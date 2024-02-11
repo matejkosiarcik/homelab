@@ -1,2 +1,3 @@
 # homelab
-My personal homelab config
+
+My personal homelab config.
