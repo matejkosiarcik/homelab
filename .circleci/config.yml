@@ -1,0 +1,20 @@
+version: 2.1
+
+workflows:
+  version: 2
+  circleci:
+    jobs:
+      - azlint
+
+jobs:
+  azlint:
+    docker:
+      - image: matejkosiarcik/azlint:0.6.11
+    steps:
+      - checkout
+      - run: |
+          if [ "$CIRCLE_BRANCH" = main ]; then
+            azlint
+          else
+            azlint --only-changed
+          fi
