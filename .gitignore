@@ -19,3 +19,10 @@ dist/
 node_modules/
 python/
 venv/
+
+# For testing deployments
+/homelab
+
+# Data
+data/
+config-private/
