@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  pihole:
+    image: pihole/pihole:2024.03.2
+    container_name: pihole
+    environment:
+      PIHOLE_DNS_: 8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
+      TZ: Europe/Bratislava
+      WEBTHEME: default-darker
+      WEBPASSWORD_FILE: /webpassword.txt
+    volumes:
+      - './data/etc-pihole:/etc/pihole'
+      - './data/etc-dnsmasq.d:/etc/dnsmasq.d'
+      - './config-private/webpassword.txt:/webpassword.txt:ro'
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:80/admin
+      start_period: 10s
+      interval: 5s
+      timeout: 2s
+      retries: 3
