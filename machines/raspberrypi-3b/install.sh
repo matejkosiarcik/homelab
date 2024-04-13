@@ -63,4 +63,4 @@ if [ "$dry_run" -eq 1 ]; then
     extra_args='--dry-run'
 fi
 # shellcheck disable=SC2248
-(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --detach --wait $extra_args 2>&1 | tee "$log_dir/docker-compose-up.txt")
+(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --detach --wait $extra_args 2>&1 | tee "$log_dir/docker-compose-up.txt")
