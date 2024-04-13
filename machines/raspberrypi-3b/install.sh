@@ -30,10 +30,11 @@ done
 
 dist_prefix="${DEST_DIR-}" # Either use DEST_DIR or empty string
 
-source_dir="$PWD/pi-hole"
-target_dir="$dist_prefix/homelab/pi-hole"
-backup_dir="$dist_prefix/homelab/.backup/pi-hole/$(date +"%Y-%m-%d_%H-%M-%S")"
-log_dir="$dist_prefix/homelab/.log/pi-hole/$(date +"%Y-%m-%d_%H-%M-%S")"
+component='pi-hole'
+source_dir="$PWD/$component"
+target_dir="$dist_prefix/homelab/$component"
+backup_dir="$dist_prefix/homelab/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
+log_dir="$dist_prefix/homelab/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
 
 mkdir -p "$log_dir" "$backup_dir"
 
