@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  app:
+    image: linuxserver/unifi-network-application:8.1.113
+    container_name: unifi-network-application
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bratislava
+      - MONGO_USER=unifi
+      # - MONGO_PASS=123HomelabFTW!
+      # - MONGO_PASSWORD=123HomelabFTW!
+      - FILE__MONGO_PASS=/.config/mongodb-password.txt
+      - MONGO_HOST=unifi-network-application-mongodb
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=unifi
+      # - MEM_LIMIT=1024 # optional
+      # - MEM_STARTUP=1024 # optional
+      # - MONGO_TLS= # optional
+      # - MONGO_AUTHSOURCE= # optional
+    volumes:
+      - ./data-app:/config
+      - ./config-private/mongodb-password.txt:/.config/mongodb-password.txt:ro
+    ports:
+      - 8443:8443
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 1900:1900/udp # optional
+      - 8843:8843 # optional
+      - 8880:8880 # optional
+      - 6789:6789 # optional
+      - 5514:5514/udp # optional
+    healthcheck:
+      test: if [ "$(curl --insecure https://localhost:8443/status | jq .meta.up)" != 'true' ]; then exit 1; fi
+      start_period: 60s
+      interval: 10s
+      timeout: 2s
+      retries: 1
+    depends_on:
+      - database
+    restart: unless-stopped
+
+  database:
+    image: mongo:7.0.8
+    container_name: unifi-network-application-mongodb
+    command: --auth
+    volumes:
+      - ./data-mongodb:/data/db
+      - ./config-public/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./config-private/mongodb-password.txt:/.config/mongodb-password.txt:ro
+    healthcheck:
+      test: printf 'show databases\n' | mongosh localhost:27017/unifi --username unifi --password "$(cat /.config/mongodb-password.txt)" --quiet
+      start_period: 20s
+      interval: 10s
+      timeout: 2s
+      retries: 1
+    restart: unless-stopped
