@@ -5,6 +5,7 @@ workflows:
   circleci:
     jobs:
       - azlint
+      - dry_deployment
 
 jobs:
   azlint:
@@ -18,3 +19,19 @@ jobs:
           else
             azlint --only-changed
           fi
+
+  dry_deployment:
+    docker:
+      - image: debian:12.5
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: |
+            apt-get update -qq
+            DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes \
+              apt-get install -q --yes --no-install-recommends bash
+      - run:
+          name: Run deployment [dry-run]
+          command: |
+            DEST_DIR="$PWD" bash './machines/raspberrypi-3b/install.sh' -n
