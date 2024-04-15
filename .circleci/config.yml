@@ -34,4 +34,6 @@ jobs:
       - run:
           name: Run deployment [dry-run]
           command: |
-            DEST_DIR="$PWD/.deployment" bash './machines/raspberrypi-3b/install.sh' -n
+            SOURCE_DIR="$PWD/machines/raspberrypi-3b/pi-hole" \
+            DEST_DIR="$PWD/.deployment" \
+              bash './.utils/install.sh' -n

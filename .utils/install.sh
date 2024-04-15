@@ -28,11 +28,16 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
+source_dir="${SOURCE_DIR-}"
+if [ "$source_dir" = '' ]; then
+    printf 'SOURCE_DIR unset\n' >&2
+fi
+
 # Default deployment location is "/homelab"
 # Can be overriden by setting "DEST_DIR=..."
 dist_prefix="${DEST_DIR-/homelab}"
 
-component='pi-hole'
+component="$(basename "$source_dir")"
 source_dir="$PWD/$component"
 target_dir="$dist_prefix/$component"
 backup_dir="$dist_prefix/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
