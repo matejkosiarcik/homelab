@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  smtp4dev:
+    ports:
+      - "80:8080"
+      - "25:25"
+      # - "143:143"
