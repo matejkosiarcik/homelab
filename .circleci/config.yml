@@ -32,8 +32,12 @@ jobs:
             DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes \
               apt-get install -q --yes --no-install-recommends bash
       - run:
-          name: Run deployment [dry-run]
+          name: Run deployment on Raspberry Pi 3B [dry-run]
           command: |
-            SOURCE_DIR="$PWD/machines/raspberrypi-3b/pi-hole" \
             DEST_DIR="$PWD/.deployment" \
-              bash './.utils/install.sh' -n
+              bash './machines/raspberrypi-3b/install.sh' -n
+      - run:
+          name: Run deployment on Odroid H3 [dry-run]
+          command: |
+            DEST_DIR="$PWD/.deployment" \
+              bash './machines/odroid-h3/install.sh' -n

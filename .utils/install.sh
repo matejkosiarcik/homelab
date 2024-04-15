@@ -38,6 +38,8 @@ fi
 dist_prefix="${DEST_DIR-/homelab}"
 
 component="$(basename "$source_dir")"
+printf 'Installing %s\n' "$component"
+
 source_dir="$PWD/$component"
 target_dir="$dist_prefix/$component"
 backup_dir="$dist_prefix/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
