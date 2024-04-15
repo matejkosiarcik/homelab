@@ -28,13 +28,15 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-dist_prefix="${DEST_DIR-}" # Either use DEST_DIR or empty string
+# Default deployment location is "/homelab"
+# Can be overriden by setting "DEST_DIR=..."
+dist_prefix="${DEST_DIR-/homelab}"
 
 component='pi-hole'
 source_dir="$PWD/$component"
-target_dir="$dist_prefix/homelab/$component"
-backup_dir="$dist_prefix/homelab/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
-log_dir="$dist_prefix/homelab/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
+target_dir="$dist_prefix/$component"
+backup_dir="$dist_prefix/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
+log_dir="$dist_prefix/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
 
 mkdir -p "$log_dir" "$backup_dir"
 

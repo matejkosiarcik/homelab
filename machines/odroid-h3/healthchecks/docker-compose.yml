@@ -10,7 +10,7 @@ services:
       database:
         condition: service_healthy
     environment:
-      # NOTE: SECRET_KEY and DB_PASSWORD should be set via .env file
+      # NOTE: SECRET_KEY and DB_PASSWORD should be set via .env file above
 
       # General options
       - DEBUG=False
