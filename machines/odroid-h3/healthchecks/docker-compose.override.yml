@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    ports:
+      - "8080:8000"
+    environment:
+      - ALLOWED_HOSTS=localhost
+      - SITE_ROOT=http://localhost:8080
+      - REGISTRATION_OPEN=True
+    restart: "no"
+
+  database:
+    ports:
+      - "5432:5432"
+    restart: "no"

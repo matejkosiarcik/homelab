@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: healthchecks
+    image: healthchecks/healthchecks:v3.3
+    env_file:
+      - ./config-private/healthchecks.env
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      # NOTE: SECRET_KEY and DB_PASSWORD should be set via .env file
+
+      # General options
+      - DEBUG=False
+      - SITE_NAME=Self_Hosted_Healthchecks
+
+      # General options
+      - DB_NAME=healthchecks
+      - DB_HOST=database
+      - DB=postgres
+
+      # Email options
+      - EMAIL_HOST=host.docker.internal
+      - EMAIL_HOST_PASSWORD= # TODO: Set ?
+      - EMAIL_HOST_USER= # TODO: Set ?
+      - EMAIL_PORT=8025 # TODO: Set 25
+      - EMAIL_USE_TLS=False # TODO: Set True
+      - EMAIL_USE_SSL=False # TODO: Remove
+      - EMAIL_USE_VERIFICATION=False # TODO: Set True
+
+    restart: unless-stopped
+
+  database:
+    image: postgres:16.2
+    container_name: healthchecks-postgres
+    volumes:
+      - './data/postgres-data:/var/lib/postgresql/data'
+      - './config-private/postgres-password.txt:/.homelab-config/password.txt'
+    environment:
+      # Basic setup
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+      # Set main database connection values
+      - POSTGRES_DB=healthchecks
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD_FILE=/.homelab-config/password.txt
+
+      # Set same connection values for psql and pg_isready
+      - PGUSER=postgres
+      - PGDATABASE=healthchecks
+    healthcheck:
+      test: pg_isready || exit 1
+      start_period: 15s
+      interval: 10s
+      timeout: 2s
+      retries: 1
+    restart: unless-stopped

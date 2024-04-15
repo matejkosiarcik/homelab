@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  app:
+    ports:
+      - "80:8000"
+    environment:
+      - ALLOWED_HOSTS=localhost # TODO: Set custom ip and later custom domain
+      - SITE_ROOT=http://localhost # TODO: Set custom ip and later custom domain
+      - REGISTRATION_OPEN=False
