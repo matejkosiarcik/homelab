@@ -15,7 +15,7 @@ services:
       - './config-private/webpassword.txt:/.homelab-config/webpassword.txt:ro'
     restart: unless-stopped
     healthcheck:
-      test: curl --fail http://localhost:80/admin
+      test: curl --fail http://localhost:80/admin || exit 1
       start_period: 20s
       interval: 10s
       timeout: 2s
