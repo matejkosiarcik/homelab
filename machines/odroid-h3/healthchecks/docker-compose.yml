@@ -57,3 +57,22 @@ services:
       - './data/postgres-data:/var/lib/postgresql/data'
       - './config-private/postgres-password.txt:/.homelab-config/password.txt'
     restart: unless-stopped
+
+  database-backup:
+    image: healthchecks-postgres-backup:custom
+    build:
+      context: backup/
+    container_name: healthchecks-postgres-backup
+    depends_on:
+      database:
+        condition: service_healthy
+    env_file:
+      - ./config-private/postgres-backup.env
+    environment:
+      # NOTE: PGPASSWORD should be set via .env file above
+      PGDATABASE: healthchecks
+      PGHOST: database
+      PGUSER: postgres
+    volumes:
+      - './data/postgres-backup:/backup'
+    restart: unless-stopped

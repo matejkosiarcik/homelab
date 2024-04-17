@@ -14,3 +14,6 @@ services:
     ports:
       - "5432:5432"
     restart: "no"
+
+  database-backup:
+    restart: "no"
