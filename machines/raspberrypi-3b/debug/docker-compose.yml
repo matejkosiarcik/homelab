@@ -9,8 +9,17 @@ services:
       - "./html:/usr/local/apache2/htdocs"
 
 networks:
-  debug:
-    driver: macvlan
+  # debug:
+  #   driver: macvlan
+  #   driver_opts:
+  #     parent: eth0
+  #   ipam:
+  #     config:
+  #       - subnet: "10.1.0.0/19"
+  #         ip_range: "10.1.6.0/24"
+  #         gateway: "10.1.0.1"
+  debug2:
+    driver: ipvlan
     driver_opts:
       parent: eth0
     ipam:
