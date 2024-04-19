@@ -3,5 +3,8 @@ set -euf
 
 install_script_path="$(git rev-parse --show-toplevel)/.utils/install.sh"
 
-SOURCE_DIR="$(dirname "$0")/pi-hole" \
+# SOURCE_DIR="$(dirname "$0")/pi-hole" \
+#     bash "$install_script_path"
+
+SOURCE_DIR="$(dirname "$0")/debug" \
     bash "$install_script_path"
