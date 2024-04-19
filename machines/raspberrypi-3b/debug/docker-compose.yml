@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  app:
+    image: httpd:2.4.59
+    container_name: apache
+    restart: unless-stopped
+    volumes:
+      - "./html:/usr/local/apache2/htdocs"
