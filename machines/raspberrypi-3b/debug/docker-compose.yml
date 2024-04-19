@@ -9,7 +9,7 @@ services:
       - "./html:/usr/local/apache2/htdocs"
 
 networks:
-  network:
+  debug:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -17,4 +17,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.6.0/24"
-          # gateway: "192.168.0.1"
+          gateway: "10.1.0.1"

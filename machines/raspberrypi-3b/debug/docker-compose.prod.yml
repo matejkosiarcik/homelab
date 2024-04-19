@@ -5,5 +5,5 @@ services:
     ports:
       - "80:80"
     networks:
-      network:
-        ipv4_address: 10.1.6.2
+      debug:
+        ipv4_address: 10.1.6.1
