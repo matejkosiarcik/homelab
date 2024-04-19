@@ -7,3 +7,14 @@ services:
     restart: unless-stopped
     volumes:
       - "./html:/usr/local/apache2/htdocs"
+
+networks:
+  network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.6.0/24"
+          ip_range: "10.1.6.0/28"
+          # gateway: "192.168.0.1"
