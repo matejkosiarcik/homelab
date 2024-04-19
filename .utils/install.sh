@@ -33,9 +33,9 @@ if [ "$source_dir" = '' ]; then
     printf 'SOURCE_DIR unset\n' >&2
 fi
 
-# Default deployment location is "/homelab"
+# Default deployment location is "~/homelab"
 # Can be overriden by setting "DEST_DIR=..."
-dist_prefix="${DEST_DIR-/homelab}"
+dist_prefix="${DEST_DIR-$HOME/homelab}"
 
 component="$(basename "$source_dir")"
 printf 'Installing %s\n' "$component"
