@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -eufo pipefail
-cd "$(dirname "$0")"
 
 print_help() {
     printf 'bash install.sh [-n] [-h]\n'

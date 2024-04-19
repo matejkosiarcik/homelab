@@ -1,5 +1,6 @@
 #!/bin/sh
 set -euf
+cd "$(dirname "$0")"
 
 install_script_path="$(git rev-parse --show-toplevel)/.utils/install.sh"
 
