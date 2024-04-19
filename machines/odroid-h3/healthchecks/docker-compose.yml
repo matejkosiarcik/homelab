@@ -29,7 +29,6 @@ services:
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_VERIFICATION=False # TODO: Set True
-
     restart: unless-stopped
 
   database:
