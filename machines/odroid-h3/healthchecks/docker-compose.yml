@@ -10,11 +10,9 @@ services:
     env_file:
       - ./private/healthchecks.env
     environment:
-      # NOTE: SECRET_KEY and DB_PASSWORD should be set via .env file above
-
       # General options
       - DEBUG=False
-      - SITE_NAME=Homelab_Healthchecks
+      - SITE_NAME=Healthchecks
 
       # General options
       - DB_NAME=healthchecks
@@ -25,10 +23,10 @@ services:
       - EMAIL_HOST=host.docker.internal # TODO: Update
       - EMAIL_HOST_PASSWORD= # TODO: Set ?
       - EMAIL_HOST_USER= # TODO: Set ?
-      - EMAIL_PORT=8025 # TODO: Set 25
+      - EMAIL_PORT=8025 # TODO: Unset
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_SSL=False # TODO: Remove
-      - EMAIL_USE_VERIFICATION=False # TODO: Set True
+      - EMAIL_USE_VERIFICATION=True
     restart: unless-stopped
 
   database:
