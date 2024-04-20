@@ -41,3 +41,9 @@ This is bad `/status`:
 ## MongoDB
 
 DockerHub: https://hub.docker.com/_/mongo
+
+## Installation
+
+Before installation prepare following files:
+
+- `/private/mongodb-password.txt` - Password for MongoDB database (forbids trailing newline)
