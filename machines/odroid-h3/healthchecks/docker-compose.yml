@@ -39,7 +39,7 @@ services:
       # Set main database connection values
       - POSTGRES_DB=healthchecks
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD_FILE=/.homelab-config/password.txt
+      - POSTGRES_PASSWORD_FILE=/.homelab/password.txt
 
       # Set same connection values for psql and pg_isready
       - PGUSER=postgres
@@ -52,7 +52,7 @@ services:
       retries: 1
     volumes:
       - './data/postgres-data:/var/lib/postgresql/data'
-      - './private/postgres-password.txt:/.homelab-config/password.txt'
+      - './private/postgres-password.txt:/.homelab/password.txt'
     restart: unless-stopped
 
   database-backup:

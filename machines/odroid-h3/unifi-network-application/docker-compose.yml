@@ -11,7 +11,7 @@ services:
       - MONGO_USER=unifi
       # - MONGO_PASS=123HomelabFTW!
       # - MONGO_PASSWORD=123HomelabFTW!
-      - FILE__MONGO_PASS=/.homelab-config/mongodb-password.txt
+      - FILE__MONGO_PASS=/.homelab/mongodb-password.txt
       - MONGO_HOST=unifi-network-application-mongodb
       - MONGO_PORT=27017
       - MONGO_DBNAME=unifi
@@ -21,7 +21,7 @@ services:
       # - MONGO_AUTHSOURCE= # optional
     volumes:
       - ./data/app:/config
-      - ./private/mongodb-password.txt:/.homelab-config/mongodb-password.txt:ro
+      - ./private/mongodb-password.txt:/.homelab/mongodb-password.txt:ro
     ports:
       - 3478:3478/udp
       - 8080:8080
@@ -51,9 +51,9 @@ services:
     volumes:
       - ./data/mongodb:/data/db
       - ./config/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ./private/mongodb-password.txt:/.homelab-config/mongodb-password.txt:ro
+      - ./private/mongodb-password.txt:/.homelab/mongodb-password.txt:ro
     healthcheck:
-      test: printf 'show databases\n' | mongosh localhost:27017/unifi --username unifi --password "$(cat /.homelab-config/mongodb-password.txt)" --quiet || exit 1
+      test: printf 'show databases\n' | mongosh localhost:27017/unifi --username unifi --password "$(cat /.homelab/mongodb-password.txt)" --quiet || exit 1
       start_period: 20s
       interval: 10s
       timeout: 2s

@@ -8,11 +8,11 @@ services:
       - PIHOLE_DNS_=8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
       - TZ=Europe/Bratislava
       - WEBTHEME=default-darker
-      - WEBPASSWORD_FILE=/.homelab-config/webpassword.txt
+      - WEBPASSWORD_FILE=/.homelab/webpassword.txt
     volumes:
       - './data/etc-pihole:/etc/pihole'
       - './data/etc-dnsmasq.d:/etc/dnsmasq.d'
-      - './private/webpassword.txt:/.homelab-config/webpassword.txt:ro'
+      - './private/webpassword.txt:/.homelab/webpassword.txt:ro'
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost/admin || exit 1
