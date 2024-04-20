@@ -4,6 +4,7 @@
 
 - GitHub: https://github.com/linuxserver/docker-unifi-network-application
 - DockerHub: https://hub.docker.com/r/linuxserver/unifi-network-application
+- Open Ports overview: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
 
 ### Note for Healtcheck
 
