@@ -26,6 +26,11 @@ TL;DR:
 sudo apt-get update
 sudo apt-get upgrade --yes
 sudo apt-get install --yes ca-certificates curl git rsync wget
+
+# git - homelab gitflow
+# ca-certificates - required for docker
+# rsync - required for log2ram
+# curl, wget - general
 ```
 
 ## Install Log2Ram
