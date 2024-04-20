@@ -56,7 +56,7 @@ services:
     restart: unless-stopped
 
   database-backup:
-    image: healthchecks-postgres-backup:custom
+    image: healthchecks-postgres-backup:homelab
     build:
       context: backup/
     container_name: healthchecks-postgres-backup
