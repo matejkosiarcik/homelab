@@ -57,13 +57,21 @@ else
 fi
 
 # Remove old config files
-find "$target_dir" -maxdepth 1 -type f -name 'docker-compose*.yml' -delete
-find "$target_dir" -maxdepth 1 -type d -name 'config-public' -exec rm -rf {} \;
+find "$target_dir" -mindepth 1 -maxdepth 1 \
+    -not \( -name data -and -type d \) -and \
+    -not \( -name log -and -type d \) -and \
+    -not \( -name config-private -and -type d \) \
+    -exec rm -rf {} \;
 
 # Copy new config files
 cp "$source_dir/docker-compose.yml" "$target_dir/docker-compose.yml"
 cp "$source_dir/docker-compose.prod.yml" "$target_dir/docker-compose.override.yml"
-cp -r "$source_dir/html" "$target_dir/html"
+find "$source_dir" -mindepth 1 -maxdepth 1 \
+    -not \( -name 'docker-compose*.yml' -and -type f \) -and \
+    -not \( -name 'data' -and -type d \) -and \
+    -not \( -name 'log' -and -type d \) -and \
+    -not \( -name 'config-private' -and -type d \) \
+     -exec cp -r "{}" "$target_dir/" \;
 
 # Run new services
 (cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always 2>&1 | tee "$log_dir/docker-compose-pull.txt")
