@@ -1,7 +1,7 @@
 # Install Docker
 
-- Instructions 32bit: https://docs.docker.com/engine/install/raspberry-pi-os/
-- Instructions 64bit: https://docs.docker.com/engine/install/debian
+- Instructions 32bit: <https://docs.docker.com/engine/install/raspberry-pi-os>
+- Instructions 64bit: <https://docs.docker.com/engine/install/debian>
 
 TL;DR 64bit:
 
@@ -19,7 +19,7 @@ sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-p
 sudo docker run hello-world
 ```
 
-Now make docker launchable for non-root users, Instructions: https://docs.docker.com/engine/install/linux-postinstall/
+Now make docker launchable for non-root users, Instructions: <https://docs.docker.com/engine/install/linux-postinstall>
 
 TL;DR:
 
@@ -39,7 +39,7 @@ sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 ```
 
-Configure logging driver https://docs.docker.com/config/containers/logging/local/
+Configure logging driver <https://docs.docker.com/config/containers/logging/local>
 
 TL;DR:
 
@@ -61,7 +61,7 @@ Unfortunetely you can't connect to container running via macvlan directly from t
 At least not without a special (pricy) network equipment.
 You can connect to them from other devices on your network though.
 
-Follow this guide to setup "shim router" which allows the host to connect to these containers as well: https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/
+Follow this guide to setup "shim router" which allows the host to connect to these containers as well: <https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks>
 
 Here is the main script:
 

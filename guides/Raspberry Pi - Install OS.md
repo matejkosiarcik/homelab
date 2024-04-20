@@ -38,7 +38,7 @@ sudo apt-get install --yes ca-certificates curl git rsync wget
 Install _Log2Ram_
 
 - GitHub: <https://github.com/azlux/log2ram>
-- Guide: <https://pimylifeup.com/raspberry-pi-log2ram/>
+- Guide: <https://pimylifeup.com/raspberry-pi-log2ram>
 
 TL;DR:
 
