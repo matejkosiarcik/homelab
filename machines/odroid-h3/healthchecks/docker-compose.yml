@@ -8,7 +8,7 @@ services:
       database:
         condition: service_healthy
     env_file:
-      - ./config-private/healthchecks.env
+      - ./private/healthchecks.env
     environment:
       # NOTE: SECRET_KEY and DB_PASSWORD should be set via .env file above
 
@@ -54,7 +54,7 @@ services:
       retries: 1
     volumes:
       - './data/postgres-data:/var/lib/postgresql/data'
-      - './config-private/postgres-password.txt:/.homelab-config/password.txt'
+      - './private/postgres-password.txt:/.homelab-config/password.txt'
     restart: unless-stopped
 
   database-backup:
@@ -66,7 +66,7 @@ services:
       database:
         condition: service_healthy
     env_file:
-      - ./config-private/postgres-backup.env
+      - ./private/postgres-backup.env
     environment:
       # NOTE: PGPASSWORD should be set via .env file above
       PGDATABASE: healthchecks

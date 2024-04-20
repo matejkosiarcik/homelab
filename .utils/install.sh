@@ -62,7 +62,7 @@ fi
 find "$target_dir" -mindepth 1 -maxdepth 1 \
     -not \( -name 'data' -and -type d \) -and \
     -not \( -name 'log' -and -type d \) -and \
-    -not \( -name 'config-private' -and -type d \) \
+    -not \( -name 'private' -and -type d \) \
     -exec rm -rf {} \;
 
 # Copy new files
@@ -72,7 +72,7 @@ find "$source_dir" -mindepth 1 -maxdepth 1 \
     -not \( -name 'docker-compose*.yml' -and -type f \) -and \
     -not \( -name 'data' -and -type d \) -and \
     -not \( -name 'log' -and -type d \) -and \
-    -not \( -name 'config-private' -and -type d \) \
+    -not \( -name 'private' -and -type d \) \
      -exec cp -r "{}" "$target_dir/" \;
 
 # Run new services

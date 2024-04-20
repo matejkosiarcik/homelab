@@ -21,7 +21,7 @@ services:
       # - MONGO_AUTHSOURCE= # optional
     volumes:
       - ./data/app:/config
-      - ./config-private/mongodb-password.txt:/.homelab-config/mongodb-password.txt:ro
+      - ./private/mongodb-password.txt:/.homelab-config/mongodb-password.txt:ro
     ports:
       - 8443:8443
       - 3478:3478/udp
@@ -50,7 +50,7 @@ services:
     volumes:
       - ./data/mongodb:/data/db
       - ./config-public/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ./config-private/mongodb-password.txt:/.homelab-config/mongodb-password.txt:ro
+      - ./private/mongodb-password.txt:/.homelab-config/mongodb-password.txt:ro
     healthcheck:
       test: printf 'show databases\n' | mongosh localhost:27017/unifi --username unifi --password "$(cat /.homelab-config/mongodb-password.txt)" --quiet || exit 1
       start_period: 20s

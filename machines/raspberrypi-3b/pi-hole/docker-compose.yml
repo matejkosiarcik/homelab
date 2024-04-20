@@ -12,10 +12,10 @@ services:
     volumes:
       - './data/etc-pihole:/etc/pihole'
       - './data/etc-dnsmasq.d:/etc/dnsmasq.d'
-      - './config-private/webpassword.txt:/.homelab-config/webpassword.txt:ro'
+      - './private/webpassword.txt:/.homelab-config/webpassword.txt:ro'
     restart: unless-stopped
     healthcheck:
-      test: curl --fail http://localhost:80/admin || exit 1
+      test: curl --fail http://localhost/admin || exit 1
       start_period: 20s
       interval: 10s
       timeout: 2s

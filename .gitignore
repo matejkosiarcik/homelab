@@ -25,4 +25,4 @@ venv/
 
 # Data
 data/
-config-private/
+private/
