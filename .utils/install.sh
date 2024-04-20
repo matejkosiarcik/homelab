@@ -66,7 +66,9 @@ find "$target_dir" -mindepth 1 -maxdepth 1 \
 
 # Copy new files
 cp "$source_dir/docker-compose.yml" "$target_dir/docker-compose.yml"
-cp "$source_dir/docker-compose.prod.yml" "$target_dir/docker-compose.override.yml"
+if [ -f "$source_dir/docker-compose.prod.yml" ]; then
+    cp "$source_dir/docker-compose.prod.yml" "$target_dir/docker-compose.override.yml"
+fi
 find "$source_dir" -mindepth 1 -maxdepth 1 \
     \( -name 'config' -and -type d \) \
     -exec cp -r "{}" "$target_dir/" \;
