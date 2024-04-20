@@ -6,4 +6,15 @@ services:
     container_name: smtp4dev
     volumes:
       - "./data/smtp4dev:/smtp4dev"
+    environment:
+      - ASPNETCORE_HTTP_PORTS=80
+      - HOSTNAME=host.docker.internal # TODO: Update with custom IP and later domain
+      - ServerOptions__HostName=host.docker.internal # TODO: Update with custom IP and later domain
+      - ServerOptions__LockSettings=true
+
+      # TODO: Enable TLS below
+      # - ServerOptions__TlsMode=StartTls
+      # - ServerOptions__SecureConnectionRequired=true
+      # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
+      # - ServerOptions__AuthenticationRequired=true
     restart: unless-stopped
