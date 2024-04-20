@@ -14,7 +14,7 @@ services:
 
       # General options
       - DEBUG=False
-      - SITE_NAME=Self_Hosted_Healthchecks
+      - SITE_NAME=Homelab_Healthchecks
 
       # General options
       - DB_NAME=healthchecks
@@ -22,7 +22,7 @@ services:
       - DB=postgres
 
       # Email options
-      - EMAIL_HOST=host.docker.internal
+      - EMAIL_HOST=host.docker.internal # TODO: Update
       - EMAIL_HOST_PASSWORD= # TODO: Set ?
       - EMAIL_HOST_USER= # TODO: Set ?
       - EMAIL_PORT=8025 # TODO: Set 25

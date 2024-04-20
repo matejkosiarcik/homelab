@@ -3,7 +3,7 @@ version: "3.8"
 services:
   smtp4dev:
     ports:
-      - "8081:8080" # TODO: Revert to 8080
+      - "8081:8080"
       - "8025:25"
       # - "8143:143"
     restart: "no"
