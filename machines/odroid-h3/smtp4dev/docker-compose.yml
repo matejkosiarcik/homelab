@@ -5,7 +5,7 @@ services:
     image: rnwood/smtp4dev:3.3.3
     container_name: smtp4dev
     volumes:
-      - "./data/smtp4dev:/smtp4dev"
+      - ./data/smtp4dev:/smtp4dev:rw
     environment:
       - ASPNETCORE_HTTP_PORTS=80
       - HOSTNAME=host.docker.internal # TODO: Update with custom IP and later domain

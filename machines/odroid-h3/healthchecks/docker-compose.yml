@@ -51,8 +51,8 @@ services:
       timeout: 2s
       retries: 1
     volumes:
-      - './data/postgres-data:/var/lib/postgresql/data'
-      - './private/postgres-password.txt:/.homelab/password.txt'
+      - ./data/postgres-data:/var/lib/postgresql/data:rw
+      - ./private/postgres-password.txt:/.homelab/password.txt:ro
     restart: unless-stopped
 
   database-backup:
@@ -71,5 +71,5 @@ services:
       PGHOST: database
       PGUSER: postgres
     volumes:
-      - './data/postgres-backup:/backup'
+      - ./data/postgres-backup:/backup:rw
     restart: unless-stopped

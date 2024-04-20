@@ -20,7 +20,7 @@ services:
       # - MONGO_TLS= # optional
       # - MONGO_AUTHSOURCE= # optional
     volumes:
-      - ./data/app:/config
+      - ./data/app:/config:rw
       - ./private/mongodb-password.txt:/.homelab/mongodb-password.txt:ro
     ports:
       - 3478:3478/udp
@@ -49,7 +49,7 @@ services:
     container_name: unifi-network-application-mongodb
     command: --auth
     volumes:
-      - ./data/mongodb:/data/db
+      - ./data/mongodb:/data/db:rw
       - ./config/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./private/mongodb-password.txt:/.homelab/mongodb-password.txt:ro
     healthcheck:

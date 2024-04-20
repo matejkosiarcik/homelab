@@ -6,7 +6,7 @@ services:
     container_name: apache
     restart: unless-stopped
     volumes:
-      - "./config/html:/usr/local/apache2/htdocs"
+      - ./config/html:/usr/local/apache2/htdocs:ro
 
 networks:
   debug:

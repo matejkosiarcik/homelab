@@ -10,9 +10,9 @@ services:
       - WEBTHEME=default-darker
       - WEBPASSWORD_FILE=/.homelab/webpassword.txt
     volumes:
-      - './data/etc-pihole:/etc/pihole'
-      - './data/etc-dnsmasq.d:/etc/dnsmasq.d'
-      - './private/webpassword.txt:/.homelab/webpassword.txt:ro'
+      - ./data/etc-pihole:/etc/pihole:rw
+      - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost/admin || exit 1
