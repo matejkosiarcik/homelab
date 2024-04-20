@@ -1,4 +1,4 @@
-FROM alpine:3.19.1
+FROM alpine:3.19.0
 RUN apk --no-cache add postgresql16-client && \
     mkdir -p /app /backup
 COPY backup.sh /app/backup.sh

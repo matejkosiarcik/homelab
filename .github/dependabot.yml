@@ -16,3 +16,37 @@ updates:
       github-actions:
         patterns:
           - "*"
+
+  # Dockerfile-s
+  - package-ecosystem: docker
+    directory: /machines/odroid-h3/healthchecks/backup
+    schedule:
+      interval: daily
+      time: "01:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
+
+  - package-ecosystem: npm
+    directory: /misc/unifi-backup-downloader # TODO: Update location
+    versioning-strategy: increase
+    schedule:
+      interval: daily
+      time: "02:00"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      npm[linters]:
+        patterns:
+          - "*"
