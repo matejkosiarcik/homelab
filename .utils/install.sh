@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -eufo pipefail
+# The reason to use `bash` instead of plain `sh` is that we require pipefail
 
 print_help() {
     printf 'bash install.sh [-n] [-h]\n'
@@ -49,21 +50,22 @@ mkdir -p "$log_dir" "$backup_dir"
 # Backup before updating
 if [ -d "$target_dir" ]; then
     if [ -f "$target_dir/docker-compose.yml" ]; then
-        (cd "$target_dir" && docker compose down 2>&1 | tee "$log_dir/docker-compose-down.txt")
+        (cd "$target_dir" && docker compose down 2>&1 | tee "$log_dir/docker-compose.txt")
+        printf '\n' >>"$log_dir/docker-compose.txt"
     fi
     cp -r "$target_dir/" "$backup_dir/"
 else
     mkdir -p "$target_dir"
 fi
 
-# Remove old config files
+# Remove old files
 find "$target_dir" -mindepth 1 -maxdepth 1 \
-    -not \( -name data -and -type d \) -and \
-    -not \( -name log -and -type d \) -and \
-    -not \( -name config-private -and -type d \) \
+    -not \( -name 'data' -and -type d \) -and \
+    -not \( -name 'log' -and -type d \) -and \
+    -not \( -name 'config-private' -and -type d \) \
     -exec rm -rf {} \;
 
-# Copy new config files
+# Copy new files
 cp "$source_dir/docker-compose.yml" "$target_dir/docker-compose.yml"
 cp "$source_dir/docker-compose.prod.yml" "$target_dir/docker-compose.override.yml"
 find "$source_dir" -mindepth 1 -maxdepth 1 \
@@ -74,10 +76,11 @@ find "$source_dir" -mindepth 1 -maxdepth 1 \
      -exec cp -r "{}" "$target_dir/" \;
 
 # Run new services
-(cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always 2>&1 | tee "$log_dir/docker-compose-pull.txt")
+(cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_dir/docker-compose.txt")
+printf '\n' >>"$log_dir/docker-compose.txt"
 extra_args=''
 if [ "$dry_run" -eq 1 ]; then
     extra_args='--dry-run'
 fi
 # shellcheck disable=SC2248
-(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --build --detach --wait $extra_args 2>&1 | tee "$log_dir/docker-compose-up.txt")
+(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --build --detach --wait $extra_args 2>&1 | tee "$log_dir/docker-compose.txt")
