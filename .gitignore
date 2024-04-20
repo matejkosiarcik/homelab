@@ -20,9 +20,7 @@ node_modules/
 python/
 venv/
 
-# For testing deployments
+# For testing services
 /homelab
-
-# Data
 data/
 private/
