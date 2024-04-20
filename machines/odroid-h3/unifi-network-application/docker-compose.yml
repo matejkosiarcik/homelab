@@ -49,7 +49,7 @@ services:
     command: --auth
     volumes:
       - ./data/mongodb:/data/db
-      - ./config-public/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./config/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./private/mongodb-password.txt:/.homelab-config/mongodb-password.txt:ro
     healthcheck:
       test: printf 'show databases\n' | mongosh localhost:27017/unifi --username unifi --password "$(cat /.homelab-config/mongodb-password.txt)" --quiet || exit 1
