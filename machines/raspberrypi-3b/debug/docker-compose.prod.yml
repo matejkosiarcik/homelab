@@ -6,4 +6,4 @@ services:
       - "80:80"
     networks:
       debug:
-        ipv4_address: 10.1.6.4
+        ipv4_address: 10.1.10.1

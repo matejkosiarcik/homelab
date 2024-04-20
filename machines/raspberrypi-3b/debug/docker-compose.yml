@@ -16,10 +16,10 @@ networks:
     ipam:
       config:
         - subnet: "10.1.0.0/19"
-          ip_range: "10.1.6.0/25"
-          gateway: "10.1.0.1"
-          aux_addresses:
-            host: "10.1.6.254"
+          ip_range: "10.1.10.0/24"
+          # gateway: "10.1.0.1"
+          # aux_addresses:
+          #   host: "10.1.6.2"
 
   # debug2:
   #   driver: ipvlan
