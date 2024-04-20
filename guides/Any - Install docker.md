@@ -1,7 +1,7 @@
 # Install Docker
 
-- Instructions 32bit: <https://docs.docker.com/engine/install/raspberry-pi-os>
-- Instructions 64bit: <https://docs.docker.com/engine/install/debian>
+- Instructions general: <https://docs.docker.com/engine/install/debian>
+- Instructions for Raspberry Pi \(32bit only\): <https://docs.docker.com/engine/install/raspberry-pi-os>
 
 TL;DR 64bit:
 

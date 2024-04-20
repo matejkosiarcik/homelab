@@ -5,7 +5,7 @@
 Install OS via RaspberryPi Imager
 
 - GitHub: <https://github.com/raspberrypi/rpi-imager>
-- Blogpost: <https://www.raspberrypi.com/news/raspberry-pi-imager-imaging-utility/>
+- Blogpost: <https://www.raspberrypi.com/news/raspberry-pi-imager-imaging-utility>
 - TL;DR: `brew install --cask raspberry-pi-imager`
 
 Notes:
