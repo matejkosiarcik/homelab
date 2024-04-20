@@ -61,7 +61,6 @@ fi
 # Remove old files
 find "$target_dir" -mindepth 1 -maxdepth 1 \
     -not \( -name 'data' -and -type d \) -and \
-    -not \( -name 'log' -and -type d \) -and \
     -not \( -name 'private' -and -type d \) \
     -exec rm -rf {} \;
 
@@ -69,11 +68,8 @@ find "$target_dir" -mindepth 1 -maxdepth 1 \
 cp "$source_dir/docker-compose.yml" "$target_dir/docker-compose.yml"
 cp "$source_dir/docker-compose.prod.yml" "$target_dir/docker-compose.override.yml"
 find "$source_dir" -mindepth 1 -maxdepth 1 \
-    -not \( -name 'docker-compose*.yml' -and -type f \) -and \
-    -not \( -name 'data' -and -type d \) -and \
-    -not \( -name 'log' -and -type d \) -and \
-    -not \( -name 'private' -and -type d \) \
-     -exec cp -r "{}" "$target_dir/" \;
+    \( -name 'config' -and -type d \) \
+    -exec cp -r "{}" "$target_dir/" \;
 
 # Run new services
 (cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_dir/docker-compose.txt")
