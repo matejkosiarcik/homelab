@@ -2,5 +2,6 @@
 set -euf
 
 crontab /app/schedule.cron
-crond -b -l 0 -L /log/cron.log
+touch /log/cron.log
+crond -b -L /log/cron.log # Add `-l 0` when debugging (note: alpine)
 tail -f /log/cron.log

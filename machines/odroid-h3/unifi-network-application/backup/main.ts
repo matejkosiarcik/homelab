@@ -36,6 +36,8 @@ import dotenv from 'dotenv';
     const browser = await chromium.launch({ headless: true, executablePath: browserPath });
     try {
         const page = await browser.newPage({ baseURL: url, strictSelectors: true, ignoreHTTPSErrors: true });
+        page.setDefaultNavigationTimeout(10_000);
+        page.setDefaultTimeout(2000);
         await page.goto('/');
 
         // Login

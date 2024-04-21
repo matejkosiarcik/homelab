@@ -14,7 +14,7 @@ COPY --from=build /app/node_modules ./node_modules
 FROM node:21.7.0-alpine
 WORKDIR /app
 RUN mkdir -p /backup /log && \
-    apk add --no-cache chromium
+    apk add --no-cache chromium curl
 COPY --from=aggregator /app /app
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
