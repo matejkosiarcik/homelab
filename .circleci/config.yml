@@ -30,7 +30,7 @@ jobs:
           command: |
             apt-get update -qq
             DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes \
-              apt-get install -q --yes --no-install-recommends bash
+              apt-get install -q --yes --no-install-recommends bash git
       - run:
           name: Run deployment on Raspberry Pi 3B [dry-run]
           command: |
