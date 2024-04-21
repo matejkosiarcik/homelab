@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
         dotenv.config({ path: '.env' });
     }
 
-    const backupsDir = process.env['BACKUPS_DIR'] || '/backup';
+    const backupDir = process.env['BACKUP_DIR'] || '/backup';
     const browserPath = process.env['BROWSER_PATH'] || undefined;
 
     const url = process.env['URL'];
@@ -28,8 +28,8 @@ import dotenv from 'dotenv';
         throw new Error('PASSWORD unset');
     }
 
-    if (!fsSync.existsSync(backupsDir)) {
-        await fs.mkdir(backupsDir, { recursive: true });
+    if (!fsSync.existsSync(backupDir)) {
+        await fs.mkdir(backupDir, { recursive: true });
     }
     const backupDate = new Date().toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
 
@@ -61,7 +61,7 @@ import dotenv from 'dotenv';
         if (extension !== 'unf') {
             throw new Error(`Unknown extension for downloaded file: ${download.suggestedFilename()}`);
         }
-        const downloadPath = path.join(backupsDir, `${backupDate}-settings.${extension}`);
+        const downloadPath = path.join(backupDir, `${backupDate}-settings.${extension}`);
         await download.saveAs(downloadPath);
     } finally {
         await browser.close();

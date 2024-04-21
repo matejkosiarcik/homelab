@@ -71,8 +71,8 @@ services:
     env_file:
       - ./private/app-backup.env
     environment:
-      - URL=https://app:8443
       - BROWSER_PATH=/usr/bin/chromium
+      - URL=https://app:8443
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw

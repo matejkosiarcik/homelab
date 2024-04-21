@@ -10,3 +10,7 @@ services:
       - REGISTRATION_OPEN=False
       - DEFAULT_FROM_EMAIL=healthchecks@healthchecks.lan
       - EMAIL_HOST=smtp4dev.lan
+
+  # database:
+
+  # database-backup:
