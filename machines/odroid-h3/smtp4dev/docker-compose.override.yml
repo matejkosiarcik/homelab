@@ -4,7 +4,7 @@ services:
   smtp4dev:
     ports:
       - "8025:25"
-      - "8081:80"
+      - "8080:80"
       # - "8143:143"
     environment:
       - HOSTNAME=host.docker.internal
