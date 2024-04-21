@@ -52,7 +52,7 @@ import dotenv from 'dotenv';
         await page.locator('button[name="backupDownload"]').click();
 
         // Initiate download
-        const downloadPromise = page.waitForEvent('download');
+        const downloadPromise = page.waitForEvent('download', { timeout: 15_000 });
         await page.locator('button[name="backupDownload"]').last().click();
 
         // Handle download
