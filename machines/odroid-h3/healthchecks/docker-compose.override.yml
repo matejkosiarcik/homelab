@@ -3,11 +3,13 @@
 services:
   app:
     ports:
-      - "8080:8000"
+      - "8082:8000"
     environment:
-      - ALLOWED_HOSTS=localhost
-      - SITE_ROOT=http://localhost:8080
+      - ALLOWED_HOSTS=localhost,host.docker.internal
+      - SITE_ROOT=http://localhost:8082
       - REGISTRATION_OPEN=True
+      - DEFAULT_FROM_EMAIL=healthchecks@localhost
+      - EMAIL_HOST=host.docker.internal
     restart: "no"
 
   database:

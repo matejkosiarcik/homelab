@@ -5,6 +5,8 @@ services:
     ports:
       - "80:8000"
     environment:
-      - ALLOWED_HOSTS=localhost # TODO: Set custom ip and later custom domain
-      - SITE_ROOT=http://localhost # TODO: Set custom ip and later custom domain
+      - ALLOWED_HOSTS=healthchecks.lan
+      - SITE_ROOT=http://healthchecks.lan
       - REGISTRATION_OPEN=False
+      - DEFAULT_FROM_EMAIL=healthchecks@healthchecks.lan
+      - EMAIL_HOST=smtp4dev.lan
