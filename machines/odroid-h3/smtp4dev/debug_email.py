@@ -1,10 +1,10 @@
 # #!/usr/bin/env python3
 
-from smtplib import SMTP
 import argparse
 import sys
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from smtplib import SMTP
 from typing import List
 
 
