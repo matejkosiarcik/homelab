@@ -33,9 +33,24 @@ updates:
       docker:
         patterns:
           - "*"
+  - package-ecosystem: docker
+    directory: /machines/odroid-h3/unifi-network-application/backup
+    schedule:
+      interval: daily
+      time: "01:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
 
   - package-ecosystem: npm
-    directory: /misc/unifi-backup-downloader # TODO: Update location
+    directory: /machines/odroid-h3/unifi-network-application/backup
     versioning-strategy: increase
     schedule:
       interval: daily
