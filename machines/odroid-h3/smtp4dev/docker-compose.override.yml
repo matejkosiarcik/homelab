@@ -6,4 +6,7 @@ services:
       - "8025:25"
       - "8081:80"
       # - "8143:143"
+    environment:
+      - HOSTNAME=host.docker.internal
+      - ServerOptions__HostName=host.docker.internal
     restart: "no"

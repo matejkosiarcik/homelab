@@ -6,3 +6,6 @@ services:
       - "25:25"
       - "80:80"
       # - "143:143"
+    environment:
+      - HOSTNAME=smtp4dev.lan
+      - ServerOptions__HostName=smtp4dev.lan

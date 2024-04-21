@@ -8,8 +8,6 @@ services:
       - ./data/smtp4dev:/smtp4dev:rw
     environment:
       - ASPNETCORE_HTTP_PORTS=80
-      - HOSTNAME=host.docker.internal # TODO: Update with custom IP and later domain
-      - ServerOptions__HostName=host.docker.internal # TODO: Update with custom IP and later domain
       - ServerOptions__LockSettings=true
 
       # TODO: Enable TLS below
