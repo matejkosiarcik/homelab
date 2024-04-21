@@ -49,6 +49,6 @@ Before installation prepare following files:
 
 - `/private/mongodb-password.txt` - Password for MongoDB database (forbids trailing newline)
 - `/private/app-backup.env` - Contains following environment variables:
-  - `USERNAME` - UI admin account username
-  - `PASSWORD` - UI admin account password
-  - `HEALTHCHECK_URL` - Full URL (protocol, domain/host, ping uuid) to Healthchecks ping check
+    - `USERNAME` - UI admin account username
+    - `PASSWORD` - UI admin account password
+    - `HEALTHCHECK_URL` - Full URL (protocol, domain/host, ping uuid) to Healthchecks ping check

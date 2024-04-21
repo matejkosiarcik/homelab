@@ -7,7 +7,7 @@ statusfile="$tmpdir/status.txt"
 logfile="$tmpdir/output.log"
 
 # Send start-status to healthchecks
-if [ ! -z "${HEALTHCHECK_URL+x}" ]; then
+if [ -n "${HEALTHCHECK_URL+x}" ]; then
     printf 'Curl Healthchecks before: '
     curl --insecure --location --request POST --retry 2 --max-time 10 --fail --silent --show-error "$HEALTHCHECK_URL/start" || true
     printf '\n'
@@ -21,7 +21,7 @@ printf '0\n' >"$statusfile"
 
 # Send status to healthchecks
 status="$(cat "$statusfile")"
-if [ ! -z "${HEALTHCHECK_URL+x}" ]; then
+if [ -n "${HEALTHCHECK_URL+x}" ]; then
     printf 'Curl Healthchecks after: '
     curl --insecure --location --request POST --retry 2 --max-time 10 --fail --silent --show-error --data-binary "@$logfile" "$HEALTHCHECK_URL/$status" || true
     printf '\n'

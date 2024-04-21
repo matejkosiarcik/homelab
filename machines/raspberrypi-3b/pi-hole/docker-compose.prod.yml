@@ -9,5 +9,3 @@ services:
     environment:
       - FTLCONF_LOCAL_IPV4=10.1.4.4
       - VIRTUAL_HOST=pihole.lan
-
-  # app-backup:
