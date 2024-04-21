@@ -1,4 +1,4 @@
-FROM alpine:3.19.0
+FROM alpine:3.19.1
 WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache curl postgresql16-client && \
