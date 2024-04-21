@@ -44,6 +44,4 @@ def main(argv: List[str]) -> int:
 
 if __name__ == "__main__":
     exit_code = main(sys.argv[1:])
-    if exit_code is None:
-        sys.exit(0)
     sys.exit(exit_code)
