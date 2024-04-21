@@ -8,3 +8,6 @@ services:
     ports:
       - 27017:27017
     restart: "no"
+
+  app-backup:
+    restart: "no"

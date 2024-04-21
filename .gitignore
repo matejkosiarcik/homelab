@@ -23,5 +23,6 @@ venv/
 # For testing services
 /homelab
 data/
+log/
 private/
 .env

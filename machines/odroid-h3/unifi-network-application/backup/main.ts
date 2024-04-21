@@ -1,17 +1,39 @@
 import fs from 'fs/promises';
+import fsSync from 'fs';
 import path from 'path';
+import process from 'process';
 import { chromium } from 'playwright';
+import dotenv from 'dotenv';
 
 (async () => {
-    // TODO: Make these values real
-    const url = 'https://localhost:8443';
-    const username = 'admin';
-    const password = 'Password123.'
+    if (fsSync.existsSync('.env')) {
+        dotenv.config({ path: '.env' });
+    }
 
-    await fs.mkdir('data', { recursive: true });
-    const date = new Date().toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
+    const backupsDir = process.env['BACKUPS_DIR'] || '/backup';
+    const browserPath = process.env['BROWSER_PATH'] || undefined;
 
-    const browser = await chromium.launch({ headless: false });
+    const url = process.env['URL'];
+    if (!url) {
+        throw new Error('URL unset');
+    }
+
+    const username = process.env['USERNAME'];
+    if (!username) {
+        throw new Error('USERNAME unset');
+    }
+
+    const password = process.env['PASSWORD'];
+    if (!password) {
+        throw new Error('PASSWORD unset');
+    }
+
+    if (!fsSync.existsSync(backupsDir)) {
+        await fs.mkdir(backupsDir, { recursive: true });
+    }
+    const backupDate = new Date().toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
+
+    const browser = await chromium.launch({ headless: true, executablePath: browserPath });
     try {
         const page = await browser.newPage({ baseURL: url, strictSelectors: true, ignoreHTTPSErrors: true });
         await page.goto('/');
@@ -37,7 +59,7 @@ import { chromium } from 'playwright';
         if (extension !== 'unf') {
             throw new Error(`Unknown extension for downloaded file: ${download.suggestedFilename()}`);
         }
-        const downloadPath = path.join('data', `${date}-settings.${extension}`);
+        const downloadPath = path.join(backupsDir, `${backupDate}-settings.${extension}`);
         await download.saveAs(downloadPath);
     } finally {
         await browser.close();

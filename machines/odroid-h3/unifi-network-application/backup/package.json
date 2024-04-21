@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "unifi-network-application-backup",
+  "scripts": {
+    "main": "tsx main.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "playwright": "^1.43.1"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.6",
+    "@types/node": "^20.12.7",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.5"
+  }
+}
