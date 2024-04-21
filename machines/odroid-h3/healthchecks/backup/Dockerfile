@@ -3,5 +3,5 @@ WORKDIR /app
 RUN apk --no-cache add postgresql16-client && \
     mkdir -p /backup /log
 COPY run.sh entrypoint.sh schedule.cron ./
-VOLUME /backup /log
+VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
