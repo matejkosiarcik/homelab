@@ -40,6 +40,8 @@ def main(argv: List[str]) -> int:
     with SMTP(host) as smtp:
         smtp.send_message(message)
 
+    return 0
+
 
 if __name__ == "__main__":
     exit_code = main(sys.argv[1:])

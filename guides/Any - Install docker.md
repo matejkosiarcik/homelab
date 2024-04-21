@@ -55,7 +55,7 @@ sudo nano /etc/docker/daemon.json
 }
 ```
 
-## How to connect to macvlan container from Host?
+## How to connect to macvlan container from Host
 
 Unfortunetely you can't connect to container running via macvlan directly from the running Host.
 At least not without a special (pricy) network equipment.

@@ -5,7 +5,7 @@
 - DockerHub: <https://hub.docker.com/r/pihole/pihole>
 - FTL Configuration: <https://docs.pi-hole.net/ftldns/configfile>
 
-# Before installation
+## Before installation
 
 Before installation prepare following files:
 
