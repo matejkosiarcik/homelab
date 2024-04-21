@@ -9,7 +9,7 @@ services:
       - DEFAULT_FROM_EMAIL=healthchecks@localhost
       - EMAIL_HOST=host.docker.internal
       - REGISTRATION_OPEN=True
-      - SITE_ROOT=http://localhost:8080 # TODO: Revert to 8080
+      - SITE_ROOT=http://localhost:8080
     restart: "no"
 
   database:
