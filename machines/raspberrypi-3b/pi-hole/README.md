@@ -3,6 +3,7 @@
 - Docs: <https://docs.pi-hole.net>
 - GitHub: <https://github.com/pi-hole/docker-pi-hole>
 - DockerHub: <https://hub.docker.com/r/pihole/pihole>
+- FTL Configuration: <https://docs.pi-hole.net/ftldns/configfile>
 
 # Before installation
 

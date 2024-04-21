@@ -9,6 +9,13 @@ services:
       - TZ=Europe/Bratislava
       - WEBTHEME=default-darker
       - WEBPASSWORD_FILE=/.homelab/webpassword.txt
+      - QUERY_LOGGING=false
+      - IPv6=false
+      - DHCP_ACTIVE=false
+      - FTLCONF_PIHOLE_PTR=HOSTNAMEFQDN
+      - FTLCONF_REPLY_WHEN_BUSY=DROP
+      - FTLCONF_IGNORE_LOCALHOST=false
+      - FTLCONF_PRIVACYLEVEL=1
     volumes:
       - ./data/etc-pihole:/etc/pihole:rw
       - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
