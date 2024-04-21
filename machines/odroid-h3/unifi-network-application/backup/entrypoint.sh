@@ -3,6 +3,7 @@ set -euf
 
 crontab /app/schedule.cron
 
+rm -f /log/cron.log
 touch /log/cron.log
 printf '-- Container startup --\n' >>/log/cron.log
 sh /app/run.sh >>/log/cron.log 2>&1
