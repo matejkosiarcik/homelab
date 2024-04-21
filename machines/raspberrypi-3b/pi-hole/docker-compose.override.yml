@@ -11,3 +11,6 @@ services:
       - FTLCONF_LOCAL_IPV4=127.0.0.1
       - FTLCONF_PRIVACYLEVEL=0
     restart: "no"
+
+  app-backup:
+    restart: "no"

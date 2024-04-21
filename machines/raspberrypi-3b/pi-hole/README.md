@@ -10,3 +10,6 @@
 Before installation prepare following files:
 
 - `/private/webpassword.txt` - Password for UI login (permits trailing newline)
+- `/private/app-backup.env` - Contains following environment variables:
+  - `PASSWORD` - UI admin account password
+  - `HEALTHCHECK_URL` - Full URL (protocol, domain/host, ping uuid) to Healthchecks ping check

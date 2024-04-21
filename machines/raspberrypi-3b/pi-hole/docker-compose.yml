@@ -4,6 +4,7 @@ services:
   app:
     image: pihole/pihole:2024.03.2
     container_name: pihole
+    hostname: pihole
     environment:
       - PIHOLE_DNS_=8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
       - TZ=Europe/Bratislava
@@ -27,3 +28,22 @@ services:
       interval: 10s
       timeout: 2s
       retries: 1
+
+  app-backup:
+    image: pihole-backup:homelab
+    build:
+      context: backup/
+    container_name: pihole-backup
+    hostname: pihole-backup
+    depends_on:
+      app:
+        condition: service_healthy
+    env_file:
+      - ./private/app-backup.env
+    environment:
+      - BROWSER_PATH=/usr/bin/chromium
+      - URL=http://pihole
+    volumes:
+      - ./data/app-backup:/backup:rw
+      - ./log/app-backup:/log:rw
+    restart: unless-stopped
