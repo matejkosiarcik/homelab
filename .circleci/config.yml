@@ -36,7 +36,7 @@ jobs:
           name: Run deployment on Raspberry Pi 3B [dry-run]
           command: |
             mkdir -p "$PWD/.deployment/raspberrypi-3b" "$PWD/.deployment/raspberrypi-3b/pi-hole/private"
-            touch "$PWD/.deployment/raspberrypi-3b/private/app-backup.env"
+            touch "$PWD/.deployment/raspberrypi-3b/pi-hole/private/app-backup.env"
             DEST_DIR="$PWD/.deployment" \
               bash './machines/raspberrypi-3b/install.sh' -n
       - run:
