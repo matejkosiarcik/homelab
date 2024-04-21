@@ -14,11 +14,13 @@ jobs:
     steps:
       - checkout
       - run: |
-          if [ "$CIRCLE_BRANCH" = main ]; then
-            azlint
-          else
-            azlint --only-changed
-          fi
+          azlint
+          # TODO: Reenable code below
+          # if [ "$CIRCLE_BRANCH" = main ]; then
+          #   azlint
+          # else
+          #   azlint --only-changed
+          # fi
 
   dry_deployment:
     docker:
