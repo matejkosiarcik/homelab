@@ -7,7 +7,7 @@ services:
       - "53:53/udp"
       - "80:80/tcp"
     environment:
-      - VIRTUAL_HOST=pihole.lan
       - FTLCONF_LOCAL_IPV4=10.1.4.4
+      - VIRTUAL_HOST=pihole.lan
 
   # app-backup:

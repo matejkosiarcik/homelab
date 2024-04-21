@@ -5,14 +5,14 @@ services:
     image: linuxserver/unifi-network-application:8.1.113
     container_name: unifi-network-application
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Bratislava
-      - MONGO_USER=unifi
       - FILE__MONGO_PASS=/.homelab/mongodb-password.txt
+      - MONGO_DBNAME=unifi
       - MONGO_HOST=unifi-network-application-mongodb
       - MONGO_PORT=27017
-      - MONGO_DBNAME=unifi
+      - MONGO_USER=unifi
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Bratislava
       # - MEM_LIMIT=1024 # optional
       # - MEM_STARTUP=1024 # optional
       # - MONGO_TLS= # optional

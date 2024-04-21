@@ -6,10 +6,10 @@ services:
       - "80:8000"
     environment:
       - ALLOWED_HOSTS=healthchecks.lan
-      - SITE_ROOT=http://healthchecks.lan
-      - REGISTRATION_OPEN=False
       - DEFAULT_FROM_EMAIL=healthchecks@healthchecks.lan
       - EMAIL_HOST=smtp4dev.lan
+      - REGISTRATION_OPEN=False
+      - SITE_ROOT=http://healthchecks.lan
 
   # database:
 
