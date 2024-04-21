@@ -10,7 +10,3 @@ services:
       - EMAIL_HOST=smtp4dev.lan
       - REGISTRATION_OPEN=False
       - SITE_ROOT=http://healthchecks.lan
-
-  # database:
-
-  # database-backup:

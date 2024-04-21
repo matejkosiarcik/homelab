@@ -13,18 +13,18 @@ print_help() {
 dry_run='0'
 while [ "$#" -gt 0 ]; do
     case "$1" in
-        -n)
-            dry_run="1"
-            shift
-            ;;
-        -h)
-            print_help
-            exit 0
-            ;;
-        *)
-            print_help
-            exit 1
-            ;;
+    -n)
+        dry_run="1"
+        shift
+        ;;
+    -h)
+        print_help
+        exit 0
+        ;;
+    *)
+        print_help
+        exit 1
+        ;;
     esac
 done
 

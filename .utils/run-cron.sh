@@ -12,19 +12,19 @@ print_help() {
 command=''
 while [ "$#" -gt 0 ]; do
     case "$1" in
-        -h)
-            print_help
-            exit 0
-            ;;
-        -c)
-            shift
-            command="$1"
-            shift
-            ;;
-        *)
-            print_help
-            exit 1
-            ;;
+    -h)
+        print_help
+        exit 0
+        ;;
+    -c)
+        shift
+        command="$1"
+        shift
+        ;;
+    *)
+        print_help
+        exit 1
+        ;;
     esac
 done
 

@@ -3,7 +3,6 @@ set -euf
 
 # Setup
 tmpdir="$(mktemp -d)"
-timestamp="$(date +"%Y-%m-%d_%H-%M-%S")"
 statusfile="$tmpdir/status.txt"
 logfile="$tmpdir/output.log"
 
@@ -18,12 +17,12 @@ fi
 
 # Run actual job
 printf '0\n' >"$statusfile"
-( pg_dump healthchecks \
+(pg_dump healthchecks \
     --data-only \
     --insert \
     --exclude-table-data=public.logs_record \
-    --file=/backup/dump.sql 2>&1 \
-    || printf '%s\n' "$?" >"$statusfile" ) | tee "$logfile"
+    --file=/backup/dump.sql 2>&1 || \
+    printf '%s\n' "$?" >"$statusfile") | tee "$logfile"
 
 # Send status to healthchecks
 status="$(cat "$statusfile")"
