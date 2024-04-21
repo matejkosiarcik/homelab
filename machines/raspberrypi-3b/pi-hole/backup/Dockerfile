@@ -15,7 +15,10 @@ FROM node:21.7.0-alpine
 WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache chromium curl && \
+    adduser -h /home/user -s /bin/sh -D user && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
+USER user
+HEALTHCHECK NONE
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
