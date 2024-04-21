@@ -1,1 +1,1 @@
-10 05 * * * sh /app/run.sh
+10 04 * * * sh /app/run.sh

@@ -6,7 +6,7 @@ services:
       - "8082:8000"
     environment:
       - ALLOWED_HOSTS=localhost,host.docker.internal
-      - SITE_ROOT=http://localhost:8082
+      - SITE_ROOT=http://localhost:8082 # TODO: Revert to 8080
       - REGISTRATION_OPEN=True
       - DEFAULT_FROM_EMAIL=healthchecks@localhost
       - EMAIL_HOST=host.docker.internal
