@@ -35,10 +35,12 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 3B [dry-run]
           command: |
+            mkdir -p "$PWD/.deployment/raspberrypi-3b" "$PWD/.deployment/raspberrypi-3b/pi-hole/private"
+            touch "$PWD/.deployment/raspberrypi-3b/private/app-backup.env"
             DEST_DIR="$PWD/.deployment" \
               bash './machines/raspberrypi-3b/install.sh' -n
       - run:
           name: Run deployment on Odroid H3 [dry-run]
           command: |
-            DEST_DIR="$PWD/.deployment" \
+            DEST_DIR="$PWD/.deployment/odroid-h3" \
               bash './machines/odroid-h3/install.sh' -n
