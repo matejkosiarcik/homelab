@@ -37,7 +37,7 @@ jobs:
           command: |
             mkdir -p "$PWD/.deployment/raspberrypi-3b" "$PWD/.deployment/raspberrypi-3b/pi-hole/private"
             touch "$PWD/.deployment/raspberrypi-3b/pi-hole/private/app-backup.env"
-            DEST_DIR="$PWD/.deployment" \
+            DEST_DIR="$PWD/.deployment/raspberrypi-3b" \
               bash './machines/raspberrypi-3b/install.sh' -n
       - run:
           name: Run deployment on Odroid H3 [dry-run]
