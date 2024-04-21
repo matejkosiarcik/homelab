@@ -18,7 +18,7 @@ fi
 
 # Run actual job
 printf '0\n' >"$statusfile"
-( node '/app/main.js' 2>&1 || printf '%s\n' "$?" >"$statusfile" ) | tee "$logfile"
+( node /app/main.js 2>&1 || printf '%s\n' "$?" >"$statusfile" ) | tee "$logfile"
 
 # Send status to healthchecks
 status="$(cat "$statusfile")"

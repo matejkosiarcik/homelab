@@ -9,8 +9,6 @@ services:
       - PGID=1000
       - TZ=Europe/Bratislava
       - MONGO_USER=unifi
-      # - MONGO_PASS=123HomelabFTW!
-      # - MONGO_PASSWORD=123HomelabFTW!
       - FILE__MONGO_PASS=/.homelab/mongodb-password.txt
       - MONGO_HOST=unifi-network-application-mongodb
       - MONGO_PORT=27017
@@ -34,7 +32,7 @@ services:
       - 8843:8843
       - 8880:8880
     healthcheck:
-      test: if [ "$(curl --insecure https://localhost:8443/status | jq .meta.up)" != 'true' ]; then exit 1; fi
+      test: if [ "$(curl --insecure https://localhost:8443/status | jq .meta.up)" = 'true' ]; then exit 0; else exit 1; fi
       start_period: 60s
       interval: 10s
       timeout: 2s
