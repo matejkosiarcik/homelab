@@ -13,7 +13,8 @@ COPY --from=build /app/node_modules ./node_modules
 
 FROM node:21.7.0-alpine
 WORKDIR /app
-RUN apk add --no-cache chromium curl && \
+RUN apk update --no-cache && \
+    apk add --no-cache chromium curl && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
 VOLUME [ "/backup", "/log" ]
