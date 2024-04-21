@@ -1,0 +1,23 @@
+{
+  "code-block-style": {
+    "style": "fenced"
+  },
+  "line-length": {
+    "line_length": 180
+  },
+  "no-duplicate-heading": {
+    "siblings_only": true
+  },
+  "no-inline-html": {
+    "allowed_elements": [
+      "details",
+      "summary"
+    ]
+  },
+  "single-h1": {
+    "front_matter_title": ""
+  },
+  "ul-indent": {
+    "indent": 4
+  }
+}

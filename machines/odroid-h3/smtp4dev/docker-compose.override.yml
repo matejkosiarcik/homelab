@@ -1,0 +1,12 @@
+# version: "3.8"
+
+services:
+  smtp4dev:
+    ports:
+      - "8025:25"
+      - "8080:80"
+      # - "8143:143"
+    environment:
+      - HOSTNAME=host.docker.internal # Or localhost
+      - ServerOptions__HostName=host.docker.internal # Or localhost
+    restart: "no"

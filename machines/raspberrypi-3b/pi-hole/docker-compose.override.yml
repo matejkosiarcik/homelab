@@ -1,0 +1,16 @@
+# version: "3.8"
+
+services:
+  app:
+    ports:
+      - "8053:53/tcp"
+      - "8053:53/udp"
+      - "8080:80/tcp"
+    environment:
+      - FTLCONF_LOCAL_IPV4=127.0.0.1
+      - FTLCONF_PRIVACYLEVEL=0
+      - VIRTUAL_HOST=localhost # Or host.docker.internal
+    restart: "no"
+
+  app-backup:
+    restart: "no"

@@ -1,0 +1,13 @@
+# version: "3.8"
+
+services:
+  app:
+    restart: "no"
+
+  database:
+    ports:
+      - 27017:27017
+    restart: "no"
+
+  app-backup:
+    restart: "no"

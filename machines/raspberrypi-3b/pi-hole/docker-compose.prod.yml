@@ -1,0 +1,11 @@
+# version: "3.8"
+
+services:
+  app:
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+    environment:
+      - FTLCONF_LOCAL_IPV4=10.1.4.4
+      - VIRTUAL_HOST=pihole.lan

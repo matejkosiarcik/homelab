@@ -1,0 +1,8 @@
+exclude = [
+  '^https://bevry\.me', # Frequent timeouts
+  '^shivammathur/setup-php@.+$', # Invalid email address
+  '^https?://localhost', # Localhost
+  '^https?://[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+', # IPs
+  '^https?://.*\.lan', # LAN domain
+  '^https?://.*', # Everything else
+]

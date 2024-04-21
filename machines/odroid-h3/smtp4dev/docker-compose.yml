@@ -1,0 +1,18 @@
+# version: "3.8"
+
+services:
+  smtp4dev:
+    image: rnwood/smtp4dev:3.3.3
+    container_name: smtp4dev
+    volumes:
+      - ./data/smtp4dev:/smtp4dev:rw
+    environment:
+      - ASPNETCORE_HTTP_PORTS=80
+      - ServerOptions__LockSettings=true
+
+      # TODO: Enable TLS below
+      # - ServerOptions__TlsMode=StartTls
+      # - ServerOptions__SecureConnectionRequired=true
+      # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
+      # - ServerOptions__AuthenticationRequired=true
+    restart: unless-stopped

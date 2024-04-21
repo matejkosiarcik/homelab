@@ -1,0 +1,19 @@
+{
+  "singleQuote": true,
+  "overrides": [
+    {
+      "files": [
+        "*.{yml,yaml}"
+      ],
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": "*.{htm,html,xhtml}",
+      "options": {
+        "printWidth": 150
+      }
+    }
+  ]
+}
