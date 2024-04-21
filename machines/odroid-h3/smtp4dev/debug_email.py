@@ -3,7 +3,6 @@
 from smtplib import SMTP
 import argparse
 import sys
-# from email.message import Message
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import List
@@ -31,7 +30,7 @@ def main(argv: List[str]) -> int:
     #     )
 
     # message = Message()
-    message =  MIMEMultipart("alternative")
+    message = MIMEMultipart("alternative")
     message["From"] = address_from
     message["To"] = address_to
     message["Subject"] = subject
