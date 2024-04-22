@@ -14,11 +14,11 @@ COPY --from=build /app/node_modules ./node_modules
 FROM node:21.7.3-alpine
 WORKDIR /app
 RUN apk update --no-cache && \
-    apk add --no-cache chromium curl && \
+    apk add --no-cache busybox-suid chromium curl && \
     adduser -h /home/user -s /bin/sh -D user && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
-USER user
+USER root
 HEALTHCHECK NONE
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
