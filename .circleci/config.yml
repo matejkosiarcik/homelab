@@ -5,6 +5,7 @@ workflows:
   circleci:
     jobs:
       - azlint
+      - build_containers
       - dry_deployment
 
 jobs:
@@ -21,6 +22,26 @@ jobs:
           # else
           #   azlint --only-changed
           # fi
+
+  build_containers:
+    docker:
+      - image: docker:26.0.2
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build pi-hole backup container
+          working_directory: ./machines/raspberrypi-3b/pi-hole/backup
+          command: docker build .
+      - run:
+          name: Build healthchecks backup container
+          working_directory: ./machines/odroid-h3/healthchecks/backup
+          command: docker build .
+      - run:
+          name: Build unifi-network-application backup container
+          working_directory: ./machines/odroid-h3/unifi-network-application/backup
+          command: docker build .
 
   dry_deployment:
     docker:
