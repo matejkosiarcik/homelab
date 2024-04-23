@@ -3,5 +3,5 @@
 services:
   app:
     networks:
-      pihole-network:
+      unifi-network-application-network:
         ipv4_address: 10.1.11.4

@@ -76,7 +76,7 @@ services:
     restart: unless-stopped
 
 networks:
-  unifi-network-application-network:
+  healthchecks-network:
     driver: macvlan
     driver_opts:
       parent: eth0
