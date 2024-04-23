@@ -14,12 +14,11 @@ COPY --from=build /app/node_modules ./node_modules
 FROM node:21.7.3-alpine
 WORKDIR /app
 RUN apk update --no-cache && \
-    apk add --no-cache chromium curl sudo && \
-    adduser -h /home/user -s /bin/sh -D user root && \
-    mkdir -p /backup /log && \
-    printf '\nuser ALL=(ALL) NOPASSWD: ALL\n' >>/etc/sudoers
+    apk add --no-cache chromium curl && \
+    mkdir -p /backup /log
 COPY --from=aggregator /app /app
-USER user
+# hadolint disable=DL3002
+USER root
 HEALTHCHECK NONE
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sudo", "-E", "sh", "/app/entrypoint.sh" ]
