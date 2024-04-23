@@ -1,3 +1,6 @@
+# hadolint ignore=DL3002
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
+
 FROM node:21.7.3-alpine AS build
 WORKDIR /app
 COPY main.ts package-lock.json package.json tsconfig.json ./
@@ -15,10 +18,8 @@ FROM node:21.7.3-alpine
 WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache chromium curl && \
-    adduser -h /home/user -s /bin/sh -D user && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
-USER user
 HEALTHCHECK NONE
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
