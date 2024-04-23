@@ -10,3 +10,6 @@ services:
       - EMAIL_HOST=smtp4dev.lan
       - REGISTRATION_OPEN=False
       - SITE_ROOT=http://healthchecks.lan
+    networks:
+      pihole-network:
+        ipv4_address: 10.1.11.3
