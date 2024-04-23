@@ -9,3 +9,6 @@ services:
     environment:
       - HOSTNAME=smtp4dev.lan
       - ServerOptions__HostName=smtp4dev.lan
+    networks:
+      pihole-network:
+        ipv4_address: 10.1.11.2
