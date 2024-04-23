@@ -1,5 +1,3 @@
-# hadolint ignore=DL3002
-
 FROM node:21.7.3-alpine AS build
 WORKDIR /app
 COPY main.ts package-lock.json package.json tsconfig.json ./
@@ -14,7 +12,6 @@ COPY --from=build /app/dist/main.js ./
 COPY --from=build /app/node_modules ./node_modules
 
 FROM node:21.7.3-alpine
-# hadolint ignore=DL3002
 WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache chromium curl && \
