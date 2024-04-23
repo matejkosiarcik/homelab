@@ -1,4 +1,4 @@
-# hadolint disable=DL3002
+# hadolint ignore=DL3002
 
 FROM node:21.7.3-alpine AS build
 WORKDIR /app
@@ -13,20 +13,20 @@ COPY run.sh entrypoint.sh package.json schedule.cron ./
 COPY --from=build /app/dist/main.js ./
 COPY --from=build /app/node_modules ./node_modules
 
-# hadolint disable=DL3002
+# hadolint ignore=DL3002
 
 FROM node:21.7.3-alpine
-# hadolint disable=DL3002
+# hadolint ignore=DL3002
 WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache chromium curl && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
-# hadolint disable=DL3002
+# hadolint ignore=DL3002
 USER root
-# hadolint disable=DL3002
+# hadolint ignore=DL3002
 HEALTHCHECK NONE
 VOLUME [ "/backup", "/log" ]
-# hadolint disable=DL3002
+# hadolint ignore=DL3002
 ENTRYPOINT [ "sudo", "-E", "sh", "/app/entrypoint.sh" ]
-# hadolint disable=DL3002
+# hadolint ignore=DL3002
