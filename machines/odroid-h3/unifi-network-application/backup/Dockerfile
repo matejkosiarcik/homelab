@@ -20,7 +20,7 @@ RUN apk update --no-cache && \
     adduser -h /home/user -s /bin/sh -D user && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
-USER user
+USER root
 HEALTHCHECK NONE
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
