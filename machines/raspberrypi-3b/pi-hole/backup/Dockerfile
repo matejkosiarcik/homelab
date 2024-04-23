@@ -1,3 +1,5 @@
+# hadolint ignore=DL3002
+
 FROM node:21.7.3-alpine AS build
 WORKDIR /app
 COPY main.ts package-lock.json package.json tsconfig.json ./
@@ -17,8 +19,6 @@ RUN apk update --no-cache && \
     apk add --no-cache chromium curl && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
-# hadolint ignore=DL3002
-USER root
 HEALTHCHECK NONE
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
