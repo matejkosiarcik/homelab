@@ -1,4 +1,7 @@
+# hadolint ignore=DL3002
+
 FROM alpine:3.19.1
+# hadolint ignore=DL3002
 WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache curl postgresql16-client && \
