@@ -1,4 +1,5 @@
 # hadolint ignore=DL3002
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 FROM alpine:3.19.1
 WORKDIR /app

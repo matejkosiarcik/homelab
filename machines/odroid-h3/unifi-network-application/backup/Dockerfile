@@ -1,4 +1,5 @@
 # hadolint ignore=DL3002
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 FROM node:21.7.3-alpine AS build
 WORKDIR /app
