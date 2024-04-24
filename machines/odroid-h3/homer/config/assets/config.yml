@@ -44,19 +44,19 @@ services:
       - name: Rasbperry Pi 3B
         subtitle: PiHole
         type: CopyToClipboard
-        logo: ./assets/icons/raspberry-pi.png
+        logo: ./assets/icons/other/raspberry-pi.png
         clipboard: ssh matej@raspberry-pi-3b-1.lan
 
       - name: Rasbperry Pi 4B 4GB
         subtitle: TV
         type: CopyToClipboard
-        logo: ./assets/icons/raspberry-pi.png
+        logo: ./assets/icons/other/raspberry-pi.png
         clipboard: ssh matej@raspberry-pi-4b-1.lan
 
       - name: Rasbperry Pi 4B 2GB
         subtitle: TV
         type: CopyToClipboard
-        logo: ./assets/icons/raspberry-pi.png
+        logo: ./assets/icons/other/raspberry-pi.png
         clipboard: ssh matej@raspberry-pi-4b-2.lan
 
   - name: Apps
