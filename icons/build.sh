@@ -9,7 +9,8 @@ global_outdir="$(git rev-parse --show-toplevel)/machines/odroid-h3/homer/config/
 rm -rf "$global_outdir"
 mkdir "$global_outdir"
 
-convert_options='-resize 128x128 -density 1200 -background none -bordercolor transparent -border 1'
+# NOTE: 126px is because the border adds 1px on each side -> so the result dimension is 128px
+convert_options='-resize 126x126 -density 1200 -background none -bordercolor transparent -border 1'
 tmpdir="$(mktemp -d)"
 mkdir "$tmpdir/file"
 
