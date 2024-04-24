@@ -1,6 +1,6 @@
 title: Homer
 subtitle: Homelab dashboard
-logo: https://raw.githubusercontent.com//bastienwirtz/homer/main/public/logo.png # TODO: Local logo
+logo: ./assets/icons/other/homer.png
 footer: ""
 columns: 4
 
@@ -11,7 +11,7 @@ services:
 
       - name: UPC Router
         subtitle: COMPAL CH7465LG
-        logo: https://a.storyblok.com/f/131641/x/e8e20edc1d/upc_greenbg_srgb.svg # TODO: Local logo
+        logo: ./assets/icons/other/upc.png
         url: http://192.168.0.1
 
       - name: Main Router
@@ -32,13 +32,13 @@ services:
       - name: MacBook Pro 2012
         subtitle: NAS
         type: CopyToClipboard
-        logo: https://upload.wikimedia.org/wikipedia/commons/8/84/Apple_Computer_Logo_rainbow.svg # TODO: Local logo
+        logo: ./assets/icons/other/apple.png
         clipboard: "ssh matej@macbook-pro-2012-1.lan"
 
       - name: Odroid H3
         subtitle: App Server
         type: CopyToClipboard
-        logo: https://wiki.odroid.com/_media/wiki/logo.png # TODO: Local logo
+        logo: ./assets/icons/other/odroid.png
         clipboard: "ssh matej@odroid-h3-1.lan"
 
       - name: Rasbperry Pi 3B
@@ -79,7 +79,7 @@ services:
         type: Ping
         subtitle: Dashboard
         url: http://homer.lan
-        logo: https://raw.githubusercontent.com//bastienwirtz/homer/main/public/logo.png # TODO: Local logo
+        logo: ./assets/icons/other/homer.png
 
       - name: Unifi
         type: Ping
@@ -97,7 +97,7 @@ services:
         type: Ping
         subtitle: Mail server
         url: http://smtp4dev.lan
-        logo: https://github.com/rnwood/smtp4dev/raw/master/Rnwood.Smtp4dev/ClientApp/public/logo.png?raw=true # TODO: Local logo
+        logo: ./assets/icons/other/smtp4dev.png
 
   - name: Smart Home
     icon: fa-solid fa-house

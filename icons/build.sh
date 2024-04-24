@@ -62,7 +62,12 @@ mkdir "$outdir"
 outdir="$global_outdir/other"
 mkdir "$outdir"
 
+convert_file "convert $convert_options" "$global_indir/other/apple.svg.bin" "$outdir/apple.png"
+convert_file "convert $convert_options" "$global_indir/other/homer.png" "$outdir/homer.png"
+convert_file "convert $convert_options" "$global_indir/other/odroid.png" "$outdir/odroid.png"
 convert_file "convert $convert_options" "$global_indir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
+convert_file "convert $convert_options" "$global_indir/other/smtp4dev.png" "$outdir/smtp4dev.png"
+convert_file "convert $convert_options" "$global_indir/other/upc.svg.bin" "$outdir/upc.png"
 
 ### Cleanup ###
 
