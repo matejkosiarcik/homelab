@@ -52,6 +52,11 @@ convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/i
 convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
 convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/unifi.png" "$outdir/unifi.png"
 
+### Kubernetes Icons ###
+
+outdir="$global_outdir/kubernetes"
+mkdir "$outdir"
+
 ### Other Icons ###
 
 outdir="$global_outdir/other"
