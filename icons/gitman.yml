@@ -1,0 +1,72 @@
+location: gitman/
+sources:
+  - repo: https://github.com/jb-stack/Dia-vrt-sheets.git
+    name: dia-vrt-sheets
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/kubernetes/community.git
+    name: kubernetes-community
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/causefx/Organizr.git
+    name: organizr
+    rev: v2-master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+sources_locked:
+  - repo: https://github.com/jb-stack/Dia-vrt-sheets.git
+    name: dia-vrt-sheets
+    rev: 086b91951338a3633fff59bf6b5facceec93a88f
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/kubernetes/community.git
+    name: kubernetes-community
+    rev: 994cba00804e83493676db2d47c978b3af305419
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/causefx/Organizr.git
+    name: organizr
+    rev: b8344ba52dc91c5159914e5d9a536d9ae0a38a3c
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+default_group: ""
+groups:
+  -

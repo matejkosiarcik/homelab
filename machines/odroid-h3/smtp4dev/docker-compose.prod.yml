@@ -11,4 +11,4 @@ services:
       - ServerOptions__HostName=smtp4dev.lan
     networks:
       smtp4dev-network:
-        ipv4_address: 10.1.11.2
+        ipv4_address: 10.1.11.3

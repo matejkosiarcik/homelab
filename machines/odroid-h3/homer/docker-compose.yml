@@ -1,0 +1,31 @@
+# version: "3.8"
+
+services:
+  app:
+    image: b4bz/homer:v24.04.1
+    container_name: homer
+    hostname: homer
+    environment:
+      - INIT_ASSETS=0
+      - PORT=80
+    ports:
+      - "8080:80"
+    volumes:
+      - ./config/assets/:/www/assets:ro
+    # healthcheck:
+    #   test: wget # TODO: run wget
+    #   start_period: 15s
+    #   interval: 10s
+    #   timeout: 2s
+    #   retries: 1
+    restart: unless-stopped
+
+networks:
+  homer-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.11.0/24"

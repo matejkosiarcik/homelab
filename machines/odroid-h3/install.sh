@@ -12,5 +12,8 @@ SOURCE_DIR="$(dirname "$0")/smtp4dev" \
 SOURCE_DIR="$(dirname "$0")/healthchecks" \
     bash "$install_script_path" $@
 
+SOURCE_DIR="$(dirname "$0")/homer" \
+    bash "$install_script_path" $@
+
 SOURCE_DIR="$(dirname "$0")/unifi-network-application" \
     bash "$install_script_path" $@

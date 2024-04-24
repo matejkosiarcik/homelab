@@ -1,0 +1,118 @@
+title: Homer
+subtitle: Homelab dashboard
+logo: ./assets/icons/other/homer.png
+footer: ""
+columns: 4
+
+services:
+  - name: Network
+    icon: fa-solid fa-network-wired
+    items:
+      - name: UPC Router
+        subtitle: COMPAL CH7465LG
+        logo: ./assets/icons/other/upc.png
+        url: http://192.168.0.1
+
+      - name: Main Router
+        subtitle: TP-Link ER605
+        logo: ./assets/icons/vrt/router.png
+        url: https://10.1.0.1
+
+      - name: Smart Switch
+        logo: ./assets/icons/vrt/switch-2.png
+        subtitle: Tp-Link SG108E
+        url: http://10.1.0.3
+        method: get
+
+  - name: Servers (SSH)
+    icon: fa-solid fa-server
+    items:
+      - name: MacBook Pro 2012
+        subtitle: NAS
+        type: CopyToClipboard
+        logo: ./assets/icons/other/apple.png
+        clipboard: "ssh matej@macbook-pro-2012-1.lan"
+
+      - name: Odroid H3
+        subtitle: App Server
+        type: CopyToClipboard
+        logo: ./assets/icons/other/odroid.png
+        clipboard: "ssh matej@odroid-h3-1.lan"
+
+      - name: Rasbperry Pi 3B
+        subtitle: PiHole
+        type: CopyToClipboard
+        logo: ./assets/icons/other/raspberry-pi.png
+        clipboard: ssh matej@raspberry-pi-3b-1.lan
+
+      - name: Rasbperry Pi 4B 4GB
+        subtitle: TV?
+        type: CopyToClipboard
+        logo: ./assets/icons/other/raspberry-pi.png
+        clipboard: ssh matej@raspberry-pi-4b-1.lan
+
+      - name: Rasbperry Pi 4B 2GB
+        subtitle: TV?
+        type: CopyToClipboard
+        logo: ./assets/icons/other/raspberry-pi.png
+        clipboard: ssh matej@raspberry-pi-4b-2.lan
+
+  - name: Apps
+    icon: fa-brands fa-docker
+    items:
+      - name: PiHole 1
+        type: Ping
+        subtitle: DNS
+        url: http://pihole-1.lan
+        logo: ./assets/icons/organizr/pihole.png
+
+      - name: PiHole 2
+        type: Ping
+        subtitle: DNS
+        url: http://pihole-2.lan
+        logo: ./assets/icons/organizr/pihole.png
+
+      - name: Homer
+        type: Ping
+        subtitle: Dashboard
+        url: http://homer.lan
+        logo: ./assets/icons/other/homer.png
+
+      - name: Unifi
+        type: Ping
+        subtitle: Network Application
+        url: http://unifi.lan
+        logo: ./assets/icons/organizr/unifi.png
+
+      - name: Healthchecks
+        type: Ping
+        subtitle: Cron monitor
+        url: http://healthchecks.lan
+        logo: ./assets/icons/organizr/healthchecks.png
+
+      - name: Smtp4dev
+        type: Ping
+        subtitle: Mail server
+        url: http://smtp4dev.lan
+        logo: ./assets/icons/other/smtp4dev.png
+
+  - name: Smart Home
+    icon: fa-solid fa-house
+    items:
+      - name: Home Assistant
+        type: Ping
+        subtitle: "-"
+        url: http://homeassistant.lan
+        logo: ./assets/icons/organizr/homeassistant.png
+
+      - name: Desk Lamp
+        subtitle: Left
+        type: Ping
+        url: http://desklamp-1.lan
+        logo: ./assets/icons/osa/awareness.png
+
+      - name: Desk Lamp
+        subtitle: Right
+        type: Ping
+        url: http://desklamp-2.lan
+        logo: ./assets/icons/osa/awareness.png

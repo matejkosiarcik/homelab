@@ -1,3 +1,10 @@
+# For testing services
+/homelab
+data/
+log/
+private/
+.env
+
 # OS stuff
 ._*
 .DS_Store
@@ -16,13 +23,7 @@ Package Control.*
 *Brewfile.lock.json
 build/
 dist/
+gitman/
 node_modules/
 python/
 venv/
-
-# For testing services
-/homelab
-data/
-log/
-private/
-.env
