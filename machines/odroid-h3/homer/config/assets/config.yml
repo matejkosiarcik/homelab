@@ -96,6 +96,24 @@ services:
         url: http://smtp4dev.lan
         logo: ./assets/icons/other/smtp4dev.png
 
+      - name: SpeedTest
+        type: Ping
+        subtitle: Internet speed tracker
+        url: http://speedtest.lan
+        logo: ./assets/icons/organizr/speedtest.png
+
+      - name: Netdata
+        type: Ping
+        subtitle: Resource monitor
+        url: http://netdata.lan
+        logo: ./assets/icons/organizr/netdata.png
+
+      - name: Prometheus
+        type: Ping
+        subtitle: General monitor
+        url: http://prometheus.lan
+        logo: ./assets/icons/other/prometheus.png
+
   - name: Smart Home
     icon: fa-solid fa-house
     items:
