@@ -42,6 +42,16 @@ mkdir "$outdir"
 convert_file "convert $convert_options" "$global_indir/gitman/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$outdir/router.png"
 convert_file "convert $convert_options" "$global_indir/gitman/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$outdir/switch-2.png"
 
+### Organizr Icons ###
+
+outdir="$global_outdir/organizr"
+mkdir "$outdir"
+
+convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/healthchecks.png" "$outdir/healthchecks.png"
+convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/homeassistant.png" "$outdir/homeassistant.png"
+convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
+convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/unifi.png" "$outdir/unifi.png"
+
 ### Other Icons ###
 
 outdir="$global_outdir/other"
