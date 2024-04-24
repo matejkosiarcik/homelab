@@ -48,13 +48,13 @@ services:
         clipboard: ssh matej@raspberry-pi-3b-1.lan
 
       - name: Rasbperry Pi 4B 4GB
-        subtitle: TV
+        subtitle: TV?
         type: CopyToClipboard
         logo: ./assets/icons/other/raspberry-pi.png
         clipboard: ssh matej@raspberry-pi-4b-1.lan
 
       - name: Rasbperry Pi 4B 2GB
-        subtitle: TV
+        subtitle: TV?
         type: CopyToClipboard
         logo: ./assets/icons/other/raspberry-pi.png
         clipboard: ssh matej@raspberry-pi-4b-2.lan
@@ -66,7 +66,13 @@ services:
       - name: PiHole 1
         type: Ping
         subtitle: DNS
-        url: http://pihole.lan
+        url: http://pihole-1.lan
+        logo: https://github.com/causefx/Organizr/blob/v2-master/plugins/images/tabs/pihole.png?raw=true # TODO: Local logo
+
+      - name: PiHole 2
+        type: Ping
+        subtitle: DNS
+        url: http://pihole-2.lan
         logo: https://github.com/causefx/Organizr/blob/v2-master/plugins/images/tabs/pihole.png?raw=true # TODO: Local logo
 
       - name: Homer
