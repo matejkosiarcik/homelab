@@ -107,10 +107,10 @@ services:
         subtitle: Left
         type: Ping
         url: http://desklamp-1.lan
-        icon: fa-regular fa-lightbulb # TODO: Link logo from OSA-icons awareness.png
+        logo: ./assets/icons/osa/awareness.png
 
       - name: Desk Lamp
         subtitle: Right
         type: Ping
         url: http://desklamp-2.lan
-        icon: fa-regular fa-lightbulb # TODO: Link logo from OSA-icons awareness.png
+        logo: ./assets/icons/osa/awareness.png

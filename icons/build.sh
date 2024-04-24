@@ -11,9 +11,11 @@ mkdir "$global_outdir"
 
 convert_options='-resize 128x128 -density 1200 -background none -bordercolor transparent -border 1'
 tmpdir="$(mktemp -d)"
+mkdir "$tmpdir/file"
+
 convert_file () {
     command="$1"
-    _infile="$tmpdir/$(basename "$2" .bin)"
+    _infile="$tmpdir/file/$(basename "$2" .bin)"
     cp "$2" "$_infile"
     _outfile="$3"
     $command "$_infile" "$_outfile"
@@ -21,16 +23,22 @@ convert_file () {
     zopflipng --iterations=200 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$_outfile" "$_outfile"
 }
 
+### OSA Icons ###
+
+outdir="$global_outdir/osa"
+mkdir "$outdir"
+unzip -q 13_05_osa_icons_svg.zip -d "$tmpdir/13_05_osa_icons_svg"
+
+convert_file "convert $convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/awareness.png"
+
+rm -rf "$tmpdir/13_05_osa_icons_svg"
+
 ### Other Icons ###
 
 outdir="$global_outdir/other"
 mkdir "$outdir"
 
-# Raspberry Pi
-
-infile="$global_indir/other/raspberry-pi.svg.bin"
-outfile="$outdir/raspberry-pi.png"
-convert_file "convert $convert_options" "$infile" "$outfile"
+convert_file "convert $convert_options" "$global_indir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
 
 ### Cleanup ###
 
