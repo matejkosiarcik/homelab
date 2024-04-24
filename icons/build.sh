@@ -34,6 +34,14 @@ convert_file "convert $convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awarene
 
 rm -rf "$tmpdir/13_05_osa_icons_svg"
 
+### VRT Icons ###
+
+outdir="$global_outdir/vrt"
+mkdir "$outdir"
+
+convert_file "convert $convert_options" "$global_indir/gitman/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$outdir/router.png"
+convert_file "convert $convert_options" "$global_indir/gitman/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$outdir/switch-2.png"
+
 ### Other Icons ###
 
 outdir="$global_outdir/other"

@@ -16,11 +16,11 @@ services:
 
       - name: Main Router
         subtitle: TP-Link ER605
-        logo: https://github.com/jb-stack/Dia-vrt-sheets/blob/master/SVG/VRT%20Networking%20%26%20Communications/Router.svg?raw=true # TODO: Local logo
+        logo: ./assets/icons/vrt/router.png
         url: https://10.1.0.1
 
       - name: Smart Switch
-        logo: https://github.com/jb-stack/Dia-vrt-sheets/blob/master/SVG/VRT%20Networking%20%26%20Communications/Switch%202.svg?raw=true # TODO: Local logo
+        logo: ./assets/icons/vrt/switch-2.png
         subtitle: Tp-Link SG108E
         url: http://10.1.0.3
         method: get
