@@ -3,5 +3,5 @@
 services:
   app:
     networks:
-      unifi-network-application-network:
+      homer-network:
         ipv4_address: 10.1.11.2
