@@ -1,0 +1,9 @@
+# Icons
+
+The Icons are obtained from following locations:
+
+- Iconpacks:
+    - DIA VRT Icons: <https://github.com/jb-stack/Dia-vrt-sheets>
+    - Kubernetes Icons: <https://github.com/kubernetes/community>
+    - Organizr Icons: <https://github.com/causefx/Organizr>
+    - OSA Icons: <https://www.opensecurityarchitecture.org/cms/library/icon-library>
