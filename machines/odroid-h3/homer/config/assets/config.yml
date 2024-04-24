@@ -8,7 +8,6 @@ services:
   - name: Network
     icon: fa-solid fa-network-wired
     items:
-
       - name: UPC Router
         subtitle: COMPAL CH7465LG
         logo: ./assets/icons/other/upc.png
@@ -28,7 +27,6 @@ services:
   - name: Servers (SSH)
     icon: fa-solid fa-server
     items:
-
       - name: MacBook Pro 2012
         subtitle: NAS
         type: CopyToClipboard
@@ -62,7 +60,6 @@ services:
   - name: Apps
     icon: fa-brands fa-docker
     items:
-
       - name: PiHole 1
         type: Ping
         subtitle: DNS
@@ -102,7 +99,6 @@ services:
   - name: Smart Home
     icon: fa-solid fa-house
     items:
-
       - name: Home Assistant
         type: Ping
         subtitle: "-"
