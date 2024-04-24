@@ -27,6 +27,7 @@ services:
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
     restart: unless-stopped
+    # TODO: Healthcheck in python
 
   database:
     image: postgres:16.2
