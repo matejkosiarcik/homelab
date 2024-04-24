@@ -14,7 +14,7 @@ convert_options='-resize 126x126 -density 1200 -background none -bordercolor tra
 tmpdir="$(mktemp -d)"
 mkdir "$tmpdir/file"
 
-convert_file () {
+convert_file() {
     command="$1"
     _infile="$tmpdir/file/$(basename "$2" .bin)"
     cp "$2" "$_infile"
