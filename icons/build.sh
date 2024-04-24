@@ -49,7 +49,9 @@ mkdir -p "$outdir"
 
 convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/healthchecks.png" "$outdir/healthchecks.png"
 convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/homeassistant.png" "$outdir/homeassistant.png"
+convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/netdata.png" "$outdir/netdata.png"
 convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
+convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/speedtest-icon.png" "$outdir/speedtest.png"
 convert_file "convert $convert_options" "$global_indir/gitman/organizr/plugins/images/tabs/unifi.png" "$outdir/unifi.png"
 
 ### Kubernetes Icons ###
@@ -65,6 +67,7 @@ mkdir -p "$outdir"
 convert_file "convert $convert_options" "$global_indir/other/apple.svg.bin" "$outdir/apple.png"
 convert_file "convert $convert_options" "$global_indir/other/homer.png" "$outdir/homer.png"
 convert_file "convert $convert_options" "$global_indir/other/odroid.png" "$outdir/odroid.png"
+convert_file "convert $convert_options" "$global_indir/other/prometheus.svg.bin" "$outdir/prometheus.png"
 convert_file "convert $convert_options" "$global_indir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
 convert_file "convert $convert_options" "$global_indir/other/smtp4dev.png" "$outdir/smtp4dev.png"
 convert_file "convert $convert_options" "$global_indir/other/tp-link.svg.bin" "$outdir/tp-link.png"
