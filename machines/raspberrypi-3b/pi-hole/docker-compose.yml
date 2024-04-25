@@ -39,7 +39,6 @@ services:
     env_file:
       - ./private/app-backup.env
     environment:
-      - BROWSER_PATH=/usr/bin/chromium
       - URL=http://pihole
     volumes:
       - ./data/app-backup:/backup:rw
