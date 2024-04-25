@@ -19,7 +19,7 @@ updates:
 
   # Dockerfile-s
   - package-ecosystem: docker
-    directory: /machines/odroid-h3/healthchecks/backup
+    directory: /machines/odroid-h3/healthchecks/backuper
     schedule:
       interval: daily
       time: "01:30"
@@ -34,7 +34,22 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /machines/odroid-h3/unifi-network-application/backup
+    directory: /machines/odroid-h3/omada-controller/backuper
+    schedule:
+      interval: daily
+      time: "01:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
+  - package-ecosystem: docker
+    directory: /machines/odroid-h3/unifi-network-application/backuper
     schedule:
       interval: daily
       time: "02:00"
@@ -49,7 +64,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /machines/raspberrypi-3b/pi-hole/backup
+    directory: /machines/raspberrypi-3b/pi-hole/backuper
     schedule:
       interval: daily
       time: "02:30"
