@@ -79,7 +79,7 @@ updates:
         patterns:
           - "*"
 
-  # NPM Backups
+  # NPM Backup script
   - package-ecosystem: npm
     directory: /machines/odroid-h3/omada-controller/backuper
     versioning-strategy: increase
@@ -126,5 +126,38 @@ updates:
     open-pull-requests-limit: 1
     groups:
       npm[linters]:
+        patterns:
+          - "*"
+
+  # Other
+  - package-ecosystem: npm
+    directory: /icons
+    versioning-strategy: increase
+    schedule:
+      interval: daily
+      time: "04:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      npm[linters]:
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directory: /icons
+    schedule:
+      interval: daily
+      time: "05:00"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      pip[linters]:
         patterns:
           - "*"
