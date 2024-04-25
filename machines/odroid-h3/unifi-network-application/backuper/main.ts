@@ -2,45 +2,36 @@ import fs from 'fs/promises';
 import fsSync from 'fs';
 import path from 'path';
 import process from 'process';
-import { chromium } from 'playwright';
 import dotenv from 'dotenv';
+import { chromium } from 'playwright';
+import { expect } from 'playwright/test';
 
 (async () => {
+    // Env config
     if (fsSync.existsSync('.env')) {
         dotenv.config({ path: '.env' });
     }
+    const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data');
+    const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
+    const url = process.env['URL'] || 'https://localhost:8443';
+    const headless = process.env['HEADLESS'] !== '0';
+    const username = process.env['USERNAME']!;
+    expect(username, 'USERNAME unset').toBeTruthy();
+    const password = process.env['PASSWORD']!;
+    expect(password, 'PASSWORD unset').toBeTruthy();
 
-    const backupDir = process.env['BACKUP_DIR'] || '/backup';
-    const browserPath = process.env['BROWSER_PATH'] || undefined;
-
-    const url = process.env['URL'];
-    if (!url) {
-        throw new Error('URL unset');
-    }
-
-    const username = process.env['USERNAME'];
-    if (!username) {
-        throw new Error('USERNAME unset');
-    }
-
-    const password = process.env['PASSWORD'];
-    if (!password) {
-        throw new Error('PASSWORD unset');
-    }
-
-    if (!fsSync.existsSync(backupDir)) {
-        await fs.mkdir(backupDir, { recursive: true });
-    }
     const backupDate = new Date().toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
+    await fs.mkdir(backupDir, { recursive: true });
 
-    const browser = await chromium.launch({ headless: true, executablePath: browserPath });
+    const browser = await chromium.launch({ headless: headless, executablePath: browserPath });
     try {
         const page = await browser.newPage({ baseURL: url, strictSelectors: true, ignoreHTTPSErrors: true });
         page.setDefaultNavigationTimeout(10_000);
-        page.setDefaultTimeout(2000);
-        await page.goto('/');
+        page.setDefaultTimeout(1000);
+        await page.goto('/manage/account/login');
 
         // Login
+        await page.locator('input[name="username"]').waitFor({ timeout: 5000 })
         await page.locator('input[name="username"]').fill(username);
         await page.locator('input[name="password"]').fill(password);
         await page.locator('button#loginButton').click();
@@ -48,6 +39,7 @@ import dotenv from 'dotenv';
 
         // Navigate to proper place in settings
         await page.goto('/manage/default/settings/system');
+        await page.locator('button[data-testid="system-backups-toggle"]').waitFor({ timeout: 10_000 });
         await page.locator('button[data-testid="system-backups-toggle"]').click();
         await page.locator('button[name="backupDownload"]').click();
 
@@ -58,11 +50,8 @@ import dotenv from 'dotenv';
         // Handle download
         const download = await downloadPromise;
         const extension = path.extname(download.suggestedFilename()).slice(1);
-        if (extension !== 'unf') {
-            throw new Error(`Unknown extension for downloaded file: ${download.suggestedFilename()}`);
-        }
-        const downloadPath = path.join(backupDir, `${backupDate}-settings.${extension}`);
-        await download.saveAs(downloadPath);
+        expect(extension, `Unknown extension for downloaded file: ${download.suggestedFilename()}`).toEqual('unf');
+        await download.saveAs(path.join(backupDir, `${backupDate}-settings.${extension}`));
     } finally {
         await browser.close();
     }
