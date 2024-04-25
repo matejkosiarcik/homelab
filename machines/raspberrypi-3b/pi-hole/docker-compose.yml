@@ -9,7 +9,6 @@ services:
       - DHCP_ACTIVE=false
       - FTLCONF_IGNORE_LOCALHOST=false
       - FTLCONF_PIHOLE_PTR=HOSTNAMEFQDN
-      - FTLCONF_PRIVACYLEVEL=1
       - FTLCONF_REPLY_WHEN_BUSY=DROP
       - IPv6=false
       - PIHOLE_DNS_=8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
@@ -45,13 +44,3 @@ services:
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
-
-networks:
-  pihole-network:
-    driver: macvlan
-    driver_opts:
-      parent: eth0
-    ipam:
-      config:
-        - subnet: "10.1.0.0/19"
-          ip_range: "10.1.10.0/24"

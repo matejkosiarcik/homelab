@@ -7,7 +7,8 @@ services:
       - "53:53/udp"
       - "80:80/tcp"
     environment:
-      - FTLCONF_LOCAL_IPV4=10.1.4.4
+      - FTLCONF_LOCAL_IPV4=10.1.10.1
+      - FTLCONF_PRIVACYLEVEL=1
       - VIRTUAL_HOST=pihole.lan
     networks:
       pihole-network:
@@ -16,3 +17,13 @@ services:
 
   app-backup:
     restart: unless-stopped
+
+networks:
+  pihole-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.10.0/24"
