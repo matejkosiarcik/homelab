@@ -47,7 +47,7 @@ DockerHub: <https://hub.docker.com/_/mongo>
 
 Before installation prepare following files:
 
-- `/private/mongodb-password.txt` - Password for MongoDB database (forbids trailing newline)
+- `/private/database-password.txt` - Password for MongoDB database (forbids trailing newline)
 - `/private/app-backup.env` - Contains following environment variables:
     - `USERNAME` - UI admin account username
     - `PASSWORD` - UI admin account password

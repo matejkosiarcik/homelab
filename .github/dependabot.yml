@@ -82,7 +82,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: npm
-    directory: /machines/odroid-h3/unifi-network-application/backup
+    directory: /machines/odroid-h3/unifi-network-application/backuper
     versioning-strategy: increase
     schedule:
       interval: daily
@@ -98,7 +98,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: npm
-    directory: /machines/raspberrypi-3b/pi-hole/backup
+    directory: /machines/raspberrypi-3b/pi-hole/backuper
     versioning-strategy: increase
     schedule:
       interval: daily
