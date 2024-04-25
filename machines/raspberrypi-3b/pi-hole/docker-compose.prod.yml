@@ -12,3 +12,7 @@ services:
     networks:
       pihole-network:
         ipv4_address: 10.1.10.1
+    restart: unless-stopped
+
+  app-backup:
+    restart: unless-stopped

@@ -15,7 +15,6 @@ services:
       # - ServerOptions__SecureConnectionRequired=true
       # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
       # - ServerOptions__AuthenticationRequired=true
-    restart: unless-stopped
 
 networks:
   smtp4dev-network:

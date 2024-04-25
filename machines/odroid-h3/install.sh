@@ -6,13 +6,18 @@ cd "$(dirname "$0")"
 
 install_script_path="$(git rev-parse --show-toplevel)/.utils/install.sh"
 
+# Note: Services ordered by priority and dependence on each other
+
 SOURCE_DIR="$(dirname "$0")/smtp4dev" \
+    bash "$install_script_path" $@
+
+SOURCE_DIR="$(dirname "$0")/homer" \
     bash "$install_script_path" $@
 
 SOURCE_DIR="$(dirname "$0")/healthchecks" \
     bash "$install_script_path" $@
 
-SOURCE_DIR="$(dirname "$0")/homer" \
+SOURCE_DIR="$(dirname "$0")/omada-controller" \
     bash "$install_script_path" $@
 
 SOURCE_DIR="$(dirname "$0")/unifi-network-application" \
