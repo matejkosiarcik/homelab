@@ -32,15 +32,15 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Build pi-hole backuper container
-          working_directory: ./machines/raspberrypi-3b/pi-hole/backup
+          working_directory: ./machines/raspberrypi-3b/pi-hole/backuper
           command: docker build .
       - run:
           name: Build healthchecks backuper container
-          working_directory: ./machines/odroid-h3/healthchecks/backup
+          working_directory: ./machines/odroid-h3/healthchecks/backuper
           command: docker build .
       - run:
           name: Build unifi-network-application backuper container
-          working_directory: ./machines/odroid-h3/unifi-network-application/backup
+          working_directory: ./machines/odroid-h3/unifi-network-application/backuper
           command: docker build .
       - run:
           name: Build omada-controller backuper container
