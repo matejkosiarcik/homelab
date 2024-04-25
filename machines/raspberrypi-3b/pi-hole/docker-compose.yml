@@ -28,7 +28,7 @@ services:
       retries: 1
 
   app-backup:
-    image: pihole-backuper:homelab
+    image: pihole-backup:homelab
     build:
       context: backuper/
     container_name: pihole-backup
