@@ -29,9 +29,9 @@ services:
       retries: 1
 
   app-backup:
-    image: pihole-backup:homelab
+    image: pihole-backuper:homelab
     build:
-      context: backup/
+      context: backuper/
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:
