@@ -56,7 +56,7 @@ services:
   database-backup:
     image: healthchecks-postgres-backup:homelab
     build:
-      context: backup/
+      context: backuper/
     container_name: healthchecks-postgres-backup
     depends_on:
       database:
