@@ -43,3 +43,13 @@ services:
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
+
+networks:
+  pihole-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.10.0/24"
