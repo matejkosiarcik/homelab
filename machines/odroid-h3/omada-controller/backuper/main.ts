@@ -2,8 +2,8 @@ import fs from 'fs/promises';
 import fsSync from 'fs';
 import path from 'path';
 import process from 'process';
-import { chromium } from 'playwright';
 import dotenv from 'dotenv';
+import { chromium } from 'playwright';
 import { expect } from 'playwright/test';
 
 (async () => {
@@ -13,7 +13,7 @@ import { expect } from 'playwright/test';
     }
     const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
-    const url = process.env['URL'] || 'https://localhost:8043';
+    const url = process.env['URL'] || 'https://localhost:8443';
     const headless = process.env['HEADLESS'] !== '0';
     const username = process.env['USERNAME']!;
     expect(username, 'USERNAME unset').toBeTruthy();
