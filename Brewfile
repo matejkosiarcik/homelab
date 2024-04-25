@@ -1,3 +1,6 @@
 cask "docker"
 brew "node"
 brew "python"
+brew "python-setuptools"
+brew "imagemagick"
+cask "raspberry-pi-imager"
