@@ -26,7 +26,6 @@ services:
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
-    restart: unless-stopped
     # TODO: Healthcheck in python
 
   database:
@@ -53,7 +52,6 @@ services:
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data:rw
       - ./private/postgres-password.txt:/.homelab/password.txt:ro
-    restart: unless-stopped
 
   database-backup:
     image: healthchecks-postgres-backup:homelab
@@ -74,7 +72,6 @@ services:
     volumes:
       - ./data/postgres-backup:/backup:rw
       - ./log/postgres-backup:/log:rw
-    restart: unless-stopped
 
 networks:
   healthchecks-network:

@@ -40,7 +40,6 @@ services:
     depends_on:
       database:
         condition: service_healthy
-    restart: unless-stopped
 
   database:
     image: mongo:7.0.8
@@ -56,7 +55,6 @@ services:
       interval: 10s
       timeout: 2s
       retries: 1
-    restart: unless-stopped
 
   app-backup:
     image: unifi-network-application-backup:homelab
@@ -76,7 +74,6 @@ services:
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
-    restart: unless-stopped
 
 networks:
   unifi-network-application-network:

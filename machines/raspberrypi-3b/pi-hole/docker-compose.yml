@@ -21,7 +21,6 @@ services:
       - ./data/etc-pihole:/etc/pihole:rw
       - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-    restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost/admin || exit 1
       start_period: 20s
@@ -46,7 +45,6 @@ services:
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
-    restart: unless-stopped
 
 networks:
   pihole-network:

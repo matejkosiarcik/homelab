@@ -5,3 +5,4 @@ services:
     networks:
       homer-network:
         ipv4_address: 10.1.11.2
+    restart: unless-stopped

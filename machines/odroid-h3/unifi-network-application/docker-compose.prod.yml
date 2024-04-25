@@ -5,3 +5,10 @@ services:
     networks:
       unifi-network-application-network:
         ipv4_address: 10.1.11.4
+    restart: unless-stopped
+
+  database:
+    restart: unless-stopped
+
+  app-backup:
+    restart: unless-stopped
