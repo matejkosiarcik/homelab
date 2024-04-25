@@ -16,3 +16,4 @@ The Icons are obtained from following locations:
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - UPC: <https://www.upc.sk>
     - TP-Link: <https://www.tp-link.com/cz/>
+    - TP-Link Omada: <https://www.tp-link.com/us/omada_compatibility_list>
