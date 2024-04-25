@@ -2,6 +2,7 @@
 
 services:
   app:
+    # TODO: Add healthcheck with wget
     image: mbentley/omada-controller:5.13
     container_name: omada-controller
     hostname: omada-controller
@@ -34,4 +35,3 @@ services:
       - ./data/app:/opt/tplink/EAPController/data:rw
       - ./data/certs:/certs:rw
       - ./log/app:/opt/tplink/EAPController/logs:rw
-    # TODO: Healthcheck with wget

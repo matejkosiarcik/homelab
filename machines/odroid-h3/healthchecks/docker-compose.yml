@@ -2,6 +2,7 @@
 
 services:
   app:
+    # TODO: Add healthcheck with python
     image: healthchecks/healthchecks:v3.3
     container_name: healthchecks
     depends_on:
@@ -26,7 +27,6 @@ services:
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
-    # TODO: Healthcheck in python
 
   database:
     image: postgres:16.2

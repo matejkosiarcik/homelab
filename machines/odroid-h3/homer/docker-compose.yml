@@ -2,6 +2,7 @@
 
 services:
   app:
+    # TODO: Add Healthcheck with wget
     image: b4bz/homer:v24.04.1
     container_name: homer
     hostname: homer
@@ -12,12 +13,6 @@ services:
       - "8080:80"
     volumes:
       - ./config/assets/:/www/assets:ro
-    # healthcheck:
-    #   test: wget # TODO: run wget
-    #   start_period: 15s
-    #   interval: 10s
-    #   timeout: 2s
-    #   retries: 1
 
 networks:
   homer-network:
