@@ -9,7 +9,7 @@ services:
       database:
         condition: service_healthy
     env_file:
-      - ./private/healthchecks.env
+      - ./private/app.env
     environment:
       # General options
       - DEBUG=False
@@ -50,13 +50,13 @@ services:
       timeout: 2s
       retries: 1
     volumes:
-      - ./data/postgres-data:/var/lib/postgresql/data:rw
-      - ./private/postgres-password.txt:/.homelab/password.txt:ro
+      - ./data/database-data:/var/lib/postgresql/data:rw
+      - ./private/database-password.txt:/.homelab/password.txt:ro
 
   database-backup:
     image: healthchecks-postgres-backup:homelab
     build:
-      context: backup/
+      context: backuper/
     container_name: healthchecks-postgres-backup
     depends_on:
       database:
@@ -64,14 +64,14 @@ services:
       app:
         condition: service_started
     env_file:
-      - ./private/postgres-backup.env
+      - ./private/database-backup.env
     environment:
       PGDATABASE: healthchecks
       PGHOST: database
       PGUSER: postgres
     volumes:
-      - ./data/postgres-backup:/backup:rw
-      - ./log/postgres-backup:/log:rw
+      - ./data/database-backup:/backup:rw
+      - ./log/database-backup:/log:rw
 
 networks:
   healthchecks-network:

@@ -32,15 +32,15 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Build pi-hole backuper container
-          working_directory: ./machines/raspberrypi-3b/pi-hole/backup
+          working_directory: ./machines/raspberrypi-3b/pi-hole/backuper
           command: docker build .
       - run:
           name: Build healthchecks backuper container
-          working_directory: ./machines/odroid-h3/healthchecks/backup
+          working_directory: ./machines/odroid-h3/healthchecks/backuper
           command: docker build .
       - run:
           name: Build unifi-network-application backuper container
-          working_directory: ./machines/odroid-h3/unifi-network-application/backup
+          working_directory: ./machines/odroid-h3/unifi-network-application/backuper
           command: docker build .
       - run:
           name: Build omada-controller backuper container
@@ -71,8 +71,8 @@ jobs:
           command: |
             mkdir -p "$PWD/.deployment/odroid-h3/healthchecks/private" \
               "$PWD/.deployment/odroid-h3/unifi-network-application/private"
-            touch "$PWD/.deployment/odroid-h3/healthchecks/private/healthchecks.env" \
-              "$PWD/.deployment/odroid-h3/healthchecks/private/postgres-backup.env" \
+            touch "$PWD/.deployment/odroid-h3/healthchecks/private/app.env" \
+              "$PWD/.deployment/odroid-h3/healthchecks/private/database-backup.env" \
               "$PWD/.deployment/odroid-h3/unifi-network-application/private/app-backup.env"
             DEST_DIR="$PWD/.deployment/odroid-h3" \
               bash './machines/odroid-h3/install.sh' -n

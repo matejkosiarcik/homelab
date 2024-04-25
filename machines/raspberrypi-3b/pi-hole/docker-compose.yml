@@ -9,7 +9,6 @@ services:
       - DHCP_ACTIVE=false
       - FTLCONF_IGNORE_LOCALHOST=false
       - FTLCONF_PIHOLE_PTR=HOSTNAMEFQDN
-      - FTLCONF_PRIVACYLEVEL=1
       - FTLCONF_REPLY_WHEN_BUSY=DROP
       - IPv6=false
       - PIHOLE_DNS_=8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
@@ -31,7 +30,7 @@ services:
   app-backup:
     image: pihole-backup:homelab
     build:
-      context: backup/
+      context: backuper/
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:
@@ -40,7 +39,6 @@ services:
     env_file:
       - ./private/app-backup.env
     environment:
-      - BROWSER_PATH=/usr/bin/chromium
       - URL=http://pihole
     volumes:
       - ./data/app-backup:/backup:rw
