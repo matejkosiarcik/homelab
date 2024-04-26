@@ -11,4 +11,4 @@ touch /log/cron.log
     printf '## Starting cron ##\n'
 } >>/log/cron.log
 crond -b -L /log/cron.log # Add `-l 0` when debugging (note: alpine)
-tail -f /log/cron.log
+tail -F /log/cron.log
