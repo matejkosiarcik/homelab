@@ -20,7 +20,8 @@ import { expect } from 'playwright/test';
     const password = process.env['PASSWORD']!;
     expect(password, 'PASSWORD unset').toBeTruthy();
 
-    const backupDate = new Date().toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
+    const _date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000);
+    const backupDate = _date.toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
     await fs.mkdir(backupDir, { recursive: true });
 
     const browser = await chromium.launch({ headless: headless, executablePath: browserPath });
