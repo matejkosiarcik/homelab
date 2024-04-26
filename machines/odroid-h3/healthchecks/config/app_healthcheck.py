@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+# pylint: disable=E0401
 import requests  # type: ignore
 
 if __name__ == "__main__":
