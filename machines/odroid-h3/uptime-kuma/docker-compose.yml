@@ -5,6 +5,8 @@ services:
     image: louislam/uptime-kuma:1.23.13
     container_name: uptime-kuma
     hostname: uptime-kuma
+    environment:
+      - TZ=Europe/Bratislava
     volumes:
       - ./data/app:/app/data:rw
     healthcheck:
@@ -13,7 +15,7 @@ services:
       interval: 10s
       timeout: 2s
       retries: 1
-    stop_grace_period: 1m
+    stop_grace_period: 30s
 
   app-backup:
     image: uptime-kuma-backup:homelab
@@ -27,7 +29,8 @@ services:
       - ./private/app-backup.env
     environment:
       - URL=http://uptime-kuma:3001
+      - TZ=Europe/Bratislava
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
-    stop_grace_period: 1m
+    stop_grace_period: 5s
