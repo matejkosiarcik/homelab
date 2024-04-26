@@ -22,5 +22,6 @@ RUN apk update --no-cache && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
 HEALTHCHECK NONE
+STOPSIGNAL SIGKILL
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
