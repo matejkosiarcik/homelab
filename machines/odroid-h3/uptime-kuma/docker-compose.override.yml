@@ -5,3 +5,6 @@ services:
     ports:
       - 8080:3001
     restart: "no"
+
+  app-backup:
+    restart: "no"
