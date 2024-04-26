@@ -74,9 +74,11 @@ jobs:
           name: Run deployment on Odroid H3 [dry-run]
           command: |
             mkdir -p "$PWD/.deployment/odroid-h3/healthchecks/private" \
-              "$PWD/.deployment/odroid-h3/unifi-network-application/private"
+              "$PWD/.deployment/odroid-h3/unifi-network-application/private" \
+              "$PWD/.deployment/odroid-h3/uptime-kuma/private"
             touch "$PWD/.deployment/odroid-h3/healthchecks/private/app.env" \
               "$PWD/.deployment/odroid-h3/healthchecks/private/database-backup.env" \
-              "$PWD/.deployment/odroid-h3/unifi-network-application/private/app-backup.env"
+              "$PWD/.deployment/odroid-h3/unifi-network-application/private/app-backup.env" \
+              "$PWD/.deployment/odroid-h3/uptime-kuma/private/app-backup.env"
             DEST_DIR="$PWD/.deployment/odroid-h3" \
               bash './machines/odroid-h3/install.sh' -n
