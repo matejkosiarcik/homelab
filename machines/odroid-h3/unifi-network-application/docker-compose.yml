@@ -40,6 +40,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    stop_grace_period: 30s
 
   database:
     image: mongo:7.0.8
@@ -55,6 +56,7 @@ services:
       interval: 10s
       timeout: 2s
       retries: 1
+    stop_grace_period: 30s
 
   app-backup:
     image: unifi-network-application-backup:homelab
@@ -79,6 +81,7 @@ services:
       interval: 10s
       timeout: 1s
       retries: 0
+    stop_grace_period: 5s
 
 networks:
   unifi-network-application-network:

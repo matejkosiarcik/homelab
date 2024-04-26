@@ -2,7 +2,7 @@
 
 services:
   app:
-    # TODO: Add healthcheck with python
+    # TODO: Add healthcheck with python (no builtin)
     image: healthchecks/healthchecks:v3.3
     container_name: healthchecks
     depends_on:
@@ -27,6 +27,7 @@ services:
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
+    stop_grace_period: 30s
 
   database:
     image: postgres:16.2
@@ -52,6 +53,7 @@ services:
     volumes:
       - ./data/database-data:/var/lib/postgresql/data:rw
       - ./private/database-password.txt:/.homelab/password.txt:ro
+    stop_grace_period: 30s
 
   database-backup:
     image: healthchecks-postgres-backup:homelab
@@ -78,6 +80,7 @@ services:
       interval: 10s
       timeout: 1s
       retries: 0
+    stop_grace_period: 5s
 
 networks:
   healthchecks-network:

@@ -9,12 +9,13 @@ services:
     environment:
       - ASPNETCORE_HTTP_PORTS=80
       - ServerOptions__LockSettings=true
-
       # TODO: Enable TLS below
       # - ServerOptions__TlsMode=StartTls
       # - ServerOptions__SecureConnectionRequired=true
       # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
       # - ServerOptions__AuthenticationRequired=true
+    stop_grace_period: 30s
+    # TODO: Healtcheck with dotnet (no builtin)
 
 networks:
   smtp4dev-network:
