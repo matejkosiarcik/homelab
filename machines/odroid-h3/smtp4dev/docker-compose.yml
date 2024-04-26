@@ -4,8 +4,6 @@ services:
   smtp4dev:
     image: rnwood/smtp4dev:3.3.3
     container_name: smtp4dev
-    volumes:
-      - ./data/smtp4dev:/smtp4dev:rw
     environment:
       - ASPNETCORE_HTTP_PORTS=80
       - ServerOptions__LockSettings=true
@@ -14,8 +12,15 @@ services:
       # - ServerOptions__SecureConnectionRequired=true
       # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
       # - ServerOptions__AuthenticationRequired=true
+    volumes:
+      - ./data/smtp4dev:/smtp4dev:rw
+    healthcheck:
+      test: timeout 1s bash -c ':> /dev/tcp/localhost/80' # because curl/wget isn't available
+      start_period: 15s
+      interval: 10s
+      timeout: 2s
+      retries: 1
     stop_grace_period: 30s
-    # TODO: Healtcheck with dotnet (no builtin)
 
 networks:
   smtp4dev-network:
