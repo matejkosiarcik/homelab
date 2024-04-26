@@ -6,6 +6,7 @@ services:
     container_name: apache
     volumes:
       - ./config/html:/usr/local/apache2/htdocs:ro
+    stop_grace_period: 30s
 
 networks:
   debug:

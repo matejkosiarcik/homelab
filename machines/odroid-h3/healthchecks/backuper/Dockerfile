@@ -8,5 +8,6 @@ RUN apk update --no-cache && \
     mkdir -p /backup /log
 COPY run.sh entrypoint.sh schedule.cron ./
 HEALTHCHECK NONE
+STOPSIGNAL SIGKILL
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]

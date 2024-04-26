@@ -14,7 +14,7 @@ The Icons are obtained from following locations:
     - Prometheus: <https://prometheus.io>
     - Raspberry Pi: <https://iconduck.com/icons/14184/raspberry-pi>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
+    - TP-Link Omada: <https://www.tp-link.com/us/omada_compatibility_list>
+    - TP-Link: <https://www.tp-link.com/cz/>
     - UPC: <https://www.upc.sk>
     - Uptime Kuma: <https://github.com/louislam/uptime-kuma>
-    - TP-Link: <https://www.tp-link.com/cz/>
-    - TP-Link Omada: <https://www.tp-link.com/us/omada_compatibility_list>

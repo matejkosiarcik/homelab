@@ -5,3 +5,6 @@ services:
     ports:
       - 80:3001
     restart: unless-stopped
+
+  app-backup:
+    restart: unless-stopped

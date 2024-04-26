@@ -2,7 +2,6 @@
 
 services:
   app:
-    # TODO: Add healthcheck with wget
     image: mbentley/omada-controller:5.13
     container_name: omada-controller
     hostname: omada-controller
@@ -10,7 +9,6 @@ services:
       nofile:
         soft: 4096
         hard: 8192
-    stop_grace_period: 60s
     environment:
       - PUID=508
       - PGID=508
@@ -35,3 +33,5 @@ services:
       - ./data/app:/opt/tplink/EAPController/data:rw
       - ./data/certs:/certs:rw
       - ./log/app:/opt/tplink/EAPController/logs:rw
+    stop_grace_period: 60s
+    # Note: healthcheck builtin
