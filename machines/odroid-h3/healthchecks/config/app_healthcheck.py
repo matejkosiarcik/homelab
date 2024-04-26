@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import requests # type: ignore
+import requests  # type: ignore
 
 if __name__ == "__main__":
     response = requests.get("http://localhost:8000", timeout=1000)
