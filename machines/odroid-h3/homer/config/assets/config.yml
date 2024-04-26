@@ -96,6 +96,12 @@ services:
         url: http://healthchecks.lan
         logo: ./assets/icons/organizr/healthchecks.png
 
+      - name: Uptime Kuma
+        type: Ping
+        subtitle: Uptime monitor
+        url: http://uptime-kuma.lan
+        logo: ./assets/icons/other/uptime-kuma.png
+
       - name: Smtp4dev
         type: Ping
         subtitle: Mail server
