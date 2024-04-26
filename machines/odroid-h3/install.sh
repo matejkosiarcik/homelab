@@ -17,6 +17,9 @@ SOURCE_DIR="$(dirname "$0")/homer" \
 SOURCE_DIR="$(dirname "$0")/healthchecks" \
     bash "$install_script_path" $@
 
+SOURCE_DIR="$(dirname "$0")/uptime-kuma" \
+    bash "$install_script_path" $@
+
 SOURCE_DIR="$(dirname "$0")/omada-controller" \
     bash "$install_script_path" $@
 

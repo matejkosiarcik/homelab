@@ -46,6 +46,10 @@ jobs:
           name: Build omada-controller backuper container
           working_directory: ./machines/odroid-h3/omada-controller/backuper
           command: docker build .
+      - run:
+          name: Build uptime-kuma backuper container
+          working_directory: ./machines/odroid-h3/uptime-kuma/backuper
+          command: docker build .
 
   dry_deployment:
     docker:

@@ -113,11 +113,27 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: npm
-    directory: /machines/raspberrypi-3b/pi-hole/backuper
+    directory: /machines/odroid-h3/uptime-kuma/backuper
     versioning-strategy: increase
     schedule:
       interval: daily
       time: "04:00"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      npm[linters]:
+        patterns:
+          - "*"
+  - package-ecosystem: npm
+    directory: /machines/raspberrypi-3b/pi-hole/backuper
+    versioning-strategy: increase
+    schedule:
+      interval: daily
+      time: "04:30"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -135,7 +151,7 @@ updates:
     versioning-strategy: increase
     schedule:
       interval: daily
-      time: "04:30"
+      time: "05:00"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -150,7 +166,7 @@ updates:
     directory: /icons
     schedule:
       interval: daily
-      time: "05:00"
+      time: "05:30"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
