@@ -72,6 +72,12 @@ services:
     volumes:
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw
+    healthcheck:
+      test: '[ "$(cat /app/.internal/status 2>/dev/null)" = "1" ] || exit 1'
+      start_period: 45s
+      interval: 10s
+      timeout: 1s
+      retries: 0
 
 networks:
   healthchecks-network:
