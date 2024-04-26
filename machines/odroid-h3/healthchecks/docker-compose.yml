@@ -27,7 +27,7 @@ services:
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
     volumes:
-      - ./config/app-healthcheck.py:/.homelab/healthcheck.py:ro
+      - ./config/app_healthcheck.py:/.homelab/healthcheck.py:ro
     healthcheck:
       test: python3 /.homelab/healthcheck.py || exit 1
       start_period: 25s
