@@ -84,6 +84,12 @@ services:
         url: http://unifi.lan
         logo: ./assets/icons/organizr/unifi.png
 
+      - name: Omada
+        type: Ping
+        subtitle: Controller
+        url: http://omada.lan
+        logo: ./assets/icons/other/tp-link-omada.png
+
       - name: Healthchecks
         type: Ping
         subtitle: Cron monitor
