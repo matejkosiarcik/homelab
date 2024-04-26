@@ -11,7 +11,7 @@ services:
       - ./data/app:/app/data:rw
     healthcheck:
       test: curl --fail --verbose http://localhost:3001 || exit 1
-      start_period: 15s
+      start_period: 25s
       interval: 10s
       timeout: 2s
       retries: 1
@@ -35,7 +35,7 @@ services:
       - ./log/app-backup:/log:rw
     healthcheck:
       test: '[ "$(cat /app/.internal/status 2>/dev/null)" = "1" ] || exit 1'
-      start_period: 45s
+      start_period: 15s
       interval: 10s
       timeout: 1s
       retries: 0
