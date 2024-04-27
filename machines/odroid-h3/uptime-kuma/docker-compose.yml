@@ -42,7 +42,7 @@ services:
     stop_grace_period: 5s
 
 networks:
-  smtp4dev-network:
+  uptime-kuma-network:
     driver: macvlan
     driver_opts:
       parent: eth0

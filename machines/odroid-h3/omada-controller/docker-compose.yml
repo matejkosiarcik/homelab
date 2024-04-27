@@ -62,7 +62,7 @@ services:
     stop_grace_period: 5s
 
 networks:
-  homer-network:
+  omada-controller-network:
     driver: macvlan
     driver_opts:
       parent: eth0
