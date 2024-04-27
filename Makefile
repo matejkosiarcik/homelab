@@ -22,13 +22,13 @@ bootstrap:
 
 	python3 -m venv venv
 	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/linters/python" \
+	PYTHONPATH="$(PROJECT_DIR)/icons/python" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		python3 -m pip install --requirement icons/requirements.txt --target icons/python --quiet --upgrade
 
 	python3 -m venv venv
-	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/linters/python" \
+	PATH="$(PROJECT_DIR)/venv/bin:$(PROJECT_DIR)/icons/python/bin:$$PATH" \
+	PYTHONPATH="$(PROJECT_DIR)/icons/python" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --quiet --force --root icons
 
@@ -78,4 +78,5 @@ clean:
 		"$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper/dist" \
 		"$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper/node_modules" \
 		"$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper/dist" \
-		"$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper/node_modules"
+		"$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper/node_modules" \
+		"$(PROJECT_DIR)/venv" \
