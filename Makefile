@@ -77,5 +77,5 @@ clean:
 		"$(PROJECT_DIR)/odroid-h3/unifi-network-application/backuper/node_modules" \
 		"$(PROJECT_DIR)/odroid-h3/uptime-kuma/backuper/dist" \
 		"$(PROJECT_DIR)/odroid-h3/uptime-kuma/backuper/node_modules" \
-		"$(PROJECT_DIR)/raspberrypi-3b/pi-hole/backuper/node_modules" \
 		"$(PROJECT_DIR)/raspberrypi-3b/pi-hole/backuper/dist" \
+		"$(PROJECT_DIR)/raspberrypi-3b/pi-hole/backuper/node_modules"
