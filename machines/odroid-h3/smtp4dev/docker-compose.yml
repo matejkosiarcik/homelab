@@ -13,6 +13,7 @@ services:
       # - ServerOptions__SecureConnectionRequired=true
       # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
       # - ServerOptions__AuthenticationRequired=true
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/smtp4dev:/smtp4dev:rw
     healthcheck:

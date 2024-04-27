@@ -27,6 +27,8 @@ services:
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
+
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./config/app_healthcheck.py:/.homelab/healthcheck.py:ro
     healthcheck:
@@ -53,6 +55,8 @@ services:
       # Set same connection values for psql and pg_isready
       - PGUSER=postgres
       - PGDATABASE=healthchecks
+
+      - TZ=Europe/Bratislava # optional
     healthcheck:
       test: pg_isready || exit 1
       start_period: 20s
@@ -78,9 +82,10 @@ services:
     env_file:
       - ./private/database-backup.env
     environment:
-      PGDATABASE: healthchecks
-      PGHOST: database
-      PGUSER: postgres
+      - PGDATABASE=healthchecks
+      - PGHOST=database
+      - PGUSER=postgres
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw

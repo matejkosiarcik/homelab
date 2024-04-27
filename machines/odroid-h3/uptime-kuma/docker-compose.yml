@@ -29,7 +29,7 @@ services:
       - ./private/app-backup.env
     environment:
       - URL=http://uptime-kuma:3001
-      - TZ=Europe/Bratislava
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw

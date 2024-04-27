@@ -48,6 +48,8 @@ services:
     container_name: unifi-network-application-mongodb
     hostname: unifi-network-application-mongodb
     command: --auth
+    environment:
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/mongodb:/data/db:rw
       - ./config/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
@@ -74,6 +76,7 @@ services:
     env_file:
       - ./private/app-backup.env
     environment:
+      - TZ=Europe/Bratislava # optional
       - URL=https://unifi-network-application:8443
     volumes:
       - ./data/app-backup:/backup:rw
