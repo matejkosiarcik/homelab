@@ -14,11 +14,11 @@ all: clean bootstrap build
 
 .PHONY: bootstrap
 bootstrap:
-	npm ci --prefix ./icons
-	npm ci --prefix ./odroid-h3/omada-controller/backuper
-	npm ci --prefix ./odroid-h3/unifi-network-application/backuper
-	npm ci --prefix ./odroid-h3/uptime-kuma/backuper
-	npm ci --prefix ./raspberrypi-3b/pi-hole/backuper
+	npm ci --prefix "$(PROJECT_DIR)/icons"
+	npm ci --prefix "$(PROJECT_DIR)/odroid-h3/omada-controller/backuper"
+	npm ci --prefix "$(PROJECT_DIR)/odroid-h3/unifi-network-application/backuper"
+	npm ci --prefix "$(PROJECT_DIR)/odroid-h3/uptime-kuma/backuper"
+	npm ci --prefix "$(PROJECT_DIR)/raspberrypi-3b/pi-hole/backuper"
 
 	python3 -m venv venv
 	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
