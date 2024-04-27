@@ -45,7 +45,7 @@ build-docker:
 	docker build "$(PROJECT_DIR)/odroid-h3/omada-controller/backuper" --tag omada-controller-backup:homelab
 	docker build "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper" --tag unifi-network-application-backup:homelab
 	docker build "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper" --tag uptime-kuma-backup:homelab
-	docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag pi-hole-backup:homelab
+	docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag pihole-backup:homelab
 
 .PHONY: build-docker-multiarch
 build-docker-multiarch:
@@ -56,7 +56,7 @@ build-docker-multiarch:
 			docker build "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper" --tag "omada-controller-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')"  && \
 			docker build "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper" --tag "unifi-network-application-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')"  && \
 			docker build "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper" --tag "uptime-kuma-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')"  && \
-			docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag "pi-hole-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" " && \
+			docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag "pihole-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" " && \
 		true; done
 
 .PHONY: run
