@@ -88,21 +88,21 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 3B [dry-run]
           command: |
-            mkdir -p "$PWD/.deployment/raspberrypi-3b/pi-hole/private"
-            touch "$PWD/.deployment/raspberrypi-3b/pi-hole/private/app-backup.env"
-            DEST_DIR="$PWD/.deployment/raspberrypi-3b" \
+            mkdir -p "$HOME/.homelab-1/pi-hole/private"
+            touch "$HOME/.homelab-1/pi-hole/private/app-backup.env"
+            DEST_DIR="$HOME/.homelab-1" \
               bash './machines/raspberrypi-3b/install.sh' -n
       - run:
           name: Run deployment on Odroid H3 [dry-run]
           command: |
-            mkdir -p "$PWD/.deployment/odroid-h3/healthchecks/private" \
-              "$PWD/.deployment/odroid-h3/omada-controller/private" \
-              "$PWD/.deployment/odroid-h3/unifi-network-application/private" \
-              "$PWD/.deployment/odroid-h3/uptime-kuma/private"
-            touch "$PWD/.deployment/odroid-h3/healthchecks/private/app.env" \
-              "$PWD/.deployment/odroid-h3/healthchecks/private/database-backup.env" \
-              "$PWD/.deployment/odroid-h3/omada-controller/private/database-backup.env" \
-              "$PWD/.deployment/odroid-h3/unifi-network-application/private/app-backup.env" \
-              "$PWD/.deployment/odroid-h3/uptime-kuma/private/app-backup.env"
-            DEST_DIR="$PWD/.deployment/odroid-h3" \
+            mkdir -p "$HOME/.homelab-2/healthchecks/private" \
+              "$HOME/.homelab-2/omada-controller/private" \
+              "$HOME/.homelab-2/unifi-network-application/private" \
+              "$HOME/.homelab-2/uptime-kuma/private"
+            touch "$HOME/.homelab-2/healthchecks/private/app.env" \
+              "$HOME/.homelab-2/healthchecks/private/database-backup.env" \
+              "$HOME/.homelab-2/omada-controller/private/database-backup.env" \
+              "$HOME/.homelab-2/unifi-network-application/private/app-backup.env" \
+              "$HOME/.homelab-2/uptime-kuma/private/app-backup.env"
+            DEST_DIR="$HOME/.homelab-2" \
               bash './machines/odroid-h3/install.sh' -n
