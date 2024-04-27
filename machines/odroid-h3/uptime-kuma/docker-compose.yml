@@ -28,9 +28,10 @@ services:
     env_file:
       - ./private/app-backup.env
     environment:
-      - URL=http://uptime-kuma:3001
-      - TZ=Europe/Bratislava
+      - TZ=Europe/Bratislava # optional
     volumes:
+      - ../../../.utils/backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../../../.utils/backup/run.sh:/app/run.sh:ro
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
     healthcheck:
@@ -40,3 +41,13 @@ services:
       timeout: 1s
       retries: 0
     stop_grace_period: 5s
+
+networks:
+  uptime-kuma-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.11.0/24"

@@ -13,7 +13,7 @@ import { expect } from 'playwright/test';
     }
     const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
-    const url = process.env['URL'] || 'http://localhost:8080';
+    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'http://uptime-kuma:3001' : 'http://localhost:8080');
     const headless = process.env['HEADLESS'] !== '0';
     const username = process.env['USERNAME']!;
     expect(username, 'USERNAME unset').toBeTruthy();

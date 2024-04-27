@@ -11,5 +11,5 @@ services:
       - ServerOptions__HostName=smtp4dev.lan
     networks:
       smtp4dev-network:
-        ipv4_address: 10.1.11.3
+        ipv4_address: 10.1.11.4
     restart: unless-stopped

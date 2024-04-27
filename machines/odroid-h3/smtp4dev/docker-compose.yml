@@ -4,6 +4,7 @@ services:
   smtp4dev:
     image: rnwood/smtp4dev:3.3.3
     container_name: smtp4dev
+    hostname: smtp4dev
     environment:
       - ASPNETCORE_HTTP_PORTS=80
       - ServerOptions__LockSettings=true
@@ -12,6 +13,7 @@ services:
       # - ServerOptions__SecureConnectionRequired=true
       # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
       # - ServerOptions__AuthenticationRequired=true
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/smtp4dev:/smtp4dev:rw
     healthcheck:

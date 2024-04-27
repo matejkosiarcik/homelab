@@ -35,3 +35,39 @@ services:
       - ./log/app:/opt/tplink/EAPController/logs:rw
     stop_grace_period: 60s
     # Note: healthcheck builtin
+
+  app-backup:
+    image: omada-controller:homelab
+    build:
+      context: backuper/
+    container_name: omada-controller-backup
+    hostname: omada-controller-backup
+    depends_on:
+      app:
+        condition: service_healthy
+    env_file:
+      - ./private/app-backup.env
+    environment:
+      - TZ=Europe/Bratislava # optional
+    volumes:
+      - ../../../.utils/backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../../../.utils/backup/run.sh:/app/run.sh:ro
+      - ./data/app-backup:/backup:rw
+      - ./log/app-backup:/log:rw
+    healthcheck:
+      test: '[ "$(cat /app/.internal/status 2>/dev/null)" = "1" ] || exit 1'
+      start_period: 15s
+      interval: 10s
+      timeout: 1s
+      retries: 0
+    stop_grace_period: 5s
+
+networks:
+  omada-controller-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.11.0/24"

@@ -4,6 +4,8 @@ services:
   app:
     image: httpd:2.4.59
     container_name: apache
+    environment:
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./config/html:/usr/local/apache2/htdocs:ro
     stop_grace_period: 30s

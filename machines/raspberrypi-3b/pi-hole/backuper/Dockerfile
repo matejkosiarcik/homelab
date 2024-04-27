@@ -10,7 +10,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
 
 FROM node:21.7.3-alpine AS aggregator
 WORKDIR /app
-COPY run.sh entrypoint.sh package.json schedule.cron ./
+COPY main.sh package.json schedule.cron ./
 COPY --from=build /app/dist/main.js ./
 COPY --from=build /app/node_modules ./node_modules
 

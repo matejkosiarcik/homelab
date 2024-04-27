@@ -4,6 +4,7 @@ services:
   app:
     image: healthchecks/healthchecks:v3.3
     container_name: healthchecks
+    hostname: healthchecks
     depends_on:
       database:
         condition: service_healthy
@@ -26,6 +27,8 @@ services:
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
+
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./config/app_healthcheck.py:/.homelab/healthcheck.py:ro
     healthcheck:
@@ -39,6 +42,7 @@ services:
   database:
     image: postgres:16.2
     container_name: healthchecks-postgres
+    hostname: healthchecks-postgres
     environment:
       # Basic setup
       - PGDATA=/var/lib/postgresql/data/pgdata
@@ -51,6 +55,8 @@ services:
       # Set same connection values for psql and pg_isready
       - PGUSER=postgres
       - PGDATABASE=healthchecks
+
+      - TZ=Europe/Bratislava # optional
     healthcheck:
       test: pg_isready || exit 1
       start_period: 20s
@@ -67,6 +73,7 @@ services:
     build:
       context: backuper/
     container_name: healthchecks-postgres-backup
+    hostname: healthchecks-postgres-backup
     depends_on:
       database:
         condition: service_healthy
@@ -75,10 +82,13 @@ services:
     env_file:
       - ./private/database-backup.env
     environment:
-      PGDATABASE: healthchecks
-      PGHOST: database
-      PGUSER: postgres
+      - PGDATABASE=healthchecks
+      - PGHOST=database
+      - PGUSER=postgres
+      - TZ=Europe/Bratislava # optional
     volumes:
+      - ../../../.utils/backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../../../.utils/backup/run.sh:/app/run.sh:ro
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw
     healthcheck:
