@@ -4,6 +4,7 @@ services:
   app:
     image: linuxserver/unifi-network-application:8.1.113
     container_name: unifi-network-application
+    hostname: unifi-network-application
     environment:
       - FILE__MONGO_PASS=/.homelab/database-password.txt
       - MONGO_DBNAME=unifi
@@ -45,6 +46,7 @@ services:
   database:
     image: mongo:7.0.8
     container_name: unifi-network-application-mongodb
+    hostname: unifi-network-application-mongodb
     command: --auth
     volumes:
       - ./data/mongodb:/data/db:rw
@@ -63,6 +65,7 @@ services:
     build:
       context: backuper/
     container_name: unifi-network-application-backup
+    hostname: unifi-network-application-backup
     depends_on:
       database:
         condition: service_healthy
@@ -71,7 +74,7 @@ services:
     env_file:
       - ./private/app-backup.env
     environment:
-      - URL=https://app:8443
+      - URL=https://unifi-network-application:8443
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw

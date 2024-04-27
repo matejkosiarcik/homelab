@@ -4,6 +4,7 @@ services:
   app:
     image: healthchecks/healthchecks:v3.3
     container_name: healthchecks
+    hostname: healthchecks
     depends_on:
       database:
         condition: service_healthy
@@ -39,6 +40,7 @@ services:
   database:
     image: postgres:16.2
     container_name: healthchecks-postgres
+    hostname: healthchecks-postgres
     environment:
       # Basic setup
       - PGDATA=/var/lib/postgresql/data/pgdata
@@ -67,6 +69,7 @@ services:
     build:
       context: backuper/
     container_name: healthchecks-postgres-backup
+    hostname: healthchecks-postgres-backup
     depends_on:
       database:
         condition: service_healthy
