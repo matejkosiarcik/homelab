@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache curl postgresql16-client && \
     mkdir -p /backup /log
-COPY run.sh entrypoint.sh schedule.cron ./
+COPY main.sh schedule.cron ./
 HEALTHCHECK NONE
 STOPSIGNAL SIGKILL
 VOLUME [ "/backup", "/log" ]
