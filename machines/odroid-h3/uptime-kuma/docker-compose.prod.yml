@@ -4,6 +4,9 @@ services:
   app:
     ports:
       - 80:3001
+    networks:
+      unifi-network-application-network:
+        ipv4_address: 10.1.11.6
     restart: unless-stopped
 
   app-backup:

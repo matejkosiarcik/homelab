@@ -35,3 +35,13 @@ services:
       - ./log/app:/opt/tplink/EAPController/logs:rw
     stop_grace_period: 60s
     # Note: healthcheck builtin
+
+networks:
+  homer-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.11.0/24"

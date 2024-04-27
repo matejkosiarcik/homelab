@@ -12,4 +12,7 @@ services:
       - 81:81
       - 443:443
       - 444:444
+    networks:
+      homer-network:
+        ipv4_address: 10.1.11.3
     restart: unless-stopped

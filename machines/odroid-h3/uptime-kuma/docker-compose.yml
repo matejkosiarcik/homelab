@@ -40,3 +40,13 @@ services:
       timeout: 1s
       retries: 0
     stop_grace_period: 5s
+
+networks:
+  smtp4dev-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.11.0/24"
