@@ -77,7 +77,6 @@ services:
       - ./private/app-backup.env
     environment:
       - TZ=Europe/Bratislava # optional
-      - URL=https://unifi-network-application:8443
     volumes:
       - ../../../.utils/backup-entrypoint.sh:/app/entrypoint.sh:ro
       - ../../../.utils/backup-run.sh:/app/run.sh:ro

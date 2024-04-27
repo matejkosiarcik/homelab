@@ -28,7 +28,6 @@ services:
     env_file:
       - ./private/app-backup.env
     environment:
-      - URL=http://uptime-kuma:3001
       - TZ=Europe/Bratislava # optional
     volumes:
       - ../../../.utils/backup-entrypoint.sh:/app/entrypoint.sh:ro
