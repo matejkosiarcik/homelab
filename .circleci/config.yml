@@ -7,7 +7,7 @@ workflows:
       - azlint
       - local_build
       - docker_build
-      - deployment[dry]
+      - deployment
 
 jobs:
   azlint:
@@ -73,7 +73,7 @@ jobs:
           working_directory: ./machines/odroid-h3/uptime-kuma/backuper
           command: docker build .
 
-  deployment[dry]:
+  deployment:
     docker:
       - image: docker:26.0.2
     steps:
