@@ -52,11 +52,11 @@ build-docker-multiarch:
 	printf '%s\n%s\n' amd64 arm64/v8 | \
 		while read -r arch; do \
 			printf 'Building for linux/%s:\n' "$$arch" && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/healthchecks/backuper" --tag "healthchecks-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')"  && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper" --tag "omada-controller-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')"  && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper" --tag "unifi-network-application-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')"  && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper" --tag "uptime-kuma-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')"  && \
-			docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag "pihole-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" " && \
+			docker build "$(PROJECT_DIR)/machines/odroid-h3/healthchecks/backuper" --tag "healthchecks-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper" --tag "omada-controller-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper" --tag "unifi-network-application-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper" --tag "uptime-kuma-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag "pihole-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
 		true; done
 
 .PHONY: run
