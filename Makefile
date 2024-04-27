@@ -42,7 +42,7 @@ build:
 .PHONY: build-docker
 build-docker:
 	docker build "$(PROJECT_DIR)/machines/odroid-h3/healthchecks/backuper" --tag healthchecks-backup:homelab
-	docker build "$(PROJECT_DIR)/odroid-h3/omada-controller/backuper" --tag omada-controller-backup:homelab
+	docker build "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper" --tag omada-controller-backup:homelab
 	docker build "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper" --tag unifi-network-application-backup:homelab
 	docker build "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper" --tag uptime-kuma-backup:homelab
 	docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag pihole-backup:homelab
