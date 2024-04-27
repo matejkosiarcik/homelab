@@ -5,8 +5,8 @@ workflows:
   circleci:
     jobs:
       - azlint
-      - build_containers
-      - dry_deployment
+      - docker_build
+      - deployment[dry]
 
 jobs:
   azlint:
@@ -23,7 +23,7 @@ jobs:
           #   azlint --only-changed
           # fi
 
-  build_containers:
+  docker_build:
     docker:
       - image: docker:26.0.2
     steps:
@@ -51,7 +51,7 @@ jobs:
           working_directory: ./machines/odroid-h3/uptime-kuma/backuper
           command: docker build .
 
-  dry_deployment:
+  deployment[dry]:
     docker:
       - image: docker:26.0.2
     steps:
