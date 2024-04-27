@@ -101,7 +101,7 @@ jobs:
               "$HOME/.homelab-2/uptime-kuma/private"
             touch "$HOME/.homelab-2/healthchecks/private/app.env" \
               "$HOME/.homelab-2/healthchecks/private/database-backup.env" \
-              "$HOME/.homelab-2/omada-controller/private/database-backup.env" \
+              "$HOME/.homelab-2/omada-controller/private/app-backup.env" \
               "$HOME/.homelab-2/unifi-network-application/private/app-backup.env" \
               "$HOME/.homelab-2/uptime-kuma/private/app-backup.env"
             DEST_DIR="$HOME/.homelab-2" \
