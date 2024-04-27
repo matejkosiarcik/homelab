@@ -5,6 +5,7 @@ workflows:
   circleci:
     jobs:
       - azlint
+      - local_build
       - docker_build
       - deployment[dry]
 
@@ -22,6 +23,27 @@ jobs:
           # else
           #   azlint --only-changed
           # fi
+
+  local_build:
+    docker:
+      - image: debian:12.5
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: |
+            apt-get update -qq
+            DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes \
+              apt-get install -q --yes --no-install-recommends \
+              ca-certificates make \
+              nodejs npm \
+              python3 python3-pip python3-venv
+      - run:
+          name: Install project dependencies
+          command: make bootstrap
+      - run:
+          name: Build subprojects
+          command: make build
 
   docker_build:
     docker:
