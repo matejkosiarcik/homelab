@@ -36,6 +36,31 @@ services:
     stop_grace_period: 60s
     # Note: healthcheck builtin
 
+  app-backup:
+    image: omada-controller:homelab
+    build:
+      context: backuper/
+    container_name: omada-controller-backup
+    hostname: omada-controller-backup
+    depends_on:
+      app:
+        condition: service_healthy
+    env_file:
+      - ./private/app-backup.env
+    environment:
+      - TZ=Europe/Bratislava # optional
+      - URL=https://omada-controller:8443
+    volumes:
+      - ./data/app-backup:/backup:rw
+      - ./log/app-backup:/log:rw
+    healthcheck:
+      test: '[ "$(cat /app/.internal/status 2>/dev/null)" = "1" ] || exit 1'
+      start_period: 15s
+      interval: 10s
+      timeout: 1s
+      retries: 0
+    stop_grace_period: 5s
+
 networks:
   homer-network:
     driver: macvlan

@@ -16,3 +16,6 @@ services:
       homer-network:
         ipv4_address: 10.1.11.3
     restart: unless-stopped
+
+  app-backup:
+    restart: unless-stopped

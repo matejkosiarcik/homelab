@@ -13,3 +13,6 @@ services:
       - 8443:8443
       - 8444:8444
     restart: "no"
+
+  app-backup:
+    restart: "no"
