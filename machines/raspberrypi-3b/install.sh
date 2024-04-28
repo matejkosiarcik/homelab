@@ -2,12 +2,19 @@
 # shellcheck disable=SC2068
 
 set -euf
-cd "$(dirname "$0")"
 
-install_script_path="$(git rev-parse --show-toplevel)/.utils/install.sh"
+# Prepare destination directory
 
-SOURCE_DIR="$(dirname "$0")/pi-hole" \
+bash "$(git rev-parse --show-toplevel)/.utils/preinstall-all.sh" $@
+
+# Install individual services
+# Note: Services ordered by priority and dependence on each other
+
+currdir="$(cd "$(dirname "$0")" && printf '%s\n' "$PWD")"
+install_script_path="$(git rev-parse --show-toplevel)/.utils/install-service.sh"
+
+SOURCE_DIR="$currdir/pi-hole" \
     bash "$install_script_path" $@
 
-# SOURCE_DIR="$(dirname "$0")/debug" \
+# SOURCE_DIR="$currdir/debug" \
 #     bash "$install_script_path" $@

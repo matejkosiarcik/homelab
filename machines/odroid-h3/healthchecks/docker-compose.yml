@@ -87,8 +87,6 @@ services:
       - PGUSER=postgres
       - TZ=Europe/Bratislava # optional
     volumes:
-      - ../../../.utils/backup/entrypoint.sh:/app/entrypoint.sh:ro
-      - ../../../.utils/backup/run.sh:/app/run.sh:ro
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw
     healthcheck:

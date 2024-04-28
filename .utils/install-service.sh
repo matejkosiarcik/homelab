@@ -2,8 +2,10 @@
 set -eufo pipefail
 # The reason to use `bash` instead of plain `sh` is that we require pipefail
 
+cd "$(git rev-parse --show-toplevel)"
+
 print_help() {
-    printf 'bash install.sh [-n] [-h]\n'
+    printf 'bash install-service.sh [-n] [-h]\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -n  - Dry run\n'
@@ -35,23 +37,26 @@ fi
 
 # Default deployment location is "~/homelab"
 # Can be overriden by setting "DEST_DIR=..."
-dist_prefix="${DEST_DIR-$HOME/homelab}"
+dest_dir="${DEST_DIR-$HOME/homelab}"
+global_log_dir="$dest_dir/.log/$(date +"%Y-%m-%d_%H-%M-%S")"
+global_log_file="$global_log_dir/install.txt"
+mkdir -p "$dest_dir" "$global_log_dir"
 
 component="$(basename "$source_dir")"
-printf 'Installing %s\n' "$component"
+printf 'Installing %s\n' "$component" | tee "$global_log_file" >&2
 
-source_dir="$PWD/$component"
-target_dir="$dist_prefix/$component"
-backup_dir="$dist_prefix/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
-log_dir="$dist_prefix/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
-
+target_dir="$dest_dir/$component"
+backup_dir="$dest_dir/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
+log_dir="$dest_dir/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
+log_file="$log_dir/install.txt"
 mkdir -p "$log_dir" "$backup_dir"
 
 # Backup before updating
 if [ -d "$target_dir" ]; then
     if [ -f "$target_dir/docker-compose.yml" ]; then
-        (cd "$target_dir" && docker compose down 2>&1 | tee "$log_dir/docker-compose.txt")
-        printf '\n' >>"$log_dir/docker-compose.txt"
+        printf 'Stop:\n' | tee "$log_file" >&2
+        (cd "$target_dir" && docker compose down 2>&1 | tee "$log_file" >&2)
+        printf '\n' | tee "$log_file" >&2
     fi
     cp -r "$target_dir/" "$backup_dir/"
 else
@@ -73,12 +78,22 @@ find "$source_dir" -mindepth 1 -maxdepth 1 \
     \( -name 'config' -and -type d \) \
     -exec cp -r "{}" "$target_dir/" \;
 
+# Pull docker images
+printf 'Pull:\n' | tee "$log_file" >&2
+(cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2)
+printf '\n' | tee "$log_file" >&2
+
+# Build docker images
+printf 'Build:\n' | tee "$log_file" >&2
+(cd "$source_dir" && docker compose build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2)
+printf '\n' | tee "$log_file" >&2
+
 # Run new services
-(cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_dir/docker-compose.txt")
-printf '\n' >>"$log_dir/docker-compose.txt"
 extra_args=''
 if [ "$dry_run" -eq 1 ]; then
     extra_args='--dry-run'
 fi
+printf 'Up:\n' | tee "$log_file" >&2
 # shellcheck disable=SC2248
-(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --build --detach --wait $extra_args 2>&1 | tee "$log_dir/docker-compose.txt")
+(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $extra_args 2>&1 | tee "$log_file" >&2)
+printf '\n' | tee "$log_file" >&2
