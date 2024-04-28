@@ -5,6 +5,11 @@ SHELL := /bin/sh
 .SHELLFLAGS := -ec
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
+SERVICES := $(shell printf 'odroid-h3/healthchecks odroid-h3/homer odroid-h3/omada-controller odroid-h3/smtp4dev odroid-h3/unifi-network-application odroid-h3/uptime-kuma raspberrypi-3b/pi-hole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
+DOCKER_COMPONENTS := $(shell printf 'odroid-h3/healthchecks/backuper odroid-h3/omada-controller/backuper odroid-h3/unifi-network-application/backuper odroid-h3/uptime-kuma/backuper raspberrypi-3b/pi-hole/backuper' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
+NPM_COMPONENTS := $(shell printf 'odroid-h3/omada-controller/backuper odroid-h3/unifi-network-application/backuper odroid-h3/uptime-kuma/backuper raspberrypi-3b/pi-hole/backuper' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
+DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
+
 .POSIX:
 .SILENT:
 
@@ -15,10 +20,9 @@ all: clean bootstrap build
 .PHONY: bootstrap
 bootstrap:
 	npm ci --prefix "$(PROJECT_DIR)/icons"
-	npm ci --prefix "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper"
-	npm ci --prefix "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper"
-	npm ci --prefix "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper"
-	npm ci --prefix "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper"
+	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+		npm ci --prefix "$(PROJECT_DIR)/$$component" && \
+	true; done
 
 	python3 -m venv venv
 	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
@@ -34,30 +38,34 @@ bootstrap:
 
 .PHONY: build
 build:
-	npm run build --prefix "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper"
-	npm run build --prefix "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper"
-	npm run build --prefix "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper"
-	npm run build --prefix "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper"
+	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+		npm run build --prefix "$(PROJECT_DIR)/$$component" && \
+	true; done
 
-.PHONY: build-docker
-build-docker:
-	docker build "$(PROJECT_DIR)/machines/odroid-h3/healthchecks/backuper" --tag healthchecks-backup:homelab
-	docker build "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper" --tag omada-controller-backup:homelab
-	docker build "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper" --tag unifi-network-application-backup:homelab
-	docker build "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper" --tag uptime-kuma-backup:homelab
-	docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --tag pihole-backup:homelab
+.PHONY: docker-build
+docker-build:
+	printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+		docker build "$(PROJECT_DIR)/$$component" --tag "$$(printf '%s' "$$component" | tr '/' '-'):homelab" && \
+	true; done
 
-.PHONY: build-docker-multiarch
-build-docker-multiarch:
-	printf '%s\n%s\n' amd64 arm64/v8 | \
-		while read -r arch; do \
-			printf 'Building for linux/%s:\n' "$$arch" && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/healthchecks/backuper" --platform "linux/$$arch" --tag "healthchecks-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper" --platform "linux/$$arch" --tag "omada-controller-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper" --platform "linux/$$arch" --tag "unifi-network-application-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
-			docker build "$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper" --platform "linux/$$arch" --tag "uptime-kuma-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
-			docker build "$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper" --platform "linux/$$arch" --tag "pihole-backup:homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
-		true; done
+	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
+		docker compose --project-directory "$(PROJECT_DIR)/$$service" build --with-dependencies --pull && \
+	true; done
+
+.PHONY: docker-multibuild
+docker-multibuild:
+	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
+		printf 'Building for linux/%s:\n' "$$arch" && \
+		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+			docker build "$(PROJECT_DIR)/$$component" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+		true; done && \
+	true; done
+
+.PHONY: dryrun
+dryrun:
+	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
+		docker compose --project-directory "$(PROJECT_DIR)/$$service" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
+	true; done
 
 .PHONY: run
 run:
@@ -71,12 +79,8 @@ clean:
 		"$(PROJECT_DIR)/icons/gitman" \
 		"$(PROJECT_DIR)/icons/node_modules" \
 		"$(PROJECT_DIR)/icons/venv" \
-		"$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper/dist" \
-		"$(PROJECT_DIR)/machines/odroid-h3/omada-controller/backuper/node_modules" \
-		"$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper/dist" \
-		"$(PROJECT_DIR)/machines/odroid-h3/unifi-network-application/backuper/node_modules" \
-		"$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper/dist" \
-		"$(PROJECT_DIR)/machines/odroid-h3/uptime-kuma/backuper/node_modules" \
-		"$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper/dist" \
-		"$(PROJECT_DIR)/machines/raspberrypi-3b/pi-hole/backuper/node_modules" \
-		"$(PROJECT_DIR)/venv" \
+		"$(PROJECT_DIR)/venv"
+
+	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+		rm -rf "$(PROJECT_DIR)/$$component/dist" "$(PROJECT_DIR)/$$component/node_modules" && \
+	true; done
