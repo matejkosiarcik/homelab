@@ -1,9 +1,9 @@
 # For testing services
-/homelab
+.env
+certs/
 data/
 log/
 private/
-.env
 
 # OS stuff
 ._*
