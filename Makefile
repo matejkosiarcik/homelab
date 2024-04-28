@@ -67,10 +67,6 @@ dryrun:
 		docker compose --project-directory "$(PROJECT_DIR)/$$service" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
 	true; done
 
-.PHONY: run
-run:
-	# TODO: Run script
-
 .PHONY: clean
 clean:
 	rm -rf \
