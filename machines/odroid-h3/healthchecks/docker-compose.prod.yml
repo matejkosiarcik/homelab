@@ -19,4 +19,7 @@ services:
     restart: unless-stopped
 
   database-backup:
+    volumes:
+      - ../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../.shared/backup/run.sh:/app/run.sh:ro
     restart: unless-stopped

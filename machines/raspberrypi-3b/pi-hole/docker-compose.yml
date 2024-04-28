@@ -42,8 +42,6 @@ services:
     environment:
       - TZ=Europe/Bratislava # optional
     volumes:
-      - ../../../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
-      - ../../../.shared/backup/run.sh:/app/run.sh:ro
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
     healthcheck:

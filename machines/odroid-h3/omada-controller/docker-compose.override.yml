@@ -15,4 +15,7 @@ services:
     restart: "no"
 
   app-backup:
+    volumes:
+      - ../../../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../../../.shared/backup/run.sh:/app/run.sh:ro
     restart: "no"
