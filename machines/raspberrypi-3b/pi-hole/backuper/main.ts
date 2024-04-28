@@ -27,9 +27,9 @@ import { expect } from 'playwright/test';
         const page = await browser.newPage({ baseURL: url, strictSelectors: true, ignoreHTTPSErrors: true });
         page.setDefaultNavigationTimeout(10_000);
         page.setDefaultTimeout(1000);
-        await page.goto('/admin/login.php');
 
         // Login
+        await page.goto('/admin/login.php');
         await page.locator('form#loginform input#loginpw').fill(password);
         await page.locator('form#loginform button[type="submit"]').click();
         await page.waitForURL('/admin/index.php');
