@@ -5,20 +5,14 @@ set -eufo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 print_help() {
-    printf 'bash preinstall.sh [-n] [-h]\n'
+    printf 'bash preinstall.sh [-h]\n'
     printf '\n'
     printf 'Arguments:\n'
-    printf ' -n  - Dry run\n'
     printf ' -h  - Print usage\n'
 }
 
-dry_run='0'
 while [ "$#" -gt 0 ]; do
     case "$1" in
-    -n)
-        dry_run="1"
-        shift
-        ;;
     -h)
         print_help
         exit 0
