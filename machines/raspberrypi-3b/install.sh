@@ -4,7 +4,7 @@
 set -euf
 cd "$(dirname "$0")"
 
-install_script_path="$(git rev-parse --show-toplevel)/.utils/install.sh"
+install_script_path="$(git rev-parse --show-toplevel)/.utils/install-service.sh"
 
 SOURCE_DIR="$(dirname "$0")/pi-hole" \
     bash "$install_script_path" $@

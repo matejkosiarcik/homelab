@@ -3,7 +3,7 @@ set -eufo pipefail
 # The reason to use `bash` instead of plain `sh` is that we require pipefail
 
 print_help() {
-    printf 'bash install.sh [-n] [-h]\n'
+    printf 'bash install-service.sh [-n] [-h]\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -n  - Dry run\n'
