@@ -4,6 +4,7 @@
 FROM node:21.7.3-alpine AS build
 WORKDIR /app
 COPY main.ts package-lock.json package.json tsconfig.json ./
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --quiet && \
     npm run build && \
     npm prune --production
