@@ -13,6 +13,10 @@ print_help() {
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
+    -n)
+        # Unused
+        shift
+        ;;
     -h)
         print_help
         exit 0
