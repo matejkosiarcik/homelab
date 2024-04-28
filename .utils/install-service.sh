@@ -2,6 +2,8 @@
 set -eufo pipefail
 # The reason to use `bash` instead of plain `sh` is that we require pipefail
 
+cd "$(git rev-parse --show-toplevel)"
+
 print_help() {
     printf 'bash install-service.sh [-n] [-h]\n'
     printf '\n'
@@ -40,7 +42,6 @@ dist_prefix="${DEST_DIR-$HOME/homelab}"
 component="$(basename "$source_dir")"
 printf 'Installing %s\n' "$component"
 
-source_dir="$PWD/$component"
 target_dir="$dist_prefix/$component"
 backup_dir="$dist_prefix/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
 log_dir="$dist_prefix/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
