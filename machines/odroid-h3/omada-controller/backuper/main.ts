@@ -29,10 +29,10 @@ import { expect } from 'playwright/test';
         const page = await browser.newPage({ baseURL: url, strictSelectors: true, ignoreHTTPSErrors: true });
         page.setDefaultNavigationTimeout(10_000);
         page.setDefaultTimeout(1000);
-        await page.goto('/login');
-        await page.click('#privacy-agree-btn'); // Hide cookies
 
         // Login
+        await page.goto('/login');
+        await page.click('#privacy-agree-btn'); // Hide cookies
         await page.locator('#username input[type="text"]').fill(username);
         await page.locator('#password input[type="password"]').fill(password);
         await page.locator('#loginBtn a[type=button]').click();

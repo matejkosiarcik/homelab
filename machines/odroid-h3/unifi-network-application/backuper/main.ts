@@ -29,9 +29,9 @@ import { expect } from 'playwright/test';
         const page = await browser.newPage({ baseURL: url, strictSelectors: true, ignoreHTTPSErrors: true });
         page.setDefaultNavigationTimeout(10_000);
         page.setDefaultTimeout(1000);
-        await page.goto('/manage/account/login');
 
         // Login
+        await page.goto('/manage/account/login');
         await page.locator('input[name="username"]').waitFor({ timeout: 5000 })
         await page.locator('input[name="username"]').fill(username);
         await page.locator('input[name="password"]').fill(password);
