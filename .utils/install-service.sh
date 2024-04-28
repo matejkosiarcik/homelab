@@ -85,7 +85,7 @@ printf '\n' | tee "$log_file" >&2
 
 # Build docker images
 printf 'Build:\n' | tee "$log_file" >&2
-(cd "$target_dir" && docker compose build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2)
+(cd "$source_dir" && docker compose build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
 
 # Run new services
