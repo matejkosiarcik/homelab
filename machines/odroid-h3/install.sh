@@ -3,9 +3,14 @@
 
 set -euf
 
-install_script_path="$(git rev-parse --show-toplevel)/.utils/install-service.sh"
+# Prepare destination directory
 
+bash "$(git rev-parse --show-toplevel)/.utils/preinstall-all.sh" $@
+
+# Install individual services
 # Note: Services ordered by priority and dependence on each other
+
+install_script_path="$(git rev-parse --show-toplevel)/.utils/install-service.sh"
 
 SOURCE_DIR="$(dirname "$0")/smtp4dev" \
     bash "$install_script_path" $@
