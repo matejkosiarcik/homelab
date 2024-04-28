@@ -73,12 +73,22 @@ find "$source_dir" -mindepth 1 -maxdepth 1 \
     \( -name 'config' -and -type d \) \
     -exec cp -r "{}" "$target_dir/" \;
 
-# Run new services
+# Pull docker images
+printf 'Pull:\n' >>"$log_dir/docker-compose.txt"
 (cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_dir/docker-compose.txt")
 printf '\n' >>"$log_dir/docker-compose.txt"
+
+# Build docker images
+printf 'Build:\n' >>"$log_dir/docker-compose.txt"
+(cd "$target_dir" && docker compose build --pull --with-dependencies --quiet 2>&1 | tee "$log_dir/docker-compose.txt")
+printf '\n' >>"$log_dir/docker-compose.txt"
+
+# Run new services
 extra_args=''
 if [ "$dry_run" -eq 1 ]; then
     extra_args='--dry-run'
 fi
+printf 'Up:\n' >>"$log_dir/docker-compose.txt"
 # shellcheck disable=SC2248
-(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --build --detach --wait $extra_args 2>&1 | tee "$log_dir/docker-compose.txt")
+(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $extra_args 2>&1 | tee "$log_dir/docker-compose.txt")
+printf '\n' >>"$log_dir/docker-compose.txt"
