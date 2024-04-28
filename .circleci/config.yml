@@ -64,7 +64,7 @@ jobs:
 
   deployment:
     docker:
-      - image: docker:26.0.2
+      - image: docker:26.1.0
     steps:
       - checkout
       - setup_remote_docker:
