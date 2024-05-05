@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  app:
+  omada-controller-app:
     environment:
       - MANAGE_HTTP_PORT=8080
       - MANAGE_HTTPS_PORT=8443
@@ -14,7 +14,7 @@ services:
       - 8444:8444
     restart: "no"
 
-  app-backup:
+  omada-controller-app-backup:
     volumes:
       - ../../../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../../../.shared/backup/run.sh:/app/run.sh:ro

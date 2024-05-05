@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "pihole-backup",
+  "name": "pihole-backuper",
   "scripts": {
     "main": "tsx main.ts",
     "build": "tsc"

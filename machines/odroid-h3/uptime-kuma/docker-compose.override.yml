@@ -1,12 +1,12 @@
 # version: "3.8"
 
 services:
-  app:
+  uptime-kuma-app:
     ports:
       - 8080:3001
     restart: "no"
 
-  app-backup:
+  uptime-kuma-app-backup:
     volumes:
       - ../../../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../../../.shared/backup/run.sh:/app/run.sh:ro

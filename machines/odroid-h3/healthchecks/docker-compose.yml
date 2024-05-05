@@ -1,12 +1,12 @@
 # version: "3.8"
 
 services:
-  app:
+  healthchecks-app:
     image: healthchecks/healthchecks:v3.3
-    container_name: healthchecks
-    hostname: healthchecks
+    container_name: healthchecks-app
+    hostname: healthchecks-app
     depends_on:
-      database:
+      healthchecks-database:
         condition: service_healthy
     env_file:
       - ./private/app.env
@@ -14,12 +14,10 @@ services:
       # General options
       - DEBUG=False
       - SITE_NAME=Healthchecks
-
-      # General options
-      - DB_HOST=database
+      # Database options
+      - DB_HOST=healthchecks-database
       - DB_NAME=healthchecks
       - DB=postgres
-
       # Email options
       - EMAIL_HOST_PASSWORD= # TODO: Set ?
       - EMAIL_HOST_USER= # TODO: Set ?
@@ -27,7 +25,7 @@ services:
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
-
+      # Others
       - TZ=Europe/Bratislava # optional
     volumes:
       - ./config/app_healthcheck.py:/.homelab/healthcheck.py:ro
@@ -39,23 +37,21 @@ services:
       retries: 1
     stop_grace_period: 30s
 
-  database:
+  healthchecks-database:
     image: postgres:16.2
-    container_name: healthchecks-postgres
-    hostname: healthchecks-postgres
+    container_name: healthchecks-database
+    hostname: healthchecks-database
     environment:
       # Basic setup
       - PGDATA=/var/lib/postgresql/data/pgdata
-
       # Set main database connection values
       - POSTGRES_DB=healthchecks
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD_FILE=/.homelab/password.txt
-
       # Set same connection values for psql and pg_isready
       - PGUSER=postgres
       - PGDATABASE=healthchecks
-
+      # The rest
       - TZ=Europe/Bratislava # optional
     healthcheck:
       test: pg_isready || exit 1
@@ -68,16 +64,16 @@ services:
       - ./private/database-password.txt:/.homelab/password.txt:ro
     stop_grace_period: 30s
 
-  database-backup:
-    image: healthchecks-postgres-backup:homelab
+  healthchecks-database-backup:
+    image: healthchecks-database-backup:homelab
     build:
       context: backuper/
-    container_name: healthchecks-postgres-backup
-    hostname: healthchecks-postgres-backup
+    container_name: healthchecks-database-backup
+    hostname: healthchecks-database-backup
     depends_on:
-      database:
+      healthchecks-database:
         condition: service_healthy
-      app:
+      healthchecks-app:
         condition: service_started
     env_file:
       - ./private/database-backup.env

@@ -1,16 +1,16 @@
 # version: "3.8"
 
 services:
-  app:
+  unifi-controller-app:
     networks:
-      unifi-network-application-network:
+      unifi-controller-network:
         ipv4_address: 10.1.11.5
     restart: unless-stopped
 
-  database:
+  unifi-controller-database:
     restart: unless-stopped
 
-  app-backup:
+  unifi-controller-app-backup:
     volumes:
       - ../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../.shared/backup/run.sh:/app/run.sh:ro

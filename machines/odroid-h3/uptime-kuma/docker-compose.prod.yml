@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  app:
+  uptime-kuma-app:
     ports:
       - 80:3001
     networks:
@@ -9,7 +9,7 @@ services:
         ipv4_address: 10.1.11.6
     restart: unless-stopped
 
-  app-backup:
+  uptime-kuma-app-backup:
     volumes:
       - ../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../.shared/backup/run.sh:/app/run.sh:ro

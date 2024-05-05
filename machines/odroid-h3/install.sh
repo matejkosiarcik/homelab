@@ -28,5 +28,5 @@ SOURCE_DIR="$currdir/uptime-kuma" \
 SOURCE_DIR="$currdir/omada-controller" \
     bash "$install_script_path" $@
 
-SOURCE_DIR="$currdir/unifi-network-application" \
+SOURCE_DIR="$currdir/unifi-controller" \
     bash "$install_script_path" $@

@@ -1,10 +1,9 @@
 # version: "3.8"
 
 services:
-  smtp4dev:
+  smtp4dev-app:
     ports:
       - "25:25"
-      - "80:80"
       # - "143:143"
     environment:
       - HOSTNAME=smtp4dev.lan
@@ -12,4 +11,15 @@ services:
     networks:
       smtp4dev-network:
         ipv4_address: 10.1.11.4
+    restart: unless-stopped
+
+  smtp4dev-proxy:
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - ENV=prod
+    volumes:
+      - ../.shared/proxy/apache.conf:/etc/apache2/sites-enabled/apache.conf:ro
+      - ../.shared/proxy/www:/app/www:ro
     restart: unless-stopped
