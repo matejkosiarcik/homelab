@@ -43,7 +43,6 @@ services:
       - ./log/proxy-error:/log/error:rw
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
-      - ./proxy/html:/app/www:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
     depends_on:
       app:
