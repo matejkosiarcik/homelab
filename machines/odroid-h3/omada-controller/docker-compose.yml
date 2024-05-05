@@ -37,7 +37,7 @@ services:
     # Note: healthcheck builtin
 
   omada-controller-app-backup:
-    image: omada-controller:homelab
+    image: omada-controller-app-backup:homelab
     build:
       context: backuper/
     container_name: omada-controller-app-backup
