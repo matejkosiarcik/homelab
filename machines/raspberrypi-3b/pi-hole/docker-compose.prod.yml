@@ -10,9 +10,18 @@ services:
       - FTLCONF_LOCAL_IPV4=10.1.10.1
       - FTLCONF_PRIVACYLEVEL=1
       - VIRTUAL_HOST=pihole.lan
+      - PIHOLE_DOMAIN=pihole.lan
     networks:
       pihole-network:
         ipv4_address: 10.1.10.1
+    restart: unless-stopped
+
+  app-proxy:
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - ENV=prod
     restart: unless-stopped
 
   app-backup:
