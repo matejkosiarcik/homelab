@@ -1,10 +1,10 @@
 # version: "3.8"
 
 services:
-  app:
+  omada-controller-app:
     image: mbentley/omada-controller:5.13
-    container_name: omada-controller
-    hostname: omada-controller
+    container_name: omada-controller-app
+    hostname: omada-controller-app
     ulimits:
       nofile:
         soft: 4096
@@ -36,14 +36,14 @@ services:
     stop_grace_period: 60s
     # Note: healthcheck builtin
 
-  app-backup:
+  omada-controller-app-backup:
     image: omada-controller:homelab
     build:
       context: backuper/
-    container_name: omada-controller-backup
-    hostname: omada-controller-backup
+    container_name: omada-controller-app-backup
+    hostname: omada-controller-app-backup
     depends_on:
-      app:
+      omada-controller-app:
         condition: service_healthy
     env_file:
       - ./private/app-backup.env
