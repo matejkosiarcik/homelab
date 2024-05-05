@@ -1,10 +1,6 @@
 #!/bin/sh
 set -euf
 
-#!/usr/bin/env bash
-set -eufo pipefail
-# The reason to use `bash` instead of plain `sh` is that we require pipefail
-
 cd "$(git rev-parse --show-toplevel)"
 
 print_help() {
