@@ -75,6 +75,17 @@ convert_file "convert $convert_options" "$global_indir/other/tp-link.svg.bin" "$
 convert_file "convert $convert_options" "$global_indir/other/upc.svg.bin" "$outdir/upc.png"
 convert_file "convert $convert_options" "$global_indir/other/uptime-kuma.svg.bin" "$outdir/uptime-kuma.png"
 
+### Favicon ###
+
+outdir="$global_outdir"
+mkdir -p "$outdir" "$tmpdir/homer-favicon"
+
+convert_file 'convert -resize 16x16 -density 1200 -background none -bordercolor transparent' "$global_indir/other/homer.png" "$tmpdir/homer-favicon/homer-16.png"
+convert_file 'convert -resize 32x32 -density 1200 -background none -bordercolor transparent' "$global_indir/other/homer.png" "$tmpdir/homer-favicon/homer-32.png"
+png2ico "$outdir/favicon.ico" --colors 16 "$tmpdir/homer-favicon/homer-16.png" "$tmpdir/homer-favicon/homer-32.png"
+
+rm -rf "$tmpdir/homer-favicon"
+
 ### Cleanup ###
 
 rm -rf "$tmpdir"
