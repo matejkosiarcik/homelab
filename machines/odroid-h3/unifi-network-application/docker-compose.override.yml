@@ -1,15 +1,15 @@
 # version: "3.8"
 
 services:
-  app:
+  unifi-controller-app:
     restart: "no"
 
-  database:
+  unifi-controller-database:
     ports:
       - 27017:27017
     restart: "no"
 
-  app-backup:
+  unifi-controller-app-backup:
     volumes:
       - ../../../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../../../.shared/backup/run.sh:/app/run.sh:ro
