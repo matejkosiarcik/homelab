@@ -8,6 +8,10 @@ RUN apt-get update -qq && \
 COPY apache.conf /etc/apache2/sites-enabled/apache.conf
 EXPOSE 80
 EXPOSE 443
+ENV APACHE_HTTP_PORT_NUMBER=80
+ENV APACHE_HTTPS_PORT_NUMBER=443
+# User necessary for binding to privileged ports
+USER root
 VOLUME [ "/app/www", "/app/misc" ]
 HEALTHCHECK --interval=10s --retries=1 --start-period=15s --timeout=2s \
     CMD curl --insecure --fail https://localhost/.proxy || exit 1

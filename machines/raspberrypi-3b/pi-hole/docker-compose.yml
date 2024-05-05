@@ -35,8 +35,6 @@ services:
     container_name: pihole-proxy
     hostname: pihole-proxy
     environment:
-      - APACHE_HTTP_PORT_NUMBER=80
-      - APACHE_HTTPS_PORT_NUMBER=443
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole
     volumes:
@@ -46,7 +44,6 @@ services:
       - ./private/certs:/certs:ro
       - ./proxy/html:/app/www:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
-    user: root # Necessary for binding to privileged ports
     depends_on:
       app:
         condition: service_healthy
