@@ -13,7 +13,7 @@ import { expect } from 'playwright/test';
     }
     const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
-    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'https://unifi-network-application:8443' : 'https://localhost:8443');
+    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'https://unifi-controller-app:8443' : 'https://localhost:8443');
     const headless = process.env['HEADLESS'] !== '0';
     const username = process.env['USERNAME']!;
     expect(username, 'USERNAME unset').toBeTruthy();

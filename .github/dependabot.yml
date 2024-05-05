@@ -49,7 +49,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /machines/odroid-h3/unifi-network-application/backuper
+    directory: /machines/odroid-h3/unifi-controller/backuper
     schedule:
       interval: daily
       time: "02:00"
@@ -97,7 +97,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: npm
-    directory: /machines/odroid-h3/unifi-network-application/backuper
+    directory: /machines/odroid-h3/unifi-controller/backuper
     versioning-strategy: increase
     schedule:
       interval: daily
