@@ -1,6 +1,5 @@
 #!/bin/sh
 set -euf
-# shellcheck disable=SC2248
 
 PATH="$PATH:$(dirname "$0")/node_modules/.bin"
 
