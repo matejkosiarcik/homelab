@@ -69,7 +69,7 @@ convert_file "convert $convert_options" "$global_indir/other/homer.png" "$outdir
 convert_file "convert $convert_options" "$global_indir/other/odroid.png" "$outdir/odroid.png"
 convert_file "convert $convert_options" "$global_indir/other/prometheus.svg.bin" "$outdir/prometheus.png"
 convert_file "convert $convert_options" "$global_indir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
-convert_file "convert $convert_options" "$global_indir/other/smtp4dev.png" "$outdir/smtp4dev.png"
+convert_file "convert $convert_options" "$global_indir/other/smtp4dev - custom.png" "$outdir/smtp4dev.png"
 convert_file "convert $convert_options" "$global_indir/other/tp-link-omada.svg.bin" "$outdir/tp-link-omada.png"
 convert_file "convert $convert_options" "$global_indir/other/tp-link.svg.bin" "$outdir/tp-link.png"
 convert_file "convert $convert_options" "$global_indir/other/upc.svg.bin" "$outdir/upc.png"
