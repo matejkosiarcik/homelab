@@ -16,5 +16,6 @@ ENV APACHE_HTTPS_PORT_NUMBER=443
 # hadolint ignore=DL3002
 USER root
 VOLUME [ "/app/www", "/app/misc" ]
-HEALTHCHECK --interval=10s --retries=1 --start-period=15s --timeout=2s CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
+HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
+# TODO: Update to --interval=10s --start-period=15s
 ENTRYPOINT [ "apachectl", "-D", "FOREGROUND" ]
