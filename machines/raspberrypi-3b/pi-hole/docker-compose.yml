@@ -38,6 +38,7 @@ services:
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole
       - HOMELAB_SERVICE=pihole
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw
