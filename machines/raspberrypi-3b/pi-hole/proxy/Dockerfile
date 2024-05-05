@@ -16,5 +16,5 @@ ENV APACHE_HTTPS_PORT_NUMBER=443
 # User necessary for binding to privileged ports
 USER root
 VOLUME [ "/app/www", "/app/misc" ]
-HEALTHCHECK --interval=10s --retries=1 --start-period=15s --timeout=2s CMD curl --insecure --fail https://localhost/.proxy || exit 1
+HEALTHCHECK --interval=10s --retries=1 --start-period=15s --timeout=2s CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
 ENTRYPOINT [ "apachectl", "-D", "FOREGROUND" ]
