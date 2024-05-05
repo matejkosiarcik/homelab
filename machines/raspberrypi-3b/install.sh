@@ -15,6 +15,3 @@ install_script_path="$(git rev-parse --show-toplevel)/.utils/install-service.sh"
 
 SOURCE_DIR="$currdir/pi-hole" \
     bash "$install_script_path" $@
-
-# SOURCE_DIR="$currdir/debug" \
-#     bash "$install_script_path" $@
