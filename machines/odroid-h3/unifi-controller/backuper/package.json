@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "unifi-network-application-backup",
+  "name": "unifi-controller-backuper",
   "scripts": {
     "main": "tsx main.ts",
     "build": "tsc"
