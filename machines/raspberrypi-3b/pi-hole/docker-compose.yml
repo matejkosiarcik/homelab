@@ -37,7 +37,7 @@ services:
     environment:
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole
-      - HOMELAB_MODE=pihole
+      - HOMELAB_SERVICE=pihole
     volumes:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw

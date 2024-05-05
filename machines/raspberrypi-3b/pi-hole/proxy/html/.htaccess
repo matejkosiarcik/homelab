@@ -80,6 +80,6 @@ RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{ENV:_REQUEST_URI}" [
 # Header always unset Content-Type "expr=%{HTTPS} =~ m#^off$#"
 
 # Specific redirect for PiHole: "/" -> "/admin"
-RewriteCond %{ENV:HOMELAB_MODE} pihole [NC]
+RewriteCond %{ENV:HOMELAB_SERVICE} pihole [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=302]
