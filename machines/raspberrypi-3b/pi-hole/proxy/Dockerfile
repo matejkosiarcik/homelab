@@ -1,4 +1,3 @@
-# hadolint ignore=DL3002
 # checkov:skip=CKV_DOCKER_8: allow root user
 
 FROM debian:12.5-slim
@@ -14,6 +13,7 @@ EXPOSE 443
 ENV APACHE_HTTP_PORT_NUMBER=80
 ENV APACHE_HTTPS_PORT_NUMBER=443
 # User necessary for binding to privileged ports
+# hadolint ignore=DL3002
 USER root
 VOLUME [ "/app/www", "/app/misc" ]
 HEALTHCHECK --interval=10s --retries=1 --start-period=15s --timeout=2s CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
