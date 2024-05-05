@@ -14,12 +14,10 @@ services:
       # General options
       - DEBUG=False
       - SITE_NAME=Healthchecks
-
-      # General options
-      - DB_HOST=database
+      # Database options
+      - DB_HOST=healthchecks-database
       - DB_NAME=healthchecks
       - DB=postgres
-
       # Email options
       - EMAIL_HOST_PASSWORD= # TODO: Set ?
       - EMAIL_HOST_USER= # TODO: Set ?
@@ -27,7 +25,7 @@ services:
       - EMAIL_USE_SSL=False # TODO: Remove
       - EMAIL_USE_TLS=False # TODO: Set True
       - EMAIL_USE_VERIFICATION=True
-
+      # Others
       - TZ=Europe/Bratislava # optional
     volumes:
       - ./config/app_healthcheck.py:/.homelab/healthcheck.py:ro
