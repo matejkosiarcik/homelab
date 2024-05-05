@@ -22,7 +22,8 @@ RUN apk update --no-cache && \
     adduser -h /home/user -s /bin/sh -D user && \
     mkdir -p /backup /log
 COPY --from=aggregator /app /app
-HEALTHCHECK NONE
+HEALTHCHECK --interval=30s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
+# TODO: Update to --interval=10s --start-period=25s
 STOPSIGNAL SIGKILL
 VOLUME [ "/backup", "/log" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]

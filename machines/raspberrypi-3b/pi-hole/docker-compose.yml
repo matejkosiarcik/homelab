@@ -38,6 +38,7 @@ services:
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole
       - HOMELAB_SERVICE=pihole
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw
@@ -65,12 +66,6 @@ services:
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
-    healthcheck:
-      test: '[ "$(cat /app/.internal/status 2>/dev/null)" = "1" ] || exit 1'
-      start_period: 15s
-      interval: 10s
-      timeout: 1s
-      retries: 0
     stop_grace_period: 5s
 
 networks:
