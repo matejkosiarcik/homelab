@@ -3,5 +3,8 @@
   "aliveStatusCodes": [
     200,
     403
+  ],
+  "ignorePatterns": [
+    { "pattern":  "^https?://([\\w\\.-]+)?opensecurityarchitecture.org(/.*)?" }
   ]
 }
