@@ -1,10 +1,10 @@
 # version: "3.8"
 
 services:
-  app:
+  pihole-app:
     image: pihole/pihole:2024.03.2
-    container_name: pihole
-    hostname: pihole
+    container_name: pihole-app
+    hostname: pihole-app
     environment:
       - DHCP_ACTIVE=false
       - FTLCONF_IGNORE_LOCALHOST=false
@@ -28,7 +28,7 @@ services:
       retries: 1
     stop_grace_period: 30s
 
-  app-proxy:
+  pihole-proxy:
     image: pihole-proxy:homelab
     build:
       context: proxy/
@@ -36,7 +36,7 @@ services:
     hostname: pihole-proxy
     environment:
       - HOST=pihole.lan
-      - UPSTREAM_URL=http://pihole
+      - UPSTREAM_URL=http://pihole-app
       - HOMELAB_SERVICE=pihole
       - TZ=Europe/Bratislava # optional
     volumes:
@@ -46,18 +46,18 @@ services:
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
     depends_on:
-      app:
+      pihole-app:
         condition: service_healthy
     stop_grace_period: 10s
 
-  app-backup:
+  pihole-app-backup:
     image: pihole-backup:homelab
     build:
       context: backuper/
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:
-      app:
+      pihole-app:
         condition: service_healthy
     env_file:
       - ./private/app-backup.env

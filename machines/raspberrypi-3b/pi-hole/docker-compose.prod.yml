@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  app:
+  pihole-app:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -16,7 +16,7 @@ services:
         ipv4_address: 10.1.10.1
     restart: unless-stopped
 
-  app-proxy:
+  pihole-proxy:
     ports:
       - 80:80
       - 443:443
@@ -27,7 +27,7 @@ services:
       - ../.shared/proxy/www:/app/www:ro
     restart: unless-stopped
 
-  app-backup:
+  pihole-app-backup:
     volumes:
       - ../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../.shared/backup/run.sh:/app/run.sh:ro
