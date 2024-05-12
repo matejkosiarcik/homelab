@@ -20,6 +20,6 @@ services:
 
   healthchecks-database-backup:
     volumes:
-      - ../.shared/backup/entrypoint.sh:/app/entrypoint.sh:ro
-      - ../.shared/backup/run.sh:/app/run.sh:ro
+      - ../.shared/ui-backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../.shared/ui-backup/run.sh:/app/run.sh:ro
     restart: unless-stopped
