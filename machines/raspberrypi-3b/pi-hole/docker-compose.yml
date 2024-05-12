@@ -45,6 +45,8 @@ services:
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+      - ../../../.shared/proxy/apache.conf:/etc/apache2/sites-enabled/apache.conf:ro
+      - ../../../.shared/proxy/www:/app/www:ro
     depends_on:
       pihole-app:
         condition: service_healthy
@@ -65,6 +67,8 @@ services:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
       - ./config/app-backup/main.sh:/app/main.sh:ro
+      - ../../../.shared/ui-backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../../../.shared/ui-backup/run.sh:/app/run.sh:ro
     stop_grace_period: 5s
 
 networks:

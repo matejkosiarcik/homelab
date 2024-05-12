@@ -45,7 +45,7 @@ mkdir -p "$dest_dir" "$global_log_dir"
 component="$(basename "$source_dir")"
 printf 'Installing %s\n' "$component" | tee "$global_log_file" >&2
 
-target_dir="$dest_dir/$component"
+target_dir="$dest_dir/machines/current/$component"
 backup_dir="$dest_dir/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
 log_dir="$dest_dir/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
 log_file="$log_dir/install.txt"

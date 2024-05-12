@@ -85,6 +85,8 @@ services:
     volumes:
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw
+      - ../../../.shared/ui-backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../../../.shared/ui-backup/run.sh:/app/run.sh:ro
     stop_grace_period: 5s
 
 networks:

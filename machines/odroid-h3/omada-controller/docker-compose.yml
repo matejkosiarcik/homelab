@@ -51,6 +51,8 @@ services:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
       - ./config/app-backup/main.sh:/app/main.sh:ro
+      - ../../../.shared/ui-backup/entrypoint.sh:/app/entrypoint.sh:ro
+      - ../../../.shared/ui-backup/run.sh:/app/run.sh:ro
     stop_grace_period: 5s
 
 networks:

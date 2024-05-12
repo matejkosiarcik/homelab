@@ -11,7 +11,4 @@ services:
     restart: unless-stopped
 
   unifi-controller-app-backup:
-    volumes:
-      - ../.shared/ui-backup/entrypoint.sh:/app/entrypoint.sh:ro
-      - ../.shared/ui-backup/run.sh:/app/run.sh:ro
     restart: unless-stopped
