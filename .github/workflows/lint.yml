@@ -18,7 +18,7 @@ jobs:
     env:
       # TODO: Remove override
       VALIDATE_NPM_INSTALL: "false"
-      VALIDATE_NPM_CI: "false"
+      VALIDATE_NPM_INSTALL_LOCK: "false"
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.5
