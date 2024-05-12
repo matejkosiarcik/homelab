@@ -20,18 +20,17 @@ services:
   uptime-kuma-app-backup:
     image: uptime-kuma-app-backup:homelab
     build:
-      context: backuper/
+      context: ../../../.shared/ui-backup/
     container_name: uptime-kuma-app-backup
     depends_on:
       uptime-kuma-app:
         condition: service_healthy
     env_file:
       - ./private/app-backup.env
-    environment:
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
+      - ./config/app-backup/main.sh:/app/main.sh:ro
     stop_grace_period: 5s
 
 networks:

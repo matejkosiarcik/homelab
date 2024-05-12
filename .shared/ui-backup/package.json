@@ -2,8 +2,12 @@
   "private": true,
   "name": "pihole-backuper",
   "scripts": {
-    "main": "tsx main.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "postinstall": "sh postinstall.sh",
+    "run:pihole": "tsx src/pihole.ts",
+    "run:omada-controller": "tsx src/omada-controller.ts",
+    "run:unifi-controller": "tsx src/unifi-controller.ts",
+    "run:uptime-kuma": "tsx src/uptime-kuma.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

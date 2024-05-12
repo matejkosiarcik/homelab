@@ -38,7 +38,7 @@ services:
     stop_grace_period: 30s
 
   healthchecks-database:
-    image: postgres:16.2
+    image: postgres:16.3
     container_name: healthchecks-database
     hostname: healthchecks-database
     environment:
@@ -67,7 +67,7 @@ services:
   healthchecks-database-backup:
     image: healthchecks-database-backup:homelab
     build:
-      context: backuper/
+      context: db-backup/
     container_name: healthchecks-database-backup
     hostname: healthchecks-database-backup
     depends_on:

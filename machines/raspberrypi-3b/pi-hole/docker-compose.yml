@@ -53,7 +53,7 @@ services:
   pihole-app-backup:
     image: pihole-backup:homelab
     build:
-      context: backuper/
+      context: ../../../.shared/ui-backup/
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:
@@ -61,11 +61,10 @@ services:
         condition: service_healthy
     env_file:
       - ./private/app-backup.env
-    environment:
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
+      - ./config/app-backup/main.sh:/app/main.sh:ro
     stop_grace_period: 5s
 
 networks:

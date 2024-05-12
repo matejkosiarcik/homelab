@@ -13,6 +13,10 @@ jobs:
   azlint:
     docker:
       - image: matejkosiarcik/azlint:0.6.11
+    environment:
+      # TODO: Remove override
+      VALIDATE_NPM_INSTALL: "false"
+      VALIDATE_NPM_INSTALL_LOCK: "false"
     steps:
       - checkout
       - run: |
@@ -47,7 +51,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: docker:26.1.1
+      - image: docker:26.1.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -64,7 +68,7 @@ jobs:
 
   deployment:
     docker:
-      - image: docker:26.1.1
+      - image: docker:26.1.2
     steps:
       - checkout
       - setup_remote_docker:

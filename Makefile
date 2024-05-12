@@ -6,8 +6,8 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 SERVICES := $(shell printf 'odroid-h3/healthchecks odroid-h3/homer odroid-h3/omada-controller odroid-h3/smtp4dev odroid-h3/unifi-controller odroid-h3/uptime-kuma raspberrypi-3b/pi-hole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf 'odroid-h3/healthchecks/backuper odroid-h3/omada-controller/backuper odroid-h3/unifi-controller/backuper odroid-h3/uptime-kuma/backuper raspberrypi-3b/pi-hole/backuper raspberrypi-3b/pi-hole/proxy' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-NPM_COMPONENTS := $(shell printf 'odroid-h3/omada-controller/backuper odroid-h3/unifi-controller/backuper odroid-h3/uptime-kuma/backuper raspberrypi-3b/pi-hole/backuper' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
+DOCKER_COMPONENTS := $(shell printf '.shared/ui-backup machines/odroid-h3/healthchecks/db-backup machines/odroid-h3/smtp4dev/proxy machines/raspberrypi-3b/pi-hole/proxy' | sed 's~ ~\n~g')
+NPM_COMPONENTS := $(shell printf '.shared/ui-backup' | sed 's~ ~\n~g')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
 .POSIX:
