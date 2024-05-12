@@ -67,7 +67,7 @@ services:
   healthchecks-database-backup:
     image: healthchecks-database-backup:homelab
     build:
-      context: backuper/
+      context: db-backup/
     container_name: healthchecks-database-backup
     hostname: healthchecks-database-backup
     depends_on:
