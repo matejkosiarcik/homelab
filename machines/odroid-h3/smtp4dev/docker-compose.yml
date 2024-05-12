@@ -42,6 +42,8 @@ services:
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+      - ../../../.shared/proxy/apache.conf:/etc/apache2/sites-enabled/apache.conf:ro
+      - ../../../.shared/proxy/www:/app/www:ro
     depends_on:
       smtp4dev-app:
         condition: service_healthy
