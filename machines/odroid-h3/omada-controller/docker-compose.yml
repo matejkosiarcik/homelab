@@ -39,7 +39,7 @@ services:
   omada-controller-app-backup:
     image: omada-controller-app-backup:homelab
     build:
-      context: ui-backup/
+      context: ../../../.shared/ui-backup/
     container_name: omada-controller-app-backup
     hostname: omada-controller-app-backup
     depends_on:
@@ -52,6 +52,7 @@ services:
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
+      - ./config/app-backup/main.sh:/app/main.sh:ro
     stop_grace_period: 5s
 
 networks:

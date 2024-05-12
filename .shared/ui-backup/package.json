@@ -4,7 +4,8 @@
   "scripts": {
     "build": "tsc",
     "postinstall": "sh postinstall.sh",
-    "run:pihole": "tsx src/pihole.ts"
+    "run:pihole": "tsx src/pihole.ts",
+    "run:omada-controller": "tsx src/omada-controller.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
