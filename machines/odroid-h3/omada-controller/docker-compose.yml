@@ -47,8 +47,6 @@ services:
         condition: service_healthy
     env_file:
       - ./private/app-backup.env
-    environment:
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
