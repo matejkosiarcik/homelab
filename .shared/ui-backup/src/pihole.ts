@@ -11,9 +11,9 @@ import { expect } from 'playwright/test';
     if (fsSync.existsSync('.env')) {
         dotenv.config({ path: '.env' });
     }
-    const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data');
+    const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data/pihole');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
-    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'http://pihole-app' : 'http://localhost:8080');
+    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'http://pihole-app' : 'https://localhost:8443');
     const headless = process.env['HEADLESS'] !== '0';
     const password = process.env['PASSWORD']!;
     expect(password, 'PASSWORD unset').toBeTruthy();
