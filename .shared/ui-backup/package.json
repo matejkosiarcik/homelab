@@ -5,7 +5,8 @@
     "build": "tsc",
     "postinstall": "sh postinstall.sh",
     "run:pihole": "tsx src/pihole.ts",
-    "run:omada-controller": "tsx src/omada-controller.ts"
+    "run:omada-controller": "tsx src/omada-controller.ts",
+    "run:unifi-controller": "tsx src/unifi-controller.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

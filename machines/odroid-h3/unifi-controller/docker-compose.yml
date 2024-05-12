@@ -52,7 +52,7 @@ services:
       - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/mongodb:/data/db:rw
-      - ./config/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./config/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./private/database-password.txt:/.homelab/database-password.txt:ro
     healthcheck:
       test: printf 'show databases\n' | mongosh localhost:27017/unifi --username unifi --password "$(cat /.homelab/database-password.txt)" --quiet || exit 1
@@ -65,7 +65,7 @@ services:
   unifi-controller-app-backup:
     image: unifi-controller-app-backup:homelab
     build:
-      context: ui-backup/
+      context: ../../../.shared/ui-backup/
     container_name: unifi-controller-app-backup
     hostname: unifi-controller-app-backup
     depends_on:
@@ -75,11 +75,10 @@ services:
         condition: service_healthy
     env_file:
       - ./private/app-backup.env
-    environment:
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
+      - ./config/app-backup/main.sh:/app/main.sh:ro
     stop_grace_period: 5s
 
 networks:
