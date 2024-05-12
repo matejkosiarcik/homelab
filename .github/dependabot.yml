@@ -19,55 +19,25 @@ updates:
 
   # Dockerfile-s
   - package-ecosystem: docker
-    directory: /machines/odroid-h3/healthchecks/backuper
+    directory: /.shared/ui-backup
+    schedule:
+      interval: daily
+      time: "01:15"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
+  - package-ecosystem: docker
+    directory: /machines/odroid-h3/healthchecks/db-backup
     schedule:
       interval: daily
       time: "01:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /machines/odroid-h3/omada-controller/backuper
-    schedule:
-      interval: daily
-      time: "01:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /machines/odroid-h3/unifi-controller/backuper
-    schedule:
-      interval: daily
-      time: "02:00"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /machines/raspberrypi-3b/pi-hole/backuper
-    schedule:
-      interval: daily
-      time: "02:30"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -81,11 +51,11 @@ updates:
 
   # NPM Backup script
   - package-ecosystem: npm
-    directory: /machines/odroid-h3/omada-controller/backuper
+    directory: /.shared/ui-backup
     versioning-strategy: increase
     schedule:
       interval: daily
-      time: "03:00"
+      time: "01:45"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -97,43 +67,11 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: npm
-    directory: /machines/odroid-h3/unifi-controller/backuper
+    directory: /machines/odroid-h3/healthchecks/db-backup
     versioning-strategy: increase
     schedule:
       interval: daily
-      time: "03:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /machines/odroid-h3/uptime-kuma/backuper
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "04:00"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /machines/raspberrypi-3b/pi-hole/backuper
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "04:30"
+      time: "02:00"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -151,7 +89,7 @@ updates:
     versioning-strategy: increase
     schedule:
       interval: daily
-      time: "05:00"
+      time: "02:15"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -166,7 +104,7 @@ updates:
     directory: /icons
     schedule:
       interval: daily
-      time: "05:30"
+      time: "02:30"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
