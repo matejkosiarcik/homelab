@@ -43,13 +43,23 @@ Install _Log2Ram_
 TL;DR:
 
 ```sh
-cd "$HOME"
-git clone https://github.com/azlux/log2ram.git
-cd log2ram
-sudo bash install.sh
+echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" | sudo tee /etc/apt/sources.list.d/azlux.list
+sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
+sudo apt-get update
+sudo apt-get install --yes log2ram
 sudo reboot
-# later
-systemctl status log2ram # verifies installation
+
+# Old installat method:
+# git clone https://github.com/azlux/log2ram.git
+# cd log2ram
+# sudo bash install.sh
+# sudo reboot
+
+# Verify installation
+systemctl status log2ram
+
+# Modify settings (disable email)
+sudo nano /etc/log2ram.conf
 ```
 
 ## Next steps
