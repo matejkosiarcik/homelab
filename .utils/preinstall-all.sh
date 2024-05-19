@@ -31,7 +31,7 @@ done
 # Default deployment location is "~/homelab"
 # Can be overriden by setting "DEST_DIR=..."
 dest_dir="${DEST_DIR-$HOME/homelab}"
-global_log_dir="$dest_dir/.log/$(date +"%Y-%m-%d_%H-%M-%S")"
+global_log_dir="$dest_dir/.log/$(date +"%Y-%m-%d_%H-%M-%S").txt"
 global_log_file="$global_log_dir/install.txt"
 mkdir -p "$dest_dir" "$global_log_dir"
 
