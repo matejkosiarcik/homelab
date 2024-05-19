@@ -5,15 +5,15 @@ services:
     ports:
       - "8053:53/tcp"
       - "8053:53/udp"
-      - "8081:80/tcp"
+      - "8081:80"
     environment:
       - FTLCONF_PRIVACYLEVEL=0
     restart: "no"
 
   pihole-proxy:
     ports:
-      - 8080:80
-      - 8443:443
+      - "8080:80"
+      - "8443:443"
     environment:
       - ENV=dev
     restart: "no"
