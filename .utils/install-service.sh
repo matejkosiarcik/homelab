@@ -76,7 +76,7 @@ if [ -f "$source_dir/docker-compose.prod.yml" ]; then
 fi
 find "$source_dir" -mindepth 1 -maxdepth 1 \
     \( -name 'config' -and -type d \) \
-    -exec cp -R "{}/." "$target_dir" \;
+    -exec cp -R "{}/." "$target_dir/config" \;
 
 # Pull docker images
 printf 'Pull:\n' | tee "$log_file" >&2
