@@ -53,4 +53,4 @@ printf 'Copy shared files\n' | tee "$global_log_file" >&2
 shared_dir="$dest_dir/.shared"
 rm -rf "$shared_dir"
 mkdir -p "$shared_dir"
-cp -r '.shared/' "$dest_dir/.shared/"
+cp -R '.shared/' "$dest_dir/.shared/"
