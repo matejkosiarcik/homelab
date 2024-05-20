@@ -18,5 +18,5 @@ services:
       - ENV=dev
     restart: "no"
 
-  pihole-app-backup:
+  pihole-backup:
     restart: "no"
