@@ -58,7 +58,7 @@ if [ -d "$target_dir" ]; then
         (cd "$target_dir" && docker compose down 2>&1 | tee "$log_file" >&2)
         printf '\n' | tee "$log_file" >&2
     fi
-    cp -R "$target_dir" "$backup_dir"
+    cp -R "$target_dir/." "$backup_dir"
 else
     mkdir -p "$target_dir"
 fi
@@ -76,7 +76,7 @@ if [ -f "$source_dir/docker-compose.prod.yml" ]; then
 fi
 find "$source_dir" -mindepth 1 -maxdepth 1 \
     \( -name 'config' -and -type d \) \
-    -exec cp -R "{}" "$target_dir" \;
+    -exec cp -R "{}/." "$target_dir" \;
 
 # Pull docker images
 printf 'Pull:\n' | tee "$log_file" >&2
