@@ -22,7 +22,6 @@ services:
       - "443:443"
     environment:
       - ENV=prod
-    # network_mode: "service:pihole-app"
     networks:
       pihole-network:
         ipv4_address: 10.1.10.2
