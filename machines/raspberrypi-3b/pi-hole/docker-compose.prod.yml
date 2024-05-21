@@ -18,14 +18,25 @@ services:
 
   pihole-proxy:
     ports:
-      # - "80:80"
+      - "80:80"
       - "443:443"
     environment:
       - ENV=prod
-    network_mode: "service:pihole-app"
-    # networks:
-    #   pihole-network:
-    #     ipv4_address: 10.1.10.1
+    # network_mode: "service:pihole-app"
+    networks:
+      pihole-network:
+        ipv4_address: 10.1.10.2
+    restart: unless-stopped
+
+  pihole-socat:
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80"
+      - "443:443"
+    networks:
+      pihole-network:
+        ipv4_address: 10.1.10.3
     restart: unless-stopped
 
   pihole-backup:

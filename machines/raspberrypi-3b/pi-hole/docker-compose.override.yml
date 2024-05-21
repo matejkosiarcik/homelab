@@ -18,5 +18,8 @@ services:
       - ENV=dev
     restart: "no"
 
+  pihole-socat:
+    restart: "no"
+
   pihole-backup:
     restart: "no"
