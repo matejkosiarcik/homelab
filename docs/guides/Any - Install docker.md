@@ -27,7 +27,7 @@ Now make docker launchable for non-root users, Instructions: <https://docs.docke
 TL;DR:
 
 ```sh
-# sudo groupadd docker
+# sudo groupadd docker # Already exists
 sudo usermod -aG docker matej
 sudo reboot
 

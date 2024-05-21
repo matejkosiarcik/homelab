@@ -17,21 +17,22 @@ Notes:
 - Set Timezone _Europe/Bratislava_
 - Set username to _matej_
 
-## Necessary packages
+## Base system packages
 
-Update and install essential packages:
+Update system packages and install other essential packages:
 
 TL;DR:
 
 ```sh
 sudo apt-get update
 sudo apt-get upgrade --yes
-sudo apt-get install --yes ca-certificates curl git rsync wget
+sudo apt-get install --yes ca-certificates curl dnsutils git rsync wget
 
 # git - homelab gitflow
-# ca-certificates - required for docker
+# ca-certificates - required for TLS and docker
 # rsync - required for log2ram
-# curl, wget - general
+# curl, wget - general HTTPs utilities
+# dnsutils - debugging DNS problems
 ```
 
 ## Install Log2Ram
@@ -50,16 +51,10 @@ sudo apt-get update
 sudo apt-get install --yes log2ram
 sudo reboot
 
-# Old installat method:
-# git clone https://github.com/azlux/log2ram.git
-# cd log2ram
-# sudo bash install.sh
-# sudo reboot
-
 # Verify installation
 systemctl status log2ram
 
-# Modify settings (disable email)
+# Modify settings (disable email "MAIL=false")
 sudo nano /etc/log2ram.conf
 ```
 
