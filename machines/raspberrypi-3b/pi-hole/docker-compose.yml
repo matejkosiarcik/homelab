@@ -33,7 +33,7 @@ services:
     build:
       context: proxy/
     container_name: pihole-proxy
-    hostname: pihole-proxy
+    # hostname: pihole-proxy
     environment:
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole-app
