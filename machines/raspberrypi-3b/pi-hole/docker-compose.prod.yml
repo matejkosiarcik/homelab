@@ -11,9 +11,6 @@ services:
       - FTLCONF_PRIVACYLEVEL=1
       - VIRTUAL_HOST=pihole.lan
       - PIHOLE_DOMAIN=pihole.lan
-    networks:
-      pihole-network:
-        ipv4_address: 10.1.10.1
     restart: unless-stopped
 
   pihole-proxy:
@@ -22,9 +19,6 @@ services:
       - "443:443"
     environment:
       - ENV=prod
-    networks:
-      pihole-network:
-        ipv4_address: 10.1.10.2
     restart: unless-stopped
 
   pihole-socat:
@@ -35,7 +29,7 @@ services:
       - "443:443"
     networks:
       pihole-network:
-        ipv4_address: 10.1.10.3
+        ipv4_address: 10.1.10.1
     restart: unless-stopped
 
   pihole-backup:
