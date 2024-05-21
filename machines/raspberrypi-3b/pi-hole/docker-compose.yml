@@ -33,7 +33,7 @@ services:
     build:
       context: proxy/
     container_name: pihole-proxy
-    # hostname: pihole-proxy
+    hostname: pihole-proxy
     environment:
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole-app
@@ -69,6 +69,26 @@ services:
       - ./config/app-backup/main.sh:/app/main.sh:ro
       - ../../../.shared/ui-backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../../../.shared/ui-backup/run.sh:/app/run.sh:ro
+    stop_grace_period: 5s
+
+  pihole-socat:
+    image: alpine/socat:1.7.4.4 # Can't upgrade to 1.8.0.0 because of https://github.com/termux/termux-packages/issues/18645
+    container_name: pihole-socat
+    hostname: pihole-socat
+    depends_on:
+      pihole-app:
+        condition: service_healthy
+      pihole-proxy:
+        condition: service_healthy
+    volumes:
+      - ./config/socat/entrypoint.sh:/app/entrypoint.sh:rw
+    entrypoint: sh /app/entrypoint.sh
+    healthcheck:
+      test: printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1
+      interval: 10s
+      timeout: 1s
+      retries: 1
+      start_period: 10s
     stop_grace_period: 5s
 
 networks:
