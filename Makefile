@@ -45,7 +45,7 @@ build:
 .PHONY: docker-build
 docker-build:
 	printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-		docker build "$(PROJECT_DIR)/$$component" --tag "$$(printf '%s' "$$component" | tr '/' '-'):homelab" && \
+		docker build "$(PROJECT_DIR)/$$component" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 	true; done
 
 	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
@@ -57,7 +57,7 @@ docker-multibuild:
 	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
 		printf 'Building for linux/%s:\n' "$$arch" && \
 		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-			docker build "$(PROJECT_DIR)/$$component" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/$$component" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
 		true; done && \
 	true; done
 
