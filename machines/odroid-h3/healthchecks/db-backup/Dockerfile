@@ -11,4 +11,5 @@ HEALTHCHECK --interval=30s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 's
 # TODO: Update to --interval=10s --start-period=25s
 STOPSIGNAL SIGKILL
 VOLUME [ "/backup", "/log" ]
+ENV TZ=Europe/Bratislava
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
