@@ -53,6 +53,9 @@ services:
     hostname: pihole-socat
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
+    links:
+      - "pihole-app:pihole-app"
+      - "pihole-http-proxy:pihole-http-proxy"
 
   pihole-backup:
     image: pihole-backup:homelab
