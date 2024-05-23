@@ -7,6 +7,8 @@ RUN apt-get update -qq && \
     mkdir -p /log /certs && \
     a2enmod auth_basic env headers http2 log_forensic macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
+COPY apache.conf /etc/apache2/sites-enabled/apache.conf
+COPY www/ /app/www/
 EXPOSE 80
 EXPOSE 443
 ENV APACHE_HTTP_PORT_NUMBER=80

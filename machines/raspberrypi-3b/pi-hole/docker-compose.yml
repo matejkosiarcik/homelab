@@ -31,7 +31,7 @@ services:
   pihole-http-proxy:
     image: pihole-http-proxy:homelab
     build:
-      context: proxy/
+      context: ../../../.shared/proxy/
     container_name: pihole-http-proxy
     hostname: pihole-http-proxy
     environment:
@@ -45,8 +45,6 @@ services:
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
-      - ../../../.shared/proxy/apache.conf:/etc/apache2/sites-enabled/apache.conf:ro
-      - ../../../.shared/proxy/www:/app/www:ro
     stop_grace_period: 10s
 
   pihole-socat:
@@ -55,6 +53,8 @@ services:
       context: ../../../.shared/socat/
     container_name: pihole-socat
     hostname: pihole-socat
+    environment:
+      - TZ=Europe/Bratislava # optional
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
     stop_grace_period: 5s
