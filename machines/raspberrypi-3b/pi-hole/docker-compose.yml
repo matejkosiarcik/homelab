@@ -38,7 +38,6 @@ services:
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole-app
       - HOMELAB_SERVICE=pihole
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw
@@ -53,8 +52,6 @@ services:
       context: ../../../.shared/socat/
     container_name: pihole-socat
     hostname: pihole-socat
-    environment:
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
     stop_grace_period: 5s
