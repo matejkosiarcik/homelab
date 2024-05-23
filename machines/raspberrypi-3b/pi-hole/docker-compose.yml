@@ -47,9 +47,6 @@ services:
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
       - ../../../.shared/proxy/apache.conf:/etc/apache2/sites-enabled/apache.conf:ro
       - ../../../.shared/proxy/www:/app/www:ro
-    depends_on:
-      pihole-app:
-        condition: service_healthy
     stop_grace_period: 10s
 
   pihole-backup:
