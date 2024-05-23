@@ -5,6 +5,7 @@ Clone homelab repository:
 ```sh
 mkdir git
 cd git
+cd .
 git clone https://github.com/matejkosiarcik/homelab.git
 cd ..
 ```
