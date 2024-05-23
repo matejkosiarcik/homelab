@@ -28,26 +28,19 @@ services:
   smtp4dev-proxy:
     image: smtp4dev-proxy:homelab
     build:
-      context: proxy/
+      context: ../../../.shared/proxy/
     container_name: smtp4dev-proxy
     hostname: smtp4dev-proxy
     environment:
       - HOST=smtp4dev.lan
       - UPSTREAM_URL=http://smtp4dev-app
       - HOMELAB_SERVICE=smtp4dev
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
-      - ../../../.shared/proxy/apache.conf:/etc/apache2/sites-enabled/apache.conf:ro
-      - ../../../.shared/proxy/www:/app/www:ro
-    depends_on:
-      smtp4dev-app:
-        condition: service_healthy
-    stop_grace_period: 10s
 
 networks:
   smtp4dev-network:

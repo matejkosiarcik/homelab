@@ -15,6 +15,8 @@ WORKDIR /app
 COPY package.json schedule.cron tsconfig.json ./
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
+COPY entrypoint.sh ./entrypoint.sh
+COPY run.sh ./run.sh
 
 FROM node:22.2.0-alpine
 WORKDIR /app

@@ -6,7 +6,7 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 SERVICES := $(shell printf 'odroid-h3/healthchecks odroid-h3/homer odroid-h3/omada-controller odroid-h3/smtp4dev odroid-h3/unifi-controller odroid-h3/uptime-kuma raspberrypi-3b/pi-hole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf '.shared/ui-backup machines/odroid-h3/healthchecks/db-backup machines/odroid-h3/smtp4dev/proxy machines/raspberrypi-3b/pi-hole/proxy' | sed 's~ ~\n~g')
+DOCKER_COMPONENTS := $(shell printf '.shared/socat .shared/proxy .shared/ui-backup machines/odroid-h3/healthchecks/db-backup' | sed 's~ ~\n~g')
 NPM_COMPONENTS := $(shell printf '.shared/ui-backup' | sed 's~ ~\n~g')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
@@ -45,7 +45,7 @@ build:
 .PHONY: docker-build
 docker-build:
 	printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-		docker build "$(PROJECT_DIR)/$$component" --tag "$$(printf '%s' "$$component" | tr '/' '-'):homelab" && \
+		docker build "$(PROJECT_DIR)/$$component" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 	true; done
 
 	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
@@ -57,7 +57,7 @@ docker-multibuild:
 	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
 		printf 'Building for linux/%s:\n' "$$arch" && \
 		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-			docker build "$(PROJECT_DIR)/$$component" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/$$component" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
 		true; done && \
 	true; done
 
