@@ -7,8 +7,9 @@ services:
     #   - "53:53/udp"
     #   - "80:80"
     networks:
-      pihole-network:
-        ipv4_address: 10.1.10.3
+      pihole-default-network: {}
+      # pihole-prod-network:
+      #   ipv4_address: 10.1.10.3
     environment:
       - FTLCONF_LOCAL_IPV4=10.1.10.1
       - FTLCONF_PRIVACYLEVEL=1
@@ -20,8 +21,9 @@ services:
     # ports:
     #   - "80:80"
     #   - "443:443"
-    # networks:
-    #   pihole-network:
+    networks:
+      pihole-default-network: {}
+    #   pihole-prod-network:
     #     ipv4_address: 10.1.10.2
     environment:
       - ENV=prod
@@ -34,7 +36,8 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      pihole-network:
+      pihole-default-network: {}
+      pihole-prod-network:
         ipv4_address: 10.1.10.1
     restart: unless-stopped
 

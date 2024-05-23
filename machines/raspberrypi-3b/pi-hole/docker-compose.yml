@@ -53,9 +53,6 @@ services:
     hostname: pihole-socat
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
-    links:
-      - "pihole-app:pihole-app"
-      - "pihole-http-proxy:pihole-http-proxy"
 
   pihole-backup:
     image: pihole-backup:homelab
@@ -74,7 +71,7 @@ services:
       - ./config/app-backup/main.sh:/app/main.sh:ro
 
 networks:
-  pihole-network:
+  pihole-prod-network:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -83,3 +80,5 @@ networks:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.10.0/24"
           gateway: "10.1.0.1"
+
+  pihole-default-network:
