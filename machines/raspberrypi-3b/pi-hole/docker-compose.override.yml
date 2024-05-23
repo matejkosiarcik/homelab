@@ -10,7 +10,7 @@ services:
       - FTLCONF_PRIVACYLEVEL=0
     restart: "no"
 
-  pihole-proxy:
+  pihole-http-proxy:
     ports:
       - "8080:80"
       - "8443:443"

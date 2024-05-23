@@ -28,12 +28,12 @@ services:
       retries: 1
     stop_grace_period: 30s
 
-  pihole-proxy:
-    image: pihole-proxy:homelab
+  pihole-http-proxy:
+    image: pihole-http-proxy:homelab
     build:
       context: proxy/
-    container_name: pihole-proxy
-    hostname: pihole-proxy
+    container_name: pihole-http-proxy
+    hostname: pihole-http-proxy
     environment:
       - HOST=pihole.lan
       - UPSTREAM_URL=http://pihole-app
@@ -78,7 +78,7 @@ services:
     depends_on:
       pihole-app:
         condition: service_healthy
-      pihole-proxy:
+      pihole-http-proxy:
         condition: service_healthy
     volumes:
       - ./config/socat/entrypoint.sh:/app/entrypoint.sh:rw

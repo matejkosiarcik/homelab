@@ -13,7 +13,7 @@ services:
       - PIHOLE_DOMAIN=pihole.lan
     restart: unless-stopped
 
-  pihole-proxy:
+  pihole-http-proxy:
     ports:
       - "80:80"
       - "443:443"
