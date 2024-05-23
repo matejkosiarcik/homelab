@@ -44,7 +44,6 @@ services:
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
-    stop_grace_period: 10s
 
   pihole-socat:
     image: pihole-socat:homelab
@@ -54,7 +53,6 @@ services:
     hostname: pihole-socat
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
-    stop_grace_period: 5s
 
   pihole-backup:
     image: pihole-backup:homelab
@@ -71,7 +69,6 @@ services:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
       - ./config/app-backup/main.sh:/app/main.sh:ro
-    stop_grace_period: 5s
 
 networks:
   pihole-network:

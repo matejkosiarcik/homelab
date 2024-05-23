@@ -1,6 +1,7 @@
 # checkov:skip=CKV_DOCKER_8: allow root user
 
 FROM debian:12.5-slim
+WORKDIR /app
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends apache2 cron curl inotify-tools openssl && \
     rm -rf /var/lib/apt/lists/* && \
@@ -8,7 +9,7 @@ RUN apt-get update -qq && \
     a2enmod auth_basic env headers http2 log_forensic macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
 COPY apache.conf /etc/apache2/sites-enabled/apache.conf
-COPY www/ /app/www/
+COPY www/ ./www/
 EXPOSE 80
 EXPOSE 443
 ENV APACHE_HTTP_PORT_NUMBER=80
