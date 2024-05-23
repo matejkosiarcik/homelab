@@ -81,7 +81,8 @@ services:
       pihole-http-proxy:
         condition: service_healthy
     volumes:
-      - ./config/socat/entrypoint.sh:/app/entrypoint.sh:rw
+      - ../../../.shared/socat/entrypoint.sh:/app/entrypoint.sh:ro
+      - ./config/socat/main.sh:/app/main.sh:ro
     entrypoint: sh /app/entrypoint.sh
     healthcheck:
       test: printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1
