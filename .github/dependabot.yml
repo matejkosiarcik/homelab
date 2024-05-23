@@ -34,6 +34,36 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
+    directory: /.shared/proxy
+    schedule:
+      interval: daily
+      time: "01:15"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
+  - package-ecosystem: docker
+    directory: /.shared/socat
+    schedule:
+      interval: daily
+      time: "01:15"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
+  - package-ecosystem: docker
     directory: /machines/odroid-h3/healthchecks/db-backup
     schedule:
       interval: daily
