@@ -49,6 +49,16 @@ services:
       - ../../../.shared/proxy/www:/app/www:ro
     stop_grace_period: 10s
 
+  pihole-socat:
+    image: pihole-socat:homelab
+    build:
+      context: ../../../.shared/socat/
+    container_name: pihole-socat
+    hostname: pihole-socat
+    volumes:
+      - ./config/socat/main.sh:/app/main.sh:ro
+    stop_grace_period: 5s
+
   pihole-backup:
     image: pihole-backup:homelab
     build:
@@ -66,16 +76,6 @@ services:
       - ./config/app-backup/main.sh:/app/main.sh:ro
       - ../../../.shared/ui-backup/entrypoint.sh:/app/entrypoint.sh:ro
       - ../../../.shared/ui-backup/run.sh:/app/run.sh:ro
-    stop_grace_period: 5s
-
-  pihole-socat:
-    image: pihole-socat:homelab
-    build:
-      context: ../../../.shared/socat/
-    container_name: pihole-socat
-    hostname: pihole-socat
-    volumes:
-      - ./config/socat/main.sh:/app/main.sh:ro
     stop_grace_period: 5s
 
 networks:
