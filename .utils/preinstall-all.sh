@@ -49,8 +49,9 @@ elif [ -e "$dest_dir" ]; then
     exit 1
 fi
 
-printf 'Copy shared files\n' | tee "$global_log_file" >&2
-shared_dir="$dest_dir/.shared"
-rm -rf "$shared_dir"
-mkdir -p "$shared_dir"
-cp -R '.shared/.' "$dest_dir/.shared"
+# TODO: Decide whether this is necessary
+# printf 'Copy shared files\n' | tee "$global_log_file" >&2
+# shared_dir="$dest_dir/.shared"
+# rm -rf "$shared_dir"
+# mkdir -p "$shared_dir"
+# cp -R '.shared/.' "$dest_dir/.shared"
