@@ -72,24 +72,13 @@ services:
     stop_grace_period: 5s
 
   pihole-socat:
-    image: alpine/socat:1.7.4.4 # Can't upgrade to 1.8.0.0 because of https://github.com/termux/termux-packages/issues/18645
+    image: pihole-socat:homelab
+    build:
+      context: ../../../.shared/socat/
     container_name: pihole-socat
     hostname: pihole-socat
-    depends_on:
-      pihole-app:
-        condition: service_healthy
-      pihole-http-proxy:
-        condition: service_healthy
     volumes:
-      - ../../../.shared/socat/entrypoint.sh:/app/entrypoint.sh:ro
       - ./config/socat/main.sh:/app/main.sh:ro
-    entrypoint: sh /app/entrypoint.sh
-    healthcheck:
-      test: printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1
-      interval: 10s
-      timeout: 1s
-      retries: 1
-      start_period: 10s
     stop_grace_period: 5s
 
 networks:
