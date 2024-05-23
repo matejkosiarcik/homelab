@@ -31,4 +31,6 @@ services:
     restart: unless-stopped
 
   pihole-backup:
+    networks:
+      pihole-default-network: {}
     restart: unless-stopped
