@@ -31,7 +31,6 @@ services:
       - ./data/app-backup:/backup:rw
       - ./log/app-backup:/log:rw
       - ./config/app-backup/main.sh:/app/main.sh:ro
-    stop_grace_period: 5s
 
 networks:
   uptime-kuma-network:

@@ -84,7 +84,6 @@ services:
     volumes:
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw
-    stop_grace_period: 5s
 
 networks:
   healthchecks-network:
