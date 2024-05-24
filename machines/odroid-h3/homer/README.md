@@ -5,3 +5,10 @@
 - Basic configuration: <https://github.com/bastienwirtz/homer/blob/main/docs/configuration.md>
 - Service types: <https://github.com/bastienwirtz/homer/blob/main/docs/customservices.md>
 - Troubleshooting (CORS): <https://github.com/bastienwirtz/homer/blob/main/docs/troubleshooting.md>
+
+## Before installation
+
+Before installation prepare following files:
+
+- `/private/status.htpasswd` - Password file (basic-auth) for apache to protect server-status endpoint
+- `/private/certs` -  Directory with TLS certificates (crt, csr, key) to use with HTTPS

@@ -63,67 +63,67 @@ services:
       - name: PiHole 1
         type: Ping
         subtitle: DNS
-        url: http://pihole.lan
+        url: https://pihole.lan
         logo: ./assets/icons/organizr/pihole.png
 
       - name: PiHole 2
         type: Ping
         subtitle: DNS
-        url: http://pihole-2.lan
+        url: https://pihole-2.lan
         logo: ./assets/icons/organizr/pihole.png
 
       - name: Homer
         type: Ping
         subtitle: Dashboard
-        url: http://homer.lan
+        url: https://homer.lan
         logo: ./assets/icons/other/homer.png
 
       - name: Unifi
         type: Ping
         subtitle: Network Application
-        url: http://unifi.lan
+        url: https://unifi.lan
         logo: ./assets/icons/organizr/unifi.png
 
       - name: Omada
         type: Ping
         subtitle: Controller
-        url: http://omada.lan
+        url: https://omada.lan
         logo: ./assets/icons/other/tp-link-omada.png
 
       - name: Healthchecks
         type: Ping
         subtitle: Cron monitor
-        url: http://healthchecks.lan
+        url: https://healthchecks.lan
         logo: ./assets/icons/organizr/healthchecks.png
 
       - name: Uptime Kuma
         type: Ping
         subtitle: Uptime monitor
-        url: http://uptime-kuma.lan
+        url: https://uptime-kuma.lan
         logo: ./assets/icons/other/uptime-kuma.png
 
       - name: Smtp4dev
         type: Ping
         subtitle: Mail server
-        url: http://smtp4dev.lan
+        url: https://smtp4dev.lan
         logo: ./assets/icons/other/smtp4dev.png
 
       - name: SpeedTest
         type: Ping
         subtitle: Internet speed tracker
-        url: http://speedtest.lan
+        url: https://speedtest.lan
         logo: ./assets/icons/organizr/speedtest.png
 
       - name: Netdata
         type: Ping
         subtitle: Resource monitor
-        url: http://netdata.lan
+        url: https://netdata.lan
         logo: ./assets/icons/organizr/netdata.png
 
       - name: Prometheus
         type: Ping
         subtitle: General monitor
-        url: http://prometheus.lan
+        url: https://prometheus.lan
         logo: ./assets/icons/other/prometheus.png
 
   - name: Smart Home
@@ -132,17 +132,17 @@ services:
       - name: Home Assistant
         type: Ping
         subtitle: "-"
-        url: http://homeassistant.lan
+        url: https://homeassistant.lan
         logo: ./assets/icons/organizr/homeassistant.png
 
       - name: Desk Lamp
         subtitle: Left
         type: Ping
-        url: http://desklamp-1.lan
+        url: https://desklamp1.lan
         logo: ./assets/icons/osa/awareness.png
 
       - name: Desk Lamp
         subtitle: Right
         type: Ping
-        url: http://desklamp-2.lan
+        url: https://desklamp2.lan
         logo: ./assets/icons/osa/awareness.png
