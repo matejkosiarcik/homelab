@@ -43,4 +43,4 @@ networks:
           ip_range: "10.1.11.0/24"
           gateway: "10.1.0.1"
 
-  pihole-internal-network:
+  homer-internal-network:
