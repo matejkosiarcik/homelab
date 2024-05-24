@@ -3,6 +3,14 @@
 services:
   homer-app:
     networks:
-      homer-network:
+      homer-internal-network: {}
+    restart: unless-stopped
+
+  homer-http-proxy:
+    networks:
+      homer-internal-network: {}
+      homer-external-network:
         ipv4_address: 10.1.11.2
+    environment:
+      - ENV=prod
     restart: unless-stopped

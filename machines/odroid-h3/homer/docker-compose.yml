@@ -9,15 +9,31 @@ services:
       - INIT_ASSETS=0
       - PORT=80
       - TZ=Europe/Bratislava # optional
-    ports:
-      - "8080:80"
     volumes:
       - ./config/assets/:/www/assets:ro
     stop_grace_period: 30s
     # Note: healthcheck builtin
 
+  homer-http-proxy:
+    image: homer-http-proxy:homelab
+    build:
+      context: ../../../.shared/proxy/
+    container_name: homer-http-proxy
+    hostname: homer-http-proxy
+    environment:
+      - HOST=homer.lan
+      - UPSTREAM_URL=http://homer-app
+      - HOMELAB_SERVICE=homer
+    volumes:
+      - ./log/proxy-access:/log/access:rw
+      - ./log/proxy-error:/log/error:rw
+      - ./log/proxy-forensic:/log/forensic:rw
+      - ./private/certs:/certs:ro
+      - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+    # Note: healthcheck builtin
+
 networks:
-  homer-network:
+  homer-external-network:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -25,3 +41,6 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.11.0/24"
+          gateway: "10.1.0.1"
+
+  pihole-internal-network:
