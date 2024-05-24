@@ -81,8 +81,8 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 3B [dry-run]
           command: |
-            mkdir -p "$HOME/.homelab-1/machines/current/pi-hole/private"
-            touch "$HOME/.homelab-1/machines/current/pi-hole/private/app-backup.env"
+            mkdir -p "$HOME/.homelab-1/machines/current/pihole/private"
+            touch "$HOME/.homelab-1/machines/current/pihole/private/app-backup.env"
             DEST_DIR="$HOME/.homelab-1" \
               bash './machines/raspberrypi-3b/install.sh' -n
       - run:
