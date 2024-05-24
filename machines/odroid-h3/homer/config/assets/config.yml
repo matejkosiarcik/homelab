@@ -63,7 +63,7 @@ services:
       - name: PiHole 1
         type: Ping
         subtitle: DNS
-        url: http://pihole-1.lan
+        url: http://pihole.lan
         logo: ./assets/icons/organizr/pihole.png
 
       - name: PiHole 2
