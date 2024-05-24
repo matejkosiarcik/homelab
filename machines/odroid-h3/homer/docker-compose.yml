@@ -2,6 +2,7 @@
 
 services:
   homer-app:
+    # Note: healthcheck builtin
     image: b4bz/homer:v24.05.1
     container_name: homer-app
     hostname: homer-app
@@ -12,9 +13,9 @@ services:
     volumes:
       - ./config/assets/:/www/assets:ro
     stop_grace_period: 30s
-    # Note: healthcheck builtin
 
   homer-http-proxy:
+    # Note: healthcheck builtin
     image: homer-http-proxy:homelab
     build:
       context: ../../../.shared/proxy/
@@ -30,7 +31,6 @@ services:
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
-    # Note: healthcheck builtin
 
 networks:
   homer-external-network:
