@@ -31,31 +31,31 @@ services:
         subtitle: NAS
         type: CopyToClipboard
         logo: ./assets/icons/other/apple.png
-        clipboard: "ssh matej@macbook-pro-2012-1.lan"
+        clipboard: "ssh matej@10.1.4.1.lan"
 
       - name: Odroid H3
         subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/other/odroid.png
-        clipboard: "ssh matej@odroid-h3-1.lan"
+        clipboard: "ssh matej@10.1.4.7.lan"
 
       - name: Rasbperry Pi 3B
         subtitle: PiHole
         type: CopyToClipboard
         logo: ./assets/icons/other/raspberry-pi.png
-        clipboard: ssh matej@raspberry-pi-3b-1.lan
-
-      - name: Rasbperry Pi 4B 4GB
-        subtitle: TV?
-        type: CopyToClipboard
-        logo: ./assets/icons/other/raspberry-pi.png
-        clipboard: ssh matej@raspberry-pi-4b-1.lan
+        clipboard: ssh matej@10.1.4.4.lan
 
       - name: Rasbperry Pi 4B 2GB
         subtitle: TV?
         type: CopyToClipboard
         logo: ./assets/icons/other/raspberry-pi.png
-        clipboard: ssh matej@raspberry-pi-4b-2.lan
+        clipboard: ssh matej@10.1.4.2.lan
+
+      - name: Rasbperry Pi 4B 4GB
+        subtitle: TV?
+        type: CopyToClipboard
+        logo: ./assets/icons/other/raspberry-pi.png
+        clipboard: ssh matej@10.1.4.3.lan
 
   - name: Apps
     icon: fa-brands fa-docker
