@@ -84,14 +84,14 @@ jobs:
             mkdir -p "$HOME/.homelab-1/machines/current/pihole/private"
             touch "$HOME/.homelab-1/machines/current/pihole/private/app-backup.env"
             DEST_DIR="$HOME/.homelab-1" \
-              bash './machines/raspberrypi-3b/install.sh' -n
+              bash './machines/raspberrypi3/install.sh' -n
       - run:
           name: Run deployment on Raspberry Pi 4B [dry-run]
           command: |
             mkdir -p "$HOME/.homelab-2/machines/current/pihole/private"
             touch "$HOME/.homelab-2/machines/current/pihole/private/app-backup.env"
             DEST_DIR="$HOME/.homelab-2" \
-              bash './machines/raspberrypi-3b/install.sh' -n
+              bash './machines/raspberrypi4/install.sh' -n
       - run:
           name: Run deployment on Odroid H3 [dry-run]
           command: |
