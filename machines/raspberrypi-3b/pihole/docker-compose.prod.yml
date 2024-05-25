@@ -4,8 +4,6 @@ services:
   pihole-app:
     networks:
       pihole-internal-network: {}
-      pihole-external-network:
-        ipv4_address: 10.1.10.2
     environment:
       - FTLCONF_LOCAL_IPV4=10.1.10.1
       - FTLCONF_PRIVACYLEVEL=0
@@ -16,8 +14,6 @@ services:
   pihole-http-proxy:
     networks:
       pihole-internal-network: {}
-      pihole-external-network:
-        ipv4_address: 10.1.10.3
     environment:
       - ENV=prod
     restart: unless-stopped
