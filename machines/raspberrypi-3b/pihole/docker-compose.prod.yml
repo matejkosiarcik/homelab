@@ -8,7 +8,7 @@ services:
         ipv4_address: 10.1.10.2
     environment:
       - FTLCONF_LOCAL_IPV4=10.1.10.1
-      - FTLCONF_PRIVACYLEVEL=1
+      - FTLCONF_PRIVACYLEVEL=0
       - VIRTUAL_HOST=pihole.lan
       - PIHOLE_DOMAIN=pihole.lan
     restart: unless-stopped
