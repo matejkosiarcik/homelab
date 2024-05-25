@@ -69,7 +69,7 @@ services:
       - name: PiHole 2
         type: Ping
         subtitle: DNS
-        url: https://pihole-2.lan
+        url: https://pihole-backup.lan
         logo: ./assets/icons/organizr/pihole.png
 
       - name: Homer
