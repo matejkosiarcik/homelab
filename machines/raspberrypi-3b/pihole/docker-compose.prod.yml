@@ -9,6 +9,8 @@ services:
       - FTLCONF_PRIVACYLEVEL=0
       - VIRTUAL_HOST=pihole.lan
       - PIHOLE_DOMAIN=pihole.lan
+      # Only for debugging:
+      # - FTLCONF_RATE_LIMIT=100000/60
     restart: unless-stopped
 
   pihole-http-proxy:
