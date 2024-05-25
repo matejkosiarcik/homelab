@@ -1,0 +1,85 @@
+# version: "3.8"
+
+services:
+  pihole-app:
+    image: pihole/pihole:2024.05.0
+    container_name: pihole-app
+    hostname: pihole-app
+    environment:
+      - DHCP_ACTIVE=false
+      - FTLCONF_IGNORE_LOCALHOST=false
+      - FTLCONF_PIHOLE_PTR=HOSTNAMEFQDN
+      - FTLCONF_REPLY_WHEN_BUSY=BLOCK
+      - IPv6=false
+      - PIHOLE_DNS_=8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
+      - QUERY_LOGGING=false
+      - TZ=Europe/Bratislava
+      - WEBPASSWORD_FILE=/.homelab/webpassword.txt
+      - WEBTHEME=default-darker
+    volumes:
+      - ./data/etc-pihole:/etc/pihole:rw
+      - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
+      - ../../../.shared/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
+    healthcheck:
+      test: curl --fail http://localhost/admin || exit 1
+      start_period: 20s
+      interval: 10s
+      timeout: 2s
+      retries: 1
+    stop_grace_period: 30s
+
+  pihole-http-proxy:
+    image: pihole-http-proxy:homelab
+    build:
+      context: ../../../.shared/proxy/
+    container_name: pihole-http-proxy
+    hostname: pihole-http-proxy
+    environment:
+      - HOST=pihole.lan
+      - UPSTREAM_URL=http://pihole-app
+      - HOMELAB_SERVICE=pihole
+    volumes:
+      - ./log/proxy-access:/log/access:rw
+      - ./log/proxy-error:/log/error:rw
+      - ./log/proxy-forensic:/log/forensic:rw
+      - ./private/certs:/certs:ro
+      - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+
+  pihole-socat:
+    image: pihole-socat:homelab
+    build:
+      context: ../../../.shared/socat/
+    container_name: pihole-socat
+    hostname: pihole-socat
+    volumes:
+      - ./config/socat/main.sh:/app/main.sh:ro
+
+  pihole-backup:
+    image: pihole-backup:homelab
+    build:
+      context: ../../../.shared/ui-backup/
+    container_name: pihole-backup
+    hostname: pihole-backup
+    depends_on:
+      pihole-app:
+        condition: service_healthy
+    env_file:
+      - ./private/app-backup.env
+    volumes:
+      - ./data/app-backup:/backup:rw
+      - ./log/app-backup:/log:rw
+      - ./config/app-backup/main.sh:/app/main.sh:ro
+
+networks:
+  pihole-external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.12.0/24"
+          gateway: "10.1.0.1"
+
+  pihole-internal-network:
