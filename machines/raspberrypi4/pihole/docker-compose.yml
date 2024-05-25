@@ -9,7 +9,6 @@ services:
       - DHCP_ACTIVE=false
       - FTLCONF_IGNORE_LOCALHOST=false
       - FTLCONF_PIHOLE_PTR=HOSTNAMEFQDN
-      - FTLCONF_RATE_LIMIT=100000/60
       - FTLCONF_REPLY_WHEN_BUSY=BLOCK
       - IPv6=false
       - PIHOLE_DNS_=8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
@@ -21,7 +20,7 @@ services:
       - ./data/etc-pihole:/etc/pihole:rw
       - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-      - ./config/app/domains.txt:/etc/pihole/custom.list:ro
+      - ../../../.shared/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     healthcheck:
       test: curl --fail http://localhost/admin || exit 1
       start_period: 20s
@@ -80,7 +79,7 @@ networks:
     ipam:
       config:
         - subnet: "10.1.0.0/19"
-          ip_range: "10.1.10.0/24"
+          ip_range: "10.1.12.0/24"
           gateway: "10.1.0.1"
 
   pihole-internal-network:

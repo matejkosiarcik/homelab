@@ -1,0 +1,2 @@
+10.1.10.1 pihole.lan
+10.1.12.1 pihole-backup.lan

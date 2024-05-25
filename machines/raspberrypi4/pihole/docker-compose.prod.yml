@@ -1,0 +1,38 @@
+# version: "3.8"
+
+services:
+  pihole-app:
+    networks:
+      pihole-internal-network: {}
+    environment:
+      - FTLCONF_LOCAL_IPV4=10.1.12.1
+      - FTLCONF_PRIVACYLEVEL=0
+      - VIRTUAL_HOST=pihole.lan
+      - PIHOLE_DOMAIN=pihole.lan
+      # Only for debugging:
+      # - FTLCONF_RATE_LIMIT=100000/60
+    restart: unless-stopped
+
+  pihole-http-proxy:
+    networks:
+      pihole-internal-network: {}
+    environment:
+      - ENV=prod
+    restart: unless-stopped
+
+  pihole-socat:
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80"
+      - "443:443"
+    networks:
+      pihole-internal-network: {}
+      pihole-external-network:
+        ipv4_address: 10.1.12.1
+    restart: unless-stopped
+
+  pihole-backup:
+    networks:
+      pihole-internal-network: {}
+    restart: unless-stopped

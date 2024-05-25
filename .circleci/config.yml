@@ -68,7 +68,7 @@ jobs:
 
   deployment:
     docker:
-      - image: docker:26.1.2
+      - image: docker:26.1.3
     steps:
       - checkout
       - setup_remote_docker:
@@ -84,20 +84,27 @@ jobs:
             mkdir -p "$HOME/.homelab-1/machines/current/pihole/private"
             touch "$HOME/.homelab-1/machines/current/pihole/private/app-backup.env"
             DEST_DIR="$HOME/.homelab-1" \
-              bash './machines/raspberrypi-3b/install.sh' -n
+              bash './machines/raspberrypi3/install.sh' -n
+      - run:
+          name: Run deployment on Raspberry Pi 4B [dry-run]
+          command: |
+            mkdir -p "$HOME/.homelab-2/machines/current/pihole/private"
+            touch "$HOME/.homelab-2/machines/current/pihole/private/app-backup.env"
+            DEST_DIR="$HOME/.homelab-2" \
+              bash './machines/raspberrypi4/install.sh' -n
       - run:
           name: Run deployment on Odroid H3 [dry-run]
           command: |
             mkdir -p \
-              "$HOME/.homelab-2/machines/current/healthchecks/private" \
-              "$HOME/.homelab-2/machines/current/omada-controller/private" \
-              "$HOME/.homelab-2/machines/current/unifi-controller/private" \
-              "$HOME/.homelab-2/machines/current/uptime-kuma/private"
+              "$HOME/.homelab-3/machines/current/healthchecks/private" \
+              "$HOME/.homelab-3/machines/current/omada-controller/private" \
+              "$HOME/.homelab-3/machines/current/unifi-controller/private" \
+              "$HOME/.homelab-3/machines/current/uptime-kuma/private"
             touch \
-              "$HOME/.homelab-2/machines/current/healthchecks/private/app.env" \
-              "$HOME/.homelab-2/machines/current/healthchecks/private/database-backup.env" \
-              "$HOME/.homelab-2/machines/current/omada-controller/private/app-backup.env" \
-              "$HOME/.homelab-2/machines/current/unifi-controller/private/app-backup.env" \
-              "$HOME/.homelab-2/machines/current/uptime-kuma/private/app-backup.env"
-            DEST_DIR="$HOME/.homelab-2" \
+              "$HOME/.homelab-3/machines/current/healthchecks/private/app.env" \
+              "$HOME/.homelab-3/machines/current/healthchecks/private/database-backup.env" \
+              "$HOME/.homelab-3/machines/current/omada-controller/private/app-backup.env" \
+              "$HOME/.homelab-3/machines/current/unifi-controller/private/app-backup.env" \
+              "$HOME/.homelab-3/machines/current/uptime-kuma/private/app-backup.env"
+            DEST_DIR="$HOME/.homelab-3" \
               bash './machines/odroid-h3/install.sh' -n
