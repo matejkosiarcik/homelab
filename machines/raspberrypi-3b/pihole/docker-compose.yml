@@ -9,6 +9,7 @@ services:
       - DHCP_ACTIVE=false
       - FTLCONF_IGNORE_LOCALHOST=false
       - FTLCONF_PIHOLE_PTR=HOSTNAMEFQDN
+      # - FTLCONF_RATE_LIMIT=100000/60
       - FTLCONF_REPLY_WHEN_BUSY=BLOCK
       - IPv6=false
       - PIHOLE_DNS_=8.8.8.8;1.1.1.1 # Trailing underscore [in the name] is intentional
@@ -54,10 +55,6 @@ services:
     hostname: pihole-socat
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
 
   pihole-backup:
     image: pihole-backup:homelab
