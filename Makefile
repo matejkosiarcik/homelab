@@ -26,12 +26,12 @@ bootstrap:
 
 	python3 -m venv venv
 	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/icons/vendor" \
+	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-		python3 -m pip install --requirement icons/requirements.txt --target icons/vendor --quiet --upgrade
+		python3 -m pip install --requirement icons/requirements.txt --target icons/python-vendor --quiet --upgrade
 
-	PATH="$(PROJECT_DIR)/venv/bin:$(PROJECT_DIR)/icons/vendor/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/icons/vendor" \
+	PATH="$(PROJECT_DIR)/venv/bin:$(PROJECT_DIR)/icons/python-vendor/bin:$$PATH" \
+	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --quiet --force --root icons
 

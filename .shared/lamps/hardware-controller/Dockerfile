@@ -7,17 +7,17 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 COPY requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --requirement requirements.txt --target vendor --quiet
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
 FROM debian:12.5
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=build /app/vendor/ ./vendor/
+COPY --from=build /app/python-vendor/ ./python-vendor/
 COPY main.py ./
 ENV PATH="/app/vendor/bin:$PATH" \
-    PYTHONPATH=/app/vendor \
+    PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava
 USER root
 ENTRYPOINT [ "python3", "/app/main.py" ]
