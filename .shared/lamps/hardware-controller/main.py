@@ -1,4 +1,6 @@
-from gpiozero import Button, DigitalOutputDevice
+
+# pylint: disable=E0401
+from gpiozero import Button, DigitalOutputDevice  # type: ignore
 import argparse
 import datetime
 import os
