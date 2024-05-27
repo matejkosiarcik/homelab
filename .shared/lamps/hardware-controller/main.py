@@ -19,7 +19,7 @@ button_device = Button(25)
 output_device = DigitalOutputDevice(23)
 
 output_status = False
-output_status_file = 'status.txt'
+output_status_file = "status.txt"
 output_status_last_changed_datetime = datetime.datetime.fromtimestamp(0, datetime.UTC)
 
 
@@ -38,10 +38,10 @@ def button_press():
 def set_output_status(status: bool):
     global output_status
     output_status = status
-    print(f'Turning lamp {"ON" if status else "OFF"}')
+    print(f"Turning lamp {'ON' if status else 'OFF'}")
     output_status_int = 1 if output_status else 0
     output_device.value = output_status_int
-    with open(output_status_file, 'w') as status_file:
+    with open(output_status_file, "w") as status_file:
         print(f'{output_status_int}', file=status_file)
 
 
@@ -50,12 +50,12 @@ def run_pipe_thread(status_dir: str):
     if not path.exists(status_dir):
         os.mkdir(status_dir)
 
-    pipe_path = path.join(status_dir, 'commands.pipe')
+    pipe_path = path.join(status_dir, "commands.pipe")
     if not path.exists(pipe_path):
         os.mkfifo(pipe_path)
 
     while True:
-        with open(pipe_path, 'r') as fifo_file:
+        with open(pipe_path, "r") as fifo_file:
             while True:
                 data = fifo_file.read()
                 if len(data) == 0:
@@ -63,16 +63,16 @@ def run_pipe_thread(status_dir: str):
                 commands_queue.put(data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="hardware-controller")
     parser.add_argument("--status-dir", type=str, required=False, default='.')
     args = parser.parse_args(sys.argv[1:])
     status_dir = args.status_dir
 
     # Read previous status (graceful restart)
-    with open(output_status_file, 'a'):
+    with open(output_status_file, "a"):
         pass
-    with open(output_status_file, 'r') as previous_status_file:
+    with open(output_status_file, "r") as previous_status_file:
         previous_status = previous_status_file.read().strip()
         output_status = True if previous_status == '1' else False
     set_output_status(output_status)
@@ -84,9 +84,9 @@ if __name__ == '__main__':
 
     while True:
         command = commands_queue.get()
-        if command == 'turn-on':
+        if command == "turn-on":
             set_output_status(True)
-        elif command == 'turn-off':
+        elif command == "turn-off":
             set_output_status(False)
         else:
-            print(f'Unrecognized command: {command}', file=sys.stderr)
+            print(f"Unrecognized command: {command}", file=sys.stderr)
