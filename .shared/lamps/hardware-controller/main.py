@@ -7,7 +7,6 @@ import queue
 import sys
 import threading
 from os import path
-from typing import Deque
 
 # pylint: disable=E0401
 from gpiozero import Button, DigitalOutputDevice  # type: ignore

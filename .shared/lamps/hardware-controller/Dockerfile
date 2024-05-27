@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_8: allow root user
-
 FROM debian:12.5 AS build
 WORKDIR /app
 RUN apt-get update && \
@@ -19,7 +17,4 @@ COPY main.py ./
 ENV PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava
-# User necessary for using privileged mode
-# hadolint ignore=DL3002
-USER root
 ENTRYPOINT [ "python3", "/app/main.py" ]
