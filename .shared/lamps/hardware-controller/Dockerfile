@@ -7,7 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 COPY requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --no-cache-dir
 
 FROM debian:12.5
 WORKDIR /app
@@ -19,5 +19,7 @@ COPY main.py ./
 ENV PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava
+# User necessary for using privileged mode
+# hadolint ignore=DL3002
 USER root
 ENTRYPOINT [ "python3", "/app/main.py" ]
