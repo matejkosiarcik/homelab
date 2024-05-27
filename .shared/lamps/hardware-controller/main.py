@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 # pylint: disable=E0401
 from gpiozero import Button, DigitalOutputDevice  # type: ignore
