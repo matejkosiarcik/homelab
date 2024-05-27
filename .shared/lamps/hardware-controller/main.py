@@ -7,6 +7,7 @@ import queue
 import sys
 import threading
 from os import path
+
 # pylint: disable=E0401
 from gpiozero import Button, DigitalOutputDevice  # type: ignore
 
@@ -37,7 +38,7 @@ def button_press():
 def set_output_status(status: bool):
     global output_status
     output_status = status
-    print(f'Turning lamp {'ON' if status else 'OFF'}')
+    print(f'Turning lamp {"ON" if status else "OFF"}')
     output_status_int = 1 if output_status else 0
     output_device.value = output_status_int
     with open(output_status_file, 'w') as status_file:
