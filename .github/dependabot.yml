@@ -78,6 +78,21 @@ updates:
       docker:
         patterns:
           - "*"
+  - package-ecosystem: docker
+    directory: /.shared/lamps/hardware-controller
+    schedule:
+      interval: daily
+      time: "01:35"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
 
   # NPM Backup script
   - package-ecosystem: npm
@@ -132,6 +147,21 @@ updates:
           - "*"
   - package-ecosystem: pip
     directory: /icons
+    schedule:
+      interval: daily
+      time: "02:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      pip:
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directory: /.shared/lamps/hardware-controller
     schedule:
       interval: daily
       time: "02:30"

@@ -6,7 +6,7 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 SERVICES := $(shell printf 'odroid-h3/healthchecks odroid-h3/homer odroid-h3/omada-controller odroid-h3/smtp4dev odroid-h3/unifi-controller odroid-h3/uptime-kuma raspberrypi3/pihole raspberrypi4/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf '.shared/socat .shared/proxy .shared/ui-backup machines/odroid-h3/healthchecks/db-backup' | sed 's~ ~\n~g')
+DOCKER_COMPONENTS := $(shell printf '.shared/socat .shared/proxy .shared/ui-backup .shared/lamps/hardware-controller machines/odroid-h3/healthchecks/db-backup' | sed 's~ ~\n~g')
 NPM_COMPONENTS := $(shell printf '.shared/ui-backup' | sed 's~ ~\n~g')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
@@ -26,13 +26,12 @@ bootstrap:
 
 	python3 -m venv venv
 	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/icons/python" \
+	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-		python3 -m pip install --requirement icons/requirements.txt --target icons/python --quiet --upgrade
+		python3 -m pip install --requirement icons/requirements.txt --target icons/python-vendor --quiet --upgrade
 
-	python3 -m venv venv
-	PATH="$(PROJECT_DIR)/venv/bin:$(PROJECT_DIR)/icons/python/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/icons/python" \
+	PATH="$(PROJECT_DIR)/venv/bin:$(PROJECT_DIR)/icons/python-vendor/bin:$$PATH" \
+	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --quiet --force --root icons
 
