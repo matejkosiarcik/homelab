@@ -1,9 +1,17 @@
 from gpiozero import Button, DigitalOutputDevice
-from signal import pause
-# from time import sleep
+import argparse
 import datetime
+import os
+from os import path
+import sys
+import threading
+import queue
 
 
+# thread communication
+commands_queue = queue.SimpleQueue()
+
+# Connected hardware
 button_device = Button(25)
 output_device = DigitalOutputDevice(23)
 
@@ -27,13 +35,37 @@ def button_press():
 def set_output_status(status: bool):
     global output_status
     output_status = status
+    print(f'Turning lamp {'ON' if status else 'OFF'}')
     output_status_int = 1 if output_status else 0
     output_device.value = output_status_int
     with open(output_status_file, 'w') as status_file:
         print(f'{output_status_int}', file=status_file)
 
 
+# Run a thread which listens to FIFO pipe and forwards received commands into task queue
+def run_pipe_thread(status_dir: str):
+    if not path.exists(status_dir):
+        os.mkdir(status_dir)
+
+    pipe_path = path.join(status_dir, 'commands.pipe')
+    if not path.exists(pipe_path):
+        os.mkfifo(pipe_path)
+
+    while True:
+        with open(pipe_path, 'r') as fifo_file:
+            while True:
+                data = fifo_file.read()
+                if len(data) == 0:
+                    break
+                commands_queue.put(data)
+
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog="hardware-controller")
+    parser.add_argument("--status-dir", type=str, required=False, default='.')
+    args = parser.parse_args(sys.argv[1:])
+    status_dir = args.status_dir
+
     # Read previous status (graceful restart)
     with open(output_status_file, 'a'):
         pass
@@ -42,9 +74,16 @@ if __name__ == '__main__':
         output_status = True if previous_status == '1' else False
     set_output_status(output_status)
 
+    # setup button handling
     button_device.when_activated = button_press
 
-    try:
-        pause()
-    except:
-        output_device.off()
+    threading.Thread(target=run_pipe_thread, daemon=True, args=[status_dir]).start()
+
+    while True:
+        command = commands_queue.get()
+        if command == 'turn-on':
+            set_output_status(True)
+        elif command == 'turn-off':
+            set_output_status(False)
+        else:
+            print(f'Unrecognized command: {command}', file=sys.stderr)
