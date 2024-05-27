@@ -22,7 +22,7 @@ sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-p
 sudo docker run hello-world
 ```
 
-Now make docker launchable for non-root users, Instructions: <https://docs.docker.com/engine/install/linux-postinstall>
+Now make docker launchable for non-root users, instructions: <https://docs.docker.com/engine/install/linux-postinstall>
 
 TL;DR:
 
