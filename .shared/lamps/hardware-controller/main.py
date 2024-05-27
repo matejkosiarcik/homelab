@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
-# pylint: disable=E0401
-from gpiozero import Button, DigitalOutputDevice  # type: ignore
 import argparse
 import datetime
 import os
-from os import path
+import queue
 import sys
 import threading
-import queue
-
+from os import path
+# pylint: disable=E0401
+from gpiozero import Button, DigitalOutputDevice  # type: ignore
 
 # thread communication
 commands_queue = queue.SimpleQueue()
