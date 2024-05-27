@@ -27,4 +27,5 @@ dist/
 gitman/
 node_modules/
 python/
+vendor/
 venv/
