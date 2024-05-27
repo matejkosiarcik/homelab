@@ -19,6 +19,7 @@ button_device = Button(25)
 output_device = DigitalOutputDevice(23)
 
 output_status = False
+# TODO: File location from within --status-dir
 output_status_file = "status.txt"
 output_status_last_changed_datetime = datetime.datetime.fromtimestamp(0, datetime.UTC)
 
@@ -41,7 +42,7 @@ def set_output_status(status: bool):
     print(f"Turning lamp {'ON' if status else 'OFF'}")
     output_status_int = 1 if output_status else 0
     output_device.value = output_status_int
-    with open(output_status_file, "w") as status_file:
+    with open(output_status_file, "w", encoding="utf-8") as status_file:
         print(f'{output_status_int}', file=status_file)
 
 
@@ -55,7 +56,7 @@ def run_pipe_thread(status_dir: str):
         os.mkfifo(pipe_path)
 
     while True:
-        with open(pipe_path, "r") as fifo_file:
+        with open(pipe_path, "r", encoding="utf-8") as fifo_file:
             while True:
                 data = fifo_file.read()
                 if len(data) == 0:
@@ -70,11 +71,11 @@ if __name__ == "__main__":
     status_dir = args.status_dir
 
     # Read previous status (graceful restart)
-    with open(output_status_file, "a"):
+    with open(output_status_file, "a", encoding="utf-8"):
         pass
-    with open(output_status_file, "r") as previous_status_file:
+    with open(output_status_file, "r", encoding="utf-8") as previous_status_file:
         previous_status = previous_status_file.read().strip()
-        output_status = True if previous_status == "1" else False
+        output_status = previous_status == "1"
     set_output_status(output_status)
 
     # setup button handling
