@@ -13,7 +13,7 @@ from typing import Deque
 from gpiozero import Button, DigitalOutputDevice  # type: ignore
 
 # thread communication
-commands_queue = queue.SimpleQueue()  # type: Deque[str]
+commands_queue: queue.SimpleQueue[str] = queue.SimpleQueue()
 
 # Connected hardware
 button_device = Button(25)
