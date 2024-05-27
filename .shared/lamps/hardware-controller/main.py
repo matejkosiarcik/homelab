@@ -24,6 +24,7 @@ output_status_last_changed_datetime = datetime.datetime.fromtimestamp(0, datetim
 
 
 def button_press():
+    # pylint: disable=W0603
     global output_status_last_changed_datetime
 
     debounce_interval = datetime.timedelta(seconds=0.2)
@@ -36,6 +37,7 @@ def button_press():
 
 
 def set_output_status(status: bool):
+    # pylint: disable=W0603
     global output_status
     output_status = status
     print(f"Turning lamp {'ON' if status else 'OFF'}")
@@ -68,7 +70,7 @@ if __name__ == "__main__":
     parser.add_argument("--status-dir", type=str, required=False, default=".")
     args = parser.parse_args(sys.argv[1:])
 
-    output_status_file = path.join(args.status_dir, 'status.txt')
+    output_status_file = path.join(args.status_dir, "status.txt")
 
     # Read previous status (graceful restart)
     with open(output_status_file, "a", encoding="utf-8"):
