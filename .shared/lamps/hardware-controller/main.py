@@ -18,9 +18,8 @@ commands_queue: queue.SimpleQueue[str] = queue.SimpleQueue()
 button_device = Button(25)
 output_device = DigitalOutputDevice(23)
 
-output_status = False
-# TODO: File location from within --status-dir
-output_status_file = "status.txt"
+output_status: bool = False
+output_status_file: str = ""
 output_status_last_changed_datetime = datetime.datetime.fromtimestamp(0, datetime.UTC)
 
 
@@ -68,6 +67,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="hardware-controller")
     parser.add_argument("--status-dir", type=str, required=False, default=".")
     args = parser.parse_args(sys.argv[1:])
+
+    output_status_file = path.join(args.status_dir, 'status.txt')
 
     # Read previous status (graceful restart)
     with open(output_status_file, "a", encoding="utf-8"):
