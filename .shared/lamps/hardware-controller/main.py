@@ -7,12 +7,13 @@ import queue
 import sys
 import threading
 from os import path
+from typing import Deque
 
 # pylint: disable=E0401
 from gpiozero import Button, DigitalOutputDevice  # type: ignore
 
 # thread communication
-commands_queue = queue.SimpleQueue()
+commands_queue = queue.SimpleQueue()  # type: Deque[str]
 
 # Connected hardware
 button_device = Button(25)
@@ -43,7 +44,7 @@ def set_output_status(status: bool):
     output_status_int = 1 if output_status else 0
     output_device.value = output_status_int
     with open(output_status_file, "w", encoding="utf-8") as status_file:
-        print(f'{output_status_int}', file=status_file)
+        print(f"{output_status_int}", file=status_file)
 
 
 # Run a thread which listens to FIFO pipe and forwards received commands into task queue
@@ -68,7 +69,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="hardware-controller")
     parser.add_argument("--status-dir", type=str, required=False, default=".")
     args = parser.parse_args(sys.argv[1:])
-    status_dir = args.status_dir
 
     # Read previous status (graceful restart)
     with open(output_status_file, "a", encoding="utf-8"):
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     # setup button handling
     button_device.when_activated = button_press
 
-    threading.Thread(target=run_pipe_thread, daemon=True, args=[status_dir]).start()
+    threading.Thread(target=run_pipe_thread, daemon=True, args=[args.status_dir]).start()
 
     while True:
         command = commands_queue.get()
