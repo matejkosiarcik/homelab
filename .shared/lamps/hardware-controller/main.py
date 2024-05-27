@@ -65,7 +65,7 @@ def run_pipe_thread(status_dir: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="hardware-controller")
-    parser.add_argument("--status-dir", type=str, required=False, default='.')
+    parser.add_argument("--status-dir", type=str, required=False, default=".")
     args = parser.parse_args(sys.argv[1:])
     status_dir = args.status_dir
 
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         pass
     with open(output_status_file, "r") as previous_status_file:
         previous_status = previous_status_file.read().strip()
-        output_status = True if previous_status == '1' else False
+        output_status = True if previous_status == "1" else False
     set_output_status(output_status)
 
     # setup button handling
