@@ -1,3 +1,28 @@
 {
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "true",
+    "lint": "tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-prom-bundle": "^7.0.0",
+    "winston": "^3.13.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@tsconfig/strictest": "^2.0.5",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.12.12",
+    "@types/yargs": "^17.0.32",
+    "modclean": "^3.0.0-beta.1",
+    "node-prune": "^1.0.2",
+    "rollup": "^4.18.0",
+    "terser": "^5.31.0",
+    "tsx": "^4.11.0",
+    "typescript": "^5.4.5"
+  }
 }
