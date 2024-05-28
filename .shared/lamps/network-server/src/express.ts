@@ -12,10 +12,10 @@ expressApp.set('etag', false);
 
 // CORS
 expressApp.use(
-  cors({
-    origin: /.*/,
-    allowedHeaders: ['Authorization', 'Content-Type'],
-  })
+    cors({
+        origin: /.*/,
+        allowedHeaders: ['Authorization', 'Content-Type'],
+    })
 );
 
 const routers = [
@@ -36,8 +36,8 @@ expressApp.use(
 // Disable client-side caching for dynamic requests
 routers.forEach((router) => {
     router.use((_, response, next) => {
-      response.setHeader('Cache-Control', 'private, no-store, no-cache');
-      return next();
+        response.setHeader('Cache-Control', 'private, no-store, no-cache');
+        return next();
     });
 })
 
