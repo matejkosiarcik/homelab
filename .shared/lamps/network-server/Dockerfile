@@ -21,4 +21,4 @@ WORKDIR /app
 ENV TZ=Europe/Bratislava
 EXPOSE 80
 EXPOSE 443
-ENTRYPOINT [ "node", "/app/dist/main.js" ]
+ENTRYPOINT [ "sh", "-c", "node /app/dist/main.js" ]
