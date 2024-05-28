@@ -93,6 +93,21 @@ updates:
       docker:
         patterns:
           - "*"
+  - package-ecosystem: docker
+    directory: /.shared/lamps/network-server
+    schedule:
+      interval: daily
+      time: "01:35"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
 
   # NPM Backup script
   - package-ecosystem: npm
