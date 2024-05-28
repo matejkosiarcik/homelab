@@ -3,8 +3,8 @@ import path from 'path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import dotenv from 'dotenv';
-import { initWinston, log } from './logging';
-import { expressApp } from './express';
+import { initWinston, log } from './logging.ts';
+import { expressApp } from './express.ts';
 
 (async () => {
   let argumentParser = yargs(hideBin(process.argv))

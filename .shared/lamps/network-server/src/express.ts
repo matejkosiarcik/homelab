@@ -1,7 +1,7 @@
 import express from 'express';
 import expressPrometheus from 'express-prom-bundle';
 import cors from 'cors';
-import { apiRouter } from './api-router';
+import { apiRouter } from './api-router.ts';
 
 // Init express and expressWs
 export const expressApp = express();

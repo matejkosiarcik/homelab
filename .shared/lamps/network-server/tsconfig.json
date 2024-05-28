@@ -8,6 +8,8 @@
     "lib": [
       "ESNext"
     ],
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
 
     // NOTE: Too many false positives
     "noUncheckedIndexedAccess": false
