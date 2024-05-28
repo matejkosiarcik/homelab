@@ -175,3 +175,19 @@ updates:
       pip:
         patterns:
           - "*"
+  - package-ecosystem: npm
+    directory: /.shared/lamps/network-server
+    versioning-strategy: increase
+    schedule:
+      interval: daily
+      time: "02:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      npm:
+        patterns:
+          - "*"
