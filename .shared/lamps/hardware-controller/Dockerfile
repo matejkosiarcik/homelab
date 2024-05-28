@@ -1,4 +1,4 @@
-FROM debian:12.5 AS build
+FROM debian:12.5-slim AS build
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 python3-pip python3-dev build-essential >/dev/null && \
@@ -7,7 +7,7 @@ COPY requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --no-cache-dir
 
-FROM debian:12.5
+FROM debian:12.5-slim
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 >/dev/null && \
