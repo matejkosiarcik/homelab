@@ -1,0 +1,21 @@
+FROM node:22.1.0-slim AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --quiet
+COPY src/ ./src/
+COPY rollup.config.js tsconfig.json ./
+RUN npm run build && \
+    npm prune --production
+
+FROM node:22.1.0-slim AS aggregator
+WORKDIR /app
+COPY --from=build /app/dist/ ./dist/
+COPY --from=build /app/package.json ./
+
+FROM node:22.1.0-slim
+COPY --from=aggregator /app/ /app/
+WORKDIR /app
+ENV TZ=Europe/Bratislava
+EXPOSE 80
+EXPOSE 443
+ENTRYPOINT [ "node", "/app/dist/main.js" ]
