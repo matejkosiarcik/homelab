@@ -64,20 +64,13 @@ statusSchema = {
 
 # This server handles only chnages (POST requests)
 class RequestHandler(BaseHTTPRequestHandler):
-    # def do_GET(self):
-    #     self.send_response(HTTPStatus.OK)
-    #     self.end_headers()
-    #     output = json.dumps({ "status": "on" if output_status else "off" })
-    #     self.wfile.write(output.encode('utf-8'))
-
     def do_POST(self):
-        content_len = int(self.headers.get('Content-Length', failobj=0))
+        content_len = int(self.headers.get("Content-Length", failobj=0))
         request_str = self.rfile.read(content_len)
-        print('Request:', request_str)
 
         try:
             request_obj = json.loads(request_str)
-        except:
+        except Exception:
             self.send_response(HTTPStatus.BAD_REQUEST)
             self.end_headers()
             self.wfile.write("Invalid request JSON data - unparsable\n".encode("utf-8"))
@@ -85,19 +78,19 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         try:
             jsonschema.validate(request_obj, statusSchema)
-        except:
+        except Exception:
             self.send_response(HTTPStatus.BAD_REQUEST)
             self.end_headers()
             self.wfile.write("Invalid request JSON schema - validation failed\n".encode("utf-8"))
             return
 
-        new_status_bool: bool = request_obj['status'] == 'on'
+        new_status_bool: bool = request_obj["status"] == "on"
         set_output_status(new_status_bool)
 
         self.send_response(HTTPStatus.OK)
         self.end_headers()
         output = json.dumps({ "status": "on" if output_status else "off" }) + "\n"
-        self.wfile.write(output.encode('utf-8'))
+        self.wfile.write(output.encode("utf-8"))
 
 
 if __name__ == "__main__":
@@ -119,5 +112,5 @@ if __name__ == "__main__":
     # setup button handling
     button_device.when_activated = handle_button_press
 
-    httpd = ThreadingHTTPServer(('', 8081), RequestHandler)
+    httpd = ThreadingHTTPServer(("", 8081), RequestHandler)
     httpd.serve_forever()
