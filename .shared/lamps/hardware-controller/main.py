@@ -9,6 +9,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from os import path
 
+# pylint: disable=E0401
 import jsonschema  # type: ignore
 
 # pylint: disable=E0401
