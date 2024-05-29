@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import { initWinston, log } from './logging.ts';
 import { expressApp } from './express.ts';
 import { setupStatusReader } from './status-reader.ts';
-import { setupStatusWriter } from './status-writer.ts';
 
 (async () => {
     let argumentParser = yargs(hideBin(process.argv))
@@ -50,7 +49,6 @@ import { setupStatusWriter } from './status-writer.ts';
     log.debug(`Status dir: ${statusDir}`);
     log.debug(`HTTP port: ${httpPort}`);
 
-    setupStatusWriter(statusDir);
     setupStatusReader(statusDir);
 
     expressApp.listen(httpPort, () => {
