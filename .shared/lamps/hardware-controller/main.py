@@ -5,8 +5,8 @@ import datetime
 import json
 import queue
 import sys
-from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from http import HTTPStatus
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from os import path
 
 import jsonschema  # type: ignore
