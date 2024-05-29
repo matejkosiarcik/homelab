@@ -64,13 +64,14 @@ statusSchema = {
 
 # This server handles only chnages (POST requests)
 class RequestHandler(BaseHTTPRequestHandler):
+    # pylint: disable=C0103
     def do_POST(self):
         content_len = int(self.headers.get("Content-Length", failobj=0))
         request_str = self.rfile.read(content_len)
 
         try:
             request_obj = json.loads(request_str)
-        except Exception:
+        except ValueError:
             self.send_response(HTTPStatus.BAD_REQUEST)
             self.end_headers()
             self.wfile.write("Invalid request JSON data - unparsable\n".encode("utf-8"))
@@ -78,7 +79,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         try:
             jsonschema.validate(request_obj, statusSchema)
-        except Exception:
+        except jsonschema.exceptions.ValidationError:
             self.send_response(HTTPStatus.BAD_REQUEST)
             self.end_headers()
             self.wfile.write("Invalid request JSON schema - validation failed\n".encode("utf-8"))
