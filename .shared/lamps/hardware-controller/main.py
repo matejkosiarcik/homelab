@@ -5,9 +5,9 @@ import datetime
 import json
 import queue
 import sys
-from os import path
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from http import HTTPStatus
+from os import path
 
 import jsonschema  # type: ignore
 
@@ -92,7 +92,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         self.send_response(HTTPStatus.OK)
         self.end_headers()
-        output = json.dumps({ "status": "on" if output_status else "off" }) + "\n"
+        output = json.dumps({"status": "on" if output_status else "off"}) + "\n"
         self.wfile.write(output.encode("utf-8"))
 
 
