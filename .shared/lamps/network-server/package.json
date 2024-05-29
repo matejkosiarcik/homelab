@@ -5,12 +5,17 @@
     "build": "run-s build:*",
     "build:1-rollup": "rollup --silent --config rollup.config.js",
     "build:2-minify": "terser dist/main.js --output dist/main.js",
+    "start": "tsx src/main.ts",
     "lint": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
+    "ajv": "^8.14.0",
+    "ajv-formats": "^3.0.1",
     "cors": "^2.8.5",
+    "cross-fetch": "^4.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-json-validator-middleware": "^3.0.1",
     "express-prom-bundle": "^7.0.0",
     "tslib": "^2.6.2",
     "winston": "^3.13.0",

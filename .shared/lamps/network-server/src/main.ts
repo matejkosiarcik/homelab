@@ -5,6 +5,7 @@ import { hideBin } from 'yargs/helpers';
 import dotenv from 'dotenv';
 import { initWinston, log } from './logging.ts';
 import { expressApp } from './express.ts';
+import { setupStatusReader } from './status-reader.ts';
 
 (async () => {
     let argumentParser = yargs(hideBin(process.argv))
@@ -47,6 +48,8 @@ import { expressApp } from './express.ts';
 
     log.debug(`Status dir: ${statusDir}`);
     log.debug(`HTTP port: ${httpPort}`);
+
+    setupStatusReader(statusDir);
 
     expressApp.listen(httpPort, () => {
         log.info(`Server started on port ${httpPort}`);

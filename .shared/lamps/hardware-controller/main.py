@@ -2,11 +2,15 @@
 
 import argparse
 import datetime
-import os
+import json
 import queue
 import sys
-import threading
+from http import HTTPStatus
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from os import path
+
+# pylint: disable=E0401
+import jsonschema  # type: ignore
 
 # pylint: disable=E0401
 from gpiozero import Button, DigitalOutputDevice  # type: ignore
@@ -25,7 +29,7 @@ output_status_last_changed_datetime = datetime.datetime.fromtimestamp(0, datetim
 commands_pipe_path: str = ""
 
 
-def button_press():
+def handle_button_press():
     # pylint: disable=W0603
     global output_status_last_changed_datetime
 
@@ -49,21 +53,48 @@ def set_output_status(status: bool):
         print(f"{output_status_int}", file=status_file)
 
 
-# Run a thread which listens to FIFO pipe and forwards received commands into task queue
-def run_pipe_thread(status_dir: str):
-    if not path.exists(status_dir):
-        os.mkdir(status_dir)
+statusSchema = {
+    "type": "object",
+    "properties": {
+        "status": {
+            "type": "string",
+            "enum": ["on", "off"],
+        },
+    },
+    "required": ["status"],
+}
 
-    if not path.exists(commands_pipe_path):
-        os.mkfifo(commands_pipe_path)
 
-    while True:
-        with open(commands_pipe_path, "r", encoding="utf-8") as fifo_file:
-            while True:
-                data = fifo_file.read()
-                if len(data) == 0:
-                    break
-                commands_queue.put(data)
+# This server handles only chnages (POST requests)
+class RequestHandler(BaseHTTPRequestHandler):
+    # pylint: disable=C0103
+    def do_POST(self):
+        content_len = int(self.headers.get("Content-Length", failobj=0))
+        request_str = self.rfile.read(content_len)
+
+        try:
+            request_obj = json.loads(request_str)
+        except ValueError:
+            self.send_response(HTTPStatus.BAD_REQUEST)
+            self.end_headers()
+            self.wfile.write("Invalid request JSON data - unparsable\n".encode("utf-8"))
+            return
+
+        try:
+            jsonschema.validate(request_obj, statusSchema)
+        except jsonschema.exceptions.ValidationError:
+            self.send_response(HTTPStatus.BAD_REQUEST)
+            self.end_headers()
+            self.wfile.write("Invalid request JSON schema - validation failed\n".encode("utf-8"))
+            return
+
+        new_status_bool: bool = request_obj["status"] == "on"
+        set_output_status(new_status_bool)
+
+        self.send_response(HTTPStatus.OK)
+        self.end_headers()
+        output = json.dumps({"status": "on" if output_status else "off"}) + "\n"
+        self.wfile.write(output.encode("utf-8"))
 
 
 if __name__ == "__main__":
@@ -83,15 +114,7 @@ if __name__ == "__main__":
     set_output_status(output_status)
 
     # setup button handling
-    button_device.when_activated = button_press
+    button_device.when_activated = handle_button_press
 
-    threading.Thread(target=run_pipe_thread, daemon=True).start()
-
-    while True:
-        command = commands_queue.get()
-        if command == "turn-on":
-            set_output_status(True)
-        elif command == "turn-off":
-            set_output_status(False)
-        else:
-            print(f"Unrecognized command: {command}", file=sys.stderr)
+    httpd = ThreadingHTTPServer(("", 8081), RequestHandler)
+    httpd.serve_forever()
