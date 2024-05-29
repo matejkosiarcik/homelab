@@ -5,6 +5,7 @@
     "build": "run-s build:*",
     "build:1-rollup": "rollup --silent --config rollup.config.js",
     "build:2-minify": "terser dist/main.js --output dist/main.js",
+    "start": "tsx src/main.ts",
     "lint": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
