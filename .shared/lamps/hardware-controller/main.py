@@ -2,13 +2,14 @@
 
 import argparse
 import datetime
+import json
 import queue
 import sys
 from os import path
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from http import HTTPStatus
-import json
-import jsonschema
+
+import jsonschema  # type: ignore
 
 # pylint: disable=E0401
 from gpiozero import Button, DigitalOutputDevice  # type: ignore
@@ -61,6 +62,7 @@ statusSchema = {
     },
     "required": ["status"],
 }
+
 
 # This server handles only chnages (POST requests)
 class RequestHandler(BaseHTTPRequestHandler):
