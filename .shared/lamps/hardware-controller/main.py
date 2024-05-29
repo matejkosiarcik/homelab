@@ -6,7 +6,7 @@ import json
 import queue
 import sys
 from http import HTTPStatus
-from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from os import path
 
 import jsonschema  # type: ignore
