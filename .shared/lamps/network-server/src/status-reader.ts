@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export function setupStatusWatcher(dir: string) {
+export function setupStatusReader(dir: string) {
     const statusFile = path.join(dir, 'status.txt');
 
     if (!fs.existsSync(statusFile)) {
