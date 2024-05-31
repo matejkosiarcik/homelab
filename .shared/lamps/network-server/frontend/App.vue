@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { getStatus, changeStatus } from "./utils/api.ts";
+import { ref } from 'vue';
+import { getStatus, changeStatus } from './utils/api.ts';
 
 const data = {
   status: ref(false),
@@ -8,8 +8,8 @@ const data = {
 
 function setStatus(status: boolean) {
   data.status.value = status;
-  document.title = `${data.status.value ? "⚡️" : "⏻"} Lamp ${
-    data.status.value ? "on ⚡️" : "off ⏻"
+  document.title = `${data.status.value ? '⚡️' : '⏻'} Lamp ${
+    data.status.value ? 'on ⚡️' : 'off ⏻'
   }`;
 }
 
@@ -26,9 +26,9 @@ async function toggleButton() {
 
 <template>
   <main class="container">
-    <p>{{ data.status.value ? "⚡️ On ⚡️" : "💤 Off 💤" }}</p>
+    <p>{{ data.status.value ? '⚡️ On ⚡️' : '💤 Off 💤' }}</p>
     <button class="toggle-button" @click="toggleButton">
-      {{ data.status.value ? "Off" : "On" }}
+      {{ data.status.value ? 'Off' : 'On' }}
     </button>
     <p>&nbsp;</p>
   </main>
