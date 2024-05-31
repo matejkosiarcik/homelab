@@ -25,7 +25,9 @@ async function toggleButton() {
 <template>
     <main class="container">
         <p>{{ data.status.value ? '⚡️ On ⚡️' : '💤 Off 💤' }}</p>
-        <button class="toggle-button" @click="toggleButton">{{ data.status.value ? 'Off' : 'On' }}</button>
+        <button class="toggle-button" @click="toggleButton">
+            {{ data.status.value ? 'Off' : 'On' }}
+        </button>
         <p>&nbsp;</p>
     </main>
 </template>
