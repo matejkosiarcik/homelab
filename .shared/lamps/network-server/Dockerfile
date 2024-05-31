@@ -3,7 +3,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --quiet
 COPY backend/ ./backend/
-COPY rollup.config.js tsconfig.json ./
+COPY frontend/ ./frontend/
+COPY terser.json tsconfig.json ./
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
