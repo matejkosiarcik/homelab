@@ -1,0 +1,13 @@
+{
+  "quiet": true,
+  "exec": "tsx backend/main.ts",
+  "events": {
+    "start": "node -e \"console.clear()\""
+  },
+  "ignore": [
+    "node_modules/",
+    "dist/",
+    "status/"
+  ],
+  "ext": "*"
+}
