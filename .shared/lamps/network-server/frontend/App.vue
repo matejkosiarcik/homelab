@@ -1,25 +1,25 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
-    import { getStatus, changeStatus } from './utils/api.ts';
+import { ref } from 'vue';
+import { getStatus, changeStatus } from './utils/api.ts';
 
-    const data = {
-        status: ref(false),
-    };
+const data = {
+    status: ref(false),
+};
 
-    function setStatus(status: boolean) {
-        data.status.value = status;
-        document.title = `${data.status.value ? '⚡️' : '⏻'} Lamp ${data.status.value ? 'on ⚡️' : 'off ⏻'}`;
-    }
+function setStatus(status: boolean) {
+    data.status.value = status;
+    document.title = `${data.status.value ? '⚡️' : '⏻'} Lamp ${data.status.value ? 'on ⚡️' : 'off ⏻'}`;
+}
 
-    async function toggleButton() {
-        const newStatus = await changeStatus(!data.status.value);
-        setStatus(newStatus);
-    }
+async function toggleButton() {
+    const newStatus = await changeStatus(!data.status.value);
+    setStatus(newStatus);
+}
 
-    (async () => {
-        const initialStatus = await getStatus();
-        setStatus(initialStatus);
-    })();
+(async () => {
+    const initialStatus = await getStatus();
+    setStatus(initialStatus);
+})();
 </script>
 
 <template>
