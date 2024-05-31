@@ -64,6 +64,11 @@ indent_size = 2
 block_comment_end = -->
 block_comment_start = <!--
 
+## JavaScript ###
+
+[*.{vue}]
+indent_size = 2
+
 ### Apple ecosystem ###
 
 [*.{entitlements,pbxproj,plist,storyboard,strings,stringsdict,xcscheme,xcworkspacedata,xib}]
