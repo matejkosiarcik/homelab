@@ -2,9 +2,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "run-s build:*",
-    "build:1-rollup": "rollup --silent --config rollup.config.js",
-    "build:2-minify": "terser dist/main.js --output dist/main.js",
+    "build": "run-p build:*",
+    "build:backend": "run-s build:backend:*",
+    "build:backend:1-rollup": "rollup --silent --config rollup.config.js",
+    "build:backend:2-minify": "terser dist/backend/main.js --output dist/backend/main.js",
     "start": "tsx src/main.ts",
     "lint": "tsc --noEmit --skipLibCheck"
   },
