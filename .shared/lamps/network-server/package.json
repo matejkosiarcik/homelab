@@ -10,7 +10,7 @@
     "build:prepare:1-mkdir": "mkdirp dist/backend",
     "build:backend:2-rollup": "rollup --silent --config backend/rollup.config.js",
     "build:backend:3-minify": "terser dist/backend/main.js --output dist/backend/main.js",
-    "build:frontend": "vite build",
+    "build:frontend": "vite build frontend",
     "start": "run-p start:*",
     "start:backend": "nodemon --config backend/nodemon.json",
     "start:frontend": "vite dev frontend --port 8081 --strictPort --clearScreen",
