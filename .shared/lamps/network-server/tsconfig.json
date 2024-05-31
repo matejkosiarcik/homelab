@@ -1,12 +1,12 @@
 {
   "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": [
-      "ESNext"
+      "ESNext",
+      "DOM"
     ],
     "noEmit": true,
     "allowImportingTsExtensions": true,

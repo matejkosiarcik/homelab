@@ -2,8 +2,9 @@ FROM node:22.2.0-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --quiet
-COPY src/ ./src/
-COPY rollup.config.js tsconfig.json ./
+COPY backend/ ./backend/
+COPY frontend/ ./frontend/
+COPY terser.json tsconfig.json ./
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
@@ -21,4 +22,4 @@ WORKDIR /app
 ENV TZ=Europe/Bratislava
 EXPOSE 80
 EXPOSE 443
-ENTRYPOINT [ "sh", "-c", "node /app/dist/main.js" ]
+ENTRYPOINT [ "sh", "-c", "node /app/dist/backend/main.js" ]

@@ -18,6 +18,8 @@ expressApp.use(
     })
 );
 
+expressApp.use(express.json());
+
 const routers = [
     apiRouter,
 ];

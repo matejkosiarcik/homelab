@@ -1,0 +1,10 @@
+{
+  "quiet": true,
+  "exec": "tsx backend/main.ts",
+  "ignore": [
+    "node_modules/",
+    "dist/",
+    "status/"
+  ],
+  "ext": "*"
+}

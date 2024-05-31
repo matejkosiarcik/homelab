@@ -1,9 +1,9 @@
 import typescript from '@rollup/plugin-typescript';
 
 export default {
-    input: 'src/main.ts',
+    input: 'backend/main.ts',
     output: {
-        dir: 'dist',
+        dir: 'dist/backend',
         format: 'esm',
     },
     plugins: [typescript()],
