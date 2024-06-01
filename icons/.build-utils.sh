@@ -27,6 +27,8 @@ convert_ico() {
     _outfile="$2"
 
     rm -f "$_outfile"
+    # shellcheck disable=SC2086
     png2ico "$_outfile" --colors 16 $_infiles
+    # shellcheck disable=SC2086
     rm -f $_infiles
 }
