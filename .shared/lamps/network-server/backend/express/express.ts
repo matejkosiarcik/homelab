@@ -15,7 +15,6 @@ expressApp.set('etag', false);
 expressApp.use(
     cors({
         origin: /.*/,
-        allowedHeaders: ['Authorization', 'Content-Type'],
     })
 );
 
