@@ -2,7 +2,9 @@
 set -euf
 # shellcheck disable=SC2248
 
+# shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
+
 indir="$(git rev-parse --show-toplevel)/icons"
 global_outdir="$(git rev-parse --show-toplevel)/machines/odroid-h3/homer/config/assets/icons"
 rm -rf "$global_outdir"

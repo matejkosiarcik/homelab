@@ -11,9 +11,7 @@ const $toast = useToast();
 
 function setStatus(status: boolean) {
   data.status.value = status;
-  document.title = `Lamp ${
-    data.status.value ? 'ON ⚡️' : 'OFF ⏻'
-  }`;
+  document.title = `Lamp ${data.status.value ? 'ON ⚡️' : 'OFF ⏻'}`;
 }
 
 async function toggleButton() {

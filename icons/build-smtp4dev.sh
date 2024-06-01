@@ -1,7 +1,9 @@
 #!/bin/sh
 set -euf
 
+# shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
+
 indir="$(git rev-parse --show-toplevel)/icons"
 outdir="$(git rev-parse --show-toplevel)/machines/odroid-h3/smtp4dev/config"
 mkdir -p "$outdir"

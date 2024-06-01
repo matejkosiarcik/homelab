@@ -1,7 +1,9 @@
 #!/bin/sh
 set -euf
 
+# shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
+
 outdir="$(git rev-parse --show-toplevel)/.shared/lamps/network-server/frontend"
 
 ### Favicon ###
