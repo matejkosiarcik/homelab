@@ -10,6 +10,11 @@ const validateRequestSchema = validator.validate;
 
 export const apiRouter = express.Router();
 
+apiRouter.use((_, response, next) => {
+    response.setHeader('Cache-Control', 'private, no-store, no-cache');
+    return next();
+});
+
 const statusSchema: AllowedSchema = {
     type: 'object',
     properties: {
