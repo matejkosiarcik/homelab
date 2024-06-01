@@ -1,14 +1,19 @@
 import express from 'express';
-import { lastStatus } from './status-reader.ts';
+import { lastStatus } from '../utils/status-reader.ts';
 import ajvFormats from 'ajv-formats';
 import { AllowedSchema, Validator } from 'express-json-validator-middleware';
 import fetch from 'cross-fetch';
 
 const validator = new Validator({ allErrors: true });
 ajvFormats.default(validator.ajv);
-export const validateRequestSchema = validator.validate;
+const validateRequestSchema = validator.validate;
 
 export const apiRouter = express.Router();
+
+apiRouter.use((_, response, next) => {
+    response.setHeader('Cache-Control', 'private, no-store, no-cache');
+    return next();
+});
 
 const statusSchema: AllowedSchema = {
     type: 'object',
@@ -37,10 +42,9 @@ apiRouter.get('/status', async (_, response, next) => {
     }
 });
 
-const hardwareServer = process.env['UPSTREAM']!;
-
 apiRouter.post('/status', validateRequestSchema({ body: statusSchema }), async (request, response, next) => {
     try {
+        const hardwareServer = process.env['UPSTREAM_URL']!;
         const upstreamResponse = await fetch(hardwareServer, {
             method: 'POST',
             body: request.body,

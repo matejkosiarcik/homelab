@@ -3,9 +3,9 @@ import path from 'path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import dotenv from 'dotenv';
-import { initWinston, log } from './logging.ts';
-import { expressApp } from './express.ts';
-import { setupStatusReader } from './status-reader.ts';
+import { initWinston, log } from './utils/logging.ts';
+import { expressApp } from './express/express.ts';
+import { setupStatusReader } from './utils/status-reader.ts';
 
 (async () => {
     let argumentParser = yargs(hideBin(process.argv))
@@ -20,12 +20,6 @@ import { setupStatusReader } from './status-reader.ts';
         })
         .option('quiet', {
             alias: 'q', describe: 'Less logging', type: 'boolean',
-        })
-        .option('status-dir', {
-            describe: 'Status directory path', type: 'string',
-        })
-        .option('http-port', {
-            describe: 'HTTP port for webui (default: "8080" or HTTP_PORT env variable)', type: 'string',
         });
     if (process.env['NOWRAP'] === '1') {
         argumentParser = argumentParser.wrap(null);
@@ -43,13 +37,17 @@ import { setupStatusReader } from './status-reader.ts';
 
     initWinston(args.quiet ? 'warning' : args.verbose ? 'debug' : 'info');
 
-    const statusDir = args.statusDir || process.env['STATUS_DIR'] || 'status';
-    const httpPort = args.httpPort || process.env['HTTP_PORT'] || (fs.existsSync('/.dockerenv') ? '80' : '8080');
+    const statusDir = process.env['STATUS_DIR'] || 'status';
+    const httpPort = process.env['HTTP_PORT'] || (fs.existsSync('/.dockerenv') ? '80' : '8081');
 
     log.debug(`Status dir: ${statusDir}`);
     log.debug(`HTTP port: ${httpPort}`);
 
     setupStatusReader(statusDir);
+
+    if (!process.env['UPSTREAM_URL']) {
+        process.env['UPSTREAM_URL'] = (fs.existsSync('/.dockerenv') ? 'http://lamp-hardware-controller' : 'http://localhost:8080');
+    }
 
     expressApp.listen(httpPort, () => {
         log.info(`Server started on port ${httpPort}`);
