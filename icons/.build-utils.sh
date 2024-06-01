@@ -7,7 +7,7 @@ mkdir -p "$tmpdir/file"
 unzip -q 13_05_osa_icons_svg.zip -d "$tmpdir/13_05_osa_icons_svg"
 
 convert_file() {
-    _infile="$tmpdir/file/$(basename "$2" .bin)"
+    _infile="$tmpdir/file/$(basename "$2" .bin | tr ' ' '-')"
     cp "$2" "$_infile"
     _outfile="$3"
     rm -f "$_outfile"
