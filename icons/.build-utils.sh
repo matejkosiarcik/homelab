@@ -11,6 +11,7 @@ convert_image() {
     cp "$2" "$_infile"
     _outfile="$3"
     rm -f "$_outfile"
+    mkdir -p "$(dirname "$_outfile")"
 
     command="$(printf '%s' "$1" | sed -E "s~INPUT_FILE~$_infile~g;s~OUTPUT_FILE~$_outfile~g")"
     $command
