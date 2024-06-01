@@ -15,7 +15,7 @@
     "build:frontend:2-terser": "glob-exec --foreach --parallel \"dist/frontend/assets/*.js\" -- \"terser --config-file terser.json {{file}} --output {{file}}\"",
     "start": "run-p start:*",
     "start:backend": "nodemon --config backend/nodemon.json",
-    "start:frontend": "vite dev frontend --port 8081 --strictPort --clearScreen",
+    "start:frontend": "vite dev frontend --port 8082 --strictPort --clearScreen",
     "lint": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
