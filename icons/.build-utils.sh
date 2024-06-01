@@ -6,7 +6,7 @@ tmpdir="$(mktemp -d)"
 mkdir -p "$tmpdir/file"
 unzip -q 13_05_osa_icons_svg.zip -d "$tmpdir/13_05_osa_icons_svg"
 
-convert_file() {
+convert_image() {
     _infile="$tmpdir/file/$(basename "$2" .bin | tr ' ' '-')"
     cp "$2" "$_infile"
     _outfile="$3"
@@ -26,6 +26,6 @@ convert_ico() {
     _outfile="$2"
 
     rm -f "$_outfile"
-    png2ico "$_outfile" $_infiles
+    png2ico "$_outfile" --colors 16 $_infiles
     rm -f $_infiles
 }
