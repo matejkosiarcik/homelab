@@ -3,9 +3,9 @@ import path from 'path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import dotenv from 'dotenv';
-import { initWinston, log } from './logging.ts';
-import { expressApp } from './express.ts';
-import { setupStatusReader } from './status-reader.ts';
+import { initWinston, log } from './utils/logging.ts';
+import { expressApp } from './express/express.ts';
+import { setupStatusReader } from './utils/status-reader.ts';
 
 (async () => {
     let argumentParser = yargs(hideBin(process.argv))

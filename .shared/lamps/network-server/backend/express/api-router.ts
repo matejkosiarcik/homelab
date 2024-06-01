@@ -1,5 +1,5 @@
 import express from 'express';
-import { lastStatus } from './status-reader.ts';
+import { lastStatus } from '../utils/status-reader.ts';
 import ajvFormats from 'ajv-formats';
 import { AllowedSchema, Validator } from 'express-json-validator-middleware';
 import fetch from 'cross-fetch';
