@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
-declare tmpdir
 
+tmpdir=''
 # shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
 

@@ -21,9 +21,7 @@ async function toggleButton() {
     const newStatus = await changeStatus(!data.status.value);
     setStatus(newStatus);
   } catch {
-    $toast.error('Could not change status', {
-      position: 'top'
-    });
+    $toast.error('Could not change status', { position: 'top' });
   } finally {
     buttonElement.disabled = false;
   }

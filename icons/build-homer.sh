@@ -1,8 +1,8 @@
 #!/bin/sh
 set -euf
 # shellcheck disable=SC2248
-declare tmpdir
 
+tmpdir=''
 # shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
 
