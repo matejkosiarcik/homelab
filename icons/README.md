@@ -12,7 +12,7 @@ The Icons are obtained from following locations:
     - Homer: <https://github.com/bastienwirtz/homer>
     - Odroid: <https://wiki.odroid.com>
     - Prometheus: <https://prometheus.io>
-    - Raspberry Pi: <https://iconduck.com/icons/14184/raspberry-pi>
+    - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (Server down)
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - TP-Link Omada: <https://www.tp-link.com/us/omada_compatibility_list>
     - TP-Link: <https://www.tp-link.com/cz/>
