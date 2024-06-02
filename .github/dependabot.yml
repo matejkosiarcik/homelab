@@ -17,7 +17,7 @@ updates:
         patterns:
           - "*"
 
-  # Dockerfile-s
+  # Docker
   - package-ecosystem: docker
     directory: /.shared/ui-backup
     schedule:
@@ -108,14 +108,45 @@ updates:
       docker:
         patterns:
           - "*"
+  - package-ecosystem: docker
+    directory: /components/pihole
+    schedule:
+      interval: daily
+      time: "01:35"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
 
-  # NPM Backup script
+  # NPM
   - package-ecosystem: npm
     directory: /.shared/ui-backup
     versioning-strategy: increase
     schedule:
       interval: daily
       time: "01:45"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      npm:
+        patterns:
+          - "*"
+  - package-ecosystem: npm
+    directory: /icons
+    versioning-strategy: increase
+    schedule:
+      interval: daily
+      time: "02:15"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -142,14 +173,12 @@ updates:
       npm:
         patterns:
           - "*"
-
-  # Other
   - package-ecosystem: npm
-    directory: /icons
+    directory: /.shared/lamps/network-server
     versioning-strategy: increase
     schedule:
       interval: daily
-      time: "02:15"
+      time: "02:30"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -160,6 +189,8 @@ updates:
       npm:
         patterns:
           - "*"
+
+  # Pip
   - package-ecosystem: pip
     directory: /icons
     schedule:
@@ -188,21 +219,5 @@ updates:
     open-pull-requests-limit: 1
     groups:
       pip:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /.shared/lamps/network-server
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "02:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
         patterns:
           - "*"
