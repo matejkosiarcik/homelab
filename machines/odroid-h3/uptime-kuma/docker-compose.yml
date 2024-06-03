@@ -18,12 +18,12 @@ services:
     stop_grace_period: 30s
 
   webui-backup:
-    image: uptime-kuma-app-backup:homelab
+    image: uptime-kuma-webui-backup:homelab
     build:
       context: ../../../components/webui-backup/
     container_name: uptime-kuma-app-backup
     depends_on:
-      uptime-kuma-app:
+      app:
         condition: service_healthy
     env_file:
       - ./private/webui-backup.env

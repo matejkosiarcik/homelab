@@ -61,7 +61,7 @@ services:
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:
-      pihole-app:
+      app:
         condition: service_healthy
     env_file:
       - ./private/webui-backup.env

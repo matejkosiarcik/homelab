@@ -71,10 +71,8 @@ services:
     container_name: healthchecks-database-backup
     hostname: healthchecks-database-backup
     depends_on:
-      healthchecks-database:
+      app:
         condition: service_healthy
-      healthchecks-app:
-        condition: service_started
     env_file:
       - ./private/database-backup.env
     environment:

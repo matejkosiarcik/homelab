@@ -15,7 +15,6 @@ services:
     stop_grace_period: 30s
 
   http-proxy:
-    # Note: healthcheck builtin
     image: homer-http-proxy:homelab
     build:
       context: ../../../components/http-proxy

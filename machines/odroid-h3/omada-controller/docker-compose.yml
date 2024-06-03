@@ -37,13 +37,13 @@ services:
     # Note: healthcheck builtin
 
   webui-backup:
-    image: omada-controller-app-backup:homelab
+    image: omada-controller-webui-backup:homelab
     build:
       context: ../../../components/webui-backup/
-    container_name: omada-controller-app-backup
-    hostname: omada-controller-app-backup
+    container_name: omada-controller-webui-backup
+    hostname: omada-controller-webui-backup
     depends_on:
-      omada-controller-app:
+      app:
         condition: service_healthy
     env_file:
       - ./private/webui-backup.env
