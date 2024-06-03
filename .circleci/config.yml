@@ -102,7 +102,7 @@ jobs:
               "$HOME/.homelab-3/machines/current/uptime-kuma/private"
             touch \
               "$HOME/.homelab-3/machines/current/healthchecks/private/app.env" \
-              "$HOME/.homelab-3/machines/current/healthchecks/private/database-backup.env" \
+              "$HOME/.homelab-3/machines/current/healthchecks/private/db-backup.env" \
               "$HOME/.homelab-3/machines/current/omada-controller/private/webui-backup.env" \
               "$HOME/.homelab-3/machines/current/unifi-controller/private/webui-backup.env" \
               "$HOME/.homelab-3/machines/current/uptime-kuma/private/webui-backup.env"
