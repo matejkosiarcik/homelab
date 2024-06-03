@@ -49,7 +49,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /.shared/socat
+    directory: /components/socat
     schedule:
       interval: daily
       time: "01:15"

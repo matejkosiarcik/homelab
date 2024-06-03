@@ -49,7 +49,7 @@ services:
   pihole-socat:
     image: pihole-socat:homelab
     build:
-      context: ../../../.shared/socat/
+      context: ../../../components/socat/
     container_name: pihole-socat
     hostname: pihole-socat
     volumes:
