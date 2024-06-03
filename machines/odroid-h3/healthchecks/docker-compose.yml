@@ -16,7 +16,7 @@ services:
       - SITE_NAME=Healthchecks
       # Database options
       - DB_HOST=healthchecks-database
-      - DB_NAME=healthchecks
+      - DB_NAME=database
       - DB=postgres
       # Email options
       - EMAIL_HOST_PASSWORD= # TODO: Set ?
@@ -38,27 +38,11 @@ services:
     stop_grace_period: 30s
 
   database:
-    image: postgres:16.3
+    image: healthchecks-database:homelab
+    build:
+      context: ../../../components/postgres
     container_name: healthchecks-database
     hostname: healthchecks-database
-    environment:
-      # Basic setup
-      - PGDATA=/var/lib/postgresql/data/pgdata
-      # Set main database connection values
-      - POSTGRES_DB=healthchecks
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD_FILE=/.homelab/password.txt
-      # Set same connection values for psql and pg_isready
-      - PGUSER=postgres
-      - PGDATABASE=healthchecks
-      # The rest
-      - TZ=Europe/Bratislava # optional
-    healthcheck:
-      test: pg_isready || exit 1
-      start_period: 20s
-      interval: 10s
-      timeout: 2s
-      retries: 1
     volumes:
       - ./data/database-data:/var/lib/postgresql/data:rw
       - ./private/database-password.txt:/.homelab/password.txt:ro
