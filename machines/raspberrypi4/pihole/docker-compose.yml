@@ -54,7 +54,7 @@ services:
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
 
-  pihole-backup:
+  pihole-webui-backup:
     image: pihole-backup:homelab
     build:
       context: ../../../components/webui-backup/

@@ -32,7 +32,7 @@ services:
         ipv4_address: 10.1.12.1
     restart: unless-stopped
 
-  pihole-backup:
+  pihole-webui-backup:
     networks:
       pihole-internal-network: {}
     restart: unless-stopped
