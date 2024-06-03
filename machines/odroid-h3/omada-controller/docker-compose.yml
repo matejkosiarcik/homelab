@@ -39,7 +39,7 @@ services:
   omada-controller-app-backup:
     image: omada-controller-app-backup:homelab
     build:
-      context: ../../../.shared/ui-backup/
+      context: ../../../components/webui-backup/
     container_name: omada-controller-app-backup
     hostname: omada-controller-app-backup
     depends_on:

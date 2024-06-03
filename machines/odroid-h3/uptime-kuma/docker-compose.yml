@@ -20,7 +20,7 @@ services:
   uptime-kuma-app-backup:
     image: uptime-kuma-app-backup:homelab
     build:
-      context: ../../../.shared/ui-backup/
+      context: ../../../components/webui-backup/
     container_name: uptime-kuma-app-backup
     depends_on:
       uptime-kuma-app:

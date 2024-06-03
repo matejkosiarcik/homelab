@@ -19,7 +19,7 @@ updates:
 
   # Docker
   - package-ecosystem: docker
-    directory: /.shared/ui-backup
+    directory: /components/webui-backup
     schedule:
       interval: daily
       time: "01:15"
@@ -126,7 +126,7 @@ updates:
 
   # NPM
   - package-ecosystem: npm
-    directory: /.shared/ui-backup
+    directory: /components/webui-backup
     versioning-strategy: increase
     schedule:
       interval: daily

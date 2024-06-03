@@ -42,7 +42,7 @@ services:
   pihole-backup:
     image: pihole-backup:homelab
     build:
-      context: ../../../.shared/ui-backup/
+      context: ../../../components/webui-backup/
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:
