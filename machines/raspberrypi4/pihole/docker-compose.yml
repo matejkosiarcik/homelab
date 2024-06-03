@@ -58,8 +58,8 @@ services:
     image: pihole-webui-backup:homelab
     build:
       context: ../../../components/webui-backup/
-    container_name: pihole-backup
-    hostname: pihole-backup
+    container_name: pihole-webui-backup
+    hostname: pihole-webui-backup
     depends_on:
       app:
         condition: service_healthy
