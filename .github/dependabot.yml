@@ -64,7 +64,22 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /machines/odroid-h3/healthchecks/database-backup
+    directory: /components/postgres
+    schedule:
+      interval: daily
+      time: "01:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
+  - package-ecosystem: docker
+    directory: /components/postgres-backup
     schedule:
       interval: daily
       time: "01:30"
@@ -147,22 +162,6 @@ updates:
     schedule:
       interval: daily
       time: "02:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /machines/odroid-h3/healthchecks/database-backup
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "02:00"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
