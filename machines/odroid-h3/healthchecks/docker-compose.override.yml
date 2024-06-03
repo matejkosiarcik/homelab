@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  healthchecks-app:
+  app:
     ports:
       - "8080:8000"
     environment:
@@ -12,10 +12,10 @@ services:
       - SITE_ROOT=http://localhost:8080
     restart: "no"
 
-  healthchecks-database:
+  database:
     ports:
       - "5432:5432"
     restart: "no"
 
-  healthchecks-database-backup:
+  database-backup:
     restart: "no"

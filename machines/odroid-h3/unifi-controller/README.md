@@ -50,7 +50,7 @@ Config file Docs: <https://www.mongodb.com/docs/manual/reference/configuration-o
 Before installation prepare following files:
 
 - `/private/database-password.txt` - Password for MongoDB database (forbids trailing newline)
-- `/private/app-backup.env` - Contains following environment variables:
+- `/private/webui-backup.env` - Contains following environment variables:
     - `USERNAME` - UI admin account username
     - `PASSWORD` - UI admin account password
     - `HEALTHCHECK_URL` - Full URL (protocol, domain/host, ping uuid) to Healthchecks ping check

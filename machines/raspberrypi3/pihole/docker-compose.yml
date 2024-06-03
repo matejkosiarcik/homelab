@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  pihole-app:
+  app:
     image: pihole-app:homelab
     build:
       context: ../../../components/pihole/
@@ -13,7 +13,7 @@ services:
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
     stop_grace_period: 30s
 
-  pihole-http-proxy:
+  http-proxy:
     image: pihole-http-proxy:homelab
     build:
       context: ../../../components/http-proxy
@@ -30,7 +30,7 @@ services:
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
-  pihole-socat:
+  socat:
     image: pihole-socat:homelab
     build:
       context: ../../../components/socat/
@@ -39,24 +39,24 @@ services:
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
 
-  pihole-backup:
+  webui-backup:
     image: pihole-backup:homelab
     build:
       context: ../../../components/webui-backup/
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:
-      pihole-app:
+      app:
         condition: service_healthy
     env_file:
-      - ./private/app-backup.env
+      - ./private/webui-backup.env
     volumes:
-      - ./data/app-backup:/backup:rw
-      - ./log/app-backup:/log:rw
-      - ./config/app-backup/main.sh:/app/main.sh:ro
+      - ./data/webui-backup:/backup:rw
+      - ./log/webui-backup:/log:rw
+      - ./config/webui-backup/main.sh:/app/main.sh:ro
 
 networks:
-  pihole-external-network:
+  external-network:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -66,4 +66,4 @@ networks:
           ip_range: "10.1.10.0/24"
           gateway: "10.1.0.1"
 
-  pihole-internal-network:
+  internal-network:

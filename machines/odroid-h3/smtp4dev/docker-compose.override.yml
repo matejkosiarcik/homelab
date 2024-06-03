@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  smtp4dev-app:
+  app:
     ports:
       - "8025:25"
       - "8081:80"
@@ -11,7 +11,7 @@ services:
       - ServerOptions__HostName=host.docker.internal # Or localhost
     restart: "no"
 
-  smtp4dev-proxy:
+  http-proxy:
     ports:
       - 8080:80
       - 8443:443
