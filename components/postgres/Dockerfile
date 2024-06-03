@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_8: allow root user
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 FROM postgres:16.3
 ENV PGDATA=/var/lib/postgresql/data/pgdata \
