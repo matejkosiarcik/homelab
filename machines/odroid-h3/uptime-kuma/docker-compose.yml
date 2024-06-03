@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  uptime-kuma-app:
+  app:
     image: louislam/uptime-kuma:1.23.13
     container_name: uptime-kuma-app
     hostname: uptime-kuma-app
@@ -17,7 +17,7 @@ services:
       retries: 1
     stop_grace_period: 30s
 
-  uptime-kuma-app-backup:
+  webui-backup:
     image: uptime-kuma-app-backup:homelab
     build:
       context: ../../../components/webui-backup/

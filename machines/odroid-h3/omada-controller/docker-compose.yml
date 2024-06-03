@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  omada-controller-app:
+  app:
     image: mbentley/omada-controller:5.13
     container_name: omada-controller-app
     hostname: omada-controller-app
@@ -36,7 +36,7 @@ services:
     stop_grace_period: 60s
     # Note: healthcheck builtin
 
-  omada-controller-app-backup:
+  webui-backup:
     image: omada-controller-app-backup:homelab
     build:
       context: ../../../components/webui-backup/

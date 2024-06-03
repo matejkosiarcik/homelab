@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  homer-app:
+  app:
     # Note: healthcheck builtin
     image: b4bz/homer:v24.05.1
     container_name: homer-app
@@ -14,7 +14,7 @@ services:
       - ./config/assets/:/www/assets:ro
     stop_grace_period: 30s
 
-  homer-http-proxy:
+  http-proxy:
     # Note: healthcheck builtin
     image: homer-http-proxy:homelab
     build:

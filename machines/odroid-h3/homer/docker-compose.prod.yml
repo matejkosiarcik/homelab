@@ -1,12 +1,12 @@
 # version: "3.8"
 
 services:
-  homer-app:
+  app:
     networks:
       homer-internal-network: {}
     restart: unless-stopped
 
-  homer-http-proxy:
+  http-proxy:
     networks:
       homer-internal-network: {}
       homer-external-network:

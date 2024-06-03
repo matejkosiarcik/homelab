@@ -15,8 +15,8 @@ services:
         ipv4_address: 10.1.11.1
     restart: unless-stopped
 
-  db:
+  database:
     restart: unless-stopped
 
-  db-backup:
+  database-backup:
     restart: unless-stopped

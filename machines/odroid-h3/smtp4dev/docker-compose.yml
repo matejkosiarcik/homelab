@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  smtp4dev-app:
+  app:
     image: rnwood/smtp4dev:3.3.3
     container_name: smtp4dev-app
     hostname: smtp4dev-app
@@ -25,12 +25,12 @@ services:
       retries: 1
     stop_grace_period: 30s
 
-  smtp4dev-proxy:
-    image: smtp4dev-proxy:homelab
+  http-proxy:
+    image: smtp4dev-http-proxy:homelab
     build:
       context: ../../../components/http-proxy
-    container_name: smtp4dev-proxy
-    hostname: smtp4dev-proxy
+    container_name: smtp4dev-http-proxy
+    hostname: smtp4dev-http-proxy
     environment:
       - HOST=smtp4dev.lan
       - UPSTREAM_URL=http://smtp4dev-app

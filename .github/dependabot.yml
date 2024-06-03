@@ -64,7 +64,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /machines/odroid-h3/healthchecks/db-backup
+    directory: /machines/odroid-h3/healthchecks/database-backup
     schedule:
       interval: daily
       time: "01:30"
@@ -158,7 +158,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: npm
-    directory: /machines/odroid-h3/healthchecks/db-backup
+    directory: /machines/odroid-h3/healthchecks/database-backup
     versioning-strategy: increase
     schedule:
       interval: daily

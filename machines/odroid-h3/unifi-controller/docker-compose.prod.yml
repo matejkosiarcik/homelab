@@ -1,14 +1,14 @@
 # version: "3.8"
 
 services:
-  unifi-controller-app:
+  app:
     networks:
       unifi-controller-network:
         ipv4_address: 10.1.11.5
     restart: unless-stopped
 
-  unifi-controller-database:
+  database:
     restart: unless-stopped
 
-  unifi-controller-app-backup:
+  webui-backup:
     restart: unless-stopped

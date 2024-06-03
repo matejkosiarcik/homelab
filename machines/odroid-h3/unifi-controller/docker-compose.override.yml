@@ -1,13 +1,13 @@
 # version: "3.8"
 
 services:
-  unifi-controller-app:
+  app:
     restart: "no"
 
-  unifi-controller-database:
+  database:
     ports:
       - 27017:27017
     restart: "no"
 
-  unifi-controller-app-backup:
+  webui-backup:
     restart: "no"
