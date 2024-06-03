@@ -33,7 +33,7 @@ services:
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
 networks:
-  homer-external-network:
+  external-network:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -43,4 +43,4 @@ networks:
           ip_range: "10.1.11.0/24"
           gateway: "10.1.0.1"
 
-  homer-internal-network:
+  internal-network:

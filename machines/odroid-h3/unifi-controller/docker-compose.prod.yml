@@ -3,12 +3,17 @@
 services:
   app:
     networks:
-      unifi-controller-network:
+      internal-network: {}
+      external-network:
         ipv4_address: 10.1.11.5
     restart: unless-stopped
 
   database:
+    networks:
+      internal-network: {}
     restart: unless-stopped
 
   webui-backup:
+    networks:
+      internal-network: {}
     restart: unless-stopped

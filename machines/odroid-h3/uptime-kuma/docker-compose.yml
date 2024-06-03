@@ -33,7 +33,7 @@ services:
       - ./config/webui-backup/main.sh:/app/main.sh:ro
 
 networks:
-  uptime-kuma-network:
+  external-network:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -41,3 +41,6 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.11.0/24"
+          gateway: "10.1.0.1"
+
+  internal-network:

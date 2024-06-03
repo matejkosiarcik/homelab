@@ -2,21 +2,26 @@
 
 services:
   app:
-    ports:
-      - "80:8000"
     environment:
       - ALLOWED_HOSTS=healthchecks.lan
       - DEFAULT_FROM_EMAIL=healthchecks@healthchecks.lan
       - EMAIL_HOST=smtp4dev.lan
       - REGISTRATION_OPEN=False
       - SITE_ROOT=http://healthchecks.lan
+    ports:
+      - "80:8000"
     networks:
-      healthchecks-network:
+      internal-network: {}
+      external-network:
         ipv4_address: 10.1.11.1
     restart: unless-stopped
 
   database:
+    networks:
+      internal-network: {}
     restart: unless-stopped
 
   database-backup:
+    networks:
+      internal-network: {}
     restart: unless-stopped

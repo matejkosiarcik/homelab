@@ -71,7 +71,7 @@ services:
       - ./config/webui-backup/main.sh:/app/main.sh:ro
 
 networks:
-  pihole-external-network:
+  external-network:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -81,4 +81,4 @@ networks:
           ip_range: "10.1.12.0/24"
           gateway: "10.1.0.1"
 
-  pihole-internal-network:
+  internal-network:
