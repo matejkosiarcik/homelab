@@ -20,7 +20,6 @@ services:
       - ./data/etc-pihole:/etc/pihole:rw
       - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-      - ../../../.shared/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     healthcheck:
       test: curl --fail http://localhost/admin || exit 1
       start_period: 20s
