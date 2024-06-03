@@ -16,7 +16,7 @@ services:
   pihole-http-proxy:
     image: pihole-http-proxy:homelab
     build:
-      context: ../../../.shared/proxy/
+      context: ../../../components/http-proxy
     container_name: pihole-http-proxy
     hostname: pihole-http-proxy
     environment:

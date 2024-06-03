@@ -34,7 +34,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /.shared/proxy
+    directory: /components/http-proxy
     schedule:
       interval: daily
       time: "01:15"

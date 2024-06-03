@@ -18,7 +18,7 @@ services:
     # Note: healthcheck builtin
     image: homer-http-proxy:homelab
     build:
-      context: ../../../.shared/proxy/
+      context: ../../../components/http-proxy
     container_name: homer-http-proxy
     hostname: homer-http-proxy
     environment:
