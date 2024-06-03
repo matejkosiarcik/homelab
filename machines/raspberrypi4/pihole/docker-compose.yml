@@ -64,7 +64,7 @@ services:
       pihole-app:
         condition: service_healthy
     env_file:
-      - ./private/app-backup.env
+      - ./private/webui-backup.env
     volumes:
       - ./data/webui-backup:/backup:rw
       - ./log/webui-backup:/log:rw

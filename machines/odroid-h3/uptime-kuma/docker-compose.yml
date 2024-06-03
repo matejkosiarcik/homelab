@@ -26,11 +26,11 @@ services:
       uptime-kuma-app:
         condition: service_healthy
     env_file:
-      - ./private/app-backup.env
+      - ./private/webui-backup.env
     volumes:
-      - ./data/app-backup:/backup:rw
-      - ./log/app-backup:/log:rw
-      - ./config/app-backup/main.sh:/app/main.sh:ro
+      - ./data/webui-backup:/backup:rw
+      - ./log/webui-backup:/log:rw
+      - ./config/webui-backup/main.sh:/app/main.sh:ro
 
 networks:
   uptime-kuma-network:
