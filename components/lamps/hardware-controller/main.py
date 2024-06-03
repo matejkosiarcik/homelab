@@ -82,7 +82,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         try:
             jsonschema.validate(request_obj, statusSchema)
-        except jsonschema.exceptions.ValidationError:
+        except jsonschema.exceptions.ValidationError: # pyright: ignore
             self.send_response(HTTPStatus.BAD_REQUEST)
             self.end_headers()
             self.wfile.write("Invalid request JSON schema - validation failed\n".encode("utf-8"))
