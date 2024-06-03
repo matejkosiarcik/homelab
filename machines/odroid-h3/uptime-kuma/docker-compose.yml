@@ -21,7 +21,7 @@ services:
     image: uptime-kuma-webui-backup:homelab
     build:
       context: ../../../components/webui-backup/
-    container_name: uptime-kuma-app-backup
+    container_name: uptime-kuma-webui-backup
     depends_on:
       app:
         condition: service_healthy
