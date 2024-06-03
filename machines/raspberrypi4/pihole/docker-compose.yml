@@ -55,7 +55,7 @@ services:
       - ./config/socat/main.sh:/app/main.sh:ro
 
   pihole-webui-backup:
-    image: pihole-backup:homelab
+    image: pihole-webui-backup:homelab
     build:
       context: ../../../components/webui-backup/
     container_name: pihole-backup
@@ -66,9 +66,9 @@ services:
     env_file:
       - ./private/app-backup.env
     volumes:
-      - ./data/app-backup:/backup:rw
-      - ./log/app-backup:/log:rw
-      - ./config/app-backup/main.sh:/app/main.sh:ro
+      - ./data/webui-backup:/backup:rw
+      - ./log/webui-backup:/log:rw
+      - ./config/webui-backup/main.sh:/app/main.sh:ro
 
 networks:
   pihole-external-network:
