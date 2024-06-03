@@ -28,7 +28,7 @@ services:
       # Others
       - TZ=Europe/Bratislava # optional
     volumes:
-      - ./config/app_healthcheck.py:/.homelab/healthcheck.py:ro
+      - ./config/app/healthcheck.py:/.homelab/healthcheck.py:ro
     healthcheck:
       test: python3 /.homelab/healthcheck.py || exit 1
       start_period: 25s
