@@ -12,13 +12,13 @@ COPY apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY www/ ./www/
 EXPOSE 80
 EXPOSE 443
-ENV APACHE_HTTP_PORT_NUMBER=80
-ENV APACHE_HTTPS_PORT_NUMBER=443
+ENV APACHE_HTTP_PORT_NUMBER=80 \
+    APACHE_HTTPS_PORT_NUMBER=443 \
+    TZ=Europe/Bratislava
 # User necessary for binding to privileged ports
 # hadolint ignore=DL3002
 USER root
 VOLUME [ "/app/www", "/app/misc" ]
 HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
 # TODO: Update to --interval=10s --start-period=15s
-ENV TZ=Europe/Bratislava
 ENTRYPOINT [ "apachectl", "-D", "FOREGROUND" ]
