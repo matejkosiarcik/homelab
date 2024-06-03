@@ -20,7 +20,6 @@ services:
       - ./data/etc-pihole:/etc/pihole:rw
       - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-      - ../../../.shared/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     healthcheck:
       test: curl --fail http://localhost/admin || exit 1
       start_period: 20s
@@ -32,7 +31,7 @@ services:
   pihole-http-proxy:
     image: pihole-http-proxy:homelab
     build:
-      context: ../../../.shared/proxy/
+      context: ../../../components/http-proxy
     container_name: pihole-http-proxy
     hostname: pihole-http-proxy
     environment:
@@ -49,7 +48,7 @@ services:
   pihole-socat:
     image: pihole-socat:homelab
     build:
-      context: ../../../.shared/socat/
+      context: ../../../components/socat/
     container_name: pihole-socat
     hostname: pihole-socat
     volumes:
@@ -58,7 +57,7 @@ services:
   pihole-backup:
     image: pihole-backup:homelab
     build:
-      context: ../../../.shared/ui-backup/
+      context: ../../../components/webui-backup/
     container_name: pihole-backup
     hostname: pihole-backup
     depends_on:

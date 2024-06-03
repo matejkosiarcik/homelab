@@ -28,7 +28,7 @@ services:
   smtp4dev-proxy:
     image: smtp4dev-proxy:homelab
     build:
-      context: ../../../.shared/proxy/
+      context: ../../../components/http-proxy
     container_name: smtp4dev-proxy
     hostname: smtp4dev-proxy
     environment:

@@ -1,3 +1,5 @@
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
+
 FROM debian:12.5-slim AS build
 WORKDIR /app
 RUN apt-get update && \
@@ -17,4 +19,5 @@ COPY main.py ./
 ENV PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava
+HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost || exit 1" ]
 ENTRYPOINT [ "python3", "/app/main.py" ]

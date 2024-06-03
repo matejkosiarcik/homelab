@@ -12,9 +12,7 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: path.join(directory, 'index.html'),
-            output: {
-                dir: 'dist/frontend',
-            },
         },
+        outDir: path.join(directory, '..', 'dist', 'frontend'),
     },
 });

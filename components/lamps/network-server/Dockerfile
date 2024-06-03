@@ -1,3 +1,5 @@
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
+
 FROM node:22.2.0-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -22,4 +24,5 @@ WORKDIR /app
 ENV TZ=Europe/Bratislava
 EXPOSE 80
 EXPOSE 443
+HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/status || exit 1" ]
 ENTRYPOINT [ "sh", "-c", "node /app/dist/backend/main.js" ]

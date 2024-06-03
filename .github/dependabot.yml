@@ -19,7 +19,7 @@ updates:
 
   # Docker
   - package-ecosystem: docker
-    directory: /.shared/ui-backup
+    directory: /components/webui-backup
     schedule:
       interval: daily
       time: "01:15"
@@ -34,7 +34,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /.shared/proxy
+    directory: /components/http-proxy
     schedule:
       interval: daily
       time: "01:15"
@@ -49,7 +49,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /.shared/socat
+    directory: /components/socat
     schedule:
       interval: daily
       time: "01:15"
@@ -79,7 +79,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /.shared/lamps/hardware-controller
+    directory: /components/lamps/hardware-controller
     schedule:
       interval: daily
       time: "01:35"
@@ -94,7 +94,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /.shared/lamps/network-server
+    directory: /components/lamps/network-server
     schedule:
       interval: daily
       time: "01:35"
@@ -126,7 +126,7 @@ updates:
 
   # NPM
   - package-ecosystem: npm
-    directory: /.shared/ui-backup
+    directory: /components/webui-backup
     versioning-strategy: increase
     schedule:
       interval: daily
@@ -174,7 +174,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: npm
-    directory: /.shared/lamps/network-server
+    directory: /components/lamps/network-server
     versioning-strategy: increase
     schedule:
       interval: daily
@@ -207,7 +207,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: pip
-    directory: /.shared/lamps/hardware-controller
+    directory: /components/lamps/hardware-controller
     schedule:
       interval: daily
       time: "02:30"

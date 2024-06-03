@@ -6,8 +6,8 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 SERVICES := $(shell printf 'odroid-h3/healthchecks odroid-h3/homer odroid-h3/omada-controller odroid-h3/smtp4dev odroid-h3/unifi-controller odroid-h3/uptime-kuma raspberrypi3/pihole raspberrypi4/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf '.shared/socat .shared/proxy .shared/ui-backup .shared/lamps/hardware-controller .shared/lamps/network-server components/pihole machines/odroid-h3/healthchecks/db-backup' | sed 's~ ~\n~g')
-NPM_COMPONENTS := $(shell printf '.shared/ui-backup .shared/lamps/network-server' | sed 's~ ~\n~g')
+DOCKER_COMPONENTS := $(shell printf 'components/socat components/http-proxy components/webui-backup components/lamps/hardware-controller components/lamps/network-server components/pihole machines/odroid-h3/healthchecks/db-backup' | sed 's~ ~\n~g')
+NPM_COMPONENTS := $(shell printf 'components/webui-backup components/lamps/network-server' | sed 's~ ~\n~g')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
 .POSIX:
@@ -15,7 +15,7 @@ DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
 .DEFAULT: all
 .PHONY: all
-all: clean bootstrap build
+all: clean bootstrap build docker-build docker-multibuild
 
 .PHONY: bootstrap
 bootstrap:

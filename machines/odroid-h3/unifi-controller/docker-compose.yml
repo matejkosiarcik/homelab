@@ -65,7 +65,7 @@ services:
   unifi-controller-app-backup:
     image: unifi-controller-app-backup:homelab
     build:
-      context: ../../../.shared/ui-backup/
+      context: ../../../components/webui-backup/
     container_name: unifi-controller-app-backup
     hostname: unifi-controller-app-backup
     depends_on:
