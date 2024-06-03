@@ -15,7 +15,7 @@ DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
 .DEFAULT: all
 .PHONY: all
-all: clean bootstrap build
+all: clean bootstrap build docker-build docker-multibuild
 
 .PHONY: bootstrap
 bootstrap:
