@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  pihole-app:
+  app:
     networks:
       pihole-internal-network: {}
     environment:
@@ -13,14 +13,14 @@ services:
       # - FTLCONF_RATE_LIMIT=100000/60
     restart: unless-stopped
 
-  pihole-http-proxy:
+  http-proxy:
     networks:
       pihole-internal-network: {}
     environment:
       - ENV=prod
     restart: unless-stopped
 
-  pihole-socat:
+  socat:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -32,7 +32,7 @@ services:
         ipv4_address: 10.1.12.1
     restart: unless-stopped
 
-  pihole-webui-backup:
+  webui-backup:
     networks:
       pihole-internal-network: {}
     restart: unless-stopped

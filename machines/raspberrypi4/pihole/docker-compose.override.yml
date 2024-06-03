@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  pihole-app:
+  app:
     # ports:
     #   - "8053:53/tcp"
     #   - "8053:53/udp"
@@ -10,7 +10,7 @@ services:
       - FTLCONF_PRIVACYLEVEL=0
     restart: "no"
 
-  pihole-http-proxy:
+  http-proxy:
     # ports:
     #   - "8080:80"
     #   - "8443:443"
@@ -18,7 +18,7 @@ services:
       - ENV=dev
     restart: "no"
 
-  pihole-socat:
+  socat:
     ports:
       - "8053:53/tcp"
       - "8053:53/udp"
@@ -26,5 +26,5 @@ services:
       - "8443:443"
     restart: "no"
 
-  pihole-webui-backup:
+  webui-backup:
     restart: "no"

@@ -1,7 +1,7 @@
 # version: "3.8"
 
 services:
-  pihole-app:
+  app:
     image: pihole-app:homelab
     build:
       context: ../../../components/pihole/
@@ -13,7 +13,7 @@ services:
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
     stop_grace_period: 30s
 
-  pihole-http-proxy:
+  http-proxy:
     image: pihole-http-proxy:homelab
     build:
       context: ../../../components/http-proxy
@@ -30,7 +30,7 @@ services:
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
-  pihole-socat:
+  socat:
     image: pihole-socat:homelab
     build:
       context: ../../../components/socat/
@@ -39,7 +39,7 @@ services:
     volumes:
       - ./config/socat/main.sh:/app/main.sh:ro
 
-  pihole-webui-backup:
+  webui-backup:
     image: pihole-backup:homelab
     build:
       context: ../../../components/webui-backup/
