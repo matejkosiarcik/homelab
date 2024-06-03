@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_8: allow root user
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 # Can't upgrade to 1.8.0.0 because of https://github.com/termux/termux-packages/issues/18645
 # FROM alpine/socat:1.7.4.4
