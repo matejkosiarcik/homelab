@@ -35,9 +35,9 @@ if [ "$source_dir" = '' ]; then
     printf 'SOURCE_DIR unset\n' >&2
 fi
 
-# Default deployment location is "~/homelab"
+# Default deployment location is "~/homelab-deployment"
 # Can be overriden by setting "DEST_DIR=..."
-dest_dir="${DEST_DIR-$HOME/homelab}"
+dest_dir="${DEST_DIR-$HOME/homelab-deployment}"
 global_log_dir="$dest_dir/.log/$(date +"%Y-%m-%d_%H-%M-%S").txt"
 global_log_file="$global_log_dir/install.txt"
 mkdir -p "$dest_dir" "$global_log_dir"

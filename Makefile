@@ -70,7 +70,7 @@ dryrun:
 clean:
 	rm -rf \
 		"$(PROJECT_DIR)/.mypy_cache" \
-		"$(PROJECT_DIR)/homelab" \
+		"$(PROJECT_DIR)/homelab-deployment" \
 		"$(PROJECT_DIR)/icons/gitman" \
 		"$(PROJECT_DIR)/icons/node_modules" \
 		"$(PROJECT_DIR)/icons/venv" \
