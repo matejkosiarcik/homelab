@@ -6,7 +6,7 @@ services:
     container_name: healthchecks-app
     hostname: healthchecks-app
     depends_on:
-      healthchecks-database:
+      database:
         condition: service_healthy
     env_file:
       - ./private/app.env
