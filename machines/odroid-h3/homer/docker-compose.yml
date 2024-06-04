@@ -2,8 +2,9 @@
 
 services:
   app:
-    # Note: healthcheck builtin
-    image: b4bz/homer:v24.05.1
+    image: homer-app:homelab
+    build:
+      context: ../../../components/homer
     container_name: homer-app
     hostname: homer-app
     environment:
