@@ -2,7 +2,9 @@
 
 services:
   app:
-    image: healthchecks/healthchecks:v3.3
+    image: healthchecks-app:homelab
+    build:
+      context: ../../../components/healthchecks
     container_name: healthchecks-app
     hostname: healthchecks-app
     depends_on:
@@ -11,30 +13,8 @@ services:
     env_file:
       - ./private/app.env
     environment:
-      # General options
-      - DEBUG=False
       - SITE_NAME=Healthchecks
-      # Database options
       - DB_HOST=healthchecks-database
-      - DB_NAME=database
-      - DB=postgres
-      # Email options
-      - EMAIL_HOST_PASSWORD= # TODO: Set ?
-      - EMAIL_HOST_USER= # TODO: Set ?
-      - EMAIL_PORT=8025 # TODO: Unset
-      - EMAIL_USE_SSL=False # TODO: Remove
-      - EMAIL_USE_TLS=False # TODO: Set True
-      - EMAIL_USE_VERIFICATION=True
-      # Others
-      - TZ=Europe/Bratislava # optional
-    volumes:
-      - ./config/app/healthcheck.py:/.homelab/healthcheck.py:ro
-    healthcheck:
-      test: python3 /.homelab/healthcheck.py || exit 1
-      start_period: 25s
-      interval: 10s
-      timeout: 2s
-      retries: 1
     stop_grace_period: 30s
 
   database:

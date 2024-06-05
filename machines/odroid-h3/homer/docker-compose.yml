@@ -2,17 +2,11 @@
 
 services:
   app:
-    # Note: healthcheck builtin
-    image: b4bz/homer:v24.05.1
+    image: homer-app:homelab
+    build:
+      context: ../../../components/homer
     container_name: homer-app
     hostname: homer-app
-    environment:
-      - INIT_ASSETS=0
-      - PORT=80
-      - TZ=Europe/Bratislava # optional
-    volumes:
-      - ./config/assets/:/www/assets:ro
-    stop_grace_period: 30s
 
   http-proxy:
     image: homer-http-proxy:homelab

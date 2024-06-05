@@ -1,5 +1,7 @@
 # Pi-hole
 
+For Pi-Hole docs see [/components/pihole/README.md](../../../components/pihole/README.md)
+
 ## Before installation
 
 Before installation prepare following files:
