@@ -7,7 +7,7 @@ tmpdir=''
 . "$(dirname "$0")/.build-utils.sh"
 
 indir="$(git rev-parse --show-toplevel)/icons"
-global_outdir="$(git rev-parse --show-toplevel)/machines/odroid-h3/homer/config/assets/icons"
+global_outdir="$(git rev-parse --show-toplevel)/components/homer/assets/icons"
 rm -rf "$global_outdir"
 mkdir -p "$global_outdir"
 
