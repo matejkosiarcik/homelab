@@ -2,7 +2,7 @@
 # checkov:skip=CKV_DOCKER_2: healthcheck builtin
 
 FROM b4bz/homer:v24.05.1
-COPY config/assets/ /www/assets/
+COPY assets/ /www/assets/
 ENV INIT_ASSETS=0 \
     PORT=80 \
     TZ=Europe/Bratislava
