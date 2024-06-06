@@ -44,22 +44,18 @@ services:
     stop_grace_period: 30s
 
   database:
-    image: mongo:7.0.9
+    image: unifi-controller-database:homelab
+    build:
+      context: ../../../components/mongodb/
     container_name: unifi-controller-database
     hostname: unifi-controller-database
-    command: --auth
     environment:
-      - TZ=Europe/Bratislava # optional
+      - DBNAME=unifi
+      - USER=unifi
     volumes:
       - ./data/mongodb:/data/db:rw
       - ./config/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./private/database-password.txt:/.homelab/database-password.txt:ro
-    healthcheck:
-      test: printf 'show databases\n' | mongosh localhost:27017/unifi --username unifi --password "$(cat /.homelab/database-password.txt)" --quiet || exit 1
-      start_period: 20s
-      interval: 10s
-      timeout: 2s
-      retries: 1
     stop_grace_period: 30s
 
   webui-backup:
@@ -87,5 +83,6 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.11.0/24"
+          gateway: "10.1.0.1"
 
   internal-network:

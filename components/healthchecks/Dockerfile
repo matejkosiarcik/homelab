@@ -7,6 +7,7 @@ ENV DB_NAME=database \
     DEBUG=False \
     PIHOLE_DNS_=8.8.8.8;1.1.1.1 \
     TZ=Europe/Bratislava
+# Trailing underscore for "PIHOLE_DNS_" is intentional
 
 # TODO: Enable email integration
 # TODO: EMAIL_HOST ???
@@ -17,5 +18,4 @@ ENV DB_NAME=database \
 # EMAIL_USE_TLS=False # TODO: Set True
 # EMAIL_USE_VERIFICATION=True \
 
-# Trailing underscore [in the name] is intentional
 HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /.homelab/healthcheck.py || exit 1" ]
