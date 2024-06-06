@@ -1,8 +1,6 @@
 # Uptime Kuma
 
-- GitHub: <https://github.com/louislam/uptime-kuma>
-- DockerHub: <https://hub.docker.com/r/louislam/uptime-kuma>
-- Docs: <https://github.com/louislam/uptime-kuma/wiki>
+For general `uptime-kuma` docs see [/components/uptime-kuma/README.md](../../../components/uptime-kuma/README.md)
 
 ## Installation
 
