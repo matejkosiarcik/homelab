@@ -1,6 +1,6 @@
 # Unifi network application
 
-For general `unifi-network-application` docs see [/components/unifi-network-application/README.md](../../../components/unifi-network-application/README.md)
+For general `unifi-controller` docs see [/components/unifi-controller/README.md](../../../components/unifi-controller/README.md)
 
 For general `mongodb` docs see [/components/mongodb/README.md](../../../components/mongodb/README.md)
 
