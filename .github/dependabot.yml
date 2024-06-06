@@ -64,6 +64,21 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
+    directory: /components/omada-controller
+    schedule:
+      interval: daily
+      time: "01:15"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        patterns:
+          - "*"
+  - package-ecosystem: docker
     directory: /components/healthchecks
     schedule:
       interval: daily

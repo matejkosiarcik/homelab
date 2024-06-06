@@ -6,7 +6,7 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 SERVICES := $(shell printf 'odroid-h3/healthchecks odroid-h3/homer odroid-h3/omada-controller odroid-h3/smtp4dev odroid-h3/unifi-controller odroid-h3/uptime-kuma raspberrypi3/pihole raspberrypi4/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf 'components/database components/database-backup components/http-proxy components/lamps/hardware-controller components/lamps/network-server components/pihole components/socat components/webui-backup' | sed 's~ ~\n~g')
+DOCKER_COMPONENTS := $(shell printf 'components/database components/database-backup components/http-proxy components/lamps/hardware-controller components/lamps/network-server components/omada-controller components/pihole components/socat components/webui-backup' | sed 's~ ~\n~g')
 NPM_COMPONENTS := $(shell printf 'components/lamps/network-server components/webui-backup' | sed 's~ ~\n~g')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
