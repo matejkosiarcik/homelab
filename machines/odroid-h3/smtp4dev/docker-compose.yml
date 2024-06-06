@@ -16,7 +16,6 @@ services:
       - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/smtp4dev:/smtp4dev:rw
-      - ./config/favicon.ico:/app/wwwroot/favicon.ico:ro
     healthcheck:
       test: timeout 1s bash -c ':> /dev/tcp/localhost/80' # Note: curl/wget isn't available
       start_period: 15s
