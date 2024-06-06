@@ -6,7 +6,7 @@ For general `omada-controller` docs see [/components/omada-controller/README.md]
 
 Before installation prepare following files:
 
-- `/private/backuper.env` - Contains following environment variables:
+- `/private/webui-backup.env` - Contains following environment variables:
     - `USERNAME` - UI admin account username
     - `PASSWORD` - UI admin account password
     - `HEALTHCHECK_URL` - Full URL (protocol, domain/host, ping uuid) to Healthchecks ping check
