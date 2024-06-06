@@ -1,7 +1,6 @@
 # TP-Link Omada SDN Controller
 
-- GitHub: <https://github.com/mbentley/docker-omada-controller>
-- DockerHub: <https://hub.docker.com/r/mbentley/omada-controller>
+For general `omada-controller` docs see [/components/omada-controller/README.md](../../../components/omada-controller/README.md)
 
 ## Installation
 
