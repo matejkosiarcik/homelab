@@ -2,26 +2,13 @@
 
 services:
   app:
-    image: rnwood/smtp4dev:3.3.3
+    image: smtp4dev-app:homelab
+    build:
+      context: ../../../components/smtp4dev
     container_name: smtp4dev-app
     hostname: smtp4dev-app
-    environment:
-      - ASPNETCORE_HTTP_PORTS=80
-      - ServerOptions__LockSettings=true
-      # TODO: Enable TLS below
-      # - ServerOptions__TlsMode=StartTls
-      # - ServerOptions__SecureConnectionRequired=true
-      # - ServerOptions__TlsCertificate=/.homelab/certs/server.pem
-      # - ServerOptions__AuthenticationRequired=true
-      - TZ=Europe/Bratislava # optional
     volumes:
       - ./data/smtp4dev:/smtp4dev:rw
-    healthcheck:
-      test: timeout 1s bash -c ':> /dev/tcp/localhost/80' # Note: curl/wget isn't available
-      start_period: 15s
-      interval: 10s
-      timeout: 2s
-      retries: 1
     stop_grace_period: 30s
 
   http-proxy:
