@@ -64,6 +64,9 @@ else
 fi
 
 # Remove old files
+if [ -e "$target_dir/log" ]; then
+    sudo rm -rf "$target_dir/log"
+fi
 find "$target_dir" -mindepth 1 -maxdepth 1 \
     -not \( -name 'data' -and -type d \) -and \
     -not \( -name 'private' -and -type d \) \
