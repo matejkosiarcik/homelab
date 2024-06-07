@@ -1,5 +1,5 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
-# checkov:skip=CKV_DOCKER_6: false positive in timezone
+# checkov:skip=CKV_SECRET_6: false positive in timezone
 
 FROM linuxserver/unifi-network-application:8.1.127
 ENV FILE__MONGO_PASS=/.homelab/database-password.txt \
