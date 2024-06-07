@@ -56,6 +56,8 @@ systemctl status log2ram
 
 # Modify settings (disable email "MAIL=false")
 sudo nano /etc/log2ram.conf
+# Verify edit
+cat /etc/log2ram.conf
 ```
 
 ## Next steps
