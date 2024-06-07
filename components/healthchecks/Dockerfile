@@ -5,9 +5,7 @@ COPY healthcheck.py /.homelab/healthcheck.py
 ENV DB_NAME=database \
     DB=postgres \
     DEBUG=False \
-    PIHOLE_DNS_=8.8.8.8;1.1.1.1 \
     TZ=Europe/Bratislava
-# Trailing underscore for "PIHOLE_DNS_" is intentional
 
 # TODO: Enable email integration
 # TODO: EMAIL_HOST ???
