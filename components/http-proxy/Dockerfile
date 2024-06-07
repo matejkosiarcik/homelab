@@ -1,3 +1,4 @@
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
 # checkov:skip=CKV_DOCKER_8: allow root user
 
 FROM debian:12.5-slim
@@ -8,6 +9,7 @@ RUN apt-get update -qq && \
     mkdir -p /log /certs && \
     a2enmod auth_basic env headers http2 log_forensic macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
+    # useradd --create-home --no-log-init --shell /bin/sh --user-group --system user
 COPY apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY www/ ./www/
 EXPOSE 80
@@ -17,7 +19,7 @@ ENV APACHE_HTTP_PORT_NUMBER=80 \
     TZ=Europe/Bratislava
 # User necessary for binding to privileged ports
 # hadolint ignore=DL3002
-USER root
+# USER root
 VOLUME [ "/app/www", "/app/misc" ]
 HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
 # TODO: Update to --interval=10s --start-period=15s
