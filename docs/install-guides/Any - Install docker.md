@@ -56,6 +56,9 @@ sudo nano /etc/docker/daemon.json
     "max-size": "10m"
   }
 }
+
+# Verify edit
+cat /etc/docker/daemon.json
 ```
 
 ## How to connect to macvlan container from Host
