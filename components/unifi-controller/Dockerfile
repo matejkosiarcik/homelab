@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM linuxserver/unifi-network-application:8.1.127
+FROM linuxserver/unifi-network-application:8.2.93
 ENV FILE__MONGO_PASS=/.homelab/database-password.txt \
     MONGO_DBNAME=database \
     MONGO_PORT=27017 \
