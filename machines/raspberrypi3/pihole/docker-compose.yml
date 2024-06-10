@@ -11,6 +11,7 @@ services:
       - ./data/etc-pihole:/etc/pihole:rw
       - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
+      - ../../../components/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     stop_grace_period: 30s
 
   http-proxy:
