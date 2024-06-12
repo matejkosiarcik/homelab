@@ -18,7 +18,7 @@ services:
       - ENV=dev
     restart: "no"
 
-  socat:
+  socket-proxy:
     ports:
       - "8053:53/tcp"
       - "8053:53/udp"

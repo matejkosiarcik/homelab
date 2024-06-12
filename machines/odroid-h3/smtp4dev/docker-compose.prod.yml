@@ -2,24 +2,34 @@
 
 services:
   app:
-    ports:
-      - "25:25"
-      # - "143:143"
+    # ports:
+    #   - "25:25"
+    #   # - "143:143"
     environment:
       - HOSTNAME=smtp4dev.lan
       - ServerOptions__HostName=smtp4dev.lan
     networks:
       internal-network: {}
-      external-network:
-        ipv4_address: 10.1.11.4
     restart: unless-stopped
 
   http-proxy:
     environment:
       - ENV=prod
-    ports:
-      - 80:80
-      - 443:443
+    # ports:
+    #   - 80:80
+    #   - 443:443
     networks:
       internal-network: {}
+    restart: unless-stopped
+
+  socket-proxy:
+    ports:
+      - "25:25"
+      - "80:80"
+      # - "143:143"
+      - "443:443"
+    networks:
+      internal-network: {}
+      external-network:
+        ipv4_address: 10.1.11.4
     restart: unless-stopped
