@@ -139,7 +139,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: docker
-    directory: /components/socat
+    directory: /components/socket-proxy
     schedule:
       interval: daily
       time: "01:15"

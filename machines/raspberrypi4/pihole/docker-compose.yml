@@ -31,14 +31,14 @@ services:
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
-  socat:
-    image: pihole-socat:homelab
+  socket-proxy:
+    image: pihole-socket-proxy:homelab
     build:
-      context: ../../../components/socat/
-    container_name: pihole-socat
-    hostname: pihole-socat
+      context: ../../../components/socket-proxy/
+    container_name: pihole-socket-proxy
+    hostname: pihole-socket-proxy
     volumes:
-      - ./config/socat/main.sh:/app/main.sh:ro
+      - ./config/socket-proxy/main.sh:/app/main.sh:ro
 
   webui-backup:
     image: pihole-webui-backup:homelab
