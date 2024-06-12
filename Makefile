@@ -74,6 +74,7 @@ clean:
 		"$(PROJECT_DIR)/icons/gitman" \
 		"$(PROJECT_DIR)/icons/node_modules" \
 		"$(PROJECT_DIR)/icons/venv" \
+		"$(PROJECT_DIR)/python-vendor" \
 		"$(PROJECT_DIR)/venv"
 
 	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
