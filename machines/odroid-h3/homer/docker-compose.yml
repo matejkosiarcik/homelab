@@ -25,6 +25,15 @@ services:
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
+  socket-proxy:
+    image: homer-socket-proxy:homelab
+    build:
+      context: ../../../components/socket-proxy/
+    container_name: homer-socket-proxy
+    hostname: homer-socket-proxy
+    environment:
+      - HOMELAB_SERVICE=homer
+
 networks:
   external-network:
     driver: macvlan

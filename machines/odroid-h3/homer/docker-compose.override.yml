@@ -5,9 +5,12 @@ services:
     restart: "no"
 
   http-proxy:
+    environment:
+      - ENV=dev
+    restart: "no"
+
+  socket-proxy:
     ports:
       - "8080:80"
       - "8443:443"
-    environment:
-      - ENV=dev
     restart: "no"
