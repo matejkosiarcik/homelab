@@ -53,13 +53,6 @@ convert_image "$convert_options" "$indir/other/tp-link.svg.bin" "$outdir/tp-link
 convert_image "$convert_options" "$indir/other/upc.svg.bin" "$outdir/upc.png"
 convert_image "$convert_options" "$indir/other/uptime-kuma.svg.bin" "$outdir/uptime-kuma.png"
 
-### Favicon ###
-
-outdir="$global_outdir"
-convert_image 'magick INPUT_FILE -resize 16x16 -density 1200 -background none -bordercolor transparent OUTPUT_FILE' "$indir/other/homer.png" "$tmpdir/homer-favicon/homer-16.png"
-convert_image 'magick INPUT_FILE -resize 32x32 -density 1200 -background none -bordercolor transparent OUTPUT_FILE' "$indir/other/homer.png" "$tmpdir/homer-favicon/homer-32.png"
-convert_ico "$tmpdir/homer-favicon/homer-16.png $tmpdir/homer-favicon/homer-32.png" "$outdir/favicon.ico"
-
 ### Cleanup ###
 
 rm -rf "$tmpdir"
