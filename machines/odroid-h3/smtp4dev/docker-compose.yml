@@ -28,6 +28,15 @@ services:
       - ./private/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
+  socket-proxy:
+    image: smtp4dev-socket-proxy:homelab
+    build:
+      context: ../../../components/socket-proxy/
+    container_name: smtp4dev-socket-proxy
+    hostname: smtp4dev-socket-proxy
+    environment:
+      - HOMELAB_SERVICE=smtp4dev
+
 networks:
   external-network:
     driver: macvlan
