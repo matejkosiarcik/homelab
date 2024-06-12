@@ -3,6 +3,7 @@ set -euf
 
 PATH="$PATH:$(dirname "$0")/node_modules/.bin"
 tmpdir="$(mktemp -d)"
+mkdir "$tmpdir/file"
 unzip -q 13_05_osa_icons_svg.zip -d "$tmpdir/13_05_osa_icons_svg"
 
 convert_image() {

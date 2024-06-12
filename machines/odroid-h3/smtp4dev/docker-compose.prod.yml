@@ -2,9 +2,6 @@
 
 services:
   app:
-    # ports:
-    #   - "25:25"
-    #   # - "143:143"
     environment:
       - HOSTNAME=smtp4dev.lan
       - ServerOptions__HostName=smtp4dev.lan
@@ -15,9 +12,6 @@ services:
   http-proxy:
     environment:
       - ENV=prod
-    # ports:
-    #   - 80:80
-    #   - 443:443
     networks:
       internal-network: {}
     restart: unless-stopped

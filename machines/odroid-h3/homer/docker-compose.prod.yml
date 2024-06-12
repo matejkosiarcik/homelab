@@ -9,6 +9,11 @@ services:
   http-proxy:
     environment:
       - ENV=prod
+    networks:
+      internal-network: {}
+    restart: unless-stopped
+
+  socket-proxy:
     ports:
       - "80:80"
       - "443:443"
