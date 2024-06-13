@@ -37,8 +37,8 @@ services:
       context: ../../../components/socket-proxy/
     container_name: pihole-socket-proxy
     hostname: pihole-socket-proxy
-    volumes:
-      - ./config/socket-proxy/main.sh:/app/main.sh:ro
+    environment:
+      - HOMELAB_SERVICE=pihole
 
   webui-backup:
     image: pihole-webui-backup:homelab
