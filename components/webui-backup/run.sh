@@ -1,6 +1,9 @@
 #!/bin/sh
 set -euf
 
+PATH="$PATH:/usr/local/bin"
+cd /app
+
 # Setup
 tmpdir="$(mktemp -d)"
 statusfile="$tmpdir/status.txt"

@@ -54,12 +54,11 @@ services:
     depends_on:
       app:
         condition: service_healthy
-    env_file:
-      - ./private/webui-backup.env
     volumes:
       - ./data/webui-backup:/backup:rw
       - ./log/webui-backup:/log:rw
       - ./config/webui-backup/main.sh:/app/main.sh:ro
+      - ./private/webui-backup.env:/app/.env:ro
 
 networks:
   external-network:
