@@ -31,10 +31,10 @@ services:
       app:
         condition: service_healthy
     volumes:
+      - ./private/webui-backup.env:/app/.env:ro
       - ./data/webui-backup:/backup:rw
       - ./log/webui-backup:/log:rw
       - ./config/webui-backup/main.sh:/app/main.sh:ro
-      - ./private/webui-backup.env:/app/.env:ro
 
 networks:
   external-network:
