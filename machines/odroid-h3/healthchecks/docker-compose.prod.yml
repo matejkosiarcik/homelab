@@ -3,11 +3,11 @@
 services:
   app:
     environment:
-      - ALLOWED_HOSTS=healthchecks.lan
-      - DEFAULT_FROM_EMAIL=healthchecks@healthchecks.lan
-      - EMAIL_HOST=smtp4dev.lan
+      - ALLOWED_HOSTS=healthchecks.home
+      - DEFAULT_FROM_EMAIL=healthchecks@healthchecks.home
+      - EMAIL_HOST=smtp4dev.home
       - REGISTRATION_OPEN=False
-      - SITE_ROOT=http://healthchecks.lan
+      - SITE_ROOT=http://healthchecks.home
     ports:
       - "80:8000"
     networks:

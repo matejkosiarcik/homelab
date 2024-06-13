@@ -21,7 +21,7 @@ services:
     container_name: pihole-http-proxy
     hostname: pihole-http-proxy
     environment:
-      - HOST=pihole.lan
+      - HOST=pihole.home
       - UPSTREAM_URL=http://pihole-app
       - HOMELAB_SERVICE=pihole
     volumes:

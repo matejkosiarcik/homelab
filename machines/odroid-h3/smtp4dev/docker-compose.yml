@@ -18,7 +18,7 @@ services:
     container_name: smtp4dev-http-proxy
     hostname: smtp4dev-http-proxy
     environment:
-      - HOST=smtp4dev.lan
+      - HOST=smtp4dev.home
       - UPSTREAM_URL=http://smtp4dev-app
       - HOMELAB_SERVICE=smtp4dev
     volumes:

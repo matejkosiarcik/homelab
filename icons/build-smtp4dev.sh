@@ -6,7 +6,7 @@ tmpdir=''
 . "$(dirname "$0")/.build-utils.sh"
 
 indir="$(git rev-parse --show-toplevel)/icons"
-outdir="$(git rev-parse --show-toplevel)/machines/odroid-h3/smtp4dev/config"
+outdir="$(git rev-parse --show-toplevel)/components/smtp4dev"
 mkdir -p "$outdir"
 
 ### Favicon ###

@@ -15,7 +15,7 @@ services:
     container_name: homer-http-proxy
     hostname: homer-http-proxy
     environment:
-      - HOST=homer.lan
+      - HOST=homer.home
       - UPSTREAM_URL=http://homer-app
       - HOMELAB_SERVICE=homer
     volumes:

@@ -27,7 +27,7 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-DOMAIN='*.lan'
+DOMAIN='*.home'
 openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN=$DOMAIN"
 
 mkdir -p ./certs

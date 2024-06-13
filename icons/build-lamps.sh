@@ -5,7 +5,7 @@ tmpdir=''
 # shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
 
-outdir="$(git rev-parse --show-toplevel)/components/lamps/network-server/frontend"
+outdir="$(git rev-parse --show-toplevel)/components/lamps/network-server/frontend/public"
 
 ### Favicon ###
 
