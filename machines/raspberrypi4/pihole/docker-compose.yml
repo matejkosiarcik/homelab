@@ -37,8 +37,8 @@ services:
       context: ../../../components/socket-proxy/
     container_name: pihole-socket-proxy
     hostname: pihole-socket-proxy
-    volumes:
-      - ./config/socket-proxy/main.sh:/app/main.sh:ro
+    environment:
+      - HOMELAB_SERVICE=pihole
 
   webui-backup:
     image: pihole-webui-backup:homelab
@@ -49,11 +49,12 @@ services:
     depends_on:
       app:
         condition: service_healthy
+    environment:
+      - HOMELAB_SERVICE=pihole
     volumes:
+      - ./private/webui-backup.env:/app/.env:ro
       - ./data/webui-backup:/backup:rw
       - ./log/webui-backup:/log:rw
-      - ./config/webui-backup/main.sh:/app/main.sh:ro
-      - ./private/webui-backup.env:/app/.env:ro
 
 networks:
   external-network:

@@ -3,6 +3,8 @@ set -euf
 
 PATH="$PATH:/usr/local/bin"
 cd /app
+# shellcheck source=/dev/null
+. /app/.internal/.env
 
 # Setup
 tmpdir="$(mktemp -d)"
@@ -20,7 +22,7 @@ fi
 
 # Run actual job
 printf '0\n' >"$statusfile"
-sh /app/main.sh 2>&1 | tee "$logfile"
+node "/app/dist/$HOMELAB_SERVICE.js" 2>&1 | tee "$logfile"
 
 # Send status to healthchecks
 status="$(cat "$statusfile")"
