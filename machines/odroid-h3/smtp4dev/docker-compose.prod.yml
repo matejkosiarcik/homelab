@@ -3,8 +3,8 @@
 services:
   app:
     environment:
-      - HOSTNAME=smtp4dev.lan
-      - ServerOptions__HostName=smtp4dev.lan
+      - HOSTNAME=smtp4dev.home
+      - ServerOptions__HostName=smtp4dev.home
     networks:
       internal-network: {}
     restart: unless-stopped
