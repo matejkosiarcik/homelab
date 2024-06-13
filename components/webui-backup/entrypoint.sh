@@ -16,7 +16,7 @@ crontab /app/schedule.cron
     printf '## Starting cron ##\n'
 } >>/log/cron.log
 
-# cron -b -L /log/cron.log # Add `-l 0` when debugging (note: alpine)
+# crond -b -L /log/cron.log # Add `-l 0` when debugging (note: alpine)
 cron -L 15
 printf 'started\n' >/app/.internal/status
 tail -F /log/cron.log
