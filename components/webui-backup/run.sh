@@ -3,6 +3,7 @@ set -euf
 
 PATH="$PATH:/usr/local/bin"
 cd /app
+# shellcheck source=/dev/null
 . /app/.internal/.env
 
 # Setup
