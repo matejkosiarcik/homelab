@@ -30,11 +30,12 @@ services:
     depends_on:
       app:
         condition: service_healthy
+    environment:
+      - HOMELAB_SERVICE=omada-controller
     volumes:
       - ./private/webui-backup.env:/app/.env:ro
       - ./data/webui-backup:/backup:rw
       - ./log/webui-backup:/log:rw
-      - ./config/webui-backup/main.sh:/app/main.sh:ro
 
 networks:
   external-network:
