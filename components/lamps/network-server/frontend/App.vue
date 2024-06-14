@@ -41,7 +41,15 @@ async function toggleButton() {
 
 <template>
   <main class="container">
-    <p>{{ data.initialLoading.value ? '&nbsp;' : data.status.value ? '⚡️ On ⚡️' : '💤 Off 💤' }}</p>
+    <p>
+      {{
+        data.initialLoading.value
+          ? '&nbsp;'
+          : data.status.value
+          ? '⚡️ On ⚡️'
+          : '💤 Off 💤'
+      }}
+    </p>
     <button
       class="toggle-button"
       :class="{ no_disabled: data.initialLoading.value }"
@@ -49,7 +57,9 @@ async function toggleButton() {
       ref="button"
       disabled
     >
-      {{ data.initialLoading.value ? '&nbsp;' : data.status.value ? 'Off' : 'On' }}
+      {{
+        data.initialLoading.value ? '&nbsp;' : data.status.value ? 'Off' : 'On'
+      }}
     </button>
     <p>&nbsp;</p>
   </main>
