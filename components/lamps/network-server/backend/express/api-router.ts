@@ -3,6 +3,7 @@ import { lastStatus } from '../utils/status-reader.ts';
 import ajvFormats from 'ajv-formats';
 import { AllowedSchema, Validator } from 'express-json-validator-middleware';
 import fetch from 'cross-fetch';
+import { log } from '../utils/logging.ts';
 
 const validator = new Validator({ allErrors: true });
 ajvFormats.default(validator.ajv);
@@ -45,14 +46,29 @@ apiRouter.get('/status', async (_, response, next) => {
 apiRouter.post('/status', validateRequestSchema({ body: statusSchema }), async (request, response, next) => {
     try {
         const hardwareServer = process.env['UPSTREAM_URL']!;
+        const requestText = JSON.stringify(request.body);
         const upstreamResponse = await fetch(hardwareServer, {
             method: 'POST',
-            body: request.body,
+            body: requestText,
         });
-        const output: statusType = await upstreamResponse.json();
+        const responseText = await upstreamResponse.text();
+        const output = await (async () => {
+            try {
+                return {
+                    status: 200,
+                    body: JSON.parse(responseText)
+                };
+            } catch {
+                log.error(`Could not parse response JSON: ${responseText}`);
+                return {
+                    status: 500,
+                    body: { status: lastStatus ? 'on' : 'off' },
+                }
+            }
+        })();
 
-        response.status(200);
-        response.json(output);
+        response.status(output.status);
+        response.json(output.body);
     } catch (error) {
         return next(error);
     }

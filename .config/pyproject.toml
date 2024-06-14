@@ -9,10 +9,12 @@ max-line-length = 150
 disable = [
   "duplicate-code",
   "fixme",
+  "invalid-name",
   "missing-class-docstring",
   "missing-function-docstring",
   "missing-module-docstring",
   "no-else-return",
+  "too-few-public-methods",
   "unused-wildcard-import",
   "wildcard-import"
 ]

@@ -3,6 +3,7 @@
 FROM node:22.3.0-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY patches/ ./patches/
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --quiet
 COPY backend/ ./backend/
 COPY frontend/ ./frontend/

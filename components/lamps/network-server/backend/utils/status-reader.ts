@@ -1,19 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 
-export function setupStatusReader(dir: string) {
-    const statusFile = path.join(dir, 'status.txt');
-
-    if (!fs.existsSync(statusFile)) {
-        fs.mkdirSync(path.dirname(statusFile), { recursive: true });
-        fs.writeFileSync(statusFile, '', 'utf8');
+export function setupStatusReader(file: string) {
+    if (!fs.existsSync(file)) {
+        fs.mkdirSync(path.dirname(file), { recursive: true });
+        fs.writeFileSync(file, '', 'utf8');
     }
 
-    fs.watch(statusFile, 'utf8', (event) => {
+    fs.watch(file, 'utf8', (event) => {
         if (event !== 'change') {
             return;
         }
-        const content = fs.readFileSync(statusFile, 'utf8').trim();
+        const content = fs.readFileSync(file, 'utf8').trim();
         lastStatus = content === '1';
     });
 }

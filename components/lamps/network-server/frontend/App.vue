@@ -6,6 +6,7 @@ import { useToast } from 'vue-toast-notification';
 const button = ref(null);
 const data = {
   status: ref(false),
+  initialLoading: ref(true),
 };
 const $toast = useToast();
 
@@ -30,14 +31,35 @@ async function toggleButton() {
 (async () => {
   const initialStatus = await getStatus();
   setStatus(initialStatus);
+
+  // Initial load
+  data.initialLoading.value = false;
+  const buttonElement = button.value as unknown as HTMLButtonElement;
+  buttonElement.disabled = false;
 })();
 </script>
 
 <template>
   <main class="container">
-    <p>{{ data.status.value ? '⚡️ On ⚡️' : '💤 Off 💤' }}</p>
-    <button class="toggle-button" @click="toggleButton" ref="button">
-      {{ data.status.value ? 'Off' : 'On' }}
+    <p>
+      {{
+        data.initialLoading.value
+          ? '&nbsp;'
+          : data.status.value
+          ? '⚡️ On ⚡️'
+          : '💤 Off 💤'
+      }}
+    </p>
+    <button
+      class="toggle-button"
+      :class="{ no_disabled: data.initialLoading.value }"
+      @click="toggleButton"
+      ref="button"
+      disabled
+    >
+      {{
+        data.initialLoading.value ? '&nbsp;' : data.status.value ? 'Off' : 'On'
+      }}
     </button>
     <p>&nbsp;</p>
   </main>
