@@ -57,6 +57,7 @@ apiRouter.post('/status', validateRequestSchema({ body: statusSchema }), async (
                 return JSON.parse(responseText);
             } catch {
                 log.error(`Could not parse response JSON: ${responseText}`);
+                return { status: lastStatus ? 'on' : 'off' };
             }
         })();
 
