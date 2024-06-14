@@ -52,17 +52,23 @@ apiRouter.post('/status', validateRequestSchema({ body: statusSchema }), async (
             body: requestText,
         });
         const responseText = await upstreamResponse.text();
-        const output: statusType = await (async () => {
+        const output = await (async () => {
             try {
-                return JSON.parse(responseText);
+                return {
+                    status: 200,
+                    body: JSON.parse(responseText)
+                };
             } catch {
                 log.error(`Could not parse response JSON: ${responseText}`);
-                return { status: lastStatus ? 'on' : 'off' };
+                return {
+                    status: 500,
+                    body: { status: lastStatus ? 'on' : 'off' },
+                }
             }
         })();
 
-        response.status(200);
-        response.json(output);
+        response.status(output.status);
+        response.json(output.body);
     } catch (error) {
         return next(error);
     }
