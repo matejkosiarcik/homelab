@@ -4,6 +4,8 @@ services:
   hardware-controller:
     networks:
       internal-network: {}
+    environment:
+      - ENV=prod
     restart: unless-stopped
 
   network-server:

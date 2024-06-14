@@ -41,13 +41,13 @@ import { setupStatusReader } from './utils/status-reader.ts';
     const statusFile = path.join(statusDir, 'status.txt');
     log.debug(`Status file: ${statusFile}`);
 
-    const httpPort = process.env['HTTP_PORT'] || (fs.existsSync('/.dockerenv') ? '80' : '8081');
+    const httpPort = process.env['HTTP_PORT'] || (fs.existsSync('/.dockerenv') ? '80' : '8080');
     log.debug(`HTTP port: ${httpPort}`);
 
     setupStatusReader(statusFile);
 
     if (!process.env['UPSTREAM_URL']) {
-        process.env['UPSTREAM_URL'] = (fs.existsSync('/.dockerenv') ? 'http://lamp-controller-network-server' : 'http://localhost:8080');
+        process.env['UPSTREAM_URL'] = (fs.existsSync('/.dockerenv') ? 'http://lamp-controller-hardware-controller' : 'http://localhost:8081');
     }
 
     expressApp.listen(httpPort, () => {

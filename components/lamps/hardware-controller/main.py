@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import os
 import json
 import queue
 import sys
@@ -15,12 +16,35 @@ import jsonschema  # type: ignore
 # pylint: disable=E0401
 from gpiozero import Button, DigitalOutputDevice  # type: ignore
 
+
+class ShimButtonDevice:
+    def when_activated(self):
+        pass
+
+
+class ShimOutputDevice:
+    def __init__(self):
+        self._value = 0
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+
+
 # thread communication
 commands_queue: queue.SimpleQueue[str] = queue.SimpleQueue()
 
 # Connected hardware
-button_device = Button(25)
-output_device = DigitalOutputDevice(23)
+if os.environ.get('ENV') == "prod":
+    button_device = Button(25)
+    output_device = DigitalOutputDevice(23)
+else:
+    button_device = ShimButtonDevice()
+    output_device = ShimOutputDevice()
 
 output_status: bool = False
 output_status_file_path: str = ""
@@ -116,5 +140,6 @@ if __name__ == "__main__":
     # setup button handling
     button_device.when_activated = handle_button_press
 
-    httpd = ThreadingHTTPServer(("", 8081), RequestHandler)
+    port = int(os.environ.get("PORT") or "80" if path.exists("/.dockerenv") else "8081")
+    httpd = ThreadingHTTPServer(("", port), RequestHandler)
     httpd.serve_forever()

@@ -2,6 +2,8 @@
 
 services:
   hardware-controller:
+    environment:
+      - ENV=dev
     restart: "no"
 
   network-server:
