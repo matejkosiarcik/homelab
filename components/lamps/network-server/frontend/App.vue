@@ -47,7 +47,8 @@ async function toggleButton() {
       :class="{ no_disabled: data.initialLoading.value }"
       @click="toggleButton"
       ref="button"
-      disabled>
+      disabled
+    >
       {{ data.initialLoading.value ? '&nbsp;' : data.status.value ? 'Off' : 'On' }}
     </button>
     <p>&nbsp;</p>
