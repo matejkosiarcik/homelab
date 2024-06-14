@@ -15,6 +15,9 @@ elif [ "$service" = 'smtp4dev' ]; then
 elif [ "$service" = 'homer' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:homer-http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:homer-http-proxy:443 &
+elif [ "$service" = 'lamp-controller' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:lamp-controller-http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:lamp-controller-http-proxy:443 &
 else
     printf 'Unknown service "%s"\n' "$service" >&2
     exit 1
