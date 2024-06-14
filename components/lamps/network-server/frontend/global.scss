@@ -36,7 +36,7 @@ body {
   border-radius: 10px;
   transition: 0.1s opacity;
 
-  &:disabled {
+  &:not(.no_disabled):disabled {
     opacity: 0.5;
   }
 }
