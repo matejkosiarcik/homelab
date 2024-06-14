@@ -7,6 +7,8 @@ services:
       context: ../../../components/lamps/hardware-controller/
     container_name: lamp-controller-hardware-controller
     hostname: lamp-controller-hardware-controller
+    volumes:
+      - ./data/status:/app/status:rw
 
   network-server:
     image: lamp-controller-network-server:homelab
@@ -14,6 +16,8 @@ services:
       context: ../../../components/lamps/network-server/
     container_name: lamp-controller-network-server
     hostname: lamp-controller-network-server
+    volumes:
+      - ./data/status:/app/status:rw
 
   http-proxy:
     image: lamp-controller-http-proxy:homelab

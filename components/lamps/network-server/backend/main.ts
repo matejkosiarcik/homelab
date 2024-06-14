@@ -38,15 +38,16 @@ import { setupStatusReader } from './utils/status-reader.ts';
     initWinston(args.quiet ? 'warning' : args.verbose ? 'debug' : 'info');
 
     const statusDir = process.env['STATUS_DIR'] || 'status';
-    const httpPort = process.env['HTTP_PORT'] || (fs.existsSync('/.dockerenv') ? '80' : '8081');
+    const statusFile = path.join(statusDir, 'status.txt');
+    log.debug(`Status file: ${statusFile}`);
 
-    log.debug(`Status dir: ${statusDir}`);
+    const httpPort = process.env['HTTP_PORT'] || (fs.existsSync('/.dockerenv') ? '80' : '8081');
     log.debug(`HTTP port: ${httpPort}`);
 
-    setupStatusReader(statusDir);
+    setupStatusReader(statusFile);
 
     if (!process.env['UPSTREAM_URL']) {
-        process.env['UPSTREAM_URL'] = (fs.existsSync('/.dockerenv') ? 'http://lamp-hardware-controller' : 'http://localhost:8080');
+        process.env['UPSTREAM_URL'] = (fs.existsSync('/.dockerenv') ? 'http://lamp-controller-network-server' : 'http://localhost:8080');
     }
 
     expressApp.listen(httpPort, () => {

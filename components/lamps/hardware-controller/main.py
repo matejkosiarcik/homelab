@@ -99,10 +99,10 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="hardware-controller")
-    parser.add_argument("--status-dir", type=str, required=False, default=".")
+    parser.add_argument("--status-dir", type=str, required=False, default="status")
     args = parser.parse_args(sys.argv[1:])
 
-    output_status_file_path = path.join(args.status_dir, "status.txt")
+    output_status_file_path = path.realpath(path.join(args.status_dir, "status.txt"))
     commands_pipe_path = path.join(args.status_dir, "commands.pipe")
 
     # Read previous status (graceful restart)
