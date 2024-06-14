@@ -42,7 +42,11 @@ async function toggleButton() {
 <template>
   <main class="container">
     <p>{{ data.initialLoading.value ? '&nbsp;' : data.status.value ? '⚡️ On ⚡️' : '💤 Off 💤' }}</p>
-    <button class="toggle-button" :class="{ no_disabled: data.initialLoading.value }" @click="toggleButton" ref="button"
+    <button
+      class="toggle-button"
+      :class="{ no_disabled: data.initialLoading.value }"
+      @click="toggleButton"
+      ref="button"
       disabled>
       {{ data.initialLoading.value ? '&nbsp;' : data.status.value ? 'Off' : 'On' }}
     </button>
