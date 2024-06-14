@@ -2,8 +2,8 @@
 
 import argparse
 import datetime
-import os
 import json
+import os
 import queue
 import sys
 from http import HTTPStatus
@@ -39,7 +39,7 @@ class ShimOutputDevice:
 commands_queue: queue.SimpleQueue[str] = queue.SimpleQueue()
 
 # Connected hardware
-if os.environ.get('ENV') == "prod":
+if os.environ.get("ENV") == "prod":
     button_device = Button(25)
     output_device = DigitalOutputDevice(23)
 else:
