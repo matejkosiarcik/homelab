@@ -73,6 +73,7 @@ clean:
 		"$(PROJECT_DIR)/homelab-deployment" \
 		"$(PROJECT_DIR)/icons/gitman" \
 		"$(PROJECT_DIR)/icons/node_modules" \
+		"$(PROJECT_DIR)/icons/python-vendor" \
 		"$(PROJECT_DIR)/icons/venv" \
 		"$(PROJECT_DIR)/python-vendor" \
 		"$(PROJECT_DIR)/venv"
