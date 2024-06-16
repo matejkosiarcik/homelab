@@ -24,8 +24,8 @@ bootstrap:
 		npm ci --prefix "$(PROJECT_DIR)/$$component" && \
 	true; done
 
-	python3 -m venv venv
-	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
+	python3 -m venv icons/venv
+	PATH="$(PROJECT_DIR)/icons/venv/bin:$$PATH" \
 	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		python3 -m pip install --requirement icons/requirements.txt --target icons/python-vendor --quiet --upgrade
