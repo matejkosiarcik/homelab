@@ -35,6 +35,11 @@ bootstrap:
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --quiet --force --root icons
 
+	python3 -m venv maintenance/venv
+	PATH="$(PROJECT_DIR)/maintenance/venv/bin:$$PATH" \
+	PIP_DISABLE_PIP_VERSION_CHECK=1 \
+		python3 -m pip install --requirement maintenance/requirements.txt --quiet --upgrade
+
 .PHONY: build
 build:
 	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
@@ -75,6 +80,8 @@ clean:
 		"$(PROJECT_DIR)/icons/node_modules" \
 		"$(PROJECT_DIR)/icons/python-vendor" \
 		"$(PROJECT_DIR)/icons/venv" \
+		"$(PROJECT_DIR)/maintenance/python-vendor" \
+		"$(PROJECT_DIR)/maintenance/venv" \
 		"$(PROJECT_DIR)/python-vendor" \
 		"$(PROJECT_DIR)/venv"
 
