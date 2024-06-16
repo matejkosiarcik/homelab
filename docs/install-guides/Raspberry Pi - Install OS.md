@@ -26,13 +26,14 @@ TL;DR:
 ```sh
 sudo apt-get update
 sudo apt-get upgrade --yes
-sudo apt-get install --yes ca-certificates curl dnsutils git rsync wget
+sudo apt-get install --yes ca-certificates curl dnsutils git moreutils rsync wget
 
 # git - homelab gitflow
 # ca-certificates - required for TLS and docker
 # rsync - required for log2ram
 # curl, wget - general HTTPs utilities
 # dnsutils - debugging DNS problems
+# moreutils - sponge and other goodies
 ```
 
 ## Install Log2Ram
