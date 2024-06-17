@@ -6,7 +6,7 @@ log/
 private/
 
 # For deployment
-/machines/.current-machine
+/machines/.current
 
 # OS stuff
 ._*
