@@ -26,13 +26,14 @@ TL;DR:
 ```sh
 sudo apt-get update
 sudo apt-get upgrade --yes
-sudo apt-get install --yes ca-certificates curl dnsutils git rsync wget
+sudo apt-get install --yes ca-certificates curl dnsutils git moreutils python rsync wget
 
 # git - homelab gitflow
 # ca-certificates - required for TLS and docker
 # rsync - required for log2ram
 # curl, wget - general HTTPs utilities
 # dnsutils - debugging DNS problems
+# moreutils - sponge and other goodies
 ```
 
 ## Install Log2Ram
@@ -49,15 +50,15 @@ echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packa
 sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
 sudo apt-get update
 sudo apt-get install --yes log2ram
+
+# Modify settings (disable email)
+sed 's~MAIL=true~MAIL=false~' </etc/log2ram.conf | sponge /etc/log2ram.conf
+cat /etc/log2ram.conf # Verify edit
+
 sudo reboot
 
 # Verify installation
 systemctl status log2ram
-
-# Modify settings (disable email "MAIL=false")
-sudo nano /etc/log2ram.conf
-# Verify edit
-cat /etc/log2ram.conf
 ```
 
 ## Next steps

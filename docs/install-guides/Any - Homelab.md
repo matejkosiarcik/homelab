@@ -13,7 +13,8 @@ cd ..
 Create startup script:
 
 ```sh
-ln -s "$HOME/git/homelab/machines/<machine>/startup.sh" startup.sh
+cd "$HOME/git/homelab"
+ln -s ./machines/<machine> .current-machine
 ```
 
 Setup default crontab:
@@ -22,7 +23,7 @@ Setup default crontab:
 crontab -e
 
 # Add following entry:
-@reboot sh "$HOME/startup.sh"
+@reboot sh "$HOME/git/homelab/.current-machine/startup.sh"
 
 # Then
 sudo reboot

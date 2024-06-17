@@ -24,8 +24,8 @@ bootstrap:
 		npm ci --prefix "$(PROJECT_DIR)/$$component" && \
 	true; done
 
-	python3 -m venv venv
-	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
+	python3 -m venv icons/venv
+	PATH="$(PROJECT_DIR)/icons/venv/bin:$$PATH" \
 	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		python3 -m pip install --requirement icons/requirements.txt --target icons/python-vendor --quiet --upgrade
@@ -34,6 +34,11 @@ bootstrap:
 	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --quiet --force --root icons
+
+	python3 -m venv maintenance/venv
+	PATH="$(PROJECT_DIR)/maintenance/venv/bin:$$PATH" \
+	PIP_DISABLE_PIP_VERSION_CHECK=1 \
+		python3 -m pip install --requirement maintenance/requirements.txt --quiet --upgrade
 
 .PHONY: build
 build:
@@ -75,6 +80,8 @@ clean:
 		"$(PROJECT_DIR)/icons/node_modules" \
 		"$(PROJECT_DIR)/icons/python-vendor" \
 		"$(PROJECT_DIR)/icons/venv" \
+		"$(PROJECT_DIR)/maintenance/python-vendor" \
+		"$(PROJECT_DIR)/maintenance/venv" \
 		"$(PROJECT_DIR)/python-vendor" \
 		"$(PROJECT_DIR)/venv"
 

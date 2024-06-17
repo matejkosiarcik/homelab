@@ -1,17 +1,9 @@
 #!/bin/sh
 # shellcheck disable=SC2068
-
 set -euf
 
-# Prepare destination directory
+current_machine_dir="$(cd "$(dirname "$0")" && printf '%s\n' "$PWD")"
+export current_machine_dir
 
-bash "$(git rev-parse --show-toplevel)/.utils/preinstall-all.sh" $@
-
-# Install individual services
-# Note: Services ordered by priority and dependence on each other
-
-currdir="$(cd "$(dirname "$0")" && printf '%s\n' "$PWD")"
-install_script_path="$(git rev-parse --show-toplevel)/.utils/install-service.sh"
-
-SOURCE_DIR="$currdir/pihole" \
-    bash "$install_script_path" $@
+# shellcheck disable=SC2068
+bash "$(git rev-parse --show-toplevel)/.utils/install-machine.sh" $@
