@@ -9,7 +9,7 @@ if [ ! -e "$current_machine_dir/crontab.cron" ]; then
     printf 'Crontab file not found\n' >&2
     exit 1
 fi
-crontab <"$current_machine_dir/crontab.cron"
+crontab - <"$current_machine_dir/crontab.cron"
 
 ### Preinstall services ###
 
