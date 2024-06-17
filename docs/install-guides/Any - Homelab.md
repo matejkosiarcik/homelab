@@ -14,7 +14,7 @@ Create startup script:
 
 ```sh
 cd "$HOME/git/homelab"
-ln -s "./machines/<machine>" .current-machine
+ln -s ./machines/<machine> .current-machine
 ```
 
 Setup default crontab:
