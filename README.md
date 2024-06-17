@@ -16,3 +16,4 @@ Below is a general format for this repository:
             - `/config/` - Directory for public config files and subdirectories
             - `/private/` - Directory for private mount data (such as passwords)
             - `/data/` - Directory for runtime data (contains subdirectories)
+- `/ansible/` - Ansible playbooks for server maintenance
