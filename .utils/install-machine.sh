@@ -18,7 +18,7 @@ bash "$(git rev-parse --show-toplevel)/.utils/preinstall-all.sh" $@
 
 ### Install all individual services ###
 
-echo "components:"
+echo "components in $current_machine_dir:"
 find "$current_machine_dir" -mindepth 1 -maxdepth 1 -type d -not -name '.*'
 
 find "$current_machine_dir" -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 |
