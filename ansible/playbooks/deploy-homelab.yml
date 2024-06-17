@@ -23,5 +23,5 @@
           exit 1
         fi
 
-        cd '/machines/.current'
+        cd 'machines/.current'
         sh install.sh
