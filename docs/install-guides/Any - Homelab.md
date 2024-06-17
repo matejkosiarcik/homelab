@@ -22,7 +22,8 @@ Setup default crontab:
 crontab -e
 
 # Add following entry:
-@reboot sh "$HOME/startup.sh"
+@reboot sh "$HOME/git/homelab/.current-machine/startup.sh"
+
 
 # Then
 sudo reboot

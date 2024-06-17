@@ -1,1 +1,1 @@
-@reboot sh "$HOME/startup.sh"
+@reboot sh "$HOME/git/homelab/.current-machine/startup.sh"
