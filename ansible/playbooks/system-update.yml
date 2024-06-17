@@ -6,6 +6,7 @@
 
     - name: Update APT
       when: ansible_facts['os_family'] == "Debian"
+      changed_when: true
       environment:
         DEBIAN_FRONTEND: noninteractive
         DEBCONF_TERSE: "yes"
@@ -15,6 +16,7 @@
         sudo apt-get upgrade --yes
 
     - name: Update homelab repository
+      changed_when: true
       ansible.builtin.shell: |
         if [ -d "$HOME/git/homelab" ]; then
           cd "$HOME/git/homelab"

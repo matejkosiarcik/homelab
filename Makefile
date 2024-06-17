@@ -35,10 +35,10 @@ bootstrap:
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --quiet --force --root icons
 
-	python3 -m venv maintenance/venv
-	PATH="$(PROJECT_DIR)/maintenance/venv/bin:$$PATH" \
+	python3 -m venv ansible/venv
+	PATH="$(PROJECT_DIR)/ansible/venv/bin:$$PATH" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-		python3 -m pip install --requirement maintenance/requirements.txt --quiet --upgrade
+		python3 -m pip install --requirement ansible/requirements.txt --quiet --upgrade
 
 .PHONY: build
 build:
@@ -75,13 +75,13 @@ dryrun:
 clean:
 	rm -rf \
 		"$(PROJECT_DIR)/.mypy_cache" \
+		"$(PROJECT_DIR)/ansible/python-vendor" \
+		"$(PROJECT_DIR)/ansible/venv" \
 		"$(PROJECT_DIR)/homelab-deployment" \
 		"$(PROJECT_DIR)/icons/gitman" \
 		"$(PROJECT_DIR)/icons/node_modules" \
 		"$(PROJECT_DIR)/icons/python-vendor" \
 		"$(PROJECT_DIR)/icons/venv" \
-		"$(PROJECT_DIR)/maintenance/python-vendor" \
-		"$(PROJECT_DIR)/maintenance/venv" \
 		"$(PROJECT_DIR)/python-vendor" \
 		"$(PROJECT_DIR)/venv"
 
