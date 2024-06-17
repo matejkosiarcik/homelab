@@ -1,0 +1,18 @@
+- name: Deploy latest homelab services
+  hosts: servers
+  serial: 1
+  any_errors_fatal: true
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+    - name: Deploy homelab
+      ansible.builtin.shell: |
+        if [ -d "$HOME/git/homelab" ]; then
+          cd "$HOME/git/homelab"
+        else
+          printf 'Directory ~/git/homelab not found\n'
+          exit 1
+        fi
+        cd "$HOME/git/homelab/.current-machine"
+        sh install.sh
