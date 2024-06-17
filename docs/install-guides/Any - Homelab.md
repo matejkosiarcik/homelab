@@ -13,8 +13,8 @@ cd ..
 Create startup script:
 
 ```sh
-cd "$HOME/git/homelab"
-ln -s ./machines/<machine> .current-machine
+cd "$HOME/git/homelab/machines"
+ln -s <machine-name> .current-machine
 ```
 
 Setup default crontab:

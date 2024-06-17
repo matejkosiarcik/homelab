@@ -15,5 +15,5 @@
           printf 'Directory ~/git/homelab not found\n'
           exit 1
         fi
-        cd "$HOME/git/homelab/.current-machine"
+        cd "$HOME/git/homelab/machines/.current-machine"
         sh install.sh
