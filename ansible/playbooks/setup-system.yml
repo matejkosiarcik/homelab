@@ -1,0 +1,125 @@
+- name: Update system
+  hosts: empty
+  serial: 1
+  any_errors_fatal: true
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+    - name: Update APT
+      when: ansible_facts['os_family'] == "Debian"
+      changed_when: true
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+        DEBCONF_TERSE: "yes"
+        DEBCONF_NOWARNINGS: "yes"
+      ansible.builtin.shell: |
+        sudo apt-get update
+        sudo apt-get upgrade --yes
+
+    - name: Install base packages
+      when: ansible_facts['os_family'] == "Debian"
+      changed_when: true
+      ansible.builtin.shell: |
+        sudo apt-get install --yes ca-certificates curl dnsutils git moreutils python rsync wget
+
+    - name: Install log2ram
+      when: ansible_facts['os_family'] == "Debian"
+      register: log2ram_install
+      changed_when: "'INSTALLED' in log2ram_install.stdout"
+      args:
+        executable: /usr/bin/env bash
+      ansible.builtin.shell: |
+        set -o pipefail
+        if ! command -v log2ram >/dev/null 2>&1 && [ "$(uname -n)" = raspberrypi ]; then
+          echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
+            | sudo tee /etc/apt/sources.list.d/azlux.list
+          sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
+          sudo apt-get update
+          sudo apt-get install --yes log2ram
+          # Modify settings (disable email)
+          sed 's~MAIL=true~MAIL=false~' </etc/log2ram.conf | sponge /etc/log2ram.conf
+          printf 'INSTALLED\n'
+        fi
+
+    - name: Reboot
+      when: log2ram_install.changed
+      ansible.builtin.reboot:
+
+    - name: Verify log2ram installation
+      changed_when: false
+      args:
+        executable: /usr/bin/env bash
+      ansible.builtin.shell: |
+        set -o pipefail
+        systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
+
+    - name: Install docker
+      changed_when: "'INSTALLED' in log2ram_install.stdout"
+      register: docker_install
+      args:
+        executable: /usr/bin/env bash
+      ansible.builtin.shell: |
+        set -o pipefail
+        if ! command -v log2ram >/dev/null 2>&1; then
+          sudo install -m 0755 -d /etc/apt/keyrings
+          sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+          sudo chmod a+r /etc/apt/keyrings/docker.asc
+          echo "deb [arch=$(dpkg --print-architecture) \
+            signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+            | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+          sudo apt-get update
+          sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          # sudo groupadd docker # Already exists
+          sudo usermod -aG docker "$(whoami)"
+          printf 'INSTALLED\n'
+        fi
+
+    # - name: Verify docker installation
+    #   changed_when: false
+    #   ansible.builtin.shell: |
+    #     sudo docker run hello-world
+
+    - name: Reboot
+      when: docker_install.changed
+      ansible.builtin.reboot:
+
+    - name: Verify docker installation
+      changed_when: false
+      ansible.builtin.shell: |
+        docker run hello-world
+
+    - name: Start docker on startup
+      when: docker_install.changed
+      changed_when: false
+      ansible.builtin.shell: |
+        sudo systemctl enable docker.service
+        sudo systemctl enable containerd.service
+
+    - name: Configure docker logging driver
+      changed_when: "'CHANGED' in docker_logdriver.stdout"
+      register: docker_logdriver
+      ansible.builtin.shell: |
+        filecontent='{
+          "log-driver": "local",
+          "log-opts": {
+            "max-size": "10m"
+          }
+        }'
+        filepath='/etc/docker/daemon.json'
+        oldfilecontent="$(cat /etc/docker/daemon.json)"
+        if "$filecontent" != "$oldfilecontent"; then
+          printf '%s' "$filecontent" >"$filepath"
+          printf 'CHANGED\n'
+        fi
+
+    - name: Git clone homelab
+      changed_when: "'CHANGED' in git_clone_homelab.stdout"
+      register: git_clone_homelab
+      ansible.builtin.shell: |
+        if [ ! -e "$HOME/git/homelab" ]; then
+          mkdir -p "$HOME/git"
+          git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
+          printf 'CHANGED\n'
+        fi

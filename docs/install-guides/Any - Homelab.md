@@ -3,11 +3,9 @@
 Clone homelab repository:
 
 ```sh
-mkdir git
-cd git
-cd .
-git clone https://github.com/matejkosiarcik/homelab.git
-cd ..
+mkdir -p "$HOME/git"
+git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
+cd "$HOME"
 ```
 
 Create startup script:
