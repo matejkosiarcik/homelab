@@ -1,5 +1,5 @@
 - name: Update system
-  hosts: ""
+  hosts: empty
   serial: 1
   any_errors_fatal: true
   tasks:
