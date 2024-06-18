@@ -27,6 +27,7 @@
       when: ansible_facts['os_family'] == "Debian"
       register: log2ram_install
       changed_when: "'INSTALLED' in log2ram_install.stdout"
+      executable: /usr/bin/env bash
       ansible.builtin.shell: |
         set -o pipefail
         if ! command -v log2ram >/dev/null 2>&1 && [ "$(uname -n)" = raspberrypi ]; then
