@@ -45,6 +45,7 @@
 
     - name: Verify log2ram installation
       changed_when: false
+      executable: /usr/bin/env bash
       ansible.builtin.shell: |
         set -o pipefail
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
@@ -52,6 +53,7 @@
     - name: Install docker
       changed_when: "'INSTALLED' in log2ram_install.stdout"
       register: docker_install
+      executable: /usr/bin/env bash
       ansible.builtin.shell: |
         set -o pipefail
         if ! command -v log2ram >/dev/null 2>&1; then
