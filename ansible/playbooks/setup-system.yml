@@ -43,7 +43,7 @@
         fi
 
     - name: Reboot
-      when: log2ram_install is changed
+      when: log2ram_install.changed
       ansible.builtin.reboot:
 
     - name: Verify log2ram installation
@@ -82,7 +82,7 @@
     #     sudo docker run hello-world
 
     - name: Reboot
-      when: docker_install is changed
+      when: docker_install.changed
       ansible.builtin.reboot:
 
     - name: Verify docker installation
@@ -91,7 +91,7 @@
         docker run hello-world
 
     - name: Start docker on startup
-      when: docker_install is changed
+      when: docker_install.changed
       changed_when: false
       ansible.builtin.shell: |
         sudo systemctl enable docker.service
