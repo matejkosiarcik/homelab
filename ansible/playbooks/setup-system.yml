@@ -32,7 +32,8 @@
       ansible.builtin.shell: |
         set -o pipefail
         if ! command -v log2ram >/dev/null 2>&1 && [ "$(uname -n)" = raspberrypi ]; then
-          echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" | sudo tee /etc/apt/sources.list.d/azlux.list
+          echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
+            | sudo tee /etc/apt/sources.list.d/azlux.list
           sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
           sudo apt-get update
           sudo apt-get install --yes log2ram
