@@ -110,7 +110,6 @@
       ansible.builtin.shell: |
         if [ ! -e "$HOME/git/homelab" ]; then
           mkdir -p "$HOME/git"
-          cd git
-          git clone https://github.com/matejkosiarcik/homelab.git
+          git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
           printf 'CHANGED\n'
         fi
