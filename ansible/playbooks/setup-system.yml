@@ -1,4 +1,4 @@
-- name: Update system
+- name: Setup OS
   hosts: empty
   serial: 1
   any_errors_fatal: true
@@ -21,14 +21,12 @@
       when: ansible_facts['os_family'] == "Debian"
       changed_when: true
       ansible.builtin.shell: |
-        sudo apt-get install --yes ca-certificates curl dnsutils git moreutils python rsync wget
+        sudo apt-get install --yes ca-certificates curl dnsutils git moreutils python-is-python3 python3 rsync wget
 
     - name: Install log2ram
       when: ansible_facts['os_family'] == "Debian"
       register: log2ram_install
       changed_when: "'INSTALLED' in log2ram_install.stdout"
-      args:
-        executable: /usr/bin/env bash
       ansible.builtin.shell: |
         set -o pipefail
         if ! command -v log2ram >/dev/null 2>&1 && [ "$(uname -n)" = raspberrypi ]; then
@@ -38,18 +36,17 @@
           sudo apt-get update
           sudo apt-get install --yes log2ram
           # Modify settings (disable email)
-          sed 's~MAIL=true~MAIL=false~' </etc/log2ram.conf | sponge /etc/log2ram.conf
+          sed 's~MAIL=true~MAIL=false~' </etc/log2ram.conf | sudo sponge /etc/log2ram.conf
           printf 'INSTALLED\n'
         fi
 
     - name: Reboot
       when: log2ram_install.changed
       ansible.builtin.reboot:
+        reboot_command: sudo reboot
 
     - name: Verify log2ram installation
       changed_when: false
-      args:
-        executable: /usr/bin/env bash
       ansible.builtin.shell: |
         set -o pipefail
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
@@ -57,8 +54,6 @@
     - name: Install docker
       changed_when: "'INSTALLED' in log2ram_install.stdout"
       register: docker_install
-      args:
-        executable: /usr/bin/env bash
       ansible.builtin.shell: |
         set -o pipefail
         if ! command -v log2ram >/dev/null 2>&1; then
@@ -76,14 +71,15 @@
           printf 'INSTALLED\n'
         fi
 
-    # - name: Verify docker installation
-    #   changed_when: false
-    #   ansible.builtin.shell: |
-    #     sudo docker run hello-world
+    - name: Verify docker installation
+      changed_when: false
+      ansible.builtin.shell: |
+        sudo docker run hello-world
 
     - name: Reboot
       when: docker_install.changed
       ansible.builtin.reboot:
+        reboot_command: sudo reboot
 
     - name: Verify docker installation
       changed_when: false
