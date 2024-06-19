@@ -23,6 +23,8 @@
       ansible.builtin.shell: |
         sudo apt-get install --yes ca-certificates curl dnsutils git moreutils python-is-python3 python3 rsync wget
 
+    # TODO: Vacuum+Optimize+Limit size of journalctl
+
     - name: Install log2ram
       when: ansible_facts['os_family'] == "Debian"
       register: log2ram_install
@@ -52,11 +54,11 @@
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
 
     - name: Install docker
-      changed_when: "'INSTALLED' in log2ram_install.stdout"
+      changed_when: "'INSTALLED' in docker_install.stdout"
       register: docker_install
       ansible.builtin.shell: |
         set -o pipefail
-        if ! command -v log2ram >/dev/null 2>&1; then
+        if ! command -v docker >/dev/null 2>&1; then
           sudo install -m 0755 -d /etc/apt/keyrings
           sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
           sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -87,11 +89,17 @@
         docker run hello-world
 
     - name: Start docker on startup
-      when: docker_install.changed
-      changed_when: false
+      changed_when: "'CHANGED' in docker_startup.stdout"
+      register: docker_startup
       ansible.builtin.shell: |
-        sudo systemctl enable docker.service
-        sudo systemctl enable containerd.service
+        if ! sudo systemctl status docker.service >/dev/null 2>&1; then
+          sudo systemctl enable docker.service
+          printf 'CHANGED\n'
+        fi
+        if ! sudo systemctl status containerd.service >/dev/null 2>&1; then
+          sudo systemctl enable containerd.service
+          printf 'CHANGED\n'
+        fi
 
     - name: Configure docker logging driver
       changed_when: "'CHANGED' in docker_logdriver.stdout"
