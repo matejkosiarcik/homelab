@@ -21,7 +21,7 @@
           printf 'Directory ~/git/homelab not found\n'
           exit 1
         fi
-        if [ "$(git status --short) != '' ]; then
+        if [ "$(git status --short)" != '' ]; then
           git checkout .
           git clean -xdf
           printf 'CHANGED\n'
