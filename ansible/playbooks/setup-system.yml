@@ -18,15 +18,15 @@
       become: true
       ansible.builtin.apt:
         pkg:
-        - ca-certificates
-        - curl
-        - dnsutils
-        - git
-        - moreutils
-        - python-is-python3
-        - python3
-        - rsync
-        - wget
+          - ca-certificates
+          - curl
+          - dnsutils
+          - git
+          - moreutils
+          - python-is-python3
+          - python3
+          - rsync
+          - wget
 
     # TODO: Vacuum+Optimize+Limit size of journalctl
 
