@@ -6,22 +6,27 @@
     - name: Ping
       ansible.builtin.ping:
 
-    - name: Update APT
+    - name: Update APT packages
       when: ansible_facts['os_family'] == "Debian"
-      changed_when: true
-      environment:
-        DEBIAN_FRONTEND: noninteractive
-        DEBCONF_TERSE: "yes"
-        DEBCONF_NOWARNINGS: "yes"
-      ansible.builtin.shell: |
-        sudo apt-get update
-        sudo apt-get upgrade --yes
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: true
 
-    - name: Install base packages
+    - name: Install base APT packages
       when: ansible_facts['os_family'] == "Debian"
-      changed_when: true
-      ansible.builtin.shell: |
-        sudo apt-get install --yes ca-certificates curl dnsutils git moreutils python-is-python3 python3 rsync wget
+      become: true
+      ansible.builtin.apt:
+        pkg:
+          - ca-certificates
+          - curl
+          - dnsutils
+          - git
+          - moreutils
+          - python-is-python3
+          - python3
+          - rsync
+          - wget
 
     # TODO: Vacuum+Optimize+Limit size of journalctl
 
