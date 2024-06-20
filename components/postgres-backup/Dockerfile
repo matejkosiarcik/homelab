@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM alpine:3.20.0
+FROM alpine:3.20.1
 WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache curl postgresql16-client && \
