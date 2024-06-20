@@ -4,16 +4,12 @@
     - name: Ping
       ansible.builtin.ping:
 
-    - name: Update APT
+    - name: Update APT packages
       when: ansible_facts['os_family'] == "Debian"
-      changed_when: true
-      environment:
-        DEBIAN_FRONTEND: noninteractive
-        DEBCONF_TERSE: "yes"
-        DEBCONF_NOWARNINGS: "yes"
-      ansible.builtin.shell: |
-        sudo apt-get update
-        sudo apt-get upgrade --yes
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: true
 
     - name: Update homelab repository
       changed_when: true
