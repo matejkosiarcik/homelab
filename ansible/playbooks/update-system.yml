@@ -12,7 +12,8 @@
         upgrade: true
 
     - name: Update homelab repository
-      changed_when: true
+      changed_when: "'CHANGED' in update_git_homelab.stdout"
+      register: update_git_homelab
       ansible.builtin.shell: |
         if [ -d "$HOME/git/homelab" ]; then
           cd "$HOME/git/homelab"
@@ -20,5 +21,17 @@
           printf 'Directory ~/git/homelab not found\n'
           exit 1
         fi
-        git checkout main
-        git pull --ff-only
+        if [ "$(git status --short) != '' ]; then
+          git checkout .
+          git clean -xdf
+          printf 'CHANGED\n'
+        fi
+        if [ "$(git branch --show-current)" != main ]; then
+          git checkout main
+          printf 'CHANGED\n'
+        fi
+        git fetch origin main:main
+        if [ "$(git diff --name-only origin/main)" != '' ]; then
+          git pull --ff-only
+          printf 'CHANGED\n'
+        fi
