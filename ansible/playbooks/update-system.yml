@@ -23,7 +23,7 @@
         fi
         if [ "$(git status --short)" != '' ]; then
           git checkout .
-          git clean -xdf
+          git clean -df
           printf 'CHANGED\n'
         fi
         if [ "$(git branch --show-current)" != main ]; then
