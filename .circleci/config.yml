@@ -79,32 +79,46 @@ jobs:
             apk update --no-cache
             apk add --no-cache bash git
       - run:
-          name: Run deployment on Raspberry Pi 3B [dry-run]
+          name: Run deployment on Raspberry Pi 3B 1 [dry-run]
           command: |
             mkdir -p "$HOME/.homelab-1/machines/current/pihole/private"
             touch "$HOME/.homelab-1/machines/current/pihole/private/webui-backup.env"
             DEST_DIR="$HOME/.homelab-1" \
-              bash './machines/raspberrypi3/install.sh' -n
+              bash './machines/raspberry-pi-3b-1/install.sh' -n
       - run:
-          name: Run deployment on Raspberry Pi 4B [dry-run]
+          name: Run deployment on Raspberry Pi 4B 1 [dry-run]
           command: |
             mkdir -p "$HOME/.homelab-2/machines/current/pihole/private"
             touch "$HOME/.homelab-2/machines/current/pihole/private/webui-backup.env"
             DEST_DIR="$HOME/.homelab-2" \
-              bash './machines/raspberrypi4/install.sh' -n
+              bash './machines/raspberry-pi-4b-1/install.sh' -n
+      - run:
+          name: Run deployment on Raspberry Pi Zero 2w 1 [dry-run]
+          command: |
+            mkdir -p "$HOME/.homelab-3/machines/current/pihole/private"
+            touch "$HOME/.homelab-3/machines/current/pihole/private/webui-backup.env"
+            DEST_DIR="$HOME/.homelab-3" \
+              bash './machines/raspberry-zero-2w-2/install.sh' -n
+      - run:
+          name: Run deployment on Raspberry Pi Zero 2w 1 [dry-run]
+          command: |
+            mkdir -p "$HOME/.homelab-4/machines/current/pihole/private"
+            touch "$HOME/.homelab-4/machines/current/pihole/private/webui-backup.env"
+            DEST_DIR="$HOME/.homelab-4" \
+              bash './machines/raspberry-zero-2w-2/install.sh' -n
       - run:
           name: Run deployment on Odroid H3 [dry-run]
           command: |
             mkdir -p \
-              "$HOME/.homelab-3/machines/current/healthchecks/private" \
-              "$HOME/.homelab-3/machines/current/omada-controller/private" \
-              "$HOME/.homelab-3/machines/current/unifi-controller/private" \
-              "$HOME/.homelab-3/machines/current/uptime-kuma/private"
+              "$HOME/.homelab-5/machines/current/healthchecks/private" \
+              "$HOME/.homelab-5/machines/current/omada-controller/private" \
+              "$HOME/.homelab-5/machines/current/unifi-controller/private" \
+              "$HOME/.homelab-5/machines/current/uptime-kuma/private"
             touch \
-              "$HOME/.homelab-3/machines/current/healthchecks/private/app.env" \
-              "$HOME/.homelab-3/machines/current/healthchecks/private/database-backup.env" \
-              "$HOME/.homelab-3/machines/current/omada-controller/private/webui-backup.env" \
-              "$HOME/.homelab-3/machines/current/unifi-controller/private/webui-backup.env" \
-              "$HOME/.homelab-3/machines/current/uptime-kuma/private/webui-backup.env"
-            DEST_DIR="$HOME/.homelab-3" \
+              "$HOME/.homelab-5/machines/current/healthchecks/private/app.env" \
+              "$HOME/.homelab-5/machines/current/healthchecks/private/database-backup.env" \
+              "$HOME/.homelab-5/machines/current/omada-controller/private/webui-backup.env" \
+              "$HOME/.homelab-5/machines/current/unifi-controller/private/webui-backup.env" \
+              "$HOME/.homelab-5/machines/current/uptime-kuma/private/webui-backup.env"
+            DEST_DIR="$HOME/.homelab-5" \
               bash './machines/odroid-h3/install.sh' -n
