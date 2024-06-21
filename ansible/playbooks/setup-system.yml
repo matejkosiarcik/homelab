@@ -139,3 +139,10 @@
           mkdir -p "$HOME/.log"
           printf 'CHANGED\n'
         fi
+
+        sudo sh -c '
+          if [ ! -e "$HOME/.log" ]; then
+            mkdir -p "$HOME/.log"
+            printf 'CHANGED\n'
+          fi
+        '
