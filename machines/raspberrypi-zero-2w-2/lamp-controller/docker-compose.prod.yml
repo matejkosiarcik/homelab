@@ -1,0 +1,31 @@
+# version: "3.8"
+
+services:
+  hardware-controller:
+    networks:
+      internal-network: {}
+    environment:
+      - ENV=prod
+    restart: unless-stopped
+
+  network-server:
+    networks:
+      internal-network: {}
+    restart: unless-stopped
+
+  http-proxy:
+    networks:
+      internal-network: {}
+    environment:
+      - ENV=prod
+    restart: unless-stopped
+
+  socket-proxy:
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      internal-network: {}
+      external-network:
+        ipv4_address: 10.1.17.1
+    restart: unless-stopped
