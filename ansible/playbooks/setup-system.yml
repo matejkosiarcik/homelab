@@ -1,7 +1,5 @@
 - name: Setup OS
-  hosts: empty
-  serial: 1
-  any_errors_fatal: true
+  hosts: servers
   tasks:
     - name: Ping
       ansible.builtin.ping:
