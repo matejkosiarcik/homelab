@@ -1,1 +1,1 @@
-@reboot sh "$HOME/git/homelab/machines/.current/startup.sh"
+@reboot sh "$HOME/git/homelab/machines/.current/startup.sh" >~/.log/cron.log 2>&1
