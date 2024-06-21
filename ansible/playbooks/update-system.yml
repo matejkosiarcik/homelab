@@ -21,21 +21,26 @@
           printf 'Directory ~/git/homelab not found\n'
           exit 1
         fi
+
         if [ "$(git status --short)" != '' ]; then
           git checkout .
           git clean -df
           printf 'CHANGED\n'
         fi
+
         if [ "$(git branch --show-current)" != main ]; then
           git checkout main
           printf 'CHANGED\n'
         fi
+
         if [ "$(git status --short)" != '' ]; then
           git checkout .
           git clean -df
           printf 'CHANGED\n'
         fi
+
         git fetch origin main:main
+
         if [ "$(git diff --name-only origin/main)" != '' ]; then
           git pull --ff-only
           printf 'CHANGED\n'

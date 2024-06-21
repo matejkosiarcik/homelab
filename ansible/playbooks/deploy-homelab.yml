@@ -15,7 +15,6 @@
           printf 'Directory ~/git/homelab not found\n'
           exit 1
         fi
-        cd "$HOME/git/homelab"
 
         if [ "$(git status --short)" != '' ]; then
           printf 'git repository is dirty\n'
@@ -23,5 +22,4 @@
           exit 1
         fi
 
-        cd 'machines/.current'
-        sh install.sh
+        sh machines/.current/install.sh
