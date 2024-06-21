@@ -121,4 +121,4 @@ jobs:
               "$HOME/.homelab-5/machines/current/unifi-controller/private/webui-backup.env" \
               "$HOME/.homelab-5/machines/current/uptime-kuma/private/webui-backup.env"
             DEST_DIR="$HOME/.homelab-5" \
-              bash './machines/odroid-h3/install.sh' -n
+              bash './machines/odroid-h3-1/install.sh' -n
