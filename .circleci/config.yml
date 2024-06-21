@@ -107,7 +107,7 @@ jobs:
             DEST_DIR="$HOME/.homelab-4" \
               bash './machines/raspberry-zero-2w-2/install.sh' -n
       - run:
-          name: Run deployment on Odroid H3 [dry-run]
+          name: Run deployment on Odroid H3 1 [dry-run]
           command: |
             mkdir -p \
               "$HOME/.homelab-5/machines/current/healthchecks/private" \
