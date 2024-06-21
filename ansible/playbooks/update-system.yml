@@ -39,7 +39,7 @@
           printf 'CHANGED\n'
         fi
 
-        git fetch origin main:main
+        git fetch
 
         if [ "$(git diff --name-only origin/main)" != '' ]; then
           git pull --ff-only

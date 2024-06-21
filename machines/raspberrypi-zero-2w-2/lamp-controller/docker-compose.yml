@@ -1,0 +1,59 @@
+# version: "3.8"
+
+services:
+  hardware-controller:
+    image: lamp-controller-hardware-controller:homelab
+    build:
+      context: ../../../components/lamps/hardware-controller/
+    container_name: lamp-controller-hardware-controller
+    hostname: lamp-controller-hardware-controller
+    volumes:
+      - ./data/status:/app/status:rw
+
+  network-server:
+    image: lamp-controller-network-server:homelab
+    build:
+      context: ../../../components/lamps/network-server/
+    container_name: lamp-controller-network-server
+    hostname: lamp-controller-network-server
+    volumes:
+      - ./data/status:/app/status:rw
+
+  http-proxy:
+    image: lamp-controller-http-proxy:homelab
+    build:
+      context: ../../../components/http-proxy
+    container_name: lamp-controller-http-proxy
+    hostname: lamp-controller-http-proxy
+    environment:
+      - HOST=lamp-1.home
+      - UPSTREAM_URL=http://lamp-controller-network-server
+      - HOMELAB_SERVICE=lamp-controller
+    volumes:
+      - ./log/proxy-access:/log/access:rw
+      - ./log/proxy-error:/log/error:rw
+      - ./log/proxy-forensic:/log/forensic:rw
+      - ./private/certs:/certs:ro
+      - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+
+  socket-proxy:
+    image: lamp-controller-socket-proxy:homelab
+    build:
+      context: ../../../components/socket-proxy/
+    container_name: lamp-controller-socket-proxy
+    hostname: lamp-controller-socket-proxy
+    environment:
+      - HOMELAB_SERVICE=lamp-controller
+
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.17.0/24"
+          gateway: "10.1.0.1"
+
+  internal-network:
