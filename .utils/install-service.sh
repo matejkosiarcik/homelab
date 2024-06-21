@@ -40,14 +40,17 @@ fi
 dest_dir="${DEST_DIR-$HOME/homelab-deployment}"
 global_log_dir="$dest_dir/.log/$(date +"%Y-%m-%d_%H-%M-%S").txt"
 global_log_file="$global_log_dir/install.txt"
+
+check_service_already_exist="$(if [ -e "$dest_dir" ]; then printf '1'; else printf '0'; fi)"
+
 mkdir -p "$dest_dir" "$global_log_dir"
 
-component="$(basename "$source_dir")"
-printf 'Installing %s\n' "$component" | tee "$global_log_file" >&2
+service_name="$(basename "$source_dir")"
+printf 'Installing %s\n' "$service_name" | tee "$global_log_file" >&2
 
-target_dir="$dest_dir/machines/current/$component"
-backup_dir="$dest_dir/.backup/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
-log_dir="$dest_dir/.log/$component/$(date +"%Y-%m-%d_%H-%M-%S")"
+target_dir="$dest_dir/machines/current/$service_name"
+backup_dir="$dest_dir/.backup/$service_name/$(date +"%Y-%m-%d_%H-%M-%S")"
+log_dir="$dest_dir/.log/$service_name/$(date +"%Y-%m-%d_%H-%M-%S")"
 log_file="$log_dir/install.txt"
 mkdir -p "$log_dir" "$backup_dir"
 
@@ -90,6 +93,13 @@ printf '\n' | tee "$log_file" >&2
 printf 'Build:\n' | tee "$log_file" >&2
 (cd "$source_dir" && docker compose build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
+
+if [ "$check_service_already_exist" -eq 0 ]; then
+    printf 'THIS IS FIRST DEPLOYMENT OF %s\n' "$service_name"
+    printf 'Intentionally failing so you can setup private secrets\n'
+    printf 'Then rerun deployment process again\n'
+    exit 1
+fi
 
 # Run new services
 extra_args=''
