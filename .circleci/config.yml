@@ -98,14 +98,14 @@ jobs:
             mkdir -p "$HOME/.homelab-3/machines/current/pihole/private"
             touch "$HOME/.homelab-3/machines/current/pihole/private/webui-backup.env"
             DEST_DIR="$HOME/.homelab-3" \
-              bash './machines/raspberry-zero-2w-2/install.sh' -n
+              bash './machines/raspberry-pi-zero-2w-2/install.sh' -n
       - run:
           name: Run deployment on Raspberry Pi Zero 2w 1 [dry-run]
           command: |
             mkdir -p "$HOME/.homelab-4/machines/current/pihole/private"
             touch "$HOME/.homelab-4/machines/current/pihole/private/webui-backup.env"
             DEST_DIR="$HOME/.homelab-4" \
-              bash './machines/raspberry-zero-2w-2/install.sh' -n
+              bash './machines/raspberry-pi-zero-2w-2/install.sh' -n
       - run:
           name: Run deployment on Odroid H3 1 [dry-run]
           command: |
