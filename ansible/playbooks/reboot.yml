@@ -1,0 +1,11 @@
+- name: Reboot
+  hosts: empty
+  serial: 1
+  any_errors_fatal: true
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+    - name: Reboot
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
