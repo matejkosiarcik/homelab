@@ -6,9 +6,9 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 SERVICES := $(shell printf 'odroid-h3-1/healthchecks odroid-h3-1/homer odroid-h3-1/omada-controller odroid-h3-1/smtp4dev odroid-h3-1/unifi-controller odroid-h3-1/uptime-kuma raspberry-pi-3b-1/pihole raspberry-pi-4b-1/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf 'components/database components/database-backup components/http-proxy components/lamps/hardware-controller components/lamps/network-server components/omada-controller components/pihole components/smtp4dev components/socket-proxy components/unifi-controller components/uptime-kuma components/webui-backup' | sed 's~ ~\n~g')
+DOCKER_COMPONENTS := $(shell printf 'components/http-proxy components/lamps/hardware-controller components/lamps/network-server components/omada-controller components/pihole components/postgres components/postgres-backup components/smtp4dev components/socket-proxy components/unifi-controller components/uptime-kuma components/webui-backup' | sed 's~ ~\n~g')
 NPM_COMPONENTS := $(shell printf 'components/lamps/network-server components/webui-backup' | sed 's~ ~\n~g')
-DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
+DOCKER_ARCHS := $(shell printf '386 amd64 arm/v5 arm/v7 arm64/v8 ppc64le s390x')
 
 .POSIX:
 .SILENT:
@@ -58,9 +58,10 @@ docker-build:
 
 .PHONY: docker-multibuild
 docker-multibuild:
+	set -e && \
 	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
-		printf 'Building for linux/%s:\n' "$$arch" && \
 		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+			printf 'Building linux/%s %s:\n' "$$arch" "$$component" && \
 			docker build "$(PROJECT_DIR)/$$component" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
 		true; done && \
 	true; done
