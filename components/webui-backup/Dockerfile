@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package-lock.json package.json postinstall.sh tsconfig.json ./
 COPY src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
-RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --quiet && \
+RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
 

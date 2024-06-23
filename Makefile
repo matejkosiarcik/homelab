@@ -19,9 +19,9 @@ all: clean bootstrap build docker-build docker-multibuild
 
 .PHONY: bootstrap
 bootstrap:
-	npm ci --prefix "$(PROJECT_DIR)/icons"
+	npm ci --prefix "$(PROJECT_DIR)/icons" --no-progress --no-audit --no-fund --loglevel=error
 	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-		npm ci --prefix "$(PROJECT_DIR)/$$component" && \
+		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
 	python3 -m venv icons/venv
