@@ -7,7 +7,7 @@ DISABLE:
   - TYPESCRIPT
 
 DISABLE_LINTERS:
-  - ANSIBLE_ANSIBLE_LINT
+  - ANSIBLE_ANSIBLE_LINT # Unable to disable "syntax-check[unknown-module]" errors, even if collections are available
   - JSON_NPM_PACKAGE_JSON_LINT
   - PYTHON_BANDIT
   - REPOSITORY_DEVSKIM
