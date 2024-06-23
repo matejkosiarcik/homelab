@@ -53,6 +53,7 @@
 
     - name: Reboot
       when: log2ram_install.changed
+      throttle: 1
       ansible.builtin.reboot:
         reboot_command: sudo reboot
 
@@ -89,6 +90,7 @@
 
     - name: Reboot
       when: docker_install.changed
+      throttle: 1
       ansible.builtin.reboot:
         reboot_command: sudo reboot
 
