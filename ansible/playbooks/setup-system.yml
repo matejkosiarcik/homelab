@@ -26,7 +26,16 @@
           - rsync
           - wget
 
-    # TODO: Vacuum+Optimize+Limit size of journalctl
+    - name: Vacuum journal logs
+      register: journactl_vacuum
+      changed_when: "'CHANGED' in journactl_vacuum.stdout"
+      ansible.builtin.shell: |
+        if [ ! -e /var/log/journal ]; then
+          exit 0
+        fi
+        sudo journalctl --vacuum-time=1d --vacuum-size=1M
+        sudo journalctl --flush --rotate
+        printf 'CHANGED\n'
 
     - name: Install log2ram
       when: ansible_facts['os_family'] == "Debian"
