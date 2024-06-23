@@ -6,5 +6,6 @@
     - name: Ping
       ansible.builtin.ping:
 
-    - name: Reboot
+    - name: Shutdown
+      become: true
       community.general.shutdown:
