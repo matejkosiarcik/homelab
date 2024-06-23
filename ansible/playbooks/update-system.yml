@@ -10,6 +10,8 @@
       ansible.builtin.apt:
         update_cache: true
         upgrade: true
+        autoclean: true
+        autoremove: true
 
     - name: Update homelab repository
       changed_when: "'CHANGED' in update_git_homelab.stdout"
