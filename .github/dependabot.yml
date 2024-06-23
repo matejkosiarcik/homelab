@@ -17,6 +17,23 @@ updates:
         patterns:
           - "*"
 
+  # Ansible
+  - package-ecosystem: pip
+    directory: /ansible
+    schedule:
+      interval: daily
+      time: "02:30"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      pip:
+        patterns:
+          - "*"
+
   # Docker
   - package-ecosystem: docker
     directory: /components/webui-backup

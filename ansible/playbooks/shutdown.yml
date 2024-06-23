@@ -1,0 +1,11 @@
+- name: Shutdown
+  hosts: servers
+  serial: 1
+  any_errors_fatal: true
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+    - name: Shutdown
+      become: true
+      community.general.shutdown:
