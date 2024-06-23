@@ -4,12 +4,11 @@
     - name: Ping
       ansible.builtin.ping:
 
-    - name: Update APT packages
+    - name: Update APT index
       when: ansible_facts['os_family'] == "Debian"
       become: true
       ansible.builtin.apt:
         update_cache: true
-        upgrade: true
 
     - name: Install base APT packages
       when: ansible_facts['os_family'] == "Debian"
@@ -26,7 +25,16 @@
           - rsync
           - wget
 
-    # TODO: Vacuum+Optimize+Limit size of journalctl
+    - name: Vacuum journal logs
+      register: journactl_vacuum
+      changed_when: "'CHANGED' in journactl_vacuum.stdout"
+      ansible.builtin.shell: |
+        if [ ! -e /var/log/journal ]; then
+          exit 0
+        fi
+        sudo journalctl --vacuum-time=1d --vacuum-size=1M
+        sudo journalctl --flush --rotate
+        printf 'CHANGED\n'
 
     - name: Install log2ram
       when: ansible_facts['os_family'] == "Debian"
