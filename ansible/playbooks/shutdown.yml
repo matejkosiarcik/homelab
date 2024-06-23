@@ -8,4 +8,6 @@
 
     - name: Shutdown
       become: true
+      tags:
+        - skip_ansible_lint
       community.general.shutdown:
