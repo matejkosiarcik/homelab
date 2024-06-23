@@ -8,9 +8,4 @@
 
     - name: Shutdown
       become: true
-      tags:
-        - skip_ansible_lint
-        - skip_ansible_lint_rule_syntax-check[unknown-module]
-        - skip_ansible_lint_rule_syntax-check
-        - skip_ansible_lint_rule_unknown-module
       community.general.shutdown:
