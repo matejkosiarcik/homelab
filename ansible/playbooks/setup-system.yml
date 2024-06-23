@@ -27,14 +27,12 @@
 
     - name: Vacuum journal logs
       register: journactl_vacuum
-      changed_when: "'CHANGED' in journactl_vacuum.stdout"
+      changed_when: "'Deleted archived journal' in journactl_vacuum.stdout or journactl_vacuum.stdout | regex_search('Vacuuming done, freed [1-9]')"
       ansible.builtin.shell: |
         if [ ! -e /var/log/journal ]; then
           exit 0
         fi
-        sudo journalctl --vacuum-time=1d --vacuum-size=1M
-        sudo journalctl --flush --rotate
-        printf 'CHANGED\n'
+        sudo journalctl --vacuum-time=2d --vacuum-size=5M --rotate 2>&1
 
     - name: Install log2ram
       when: ansible_facts['os_family'] == "Debian"
