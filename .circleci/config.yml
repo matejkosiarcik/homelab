@@ -30,7 +30,7 @@ jobs:
 
   local_build:
     docker:
-      - image: debian:12.5
+      - image: debian:12.6
     steps:
       - checkout
       - run:
@@ -68,7 +68,7 @@ jobs:
 
   deployment:
     docker:
-      - image: docker:26.1.3
+      - image: docker:26.1.4
     steps:
       - checkout
       - setup_remote_docker:
