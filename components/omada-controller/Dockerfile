@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 # checkov:skip=CKV_DOCKER_2: healthcheck builtin
 
-FROM mbentley/omada-controller:5.13
+FROM mbentley/omada-controller:5.14
 ENV PUID=508 \
     PGID=508 \
     PORT_APP_DISCOVERY=27001 \
