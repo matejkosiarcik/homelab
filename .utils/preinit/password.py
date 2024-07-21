@@ -36,5 +36,5 @@ if __name__ == "__main__":
         print(password)
     else:
         os.makedirs(path.dirname(file_output), exist_ok=True)
-        with open(file_output, "w") as file:
+        with open(file_output, "w", encoding="utf8") as file:
             print(password, file=file, sep="", end="")

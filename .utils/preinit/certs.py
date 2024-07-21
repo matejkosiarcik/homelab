@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 import subprocess
 import sys
-import os
 from os import path
 
 if __name__ == "__main__":
@@ -15,7 +15,7 @@ if __name__ == "__main__":
     dir_output = args.output
     os.makedirs(dir_output, exist_ok=True)
 
-    domain="*.home" # TODO: Pass domain in argument
+    domain = "*.home" # TODO: Pass domain in argument
     # TODO: Can you put multiple domains here? What is the syntax?
     # Something like "pihole.home,*.pihole.home"
     openssl_subj=f"/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN={domain}"
