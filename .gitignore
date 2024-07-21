@@ -4,6 +4,7 @@ certs/
 data/
 log/
 private/
+private-new/
 
 # For deployment
 /machines/.current
