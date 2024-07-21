@@ -15,10 +15,10 @@ if __name__ == "__main__":
     dir_output = args.output
     os.makedirs(dir_output, exist_ok=True)
 
-    domain = "*.home" # TODO: Pass domain in argument
+    domain = "*.home"  # TODO: Pass domain in argument
     # TODO: Can you put multiple domains here? What is the syntax?
     # Something like "pihole.home,*.pihole.home"
-    openssl_subj=f"/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN={domain}"
+    openssl_subj = f"/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN={domain}"
 
     subprocess.check_call(["openssl", "genrsa", "-out", path.join(dir_output, "server.key"), "4096"])
     subprocess.check_call(["openssl", "rsa", "-in", path.join(dir_output, "server.key"), "-out", path.join(dir_output, "server.key")])
