@@ -11,6 +11,7 @@ touch /log/cron.log
 # Run script initially
 CRON='0'
 export CRON
+touch /app/.internal/cron.env
 if [ "${HOST-x}" != 'x' ]; then
     printf 'HOST=%s\n' "$HOST" >>/app/.internal/cron.env
 fi

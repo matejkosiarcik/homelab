@@ -1,11 +1,19 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM alpine:3.20.2
+# FROM alpine:3.20.2
+# WORKDIR /app
+# RUN apk update --no-cache && \
+#     apk add --no-cache curl postgresql16-client && \
+#     mkdir -p /backup /log
+
+# TODO: Switch to regular stable debian
+FROM debian:trixie-slim
 WORKDIR /app
-RUN apk update --no-cache && \
-    apk add --no-cache curl postgresql16-client && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends cron postgresql-client-16 >/dev/null && \
+    rm -rf /var/lib/apt/lists/* && \
     mkdir -p /backup /log
-COPY crontab.cron entrypoint.sh run.sh ./
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./postgres-backup/cron-main.sh ./postgres-backup/crontab.cron ./
 ENV PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava

@@ -31,7 +31,8 @@ services:
   database-backup:
     image: healthchecks-database-backup:homelab
     build:
-      context: ../../../components/postgres-backup
+      context: ../../../components
+      dockerfile: ./postgres-backup/Dockerfile
     container_name: healthchecks-database-backup
     hostname: healthchecks-database-backup
     depends_on:
@@ -42,7 +43,7 @@ services:
     environment:
       - PGHOST=healthchecks-database
     volumes:
-      - ./config/database-backup/main.sh:/app/main.sh:ro
+      - ./config/database-backup/backup.sh:/app/backup.sh:ro
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw
 
