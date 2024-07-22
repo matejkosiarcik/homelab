@@ -12,7 +12,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
 
 FROM node:22.5.1-slim AS aggregator
 WORKDIR /app
-COPY package.json schedule.cron tsconfig.json ./
+COPY crontab.cron package.json tsconfig.json ./
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY entrypoint.sh ./entrypoint.sh
