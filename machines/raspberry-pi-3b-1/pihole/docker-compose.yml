@@ -8,11 +8,24 @@ services:
     container_name: pihole-app
     hostname: pihole-app
     volumes:
-      - ./data/etc-pihole:/etc/pihole:rw
-      - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ./data/pihole/etc-pihole:/etc/pihole:rw
+      - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
       - ../../../components/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     stop_grace_period: 30s
+
+  certificate-manager:
+    image: pihole-certificate-manager:homelab
+    build:
+      context: ../../../components/
+      dockerfile: ./certificate-manager/Dockerfile
+    container_name: pihole-certificate-manager
+    hostname: pihole-certificate-manager
+    environment:
+      - HOST=pihole.home
+    volumes:
+      - ./data/certs:/certs:rw
+      - ./log/certificate-manager:/log:rw
 
   http-proxy:
     image: pihole-http-proxy:homelab
@@ -20,6 +33,9 @@ services:
       context: ../../../components/http-proxy
     container_name: pihole-http-proxy
     hostname: pihole-http-proxy
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
     environment:
       - HOST=pihole.home
       - UPSTREAM_URL=http://pihole-app
@@ -28,7 +44,7 @@ services:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw
       - ./log/proxy-forensic:/log/forensic:rw
-      - ./private/certs:/certs:ro
+      - ./data/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
   socket-proxy:
@@ -43,11 +59,14 @@ services:
   webui-backup:
     image: pihole-webui-backup:homelab
     build:
-      context: ../../../components/webui-backup/
+      context: ../../../components/
+      dockerfile: ./webui-backup/Dockerfile
     container_name: pihole-webui-backup
     hostname: pihole-webui-backup
     depends_on:
       app:
+        condition: service_healthy
+      http-proxy:
         condition: service_healthy
     environment:
       - HOMELAB_SERVICE=pihole

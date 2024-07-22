@@ -10,6 +10,11 @@ services:
       - FTLCONF_PRIVACYLEVEL=0
     restart: "no"
 
+  certificate-manager:
+    environment:
+      - ENV=dev
+    restart: "no"
+
   http-proxy:
     # ports:
     #   - "8080:80"

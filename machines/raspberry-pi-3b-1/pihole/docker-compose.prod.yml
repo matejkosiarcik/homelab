@@ -13,6 +13,13 @@ services:
       # - FTLCONF_RATE_LIMIT=100000/60
     restart: unless-stopped
 
+  certificate-manager:
+    networks:
+      internal-network: {}
+    environment:
+      - ENV=prod
+    restart: unless-stopped
+
   http-proxy:
     networks:
       internal-network: {}
