@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apk update --no-cache && \
     apk add --no-cache curl postgresql16-client && \
     mkdir -p /backup /log
-COPY entrypoint.sh run.sh schedule.cron ./
+COPY crontab.cron entrypoint.sh run.sh ./
 ENV PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava

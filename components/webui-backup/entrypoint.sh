@@ -8,7 +8,7 @@ printf 'HOMELAB_SERVICE=%s\n' "$HOMELAB_SERVICE" >>/app/.internal/.env
 
 rm -f /log/cron.log
 touch /log/cron.log
-crontab /app/schedule.cron
+crontab /app/crontab.cron
 
 # Run script on startup
 {

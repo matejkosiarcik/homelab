@@ -7,7 +7,7 @@ printf 'starting\n' >/app/.internal/status
 
 rm -f /log/cron.log
 touch /log/cron.log
-crontab /app/schedule.cron
+crontab /app/crontab.cron
 
 # Run script on startup
 {
