@@ -3,8 +3,8 @@
 
 FROM node:22.5.1-slim AS build
 WORKDIR /app
-COPY package-lock.json package.json postinstall.sh tsconfig.json ./
-COPY src/ ./src/
+COPY ./webui-backup/package-lock.json ./webui-backup/package.json ./webui-backup/postinstall.sh ./webui-backup/tsconfig.json ./
+COPY ./webui-backup/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
@@ -12,11 +12,11 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
 
 FROM node:22.5.1-slim AS aggregator
 WORKDIR /app
-COPY crontab.cron package.json tsconfig.json ./
+COPY ./webui-backup/crontab.cron ./webui-backup/package.json ./webui-backup/tsconfig.json ./
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
-COPY entrypoint.sh ./entrypoint.sh
-COPY run.sh ./run.sh
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./
+COPY ./webui-backup/cron-main.sh ./
 
 FROM node:22.5.1-slim
 WORKDIR /app

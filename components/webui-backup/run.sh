@@ -22,9 +22,9 @@ fi
 
 # Run actual job
 printf '0\n' >"$statusfile"
-node "/app/dist/$HOMELAB_SERVICE.js" 2>&1 | tee "$logfile"
+{ node "/app/dist/$HOMELAB_SERVICE.js" 2>&1; printf '%s\n' "$?" >"$statusfile" } | tee "$logfile"
 
-# Send status to healthchecks
+# Send end-status to healthchecks
 status="$(cat "$statusfile")"
 if [ -n "${HEALTHCHECK_URL+x}" ]; then
     printf 'Healthchecks HTTP after: '
