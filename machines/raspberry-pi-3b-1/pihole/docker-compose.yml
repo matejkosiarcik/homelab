@@ -83,7 +83,7 @@ networks:
     ipam:
       config:
         - subnet: "10.1.0.0/19"
-          ip_range: "10.1.10.0/31"
-          gateway: "10.1.0.1"
+          ip_range: "10.1.10.0/30"
+          gateway: "10.1.6.105"
 
   internal-network:
