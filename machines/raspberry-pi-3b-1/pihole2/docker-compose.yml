@@ -70,6 +70,7 @@ services:
         condition: service_healthy
     environment:
       - HOMELAB_SERVICE=pihole
+      - URL=http://pihole2-app
     volumes:
       - ./private/webui-backup.env:/app/.env:ro
       - ./data/webui-backup:/backup:rw
