@@ -15,6 +15,7 @@
       become: true
       ansible.builtin.apt:
         pkg:
+          - apache2-utils
           - ca-certificates
           - curl
           - dnsutils
