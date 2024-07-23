@@ -22,7 +22,7 @@ services:
     container_name: pihole2-certificate-manager
     hostname: pihole2-certificate-manager
     environment:
-      - HOST=pihole.home
+      - HOST=pihole2.home
     volumes:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
