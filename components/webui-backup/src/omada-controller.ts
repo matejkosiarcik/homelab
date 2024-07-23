@@ -32,10 +32,10 @@ import { expect } from 'playwright/test';
 
         // Login
         await page.goto('/login');
-        await page.click('#privacy-agree-btn'); // Hide cookies
+        await page.locator('#privacy-agree-btn').click(); // Hide cookies
         await page.locator('#username input[type="text"]').fill(username);
         await page.locator('#password input[type="password"]').fill(password);
-        await page.locator('#loginBtn a[type=button]').click();
+        await page.locator('#loginBtn a[type=button]').click({ noWaitAfter: true });
         await page.waitForURL(/.*#dashboardGlobal$/);
 
         // Navigate to proper place in settings

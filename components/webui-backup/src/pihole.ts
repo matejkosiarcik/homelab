@@ -31,7 +31,7 @@ import { expect } from 'playwright/test';
         // Login
         await page.goto('/admin/login.php');
         await page.locator('form#loginform input#loginpw').fill(password);
-        await page.locator('form#loginform button[type="submit"]').click();
+        await page.locator('form#loginform button[type="submit"]').click({ noWaitAfter: true });
         await page.waitForURL('/admin/index.php');
 
         // Navigate to proper place in settings
