@@ -54,7 +54,7 @@ services:
     container_name: pihole2-socket-proxy
     hostname: pihole2-socket-proxy
     environment:
-      - HOMELAB_SERVICE=pihole
+      - HOMELAB_SERVICE=pihole2
 
   webui-backup:
     image: pihole2-webui-backup:homelab
