@@ -61,7 +61,8 @@ if [ -d "$target_dir" ]; then
         (cd "$target_dir" && docker compose down 2>&1 | tee "$log_file" >&2)
         printf '\n' | tee "$log_file" >&2
     fi
-    cp -R "$target_dir/." "$backup_dir"
+    # TODO: Remove sudo!!!
+    sudo cp -R "$target_dir/." "$backup_dir"
 else
     mkdir -p "$target_dir"
 fi
