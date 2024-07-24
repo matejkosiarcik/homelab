@@ -23,7 +23,7 @@ else
 fi
 
 # Run actual job
-( sh /app/cron-main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile" ) | tee "$logfile"
+(sh /app/cron-main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile") | tee "$logfile"
 
 # Send end-signal to healthchecks
 status="$(cat "$statusfile")"

@@ -26,7 +26,7 @@ fi
 
 if [ -e '/certs/certificate.key' ] && [ -e '/certs/certificate.csr' ] && [ -e '/certs/certificate.crt' ]; then
     # Only renew certificate when it's validity is less than 1 month
-    if ! openssl x509 -checkend "$((60*60*24*30))" -noout -in '/certs/certificate.crt' >/dev/null; then
+    if ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in '/certs/certificate.crt' >/dev/null; then
         create_certs='1'
     fi
 else
