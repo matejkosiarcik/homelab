@@ -17,10 +17,12 @@
         pkg:
           - apache2-utils
           - ca-certificates
+          - cron
           - curl
           - dnsutils
           - git
           - moreutils
+          - openssl
           - python-is-python3
           - python3
           - rsync
