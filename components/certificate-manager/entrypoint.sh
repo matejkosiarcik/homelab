@@ -19,7 +19,7 @@ sh /app/cron-wrapper.sh
 CRON='1'
 printf 'CRON=%s\n' "$CRON" >>/app/.internal/cron.env
 
-# Run cron indefintely
+# Run cron indefinitely
 crontab /app/crontab.cron
 cron -L 15
 printf 'started\n' >/app/.internal/status
