@@ -16,7 +16,8 @@ export CRON
 printf 'HOST=%s\n' "$HOST" >>/app/.internal/cron.env
 printf 'ENV=%s\n' "$ENV" >>/app/.internal/cron.env
 sh /app/cron-wrapper.sh
-printf 'CRON=1\n' "$ENV" >>/app/.internal/cron.env
+CRON='1'
+printf 'CRON=%s\n' "$CRON" >>/app/.internal/cron.env
 
 # Run cron indefintely
 crontab /app/crontab.cron
