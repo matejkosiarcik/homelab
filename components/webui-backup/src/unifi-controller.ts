@@ -35,7 +35,7 @@ import { expect } from 'playwright/test';
         await page.locator('input[name="username"]').waitFor({ timeout: 5000 })
         await page.locator('input[name="username"]').fill(username);
         await page.locator('input[name="password"]').fill(password);
-        await page.locator('button#loginButton').click();
+        await page.locator('button#loginButton').click({ noWaitAfter: true });
         await page.waitForURL('/manage/default/dashboard');
 
         // Navigate to proper place in settings
