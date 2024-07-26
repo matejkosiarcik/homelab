@@ -1,0 +1,90 @@
+# version: "3.8"
+
+services:
+  app:
+    image: pihole-guest-app:homelab
+    build:
+      context: ../../../components/pihole/
+    container_name: pihole-guest-app
+    hostname: pihole-guest-app
+    volumes:
+      - ./data/pihole/etc-pihole:/etc/pihole:rw
+      - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
+      - ../../../components/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
+    stop_grace_period: 30s
+
+  certificate-manager:
+    image: pihole-guest-certificate-manager:homelab
+    build:
+      context: ../../../components/
+      dockerfile: ./certificate-manager/Dockerfile
+    container_name: pihole-guest-certificate-manager
+    hostname: pihole-guest-certificate-manager
+    environment:
+      - HOST=pihole2.home
+    volumes:
+      - ./data/certs:/certs:rw
+      - ./log/certificate-manager:/log:rw
+
+  http-proxy:
+    image: pihole-guest-http-proxy:homelab
+    build:
+      context: ../../../components/http-proxy
+    container_name: pihole-guest-http-proxy
+    hostname: pihole-guest-http-proxy
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    environment:
+      - HOST=pihole.home
+      - UPSTREAM_URL=http://pihole-guest-app
+      - HOMELAB_SERVICE=pihole
+    volumes:
+      - ./log/proxy-access:/log/access:rw
+      - ./log/proxy-error:/log/error:rw
+      - ./log/proxy-forensic:/log/forensic:rw
+      - ./data/certs:/certs:ro
+      - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+
+  socket-proxy:
+    image: pihole-guest-socket-proxy:homelab
+    build:
+      context: ../../../components/socket-proxy/
+    container_name: pihole-guest-socket-proxy
+    hostname: pihole-guest-socket-proxy
+    environment:
+      - HOMELAB_SERVICE=pihole2
+
+  webui-backup:
+    image: pihole-guest-webui-backup:homelab
+    build:
+      context: ../../../components/
+      dockerfile: ./webui-backup/Dockerfile
+    container_name: pihole-guest-webui-backup
+    hostname: pihole-guest-webui-backup
+    depends_on:
+      app:
+        condition: service_healthy
+      http-proxy:
+        condition: service_healthy
+    environment:
+      - HOMELAB_SERVICE=pihole
+      - URL=http://pihole-guest-app
+    volumes:
+      - ./private/webui-backup.env:/app/.env:ro
+      - ./data/webui-backup:/backup:rw
+      - ./log/webui-backup:/log:rw
+
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.10.128/30"
+          gateway: "10.1.6.105"
+
+  internal-network:
