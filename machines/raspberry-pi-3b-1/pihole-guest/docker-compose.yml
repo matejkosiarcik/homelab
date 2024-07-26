@@ -22,7 +22,7 @@ services:
     container_name: pihole-guest-certificate-manager
     hostname: pihole-guest-certificate-manager
     environment:
-      - HOST=pihole2.home
+      - HOST=pihole-guest.home
     volumes:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
@@ -37,7 +37,7 @@ services:
       certificate-manager:
         condition: service_healthy
     environment:
-      - HOST=pihole.home
+      - HOST=pihole-guest.home
       - UPSTREAM_URL=http://pihole-guest-app
       - HOMELAB_SERVICE=pihole
     volumes:

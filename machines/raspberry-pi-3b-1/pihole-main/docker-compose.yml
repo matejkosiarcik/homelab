@@ -22,7 +22,7 @@ services:
     container_name: pihole-main-certificate-manager
     hostname: pihole-main-certificate-manager
     environment:
-      - HOST=pihole.home
+      - HOST=pihole-main.home
     volumes:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
@@ -37,7 +37,7 @@ services:
       certificate-manager:
         condition: service_healthy
     environment:
-      - HOST=pihole.home
+      - HOST=pihole-main.home
       - UPSTREAM_URL=http://pihole-main-app
       - HOMELAB_SERVICE=pihole
     volumes:

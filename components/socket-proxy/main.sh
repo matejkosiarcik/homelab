@@ -2,15 +2,20 @@
 set -euf
 
 if [ "${HOMELAB_SERVICE-x}" = 'pihole' ]; then
-    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole-http-proxy:80 &
-    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole-http-proxy:443 &
-    socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole-app:53 &
-    socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole-app:53 &
-elif [ "${HOMELAB_SERVICE-x}" = 'pihole2' ]; then
-    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole2-http-proxy:80 &
-    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole2-http-proxy:443 &
-    socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole2-app:53 &
-    socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole2-app:53 &
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole-main-http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole-main-http-proxy:443 &
+    socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole-main-app:53 &
+    socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole-main-app:53 &
+elif [ "${HOMELAB_SERVICE-x}" = 'pihole-spouse' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole-spouse-http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole-spouse-http-proxy:443 &
+    socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole-spouse-app:53 &
+    socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole-spouse-app:53 &
+elif [ "${HOMELAB_SERVICE-x}" = 'pihole-guest' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole-guest-http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole-guest-http-proxy:443 &
+    socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole-guest-app:53 &
+    socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole-guest-app:53 &
 elif [ "${HOMELAB_SERVICE-x}" = 'smtp4dev' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:smtp4dev-http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:smtp4dev-http-proxy:443 &
