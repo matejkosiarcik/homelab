@@ -2,11 +2,11 @@
 
 services:
   app:
-    image: pihole2-app:homelab
+    image: pihole-spouse-app:homelab
     build:
       context: ../../../components/pihole/
-    container_name: pihole2-app
-    hostname: pihole2-app
+    container_name: pihole-spouse-app
+    hostname: pihole-spouse-app
     volumes:
       - ./data/pihole/etc-pihole:/etc/pihole:rw
       - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
@@ -15,12 +15,12 @@ services:
     stop_grace_period: 30s
 
   certificate-manager:
-    image: pihole2-certificate-manager:homelab
+    image: pihole-spouse-certificate-manager:homelab
     build:
       context: ../../../components/
       dockerfile: ./certificate-manager/Dockerfile
-    container_name: pihole2-certificate-manager
-    hostname: pihole2-certificate-manager
+    container_name: pihole-spouse-certificate-manager
+    hostname: pihole-spouse-certificate-manager
     environment:
       - HOST=pihole2.home
     volumes:
@@ -28,17 +28,17 @@ services:
       - ./log/certificate-manager:/log:rw
 
   http-proxy:
-    image: pihole2-http-proxy:homelab
+    image: pihole-spouse-http-proxy:homelab
     build:
       context: ../../../components/http-proxy
-    container_name: pihole2-http-proxy
-    hostname: pihole2-http-proxy
+    container_name: pihole-spouse-http-proxy
+    hostname: pihole-spouse-http-proxy
     depends_on:
       certificate-manager:
         condition: service_healthy
     environment:
       - HOST=pihole.home
-      - UPSTREAM_URL=http://pihole2-app
+      - UPSTREAM_URL=http://pihole-spouse-app
       - HOMELAB_SERVICE=pihole
     volumes:
       - ./log/proxy-access:/log/access:rw
@@ -48,21 +48,21 @@ services:
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
   socket-proxy:
-    image: pihole2-socket-proxy:homelab
+    image: pihole-spouse-socket-proxy:homelab
     build:
       context: ../../../components/socket-proxy/
-    container_name: pihole2-socket-proxy
-    hostname: pihole2-socket-proxy
+    container_name: pihole-spouse-socket-proxy
+    hostname: pihole-spouse-socket-proxy
     environment:
       - HOMELAB_SERVICE=pihole2
 
   webui-backup:
-    image: pihole2-webui-backup:homelab
+    image: pihole-spouse-webui-backup:homelab
     build:
       context: ../../../components/
       dockerfile: ./webui-backup/Dockerfile
-    container_name: pihole2-webui-backup
-    hostname: pihole2-webui-backup
+    container_name: pihole-spouse-webui-backup
+    hostname: pihole-spouse-webui-backup
     depends_on:
       app:
         condition: service_healthy
@@ -70,7 +70,7 @@ services:
         condition: service_healthy
     environment:
       - HOMELAB_SERVICE=pihole
-      - URL=http://pihole2-app
+      - URL=http://pihole-spouse-app
     volumes:
       - ./private/webui-backup.env:/app/.env:ro
       - ./data/webui-backup:/backup:rw
