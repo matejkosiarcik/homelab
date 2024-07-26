@@ -14,8 +14,8 @@ sudo ip addr add "10.1.6.104/32" dev "$router_name"
 sudo ip link set "$router_name" up
 sudo ip route add "10.1.10.0/30" dev "$router_name"
 
-router_name="macvlan-shim3"
-sudo ip link add "$router_name" link eth0 type macvlan mode bridge
-sudo ip addr add "10.1.6.105/32" dev "$router_name"
-sudo ip link set "$router_name" up
-sudo ip route add "10.1.10.128/30" dev "$router_name"
+# router_name="macvlan-shim3"
+# sudo ip link add "$router_name" link eth0 type macvlan mode bridge
+# sudo ip addr add "10.1.6.105/32" dev "$router_name"
+# sudo ip link set "$router_name" up
+# sudo ip route add "10.1.10.128/30" dev "$router_name"
