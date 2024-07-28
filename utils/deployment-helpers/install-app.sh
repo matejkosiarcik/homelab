@@ -73,7 +73,6 @@ if [ -e "$target_dir/log" ]; then
 fi
 find "$target_dir" -mindepth 1 -maxdepth 1 \
     -not \( -name 'data' -and -type d \) -and \
-    -not \( -name 'private' -and -type d \) \
     -exec rm -rf {} \;
 
 # Copy new files
@@ -83,6 +82,7 @@ if [ -f "$source_dir/docker-compose.prod.yml" ]; then
 fi
 find "$source_dir" -mindepth 1 -maxdepth 1 \
     \( -name 'config' -and -type d \) \
+    \( -name 'private' -and -type d \) \
     -exec cp -R "{}/." "$target_dir/config" \;
 
 # Pull docker images
