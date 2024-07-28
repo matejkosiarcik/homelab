@@ -1,8 +1,10 @@
 # version: "3.8"
 
-x-common-env-variables: &common-env-variables
-  HOMELAB_APP_TYPE: pihole
-  HOMELAB_APP_SUBTYPE: pihole-main
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: pihole
+    HOMELAB_APP_SUBTYPE: pihole-main
+    HOMELAB_APP_EXTERNAL_DOMAIN: pihole-main.home
 
 services:
   app:
@@ -30,7 +32,6 @@ services:
     hostname: pihole-main-certificate-manager
     environment:
       <<: *common-env-variables
-      HOST: pihole-main.home
     volumes:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
@@ -47,8 +48,6 @@ services:
         condition: service_healthy
     environment:
       <<: *common-env-variables
-      HOST: pihole-main.home
-      UPSTREAM_URL: http://pihole-main-app
     volumes:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw

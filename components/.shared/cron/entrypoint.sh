@@ -8,26 +8,19 @@ printf 'starting\n' >/app/.internal/status
 rm -f /log/cron.log
 touch /log/cron.log
 
-# Run script initially
+# Setup Environment variables
 CRON='0'
 export CRON
-touch /app/.internal/cron.env
-if [ "${HOST-x}" != 'x' ]; then
-    printf 'HOST=%s\n' "$HOST" >>/app/.internal/cron.env
-fi
-if [ "${ENV-x}" != 'x' ]; then
-    printf 'ENV=%s\n' "$ENV" >>/app/.internal/cron.env
-fi
-if [ "${HOMELAB_APP_TYPE-x}" != 'x' ]; then
-    printf 'HOMELAB_APP_TYPE=%s\n' "$HOMELAB_APP_TYPE" >>/app/.internal/cron.env
-fi
-if [ "${HOMELAB_APP_SUBTYPE-x}" != 'x' ]; then
-    printf 'HOMELAB_APP_SUBTYPE=%s\n' "$HOMELAB_APP_SUBTYPE" >>/app/.internal/cron.env
-fi
+printf 'HOMELAB_ENV=%s\n' "$HOMELAB_ENV" >>/app/.internal/cron.env
+printf 'HOMELAB_APP_TYPE=%s\n' "$HOMELAB_APP_TYPE" >>/app/.internal/cron.env
+printf 'HOMELAB_APP_SUBTYPE=%s\n' "$HOMELAB_APP_SUBTYPE" >>/app/.internal/cron.env
+printf 'HOMELAB_APP_EXTERNAL_DOMAIN=%s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >>/app/.internal/cron.env
+
+# Run script initially
 sh /app/main.sh
-printf 'CRON=1\n' "$CRON" >>/app/.internal/cron.env
 
 # Run cron indefintely
+printf 'CRON=1\n' "$CRON" >>/app/.internal/cron.env
 crontab /app/crontab.cron
 cron -L 15
 printf 'started\n' >/app/.internal/status
