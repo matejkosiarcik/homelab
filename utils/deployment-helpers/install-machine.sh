@@ -5,6 +5,9 @@ set -eufo pipefail
 
 currdir="$(cd "$(dirname "$0")" >/dev/null && pwd)"
 
+START_DATE="$(date +"%Y-%m-%d_%H-%M-%S")"
+export START_DATE
+
 ### Install latest crontab ###
 
 declare current_machine_dir

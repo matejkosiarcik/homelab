@@ -38,23 +38,17 @@ fi
 # Default deployment location is "~/homelab"
 # Can be overriden by setting "DEST_DIR=..."
 dest_dir="${DEST_DIR-$HOME/homelab}"
-global_log_dir="$dest_dir/.log/$(date +"%Y-%m-%d_%H-%M-%S").txt"
-global_log_file="$global_log_dir/install.txt"
-
-check_service_already_exist="$(if [ -e "$dest_dir" ]; then printf '1'; else printf '0'; fi)"
-
-mkdir -p "$dest_dir" "$global_log_dir"
+mkdir -p "$dest_dir"
 
 service_name="$(basename "$source_dir")"
-printf 'Installing %s\n' "$service_name" | tee "$global_log_file" >&2
-
 target_dir="$dest_dir/machines/current/apps/$service_name"
-backup_dir="$dest_dir/.backup/$service_name/$(date +"%Y-%m-%d_%H-%M-%S")"
-log_dir="$dest_dir/.log/$service_name/$(date +"%Y-%m-%d_%H-%M-%S")"
+backup_dir="$dest_dir/.backup/$START_DATE/$service_name"
+log_dir="$dest_dir/.log/$START_DATE/$service_name"
 log_file="$log_dir/install.txt"
 mkdir -p "$log_dir" "$backup_dir"
 
 # Backup before updating
+printf 'Installing %s\n' "$service_name" | tee "$log_file" >&2
 if [ -d "$target_dir" ]; then
     if [ -f "$target_dir/docker-compose.yml" ]; then
         printf 'Stop:\n' | tee "$log_file" >&2
@@ -94,13 +88,6 @@ printf '\n' | tee "$log_file" >&2
 printf 'Build:\n' | tee "$log_file" >&2
 (cd "$source_dir" && docker compose build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
-
-if [ "$check_service_already_exist" -eq 0 ]; then
-    printf 'THIS IS FIRST DEPLOYMENT OF %s\n' "$service_name"
-    printf 'Intentionally failing so you can setup private secrets\n'
-    printf 'Then rerun deployment process again\n'
-    exit 1
-fi
 
 # Run new services
 extra_args=''

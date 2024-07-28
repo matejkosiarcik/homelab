@@ -1,13 +1,12 @@
 # For testing services
 .env
-certs/
 data/
 log/
 private/
-private-new/
 
 # For deployment
 /machines/.current
+/.deployment/
 
 # OS stuff
 ._*
