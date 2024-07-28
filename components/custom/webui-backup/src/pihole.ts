@@ -12,6 +12,7 @@ import { getIsoDate } from './utils/utils.ts';
     if (fsSync.existsSync('.env')) {
         dotenv.config({ path: '.env' });
     }
+
     const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data/pihole');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
     const piholeSubtype = process.env['HOMELAB_APP_SUBTYPE'] || (() => { throw new Error('Unset pihole subtype'); });
@@ -19,7 +20,6 @@ import { getIsoDate } from './utils/utils.ts';
     const headless = process.env['HEADLESS'] !== '0';
     const password = process.env['PASSWORD']!;
     expect(password, 'PASSWORD unset').toBeTruthy();
-
     await fs.mkdir(backupDir, { recursive: true });
 
     const browser = await chromium.launch({ headless: headless, executablePath: browserPath });
