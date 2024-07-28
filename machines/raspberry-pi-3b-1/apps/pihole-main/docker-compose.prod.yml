@@ -18,21 +18,21 @@ services:
       # FTLCONF_RATE_LIMIT: "100000/60"
     networks:
       internal-network: {}
-    restart: unless-stopped
+    restart: "no" # TODO: revert to: unless-stopped
 
   certificate-manager:
     environment:
       <<: *common-env-variables
     networks:
       internal-network: {}
-    restart: unless-stopped
+    restart: "no" # TODO: revert to: unless-stopped
 
   http-proxy:
     environment:
       <<: *common-env-variables
     networks:
       internal-network: {}
-    restart: unless-stopped
+    restart: "no" # TODO: revert to: unless-stopped
 
   socket-proxy:
     environment:
@@ -46,11 +46,11 @@ services:
       internal-network: {}
       external-network:
         ipv4_address: *external-ip
-    restart: unless-stopped
+    restart: "no" # TODO: revert to: unless-stopped
 
   webui-backup:
     environment:
       <<: *common-env-variables
     networks:
       internal-network: {}
-    restart: unless-stopped
+    restart: "no" # TODO: revert to: unless-stopped
