@@ -13,13 +13,12 @@ import { expect } from 'playwright/test';
     }
     const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data/pihole');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
-    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'http://pihole-main-app' : 'https://localhost:8443');
+    const piholeSubtype = process.env['HOMELAB_APP_SUBTYPE'] || (() => { throw new Error('Unset pihole subtype'); });
+    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? `http://${piholeSubtype}-app` : 'https://localhost:8443');
     const headless = process.env['HEADLESS'] !== '0';
     const password = process.env['PASSWORD']!;
     expect(password, 'PASSWORD unset').toBeTruthy();
 
-    const _date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000);
-    const backupDate = _date.toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
     await fs.mkdir(backupDir, { recursive: true });
 
     const browser = await chromium.launch({ headless: headless, executablePath: browserPath });
@@ -44,6 +43,11 @@ import { expect } from 'playwright/test';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).toMatch(/\.tar\.gz/);
+        const backupDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000)
+            .toISOString()
+            .replaceAll(':', '-')
+            .replaceAll('T', '_')
+            .replace(/\..+$/, '');
         await download.saveAs(path.join(backupDir, `${backupDate}.tar.gz`));
     } finally {
         await browser.close();
