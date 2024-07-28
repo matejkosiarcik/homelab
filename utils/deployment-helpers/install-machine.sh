@@ -20,5 +20,5 @@ bash "$currdir/preinstall.sh" $@
 
 ### Install all individual services ###
 
-find "$current_machine_dir/" -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 |
+find "$current_machine_dir/apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 |
     xargs -0 -I% bash -c "SOURCE_DIR=% bash \"$currdir/install-app.sh\" $@"
