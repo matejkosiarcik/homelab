@@ -34,311 +34,311 @@ updates:
         patterns:
           - "*"
 
-  # Docker
-  - package-ecosystem: docker
-    directory: /components/webui-backup
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/http-proxy
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/homer
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/omada-controller
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/mongodb
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/unifi-controller
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/uptime-kuma
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/healthchecks
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/socket-proxy
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/postgres
-    schedule:
-      interval: daily
-      time: "01:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/postgres-backup
-    schedule:
-      interval: daily
-      time: "01:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/lamps/hardware-controller
-    schedule:
-      interval: daily
-      time: "01:35"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/lamps/network-server
-    schedule:
-      interval: daily
-      time: "01:35"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /components/pihole
-    schedule:
-      interval: daily
-      time: "01:35"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
+  # # Docker
+  # - package-ecosystem: docker
+  #   directory: /components/webui-backup
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/http-proxy
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/homer
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/omada-controller
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/mongodb
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/unifi-controller
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/uptime-kuma
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/healthchecks
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/socket-proxy
+  #   schedule:
+  #     interval: daily
+  #     time: "01:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/postgres
+  #   schedule:
+  #     interval: daily
+  #     time: "01:30"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/postgres-backup
+  #   schedule:
+  #     interval: daily
+  #     time: "01:30"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/lamps/hardware-controller
+  #   schedule:
+  #     interval: daily
+  #     time: "01:35"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/lamps/network-server
+  #   schedule:
+  #     interval: daily
+  #     time: "01:35"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: docker
+  #   directory: /components/pihole
+  #   schedule:
+  #     interval: daily
+  #     time: "01:35"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     docker:
+  #       patterns:
+  #         - "*"
 
-  # NPM
-  - package-ecosystem: npm
-    directory: /components/webui-backup
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "01:45"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /icons
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "02:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /components/lamps/network-server
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "02:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
+  # # NPM
+  # - package-ecosystem: npm
+  #   directory: /components/webui-backup
+  #   versioning-strategy: increase
+  #   schedule:
+  #     interval: daily
+  #     time: "01:45"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     npm:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: npm
+  #   directory: /icons
+  #   versioning-strategy: increase
+  #   schedule:
+  #     interval: daily
+  #     time: "02:15"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     npm:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: npm
+  #   directory: /components/lamps/network-server
+  #   versioning-strategy: increase
+  #   schedule:
+  #     interval: daily
+  #     time: "02:30"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     npm:
+  #       patterns:
+  #         - "*"
 
-  # Pip
-  - package-ecosystem: pip
-    directory: /icons
-    schedule:
-      interval: daily
-      time: "02:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      pip:
-        patterns:
-          - "*"
-  - package-ecosystem: pip
-    directory: /components/lamps/hardware-controller
-    schedule:
-      interval: daily
-      time: "02:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      pip:
-        patterns:
-          - "*"
-  - package-ecosystem: pip
-    directory: /maintenance
-    schedule:
-      interval: daily
-      time: "02:35"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      pip:
-        patterns:
-          - "*"
+  # # Pip
+  # - package-ecosystem: pip
+  #   directory: /icons
+  #   schedule:
+  #     interval: daily
+  #     time: "02:30"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     pip:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: pip
+  #   directory: /components/lamps/hardware-controller
+  #   schedule:
+  #     interval: daily
+  #     time: "02:30"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     pip:
+  #       patterns:
+  #         - "*"
+  # - package-ecosystem: pip
+  #   directory: /maintenance
+  #   schedule:
+  #     interval: daily
+  #     time: "02:35"
+  #     timezone: Europe/Bratislava
+  #   reviewers:
+  #     - matejkosiarcik
+  #   assignees:
+  #     - matejkosiarcik
+  #   open-pull-requests-limit: 1
+  #   groups:
+  #     pip:
+  #       patterns:
+  #         - "*"
