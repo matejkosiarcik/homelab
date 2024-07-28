@@ -35,19 +35,23 @@ global_log_dir="$dest_dir/.log/$(date +"%Y-%m-%d_%H-%M-%S").txt"
 global_log_file="$global_log_dir/install.txt"
 mkdir -p "$dest_dir" "$global_log_dir"
 
-# printf 'Preparing destination directory\n' | tee "$global_log_file" >&2
-# if [ -d "$dest_dir" ]; then
-#     find "$dest_dir" -mindepth 1 -maxdepth 1 -type d \( -not -name '.*' \) | while read -r dir; do
-#         if [ -e "$dir/docker-compose.yml" ]; then
-#             printf 'Stop %s\n' "$(basename "$dir")" | tee "$global_log_file" >&2
-#             (cd "$dir" && docker compose down 2>&1 | tee "$global_log_file" >&2)
-#         fi
-#     done
-# elif [ -e "$dest_dir" ]; then
-#     printf 'Destination directory %s exists.\nDelete before proceeding.\n' "$dest_dir" | tee "$global_log_file" >&2
-#     exit 1
-# fi
+# Stop running apps
+extra_args=''
+if [ "$dry_run" -eq 1 ]; then
+    extra_args='--dry-run'
+fi
+printf 'Stop all running apps\n' | tee "$global_log_file" >&2
+if [ -e "$dest_dir/machines/current/apps" ]; then
+    find "$dest_dir/machines/current/apps" -mindepth 1 -maxdepth 1 -type d \( -not -name '.*' \) | while read -r app_dir; do
+        if [ -e "$app_dir/docker-compose.yml" ]; then
+            printf 'Stop %s\n' "$(basename "$app_dir")" | tee "$global_log_file" >&2
+            # shellcheck disable=SC2248
+            (cd "$app_dir" && docker compose down $extra_args 2>&1 | tee "$global_log_file" >&2)
+        fi
+    done
+fi
 
+# Copy shared files
 printf 'Copy shared files\n' | tee "$global_log_file" >&2
 rm -rf "$dest_dir/components"
 mkdir -p "$dest_dir/components"
