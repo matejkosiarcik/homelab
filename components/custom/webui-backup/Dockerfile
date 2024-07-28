@@ -12,7 +12,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
 
 FROM node:22.5.1-slim AS prefinal
 WORKDIR /app
-COPY ./custom/webui-backup/crontab.cron ./custom/webui-backup/package.json ./custom/webui-backup/cron-main.sh ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/webui-backup/crontab.cron ./custom/webui-backup/main.sh ./custom/webui-backup/package.json ./
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 

@@ -21,7 +21,7 @@ fi
 if [ "${HOMELAB_SERVICE-x}" != 'x' ]; then
     printf 'HOMELAB_SERVICE=%s\n' "$HOMELAB_SERVICE" >>/app/.internal/cron.env
 fi
-sh /app/cron-wrapper.sh
+sh /app/main.sh
 printf 'CRON=1\n' "$CRON" >>/app/.internal/cron.env
 
 # Run cron indefintely
