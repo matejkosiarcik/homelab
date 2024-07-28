@@ -5,6 +5,7 @@ import process from 'process';
 import dotenv from 'dotenv';
 import { chromium } from 'playwright';
 import { expect } from 'playwright/test';
+import { getIsoDate } from './utils/utils.ts';
 
 (async () => {
     // Env config
@@ -43,12 +44,7 @@ import { expect } from 'playwright/test';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).toMatch(/\.tar\.gz/);
-        const backupDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000)
-            .toISOString()
-            .replaceAll(':', '-')
-            .replaceAll('T', '_')
-            .replace(/\..+$/, '');
-        await download.saveAs(path.join(backupDir, `${backupDate}.tar.gz`));
+        await download.saveAs(path.join(backupDir, `${getIsoDate()}.tar.gz`));
     } finally {
         await browser.close();
     }
