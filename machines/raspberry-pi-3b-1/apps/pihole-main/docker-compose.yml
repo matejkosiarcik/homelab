@@ -75,8 +75,6 @@ services:
     depends_on:
       app:
         condition: service_healthy
-      http-proxy:
-        condition: service_healthy
     environment:
       <<: *common-env-variables
     volumes:
