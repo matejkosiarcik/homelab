@@ -6,7 +6,7 @@ set -euf
 
 if [ -z "${HOMELAB_APP_EXTERNAL_DOMAIN+x}" ]; then
     printf 'HOMELAB_APP_EXTERNAL_DOMAIN unset\n'
-    exit 4
+    exit 1
 fi
 
 create_certs='0'
@@ -47,7 +47,7 @@ if [ "$create_certs" = '1' ]; then
         openssl x509 -req -sha256 -days 365 -in "$tmpdir/certificate.csr" -signkey "$tmpdir/certificate.key" -out "$tmpdir/certificate.crt"
     else
         printf 'Unsupported HOMELAB_ENV %s\n' "$HOMELAB_ENV"
-        exit 5
+        exit 1
     fi
 
     mkdir -p /certs
