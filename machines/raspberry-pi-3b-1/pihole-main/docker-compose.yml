@@ -1,5 +1,9 @@
 # version: "3.8"
 
+x-common-env-variables: &common-env-variables
+  - HOMELAB_APP_TYPE=pihole
+  - HOMELAB_APP_SUBTYPE=pihole-main
+
 services:
   app:
     image: pihole-main-app:homelab
@@ -8,6 +12,8 @@ services:
       dockerfile: ./external/pihole/Dockerfile
     container_name: pihole-main-app
     hostname: pihole-main-app
+    environment:
+      <<: *common-env-variables
     volumes:
       - ./data/pihole/etc-pihole:/etc/pihole:rw
       - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
@@ -23,7 +29,8 @@ services:
     container_name: pihole-main-certificate-manager
     hostname: pihole-main-certificate-manager
     environment:
-      - HOST=pihole-main.home
+      <<: *common-env-variables
+      HOST: pihole-main.home
     volumes:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
@@ -39,9 +46,9 @@ services:
       certificate-manager:
         condition: service_healthy
     environment:
-      - HOST=pihole-main.home
-      - UPSTREAM_URL=http://pihole-main-app
-      - HOMELAB_SERVICE=pihole
+      <<: *common-env-variables
+      HOST: pihole-main.home
+      UPSTREAM_URL: http://pihole-main-app
     volumes:
       - ./log/proxy-access:/log/access:rw
       - ./log/proxy-error:/log/error:rw
@@ -57,7 +64,7 @@ services:
     container_name: pihole-main-socket-proxy
     hostname: pihole-main-socket-proxy
     environment:
-      - HOMELAB_SERVICE=pihole
+      <<: *common-env-variables
 
   webui-backup:
     image: pihole-main-webui-backup:homelab
@@ -72,7 +79,7 @@ services:
       http-proxy:
         condition: service_healthy
     environment:
-      - HOMELAB_SERVICE=pihole
+      <<: *common-env-variables
     volumes:
       - ./private/webui-backup.env:/app/.env:ro
       - ./data/webui-backup:/backup:rw
