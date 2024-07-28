@@ -79,6 +79,7 @@ clean:
 		"$(PROJECT_DIR)/.mypy_cache" \
 		"$(PROJECT_DIR)/ansible/python-vendor" \
 		"$(PROJECT_DIR)/ansible/venv" \
+		"$(PROJECT_DIR)/homelab" \
 		"$(PROJECT_DIR)/homelab-deployment" \
 		"$(PROJECT_DIR)/icons/gitman" \
 		"$(PROJECT_DIR)/icons/node_modules" \
