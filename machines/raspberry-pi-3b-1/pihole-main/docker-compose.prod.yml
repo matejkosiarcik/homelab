@@ -7,8 +7,8 @@ services:
     environment:
       - FTLCONF_LOCAL_IPV4=10.1.10.1
       - FTLCONF_PRIVACYLEVEL=0
-      - VIRTUAL_HOST=pihole.home
-      - PIHOLE_DOMAIN=pihole.home
+      - VIRTUAL_HOST=pihole-main.home
+      - PIHOLE_DOMAIN=pihole-main.home
       # Only for debugging:
       # - FTLCONF_RATE_LIMIT=100000/60
     restart: unless-stopped

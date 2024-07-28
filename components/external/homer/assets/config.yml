@@ -63,13 +63,13 @@ services:
       - name: PiHole 1
         type: Ping
         subtitle: DNS
-        url: https://pihole.home
+        url: https://pihole-main.home
         logo: ./assets/icons/organizr/pihole.png
 
       - name: PiHole 2
         type: Ping
         subtitle: DNS
-        url: https://pihole-backup.home
+        url: https://pihole-main-backup.home
         logo: ./assets/icons/organizr/pihole.png
 
       - name: Homer
