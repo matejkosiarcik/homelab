@@ -22,7 +22,7 @@ if [ "${HOMELAB_APP_TYPE-x}" != 'x' ]; then
     printf 'HOMELAB_APP_TYPE=%s\n' "$HOMELAB_APP_TYPE" >>/app/.internal/cron.env
 fi
 if [ "${HOMELAB_APP_SUBTYPE-x}" != 'x' ]; then
-    printf 'HOMELAB_APP_TYPE=%s\n' "$HOMELAB_APP_SUBTYPE" >>/app/.internal/cron.env
+    printf 'HOMELAB_APP_SUBTYPE=%s\n' "$HOMELAB_APP_SUBTYPE" >>/app/.internal/cron.env
 fi
 sh /app/main.sh
 printf 'CRON=1\n' "$CRON" >>/app/.internal/cron.env
