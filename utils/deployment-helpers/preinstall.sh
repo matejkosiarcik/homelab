@@ -11,10 +11,11 @@ print_help() {
     printf ' -h  - Print usage\n'
 }
 
+dry_run='0'
 while [ "$#" -gt 0 ]; do
     case "$1" in
     -n)
-        # Unused
+        dry_run="1"
         shift
         ;;
     -h)

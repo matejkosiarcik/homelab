@@ -48,7 +48,7 @@ mkdir -p "$dest_dir" "$global_log_dir"
 service_name="$(basename "$source_dir")"
 printf 'Installing %s\n' "$service_name" | tee "$global_log_file" >&2
 
-target_dir="$dest_dir/machines/current/$service_name"
+target_dir="$dest_dir/machines/current/apps/$service_name"
 backup_dir="$dest_dir/.backup/$service_name/$(date +"%Y-%m-%d_%H-%M-%S")"
 log_dir="$dest_dir/.log/$service_name/$(date +"%Y-%m-%d_%H-%M-%S")"
 log_file="$log_dir/install.txt"
