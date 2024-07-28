@@ -103,7 +103,7 @@ printf 'Build docker images\n' | tee "$log_file" >&2
 printf '\n' | tee "$log_file" >&2
 
 # Run new services
-printf 'Start docker images\n' | tee "$log_file" >&2
+printf 'Start docker containers\n' | tee "$log_file" >&2
 # shellcheck disable=SC2248
 (cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $docker_extra_args 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
