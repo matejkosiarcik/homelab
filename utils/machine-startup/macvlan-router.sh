@@ -7,10 +7,9 @@ if [ "$#" -lt 2 ]; then
     exit 1
 fi
 
+router_name="macvlan-shim"
 current_external_ip="$1"
 new_macvlan_ip_range="$2"
-
-router_name="macvlan-shim"
 
 # Add macvlan-shim "router" to be able to access containers from host
 sudo ip link add "$router_name" link eth0 type macvlan mode bridge
