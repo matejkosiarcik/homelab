@@ -37,7 +37,7 @@ create_password() {
         printf 'Password123.' >"$output_file" # A simple password for debugging
     else
         # shellcheck disable=SC2068
-        python3 "$gitroot/.utils/preinit/.shared/password.py" --output "$output_file" $extra_flags
+        python3 "$gitroot/utils/app-init/.shared/password.py" --output "$output_file" $extra_flags
     fi
 }
 
