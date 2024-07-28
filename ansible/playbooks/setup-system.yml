@@ -143,18 +143,11 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Create log directory
-      changed_when: "'CHANGED' in create_log_dir.stdout"
-      register: create_log_dir
+    - name: Create cron log directory
+      changed_when: "'CHANGED' in create_cron_log_dir.stdout"
+      register: create_cron_log_dir
       ansible.builtin.shell: |
         if [ ! -e "$HOME/.log" ]; then
           mkdir -p "$HOME/.log"
           printf 'CHANGED\n'
         fi
-
-        sudo sh -c '
-          if [ ! -e "$HOME/.log" ]; then
-            mkdir -p "$HOME/.log"
-            printf 'CHANGED\n'
-          fi
-        '
