@@ -5,12 +5,14 @@ import process from 'process';
 import dotenv from 'dotenv';
 import { chromium } from 'playwright';
 import { expect } from 'playwright/test';
+import { getIsoDate } from './utils/utils.ts';
 
 (async () => {
     // Env config
     if (fsSync.existsSync('.env')) {
         dotenv.config({ path: '.env' });
     }
+
     const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
     const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'https://unifi-controller-app:8443' : 'https://localhost:8443');
@@ -19,9 +21,6 @@ import { expect } from 'playwright/test';
     expect(username, 'USERNAME unset').toBeTruthy();
     const password = process.env['PASSWORD']!;
     expect(password, 'PASSWORD unset').toBeTruthy();
-
-    const _date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000);
-    const backupDate = _date.toISOString().replaceAll(':', '-').replaceAll('T', '_').replace(/\..+$/, '');
     await fs.mkdir(backupDir, { recursive: true });
 
     const browser = await chromium.launch({ headless: headless, executablePath: browserPath });
@@ -52,7 +51,7 @@ import { expect } from 'playwright/test';
         const download = await downloadPromise;
         const extension = path.extname(download.suggestedFilename()).slice(1);
         expect(extension, `Unknown extension for downloaded file: ${download.suggestedFilename()}`).toEqual('unf');
-        await download.saveAs(path.join(backupDir, `${backupDate}-settings.${extension}`));
+        await download.saveAs(path.join(backupDir, `${getIsoDate()}-settings.${extension}`));
     } finally {
         await browser.close();
     }
