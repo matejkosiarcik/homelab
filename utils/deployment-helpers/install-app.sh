@@ -47,14 +47,22 @@ log_dir="$dest_dir/.log/$START_DATE/$service_name"
 log_file="$log_dir/install.txt"
 mkdir -p "$log_dir" "$backup_dir"
 
+# Init service data
+if [ ! -d "$source_dir/private" ]; then
+    printf 'Init data\n' | tee "$log_file" >&2
+    sh "$source_dir/init.sh" 2>&1 | tee "$log_file" >&2
+fi
+
 # Backup before updating
-printf 'Installing %s\n' "$service_name" | tee "$log_file" >&2
+printf 'Installing\n' "$service_name" | tee "$log_file" >&2
 if [ -d "$target_dir" ]; then
     if [ -f "$target_dir/docker-compose.yml" ]; then
-        printf 'Stop:\n' | tee "$log_file" >&2
+        printf 'Stop previous deployment\n' | tee "$log_file" >&2
         (cd "$target_dir" && docker compose down 2>&1 | tee "$log_file" >&2)
         printf '\n' | tee "$log_file" >&2
     fi
+
+    printf 'Backup previous data\n' | tee "$log_file" >&2
     # TODO: Remove sudo!!!
     sudo cp -R "$target_dir/." "$backup_dir"
 else
@@ -63,7 +71,8 @@ fi
 
 # Remove old files
 if [ -e "$target_dir/log" ]; then
-    sudo rm -rf "$target_dir/log"
+    # TODO: Remove sudo!!!
+    sudo rm -rf "$target_dir/log" "$target_dir/private"
 fi
 find "$target_dir" -mindepth 1 -maxdepth 1 \
     -not \( -name 'data' -and -type d \) -and \
@@ -74,18 +83,20 @@ cp "$source_dir/docker-compose.yml" "$target_dir/docker-compose.yml"
 if [ -f "$source_dir/docker-compose.prod.yml" ]; then
     cp "$source_dir/docker-compose.prod.yml" "$target_dir/docker-compose.override.yml"
 fi
-find "$source_dir" -mindepth 1 -maxdepth 1 \
-    \( -name 'config' -and -type d \) \
-    \( -name 'private' -and -type d \) \
-    -exec cp -R "{}/." "$target_dir/config" \;
+if [ -d "$source_dir/config" ]; then
+    cp -R "$source_dir/config/." "$target_dir/config" \;
+fi
+if [ -d "$source_dir/private" ]; then
+    cp -R "$source_dir/private/." "$target_dir/private" \;
+fi
 
 # Pull docker images
-printf 'Pull:\n' | tee "$log_file" >&2
+printf 'Pull docker images\n' | tee "$log_file" >&2
 (cd "$target_dir" && docker compose pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
 
 # Build docker images
-printf 'Build:\n' | tee "$log_file" >&2
+printf 'Build docker images\n' | tee "$log_file" >&2
 (cd "$source_dir" && docker compose build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
 
@@ -94,7 +105,7 @@ extra_args=''
 if [ "$dry_run" -eq 1 ]; then
     extra_args='--dry-run'
 fi
-printf 'Up:\n' | tee "$log_file" >&2
+printf 'Start docker images\n' | tee "$log_file" >&2
 # shellcheck disable=SC2248
 (cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $extra_args 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
