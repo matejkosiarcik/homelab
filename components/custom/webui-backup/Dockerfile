@@ -3,7 +3,7 @@
 
 FROM node:22.5.1-slim AS build
 WORKDIR /app
-COPY ./custom/webui-backup/package-lock.json ./custom/webui-backup/package.json ./custom/webui-backup/postinstall.sh ./custom/webui-backup/tsconfig.json ./
+COPY ./custom/webui-backup/package-lock.json ./custom/webui-backup/package.json ./custom/webui-backup/postinstall.sh ./custom/webui-backup/rollup.config.js ./custom/webui-backup/tsconfig.json ./
 COPY ./custom/webui-backup/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
