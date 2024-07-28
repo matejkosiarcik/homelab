@@ -1,0 +1,5 @@
+#!/bin/sh
+set -euf
+
+cd "$(dirname "$0")"
+sh "$(git rev-parse --show-toplevel)/.utils/preinit/apps/pihole/preinit.sh"

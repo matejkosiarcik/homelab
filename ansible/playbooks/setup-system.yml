@@ -16,6 +16,7 @@
       ansible.builtin.apt:
         pkg:
           - apache2-utils
+          - bash
           - ca-certificates
           - cron
           - curl
