@@ -4,21 +4,22 @@ services:
   app:
     image: pihole-main-app:homelab
     build:
-      context: ../../../components/pihole/
+      context: ../../../components/
+      dockerfile: ./external/pihole/Dockerfile
     container_name: pihole-main-app
     hostname: pihole-main-app
     volumes:
       - ./data/pihole/etc-pihole:/etc/pihole:rw
       - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-      - ../../../components/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
+      - ../../../components/external/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     stop_grace_period: 30s
 
   certificate-manager:
     image: pihole-main-certificate-manager:homelab
     build:
       context: ../../../components/
-      dockerfile: ./certificate-manager/Dockerfile
+      dockerfile: ./custom/certificate-manager/Dockerfile
     container_name: pihole-main-certificate-manager
     hostname: pihole-main-certificate-manager
     environment:
@@ -30,7 +31,8 @@ services:
   http-proxy:
     image: pihole-main-http-proxy:homelab
     build:
-      context: ../../../components/http-proxy
+      context: ../../../components/
+      dockerfile: ./custom/http-proxy/Dockerfile
     container_name: pihole-main-http-proxy
     hostname: pihole-main-http-proxy
     depends_on:
@@ -50,7 +52,8 @@ services:
   socket-proxy:
     image: pihole-main-socket-proxy:homelab
     build:
-      context: ../../../components/socket-proxy/
+      context: ../../../components/
+      dockerfile: ./custom/socket-proxy/Dockerfile
     container_name: pihole-main-socket-proxy
     hostname: pihole-main-socket-proxy
     environment:
@@ -60,7 +63,7 @@ services:
     image: pihole-main-webui-backup:homelab
     build:
       context: ../../../components/
-      dockerfile: ./webui-backup/Dockerfile
+      dockerfile: ./custom/webui-backup/Dockerfile
     container_name: pihole-main-webui-backup
     hostname: pihole-main-webui-backup
     depends_on:
