@@ -48,13 +48,13 @@ log_file="$log_dir/install.txt"
 mkdir -p "$log_dir" "$backup_dir"
 
 # Init service data
+printf 'Installing %s\n' "$service_name" | tee "$log_file" >&2
 if [ ! -d "$source_dir/private" ]; then
     printf 'Init data\n' | tee "$log_file" >&2
     sh "$source_dir/init.sh" 2>&1 | tee "$log_file" >&2
 fi
 
 # Backup before updating
-printf 'Installing\n' "$service_name" | tee "$log_file" >&2
 if [ -d "$target_dir" ]; then
     if [ -f "$target_dir/docker-compose.yml" ]; then
         printf 'Stop previous deployment\n' | tee "$log_file" >&2
@@ -70,10 +70,7 @@ else
 fi
 
 # Remove old files
-if [ -e "$target_dir/log" ]; then
-    # TODO: Remove sudo!!!
-    sudo rm -rf "$target_dir/log" "$target_dir/private"
-fi
+sudo rm -rf "$target_dir/log" "$target_dir/private"
 find "$target_dir" -mindepth 1 -maxdepth 1 \
     -not \( -name 'data' -and -type d \) -and \
     -exec rm -rf {} \;
@@ -84,10 +81,10 @@ if [ -f "$source_dir/docker-compose.prod.yml" ]; then
     cp "$source_dir/docker-compose.prod.yml" "$target_dir/docker-compose.override.yml"
 fi
 if [ -d "$source_dir/config" ]; then
-    cp -R "$source_dir/config/." "$target_dir/config" \;
+    cp -R "$source_dir/config/." "$target_dir/config"
 fi
 if [ -d "$source_dir/private" ]; then
-    cp -R "$source_dir/private/." "$target_dir/private" \;
+    cp -R "$source_dir/private/." "$target_dir/private"
 fi
 
 # Pull docker images
