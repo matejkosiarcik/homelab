@@ -1,6 +1,9 @@
 #!/bin/sh
 set -euf
 
+# This script wraps the main.sh script we are executing with calls to healthchecks
+# It calls healthchecks both before and after the main script is run, and reports it status and output to healthchecks
+
 PATH="$PATH:/usr/local/bin"
 cd /app
 # shellcheck source=/dev/null
