@@ -6,14 +6,15 @@
 #     apk add --no-cache curl postgresql16-client && \
 #     mkdir -p /backup /log
 
-# TODO: Switch to regular stable debian
+# TODO: Switch to regular stable debian when trixie is released
+# Currently postgresql-client-16 is not available in bookworm
 FROM debian:trixie-slim
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends cron postgresql-client-16 >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /backup /log
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./postgres-backup/cron-main.sh ./postgres-backup/crontab.cron ./
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./postgres-backup/crontab.cron ./postgres-backup/main.sh ./
 ENV PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava

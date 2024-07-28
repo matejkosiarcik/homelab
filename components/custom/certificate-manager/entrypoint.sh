@@ -15,7 +15,7 @@ CRON='0'
 export CRON
 printf 'HOST=%s\n' "$HOST" >>/app/.internal/cron.env
 printf 'ENV=%s\n' "$ENV" >>/app/.internal/cron.env
-sh /app/cron-wrapper.sh
+sh /app/main.sh
 CRON='1'
 printf 'CRON=%s\n' "$CRON" >>/app/.internal/cron.env
 

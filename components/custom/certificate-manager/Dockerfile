@@ -2,7 +2,7 @@
 
 FROM debian:12.6-slim AS prefinal
 WORKDIR /app
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/certificate-manager/cron-main.sh ./custom/certificate-manager/crontab.cron ./
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/certificate-manager/crontab.cron ./custom/certificate-manager/main.sh ./
 
 FROM debian:12.6-slim
 WORKDIR /app
