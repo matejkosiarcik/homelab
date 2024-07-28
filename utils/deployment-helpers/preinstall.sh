@@ -36,11 +36,12 @@ global_log_dir="$dest_dir/.log/$START_DATE"
 global_log_file="$global_log_dir/install.txt"
 mkdir -p "$dest_dir" "$global_log_dir"
 
-# Stop running apps
 extra_args=''
 if [ "$dry_run" -eq 1 ]; then
     extra_args='--dry-run'
 fi
+
+# Stop running apps
 printf 'Stop all running apps\n' | tee "$global_log_file" >&2
 if [ -e "$dest_dir/machines/current/apps" ]; then
     find "$dest_dir/machines/current/apps" -mindepth 1 -maxdepth 1 -type d \( -not -name '.*' \) | while read -r app_dir; do

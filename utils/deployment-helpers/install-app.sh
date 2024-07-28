@@ -35,6 +35,11 @@ if [ "$source_dir" = '' ]; then
     printf 'SOURCE_DIR unset\n' >&2
 fi
 
+docker_extra_args=''
+if [ "$dry_run" -eq 1 ]; then
+    docker_extra_args='--dry-run'
+fi
+
 # Default deployment location is "~/homelab"
 # Can be overriden by setting "DEST_DIR=..."
 dest_dir="${DEST_DIR-$HOME/homelab}"
@@ -58,7 +63,7 @@ fi
 if [ -d "$target_dir" ]; then
     if [ -f "$target_dir/docker-compose.yml" ]; then
         printf 'Stop previous deployment\n' | tee "$log_file" >&2
-        (cd "$target_dir" && docker compose down 2>&1 | tee "$log_file" >&2)
+        (cd "$target_dir" && docker compose down $docker_extra_args 2>&1 | tee "$log_file" >&2)
         printf '\n' | tee "$log_file" >&2
     fi
 
@@ -98,11 +103,7 @@ printf 'Build docker images\n' | tee "$log_file" >&2
 printf '\n' | tee "$log_file" >&2
 
 # Run new services
-extra_args=''
-if [ "$dry_run" -eq 1 ]; then
-    extra_args='--dry-run'
-fi
 printf 'Start docker images\n' | tee "$log_file" >&2
 # shellcheck disable=SC2248
-(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $extra_args 2>&1 | tee "$log_file" >&2)
+(cd "$target_dir" && docker compose up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $docker_extra_args 2>&1 | tee "$log_file" >&2)
 printf '\n' | tee "$log_file" >&2
