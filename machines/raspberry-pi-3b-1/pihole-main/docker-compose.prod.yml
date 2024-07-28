@@ -1,33 +1,42 @@
 # version: "3.8"
 
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: prod
+  external-ip: &external-ip "10.1.10.1"
+  external-domain: &external-domain pihole-main.home
+
 services:
   app:
+    environment:
+      <<: *common-env-variables
+      FTLCONF_LOCAL_IPV4: *external-ip
+      FTLCONF_PRIVACYLEVEL: "0"
+      VIRTUAL_HOST: *external-domain
+      PIHOLE_DOMAIN: *external-domain
+      # Only for debugging:
+      # FTLCONF_RATE_LIMIT: "100000/60"
     networks:
       internal-network: {}
-    environment:
-      - FTLCONF_LOCAL_IPV4=10.1.10.1
-      - FTLCONF_PRIVACYLEVEL=0
-      - VIRTUAL_HOST=pihole-main.home
-      - PIHOLE_DOMAIN=pihole-main.home
-      # Only for debugging:
-      # - FTLCONF_RATE_LIMIT=100000/60
     restart: unless-stopped
 
   certificate-manager:
+    environment:
+      <<: *common-env-variables
     networks:
       internal-network: {}
-    environment:
-      - ENV=prod
     restart: unless-stopped
 
   http-proxy:
+    environment:
+      <<: *common-env-variables
     networks:
       internal-network: {}
-    environment:
-      - ENV=prod
     restart: unless-stopped
 
   socket-proxy:
+    environment:
+      <<: *common-env-variables
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -36,10 +45,12 @@ services:
     networks:
       internal-network: {}
       external-network:
-        ipv4_address: 10.1.10.1
+        ipv4_address: *external-ip
     restart: unless-stopped
 
   webui-backup:
+    environment:
+      <<: *common-env-variables
     networks:
       internal-network: {}
     restart: unless-stopped

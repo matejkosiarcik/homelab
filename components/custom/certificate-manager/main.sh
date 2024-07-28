@@ -4,8 +4,8 @@ set -euf
 # shellcheck source=/dev/null
 . /app/.internal/cron.env
 
-if [ -z "${HOST+x}" ]; then
-    printf 'Apache HOST unset\n'
+if [ -z "${HOMELAB_APP_EXTERNAL_DOMAIN+x}" ]; then
+    printf 'HOMELAB_APP_EXTERNAL_DOMAIN unset\n'
     exit 4
 fi
 
@@ -17,7 +17,7 @@ fi
 
 if [ -e '/certs/domain.txt' ]; then
     old_domain="$(cat '/certs/domain.txt')"
-    if [ "$HOST" != "$old_domain" ]; then
+    if [ "$HOMELAB_APP_EXTERNAL_DOMAIN" != "$old_domain" ]; then
         create_certs='1'
     fi
 else
@@ -37,15 +37,16 @@ if [ "$create_certs" = '1' ]; then
     printf 'Creating certificates\n'
     tmpdir="$(mktemp -d)"
 
-    if [ "$ENV" = 'dev' ] || [ "$ENV" = 'prod' ]; then
-        openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN=$HOST"
-        printf '%s\n' "$HOST" >"$tmpdir/domain.txt"
+    # TODO: Implement Production certificates
+    if [ "$HOMELAB_ENV" = 'dev' ] || [ "$HOMELAB_ENV" = 'prod' ]; then
+        openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN=$HOMELAB_APP_EXTERNAL_DOMAIN"
+        printf '%s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >"$tmpdir/domain.txt"
         openssl genrsa -out "$tmpdir/certificate.key" 4096
         openssl rsa -in "$tmpdir/certificate.key" -out "$tmpdir/certificate.key"
         openssl req -sha256 -new -key "$tmpdir/certificate.key" -out "$tmpdir/certificate.csr" -subj "$openssl_subj"
         openssl x509 -req -sha256 -days 365 -in "$tmpdir/certificate.csr" -signkey "$tmpdir/certificate.key" -out "$tmpdir/certificate.crt"
     else
-        printf 'Unsupported ENV %s\n' "$ENV"
+        printf 'Unsupported HOMELAB_ENV %s\n' "$HOMELAB_ENV"
         exit 5
     fi
 
