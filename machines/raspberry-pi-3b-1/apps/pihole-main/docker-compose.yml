@@ -49,9 +49,7 @@ services:
     environment:
       <<: *common-env-variables
     volumes:
-      - ./log/proxy-access:/log/access:rw
-      - ./log/proxy-error:/log/error:rw
-      - ./log/proxy-forensic:/log/forensic:rw
+      - ./log/http-proxy:/log:rw
       - ./data/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
 
