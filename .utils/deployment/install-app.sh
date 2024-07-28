@@ -5,7 +5,7 @@ set -eufo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 print_help() {
-    printf 'bash install-service.sh [-n] [-h]\n'
+    printf 'bash install-app.sh [-n] [-h]\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -n  - Dry run\n'
