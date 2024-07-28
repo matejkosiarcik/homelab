@@ -7,12 +7,12 @@ if [ "$#" -lt 2 ]; then
     exit 1
 fi
 
-router_name="macvlan-shim"
-current_external_ip="$1"
-new_macvlan_ip_range="$2"
+router_name="$1"
+external_ip="$2"
+internal_docker_ip="$3"
 
 # Add macvlan-shim "router" to be able to access containers from host
 sudo ip link add "$router_name" link eth0 type macvlan mode bridge
-sudo ip addr add "$current_external_ip/32" dev "$router_name"
+sudo ip addr add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
-sudo ip route add "$new_macvlan_ip_range/24" dev "$router_name"
+sudo ip route add "$internal_docker_ip/32" dev "$router_name"
