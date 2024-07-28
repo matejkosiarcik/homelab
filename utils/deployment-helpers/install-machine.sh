@@ -3,6 +3,8 @@
 set -eufo pipefail
 # The reason to use `bash` instead of plain `sh` is that we require pipefail
 
+currdir="$(cd "$(dirname "$0")" >/dev/null && pwd)"
+
 ### Install latest crontab ###
 
 declare current_machine_dir
@@ -14,9 +16,9 @@ crontab - <"$current_machine_dir/crontab.cron"
 
 ### Preinstall services ###
 
-bash "$(git rev-parse --show-toplevel)/.utils/preinstall-all.sh" $@
+bash "$currdir/preinstall.sh" $@
 
 ### Install all individual services ###
 
 find "$current_machine_dir/" -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 |
-    xargs -0 -I% bash -c "SOURCE_DIR=% bash \"$(git rev-parse --show-toplevel)/.utils/install-app.sh\" $*"
+    xargs -0 -I% bash -c "SOURCE_DIR=% bash \"$currdir/install-app.sh\" $@"
