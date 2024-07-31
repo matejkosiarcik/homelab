@@ -5,7 +5,7 @@ SHELL := /bin/sh
 .SHELLFLAGS := -ec
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
-SERVICES := $(shell printf 'odroid-h3-1/healthchecks odroid-h3-1/homer odroid-h3-1/omada-controller odroid-h3-1/smtp4dev odroid-h3-1/unifi-controller odroid-h3-1/uptime-kuma raspberry-pi-3b-1/pihole raspberry-pi-4b-1/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
+DOCKER_APPS := $(shell printf 'odroid-h3-1/healthchecks odroid-h3-1/homer odroid-h3-1/omada-controller odroid-h3-1/smtp4dev odroid-h3-1/unifi-controller odroid-h3-1/uptime-kuma raspberry-pi-3b-1/pihole raspberry-pi-4b-1/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
 DOCKER_COMPONENTS := $(shell printf 'components/custom/http-proxy components/custom/lamp-hardware-controller components/custom/lamp-network-server components/custom/postgres-backup components/custom/socket-proxy components/custom/webui-backup components/database/postgres components/external/omada-controller components/external/pihole components/external/smtp4dev components/external/unifi-controller components/external/uptime-kuma')
 NPM_COMPONENTS := $(shell printf 'components/custom/lamp-network-server components/custom/webui-backup')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
@@ -53,8 +53,8 @@ docker-build:
 		docker build components --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 	true; done
 
-	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
-		docker compose --project-directory "$(PROJECT_DIR)/$$service" build --with-dependencies --pull && \
+	printf '%s\n' "$(DOCKER_APPS)" | tr ' ' '\n' | while read -r app; do \
+		docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies --pull && \
 	true; done
 
 .PHONY: docker-multibuild
@@ -69,8 +69,8 @@ docker-multibuild:
 
 .PHONY: dryrun
 dryrun:
-	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
-		docker compose --project-directory "$(PROJECT_DIR)/$$service" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
+	printf '%s\n' "$(DOCKER_APPS)" | tr ' ' '\n' | while read -r app; do \
+		docker compose --project-directory "$(PROJECT_DIR)/$$app" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
 	true; done
 
 .PHONY: clean
