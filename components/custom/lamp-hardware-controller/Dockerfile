@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 python3-pip python3-dev build-essential >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY requirements.txt ./
+COPY ./custom/lamp-hardware-controller/requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --no-cache-dir
 
@@ -15,7 +15,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=build /app/python-vendor/ ./python-vendor/
-COPY main.py ./
+COPY ./custom/lamp-hardware-controller/main.py ./
 ENV PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava

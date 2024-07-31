@@ -1,7 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 FROM pihole/pihole:2024.07.0
-# COPY custom-domains.txt /etc/pihole/custom.list
 ENV DHCP_ACTIVE=false \
     FTLCONF_IGNORE_LOCALHOST=false \
     FTLCONF_PIHOLE_PTR=HOSTNAMEFQDN \

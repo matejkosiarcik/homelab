@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 FROM mongo:7.0.12
-COPY init-mongo.js /docker-entrypoint-initdb.d/init-mongo.js
+COPY ./database/mongodb/init-mongo.js /docker-entrypoint-initdb.d/init-mongo.js
 ENV TZ=Europe/Bratislava \
     DBNAME=database \
     USER=mongo \
