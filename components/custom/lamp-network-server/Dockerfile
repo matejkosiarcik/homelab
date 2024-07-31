@@ -2,12 +2,12 @@
 
 FROM node:22.5.1-slim AS build
 WORKDIR /app
-COPY package.json package-lock.json ./
-COPY patches/ ./patches/
+COPY ./custom/lamp-network-server/package.json ./custom/lamp-network-server/package-lock.json ./
+COPY ./custom/lamp-network-server/patches/ ./patches/
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error
-COPY backend/ ./backend/
-COPY frontend/ ./frontend/
-COPY terser.json tsconfig.json ./
+COPY ./custom/lamp-network-server/backend/ ./backend/
+COPY ./custom/lamp-network-server/frontend/ ./frontend/
+COPY ./custom/lamp-network-server/terser.json tsconfig.json ./
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
