@@ -7,7 +7,7 @@ COPY ./custom/lamp-network-server/patches/ ./patches/
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error
 COPY ./custom/lamp-network-server/backend/ ./backend/
 COPY ./custom/lamp-network-server/frontend/ ./frontend/
-COPY ./custom/lamp-network-server/terser.json tsconfig.json ./
+COPY ./custom/lamp-network-server/terser.json ./custom/lamp-network-server/tsconfig.json ./
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
