@@ -14,7 +14,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends cron postgresql-client-16 >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /backup /log
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./postgres-backup/crontab.cron ./postgres-backup/main.sh ./
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/postgres-backup/crontab.cron ./custom/postgres-backup/main.sh ./
 ENV PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava
