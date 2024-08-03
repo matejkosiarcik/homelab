@@ -35,7 +35,7 @@ RewriteRule ^ - [E=_HTTPS:true,E=_REDIRECT_FOR_HTTPS:true,NE]
 # Set custom HTTPS port (non 443)
 # Used when we are using non-standard HTTPS port (eg. on dev machine)
 RewriteRule ^ - [E=_HTTPS_PORT:,NE]
-RewriteCond %{ENV:ENV} dev [NC]
+RewriteCond %{ENV:HOMELAB_ENV} dev [NC]
 RewriteRule ^ - [E=_HTTPS_PORT::8443,NE]
 
 # Use 301/302 for GET & HEAD requests and 308/307 for all others (POST, PUT, ...)
