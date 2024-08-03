@@ -4,7 +4,8 @@ services:
   hardware-controller:
     image: lamp-controller-hardware-controller:homelab
     build:
-      context: ../../../components/lamps/hardware-controller/
+      context: ../../../../components/
+      dockerfile: ./custom/lamp-hardware-controller/Dockerfile
     container_name: lamp-controller-hardware-controller
     hostname: lamp-controller-hardware-controller
     volumes:
@@ -13,7 +14,8 @@ services:
   network-server:
     image: lamp-controller-network-server:homelab
     build:
-      context: ../../../components/lamps/network-server/
+      context: ../../../../components/
+      dockerfile: ./custom/lamp-network-server/Dockerfile
     container_name: lamp-controller-network-server
     hostname: lamp-controller-network-server
     volumes:
@@ -22,7 +24,8 @@ services:
   http-proxy:
     image: lamp-controller-http-proxy:homelab
     build:
-      context: ../../../components/http-proxy
+      context: ../../../../components/
+      dockerfile: ./custom/http-proxy/Dockerfile
     container_name: lamp-controller-http-proxy
     hostname: lamp-controller-http-proxy
     environment:
@@ -39,7 +42,8 @@ services:
   socket-proxy:
     image: lamp-controller-socket-proxy:homelab
     build:
-      context: ../../../components/socket-proxy/
+      context: ../../../../components/
+      dockerfile: ./custom/socket-proxy/Dockerfile
     container_name: lamp-controller-socket-proxy
     hostname: lamp-controller-socket-proxy
     environment:
