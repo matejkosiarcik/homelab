@@ -4,7 +4,8 @@ services:
   app:
     image: healthchecks-app:homelab
     build:
-      context: ../../../components/healthchecks
+      context: ../../../../components/
+      dockerfile: ./external/healthchecks/Dockerfile
     container_name: healthchecks-app
     hostname: healthchecks-app
     depends_on:
@@ -20,7 +21,8 @@ services:
   database:
     image: healthchecks-database:homelab
     build:
-      context: ../../../components/postgres
+      context: ../../../../components/
+      dockerfile: ./database/postgres/Dockerfile
     container_name: healthchecks-database
     hostname: healthchecks-database
     volumes:
@@ -31,8 +33,8 @@ services:
   database-backup:
     image: healthchecks-database-backup:homelab
     build:
-      context: ../../../components
-      dockerfile: ./postgres-backup/Dockerfile
+      context: ../../../../components/
+      dockerfile: ./custom/postgres-backup/Dockerfile
     container_name: healthchecks-database-backup
     hostname: healthchecks-database-backup
     depends_on:

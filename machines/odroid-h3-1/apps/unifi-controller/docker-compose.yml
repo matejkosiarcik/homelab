@@ -4,7 +4,8 @@ services:
   app:
     image: unifi-controller-app:homelab
     build:
-      context: ../../../components/unifi-controller/
+      context: ../../../../components/
+      dockerfile: ./external/unifi-controller/Dockerfile
     container_name: unifi-controller-app
     hostname: unifi-controller-app
     environment:
@@ -33,7 +34,8 @@ services:
   database:
     image: unifi-controller-database:homelab
     build:
-      context: ../../../components/mongodb/
+      context: ../../../../components/
+      dockerfile: ./database/mongodb/Dockerfile
     container_name: unifi-controller-database
     hostname: unifi-controller-database
     environment:
@@ -48,7 +50,8 @@ services:
   webui-backup:
     image: unifi-controller-webui-backup:homelab
     build:
-      context: ../../../components/webui-backup/
+      context: ../../../../components/
+      dockerfile: ./custom/webui-backup/Dockerfile
     container_name: unifi-controller-webui-backup
     hostname: unifi-controller-webui-backup
     depends_on:

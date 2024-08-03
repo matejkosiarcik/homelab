@@ -4,14 +4,16 @@ services:
   app:
     image: homer-app:homelab
     build:
-      context: ../../../components/homer
+      context: ../../../../components/
+      dockerfile: ./external/homer/Dockerfile
     container_name: homer-app
     hostname: homer-app
 
   http-proxy:
     image: homer-http-proxy:homelab
     build:
-      context: ../../../components/http-proxy
+      context: ../../../../components/
+      dockerfile: ./custom/http-proxy/Dockerfile
     container_name: homer-http-proxy
     hostname: homer-http-proxy
     environment:
@@ -28,7 +30,8 @@ services:
   socket-proxy:
     image: homer-socket-proxy:homelab
     build:
-      context: ../../../components/socket-proxy/
+      context: ../../../../components/
+      dockerfile: ./custom/socket-proxy/Dockerfile
     container_name: homer-socket-proxy
     hostname: homer-socket-proxy
     environment:
