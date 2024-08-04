@@ -57,7 +57,7 @@ printf 'Installing %s\n' "$service_name" | tee "$log_file" >&2
 # Init service secrets
 if [ ! -d "$source_dir/private" ]; then
     printf 'Initializing secrets\n' | tee "$log_file" >&2
-    sh "$source_dir/init.sh" 2>&1 | tee "$log_file" >&2
+    sh "$source_dir/init-secrets.sh" 2>&1 | tee "$log_file" >&2
 else
     printf 'Skipping secrets initilization\n' | tee "$log_file" >&2
 fi

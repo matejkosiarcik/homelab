@@ -28,7 +28,7 @@ if [ -e "$output" ]; then
         rm -rf "$output"
     else
         printf 'Output directory "%s" already exists.\n' "$output" >&2
-        exit 0
+        exit 1
     fi
 fi
 mkdir "$output"
