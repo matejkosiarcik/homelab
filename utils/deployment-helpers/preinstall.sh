@@ -55,6 +55,6 @@ fi
 
 # Copy shared files
 printf 'Copy shared files\n' | tee "$global_log_file" >&2
-rm -rf "$dest_dir/components"
-mkdir -p "$dest_dir/components"
-cp -R 'components/.' "$dest_dir/components"
+rm -rf "$dest_dir/docker-images"
+mkdir -p "$dest_dir/docker-images"
+cp -R 'docker-images/.' "$dest_dir/docker-images"

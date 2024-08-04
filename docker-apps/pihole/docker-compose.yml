@@ -11,19 +11,19 @@ services:
   main-app:
     <<: *common-service-options
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
     volumes:
       - ./data/pihole/etc-pihole:/etc/pihole:rw
       - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-      - ../../../../components/external/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
+      - ../../../../docker-images/external/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     stop_grace_period: 30s
 
   certificate-manager:
     <<: *common-service-options
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
     volumes:
       - ./data/certs:/certs:rw
@@ -32,7 +32,7 @@ services:
   http-proxy:
     <<: *common-service-options
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
     depends_on:
       certificate-manager:
@@ -45,13 +45,13 @@ services:
   socket-proxy:
     <<: *common-service-options
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
   webui-backup:
     <<: *common-service-options
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/webui-backup/Dockerfile
     depends_on:
       main-app:

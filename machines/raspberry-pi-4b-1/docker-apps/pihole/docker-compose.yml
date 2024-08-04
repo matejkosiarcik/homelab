@@ -4,20 +4,20 @@ services:
   app:
     image: pihole-app:homelab
     build:
-      context: ../../../components/pihole/
+      context: ../../../docker-images/pihole/
     container_name: pihole-app
     hostname: pihole-app
     volumes:
       - ./data/etc-pihole:/etc/pihole:rw
       - ./data/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-      - ../../../components/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
+      - ../../../docker-images/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
     stop_grace_period: 30s
 
   http-proxy:
     image: pihole-http-proxy:homelab
     build:
-      context: ../../../components/http-proxy
+      context: ../../../docker-images/http-proxy
     container_name: pihole-http-proxy
     hostname: pihole-http-proxy
     environment:
@@ -34,7 +34,7 @@ services:
   socket-proxy:
     image: pihole-socket-proxy:homelab
     build:
-      context: ../../../components/socket-proxy/
+      context: ../../../docker-images/socket-proxy/
     container_name: pihole-socket-proxy
     hostname: pihole-socket-proxy
     environment:
@@ -43,7 +43,7 @@ services:
   webui-backup:
     image: pihole-webui-backup:homelab
     build:
-      context: ../../../components/webui-backup/
+      context: ../../../docker-images/webui-backup/
     container_name: pihole-webui-backup
     hostname: pihole-webui-backup
     depends_on:

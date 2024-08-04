@@ -4,7 +4,7 @@ services:
   app:
     image: smtp4dev-app:homelab
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./external/smtp4dev/Dockerfile
     container_name: smtp4dev-app
     hostname: smtp4dev-app
@@ -15,7 +15,7 @@ services:
   http-proxy:
     image: smtp4dev-http-proxy:homelab
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
     container_name: smtp4dev-http-proxy
     hostname: smtp4dev-http-proxy
@@ -33,7 +33,7 @@ services:
   socket-proxy:
     image: smtp4dev-socket-proxy:homelab
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     container_name: smtp4dev-socket-proxy
     hostname: smtp4dev-socket-proxy

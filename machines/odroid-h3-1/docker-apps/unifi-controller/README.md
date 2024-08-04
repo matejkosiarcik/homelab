@@ -1,8 +1,8 @@
 # Unifi network application
 
-For general `unifi-controller` docs see [/components/unifi-controller/README.md](../../../components/unifi-controller/README.md)
+For general `unifi-controller` docs see [/docker-images/unifi-controller/README.md](../../../docker-images/unifi-controller/README.md)
 
-For general `mongodb` docs see [/components/mongodb/README.md](../../../components/mongodb/README.md)
+For general `mongodb` docs see [/docker-images/mongodb/README.md](../../../docker-images/mongodb/README.md)
 
 ## Installation
 

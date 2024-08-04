@@ -6,8 +6,8 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 DOCKER_APPS := $(shell printf 'odroid-h3-1/healthchecks odroid-h3-1/homer odroid-h3-1/omada-controller odroid-h3-1/smtp4dev odroid-h3-1/unifi-controller odroid-h3-1/uptime-kuma raspberry-pi-3b-1/pihole raspberry-pi-4b-1/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf 'components/custom/http-proxy components/custom/lamp-hardware-controller components/custom/lamp-network-server components/custom/postgres-backup components/custom/socket-proxy components/custom/webui-backup components/database/postgres components/external/omada-controller components/external/pihole components/external/smtp4dev components/external/unifi-controller components/external/uptime-kuma')
-NPM_COMPONENTS := $(shell printf 'components/custom/lamp-network-server components/custom/webui-backup')
+DOCKER_COMPONENTS := $(shell printf 'docker-images/custom/http-proxy docker-images/custom/lamp-hardware-controller docker-images/custom/lamp-network-server docker-images/custom/postgres-backup docker-images/custom/socket-proxy docker-images/custom/webui-backup docker-images/database/postgres docker-images/external/omada-controller docker-images/external/pihole docker-images/external/smtp4dev docker-images/external/unifi-controller docker-images/external/uptime-kuma')
+NPM_COMPONENTS := $(shell printf 'docker-images/custom/lamp-network-server docker-images/custom/webui-backup')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 # DOCKER_ARCHS := $(shell printf '386 amd64 arm/v5 arm/v7 arm64/v8 ppc64le')
 
@@ -50,7 +50,7 @@ build:
 .PHONY: docker-build
 docker-build:
 	printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-		docker build components --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
+		docker build docker-images/ --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 	true; done
 
 	printf '%s\n' "$(DOCKER_APPS)" | tr ' ' '\n' | while read -r app; do \
@@ -63,7 +63,7 @@ docker-multibuild:
 	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
 		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
 			printf 'Building linux/%s %s:\n' "$$arch" "$$component" && \
-			docker build components --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build docker-images/ --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
 		true; done && \
 	true; done
 
