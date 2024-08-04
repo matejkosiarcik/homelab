@@ -49,8 +49,8 @@ export function getTargetAdminPassword(): string {
     return password;
 }
 
-export function getDownloadFilename(backupDir: string, extension: string): string {
-    return path.join(backupDir, `${getIsoDate()}.${extension}`);
+export function getDownloadFilename(options: { backupDir: string, extension: string, fileSuffix?: string | undefined }): string {
+    return path.join(options.backupDir, `${getIsoDate()}${options.fileSuffix ?? ''}.${options.extension}`);
 }
 
 export async function newPage(browser: Browser, baseUrl: string): Promise<Page> {
