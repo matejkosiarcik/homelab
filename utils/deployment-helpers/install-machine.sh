@@ -26,6 +26,11 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
+extra_install_app_args=''
+if [ "$dry_run" -eq 1 ]; then
+    extra_install_app_args='-n'
+fi
+
 ### Install latest crontab ###
 
 printf 'Installing crontab\n' >&2
@@ -52,4 +57,4 @@ bash "$currdir/preinstall.sh" $@
 ### Install all individual services ###
 
 find "$current_machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 |
-    xargs -0 -I% bash -c "SOURCE_DIR=% bash \"$currdir/install-docker-app.sh\" $@"
+    xargs -0 -I% bash -c "SOURCE_DIR=% bash \"$currdir/install-docker-app.sh\" $extra_install_app_args"
