@@ -1,31 +1,18 @@
-import fs from 'fs/promises';
-import fsSync from 'fs';
-import path from 'path';
-import process from 'process';
-import dotenv from 'dotenv';
 import { chromium } from 'playwright';
 import { expect } from 'playwright/test';
-import { getIsoDate } from './utils/utils.ts';
+import { getBackupDir, getBrowserPath, getDownloadFilename, getIsHeadless, getIsoDate, getTargetAdminPassword, getTargetUrl, loadEnv, newPage } from './utils/utils.ts';
 
 (async () => {
-    // Env config
-    if (fsSync.existsSync('.env')) {
-        dotenv.config({ path: '.env' });
-    }
+    loadEnv();
+    const backupDir = await getBackupDir();
+    const browserPath = getBrowserPath();
+    const isHeadless = getIsHeadless();
+    const url = getTargetUrl();
+    const password = getTargetAdminPassword();
 
-    const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data/pihole');
-    const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
-    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'http://main-app' : 'https://localhost:8443');
-    const headless = process.env['HEADLESS'] !== '0';
-    const password = process.env['PASSWORD']!;
-    expect(password, 'PASSWORD unset').toBeTruthy();
-    await fs.mkdir(backupDir, { recursive: true });
-
-    const browser = await chromium.launch({ headless: headless, executablePath: browserPath });
+    const browser = await chromium.launch({ headless: isHeadless, executablePath: browserPath });
     try {
-        const page = await browser.newPage({ baseURL: url, strictSelectors: true, ignoreHTTPSErrors: true });
-        page.setDefaultNavigationTimeout(10_000);
-        page.setDefaultTimeout(1000);
+        const page = await newPage(browser, url);
 
         // Login
         await page.goto('/admin/login.php');
@@ -43,7 +30,7 @@ import { getIsoDate } from './utils/utils.ts';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).toMatch(/\.tar\.gz/);
-        await download.saveAs(path.join(backupDir, `${getIsoDate()}.tar.gz`));
+        await download.saveAs(getDownloadFilename(backupDir, 'tar.gz'));
     } finally {
         await browser.close();
     }
