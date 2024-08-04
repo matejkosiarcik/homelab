@@ -44,4 +44,4 @@ bash "$currdir/preinstall.sh" $@
 ### Install all individual services ###
 
 find "$current_machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 |
-    xargs -0 -I% bash -c "SOURCE_DIR=% bash \"$currdir/install-app.sh\" $@"
+    xargs -0 -I% bash -c "SOURCE_DIR=% bash \"$currdir/install-docker-app.sh\" $@"
