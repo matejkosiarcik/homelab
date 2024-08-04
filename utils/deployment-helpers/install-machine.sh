@@ -28,6 +28,7 @@ done
 
 ### Install latest crontab ###
 
+printf 'Installing crontab\n' >&2
 declare current_machine_dir
 if [ ! -e "$current_machine_dir/crontab.cron" ]; then
     printf 'Crontab file not found\n' >&2
@@ -39,9 +40,10 @@ fi
 
 ### Execute startup script ###
 
-if [ -e "$current_machine_dir/startup.sh" ]; then
-    bash "$current_machine_dir/startup.sh"
-fi
+# printf 'Running startup script\n' >&2
+# if [ -e "$current_machine_dir/startup.sh" ]; then
+#     bash "$current_machine_dir/startup.sh"
+# fi
 
 ### Preinstall services ###
 
