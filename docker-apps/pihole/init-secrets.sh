@@ -54,7 +54,7 @@ create_password() {
 create_password "$output/webpassword.txt"
 
 # Backup
-printf 'PASSWORD=%s\n' "$(cat "$output/webpassword.txt")" >>"$output/webui-backup.env"
+printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$output/webpassword.txt")" >>"$output/webui-backup.env"
 
 # Apache proxy
 create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
