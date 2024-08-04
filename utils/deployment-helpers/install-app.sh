@@ -46,7 +46,7 @@ dest_dir="${DEST_DIR-$HOME/homelab}"
 mkdir -p "$dest_dir"
 
 service_name="$(basename "$source_dir")"
-target_dir="$dest_dir/machines/current/apps/$service_name"
+target_dir="$dest_dir/machines/current/docker-apps/$service_name"
 backup_dir="$dest_dir/.backup/$START_DATE/$service_name"
 log_dir="$dest_dir/.log/$START_DATE/$service_name"
 log_file="$log_dir/install.txt"
