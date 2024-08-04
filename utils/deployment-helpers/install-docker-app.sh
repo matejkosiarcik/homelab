@@ -63,7 +63,7 @@ fi
 if [ -d "$target_dir" ]; then
     if [ -f "$target_dir/docker-compose.yml" ]; then
         printf 'Stop previous deployment\n' | tee "$log_file" >&2
-        (cd "$target_dir" && docker compose down $docker_extra_args 2>&1 | tee "$log_file" >&2)
+        (cd "$target_dir" && docker compose down 2>&1 | tee "$log_file" >&2)
         printf '\n' | tee "$log_file" >&2
     fi
 
