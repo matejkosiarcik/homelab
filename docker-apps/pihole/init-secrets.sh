@@ -61,4 +61,9 @@ create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
 printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
 chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
 
+# Cleanup
 rm -rf "$tmpdir"
+
+# Additional notes
+printf 'Most secrets setup\n' >&2
+printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
