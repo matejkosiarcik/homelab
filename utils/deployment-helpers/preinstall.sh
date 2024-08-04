@@ -42,7 +42,7 @@ if [ "$dry_run" -eq 1 ]; then
 fi
 
 # Stop running apps
-printf 'Stop all running apps\n' | tee "$global_log_file" >&2
+printf 'Stop all running docker apps\n' | tee "$global_log_file" >&2
 if [ -e "$dest_dir/machines/current/docker-apps" ]; then
     find "$dest_dir/machines/current/docker-apps" -mindepth 1 -maxdepth 1 -type d \( -not -name '.*' \) | while read -r app_dir; do
         if [ -e "$app_dir/docker-compose.yml" ]; then
@@ -55,6 +55,7 @@ fi
 
 # Copy shared files
 printf 'Copy shared files\n' | tee "$global_log_file" >&2
-rm -rf "$dest_dir/docker-images"
-mkdir -p "$dest_dir/docker-images"
+rm -rf "$dest_dir/docker-images" "$dest_dir/docker-apps"
+mkdir -p "$dest_dir/docker-images" "$dest_dir/docker-apps"
 cp -R 'docker-images/.' "$dest_dir/docker-images"
+cp -R 'docker-apps/.' "$dest_dir/docker-apps"
