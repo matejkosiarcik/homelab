@@ -1,56 +1,59 @@
-# version: "3.8"
-
 x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_ENV: prod
+  extends-file: &extends-file ../../../../apps/pihole/docker-compose.override-prod.yml
   external-ip: &external-ip "10.1.10.1"
   external-domain: &external-domain pihole-main.home
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_EXTERNAL_DOMAIN: *external-domain
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
 
 services:
-  app:
+  main-app:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: main-app
     environment:
       <<: *common-env-variables
       FTLCONF_LOCAL_IPV4: *external-ip
-      FTLCONF_PRIVACYLEVEL: "0"
       VIRTUAL_HOST: *external-domain
       PIHOLE_DOMAIN: *external-domain
-      # Only for debugging:
-      # FTLCONF_RATE_LIMIT: "100000/60"
-    networks:
-      internal-network: {}
-    restart: "no" # TODO: revert to: unless-stopped
 
   certificate-manager:
-    environment:
-      <<: *common-env-variables
-    networks:
-      internal-network: {}
-    restart: "no" # TODO: revert to: unless-stopped
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: certificate-manager
 
   http-proxy:
-    environment:
-      <<: *common-env-variables
-    networks:
-      internal-network: {}
-    restart: "no" # TODO: revert to: unless-stopped
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: http-proxy
 
   socket-proxy:
-    environment:
-      <<: *common-env-variables
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "80:80"
-      - "443:443"
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: socket-proxy
     networks:
-      internal-network: {}
       external-network:
         ipv4_address: *external-ip
-    restart: "no" # TODO: revert to: unless-stopped
 
   webui-backup:
-    environment:
-      <<: *common-env-variables
-    networks:
-      internal-network: {}
-    restart: "no" # TODO: revert to: unless-stopped
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: webui-backup
+
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.10.0/24"
+          gateway: "10.1.6.201"

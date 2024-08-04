@@ -1,0 +1,35 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: prod
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/prod.env
+    restart: unless-stopped
+
+services:
+  main-app:
+    <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      FTLCONF_PRIVACYLEVEL: "0"
+      # Only for debugging:
+      # FTLCONF_RATE_LIMIT: "100000/60"
+
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80"
+      - "443:443"
+
+  webui-backup:
+    <<: *common-service-options
