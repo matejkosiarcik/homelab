@@ -37,6 +37,12 @@ if [ "$dry_run" = '0' ]; then
     crontab - <"$current_machine_dir/crontab.cron"
 fi
 
+### Execute startup script ###
+
+if [ -e "$current_machine_dir/startup.sh" ]; then
+    bash "$current_machine_dir/startup.sh"
+fi
+
 ### Preinstall services ###
 
 bash "$currdir/preinstall.sh" $@
