@@ -2,25 +2,10 @@
 set -euf
 
 if [ "${HOMELAB_APP_TYPE-x}" = 'pihole' ]; then
-    if [ "${HOMELAB_APP_SUBTYPE-x}" = 'pihole-main' ]; then
-        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole-main-http-proxy:80 &
-        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole-main-http-proxy:443 &
-        socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole-main-app:53 &
-        socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole-main-app:53 &
-    elif [ "${HOMELAB_APP_SUBTYPE-x}" = 'pihole-spouse' ]; then
-        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole-spouse-http-proxy:80 &
-        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole-spouse-http-proxy:443 &
-        socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole-spouse-app:53 &
-        socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole-spouse-app:53 &
-    elif [ "${HOMELAB_APP_SUBTYPE-x}" = 'pihole-guest' ]; then
-        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:pihole-guest-http-proxy:80 &
-        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:pihole-guest-http-proxy:443 &
-        socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole-guest-app:53 &
-        socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole-guest-app:53 &
-    else
-        printf 'Unknown pihole variant "%s"\n' "${HOMELAB_APP_SUBTYPE-N/A}" >&2
-        exit 1
-    fi
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+    socat TCP4-LISTEN:53,fork,reuseaddr TCP4:main-app:53 &
+    socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:main-app:53 &
 elif [ "${HOMELAB_APP_TYPE-x}" = 'smtp4dev' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:smtp4dev-http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:smtp4dev-http-proxy:443 &

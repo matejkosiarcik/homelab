@@ -13,7 +13,6 @@ CRON='0'
 export CRON
 printf 'HOMELAB_ENV=%s\n' "$HOMELAB_ENV" >>/app/.internal/cron.env
 printf 'HOMELAB_APP_TYPE=%s\n' "$HOMELAB_APP_TYPE" >>/app/.internal/cron.env
-printf 'HOMELAB_APP_SUBTYPE=%s\n' "$HOMELAB_APP_SUBTYPE" >>/app/.internal/cron.env
 printf 'HOMELAB_APP_EXTERNAL_DOMAIN=%s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >>/app/.internal/cron.env
 
 # Run script initially

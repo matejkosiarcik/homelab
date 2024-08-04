@@ -15,8 +15,7 @@ import { getIsoDate } from './utils/utils.ts';
 
     const backupDir = process.env['BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : './data/pihole');
     const browserPath = process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
-    const piholeSubtype = process.env['HOMELAB_APP_SUBTYPE'] || (() => { throw new Error('Unset pihole subtype'); });
-    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? `http://${piholeSubtype}-app` : 'https://localhost:8443');
+    const url = process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'http://main-app' : 'https://localhost:8443');
     const headless = process.env['HEADLESS'] !== '0';
     const password = process.env['PASSWORD']!;
     expect(password, 'PASSWORD unset').toBeTruthy();
