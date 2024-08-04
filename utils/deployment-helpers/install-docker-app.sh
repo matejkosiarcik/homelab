@@ -46,17 +46,20 @@ dest_dir="${DEST_DIR-$HOME/homelab}"
 mkdir -p "$dest_dir"
 
 service_name="$(basename "$source_dir")"
+printf 'Installing %s\n' "$service_name" | tee "$log_file" >&2
+
 target_dir="$dest_dir/machines/current/docker-apps/$service_name"
 backup_dir="$dest_dir/.backup/$START_DATE/$service_name"
 log_dir="$dest_dir/.log/$START_DATE/$service_name"
 log_file="$log_dir/install.txt"
 mkdir -p "$log_dir" "$backup_dir"
 
-# Init service data
-printf 'Installing %s\n' "$service_name" | tee "$log_file" >&2
+# Init service secrets
 if [ ! -d "$source_dir/private" ]; then
-    printf 'Init data\n' | tee "$log_file" >&2
+    printf 'Initializing secrets\n' | tee "$log_file" >&2
     sh "$source_dir/init.sh" 2>&1 | tee "$log_file" >&2
+else
+    printf 'Skipping secrets initilization\n' | tee "$log_file" >&2
 fi
 
 # Backup before updating
