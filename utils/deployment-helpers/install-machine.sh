@@ -31,7 +31,7 @@ done
 printf 'Installing crontab\n' >&2
 declare current_machine_dir
 if [ ! -e "$current_machine_dir/crontab.cron" ]; then
-    printf 'Crontab file not found\n' >&2
+    printf 'Machine crontab file not found\n' >&2
     exit 1
 fi
 if [ "$dry_run" = '0' ]; then
@@ -41,7 +41,7 @@ fi
 ### Execute startup script ###
 
 # printf 'Running startup script\n' >&2
-# if [ -e "$current_machine_dir/startup.sh" ]; then
+# if [ "$dry_run" = '0' ] && [ -e "$current_machine_dir/startup.sh" ]; then
 #     bash "$current_machine_dir/startup.sh"
 # fi
 
