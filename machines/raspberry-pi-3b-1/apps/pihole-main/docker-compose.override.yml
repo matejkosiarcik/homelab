@@ -1,9 +1,9 @@
 # include:
-#   - path: ../../../../apps/pihole/docker-compose.override-dev.yml
+#   - path: ../../../../docker-apps/pihole/docker-compose.override-dev.yml
 #     project_directory: .
 
 x-definitions:
-  extends-file: &extends-file ../../../../apps/pihole/docker-compose.override-dev.yml
+  extends-file: &extends-file ../../../../docker-apps/pihole/docker-compose.override-dev.yml
 
 services:
   main-app:
