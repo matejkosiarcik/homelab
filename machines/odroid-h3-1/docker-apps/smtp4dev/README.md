@@ -1,6 +1,6 @@
 # Smtp4Dev
 
-For general `smtp4dev` docs see [/components/smtp4dev/README.md](../../../components/smtp4dev/README.md)
+For general `smtp4dev` docs see [/docker-images/smtp4dev/README.md](../../../docker-images/smtp4dev/README.md)
 
 ## Before installation
 

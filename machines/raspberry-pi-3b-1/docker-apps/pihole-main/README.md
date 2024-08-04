@@ -1,6 +1,6 @@
 # Pi-hole
 
-For Pi-Hole docs see [/components/pihole/README.md](../../../components/pihole/README.md)
+For Pi-Hole docs see [/docker-images/pihole/README.md](../../../docker-images/pihole/README.md)
 
 ## Before installation
 

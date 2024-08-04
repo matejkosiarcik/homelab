@@ -4,7 +4,7 @@ services:
   app:
     image: omada-controller-app:homelab
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./external/omada-controller/Dockerfile
     container_name: omada-controller-app
     hostname: omada-controller-app
@@ -25,7 +25,7 @@ services:
   webui-backup:
     image: omada-controller-webui-backup:homelab
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/webui-backup/Dockerfile
     container_name: omada-controller-webui-backup
     hostname: omada-controller-webui-backup

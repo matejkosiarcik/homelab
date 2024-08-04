@@ -4,7 +4,7 @@ services:
   app:
     image: uptime-kuma:homelab
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./external/uptime-kuma/Dockerfile
     container_name: uptime-kuma-app
     hostname: uptime-kuma-app
@@ -15,7 +15,7 @@ services:
   webui-backup:
     image: uptime-kuma-webui-backup:homelab
     build:
-      context: ../../../../components/
+      context: ../../../../docker-images/
       dockerfile: ./custom/webui-backup/Dockerfile
     container_name: uptime-kuma-webui-backup
     depends_on:
