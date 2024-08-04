@@ -12,12 +12,8 @@ if [ "${HOMELAB_APP_TYPE-x}" = 'x' ]; then
     printf 'HOMELAB_APP_TYPE unset\n' >&2
     exit 1
 fi
-if [ "${HOMELAB_APP_SUBTYPE-x}" = 'x' ]; then
-    printf 'HOMELAB_APP_SUBTYPE unset\n' >&2
-    exit 1
-fi
 
-HOMELAB_UPSTREAM_URL="http://${HOMELAB_APP_SUBTYPE}-app"
+HOMELAB_UPSTREAM_URL="http://main-app"
 export HOMELAB_UPSTREAM_URL
 
 # Start apache
