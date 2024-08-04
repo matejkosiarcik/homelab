@@ -2,10 +2,15 @@
 set -euf
 
 dev_mode='0'
+force_mode='0'
 while [ "$#" -gt 0 ]; do
     case "$1" in
     -d)
         dev_mode='1'
+        shift
+        ;;
+    -f)
+        force_mode='1'
         shift
         ;;
     *)
@@ -19,8 +24,12 @@ gitroot="$(git rev-parse --show-toplevel)"
 
 output='private'
 if [ -e "$output" ]; then
-    printf 'Output directory "%s" already exists.\n' "$output" >&2
-    exit 1
+    if [ "$force_mode" -eq 1 ]; then
+        rm -rf "$output"
+    else
+        printf 'Output directory "%s" already exists.\n' "$output" >&2
+        exit 0
+    fi
 fi
 mkdir "$output"
 
@@ -37,7 +46,7 @@ create_password() {
         printf 'Password123.' >"$output_file" # A simple password for debugging
     else
         # shellcheck disable=SC2068
-        python3 "$gitroot/utils/app-init/.shared/password.py" --output "$output_file" $extra_flags
+        python3 "$gitroot/utils/init-secrets-helpers/password.py" --output "$output_file" $extra_flags
     fi
 }
 
