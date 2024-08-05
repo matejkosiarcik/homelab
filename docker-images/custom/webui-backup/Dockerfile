@@ -25,6 +25,5 @@ RUN apt-get update && \
 COPY --from=prefinal /app /app
 ENV TZ=Europe/Bratislava
 HEALTHCHECK --interval=60s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
-VOLUME [ "/backup", "/log" ]
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
