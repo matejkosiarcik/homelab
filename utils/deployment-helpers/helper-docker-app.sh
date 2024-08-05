@@ -91,7 +91,7 @@ backup_dir="$HOME/homelab-backup/$START_DATE/$full_service_name"
 
 docker_file_args=''
 if [ "$mode" = 'prod' ]; then
-    docker_file_args='-f docker-compose.yml -f docker-compose.prod.yml'
+    docker_file_args='--file docker-compose.yml --file docker-compose.prod.yml'
 fi
 
 docker_dryrun_args=''
@@ -102,13 +102,13 @@ fi
 docker_stop() {
     if [ "$mode" != 'prod' ]; then
         # shellcheck disable=SC2248
-        docker compose down $docker_file_args $docker_dryrun_args
+        docker compose $docker_file_args down $docker_dryrun_args
     else
         mkdir -p "$log_dir"
 
         printf 'Stop docker containers %s\n' | tee "$log_file" >&2
         # shellcheck disable=SC2248
-        docker compose down $docker_file_args $docker_dryrun_args 2>&1 | tee "$log_file" >&2
+        docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
     fi
 }
 
@@ -128,24 +128,24 @@ docker_start() {
 
     if [ "$mode" != 'prod' ]; then
         # shellcheck disable=SC2248
-        docker compose up --force-recreate --always-recreate-deps --remove-orphans --build $docker_file_args $docker_dryrun_args
+        docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --build $docker_dryrun_args
     else
         mkdir -p "$log_dir"
 
         # Pull docker images
         printf 'Pull docker images\n' | tee "$log_file" >&2
-        docker compose pull --ignore-buildable --include-deps --policy always --quiet $docker_file_args 2>&1 | tee "$log_file" >&2
+        docker compose $docker_file_args pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2
         printf '\n' | tee "$log_file" >&2
 
         # Build docker images
         printf 'Build docker images\n' | tee "$log_file" >&2
-        docker compose build --pull --with-dependencies --quiet $docker_file_args 2>&1 | tee "$log_file" >&2
+        docker compose $docker_file_args build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2
         printf '\n' | tee "$log_file" >&2
 
         # Run new services
         printf 'Start docker containers\n' | tee "$log_file" >&2
         # shellcheck disable=SC2248
-        docker compose up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $docker_file_args $docker_dryrun_args 2>&1 | tee "$log_file" >&2
+        docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $docker_dryrun_args 2>&1 | tee "$log_file" >&2
         printf '\n' | tee "$log_file" >&2
     fi
 }
