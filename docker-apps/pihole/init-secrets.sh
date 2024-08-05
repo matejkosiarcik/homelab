@@ -1,10 +1,10 @@
 #!/bin/sh
 set -euf
 
-LC_CTYPE=en_US.UTF-8
-export LC_CTYPE
-LC_ALL=en_US.UTF-8
-export LC_ALL
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
 
 dev_mode='0'
 force_mode='0'
