@@ -7,4 +7,4 @@ app_dir="$PWD"
 export app_dir
 
 # shellcheck disable=SC2068
-sh "$(git rev-parse --show-toplevel)/utils/deployment-helpers/helper-docker-app.sh" $@
+bash "$(git rev-parse --show-toplevel)/utils/deployment-helpers/helper-docker-app.sh" $@
