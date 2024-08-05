@@ -151,3 +151,9 @@
           mkdir -p "$HOME/.log"
           printf 'CHANGED\n'
         fi
+
+    - name: Setup locale
+      when: ansible_facts['os_family'] == "Debian"
+      become: true
+      ansible.builtin.shell: |
+        locale-gen en_US.UTF-8
