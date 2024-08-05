@@ -52,6 +52,6 @@ if [ "$create_certs" = '1' ]; then
 
     mkdir -p /certs
     find /certs -type f -delete
-    find "$tmpdir" -type f -mindepth 1 -maxdepth 1 -exec sh -c 'mv "$1" "/certs/$(basename "$1")"' - {} \;
+    find "$tmpdir" -mindepth 1 -maxdepth 1 -type f -exec sh -c 'mv "$1" "/certs/$(basename "$1")"' - {} \;
     rm -rf "$tmpdir"
 fi
