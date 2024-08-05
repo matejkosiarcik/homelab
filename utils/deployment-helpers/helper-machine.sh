@@ -76,7 +76,7 @@ machine_stop() {
 
     find "$machine_dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
         sh "$machine_dir/main.sh" stop --prod
-    do
+    done
 }
 
 machine_start() {
@@ -84,7 +84,7 @@ machine_start() {
 
     find "$machine_dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
         sh "$machine_dir/main.sh" start --prod
-    do
+    done
 }
 
 machine_init_secrets() {
@@ -92,7 +92,7 @@ machine_init_secrets() {
 
     find "$machine_dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
         sh "$machine_dir/main.sh" init-secrets --prod
-    do
+    done
 }
 
 machine_install() {
