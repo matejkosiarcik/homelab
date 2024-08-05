@@ -19,7 +19,7 @@ print_help() {
 }
 
 if [ "$#" -lt 1 ]; then
-    printf 'Not enough arguments\n' >&2
+    printf 'Not enough arguments. COMMAND must be specified.\n' >&2
     print_help
     exit 1
 fi
@@ -70,7 +70,12 @@ elif [ "$mode" != 'dev' ] && [ "$mode" != 'prod' ]; then
     exit 1
 fi
 
-START_DATE="$(date +"%Y-%m-%d_%H-%M-%S")"
+# Only set START_DATE if it's not already set from parent script
+declare START_DATE
+START_DATE="${START_DATE-}"
+if [ "$START_DATE" = '' ]; then
+    START_DATE="$(date +"%Y-%m-%d_%H-%M-%S")"
+fi
 export START_DATE
 
 # This should be set be caller script
