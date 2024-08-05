@@ -59,7 +59,7 @@ declare machine_dir
 
 git_dir="$(git rev-parse --show-toplevel)"
 
-log_dir="$HOME/homelab-log/$START_DATE/$full_service_name"
+log_dir="$HOME/homelab-log/$START_DATE"
 log_file="$log_dir/install.txt"
 mkdir -p "$log_dir"
 
