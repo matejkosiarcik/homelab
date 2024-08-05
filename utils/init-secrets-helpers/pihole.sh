@@ -1,10 +1,8 @@
 #!/bin/sh
 set -euf
 
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_CTYPE=en_US.UTF-8
+helper_script_dir="$(cd "$(dirname "$0")" >/dev/null && pwd)"
+. "$helper_script_dir/.shared/env.sh"
 
 dev_mode='0'
 force_mode='0'
@@ -24,8 +22,6 @@ while [ "$#" -gt 0 ]; do
         ;;
     esac
 done
-
-gitroot="$(git rev-parse --show-toplevel)"
 
 output='private'
 if [ -e "$output" ]; then
@@ -51,17 +47,17 @@ create_password() {
         printf 'Password123.' >"$output_file" # A simple password for debugging
     else
         # shellcheck disable=SC2068
-        python3 "$gitroot/utils/init-secrets-helpers/password.py" --output "$output_file" $extra_flags
+        python3 "$helper_script_dir/.shared/password.py" --output "$output_file" $extra_flags
     fi
 }
 
 # App
 create_password "$output/webpassword.txt"
 
-# Backup
+# Backups
 printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$output/webpassword.txt")" >>"$output/webui-backup.env"
 
-# Apache proxy
+# HTTP proxy
 create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
 printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
 chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"

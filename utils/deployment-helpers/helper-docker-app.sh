@@ -167,7 +167,7 @@ init-secrets)
         init_secrets_args="$init_secrets_args -d"
     fi
     # shellcheck disable=SC2248
-    sh "$git_dir/docker-apps/$base_service_name/init-secrets.sh" $init_secrets_args
+    sh "$git_dir/utils/init-secrets-helpers/$base_service_name.sh" $init_secrets_args
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2
