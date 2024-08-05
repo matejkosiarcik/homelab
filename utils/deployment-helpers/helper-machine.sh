@@ -77,27 +77,33 @@ if [ "$dry_run" = '1' ]; then
 fi
 
 machine_stop() {
-    printf 'Stop all docker apps\n' | tee "$log_file" >&2
+    if [ -d "$machine_dir/docker-apps" ]; then
+        printf 'Stop all docker apps\n' | tee "$log_file" >&2
 
-    find "$machine_dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
-        sh "$machine_dir/main.sh" stop --prod
-    done
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+            sh "$machine_dir/main.sh" stop --prod
+        done
+    fi
 }
 
 machine_start() {
-    printf 'Start all docker apps\n' | tee "$log_file" >&2
+    if [ -d "$machine_dir/docker-apps" ]; then
+        printf 'Start all docker apps\n' | tee "$log_file" >&2
 
-    find "$machine_dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
-        sh "$machine_dir/main.sh" start --prod
-    done
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+            sh "$machine_dir/main.sh" start --prod
+        done
+    fi
 }
 
 machine_init_secrets() {
-    printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
+    if [ -d "$machine_dir/docker-apps" ]; then
+        printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
 
-    find "$machine_dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
-        sh "$machine_dir/main.sh" init-secrets --prod
-    done
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+            sh "$machine_dir/main.sh" init-secrets --prod
+        done
+    fi
 }
 
 machine_install() {
