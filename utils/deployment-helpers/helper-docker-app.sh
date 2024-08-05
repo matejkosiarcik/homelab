@@ -87,6 +87,7 @@ full_service_name="$(basename "$app_dir")"
 base_service_name="$(printf '%s' "$full_service_name" | sed -E 's~-.+$~~')"
 log_dir="$HOME/homelab-log/$START_DATE/$full_service_name"
 log_file="$log_dir/install.txt"
+backup_dir="$HOME/homelab-backup/$START_DATE/$full_service_name"
 
 docker_file_args=''
 if [ "$mode" = 'prod' ]; then
@@ -115,6 +116,14 @@ docker_start() {
     if [ ! -e 'private' ]; then
         printf 'Secrets directory not found. App cannot be run.\n'
         exit 1
+    fi
+
+    mkdir -p "$backup_dir"
+    if [ -d "$app_dir/log" ]; then
+        cp -R "$app_dir/log/." "$backup_dir/log"
+    fi
+    if [ -d "$app_dir/data" ]; then
+        cp -R "$app_dir/data/." "$backup_dir/data"
     fi
 
     if [ "$mode" != 'prod' ]; then
