@@ -1,6 +1,11 @@
 #!/bin/sh
 set -euf
 
+LC_CTYPE=en_US.UTF-8
+export LC_CTYPE
+LC_ALL=en_US.UTF-8
+export LC_ALL
+
 dev_mode='0'
 force_mode='0'
 while [ "$#" -gt 0 ]; do
@@ -65,5 +70,5 @@ chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-stat
 rm -rf "$tmpdir"
 
 # Additional notes
-printf 'Most secrets setup\n' >&2
+printf 'Not all secrets setup\n' >&2
 printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
