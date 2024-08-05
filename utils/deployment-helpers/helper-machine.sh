@@ -44,10 +44,6 @@ while [ "$#" -gt 0 ]; do
         dry_run='1'
         shift
         ;;
-    -h|--help)
-        print_help
-        exit 0
-        ;;
     *)
         printf 'Unrecognized argument "%s"\n' "$1" >&2
         print_help
