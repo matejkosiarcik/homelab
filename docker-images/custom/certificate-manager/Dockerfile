@@ -11,7 +11,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /certs /log
 COPY --from=prefinal /app /app
-VOLUME [ "/certs" ]
 ENV TZ=Europe/Bratislava
 HEALTHCHECK --interval=20s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
 # TODO: Update to --interval=10s --start-period=15s
