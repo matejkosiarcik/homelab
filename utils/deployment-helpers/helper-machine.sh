@@ -26,6 +26,11 @@ fi
 command="$1"
 shift
 
+if [ "$command" = '-h' ] || [ "$command" = '--help' ]; then
+    print_help
+    exit 0
+fi
+
 dry_run='0'
 force='0'
 mode=''
