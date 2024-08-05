@@ -106,9 +106,9 @@ docker_stop() {
     else
         mkdir -p "$log_dir"
 
-        printf 'Stop docker containers %s\n' | tee "$global_log_file" >&2
+        printf 'Stop docker containers %s\n' | tee "$log_file" >&2
         # shellcheck disable=SC2248
-        docker compose down $docker_file_args $docker_dryrun_args 2>&1 | tee "$global_log_file" >&2
+        docker compose down $docker_file_args $docker_dryrun_args 2>&1 | tee "$log_file" >&2
     fi
 }
 
