@@ -53,10 +53,6 @@ while [ "$#" -gt 0 ]; do
         mode='prod'
         shift
         ;;
-    -h|--help)
-        print_help
-        exit 0
-        ;;
     *)
         printf 'Unrecognized argument "%s"\n' "$1" >&2
         print_help
