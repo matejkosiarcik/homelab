@@ -27,7 +27,7 @@ Package Control.*
 *Brewfile.lock.json
 build/
 dist/
-gitman/
+gitman-repositories/
 node_modules/
 python-vendor/
 venv/
