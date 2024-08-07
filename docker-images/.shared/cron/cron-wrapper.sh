@@ -6,8 +6,6 @@ set -euf
 
 PATH="$PATH:/usr/local/bin"
 cd /app
-# shellcheck source=/dev/null
-. /app/.internal/cron.env
 
 # Setup
 tmpdir="$(mktemp -d)"

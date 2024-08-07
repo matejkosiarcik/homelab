@@ -1,14 +1,6 @@
 #!/bin/sh
 set -euf
 
-# shellcheck source=/dev/null
-. /app/.internal/cron.env
-
-if [ -z "${HOMELAB_APP_EXTERNAL_DOMAIN+x}" ]; then
-    printf 'HOMELAB_APP_EXTERNAL_DOMAIN unset\n'
-    exit 1
-fi
-
 create_certs='0'
 
 if [ ! -e '/certs' ]; then
