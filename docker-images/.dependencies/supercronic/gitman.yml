@@ -1,0 +1,28 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/aptible/supercronic.git
+    name: supercronic
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+sources_locked:
+  - repo: https://github.com/aptible/supercronic.git
+    name: supercronic
+    rev: 7468d854628d604a645b39933cf32f165bd2831c
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+default_group: ""
+groups:
+  -
