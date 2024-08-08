@@ -27,7 +27,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
     volumes:
-      - ./data/certs:/certs:rw
+      # - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
 
   http-proxy:
