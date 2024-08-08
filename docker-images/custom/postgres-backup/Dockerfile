@@ -37,16 +37,12 @@ WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends postgresql-client-16 >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /backup /log && \
-    groupadd --system homelab && \
-    useradd --gid homelab --system homelab && \
-    chown -R homelab:homelab /app /backup /log
-COPY --from=prefinal --chown=homelab:homelab /app/ ./
+    mkdir -p /backup /log
+COPY --from=prefinal /app/ ./
 ENV PATH="$PATH:/app/bin" \
     PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava
-USER homelab
 HEALTHCHECK --interval=30s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
