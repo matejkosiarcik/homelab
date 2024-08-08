@@ -1,3 +1,5 @@
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
+
 FROM debian:12.6-slim AS prefinal
 WORKDIR /app
 COPY ./custom/http-proxy/www/ ./www/
