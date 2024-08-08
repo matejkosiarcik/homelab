@@ -4,9 +4,6 @@ set -euf
 mkdir -p /app/.internal
 printf 'starting\n' >/app/.internal/status
 
-rm -f /log/cron.log
-touch /log/cron.log
-
 # Setup Environment variables
 CRON='0'
 export CRON
