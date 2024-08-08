@@ -6,6 +6,7 @@ x-definitions:
       <<: *common-env-variables
     networks:
       internal-network: {}
+    user: homelab:homelab
 
 services:
   main-app:
