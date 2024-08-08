@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM debian:12.6-slim AS build
+FROM debian:12.6-slim AS python-build
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 python3-pip python3-dev build-essential >/dev/null && \
@@ -14,7 +14,7 @@ WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=build /app/python-vendor/ ./python-vendor/
+COPY --from=python-build /app/python-vendor/ ./python-vendor/
 COPY ./custom/lamp-hardware-controller/main.py ./
 ENV PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
