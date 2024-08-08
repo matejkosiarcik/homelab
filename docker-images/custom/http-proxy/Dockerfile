@@ -12,7 +12,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /certs /log /log/access /log/error /log/forensic && \
     a2enmod auth_basic env headers http2 log_forensic macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
-    rm -rf /etc/apache2/sites-enabled/* /var/www/html/* && \
+    rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
 COPY ./custom/http-proxy/apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY --from=prefinal /app/ ./
 EXPOSE 80
