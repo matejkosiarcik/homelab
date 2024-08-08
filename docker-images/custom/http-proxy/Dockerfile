@@ -10,7 +10,7 @@ WORKDIR /app
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends apache2 curl inotify-tools && \
     rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /certs /log /log/access /log/error /log/forensic && \
+    mkdir -p /certs /log && \
     a2enmod auth_basic env headers http2 log_forensic macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
 COPY ./custom/http-proxy/apache.conf /etc/apache2/sites-enabled/apache.conf
