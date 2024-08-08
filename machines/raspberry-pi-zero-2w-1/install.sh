@@ -10,4 +10,4 @@ COMPOSE_PARALLEL_LIMIT=1
 export COMPOSE_PARALLEL_LIMIT
 
 # shellcheck disable=SC2068
-bash "$(git rev-parse --show-toplevel)/.utils/install-machine.sh" $@
+bash "$(git rev-parse --show-toplevel)/utils/deployment-helpers/install-machine.sh" $@
