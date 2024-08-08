@@ -38,7 +38,9 @@ RUN apt-get update && \
     mkdir -p /certs /log && \
     groupadd --system homelab && \
     useradd --gid homelab --system homelab && \
-    chown -R homelab:homelab /app /certs /log
+    chown -R homelab:homelab /app && \
+    chown -R homelab:homelab /certs && \
+    chown -R homelab:homelab /log
 COPY --from=prefinal --chown=homelab:homelab /app /app
 ENV PATH="$PATH:/app/bin" \
     TZ=Europe/Bratislava
