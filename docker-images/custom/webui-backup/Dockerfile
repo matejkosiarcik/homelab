@@ -1,3 +1,5 @@
+# checkov:skip=CKV_DOCKER_3: no need for explicit user
+
 FROM python:3.12.4-slim AS supercronic-gitman
 WORKDIR /app
 RUN apt-get update -qq && \
