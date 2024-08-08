@@ -42,6 +42,6 @@ RUN apt-get update && \
 COPY --from=prefinal /app /app
 ENV PATH="$PATH:/app/bin" \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=20s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
+HEALTHCHECK --interval=30s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
 # TODO: Update to --interval=10s --start-period=15s
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
