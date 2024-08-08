@@ -1,23 +1,52 @@
-# checkov:skip=CKV_DOCKER_3: no need for explicit user
+FROM python:3.12.4-slim AS supercronic-gitman
+WORKDIR /app
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        git >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.dependencies/gitman/requirements.txt ./
+RUN python3 -m pip install --requirement requirements.txt --target python-packages --quiet
+ENV PATH="/app/python-packages/bin:$PATH" \
+    PYTHONPATH=/app/python-packages
+COPY ./.dependencies/supercronic/gitman.yml ./
+RUN gitman install --quiet
 
-# FROM alpine:3.20.2
-# WORKDIR /app
-# RUN apk update --no-cache && \
-#     apk add --no-cache curl postgresql16-client && \
-#     mkdir -p /backup /log
+FROM golang:1.22.5-bookworm AS supercronic-build
+WORKDIR /app
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=supercronic-gitman /app/gitman-repositories/supercronic/ ./supercronic/
+ENV CGO_ENABLED=0
+WORKDIR /app/supercronic
+RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
+    strip --strip-all supercronic
+WORKDIR /app
+COPY ./.shared/build-utils/validate-executable.sh ./
+RUN sh validate-executable.sh ./supercronic/supercronic
+
+FROM debian:12.6-slim AS prefinal
+WORKDIR /app
+COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/postgres-backup/crontab.cron ./custom/postgres-backup/main.sh ./
 
 # TODO: Switch to regular stable debian when trixie is released
 # Currently postgresql-client-16 is not available in bookworm
 FROM debian:trixie-slim
 WORKDIR /app
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends cron postgresql-client-16 >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends postgresql-client-16 >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /backup /log
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/postgres-backup/crontab.cron ./custom/postgres-backup/main.sh ./
-ENV PGDATABASE=database \
+    mkdir -p /backup /log && \
+    groupadd --system homelab && \
+    useradd --gid homelab --system homelab && \
+    chown -R homelab:homelab /app /backup /log
+COPY --from=prefinal --chown=homelab:homelab /app/ ./
+ENV PATH="$PATH:/app/bin" \
+    PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava
+USER homelab
 HEALTHCHECK --interval=30s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]

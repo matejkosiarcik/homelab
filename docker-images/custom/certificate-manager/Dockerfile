@@ -35,13 +35,13 @@ WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends openssl >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /app /certs /log && \
+    mkdir -p /certs /log && \
     groupadd --system homelab && \
     useradd --gid homelab --system homelab && \
     chown -R homelab:homelab /app /certs /log
 COPY --from=prefinal --chown=homelab:homelab /app /app
-ENV TZ=Europe/Bratislava \
-    PATH="$PATH:/app/bin"
+ENV PATH="$PATH:/app/bin" \
+    TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=20s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
 # TODO: Update to --interval=10s --start-period=15s

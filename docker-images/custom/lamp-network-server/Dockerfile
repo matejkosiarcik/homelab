@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM node:22.5.1-slim AS build
+FROM node:22.5.1-slim AS nodejs-build
 WORKDIR /app
 COPY ./custom/lamp-network-server/package.json ./custom/lamp-network-server/package-lock.json ./
 COPY ./custom/lamp-network-server/patches/ ./patches/
@@ -15,9 +15,9 @@ RUN npm run build && \
 
 FROM node:22.5.1-slim AS aggregator
 WORKDIR /app
-COPY --from=build /app/dist/ ./dist/
-COPY --from=build /app/node_modules/ ./node_modules/
-COPY --from=build /app/package.json ./
+COPY --from=nodejs-build /app/dist/ ./dist/
+COPY --from=nodejs-build /app/node_modules/ ./node_modules/
+COPY --from=nodejs-build /app/package.json ./
 
 FROM node:22.5.1-slim
 COPY --from=aggregator /app/ /app/

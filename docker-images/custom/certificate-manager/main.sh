@@ -3,6 +3,15 @@ set -euf
 
 create_certs='0'
 
+if [ "${HOMELAB_ENV-x}" = 'x' ]; then
+    printf 'HOMELAB_ENV unset\n' >&2
+    exit 1
+fi
+if [ "${HOMELAB_APP_EXTERNAL_DOMAIN-x}" = 'x' ]; then
+    printf 'HOMELAB_APP_EXTERNAL_DOMAIN unset\n' >&2
+    exit 1
+fi
+
 if [ ! -e '/certs' ]; then
     create_certs='1'
 fi
