@@ -119,12 +119,16 @@ docker_start() {
         exit 1
     fi
 
-    mkdir -p "$backup_dir"
-    if [ -d "$app_dir/log" ]; then
-        cp -R "$app_dir/log/." "$backup_dir/log"
-    fi
-    if [ -d "$app_dir/data" ]; then
-        cp -R "$app_dir/data/." "$backup_dir/data"
+    if [ "$mode" = prod ]; then
+        mkdir -p "$backup_dir"
+        if [ -d "$app_dir/log" ]; then
+            # TODO: Run without sudo?
+            sudo cp -R "$app_dir/log/." "$backup_dir/log"
+        fi
+        if [ -d "$app_dir/data" ]; then
+            # TODO: Run without sudo?
+            sudo cp -R "$app_dir/data/." "$backup_dir/data"
+        fi
     fi
 
     if [ "$mode" != 'prod' ]; then
