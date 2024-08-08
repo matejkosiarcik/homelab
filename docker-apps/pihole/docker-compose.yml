@@ -22,17 +22,15 @@ services:
 
   certificate-manager:
     <<: *common-service-options
-    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
     volumes:
-      # - ./data/certs:/certs:rw
+      - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
 
   http-proxy:
     <<: *common-service-options
-    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -46,14 +44,12 @@ services:
 
   socket-proxy:
     <<: *common-service-options
-    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
   webui-backup:
     <<: *common-service-options
-    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/webui-backup/Dockerfile
