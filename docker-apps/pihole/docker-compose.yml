@@ -6,7 +6,6 @@ x-definitions:
       <<: *common-env-variables
     networks:
       internal-network: {}
-    user: homelab:homelab
 
 services:
   main-app:
@@ -23,6 +22,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
+    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -32,6 +32,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
+    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -45,12 +46,14 @@ services:
 
   socket-proxy:
     <<: *common-service-options
+    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
   webui-backup:
     <<: *common-service-options
+    user: homelab:homelab
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/webui-backup/Dockerfile
