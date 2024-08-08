@@ -38,7 +38,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /certs /log && \
     groupadd --system homelab && \
-    useradd --gid homelab --system homelab
+    useradd --gid homelab --system homelab && \
+    chown -R homelab:homelab /app /certs /log
 COPY --from=prefinal --chown=homelab:homelab /app /app
 COPY --from=prefinal --chown=homelab:homelab /certs /certs
 COPY --from=prefinal --chown=homelab:homelab /log /log
