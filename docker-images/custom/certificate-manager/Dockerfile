@@ -27,6 +27,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 FROM debian:12.6-slim AS prefinal
 WORKDIR /app
+RUN mkdir -p /certs /log
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/certificate-manager/crontab.cron ./custom/certificate-manager/main.sh ./
 
@@ -37,14 +38,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /certs /log && \
     groupadd --system homelab && \
-    useradd --gid homelab --system homelab && \
-    chown homelab:homelab /app && \
-    chown -R homelab:homelab /app && \
-    chown homelab:homelab /certs && \
-    chown -R homelab:homelab /certs && \
-    chown homelab:homelab /log && \
-    chown -R homelab:homelab /log
+    useradd --gid homelab --system homelab
 COPY --from=prefinal --chown=homelab:homelab /app /app
+COPY --from=prefinal --chown=homelab:homelab /certs /certs
+COPY --from=prefinal --chown=homelab:homelab /log /log
 ENV PATH="$PATH:/app/bin" \
     TZ=Europe/Bratislava
 USER homelab
