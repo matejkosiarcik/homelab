@@ -6,7 +6,8 @@ x-definitions:
       <<: *common-env-variables
     # env_file:
     #   - ./config/prod.env
-    restart: unless-stopped
+    restart: "no"
+    # restart: unless-stopped
 
 services:
   main-app:
