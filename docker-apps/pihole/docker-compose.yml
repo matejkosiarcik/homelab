@@ -59,6 +59,7 @@ services:
     volumes:
       - ./private/webui-backup.env:/app/.env:ro
       - ./data/webui-backup:/backup:rw
+      - ./data/webui-backup-errors:/error:rw
       - ./log/webui-backup:/log:rw
 
 networks:

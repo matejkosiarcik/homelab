@@ -1,24 +1,21 @@
-import { chromium } from 'playwright';
-import { expect } from 'playwright/test';
-import { getBackupDir, getBrowserPath, getDownloadFilename, getIsHeadless, getIsoDate, getTargetAdminPassword, getTargetAdminUsername, getTargetUrl, loadEnv, newPage } from './utils/utils.ts';
+import path from 'path';
+import { expect } from 'chai';
+import { getBackupDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername, loadEnv } from './utils/utils.ts';
+import { runAutomation } from './utils/main.ts';
 
 (async () => {
     loadEnv();
+
     const setup = {
         backupDir: await getBackupDir(),
-        browserPath: getBrowserPath(),
-        isHeadless: getIsHeadless(),
-        url: getTargetUrl(),
     };
     const credentials = {
         username: getTargetAdminUsername(),
         password: getTargetAdminPassword(),
     };
+    const currentDate = getIsoDate();
 
-    const browser = await chromium.launch({ headless: setup.isHeadless, executablePath: setup.browserPath });
-    try {
-        const page = await newPage(browser, setup.url);
-
+    await runAutomation(async (page) => {
         // Login
         await page.goto('/login');
         await page.locator('#privacy-agree-btn').click(); // Hide cookies
@@ -38,9 +35,7 @@ import { getBackupDir, getBrowserPath, getDownloadFilename, getIsHeadless, getIs
 
         // Handle download
         const download = await downloadPromise;
-        expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).toMatch(/\.cfg$/);
-        await download.saveAs(getDownloadFilename({ backupDir: setup.backupDir, extension: 'cfg', fileSuffix: '-settings' }));
-    } finally {
-        await browser.close();
-    }
+        expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.cfg$/);
+        await download.saveAs(path.join(setup.backupDir, `${currentDate}-settings.cfg`));
+    }, { date: currentDate });
 })();

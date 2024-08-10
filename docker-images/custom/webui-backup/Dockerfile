@@ -38,18 +38,25 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
 
 FROM node:22.5.1-slim AS prefinal
 WORKDIR /app
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/webui-backup/crontab.cron ./custom/webui-backup/main.sh ./custom/webui-backup/package.json ./
-COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
+COPY --from=nodejs-build /app/package.json ./
 COPY --from=nodejs-build /app/node_modules ./node_modules
+RUN apt-get update && \
+    npx --no-install playwright install-deps chromium && \
+    npx --no-install playwright install chromium && \
+    rm -rf /var/lib/apt/lists/*
 COPY --from=nodejs-build /app/dist ./dist
+COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/webui-backup/crontab.cron ./custom/webui-backup/main.sh ./
+COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 
 FROM node:22.5.1-slim
 WORKDIR /app
+RUN mkdir -p /backup /log
+COPY --from=prefinal /app/node_modules ./node_modules
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends chromium curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /backup /log
+    npx --no-install playwright install-deps chromium && \
+    rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
+COPY --from=prefinal /root/.cache/ms-playwright /root/.cache/ms-playwright
 ENV PATH="$PATH:/app/bin" \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=60s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
