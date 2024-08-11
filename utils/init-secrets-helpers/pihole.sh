@@ -2,6 +2,7 @@
 set -euf
 
 helper_script_dir="$(cd "$(dirname "$0")" >/dev/null && pwd)"
+# shellcheck source=/dev/null
 . "$helper_script_dir/.shared/env.sh"
 
 dev_mode='0'

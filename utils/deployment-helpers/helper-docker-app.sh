@@ -151,7 +151,7 @@ docker_start() {
 
         # Run new services
         printf 'Start docker containers\n' | tee "$log_file" >&2
-        # shellcheck disable=SC2086
+        # shellcheck disable=SC2086,SC2248
         docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $docker_dryrun_args 2>&1 | tee "$log_file" >&2
         printf '\n' | tee "$log_file" >&2
     fi
