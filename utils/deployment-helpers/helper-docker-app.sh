@@ -102,13 +102,13 @@ fi
 
 docker_stop() {
     if [ "$mode" != 'prod' ]; then
-        # shellcheck disable=SC2086
+        # shellcheck disable=SC2086,SC2248
         docker compose $docker_file_args down $docker_dryrun_args
     else
         mkdir -p "$log_dir"
 
         printf 'Stop docker containers\n' | tee "$log_file" >&2
-        # shellcheck disable=SC2086
+        # shellcheck disable=SC2086,SC2248
         docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
     fi
 }
@@ -132,7 +132,7 @@ docker_start() {
     fi
 
     if [ "$mode" != 'prod' ]; then
-        # shellcheck disable=SC2086
+        # shellcheck disable=SC2086,SC2248
         docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --build $docker_dryrun_args
     else
         mkdir -p "$log_dir"
@@ -173,7 +173,7 @@ init-secrets)
     if [ "$mode" = 'dev' ]; then
         init_secrets_args="$init_secrets_args -d"
     fi
-    # shellcheck disable=SC2248
+    # shellcheck disable=SC2086
     sh "$git_dir/utils/init-secrets-helpers/$base_service_name.sh" $init_secrets_args
     ;;
 *)

@@ -33,7 +33,6 @@ fi
 
 dry_run='0'
 force='0'
-mode=''
 while [ "$#" -gt 0 ]; do
     case "$1" in
     -f | --force)
