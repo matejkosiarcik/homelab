@@ -113,13 +113,13 @@ lamp-controller)
 pihole | pihole-main)
     # Precreate passwords
     create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
-    create_password "$output/app-password.txt"
+    create_password "$tmpdir/app-password.txt"
 
     # Database
-    printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/webpassword.txt"
+    printf '%s' "$(cat "$tmpdir/app-password.txt")" >>"$output/webpassword.txt"
 
     # Backups
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$output/webpassword.txt")" >>"$output/webui-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/webui-backup.env"
     printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
 
     # HTTP proxy
