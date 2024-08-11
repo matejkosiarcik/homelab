@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     ports:
       - "8080:8000"
     environment:

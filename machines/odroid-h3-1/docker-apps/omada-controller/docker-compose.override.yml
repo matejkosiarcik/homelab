@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     environment:
       - MANAGE_HTTP_PORT=8080
       - MANAGE_HTTPS_PORT=8443

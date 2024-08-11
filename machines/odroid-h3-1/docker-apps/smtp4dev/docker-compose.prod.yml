@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     environment:
       - HOSTNAME=smtp4dev.home
       - ServerOptions__HostName=smtp4dev.home

@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     image: unifi-controller-app:homelab
     build:
       context: ../../../../docker-images/
@@ -53,7 +53,7 @@ services:
     container_name: unifi-controller-webui-backup
     hostname: unifi-controller-webui-backup
     depends_on:
-      app:
+      main-app:
         condition: service_healthy
     environment:
       - HOMELAB_SERVICE=unifi-controller

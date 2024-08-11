@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     ports:
       - 80:3001
     networks:

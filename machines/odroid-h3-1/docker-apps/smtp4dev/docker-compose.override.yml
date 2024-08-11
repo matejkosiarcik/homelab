@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     # ports:
     #   - "8025:25"
     #   - "8080:80"

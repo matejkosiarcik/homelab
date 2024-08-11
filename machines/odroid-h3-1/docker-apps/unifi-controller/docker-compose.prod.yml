@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     networks:
       internal-network: {}
       external-network:

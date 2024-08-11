@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     environment:
       - ALLOWED_HOSTS=healthchecks.home
       - DEFAULT_FROM_EMAIL=healthchecks@healthchecks.home

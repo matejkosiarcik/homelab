@@ -1,5 +1,5 @@
 services:
-  app:
+  main-app:
     image: smtp4dev-app:homelab
     build:
       context: ../../../../docker-images/
