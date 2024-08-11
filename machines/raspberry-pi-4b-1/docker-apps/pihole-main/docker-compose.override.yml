@@ -1,30 +1,32 @@
-# version: "3.8"
+# include:
+#   - path: ../../../../docker-apps/pihole/docker-compose.override-dev.yml
+#     project_directory: .
+
+x-definitions:
+  extends-file: &extends-file ../../../../docker-apps/pihole/docker-compose.override-dev.yml
 
 services:
-  app:
-    # ports:
-    #   - "8053:53/tcp"
-    #   - "8053:53/udp"
-    #   - "8080:80"
-    environment:
-      - FTLCONF_PRIVACYLEVEL=0
-    restart: "no"
+  main-app:
+    extends:
+      file: *extends-file
+      service: main-app-base
+
+  certificate-manager:
+    extends:
+      file: *extends-file
+      service: certificate-manager
 
   http-proxy:
-    # ports:
-    #   - "8080:80"
-    #   - "8443:443"
-    environment:
-      - ENV=dev
-    restart: "no"
+    extends:
+      file: *extends-file
+      service: http-proxy
 
   socket-proxy:
-    ports:
-      - "8053:53/tcp"
-      - "8053:53/udp"
-      - "8080:80"
-      - "8443:443"
-    restart: "no"
+    extends:
+      file: *extends-file
+      service: socket-proxy
 
   webui-backup:
-    restart: "no"
+    extends:
+      file: *extends-file
+      service: webui-backup
