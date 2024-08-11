@@ -15,6 +15,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/homer/Dockerfile
+    volumes:
+      - ./log/main-app:/log:rw
 
   certificate-manager:
     <<: *common-service-options
