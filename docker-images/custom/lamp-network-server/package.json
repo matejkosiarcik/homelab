@@ -14,7 +14,8 @@
     "build:frontend:1-vite": "vite build frontend",
     "build:frontend:2-terser": "glob-exec --foreach --parallel \"dist/frontend/assets/*.js\" -- \"terser --config-file terser.json {{file}} --output {{file}}\"",
     "lint": "tsc --noEmit --skipLibCheck",
-    "postinstall": "patch-package --patch-dir patches ",
+    "postinstall": "run-s postinstall:patch",
+    "postinstall:patch": "patch-package --patch-dir patches",
     "start": "run-p start:*",
     "start:backend": "nodemon --config backend/nodemon.json",
     "start:frontend": "vite dev frontend --port 8082 --strictPort --clearScreen"
