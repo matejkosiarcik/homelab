@@ -18,6 +18,7 @@ services:
       - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
       - ../../../../docker-images/external/pihole/custom-domains.txt:/etc/pihole/custom.list:ro
+      - ./log/main-app:/log:rw
     stop_grace_period: 30s
 
   certificate-manager:
@@ -38,15 +39,17 @@ services:
       certificate-manager:
         condition: service_healthy
     volumes:
-      - ./log/http-proxy:/log:rw
       - ./data/certs:/certs:ro
       - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+      - ./log/http-proxy:/log:rw
 
   socket-proxy:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
+    volumes:
+      - ./log/socket-proxy:/log:rw
 
   webui-backup:
     <<: *common-service-options

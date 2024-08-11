@@ -9,7 +9,7 @@ services:
   main-app:
     extends:
       file: *extends-file
-      service: main-app-base
+      service: main-app
 
   certificate-manager:
     extends:
