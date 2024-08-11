@@ -139,11 +139,13 @@ docker_start() {
 
         # Pull docker images
         printf 'Pull docker images\n' | tee "$log_file" >&2
+        # shellcheck disable=SC2086
         docker compose $docker_file_args pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2
         printf '\n' | tee "$log_file" >&2
 
         # Build docker images
         printf 'Build docker images\n' | tee "$log_file" >&2
+        # shellcheck disable=SC2086
         docker compose $docker_file_args build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2
         printf '\n' | tee "$log_file" >&2
 
