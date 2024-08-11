@@ -1,32 +1,3 @@
-# include:
-#   - path: ../../../../docker-apps/pihole/docker-compose.override-dev.yml
-#     project_directory: .
-
-x-definitions:
-  extends-file: &extends-file ../../../../docker-apps/pihole/docker-compose.override-dev.yml
-
-services:
-  main-app:
-    extends:
-      file: *extends-file
-      service: main-app
-
-  certificate-manager:
-    extends:
-      file: *extends-file
-      service: certificate-manager
-
-  http-proxy:
-    extends:
-      file: *extends-file
-      service: http-proxy
-
-  socket-proxy:
-    extends:
-      file: *extends-file
-      service: socket-proxy
-
-  webui-backup:
-    extends:
-      file: *extends-file
-      service: webui-backup
+include:
+  - path: ../../../../docker-apps/pihole/docker-compose.override-dev.yml
+    project_directory: .
