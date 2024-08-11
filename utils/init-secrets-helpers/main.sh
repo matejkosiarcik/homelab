@@ -66,6 +66,7 @@ if [ "$current_dir" = 'pihole' ] || [ "$current_dir" = 'pihole-main' ]; then
 
     # Backups
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$output/webpassword.txt")" >>"$output/webui-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
 
     # HTTP proxy
     create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
