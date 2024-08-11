@@ -46,8 +46,8 @@ async function toggleButton() {
         data.initialLoading.value
           ? '&nbsp;'
           : data.status.value
-          ? '⚡️ On ⚡️'
-          : '💤 Off 💤'
+            ? '⚡️ On ⚡️'
+            : '💤 Off 💤'
       }}
     </p>
     <button
