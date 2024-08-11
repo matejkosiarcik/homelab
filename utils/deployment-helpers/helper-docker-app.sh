@@ -37,19 +37,19 @@ force='0'
 mode=''
 while [ "$#" -gt 0 ]; do
     case "$1" in
-    -d|--dev)
+    -d | --dev)
         mode='dev'
         shift
         ;;
-    -f|--force)
+    -f | --force)
         force='1'
         shift
         ;;
-    -n|--dry-run)
+    -n | --dry-run)
         dry_run='1'
         shift
         ;;
-    -p|--prod)
+    -p | --prod)
         mode='prod'
         shift
         ;;

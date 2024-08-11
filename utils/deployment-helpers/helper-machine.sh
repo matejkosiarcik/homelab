@@ -36,11 +36,11 @@ force='0'
 mode=''
 while [ "$#" -gt 0 ]; do
     case "$1" in
-    -f|--force)
+    -f | --force)
         force='1'
         shift
         ;;
-    -n|--dry-run)
+    -n | --dry-run)
         dry_run='1'
         shift
         ;;
@@ -57,8 +57,6 @@ export START_DATE
 
 # This should be set be caller script
 declare machine_dir
-
-git_dir="$(git rev-parse --show-toplevel)"
 
 log_dir="$HOME/homelab-log/$START_DATE"
 log_file="$log_dir/install.txt"
