@@ -60,13 +60,13 @@ services:
   - name: Apps
     icon: fa-brands fa-docker
     items:
-      - name: PiHole 1
+      - name: PiHole (main)
         type: Ping
         subtitle: DNS
         url: https://pihole-main.home
         logo: ./assets/icons/organizr/pihole.png
 
-      - name: PiHole 2
+      - name: PiHole (main) [backup]
         type: Ping
         subtitle: DNS
         url: https://pihole-main-backup.home
