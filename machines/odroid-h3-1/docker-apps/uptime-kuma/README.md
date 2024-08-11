@@ -1,6 +1,6 @@
 # Uptime Kuma
 
-For general `uptime-kuma` docs see [/docker-images/uptime-kuma/README.md](../../../docker-images/external/uptime-kuma/README.md)
+For general `uptime-kuma` docs see [/docker-images/uptime-kuma/README.md](../../../../docker-images/external/uptime-kuma/README.md)
 
 ## Installation
 
