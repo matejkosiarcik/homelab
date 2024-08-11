@@ -45,7 +45,7 @@ apiRouter.get('/status', async (_, response, next) => {
 
 apiRouter.post('/status', validateRequestSchema({ body: statusSchema }), async (request, response, next) => {
     try {
-        const hardwareServer = process.env['UPSTREAM_URL']!;
+        const hardwareServer = process.env['HOMELAB_UPSTREAM_URL']!;
         const requestText = JSON.stringify(request.body);
         const upstreamResponse = await fetch(hardwareServer, {
             method: 'POST',

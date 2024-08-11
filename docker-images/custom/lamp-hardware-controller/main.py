@@ -39,7 +39,7 @@ class ShimOutputDevice:
 commands_queue: queue.SimpleQueue[str] = queue.SimpleQueue()
 
 # Connected hardware
-if os.environ.get("ENV") == "prod":
+if os.environ.get("HOMELAB_ENV") == "prod":
     button_device = Button(25)
     output_device = DigitalOutputDevice(23)
 else:
@@ -119,6 +119,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         output = json.dumps({"status": "on" if output_status else "off"}) + "\n"
         self.wfile.write(output.encode("utf-8"))
+
+    # pylint: disable=C0103
+    def do_GET(self):
+        self.send_response(HTTPStatus.OK)
+        self.end_headers()
+        self.wfile.write("".encode("utf-8"))
 
 
 if __name__ == "__main__":

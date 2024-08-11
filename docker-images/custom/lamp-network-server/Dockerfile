@@ -13,17 +13,20 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
-FROM node:22.5.1-slim AS aggregator
+FROM debian:12.6-slim AS prefinal
 WORKDIR /app
 COPY --from=nodejs-build /app/dist/ ./dist/
 COPY --from=nodejs-build /app/node_modules/ ./node_modules/
 COPY --from=nodejs-build /app/package.json ./
 
 FROM node:22.5.1-slim
-COPY --from=aggregator /app/ /app/
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=prefinal /app/ /app/
 WORKDIR /app
 ENV TZ=Europe/Bratislava
 EXPOSE 80
 EXPOSE 443
-HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/status || exit 1" ]
+HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/api/status || exit 1" ]
 ENTRYPOINT [ "sh", "-c", "node /app/dist/backend/main.js" ]

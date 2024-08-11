@@ -3,7 +3,7 @@ type ApiStatus = {
 };
 
 const isDev = (import.meta as any).env?.PROD !== true;
-const backendUrl = isDev ? 'http://localhost:8081/api/status' : `https://${window.location.host}/api/status`;
+const backendUrl = isDev ? 'http://localhost:8081/api/status' : `${window.location.protocol}//${window.location.host}/api/status`;
 
 export async function getStatus(): Promise<boolean> {
     const response = await fetch(backendUrl);

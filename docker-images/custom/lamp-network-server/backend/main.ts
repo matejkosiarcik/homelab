@@ -46,8 +46,8 @@ import { setupStatusReader } from './utils/status-reader.ts';
 
     setupStatusReader(statusFile);
 
-    if (!process.env['UPSTREAM_URL']) {
-        process.env['UPSTREAM_URL'] = (fs.existsSync('/.dockerenv') ? 'http://lamp-controller-hardware-controller' : 'http://localhost:8081');
+    if (!process.env['HOMELAB_UPSTREAM_URL']) {
+        process.env['HOMELAB_UPSTREAM_URL'] = (fs.existsSync('/.dockerenv') ? 'http://app-hardware-controller' : 'http://localhost:8081');
     }
 
     expressApp.listen(httpPort, () => {
