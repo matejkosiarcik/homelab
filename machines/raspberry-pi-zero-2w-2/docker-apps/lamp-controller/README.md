@@ -1,6 +1,6 @@
 # Lamp controller
 
-For more docs see [/docker-images/lamps/network-server/README.md](../../../docker-images/lamps/network-server/README.md) [/docker-images/lamps/hardware-controller/README.md](../../../docker-images/lamps/hardware-controller/README.md)
+For more docs see [/docker-images/lamps/network-server/README.md](../../../docker-images/lamp-network-server/README.md) [/docker-images/lamps/hardware-controller/README.md](../../../docker-images/lamp-hardware-controller/README.md)
 
 ## Before installation
 
