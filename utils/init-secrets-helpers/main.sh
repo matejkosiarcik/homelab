@@ -42,8 +42,8 @@ if [ -e "$output" ]; then
 fi
 mkdir "$output"
 
-tmpdir="$(mktemp -d)"
 current_dir="$(basename "$PWD")"
+tmpdir="$(mktemp -d)"
 
 create_password() {
     output_file="$1"
@@ -61,6 +61,31 @@ create_password() {
 }
 
 case "$current_dir" in
+healthchecks)
+    # Precreate password
+    create_password "$tmpdir/database-password.txt"
+    create_password "$tmpdir/app-secret-key.txt" --only-alphanumeric
+    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+
+    # App
+    printf 'DB_PASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/app.env"
+    printf 'SECRET_KEY=%s\n' "$(cat "$tmpdir/app-secret-key.txt")" >>"$output/app.env"
+
+    # Database
+    printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
+
+    # Backups
+    printf 'PGPASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/database-backup.env"
+
+    # HTTP proxy
+    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
+    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
+    ;;
 homer)
     # HTTP proxy
     create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
