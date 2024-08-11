@@ -62,14 +62,14 @@ create_password() {
 
 case "$current_dir" in
 healthchecks)
-    # Precreate password
+    # Precreate passwords
     create_password "$tmpdir/database-password.txt"
     create_password "$tmpdir/app-secret-key.txt" --only-alphanumeric
     create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
 
     # App
-    printf 'DB_PASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/app.env"
     printf 'SECRET_KEY=%s\n' "$(cat "$tmpdir/app-secret-key.txt")" >>"$output/app.env"
+    printf 'DB_PASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/app.env"
 
     # Database
     printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
@@ -87,35 +87,44 @@ healthchecks)
     printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
     ;;
 homer)
+    # Precreate passwords
+    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+
     # HTTP proxy
-    create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
-    printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
-    chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
+    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
+    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
 
     # Log results
-    printf 'All secrets setup\n' >&2
+    printf 'Not all secrets setup\n' >&2
+    printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
     ;;
 lamp-controller)
+    # Precreate passwords
+    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+
     # HTTP proxy
-    create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
-    printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
-    chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
+    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
+    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
 
     # Log results
-    printf 'All secrets setup\n' >&2
+    printf 'Not all secrets setup\n' >&2
+    printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
     ;;
 pihole | pihole-main)
-    # App
-    create_password "$output/webpassword.txt"
+    # Precreate passwords
+    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+    create_password "$output/app-password.txt"
+
+    # Database
+    printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/webpassword.txt"
 
     # Backups
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$output/webpassword.txt")" >>"$output/webui-backup.env"
     printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
 
     # HTTP proxy
-    create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
-    printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
-    chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
+    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
+    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
