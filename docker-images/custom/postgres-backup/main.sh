@@ -1,4 +1,4 @@
 #!/bin/sh
 set -euf
 
-sh /app/backup.sh
+sh "/app/src/backup-$HOMELAB_APP_TYPE.sh"

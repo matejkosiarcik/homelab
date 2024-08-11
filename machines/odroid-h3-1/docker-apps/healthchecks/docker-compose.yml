@@ -44,8 +44,8 @@ services:
       - ./private/database-backup.env
     environment:
       - PGHOST=healthchecks-database
+      - HOMELAB_APP_TYPE=healthchecks
     volumes:
-      - ./config/database-backup/backup.sh:/app/backup.sh:ro
       - ./data/database-backup:/backup:rw
       - ./log/database-backup:/log:rw
 
