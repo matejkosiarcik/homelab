@@ -60,7 +60,26 @@ create_password() {
     fi
 }
 
-if [ "$current_dir" = 'pihole' ] || [ "$current_dir" = 'pihole-main' ]; then
+case "$current_dir" in
+homer)
+    # HTTP proxy
+    create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
+    printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
+    chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
+
+    # Log results
+    printf 'All secrets setup\n' >&2
+    ;;
+lamp-controller)
+    # HTTP proxy
+    create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
+    printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
+    chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
+
+    # Log results
+    printf 'All secrets setup\n' >&2
+    ;;
+pihole | pihole-main)
     # App
     create_password "$output/webpassword.txt"
 
@@ -76,25 +95,12 @@ if [ "$current_dir" = 'pihole' ] || [ "$current_dir" = 'pihole-main' ]; then
     # Log results
     printf 'Not all secrets setup\n' >&2
     printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
-elif [ "$current_dir" = 'homer' ]; then
-    # HTTP proxy
-    create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
-    printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
-    chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
-
-    # Log results
-    printf 'All secrets setup\n' >&2
-elif [ "$current_dir" = 'lamp-controller' ]; then
-    # HTTP proxy
-    create_password "$tmpdir/apache-status-password.txt" --only-alphanumeric
-    printf 'status:%s\n' "$(cat "$tmpdir/apache-status-password.txt")" >>"$output/apache-users.txt"
-    chronic htpasswd -c -B -i "$output/status.htpasswd" status <"$tmpdir/apache-status-password.txt"
-
-    # Log results
-    printf 'All secrets setup\n' >&2
-else
-    printf 'Unknown app "%s"\n' "$current_dir" >&2
-fi
+    ;;
+*)
+    printf 'Unknown app directory "%s"\n' "$current_dir" >&2
+    exit 1
+    ;;
+esac
 
 # Cleanup
 rm -rf "$tmpdir"
