@@ -80,13 +80,13 @@ services:
 
       - name: Unifi
         type: Ping
-        subtitle: Network Application
+        subtitle: Network Controller
         url: https://unifi.home
         logo: ./assets/icons/organizr/unifi.png
 
-      - name: Omada
+      - name: TP-Link Omada
         type: Ping
-        subtitle: Controller
+        subtitle: Network Controller
         url: https://omada.home
         logo: ./assets/icons/other/tp-link-omada.png
 
