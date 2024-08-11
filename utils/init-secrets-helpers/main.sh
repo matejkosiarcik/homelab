@@ -84,7 +84,7 @@ healthchecks)
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in database-backup.env\n' >&2
     ;;
 homer)
     # Precreate passwords
@@ -96,7 +96,7 @@ homer)
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
     ;;
 lamp-controller)
     # Precreate passwords
@@ -108,7 +108,7 @@ lamp-controller)
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
     ;;
 pihole | pihole-main)
     # Precreate passwords
@@ -128,7 +128,7 @@ pihole | pihole-main)
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure custom "HOMELAB_HEALTHCHECK_URL"\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
     ;;
 *)
     printf 'Unknown app directory "%s"\n' "$current_dir" >&2
