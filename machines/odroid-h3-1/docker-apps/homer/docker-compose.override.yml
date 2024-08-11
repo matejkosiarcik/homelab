@@ -1,16 +1,3 @@
-# version: "3.8"
-
-services:
-  app:
-    restart: "no"
-
-  http-proxy:
-    environment:
-      - ENV=dev
-    restart: "no"
-
-  socket-proxy:
-    ports:
-      - "8080:80"
-      - "8443:443"
-    restart: "no"
+include:
+  - path: ../../../../docker-apps/homer/docker-compose.override-dev.yml
+    project_directory: .
