@@ -52,6 +52,8 @@ FROM node:22.5.1-slim
 WORKDIR /app
 RUN mkdir -p /backup /log
 COPY --from=prefinal /app/node_modules ./node_modules
+# "apt-get update" is necessary here, because playwright calls apt inside of install-deps
+# dockerfile_lint - ignore
 RUN apt-get update && \
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
