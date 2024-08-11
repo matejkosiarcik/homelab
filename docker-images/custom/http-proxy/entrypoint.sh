@@ -13,11 +13,15 @@ printf "\nexport HOMELAB_APP_TYPE='%s'\n" "$HOMELAB_APP_TYPE" >>/etc/apache2/env
 
 if [ "${HOMELAB_APP_TYPE-x}" = 'lamp-controller' ]; then
     HOMELAB_UPSTREAM_URL="http://app-network-server"
+elif [ "${HOMELAB_APP_TYPE-x}" = 'healthchecks' ]; then
+    HOMELAB_UPSTREAM_URL="http://main-app:8000"
 else
     HOMELAB_UPSTREAM_URL="http://main-app"
 fi
 export HOMELAB_UPSTREAM_URL
 printf "\nexport HOMELAB_UPSTREAM_URL='%s'\n" "$HOMELAB_UPSTREAM_URL" >>/etc/apache2/envvars
+
+echo "upstream: $HOMELAB_UPSTREAM_URL"
 
 mkdir -p /log/access /log/error /log/forensic
 
