@@ -48,7 +48,7 @@ services:
     volumes:
       - ./log/http-proxy:/log:rw
       - ./data/certs:/certs:ro
-      - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
 
   socket-proxy:
     <<: *common-service-options

@@ -28,7 +28,7 @@ services:
       - ./log/proxy-error:/log/error:rw
       - ./log/proxy-forensic:/log/forensic:rw
       - ./private/certs:/certs:ro
-      - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
 
   socket-proxy:
     image: smtp4dev-socket-proxy:homelab
