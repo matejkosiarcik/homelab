@@ -47,7 +47,7 @@ create_password() {
     if [ "$dev_mode" = '1' ]; then
         printf 'Password123.' >"$output_file" # A simple password for debugging
     else
-        # shellcheck disable=SC2068
+        # shellcheck disable=SC2086
         python3 "$helper_script_dir/.shared/password.py" --output "$output_file" $extra_flags
     fi
 }
