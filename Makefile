@@ -16,7 +16,7 @@ DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
 .DEFAULT: all
 .PHONY: all
-all: clean bootstrap build docker-build docker-multibuild
+all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
@@ -57,8 +57,8 @@ docker-build:
 		docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies --pull && \
 	true; done
 
-.PHONY: docker-multibuild
-docker-multibuild:
+.PHONY: docker-build-multiarch
+docker-build-multiarch:
 	set -e && \
 	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
 		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
