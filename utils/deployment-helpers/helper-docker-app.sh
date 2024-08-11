@@ -168,13 +168,13 @@ stop)
 init-secrets)
     init_secrets_args=''
     if [ "$force" -eq '1' ]; then
-        init_secrets_args="$init_secrets_args -f"
+        init_secrets_args="$init_secrets_args --force"
     fi
     if [ "$mode" = 'dev' ]; then
-        init_secrets_args="$init_secrets_args -d"
+        init_secrets_args="$init_secrets_args --dev"
     fi
     # shellcheck disable=SC2086
-    sh "$git_dir/utils/init-secrets-helpers/$base_service_name.sh" $init_secrets_args
+    sh "$git_dir/utils/init-secrets-helpers/main.sh" $init_secrets_args
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2
