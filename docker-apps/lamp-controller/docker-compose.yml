@@ -1,0 +1,62 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: lamp-controller
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common.env
+    networks:
+      internal-network: {}
+
+services:
+  app-hardware-controller:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/lamp-hardware-controller/Dockerfile
+    volumes:
+      - ./data/status:/app/status:rw
+      - ./log/hardware-controller:/log:rw
+
+  app-network-server:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/lamp-network-server/Dockerfile
+    volumes:
+      - ./data/status:/app/status:rw
+      - ./log/network-server:/log:rw
+
+  certificate-manager:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    volumes:
+      - ./data/certs:/certs:rw
+      - ./log/certificate-manager:/log:rw
+
+  http-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./log/http-proxy:/log:rw
+      - ./data/certs:/certs:ro
+      - ./private/status.htpasswd:/app/misc/status.htpasswd:ro
+
+  socket-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+    volumes:
+      - ./log/socket-proxy:/log:rw
+
+networks:
+  internal-network: {}

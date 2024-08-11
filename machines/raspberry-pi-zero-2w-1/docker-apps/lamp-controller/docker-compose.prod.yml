@@ -1,31 +1,54 @@
-# version: "3.8"
+x-definitions:
+  extends-file: &extends-file ../../../../docker-apps/lamp-controller/docker-compose.override-prod.yml
+  external-ip: &external-ip "10.1.16.1"
+  external-domain: &external-domain lamp-1.home
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_EXTERNAL_DOMAIN: *external-domain
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
 
 services:
-  hardware-controller:
-    networks:
-      internal-network: {}
-    environment:
-      - ENV=prod
-    restart: unless-stopped
+  app-hardware-controller:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: app-hardware-controller
 
-  network-server:
-    networks:
-      internal-network: {}
-    restart: unless-stopped
+  app-network-server:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: app-network-server
+
+  certificate-manager:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: certificate-manager
 
   http-proxy:
-    networks:
-      internal-network: {}
-    environment:
-      - ENV=prod
-    restart: unless-stopped
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: http-proxy
 
   socket-proxy:
-    ports:
-      - "80:80"
-      - "443:443"
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: socket-proxy
     networks:
-      internal-network: {}
       external-network:
-        ipv4_address: 10.1.16.1
-    restart: unless-stopped
+        ipv4_address: *external-ip
+
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.16.0/24"
+          gateway: "10.1.17.1"
