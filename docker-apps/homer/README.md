@@ -6,10 +6,10 @@
 - Service types: <https://github.com/bastienwirtz/homer/blob/main/docs/customservices.md>
 - Troubleshooting (CORS): <https://github.com/bastienwirtz/homer/blob/main/docs/troubleshooting.md>
 
-## Before installation
+## Before initial installation
 
 Nothing
 
-## After installation
+## After initial installation
 
 Nothing

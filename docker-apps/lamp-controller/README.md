@@ -1,5 +1,14 @@
 # Lamp Controller
 
-## Postinstall steps
+Main documentation found at
+[lamp-network-server](../../docker-images/custom/lamp-network-server/README.md)
+and
+[lamp-hardware-controller](../../docker-images/custom/lamp-hardware-controller/README.md).
 
-N/A
+## Before initial installation
+
+Nothing
+
+## After initial installation
+
+Nothing
