@@ -5,7 +5,7 @@ x-definitions:
     environment:
       <<: *common-env-variables
     # env_file:
-    #   - ./config/prod.env
+    #   - ./config/common-prod.env
     restart: unless-stopped
 
 services:
