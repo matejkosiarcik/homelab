@@ -1,7 +1,7 @@
 x-definitions:
   extends-file: &extends-file ../../../../docker-apps/pihole/docker-compose.override-prod.yml
   external-ip: &external-ip "10.1.10.1"
-  external-domain: &external-domain pihole-main-backup.home
+  external-domain: &external-domain pihole-backup.home
   common-env-variables: &common-env-variables
     HOMELAB_APP_EXTERNAL_DOMAIN: *external-domain
   common-service-options: &common-service-options
