@@ -2,7 +2,7 @@
 
 For general `unifi-controller` docs see [/docker-apps/unifi-controller/README.md](../../../../docker-apps/unifi-controller/README.md)
 
-For general `mongodb` docs see [/docker-apps/mongodb/README.md](../../../../docker-apps/mongodb/README.md)
+For general `mongodb` docs see [/docker-images/database/mongodb/README.md](../../../../docker-images/database/mongodb/README.md)
 
 ## Installation
 
