@@ -14,7 +14,7 @@ services:
     environment:
       <<: *common-env-variables
       # EMAIL_HOST: smtp4dev.home
-      REGISTRATION_OPEN: False
+      REGISTRATION_OPEN: "False"
 
   database:
     <<: *common-service-options
