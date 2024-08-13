@@ -110,6 +110,18 @@ lamp-controller)
     printf 'Not all secrets setup\n' >&2
     printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
     ;;
+smtp4dev)
+    # Precreate passwords
+    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+
+    # HTTP proxy
+    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
+    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
+    ;;
 pihole | pihole-main)
     # Precreate passwords
     create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
