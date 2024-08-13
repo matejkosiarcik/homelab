@@ -13,7 +13,7 @@ Notes:
 - Set _homelab_ public SSH key
 - Disable hostname
 - Disable SSH authentication via password
-- Disable WiFi
+- Disable Wi-Fi
 - Set Timezone _Europe/Bratislava_
 - Set username to _matej_
 
