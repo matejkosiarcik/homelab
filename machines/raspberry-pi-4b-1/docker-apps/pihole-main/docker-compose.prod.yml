@@ -14,11 +14,11 @@ services:
     extends:
       file: *extends-file
       service: main-app
-    environment:
-      <<: *common-env-variables
-      FTLCONF_LOCAL_IPV4: *external-ip
-      VIRTUAL_HOST: *external-domain
-      PIHOLE_DOMAIN: *external-domain
+    # environment:
+    #   <<: *common-env-variables
+    #   FTLCONF_LOCAL_IPV4: *external-ip
+    #   VIRTUAL_HOST: *external-domain
+    #   PIHOLE_DOMAIN: *external-domain
 
   certificate-manager:
     <<: *common-service-options

@@ -15,6 +15,9 @@ services:
     environment:
       <<: *common-env-variables
       FTLCONF_PRIVACYLEVEL: "0"
+      # FTLCONF_LOCAL_IPV4: "127.0.0.1"
+      # VIRTUAL_HOST: localhost
+      # PIHOLE_DOMAIN: localhost
 
   certificate-manager:
     <<: *common-service-options
