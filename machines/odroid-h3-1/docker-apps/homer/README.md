@@ -1,6 +1,6 @@
 # Homer
 
-For `homer` docs see [/docker-images/homer/README.md](../../../../docker-images/external/homer/README.md)
+For `homer` docs see [/docker-images/external/homer/README.md](../../../../docker-images/external/homer/README.md)
 
 ## Before installation
 

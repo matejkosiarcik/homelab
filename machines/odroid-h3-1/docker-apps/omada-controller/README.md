@@ -1,6 +1,6 @@
 # TP-Link Omada SDN Controller
 
-For general `omada-controller` docs see [/docker-images/omada-controller/README.md](../../../../docker-images/external/omada-controller/README.md)
+For general `omada-controller` docs see [/docker-images/external/omada-controller/README.md](../../../../docker-images/external/omada-controller/README.md)
 
 ## Installation
 

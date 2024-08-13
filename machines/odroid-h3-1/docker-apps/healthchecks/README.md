@@ -1,6 +1,6 @@
 # Healthchecks.io
 
-For healthchecks.io docs see [/docker-images/healthchecks/README.md](../../../../docker-images/external/healthchecks/README.md)
+For healthchecks.io docs see [/docker-images/external/healthchecks/README.md](../../../../docker-images/external/healthchecks/README.md)
 
 ## Installation
 
