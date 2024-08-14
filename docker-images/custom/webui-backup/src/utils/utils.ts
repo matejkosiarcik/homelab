@@ -28,6 +28,9 @@ export function getTargetUrl(): string {
             case 'uptime-kuma': {
                 return 'http://main-app:3001';
             }
+            case 'omada-controller': {
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'http://main-app:8080' : 'http://main-app';
+            }
             default: {
                 return 'http://main-app';
             }

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
 import { chromium, type Page } from 'playwright';
-import { getBackupDir, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
+import { getAppType, getBackupDir, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
 
 export async function runAutomation(callback: (page: Page) => Promise<void>, options: { date: string }) {
     const setup = {
@@ -17,8 +17,13 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, opt
     const browser = await chromium.launch({ headless: setup.isHeadless });
     try {
         const page = await browser.newPage({ baseURL: setup.baseUrl, strictSelectors: true, ignoreHTTPSErrors: true, recordVideo: { dir: tmpDir } });
-        page.setDefaultNavigationTimeout(10_000);
-        page.setDefaultTimeout(1000);
+        if (['omada-controller', 'unifi-controller'].includes(getAppType())) {
+            page.setDefaultNavigationTimeout(15_000);
+            page.setDefaultTimeout(5000);
+        } else {
+            page.setDefaultNavigationTimeout(10_000);
+            page.setDefaultTimeout(1000);
+        }
 
         try {
             await callback(page);
