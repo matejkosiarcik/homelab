@@ -1,25 +1,3 @@
-services:
-  main-app:
-    # ports:
-    #   - "8025:25"
-    #   - "8080:80"
-    #   # - "8143:143"
-    environment:
-      - HOSTNAME=host.docker.internal # Or localhost
-      - ServerOptions__HostName=host.docker.internal # Or localhost
-    restart: "no"
-
-  http-proxy:
-    # ports:
-    #   - 8080:80
-    #   - 8443:443
-    environment:
-      - ENV=dev
-    restart: "no"
-
-  socket-proxy:
-    ports:
-      - "8025:25"
-      - "8080:80"
-      - "8443:443"
-    restart: "no"
+include:
+  - path: ../../../../docker-apps/smtp4dev/docker-compose.override-dev.yml
+    project_directory: .
