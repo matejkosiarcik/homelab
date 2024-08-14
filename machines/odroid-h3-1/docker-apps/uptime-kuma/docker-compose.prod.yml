@@ -34,6 +34,12 @@ services:
       external-network:
         ipv4_address: "10.1.16.4"
 
+  webui-backup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: webui-backup
+
 networks:
   external-network:
     driver: macvlan
