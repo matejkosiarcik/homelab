@@ -1,9 +1,7 @@
 x-definitions:
   extends-file: &extends-file ../../../../docker-apps/lamp-controller/docker-compose.override-prod.yml
-  external-ip: &external-ip "10.1.18.1"
-  external-domain: &external-domain lamp-2.home
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: *external-domain
+    HOMELAB_APP_EXTERNAL_DOMAIN: desklamp-2.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -40,7 +38,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: *external-ip
+        ipv4_address: "10.1.18.1"
 
 networks:
   external-network:
