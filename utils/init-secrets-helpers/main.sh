@@ -128,7 +128,7 @@ pihole | pihole-main)
     create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
     create_password "$tmpdir/app-password.txt"
 
-    # Database
+    # App
     printf '%s' "$(cat "$tmpdir/app-password.txt")" >>"$output/webpassword.txt"
 
     # Backups
@@ -154,6 +154,23 @@ smtp4dev)
     # Log results
     printf 'Not all secrets setup\n' >&2
     printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
+    ;;
+unifi-controller)
+    # Precreate passwords
+    create_password "$tmpdir/app-password.txt"
+    create_password "$tmpdir/database-password.txt"
+
+    # Database
+    printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
+
+    # Backups
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/webui-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/webui-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
     ;;
 uptime-kuma)
     # Precreate passwords
