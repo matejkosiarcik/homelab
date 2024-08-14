@@ -1,8 +1,3 @@
-services:
-  main-app:
-    ports:
-      - 8080:3001
-    restart: "no"
-
-  webui-backup:
-    restart: "no"
+include:
+  - path: ../../../../docker-apps/uptime-kuma/docker-compose.override-dev.yml
+    project_directory: .
