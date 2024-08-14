@@ -18,14 +18,11 @@ import { runAutomation } from './utils/main.ts';
     await runAutomation(async (page) => {
         await page.goto('/dashboard');
 
-        const isSetupForm = await (async () => {
-            try {
-                await page.locator('[data-cy="setup-form"]').waitFor({ timeout: 2000 });
-                return true;
-            } catch {
-                return false;
-            }
-        })();
+        const setupButtonSelector = 'form button[type="submit"]:has-text("Create")';
+        const loginButtonSelector = 'form button[type="submit"]:has-text("Login")';
+        await page.locator(`${setupButtonSelector},${loginButtonSelector}`).waitFor();
+
+        const isSetupForm = await page.locator(setupButtonSelector).isVisible({ timeout: 0 });
         if (isSetupForm) {
             console.log('Quitting backup, because app is not setup yet.');
             return;
@@ -34,7 +31,7 @@ import { runAutomation } from './utils/main.ts';
         // Login
         await page.locator('form input[type="text"][autocomplete="username"]').fill(credentials.username);
         await page.locator('form input[type="password"][autocomplete="current-password"]').fill(credentials.password);
-        await page.locator('form button[type="submit"]:has-text("Login")').click();
+        await page.locator(loginButtonSelector).click();
         await page.locator('ul.nav .nav-link .profile-pic').waitFor({ timeout: 10_000 });
 
         // Navigate to proper place in settings
