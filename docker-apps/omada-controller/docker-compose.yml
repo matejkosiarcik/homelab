@@ -1,0 +1,47 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: omada-controller
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common.env
+    networks:
+      internal-network: {}
+
+services:
+  main-app:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/omada-controller/Dockerfile
+    ulimits:
+      nofile:
+        soft: 4096
+        hard: 8192
+    ports:
+      - 27001:27001/udp
+      - 29810:29810/udp
+      - 29811-29816:29811-29816
+    volumes:
+      - ./data/app:/opt/tplink/EAPController/data:rw
+      - ./data/certs:/certs:rw
+      - ./log/app:/opt/tplink/EAPController/logs:rw
+    stop_grace_period: 60s
+
+  webui-backup:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/webui-backup/Dockerfile
+    depends_on:
+      main-app:
+        condition: service_healthy
+    volumes:
+      - ./private/webui-backup.env:/app/.env:ro
+      - ./data/webui-backup:/backup:rw
+      - ./data/webui-backup-errors:/error:rw
+      - ./log/webui-backup:/log:rw
+
+networks:
+  internal-network: {}

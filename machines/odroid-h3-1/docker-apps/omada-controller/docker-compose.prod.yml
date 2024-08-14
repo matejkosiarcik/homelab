@@ -1,22 +1,28 @@
+x-definitions:
+  extends-file: &extends-file ../../../../docker-apps/omada-controller/docker-compose.override-prod.yml
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_EXTERNAL_DOMAIN: omada-controller.home
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+
 services:
   main-app:
-    environment:
-      - MANAGE_HTTP_PORT=80
-      - MANAGE_HTTPS_PORT=443
-      - PORTAL_HTTP_PORT=81
-      - PORTAL_HTTPS_PORT=444
-    ports:
-      - 80:80
-      - 81:81
-      - 443:443
-      - 444:444
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: main-app
     networks:
-      internal-network: {}
       external-network:
-        ipv4_address: 10.1.11.3
-    restart: unless-stopped
+        ipv4_address: "10.1.16.5"
 
-  webui-backup:
-    networks:
-      internal-network: {}
-    restart: unless-stopped
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.16.0/24"
+          gateway: "10.1.17.5"

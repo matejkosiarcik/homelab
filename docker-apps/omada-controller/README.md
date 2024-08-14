@@ -9,8 +9,9 @@
 
 ## After initial installation
 
-- [All] Setup admin _username_ and _password_
-- [Prod] Setup settings
+- [All] Setup admin _username_, _password_ and _email_
+- [All] Setup initial settings + initial login to finish the wizard
+- [Prod] Setup more settings
   - General config and settings customization
   - Setup SMTP server for email
   - Send automatic backups via SFTP
