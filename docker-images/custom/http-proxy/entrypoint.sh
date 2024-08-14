@@ -15,6 +15,8 @@ if [ "${HOMELAB_APP_TYPE-x}" = 'lamp-controller' ]; then
     HOMELAB_UPSTREAM_URL="http://app-network-server"
 elif [ "${HOMELAB_APP_TYPE-x}" = 'healthchecks' ]; then
     HOMELAB_UPSTREAM_URL="http://main-app:8000"
+elif [ "${HOMELAB_APP_TYPE-x}" = 'uptime-kuma' ]; then
+    HOMELAB_UPSTREAM_URL="http://main-app:3001"
 else
     HOMELAB_UPSTREAM_URL="http://main-app"
 fi

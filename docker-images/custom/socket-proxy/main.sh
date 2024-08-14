@@ -21,6 +21,9 @@ elif [ "${HOMELAB_APP_TYPE-x}" = 'homer' ]; then
 elif [ "${HOMELAB_APP_TYPE-x}" = 'lamp-controller' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "${HOMELAB_APP_TYPE-x}" = 'uptime-kuma' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 else
     printf 'Unknown app type "%s"\n' "${HOMELAB_APP_TYPE-N/A}" >&2
     exit 1

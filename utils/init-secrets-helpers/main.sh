@@ -142,6 +142,25 @@ pihole | pihole-main)
     printf 'Not all secrets setup\n' >&2
     printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
     ;;
+uptime-kuma)
+    # Precreate passwords
+    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+    create_password "$tmpdir/app-password.txt"
+
+    # HTTP proxy
+    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
+    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+
+    # Backups
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/webui-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/webui-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
+    ;;
 *)
     printf 'Unknown app directory "%s"\n' "$current_dir" >&2
     exit 1

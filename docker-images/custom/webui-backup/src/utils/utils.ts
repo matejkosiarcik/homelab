@@ -19,7 +19,22 @@ export function getIsoDate(): string {
 }
 
 export function getTargetUrl(): string {
-    return process.env['URL'] || (fsSync.existsSync('/.dockerenv') ? 'http://main-app' : 'https://localhost:8443');
+    if (process.env['URL']) {
+        return process.env['URL'];
+    }
+
+    if (fsSync.existsSync('/.dockerenv')) {
+        switch (getAppType()) {
+            case 'uptime-kuma': {
+                return 'http://main-app:3001';
+            }
+            default: {
+                return 'http://main-app';
+            }
+        }
+    }
+
+    return 'https://localhost:8443';
 }
 
 export function getBrowserPath(): string | undefined {

@@ -1,7 +1,6 @@
 import path from 'path';
-import { chromium } from 'playwright';
 import { expect } from 'chai';
-import { getBackupDir, getBrowserPath, getIsHeadless, getIsoDate, getTargetAdminPassword, getTargetAdminUsername, getTargetUrl, loadEnv } from './utils/utils.ts';
+import { getBackupDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername, loadEnv } from './utils/utils.ts';
 import { runAutomation } from './utils/main.ts';
 
 (async () => {
@@ -17,8 +16,22 @@ import { runAutomation } from './utils/main.ts';
     const currentDate = getIsoDate();
 
     await runAutomation(async (page) => {
-        // Login
         await page.goto('/dashboard');
+
+        const isSetupForm = await (async () => {
+            try {
+                await page.locator('[data-cy="setup-form"]').waitFor({ timeout: 2000 });
+                return true;
+            } catch {
+                return false;
+            }
+        })();
+        if (isSetupForm) {
+            console.log('Quitting backup, because app is not setup yet.');
+            return;
+        }
+
+        // Login
         await page.locator('form input[type="text"][autocomplete="username"]').fill(credentials.username);
         await page.locator('form input[type="password"][autocomplete="current-password"]').fill(credentials.password);
         await page.locator('form button[type="submit"]:has-text("Login")').click();
