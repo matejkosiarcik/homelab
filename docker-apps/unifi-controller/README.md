@@ -36,3 +36,11 @@ This is bad `/status`:
   "data": []
 }
 ```
+
+## Before initial installation
+
+TODO: TBD
+
+## After initial installation
+
+TODO: TBD

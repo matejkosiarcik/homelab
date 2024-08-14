@@ -7,8 +7,9 @@ and
 
 ## Before initial installation
 
-Nothing
+- [Prod] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
+- [Prod] Add healthchecks monitor for `web-backup` and configure `HOMELAB_HEALTHCHECK_URL`
 
 ## After initial installation
 
-Nothing
+N/A
