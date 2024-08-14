@@ -5,8 +5,13 @@
 
 ## Before initial installation
 
-TODO: TBD
+- [Prod] Add healthchecks monitor for `web-backup` and configure `HOMELAB_HEALTHCHECK_URL`
 
 ## After initial installation
 
-TODO: TBD
+- [All] Setup admin _username_ and _password_
+- [Prod] Setup settings
+  - General config and settings customization
+  - Setup SMTP server for email
+  - Send automatic backups via SFTP
+  - Send logs to remote syslog server
