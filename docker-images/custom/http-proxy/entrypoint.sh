@@ -21,8 +21,6 @@ fi
 export HOMELAB_UPSTREAM_URL
 printf "\nexport HOMELAB_UPSTREAM_URL='%s'\n" "$HOMELAB_UPSTREAM_URL" >>/etc/apache2/envvars
 
-echo "upstream: $HOMELAB_UPSTREAM_URL"
-
 mkdir -p /log/access /log/error /log/forensic
 
 # Start apache
