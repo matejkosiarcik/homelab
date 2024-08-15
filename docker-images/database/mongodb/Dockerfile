@@ -7,4 +7,4 @@ ENV TZ=Europe/Bratislava \
     USER=mongo \
     PORT=27017
 HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "bash", "-c", "printf 'show databases\n' | mongosh \"localhost:${PORT}/${DBNAME}\" --username \"${USER}\" --password \"$(cat /.homelab/database-password.txt)\" --quiet || exit 1" ]
-CMD ["--auth"]
+CMD [ "--auth", "--quiet", "--logpath", "/dev/null" ]
