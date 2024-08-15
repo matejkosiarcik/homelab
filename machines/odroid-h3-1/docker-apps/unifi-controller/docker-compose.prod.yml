@@ -1,17 +1,40 @@
+x-definitions:
+  extends-file: &extends-file ../../../../docker-apps/unifi-controller/docker-compose.override-prod.yml
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_EXTERNAL_DOMAIN: unifi-controller.home
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+
 services:
   main-app:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: main-app
     networks:
-      internal-network: {}
       external-network:
-        ipv4_address: 10.1.11.5
-    restart: unless-stopped
+        ipv4_address: "10.1.16.6"
 
   database:
-    networks:
-      internal-network: {}
-    restart: unless-stopped
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: database
 
   webui-backup:
-    networks:
-      internal-network: {}
-    restart: unless-stopped
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: webui-backup
+
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.16.0/24"
+          gateway: "10.1.17.6"

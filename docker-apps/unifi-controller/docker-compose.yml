@@ -1,0 +1,71 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: unifi-controller
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common.env
+    networks:
+      internal-network: {}
+
+services:
+  main-app:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/unifi-controller/Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      <<: *common-env-variables
+      MONGO_DBNAME: unifi
+      MONGO_HOST: database
+      MONGO_USER: unifi
+    ports:
+      - 3478:3478/udp
+      - 8080:8080
+      - 8443:8443
+      - 10001:10001/udp
+      # Optional below
+      - 1900:1900/udp
+      - 5514:5514/udp
+      - 6789:6789
+      - 8843:8843
+      - 8880:8880
+    volumes:
+      - ./data/app:/config:rw
+      - ./private/database-password.txt:/.homelab/database-password.txt:ro
+    stop_grace_period: 60s
+
+  database:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./database/mongodb/Dockerfile
+    environment:
+      - DBNAME=unifi
+      - USER=unifi
+    volumes:
+      - ./data/mongodb:/data/db:rw
+      - ./config/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./private/database-password.txt:/.homelab/database-password.txt:ro
+    stop_grace_period: 30s
+
+  webui-backup:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/webui-backup/Dockerfile
+    depends_on:
+      main-app:
+        condition: service_healthy
+    volumes:
+      - ./private/webui-backup.env:/app/.env:ro
+      - ./data/webui-backup:/backup:rw
+      - ./data/webui-backup-errors:/error:rw
+      - ./log/webui-backup:/log:rw
+
+networks:
+  internal-network: {}
