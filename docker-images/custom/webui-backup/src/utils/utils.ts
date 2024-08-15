@@ -31,6 +31,9 @@ export function getTargetUrl(): string {
             case 'omada-controller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'http://main-app:8080' : 'http://main-app';
             }
+            case 'unifi-controller': {
+                return 'http://main-app:8080';
+            }
             default: {
                 return 'http://main-app';
             }
