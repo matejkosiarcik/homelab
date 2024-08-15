@@ -18,8 +18,18 @@ import { runAutomation } from './utils/main.ts';
     await runAutomation(async (page) => {
         // Login
         await page.goto('/manage/account/login');
-        await page.locator('input[name="username"]').waitFor({ timeout: 5000 })
-        await page.locator('input[name="username"]').fill(credentials.username);
+
+        // Wait for either setup-form or login-form to load
+        const controllerNameInputSelector = 'input#controllerName';
+        const loginNameInputSelector = 'input[name="username"]';
+        await page.locator(`${controllerNameInputSelector},${loginNameInputSelector}`).waitFor({ timeout: 5000 });
+        const isSetupForm = await page.locator(controllerNameInputSelector).isVisible({ timeout: 0 });
+        if (isSetupForm && process.env['CRON'] === '0') {
+            console.log('Quitting backup, because app is not setup yet.');
+            return;
+        }
+
+        await page.locator(loginNameInputSelector).fill(credentials.username);
         await page.locator('input[name="password"]').fill(credentials.password);
         await page.locator('button#loginButton').click({ noWaitAfter: true });
         await page.waitForURL('/manage/default/dashboard');
