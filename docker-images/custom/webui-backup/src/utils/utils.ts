@@ -32,7 +32,7 @@ export function getTargetUrl(): string {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'http://main-app:8080' : 'http://main-app';
             }
             case 'unifi-controller': {
-                return 'http://main-app:8080';
+                return 'https://main-app:8443';
             }
             default: {
                 return 'http://main-app';
