@@ -20,7 +20,7 @@ This is good `/status`:
 }
 ```
 
-This is bad `/status`:
+This is bad (still starting) `/status`:
 
 ```json
 {
