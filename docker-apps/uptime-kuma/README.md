@@ -11,4 +11,4 @@
 
 ## After initial installation
 
-- [All] Setup admin _username_ and _password_
+- \[All\] Setup admin _username_ and _password_
