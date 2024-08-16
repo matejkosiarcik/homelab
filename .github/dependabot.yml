@@ -36,7 +36,7 @@ updates:
 
   # # Docker
   # - package-ecosystem: docker
-  #   directory: /components/webui-backup
+  #   directory: /docker-images/webui-backup
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -51,7 +51,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/http-proxy
+  #   directory: /docker-images/http-proxy
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -66,7 +66,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/homer
+  #   directory: /docker-images/homer
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -81,7 +81,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/omada-controller
+  #   directory: /docker-images/omada-controller
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -96,7 +96,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/mongodb
+  #   directory: /docker-images/mongodb
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -111,7 +111,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/unifi-controller
+  #   directory: /docker-images/unifi-controller
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -126,7 +126,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/uptime-kuma
+  #   directory: /docker-images/uptime-kuma
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -141,7 +141,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/healthchecks
+  #   directory: /docker-images/healthchecks
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -156,7 +156,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/socket-proxy
+  #   directory: /docker-images/socket-proxy
   #   schedule:
   #     interval: daily
   #     time: "01:15"
@@ -171,7 +171,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/postgres
+  #   directory: /docker-images/postgres
   #   schedule:
   #     interval: daily
   #     time: "01:30"
@@ -186,7 +186,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/postgres-backup
+  #   directory: /docker-images/postgres-backup
   #   schedule:
   #     interval: daily
   #     time: "01:30"
@@ -201,7 +201,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/lamps/hardware-controller
+  #   directory: /docker-images/lamps/hardware-controller
   #   schedule:
   #     interval: daily
   #     time: "01:35"
@@ -216,7 +216,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/lamps/network-server
+  #   directory: /docker-images/lamps/network-server
   #   schedule:
   #     interval: daily
   #     time: "01:35"
@@ -231,7 +231,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: docker
-  #   directory: /components/pihole
+  #   directory: /docker-images/pihole
   #   schedule:
   #     interval: daily
   #     time: "01:35"
@@ -248,7 +248,7 @@ updates:
 
   # # NPM
   # - package-ecosystem: npm
-  #   directory: /components/webui-backup
+  #   directory: /docker-images/webui-backup
   #   versioning-strategy: increase
   #   schedule:
   #     interval: daily
@@ -280,7 +280,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: npm
-  #   directory: /components/lamps/network-server
+  #   directory: /docker-images/lamps/network-server
   #   versioning-strategy: increase
   #   schedule:
   #     interval: daily
@@ -313,7 +313,7 @@ updates:
   #       patterns:
   #         - "*"
   # - package-ecosystem: pip
-  #   directory: /components/lamps/hardware-controller
+  #   directory: /docker-images/lamps/hardware-controller
   #   schedule:
   #     interval: daily
   #     time: "02:30"

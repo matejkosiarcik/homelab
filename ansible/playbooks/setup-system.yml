@@ -16,6 +16,7 @@
       ansible.builtin.apt:
         pkg:
           - apache2-utils
+          - bash
           - ca-certificates
           - cron
           - curl
@@ -142,18 +143,17 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Create log directory
-      changed_when: "'CHANGED' in create_log_dir.stdout"
-      register: create_log_dir
+    - name: Create cron log directory
+      changed_when: "'CHANGED' in create_cron_log_dir.stdout"
+      register: create_cron_log_dir
       ansible.builtin.shell: |
         if [ ! -e "$HOME/.log" ]; then
           mkdir -p "$HOME/.log"
           printf 'CHANGED\n'
         fi
 
-        sudo sh -c '
-          if [ ! -e "$HOME/.log" ]; then
-            mkdir -p "$HOME/.log"
-            printf 'CHANGED\n'
-          fi
-        '
+    - name: Setup locale
+      when: ansible_facts['os_family'] == "Debian"
+      become: true
+      ansible.builtin.shell: |
+        locale-gen en_US.UTF-8

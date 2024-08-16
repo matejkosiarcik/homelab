@@ -1,0 +1,1 @@
+20 03 * * * sh /app/cron-wrapper.sh >>/log/cron.log 2>&1

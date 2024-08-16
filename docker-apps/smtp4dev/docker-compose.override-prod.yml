@@ -1,0 +1,27 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: prod
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common-prod.env
+    restart: unless-stopped
+
+services:
+  main-app:
+    <<: *common-service-options
+
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - "25:25"
+      - "80:80"
+      # - "143:143"
+      - "443:443"

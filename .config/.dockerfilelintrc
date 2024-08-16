@@ -1,0 +1,3 @@
+rules:
+  missing_tag: off # disabled becuase of https://github.com/replicatedhq/dockerfilelint/issues/187
+  apt-get-update_require_install: off # disable because of false-positives when using playwright install-deps

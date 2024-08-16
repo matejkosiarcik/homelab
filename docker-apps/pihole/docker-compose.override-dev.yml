@@ -1,0 +1,37 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: dev
+    HOMELAB_APP_EXTERNAL_DOMAIN: localhost
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common-dev.env
+    restart: "no"
+
+services:
+  main-app:
+    <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      FTLCONF_PRIVACYLEVEL: "0"
+      # FTLCONF_LOCAL_IPV4: "127.0.0.1"
+      # VIRTUAL_HOST: localhost
+      # PIHOLE_DOMAIN: localhost
+
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - "8053:53/tcp"
+      - "8053:53/udp"
+      - "8080:80"
+      - "8443:443"
+
+  webui-backup:
+    <<: *common-service-options

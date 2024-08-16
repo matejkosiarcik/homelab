@@ -1,0 +1,90 @@
+# Protect .htaccess and .htpasswd
+<FilesMatch "^(?:^.*/)?\.[Hh][Tt]">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Turn on redirection
+RewriteEngine On
+RewriteBase /
+
+# Remove port from _HOST if applicable
+RewriteRule ^ - [E=_HOST:%{HTTP_HOST},NE]
+RewriteRule ^ - [E=_ORIGINAL_PORT:,NE]
+RewriteCond %{ENV:_HOST} ^(.*)(:.*)$ [NC]
+RewriteRule ^ - [E=_HOST:%1,E=_ORIGINAL_PORT:%2,NE]
+
+# Set Host without WWW if applicable
+RewriteRule ^ - [E=_REDIRECT_FOR_WWW:false,NE]
+RewriteCond %{ENV:_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ - [E=_HOST:%1,E=_REDIRECT_FOR_WWW:true,NE]
+
+# Set _ACME if applicable
+RewriteRule ^ - [E=_ACME:false,NE]
+RewriteCond %{REQUEST_URI} ^/.well-known/acme-challenge/ [NC]
+RewriteRule ^ - [E=_ACME:true,NE]
+
+# Check if we should redirect from HTTP to HTTPS if applicable
+RewriteRule ^ - [E=_HTTPS:false,E=_REDIRECT_FOR_HTTPS:false,NE]
+RewriteCond %{HTTPS} !off [NC]
+RewriteRule ^ - [E=_HTTPS:true,E=_REDIRECT_FOR_HTTPS:false,NE]
+RewriteCond %{HTTPS} off [NC]
+RewriteCond %{ENV:_ACME} !true [NC]
+RewriteRule ^ - [E=_HTTPS:true,E=_REDIRECT_FOR_HTTPS:true,NE]
+
+# Set custom HTTPS port (non 443)
+# Used when we are using non-standard HTTPS port (eg. on dev machine)
+RewriteRule ^ - [E=_HTTPS_PORT:,NE]
+RewriteCond %{ENV:HOMELAB_ENV} dev [NC]
+RewriteRule ^ - [E=_HTTPS_PORT::8443,NE]
+
+# Use 301/302 for GET & HEAD requests and 308/307 for all others (POST, PUT, ...)
+# Because 301 and 302 are not guaranteed to keep the original request method when client receives it (so it changes eg. from POST to GET)
+# See more info: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301 or https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302
+RewriteRule ^ - [E=_REDIRECT_STATUS_SAFE_GET:false,NE]
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteRule ^ - [E=_REDIRECT_STATUS_SAFE_GET:true,NE]
+
+# Save modified REQUEST_URI, change from  "/" to "" (empty string) or keep it's value otherwise
+RewriteRule ^ - [E=_REQUEST_URI:%{REQUEST_URI},NE]
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^ - [E=_REQUEST_URI:,NE]
+
+# Set target protocol
+RewriteRule ^ - [E=_PROTOCOL:https,E=_PORT:%{ENV:_HTTPS_PORT},NE]
+RewriteCond %{ENV:_HTTPS} false [NC]
+RewriteRule ^ - [E=_PROTOCOL:http,E=_PORT:%{ENV:_ORIGINAL_PORT},NE]
+
+# Redirect [internally] all directories without trailing slash
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^ "%{REQUEST_URI}/" [L]
+
+# Decide if we should redirect at all
+RewriteRule ^ - [E=_REDIRECT:false,NE]
+RewriteCond %{ENV:_REDIRECT_FOR_WWW} true [NC,OR]
+RewriteCond %{ENV:_REDIRECT_FOR_HTTPS} true [NC]
+RewriteRule ^ - [E=_REDIRECT:true,NE]
+
+# Perform redirects if applicable
+RewriteCond %{ENV:_REDIRECT} true [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
+RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{ENV:_REQUEST_URI}" [L,R=301]
+RewriteCond %{ENV:_REDIRECT} true [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
+RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{ENV:_REQUEST_URI}" [L,R=308]
+
+# Remove "Content-Type" header when redirecting from HTTP to HTTPS
+# More info: https://github.com/whatwg/fetch/issues/609
+# Header always set Content-Type "" "expr=%{HTTPS} =~ m#^off$#"
+# Header always unset Content-Type "expr=%{HTTPS} =~ m#^off$#"
+
+# Specific redirect for PiHole: "/" -> "/admin"
+RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /admin [L,R=301]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /admin [L,R=308]

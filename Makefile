@@ -5,9 +5,9 @@ SHELL := /bin/sh
 .SHELLFLAGS := -ec
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
-SERVICES := $(shell printf 'odroid-h3-1/healthchecks odroid-h3-1/homer odroid-h3-1/omada-controller odroid-h3-1/smtp4dev odroid-h3-1/unifi-controller odroid-h3-1/uptime-kuma raspberry-pi-3b-1/pihole raspberry-pi-4b-1/pihole' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf 'components/http-proxy components/lamps/hardware-controller components/lamps/network-server components/omada-controller components/pihole components/postgres components/postgres-backup components/smtp4dev components/socket-proxy components/unifi-controller components/uptime-kuma components/webui-backup' | sed 's~ ~\n~g')
-NPM_COMPONENTS := $(shell printf 'components/lamps/network-server components/webui-backup' | sed 's~ ~\n~g')
+DOCKER_APPS := $(shell printf 'odroid-h3-1/docker-apps/healthchecks odroid-h3-1/docker-apps/homer odroid-h3-1/docker-apps/omada-controller odroid-h3-1/docker-apps/smtp4dev odroid-h3-1/docker-apps/unifi-controller odroid-h3-1/docker-apps/uptime-kuma raspberry-pi-3b-1/docker-apps/pihole-main raspberry-pi-4b-1/docker-apps/pihole-main raspberry-pi-zero-2w-1/docker-apps/lamp-controller raspberry-pi-zero-2w-2/docker-apps/lamp-controller' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
+DOCKER_COMPONENTS := $(shell printf 'docker-images/custom/certificate-manager docker-images/custom/http-proxy docker-images/custom/lamp-hardware-controller docker-images/custom/lamp-network-server docker-images/custom/postgres-backup docker-images/custom/socket-proxy docker-images/custom/webui-backup docker-images/database/postgres docker-images/external/healthchecks docker-images/external/homer docker-images/external/omada-controller docker-images/external/pihole docker-images/external/smtp4dev docker-images/external/unifi-controller docker-images/external/uptime-kuma')
+NPM_COMPONENTS := $(shell printf 'docker-images/custom/lamp-network-server docker-images/custom/webui-backup')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 # DOCKER_ARCHS := $(shell printf '386 amd64 arm/v5 arm/v7 arm64/v8 ppc64le')
 
@@ -16,7 +16,7 @@ DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 
 .DEFAULT: all
 .PHONY: all
-all: clean bootstrap build docker-build docker-multibuild
+all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
@@ -50,27 +50,27 @@ build:
 .PHONY: docker-build
 docker-build:
 	printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-		docker build "$(PROJECT_DIR)/$$component" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
+		docker build docker-images/ --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 	true; done
 
-	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
-		docker compose --project-directory "$(PROJECT_DIR)/$$service" build --with-dependencies --pull && \
+	printf '%s\n' "$(DOCKER_APPS)" | tr ' ' '\n' | while read -r app; do \
+		docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies --pull && \
 	true; done
 
-.PHONY: docker-multibuild
-docker-multibuild:
+.PHONY: docker-build-multiarch
+docker-build-multiarch:
 	set -e && \
 	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
 		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
 			printf 'Building linux/%s %s:\n' "$$arch" "$$component" && \
-			docker build "$(PROJECT_DIR)/$$component" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build docker-images/ --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
 		true; done && \
 	true; done
 
 .PHONY: dryrun
 dryrun:
-	printf '%s\n' "$(SERVICES)" | tr ' ' '\n' | while read -r service; do \
-		docker compose --project-directory "$(PROJECT_DIR)/$$service" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
+	printf '%s\n' "$(DOCKER_APPS)" | tr ' ' '\n' | while read -r app; do \
+		docker compose --project-directory "$(PROJECT_DIR)/$$app" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
 	true; done
 
 .PHONY: clean
@@ -79,6 +79,7 @@ clean:
 		"$(PROJECT_DIR)/.mypy_cache" \
 		"$(PROJECT_DIR)/ansible/python-vendor" \
 		"$(PROJECT_DIR)/ansible/venv" \
+		"$(PROJECT_DIR)/homelab" \
 		"$(PROJECT_DIR)/homelab-deployment" \
 		"$(PROJECT_DIR)/icons/gitman" \
 		"$(PROJECT_DIR)/icons/node_modules" \

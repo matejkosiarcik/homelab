@@ -12,7 +12,7 @@ workflows:
 jobs:
   azlint:
     docker:
-      - image: matejkosiarcik/azlint:0.6.11
+      - image: matejkosiarcik/azlint:0.6.12
     environment:
       # TODO: Remove override
       VALIDATE_NPM_INSTALL: "false"
@@ -51,7 +51,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: docker:26.1.4
+      - image: docker:27.1.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -68,7 +68,7 @@ jobs:
 
   deployment:
     docker:
-      - image: docker:26.1.4
+      - image: docker:27.1.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -77,48 +77,29 @@ jobs:
           name: Install system dependencies
           command: |
             apk update --no-cache
-            apk add --no-cache bash git
+            apk add --no-cache apache2-utils bash git moreutils python3
       - run:
           name: Run deployment on Raspberry Pi 3B 1 [dry-run]
           command: |
-            mkdir -p "$HOME/.homelab-1/machines/current/pihole/private"
-            touch "$HOME/.homelab-1/machines/current/pihole/private/webui-backup.env"
-            DEST_DIR="$HOME/.homelab-1" \
-              bash './machines/raspberry-pi-3b-1/install.sh' -n
+            bash './machines/raspberry-pi-3b-1/deployment.sh' init-secrets
+            # bash './machines/raspberry-pi-3b-1/deployment.sh' start --dry-run
       - run:
           name: Run deployment on Raspberry Pi 4B 1 [dry-run]
           command: |
-            mkdir -p "$HOME/.homelab-2/machines/current/pihole/private"
-            touch "$HOME/.homelab-2/machines/current/pihole/private/webui-backup.env"
-            DEST_DIR="$HOME/.homelab-2" \
-              bash './machines/raspberry-pi-4b-1/install.sh' -n
+            bash './machines/raspberry-pi-4b-1/deployment.sh' init-secrets
+            # bash './machines/raspberry-pi-4b-1/deployment.sh' start --dry-run
       - run:
           name: Run deployment on Raspberry Pi Zero 2w 1 [dry-run]
           command: |
-            mkdir -p "$HOME/.homelab-3/machines/current/pihole/private"
-            touch "$HOME/.homelab-3/machines/current/pihole/private/webui-backup.env"
-            DEST_DIR="$HOME/.homelab-3" \
-              bash './machines/raspberry-pi-zero-2w-2/install.sh' -n
+            bash './machines/raspberry-pi-zero-2w-1/deployment.sh' init-secrets
+            # bash './machines/raspberry-pi-zero-2w-1/deployment.sh' start --dry-run
       - run:
           name: Run deployment on Raspberry Pi Zero 2w 1 [dry-run]
           command: |
-            mkdir -p "$HOME/.homelab-4/machines/current/pihole/private"
-            touch "$HOME/.homelab-4/machines/current/pihole/private/webui-backup.env"
-            DEST_DIR="$HOME/.homelab-4" \
-              bash './machines/raspberry-pi-zero-2w-2/install.sh' -n
+            bash './machines/raspberry-pi-zero-2w-2/deployment.sh' init-secrets
+            # bash './machines/raspberry-pi-zero-2w-2/deployment.sh' start --dry-run
       - run:
           name: Run deployment on Odroid H3 1 [dry-run]
           command: |
-            mkdir -p \
-              "$HOME/.homelab-5/machines/current/healthchecks/private" \
-              "$HOME/.homelab-5/machines/current/omada-controller/private" \
-              "$HOME/.homelab-5/machines/current/unifi-controller/private" \
-              "$HOME/.homelab-5/machines/current/uptime-kuma/private"
-            touch \
-              "$HOME/.homelab-5/machines/current/healthchecks/private/app.env" \
-              "$HOME/.homelab-5/machines/current/healthchecks/private/database-backup.env" \
-              "$HOME/.homelab-5/machines/current/omada-controller/private/webui-backup.env" \
-              "$HOME/.homelab-5/machines/current/unifi-controller/private/webui-backup.env" \
-              "$HOME/.homelab-5/machines/current/uptime-kuma/private/webui-backup.env"
-            DEST_DIR="$HOME/.homelab-5" \
-              bash './machines/odroid-h3-1/install.sh' -n
+            bash './machines/odroid-h3-1/deployment.sh' init-secrets
+            # bash './machines/odroid-h3-1/deployment.sh' start --dry-run

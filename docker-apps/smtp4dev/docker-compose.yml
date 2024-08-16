@@ -1,0 +1,53 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: smtp4dev
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common.env
+    networks:
+      internal-network: {}
+
+services:
+  main-app:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/smtp4dev/Dockerfile
+    volumes:
+      - ./data/smtp4dev:/smtp4dev:rw
+    stop_grace_period: 30s
+
+  certificate-manager:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    volumes:
+      - ./data/certs:/certs:rw
+      - ./log/certificate-manager:/log:rw
+
+  http-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./data/certs:/certs:ro
+      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
+      - ./log/http-proxy:/log:rw
+
+  socket-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+    volumes:
+      - ./log/socket-proxy:/log:rw
+
+networks:
+  internal-network:
