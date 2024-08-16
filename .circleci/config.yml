@@ -51,7 +51,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: docker:26.1.4
+      - image: docker:27.1.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -68,7 +68,7 @@ jobs:
 
   deployment:
     docker:
-      - image: docker:26.1.4
+      - image: docker:27.1.2
     steps:
       - checkout
       - setup_remote_docker:
