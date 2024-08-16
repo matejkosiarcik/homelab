@@ -73,7 +73,7 @@ machine_stop() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Stop all docker apps\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             sh "$dir/deployment.sh" stop --prod
         done
     fi
@@ -83,7 +83,7 @@ machine_start() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Start all docker apps\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             sh "$dir/deployment.sh" start --prod
         done
     fi
@@ -93,7 +93,7 @@ machine_init_secrets() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             sh "$dir/deployment.sh" init-secrets --prod
         done
     fi
