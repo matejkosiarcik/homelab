@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM python:3.12.4-slim AS supercronic-gitman
+FROM python:3.12.5-slim AS supercronic-gitman
 WORKDIR /app
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -13,7 +13,7 @@ ENV PATH="/app/python-packages/bin:$PATH" \
 COPY ./.dependencies/supercronic/gitman.yml ./
 RUN gitman install --quiet
 
-FROM golang:1.22.5-bookworm AS supercronic-build
+FROM golang:1.23.0-bookworm AS supercronic-build
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends binutils file >/dev/null && \
