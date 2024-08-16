@@ -12,16 +12,16 @@
   "dependencies": {
     "chai": "^5.1.1",
     "dotenv": "^16.4.5",
-    "playwright": "^1.45.3"
+    "playwright": "^1.46.1"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
     "@tsconfig/recommended": "^1.0.7",
     "@types/chai": "^4.3.17",
-    "@types/node": "^20.14.12",
-    "rollup": "^4.19.1",
+    "@types/node": "^22.4.0",
+    "rollup": "^4.20.0",
     "tslib": "^2.6.3",
-    "tsx": "^4.16.2",
+    "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   }
 }
