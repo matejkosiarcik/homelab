@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM postgres:16.3
+FROM postgres:16.4
 ENV PGDATA=/var/lib/postgresql/data/pgdata \
     POSTGRES_DB=database \
     POSTGRES_USER=postgres \
