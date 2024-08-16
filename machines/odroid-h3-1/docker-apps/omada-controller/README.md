@@ -13,8 +13,9 @@ Before installation prepare following files:
 
 ## After First Installation
 
-- Setup admin account
-- General config and settings customization
-- Setup SMTP server for email
-- Send automatic backups via SFTP
-- Send logs to remote syslog server
+- Setup
+    - Setup admin account
+    - General config and settings customization
+    - Setup SMTP server for email
+    - Send automatic backups via SFTP
+    - Send logs to remote syslog server
