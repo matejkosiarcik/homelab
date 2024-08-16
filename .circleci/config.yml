@@ -91,15 +91,15 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi Zero 2w 1 [dry-run]
           command: |
-            bash './machines/raspberry-pi-4b-1/deployment.sh' init-secrets
-            # bash './machines/raspberry-pi-zero-2w-2/deployment.sh' start --dry-run
+            bash './machines/raspberry-pi-zero-2w-1/deployment.sh' init-secrets
+            # bash './machines/raspberry-pi-zero-2w-1/deployment.sh' start --dry-run
       - run:
           name: Run deployment on Raspberry Pi Zero 2w 1 [dry-run]
           command: |
-            bash './machines/raspberry-pi-4b-1/deployment.sh' init-secrets
+            bash './machines/raspberry-pi-zero-2w-2/deployment.sh' init-secrets
             # bash './machines/raspberry-pi-zero-2w-2/deployment.sh' start --dry-run
       - run:
           name: Run deployment on Odroid H3 1 [dry-run]
           command: |
-            bash './machines/raspberry-pi-4b-1/deployment.sh' init-secrets
+            bash './machines/odroid-h3-1/deployment.sh' init-secrets
             # bash './machines/odroid-h3-1/deployment.sh' start --dry-run
