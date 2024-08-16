@@ -12,7 +12,7 @@
 - \[All\] Setup admin _username_, _password_ and _email_
 - \[All\] Setup initial settings + initial login to finish the wizard
 - \[Prod\] Setup more settings
-  - General config and settings customization
-  - Setup SMTP server for email
-  - Send automatic backups via SFTP
-  - Send logs to remote syslog server
+    - General config and settings customization
+    - Setup SMTP server for email
+    - Send automatic backups via SFTP
+    - Send logs to remote syslog server
