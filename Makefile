@@ -20,7 +20,7 @@ all: clean bootstrap build docker-build docker-build-multiarch
 .PHONY: bootstrap
 bootstrap:
 	npm ci --prefix "$(PROJECT_DIR)/icons" --no-progress --no-audit --no-fund --loglevel=error
-	printf '%s' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
+	printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
@@ -44,7 +44,7 @@ bootstrap:
 
 .PHONY: build
 build:
-	printf '%s' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
+	printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
 		printf 'Building %s\n' "$$component" && \
 		npm run build --prefix "$(PROJECT_DIR)/$$component" && \
 		printf '\n\n' && \
@@ -52,13 +52,13 @@ build:
 
 .PHONY: docker-build
 docker-build:
-	printf '%s' "$(DOCKER_IMAGES)" | base64 -d | while read -r component; do \
+	printf '%s\n' "$(DOCKER_IMAGES)" | base64 -d | while read -r component; do \
 		printf 'Building %s\n' "$$component" && \
-		docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
+		docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 		printf '\n\n' && \
 	true; done
 
-	printf '%s' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
+	printf '%s\n' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
 		printf 'Building %s\n' "$$app" && \
 		docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies && \
 		printf '\n\n' && \
@@ -67,17 +67,17 @@ docker-build:
 .PHONY: docker-build-multiarch
 docker-build-multiarch:
 	set -e && \
-	printf '%s' "$(DOCKER_ARCHS)" | base64 -d | while read -r arch; do \
-		printf '%s' "$(DOCKER_IMAGES)" | base64 -d | while read -r component; do \
+	printf '%s\n' "$(DOCKER_ARCHS)" | base64 -d | while read -r arch; do \
+		printf '%s\n' "$(DOCKER_IMAGES)" | base64 -d | while read -r component; do \
 			printf 'Building %s for linux/%s:\n' "$$component" "$$arch" && \
-			docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$$arch" | tr '/' '-')" && \
 			printf '\n\n' && \
 		true; done && \
 	true; done
 
 .PHONY: dryrun
 dryrun:
-	printf '%s' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
+	printf '%s\n' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
 		docker compose --project-directory "$(PROJECT_DIR)/$$app" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
 		printf '\n\n' && \
 	true; done
