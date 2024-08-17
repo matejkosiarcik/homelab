@@ -73,5 +73,22 @@ services:
       - ./data/web-backup-errors:/error:rw
       - ./log/web-backup:/log:rw
 
+  web-update-gravity:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/web-automation/Dockerfile
+    depends_on:
+      main-app:
+        condition: service_healthy
+    env_file:
+      - ./private/web-update-gravity.env
+    environment:
+      <<: *common-env-variables
+      HOMELAB_AUTOMATION_TYPE: update-gravity
+    volumes:
+      - ./data/web-update-gravity-errors:/error:rw
+      - ./log/web-update-gravity:/log:rw
+
 networks:
   internal-network: {}

@@ -45,6 +45,12 @@ services:
       file: *extends-file
       service: web-backup
 
+  web-update-gravity:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-update-gravity
+
 networks:
   external-network:
     driver: macvlan
