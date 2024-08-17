@@ -5,11 +5,10 @@ SHELL := /bin/sh
 .SHELLFLAGS := -ec
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
-DOCKER_APPS := $(shell printf 'odroid-h3-1/docker-apps/healthchecks odroid-h3-1/docker-apps/homer odroid-h3-1/docker-apps/omada-controller odroid-h3-1/docker-apps/smtp4dev odroid-h3-1/docker-apps/unifi-controller odroid-h3-1/docker-apps/uptime-kuma raspberry-pi-3b-1/docker-apps/pihole-main raspberry-pi-4b-1/docker-apps/pihole-main raspberry-pi-zero-2w-1/docker-apps/lamp-controller raspberry-pi-zero-2w-2/docker-apps/lamp-controller' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf 'docker-images/custom/certificate-manager docker-images/custom/http-proxy docker-images/custom/lamp-hardware-controller docker-images/custom/lamp-network-server docker-images/custom/postgres-backup docker-images/custom/socket-proxy docker-images/custom/web-backup docker-images/database/postgres docker-images/external/healthchecks docker-images/external/homer docker-images/external/omada-controller docker-images/external/pihole docker-images/external/smtp4dev docker-images/external/unifi-controller docker-images/external/uptime-kuma')
-NPM_COMPONENTS := $(shell printf 'docker-images/custom/lamp-network-server docker-images/custom/web-backup')
+DOCKER_APPS := $(shell find 'machines' -type f -name 'docker-compose.yml' -exec dirname {} \; | base64)
+DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
+NPM_COMPONENTS := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
-# DOCKER_ARCHS := $(shell printf '386 amd64 arm/v5 arm/v7 arm64/v8 ppc64le')
 
 .POSIX:
 .SILENT:
@@ -21,7 +20,7 @@ all: clean bootstrap build docker-build docker-build-multiarch
 .PHONY: bootstrap
 bootstrap:
 	npm ci --prefix "$(PROJECT_DIR)/icons" --no-progress --no-audit --no-fund --loglevel=error
-	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+	printf '%s' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
@@ -43,33 +42,33 @@ bootstrap:
 
 .PHONY: build
 build:
-	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+	printf '%s' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
 		npm run build --prefix "$(PROJECT_DIR)/$$component" && \
 	true; done
 
 .PHONY: docker-build
 docker-build:
-	printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
-		docker build docker-images/ --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
+	printf '%s' "$(DOCKER_IMAGES)" | base64 -d | while read -r component; do \
+		docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 	true; done
 
-	printf '%s\n' "$(DOCKER_APPS)" | tr ' ' '\n' | while read -r app; do \
+	printf '%s' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
 		docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies --pull && \
 	true; done
 
 .PHONY: docker-build-multiarch
 docker-build-multiarch:
 	set -e && \
-	printf '%s\n' "$(DOCKER_ARCHS)" | tr ' ' '\n' | while read -r arch; do \
-		printf '%s\n' "$(DOCKER_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+	printf '%s' "$(DOCKER_ARCHS)" | base64 -d | while read -r arch; do \
+		printf '%s' "$(DOCKER_IMAGES)" | base64 -d | while read -r component; do \
 			printf 'Building linux/%s %s:\n' "$$arch" "$$component" && \
-			docker build docker-images/ --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s' "$$arch" | tr '/' '-')" && \
 		true; done && \
 	true; done
 
 .PHONY: dryrun
 dryrun:
-	printf '%s\n' "$(DOCKER_APPS)" | tr ' ' '\n' | while read -r app; do \
+	printf '%s' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
 		docker compose --project-directory "$(PROJECT_DIR)/$$app" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
 	true; done
 
@@ -88,6 +87,6 @@ clean:
 		"$(PROJECT_DIR)/python-vendor" \
 		"$(PROJECT_DIR)/venv"
 
-	printf '%s\n' "$(NPM_COMPONENTS)" | tr ' ' '\n' | while read -r component; do \
+	printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
 		rm -rf "$(PROJECT_DIR)/$$component/dist" "$(PROJECT_DIR)/$$component/node_modules" && \
 	true; done
