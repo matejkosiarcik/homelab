@@ -22,4 +22,4 @@
           exit 1
         fi
 
-        sh machines/.current/install.sh
+        sh machines/.current/deployment.sh --start

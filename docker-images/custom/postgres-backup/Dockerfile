@@ -30,7 +30,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 FROM debian:12.6-slim AS prefinal
 WORKDIR /app
 COPY ./custom/postgres-backup/src/ ./src/
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/postgres-backup/crontab.cron ./custom/postgres-backup/main.sh ./
+COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/postgres-backup/crontab.cron ./custom/postgres-backup/main.sh ./
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 
 # TODO: Switch to regular stable debian when trixie is released

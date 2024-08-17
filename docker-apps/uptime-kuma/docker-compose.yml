@@ -24,6 +24,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./private/certificate-manager.env
     volumes:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
@@ -57,8 +59,9 @@ services:
     depends_on:
       main-app:
         condition: service_healthy
+    env_file:
+      - ./private/web-backup.env
     volumes:
-      - ./private/web-backup.env:/app/.env:ro
       - ./data/web-backup:/backup:rw
       - ./data/web-backup-errors:/error:rw
       - ./log/web-backup:/log:rw
