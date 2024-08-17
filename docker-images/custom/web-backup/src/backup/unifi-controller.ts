@@ -1,7 +1,7 @@
 import path from 'path';
 import { expect } from 'chai';
-import { getBackupDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername, loadEnv } from './utils/utils.ts';
-import { runAutomation } from './utils/main.ts';
+import { getBackupDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername, loadEnv } from '../.utils/utils.ts';
+import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
     loadEnv();
