@@ -37,8 +37,9 @@ services:
     depends_on:
       main-app:
         condition: service_healthy
+    env_file:
+      - ./private/web-backup.env
     volumes:
-      - ./private/web-backup.env:/app/.env:ro
       - ./data/web-backup:/backup:rw
       - ./data/web-backup-errors:/error:rw
       - ./log/web-backup:/log:rw
