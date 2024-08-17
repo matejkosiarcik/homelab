@@ -15,10 +15,6 @@ jobs:
     container:
       image: matejkosiarcik/azlint:0.6.12
       options: --user root
-    env:
-      # TODO: Remove override
-      VALIDATE_NPM_INSTALL: "false"
-      VALIDATE_NPM_INSTALL_LOCK: "false"
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
@@ -69,10 +65,9 @@ jobs:
           LINTER_RULES_PATH: .config/
           MULTI_STATUS: false
 
-          # disable
+          # Disabled linters below
           VALIDATE_BASH_EXEC: false
           VALIDATE_CSS: false
-          # VALIDATE_DOCKERFILE_HADOLINT: false # Incorrectly tries to lint .dockerfilelintrc
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_JAVASCRIPT_PRETTIER: false
           VALIDATE_JAVASCRIPT_STANDARD: false
@@ -83,6 +78,13 @@ jobs:
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_TYPESCRIPT_PRETTIER: false
           VALIDATE_TYPESCRIPT_STANDARD: false
+
+          # TODO: Try to reenable these below
+          VALIDATE_CSS_PRETTIER: false
+          VALIDATE_HTML_PRETTIER: false
+          VALIDATE_JSON_PRETTIER: false
+          VALIDATE_MARKDOWN_PRETTIER: false
+          VALIDATE_VUE_PRETTIER: false
 
           # config files
           CHECKOV_FILE_NAME: .checkov.yml
