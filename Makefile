@@ -91,7 +91,7 @@ dryrun:
 
 .PHONY: clean
 clean:
-	find . \( \
+	find "$(PROJECT_DIR)" -type d \( \
 		-name ".mypy_cache" -or \
 		-name "dist" -or \
 		-name "gitman-repositories" -or \
