@@ -73,14 +73,6 @@ docker-build-multiarch:
 		true; done && \
 	true; done
 
-.PHONY: docker-pull
-docker-pull:
-	printf '%s\n' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
-		printf 'Building %s\n' "$$app" && \
-		docker compose --project-directory "$(PROJECT_DIR)/$$app" pull && \
-		printf '\n\n' && \
-	true; done
-
 .PHONY: dryrun
 dryrun:
 	printf '%s\n' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
