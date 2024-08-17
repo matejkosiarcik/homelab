@@ -84,19 +84,11 @@ dryrun:
 
 .PHONY: clean
 clean:
-	rm -rf \
-		"$(PROJECT_DIR)/.mypy_cache" \
-		"$(PROJECT_DIR)/ansible/python-vendor" \
-		"$(PROJECT_DIR)/ansible/venv" \
-		"$(PROJECT_DIR)/homelab" \
-		"$(PROJECT_DIR)/homelab-deployment" \
-		"$(PROJECT_DIR)/icons/gitman" \
-		"$(PROJECT_DIR)/icons/node_modules" \
-		"$(PROJECT_DIR)/icons/python-vendor" \
-		"$(PROJECT_DIR)/icons/venv" \
-		"$(PROJECT_DIR)/python-vendor" \
-		"$(PROJECT_DIR)/venv"
-
-	printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
-		rm -rf "$(PROJECT_DIR)/$$component/dist" "$(PROJECT_DIR)/$$component/node_modules" && \
-	true; done
+	find . \( \
+		-name ".mypy_cache" -or \
+		-name "dist" -or \
+		-name "gitman-repositories" -or \
+		-name "node_modules" -or \
+		-name "python-vendor" -or \
+		-name "venv" \
+	\) -prune -exec rm -rf {} \;
