@@ -12,9 +12,11 @@ print_help() {
     printf ' init-secrets - Initialize all docker apps secrets\n'
     printf '\n'
     printf 'Arguments:\n'
+    printf ' -d, --dev     - Dev mode\n'
     printf ' -f, --force   - Force\n'
     printf ' -h, --help    - Print help message\n'
     printf ' -n, --dry-run - Dry run\n'
+    printf ' -p, --prod    - Production mode\n'
 }
 
 if [ "$#" -lt 1 ]; then
@@ -33,14 +35,23 @@ fi
 
 dry_run='0'
 force='0'
+mode='prod'
 while [ "$#" -gt 0 ]; do
     case "$1" in
+    -d | --dev)
+        mode='dev'
+        shift
+        ;;
     -f | --force)
         force='1'
         shift
         ;;
     -n | --dry-run)
         dry_run='1'
+        shift
+        ;;
+    -p | --prod)
+        mode='prod'
         shift
         ;;
     *)
@@ -69,12 +80,14 @@ if [ "$dry_run" = '1' ]; then
     extra_script_args="$extra_script_args --dry-run"
 fi
 
+mode_arg="--$mode"
+
 machine_stop() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Stop all docker apps\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
-            sh "$dir/deployment.sh" stop --prod
+            sh "$dir/deployment.sh" stop "$mode_arg"
         done
     fi
 }
@@ -84,7 +97,7 @@ machine_start() {
         printf 'Start all docker apps\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
-            sh "$dir/deployment.sh" start --prod
+            sh "$dir/deployment.sh" start "$mode_arg"
         done
     fi
 }
@@ -94,7 +107,7 @@ machine_init_secrets() {
         printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
-            sh "$dir/deployment.sh" init-secrets --prod
+            sh "$dir/deployment.sh" init-secrets "$mode_arg"
         done
     fi
 }
