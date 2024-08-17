@@ -19,8 +19,7 @@ all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
-	npm ci --prefix "$(PROJECT_DIR)/icons" --no-progress --no-audit --no-fund --loglevel=error
-	printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
+	(printf 'icons\n' && printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d) | while read -r component; do \
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
@@ -91,7 +90,7 @@ dryrun:
 
 .PHONY: clean
 clean:
-	find . \( \
+	find "$(PROJECT_DIR)" -type d \( \
 		-name ".mypy_cache" -or \
 		-name "dist" -or \
 		-name "gitman-repositories" -or \
