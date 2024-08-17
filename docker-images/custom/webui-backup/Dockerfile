@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM python:3.12.4-slim AS supercronic-gitman
+FROM python:3.12.5-slim AS supercronic-gitman
 WORKDIR /app
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -13,7 +13,7 @@ ENV PATH="/app/python-packages/bin:$PATH" \
 COPY ./.dependencies/supercronic/gitman.yml ./
 RUN gitman install --quiet
 
-FROM golang:1.22.5-bookworm AS supercronic-build
+FROM golang:1.23.0-bookworm AS supercronic-build
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends binutils file >/dev/null && \
@@ -27,7 +27,7 @@ WORKDIR /app
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM node:22.5.1-slim AS nodejs-build
+FROM node:22.6.0-slim AS nodejs-build
 WORKDIR /app
 COPY ./custom/webui-backup/package-lock.json ./custom/webui-backup/package.json ./custom/webui-backup/postinstall.sh ./custom/webui-backup/rollup.config.js ./custom/webui-backup/tsconfig.json ./
 COPY ./custom/webui-backup/src/ ./src/
@@ -36,7 +36,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:22.5.1-slim AS prefinal
+FROM node:22.6.0-slim AS prefinal
 WORKDIR /app
 COPY --from=nodejs-build /app/package.json ./
 COPY --from=nodejs-build /app/node_modules ./node_modules
@@ -48,7 +48,7 @@ COPY --from=nodejs-build /app/dist ./dist
 COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/webui-backup/crontab.cron ./custom/webui-backup/main.sh ./
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 
-FROM node:22.5.1-slim
+FROM node:22.6.0-slim
 WORKDIR /app
 RUN mkdir -p /backup /log
 COPY --from=prefinal /app/node_modules ./node_modules
