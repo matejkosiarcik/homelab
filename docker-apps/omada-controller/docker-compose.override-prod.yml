@@ -23,5 +23,5 @@ services:
       - 443:443
       - 444:444
 
-  webui-backup:
+  web-backup:
     <<: *common-service-options

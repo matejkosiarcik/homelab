@@ -15,5 +15,5 @@ services:
   database:
     <<: *common-service-options
 
-  webui-backup:
+  web-backup:
     <<: *common-service-options

@@ -36,7 +36,7 @@ updates:
 
   # Docker
   - package-ecosystem: docker
-    directory: /docker-images/custom/webui-backup
+    directory: /docker-images/custom/web-backup
     schedule:
       interval: daily
       time: "01:15"
@@ -248,7 +248,7 @@ updates:
 
   # NPM
   - package-ecosystem: npm
-    directory: /docker-images/custom/webui-backup
+    directory: /docker-images/custom/web-backup
     versioning-strategy: increase
     schedule:
       interval: daily

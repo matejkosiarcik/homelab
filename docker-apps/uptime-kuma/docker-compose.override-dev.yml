@@ -25,5 +25,5 @@ services:
       - "8080:80"
       - "8443:443"
 
-  webui-backup:
+  web-backup:
     <<: *common-service-options

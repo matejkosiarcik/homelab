@@ -18,5 +18,5 @@ services:
     ports:
       - 27017:27017
 
-  webui-backup:
+  web-backup:
     <<: *common-service-options
