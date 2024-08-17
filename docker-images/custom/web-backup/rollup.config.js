@@ -1,15 +1,17 @@
 import typescript from '@rollup/plugin-typescript';
 
-export default {
-    input: [
-        'src/omada-controller.ts',
-        'src/pihole.ts',
-        'src/unifi-controller.ts',
-        'src/uptime-kuma.ts',
-    ],
-    output: {
-        dir: 'dist',
-        format: 'esm',
-    },
-    plugins: [typescript()],
-};
+export default [
+    {
+        input: [
+            'src/backup/omada-controller.ts',
+            'src/backup/pihole.ts',
+            'src/backup/unifi-controller.ts',
+            'src/backup/uptime-kuma.ts',
+        ],
+        output: {
+            dir: 'dist/backup',
+            format: 'esm',
+        },
+        plugins: [typescript()],
+    }
+];
