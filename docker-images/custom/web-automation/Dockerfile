@@ -29,8 +29,8 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 FROM node:22.6.0-slim AS nodejs-build
 WORKDIR /app
-COPY ./custom/web-backup/package-lock.json ./custom/web-backup/package.json ./custom/web-backup/postinstall.sh ./custom/web-backup/rollup.config.js ./custom/web-backup/tsconfig.json ./
-COPY ./custom/web-backup/src/ ./src/
+COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json ./
+COPY ./custom/web-automation/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
@@ -45,7 +45,7 @@ RUN apt-get update && \
     npx --no-install playwright install chromium && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=nodejs-build /app/dist ./dist
-COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-backup/crontab.cron ./custom/web-backup/main.sh ./
+COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-automation/crontab.cron ./custom/web-automation/main.sh ./
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 
 FROM node:22.6.0-slim
