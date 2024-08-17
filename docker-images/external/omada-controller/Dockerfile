@@ -2,7 +2,8 @@
 # checkov:skip=CKV_DOCKER_2: healthcheck builtin
 
 FROM mbentley/omada-controller:5.14
-ENV PUID=508 \
+ENV HOMELAB_CONTAINER_TYPE=omada-controller \
+    PUID=508 \
     PGID=508 \
     PORT_APP_DISCOVERY=27001 \
     PORT_ADOPT_V1=29812 \

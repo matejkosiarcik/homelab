@@ -57,7 +57,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
 COPY --from=prefinal /root/.cache/ms-playwright /root/.cache/ms-playwright
-ENV PATH="$PATH:/app/bin" \
+ENV HOMELAB_CONTAINER_TYPE=web-automation \
+    PATH="$PATH:/app/bin" \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=60s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
 STOPSIGNAL SIGKILL

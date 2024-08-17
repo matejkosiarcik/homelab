@@ -2,6 +2,7 @@
 
 FROM linuxserver/unifi-network-application:8.3.32
 ENV FILE__MONGO_PASS=/.homelab/database-password.txt \
+    HOMELAB_CONTAINER_TYPE=unifi-controller \
     MONGO_DBNAME=database \
     MONGO_PORT=27017 \
     MONGO_USER=mongo \
