@@ -66,13 +66,20 @@ docker-build:
 
 .PHONY: docker-build-multiarch
 docker-build-multiarch:
-	set -e && \
 	printf '%s\n' "$(DOCKER_ARCHS)" | base64 -d | while read -r arch; do \
 		printf '%s\n' "$(DOCKER_IMAGES)" | base64 -d | while read -r component; do \
 			printf 'Building %s for linux/%s:\n' "$$component" "$$arch" && \
 			docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$$arch" | tr '/' '-')" && \
 			printf '\n\n' && \
 		true; done && \
+	true; done
+
+.PHONY: docker-pull
+docker-pull:
+	printf '%s\n' "$(DOCKER_APPS)" | base64 -d | while read -r app; do \
+		printf 'Building %s\n' "$$app" && \
+		docker compose --project-directory "$(PROJECT_DIR)/$$app" pull && \
+		printf '\n\n' && \
 	true; done
 
 .PHONY: dryrun
