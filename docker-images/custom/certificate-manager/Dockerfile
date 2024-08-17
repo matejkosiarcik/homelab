@@ -31,7 +31,7 @@ FROM debian:12.6-slim AS prefinal
 WORKDIR /app
 RUN mkdir -p /certs /log
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/certificate-manager/crontab.cron ./custom/certificate-manager/main.sh ./
+COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/certificate-manager/crontab.cron ./custom/certificate-manager/main.sh ./
 
 FROM debian:12.6-slim
 WORKDIR /app

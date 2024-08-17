@@ -45,7 +45,7 @@ RUN apt-get update && \
     npx --no-install playwright install chromium && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=nodejs-build /app/dist ./dist
-COPY ./.shared/cron/cron-wrapper.sh ./.shared/cron/entrypoint.sh ./custom/web-backup/crontab.cron ./custom/web-backup/main.sh ./
+COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-backup/crontab.cron ./custom/web-backup/main.sh ./
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 
 FROM node:22.6.0-slim
