@@ -60,12 +60,31 @@ create_password() {
     fi
 }
 
+user_logfile="$tmpdir/user-logs.txt"
+
+init_apache_users() {
+    # Precreate passwords
+    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+
+    # HTTP proxy
+    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
+    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+}
+
+prepare_healthcheck_url() {
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$1"
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in %s\n' "$(basename "$1")" >>"$user_logfile"
+}
+
 case "$current_dir" in
 healthchecks)
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/database-backup.env"
+
     # Precreate passwords
     create_password "$tmpdir/database-password.txt"
     create_password "$tmpdir/app-secret-key.txt" --only-alphanumeric
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
 
     # App
     printf 'SECRET_KEY=%s\n' "$(cat "$tmpdir/app-secret-key.txt")" >>"$output/app.env"
@@ -74,58 +93,50 @@ healthchecks)
     # Database
     printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
 
-    # Backups
+    # Database Backups
     printf 'PGPASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/database-backup.env"
-
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in database-backup.env\n' >&2
+    cat "$user_logfile" >&2
     ;;
 homer)
-    # Precreate passwords
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
-
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
+    cat "$user_logfile" >&2
     ;;
 lamp-controller)
-    # Precreate passwords
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
-
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
+    cat "$user_logfile" >&2
     ;;
 omada-controller)
+    prepare_healthcheck_url "$output/web-backup.env"
+
     # Precreate passwords
     create_password "$tmpdir/app-password.txt"
+    printf 'admin' >"$tmpdir/app-username.txt"
 
     # Backups
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
+    cat "$user_logfile" >&2
     ;;
 pihole | pihole-main)
+    init_apache_users
+    prepare_healthcheck_url "$output/web-backup.env"
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
     # Precreate passwords
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
     create_password "$tmpdir/app-password.txt"
 
     # App
@@ -133,63 +144,54 @@ pihole | pihole-main)
 
     # Backups
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
-
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
+    cat "$user_logfile" >&2
     ;;
 smtp4dev)
-    # Precreate passwords
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
-
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
+    cat "$user_logfile" >&2
     ;;
 unifi-controller)
+    prepare_healthcheck_url "$output/web-backup.env"
+
     # Precreate passwords
     create_password "$tmpdir/app-password.txt"
+    printf 'admin' >"$tmpdir/app-username.txt"
     create_password "$tmpdir/database-password.txt"
 
     # Database
     printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
 
     # Backups
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
+    cat "$user_logfile" >&2
     ;;
 uptime-kuma)
-    # Precreate passwords
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
-    create_password "$tmpdir/app-password.txt"
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-backup.env"
 
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+    # Precreate passwords
+    create_password "$tmpdir/app-password.txt"
+    printf 'admin' >"$tmpdir/app-username.txt"
 
     # Backups
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
+    cat "$user_logfile" >&2
     ;;
 *)
     printf 'Unknown app directory "%s"\n' "$current_dir" >&2
