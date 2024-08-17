@@ -23,6 +23,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./private/certificate-manager.env
     volumes:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
