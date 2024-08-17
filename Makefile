@@ -6,8 +6,8 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 DOCKER_APPS := $(shell printf 'odroid-h3-1/docker-apps/healthchecks odroid-h3-1/docker-apps/homer odroid-h3-1/docker-apps/omada-controller odroid-h3-1/docker-apps/smtp4dev odroid-h3-1/docker-apps/unifi-controller odroid-h3-1/docker-apps/uptime-kuma raspberry-pi-3b-1/docker-apps/pihole-main raspberry-pi-4b-1/docker-apps/pihole-main raspberry-pi-zero-2w-1/docker-apps/lamp-controller raspberry-pi-zero-2w-2/docker-apps/lamp-controller' | sed 's~ ~\n~g' | sed -E 's~^~machines/~')
-DOCKER_COMPONENTS := $(shell printf 'docker-images/custom/certificate-manager docker-images/custom/http-proxy docker-images/custom/lamp-hardware-controller docker-images/custom/lamp-network-server docker-images/custom/postgres-backup docker-images/custom/socket-proxy docker-images/custom/webui-backup docker-images/database/postgres docker-images/external/healthchecks docker-images/external/homer docker-images/external/omada-controller docker-images/external/pihole docker-images/external/smtp4dev docker-images/external/unifi-controller docker-images/external/uptime-kuma')
-NPM_COMPONENTS := $(shell printf 'docker-images/custom/lamp-network-server docker-images/custom/webui-backup')
+DOCKER_COMPONENTS := $(shell printf 'docker-images/custom/certificate-manager docker-images/custom/http-proxy docker-images/custom/lamp-hardware-controller docker-images/custom/lamp-network-server docker-images/custom/postgres-backup docker-images/custom/socket-proxy docker-images/custom/web-backup docker-images/database/postgres docker-images/external/healthchecks docker-images/external/homer docker-images/external/omada-controller docker-images/external/pihole docker-images/external/smtp4dev docker-images/external/unifi-controller docker-images/external/uptime-kuma')
+NPM_COMPONENTS := $(shell printf 'docker-images/custom/lamp-network-server docker-images/custom/web-backup')
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
 # DOCKER_ARCHS := $(shell printf '386 amd64 arm/v5 arm/v7 arm64/v8 ppc64le')
 

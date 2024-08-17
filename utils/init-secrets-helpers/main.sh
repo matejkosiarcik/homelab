@@ -115,13 +115,13 @@ omada-controller)
     create_password "$tmpdir/app-password.txt"
 
     # Backups
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/webui-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/webui-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
     ;;
 pihole | pihole-main)
     # Precreate passwords
@@ -132,8 +132,8 @@ pihole | pihole-main)
     printf '%s' "$(cat "$tmpdir/app-password.txt")" >>"$output/webpassword.txt"
 
     # Backups
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/webui-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
 
     # HTTP proxy
     printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
@@ -141,7 +141,7 @@ pihole | pihole-main)
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
     ;;
 smtp4dev)
     # Precreate passwords
@@ -164,13 +164,13 @@ unifi-controller)
     printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
 
     # Backups
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/webui-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/webui-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
     ;;
 uptime-kuma)
     # Precreate passwords
@@ -182,13 +182,13 @@ uptime-kuma)
     chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
 
     # Backups
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/webui-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/webui-backup.env"
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/webui-backup.env"
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in webui-backup.env\n' >&2
+    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in web-backup.env\n' >&2
     printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in <<TBD>>\n' >&2
     ;;
 *)

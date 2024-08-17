@@ -49,19 +49,19 @@ services:
     volumes:
       - ./log/socket-proxy:/log:rw
 
-  webui-backup:
+  web-backup:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/webui-backup/Dockerfile
+      dockerfile: ./custom/web-backup/Dockerfile
     depends_on:
       main-app:
         condition: service_healthy
     volumes:
-      - ./private/webui-backup.env:/app/.env:ro
-      - ./data/webui-backup:/backup:rw
-      - ./data/webui-backup-errors:/error:rw
-      - ./log/webui-backup:/log:rw
+      - ./private/web-backup.env:/app/.env:ro
+      - ./data/web-backup:/backup:rw
+      - ./data/web-backup-errors:/error:rw
+      - ./log/web-backup:/log:rw
 
 networks:
   internal-network:

@@ -34,11 +34,11 @@ services:
       external-network:
         ipv4_address: "10.1.16.4"
 
-  webui-backup:
+  web-backup:
     <<: *common-service-options
     extends:
       file: *extends-file
-      service: webui-backup
+      service: web-backup
 
 networks:
   external-network:
