@@ -15,6 +15,7 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, opt
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'homelab-'));
 
     const browser = await chromium.launch({ headless: setup.isHeadless });
+    let isBrowserOpen = true;
     try {
         const page = await browser.newPage({ baseURL: setup.baseUrl, strictSelectors: true, ignoreHTTPSErrors: true, recordVideo: { dir: tmpDir } });
         if (['omada-controller', 'unifi-controller'].includes(getAppType())) {
@@ -35,6 +36,8 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, opt
             await page.close();
         }
     } catch (error) {
+        await browser.close();
+        isBrowserOpen = false;
         const files = await fs.readdir(tmpDir, { withFileTypes: true, recursive: false });
         const videoFiles = files.filter((el) => /\.webm$/.test(el.name)).map((el) => path.join(el.parentPath, el.name));
         for (const [index, videoFile] of videoFiles.entries()) {
@@ -42,7 +45,9 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, opt
         }
         throw error;
     } finally {
-        await browser.close();
+        if (isBrowserOpen) {
+            await browser.close();
+        }
         await fs.rm(tmpDir, { force: true, recursive: true });
     }
 }

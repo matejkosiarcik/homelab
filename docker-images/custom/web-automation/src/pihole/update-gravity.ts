@@ -1,4 +1,4 @@
-import { getBackupDir, getIsoDate, getTargetAdminPassword, loadEnv } from '../.utils/utils.ts';
+import { getIsoDate, getTargetAdminPassword, loadEnv } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {

@@ -51,6 +51,12 @@ services:
       file: *extends-file
       service: web-update-gravity
 
+  web-setup-blocking:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-setup-blocking
+
 networks:
   external-network:
     driver: macvlan

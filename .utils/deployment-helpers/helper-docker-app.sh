@@ -173,7 +173,7 @@ init-secrets)
         init_secrets_args="$init_secrets_args --dev"
     fi
     # shellcheck disable=SC2086
-    sh "$git_dir/utils/init-secrets-helpers/main.sh" $init_secrets_args
+    sh "$git_dir/.utils/init-secrets-helpers/main.sh" $init_secrets_args
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2

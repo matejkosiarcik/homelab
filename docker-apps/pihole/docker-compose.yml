@@ -90,5 +90,23 @@ services:
       - ./data/web-update-gravity-errors:/error:rw
       - ./log/web-update-gravity:/log:rw
 
+  web-setup-blocking:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/web-automation/Dockerfile
+    depends_on:
+      main-app:
+        condition: service_healthy
+    env_file:
+      - ./private/web-setup-blocking.env
+    environment:
+      <<: *common-env-variables
+      HOMELAB_AUTOMATION_TYPE: setup-blocking
+      HOMELAB_BLOCK_ADS: 1
+    volumes:
+      - ./data/web-setup-blocking-errors:/error:rw
+      - ./log/web-setup-blocking:/log:rw
+
 networks:
   internal-network: {}
