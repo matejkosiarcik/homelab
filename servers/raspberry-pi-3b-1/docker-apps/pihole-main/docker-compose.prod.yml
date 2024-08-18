@@ -45,17 +45,11 @@ services:
       file: *extends-file
       service: web-backup
 
-  web-update-gravity:
+  web-custom-setup:
     <<: *common-service-options
     extends:
       file: *extends-file
-      service: web-update-gravity
-
-  web-setup-blocking:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: web-setup-blocking
+      service: web-custom-setup
 
 networks:
   external-network:

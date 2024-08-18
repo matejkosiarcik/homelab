@@ -19,7 +19,7 @@ services:
       - ./data/pihole/etc-pihole:/etc/pihole:rw
       - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
-      - ../../../../docker-images/external/pihole/custom-local-domains.txt:/etc/pihole/custom.list:ro
+      - ../../../../docker-images/external/pihole/local-domains.txt:/etc/pihole/custom.list:ro
       - ./log/main-app:/log:rw
     stop_grace_period: 30s
 
@@ -73,7 +73,7 @@ services:
       - ./data/web-backup-errors:/error:rw
       - ./log/web-backup:/log:rw
 
-  web-update-gravity:
+  web-custom-setup:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -82,31 +82,17 @@ services:
       main-app:
         condition: service_healthy
     env_file:
-      - ./private/web-update-gravity.env
+      - ./private/web-custom-setup.env
     environment:
       <<: *common-env-variables
-      HOMELAB_AUTOMATION_TYPE: update-gravity
-    volumes:
-      - ./data/web-update-gravity-errors:/error:rw
-      - ./log/web-update-gravity:/log:rw
-
-  web-setup-blocking:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      main-app:
-        condition: service_healthy
-    env_file:
-      - ./private/web-setup-blocking.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_AUTOMATION_TYPE: setup-blocking
+      HOMELAB_AUTOMATION_TYPE: custom-setup
       HOMELAB_BLOCK_ADS: 1
+      HOMELAB_REMOVE_DEFAULT_ADLISTS: 0
     volumes:
-      - ./data/web-setup-blocking-errors:/error:rw
-      - ./log/web-setup-blocking:/log:rw
+      - ./data/web-custom-setup-errors:/error:rw
+      - ./log/web-custom-setup:/log:rw
+      - ../../../../docker-images/external/pihole/base-whitelist.txt:/.homelab/domains/base-whitelist.txt:ro
+      - ../../../../docker-images/external/pihole/base-blacklist.txt:/.homelab/domains/base-blacklist.txt:ro
 
 networks:
   internal-network: {}
