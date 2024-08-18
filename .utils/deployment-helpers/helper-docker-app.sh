@@ -79,11 +79,8 @@ if [ "$START_DATE" = '' ]; then
 fi
 export START_DATE
 
-# This should be set by caller script
-declare app_dir
-
+app_dir="$PWD"
 git_dir="$(git rev-parse --show-toplevel)"
-
 full_service_name="$(basename "$app_dir")"
 log_dir="$HOME/homelab-log/$START_DATE/$full_service_name"
 log_file="$log_dir/install.txt"
