@@ -10,16 +10,16 @@ services:
     items:
       - name: UPC Router
         subtitle: COMPAL CH7465LG
-        logo: ./assets/icons/other/upc.png
+        logo: ./assets/icons/upc.png
         url: http://192.168.0.1
 
       - name: Main Router
         subtitle: TP-Link ER605
-        logo: ./assets/icons/vrt/router.png
+        logo: ./assets/icons/router.png
         url: https://10.1.0.1
 
       - name: Smart Switch
-        logo: ./assets/icons/vrt/switch.png
+        logo: ./assets/icons/switch.png
         subtitle: Tp-Link SG108E
         url: http://10.1.0.3
         method: get
@@ -30,31 +30,31 @@ services:
       - name: MacBook Pro 2012
         subtitle: NAS
         type: CopyToClipboard
-        logo: ./assets/icons/other/apple.png
+        logo: ./assets/icons/apple.png
         clipboard: "ssh matej@10.1.4.1.home"
 
       - name: Odroid H3
         subtitle: App Server
         type: CopyToClipboard
-        logo: ./assets/icons/other/odroid.png
+        logo: ./assets/icons/odroid.png
         clipboard: "ssh matej@10.1.4.7.home"
 
       - name: Rasbperry Pi 3B
         subtitle: PiHole
         type: CopyToClipboard
-        logo: ./assets/icons/other/raspberry-pi.png
+        logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.4.home
 
       - name: Rasbperry Pi 4B 2GB
         subtitle: TV?
         type: CopyToClipboard
-        logo: ./assets/icons/other/raspberry-pi.png
+        logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.2.home
 
       - name: Rasbperry Pi 4B 4GB
         subtitle: TV?
         type: CopyToClipboard
-        logo: ./assets/icons/other/raspberry-pi.png
+        logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.3.home
 
   - name: Smart Home
@@ -64,19 +64,19 @@ services:
         type: Ping
         subtitle: "-"
         url: https://home-assistant.home
-        logo: ./assets/icons/organizr/home-assistant.png
+        logo: ./assets/icons/home-assistant.png
 
       - name: Desk Lamp
         subtitle: Left
         type: Ping
         url: https://desklamp-1.home
-        logo: ./assets/icons/osa/light-bulb.png
+        logo: ./assets/icons/light-bulb.png
 
       - name: Desk Lamp
         subtitle: Right
         type: Ping
         url: https://desklamp-2.home
-        logo: ./assets/icons/osa/light-bulb.png
+        logo: ./assets/icons/light-bulb.png
 
   - name: Apps
     icon: fa-brands fa-docker
@@ -86,95 +86,95 @@ services:
         type: Ping
         subtitle: main
         url: https://pihole-main.home
-        logo: ./assets/icons/organizr/pihole.png
+        logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
         subtitle: main (backup)
         url: https://pihole-main-backup.home
-        logo: ./assets/icons/organizr/pihole.png
+        logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
         subtitle: work
         url: https://pihole-work.home
-        logo: ./assets/icons/organizr/pihole.png
+        logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
         subtitle: spouse
         url: https://pihole-spouse.home
-        logo: ./assets/icons/organizr/pihole.png
+        logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
         subtitle: guests
         url: https://pihole-guests.home
-        logo: ./assets/icons/organizr/pihole.png
+        logo: ./assets/icons/pihole.png
 
       # Dashboard
       - name: Homer
         type: Ping
         subtitle: "-"
         url: https://homer.home
-        logo: ./assets/icons/other/homer.png
+        logo: ./assets/icons/homer.png
 
       # SDN Network controller
       - name: Unifi
         type: Ping
         subtitle: "-"
         url: https://unifi-controller.home
-        logo: ./assets/icons/organizr/unifi.png
+        logo: ./assets/icons/unifi.png
 
       # SDN Network controller
       - name: TP-Link Omada
         type: Ping
         subtitle: "-"
         url: https://omada-controller.home
-        logo: ./assets/icons/other/tp-link-omada.png
+        logo: ./assets/icons/tp-link-omada.png
 
       # Cron monitor
       - name: Healthchecks
         type: Ping
         subtitle: "-"
         url: https://healthchecks.home
-        logo: ./assets/icons/organizr/healthchecks.png
+        logo: ./assets/icons/healthchecks.png
 
       # Uptime monitor
       - name: Uptime Kuma
         type: Ping
         subtitle: "-"
         url: https://uptime-kuma.home
-        logo: ./assets/icons/other/uptime-kuma.png
+        logo: ./assets/icons/uptime-kuma.png
 
       # Mail server
       - name: Smtp4dev
         type: Ping
         subtitle: "-"
         url: https://smtp4dev.home
-        logo: ./assets/icons/other/smtp4dev.png
+        logo: ./assets/icons/smtp4dev.png
 
       # Eh?
       - name: SpeedTest
         type: Ping
         subtitle: "-"
         url: https://speedtest.home
-        logo: ./assets/icons/organizr/speedtest.png
+        logo: ./assets/icons/speedtest.png
 
       # Resource monitor
       - name: Netdata
         type: Ping
         subtitle: "-"
         url: https://netdata.home
-        logo: ./assets/icons/organizr/netdata.png
+        logo: ./assets/icons/netdata.png
 
       # General monitor
       - name: Prometheus
         type: Ping
         subtitle: "-"
         url: https://prometheus.home
-        logo: ./assets/icons/other/prometheus.png
+        logo: ./assets/icons/prometheus.png
