@@ -77,7 +77,7 @@ prepare_healthcheck_url() {
 }
 
 case "$current_dir" in
-healthchecks)
+healthchecks*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/database-backup.env"
@@ -100,7 +100,7 @@ healthchecks)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-homer)
+homer*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
@@ -108,7 +108,7 @@ homer)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-lamp-controller)
+lamp-controller*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
@@ -116,7 +116,7 @@ lamp-controller)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-omada-controller)
+omada-controller*)
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
@@ -151,7 +151,7 @@ pihole*)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-smtp4dev)
+smtp4dev*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
@@ -159,7 +159,7 @@ smtp4dev)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-unifi-controller)
+unifi-controller*)
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
@@ -178,7 +178,7 @@ unifi-controller)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-uptime-kuma)
+uptime-kuma*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
