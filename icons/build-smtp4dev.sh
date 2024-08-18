@@ -7,6 +7,7 @@ tmpdir=''
 
 indir="$(git rev-parse --show-toplevel)/icons"
 outdir="$(git rev-parse --show-toplevel)/docker-images/external/smtp4dev"
+rm -rf "$outdir"
 mkdir -p "$outdir"
 
 ### Favicon ###

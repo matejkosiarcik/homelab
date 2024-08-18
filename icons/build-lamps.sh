@@ -6,6 +6,8 @@ tmpdir=''
 . "$(dirname "$0")/.build-utils.sh"
 
 outdir="$(git rev-parse --show-toplevel)/docker-images/custom/lamp-network-server/frontend/public"
+rm -rf "$outdir"
+mkdir -p "$outdir"
 
 ### Favicon ###
 
