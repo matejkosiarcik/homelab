@@ -39,19 +39,19 @@ services:
         logo: ./assets/icons/odroid.png
         clipboard: "ssh matej@10.1.4.7.home"
 
-      - name: Rasbperry Pi 3B
+      - name: RPi 3B
         subtitle: PiHole
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.4.home
 
-      - name: Rasbperry Pi 4B 2GB
+      - name: RPi 4B 2GB
         subtitle: TV?
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.2.home
 
-      - name: Rasbperry Pi 4B 4GB
+      - name: RPi 4B 4GB
         subtitle: TV?
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
