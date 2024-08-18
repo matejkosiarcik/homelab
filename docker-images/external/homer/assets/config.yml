@@ -19,7 +19,7 @@ services:
         url: https://10.1.0.1
 
       - name: Smart Switch
-        logo: ./assets/icons/vrt/switch-2.png
+        logo: ./assets/icons/vrt/switch.png
         subtitle: Tp-Link SG108E
         url: http://10.1.0.3
         method: get

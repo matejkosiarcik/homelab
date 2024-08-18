@@ -23,7 +23,7 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg"
 
 outdir="$global_outdir/vrt"
 convert_image "$convert_options" "$indir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$outdir/router.png"
-convert_image "$convert_options" "$indir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$outdir/switch-2.png"
+convert_image "$convert_options" "$indir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$outdir/switch.png"
 
 ### Organizr Icons ###
 
