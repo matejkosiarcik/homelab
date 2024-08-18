@@ -17,7 +17,7 @@ convert_options='magick INPUT_FILE -resize 126x126 -density 1200 -background non
 ### OSA Icons ###
 
 outdir="$global_outdir/osa"
-convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/awareness.png"
+convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/light-bulb.png"
 
 ### VRT Icons ###
 
