@@ -3,8 +3,8 @@ import path from 'path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import dotenv from 'dotenv';
-import { initWinston, log } from './utils/logging.ts';
 import { expressApp } from './express/express.ts';
+import { initWinston, log } from './utils/logging.ts';
 import { setupStatusReader } from './utils/status-reader.ts';
 
 (async () => {
