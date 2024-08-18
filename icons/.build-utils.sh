@@ -18,7 +18,7 @@ convert_image() {
     rm -f "$_infile"
 
     if printf '%s' "$_outfile" | grep -E '\.png$' >/dev/null 2>&1; then
-        zopflipng --iterations=200 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$_outfile" "$_outfile"
+        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$_outfile" "$_outfile"
     fi
 }
 
