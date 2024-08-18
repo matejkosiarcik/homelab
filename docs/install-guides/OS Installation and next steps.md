@@ -49,7 +49,7 @@ ansible-playbook --limit <machine-name> playbooks/setup-system.yml
 TL;DR:
 
 ```sh
-cd "$HOME/git/homelab/machines"
+cd "$HOME/git/homelab/servers"
 ln -s <machine-name> .current
 ```
 

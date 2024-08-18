@@ -1,0 +1,1 @@
+@reboot sh "$HOME/git/homelab/servers/.current/startup.sh" >"$HOME/.log/startup-cron.log" 2>&1

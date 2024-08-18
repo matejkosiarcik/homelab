@@ -22,11 +22,11 @@
           exit 1
         fi
 
-        if [ ! -e 'machines/.current' ]; then
+        if [ ! -e 'servers/.current' ]; then
           printf 'machine symlink is not setup\n'
           exit 1
         fi
 
-        cd machines/.current
+        cd servers/.current
 
         sh deployment.sh start
