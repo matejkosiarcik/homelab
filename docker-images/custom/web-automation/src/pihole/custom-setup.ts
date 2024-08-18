@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import legacyFs from 'fs';
 import { getIsoDate, getTargetAdminPassword } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 import path from 'path';
@@ -35,6 +36,10 @@ import path from 'path';
                     await page.locator('.alert-success').waitFor();
                     await page.locator('.alert-success').waitFor({ state: 'hidden', timeout: 10_000 });
                 }
+            }
+
+            if (!legacyFs.existsSync('/.homelab/domains')) {
+                return;
             }
 
             const domainsFiles = (await fs.readdir('/.homelab/domains', { recursive: false, withFileTypes: true }))
