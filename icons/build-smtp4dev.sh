@@ -6,7 +6,8 @@ tmpdir=''
 . "$(dirname "$0")/.build-utils.sh"
 
 indir="$(git rev-parse --show-toplevel)/icons"
-outdir="$(git rev-parse --show-toplevel)/docker-images/smtp4dev"
+outdir="$(git rev-parse --show-toplevel)/docker-images/external/smtp4dev"
+rm -rf "$outdir"
 mkdir -p "$outdir"
 
 ### Favicon ###

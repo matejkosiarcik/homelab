@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 FROM rnwood/smtp4dev:3.3.3
-COPY ./external/smtp4dev/favicon.ico /app/wwwroot/favicon.ico
+COPY ./external/smtp4dev/icons/favicon.ico /app/wwwroot/favicon.ico
 ENV ASPNETCORE_HTTP_PORTS=80 \
     HOMELAB_CONTAINER_TYPE=smtp4dev \
     ServerOptions__LockSettings=true \

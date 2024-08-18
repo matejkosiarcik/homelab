@@ -7,7 +7,7 @@ tmpdir=''
 . "$(dirname "$0")/.build-utils.sh"
 
 indir="$(git rev-parse --show-toplevel)/icons"
-global_outdir="$(git rev-parse --show-toplevel)/docker-images/homer/assets/icons"
+global_outdir="$(git rev-parse --show-toplevel)/docker-images/external/homer/assets/icons"
 rm -rf "$global_outdir"
 mkdir -p "$global_outdir"
 
@@ -23,13 +23,13 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg"
 
 outdir="$global_outdir/vrt"
 convert_image "$convert_options" "$indir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$outdir/router.png"
-convert_image "$convert_options" "$indir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$outdir/switch-2.png"
+convert_image "$convert_options" "$indir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$outdir/switch.png"
 
 ### Organizr Icons ###
 
 outdir="$global_outdir/organizr"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$outdir/healthchecks.png"
-convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$outdir/homeassistant.png"
+convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$outdir/home-assistant.png"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/netdata.png" "$outdir/netdata.png"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$outdir/speedtest.png"
