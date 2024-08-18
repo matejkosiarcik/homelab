@@ -95,7 +95,7 @@ if [ "$mode" = 'prod' ]; then
 fi
 
 docker_dryrun_args=''
-if [ "$dry_run" -eq 1 ]; then
+if [ "$dry_run" = '1' ]; then
     docker_dryrun_args='--dry-run'
 fi
 
