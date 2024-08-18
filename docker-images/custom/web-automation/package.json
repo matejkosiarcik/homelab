@@ -19,7 +19,7 @@
     "@tsconfig/recommended": "^1.0.7",
     "@types/chai": "^4.3.17",
     "@types/node": "^22.4.0",
-    "rollup": "^4.20.0",
+    "rollup": "^4.21.0",
     "tslib": "^2.6.3",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
