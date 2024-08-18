@@ -4,12 +4,6 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { expect } from 'chai';
 
-export function loadEnv() {
-    if (fsSync.existsSync('.env')) {
-        dotenv.config({ path: '.env' });
-    }
-}
-
 export function getIsoDate(): string {
     return new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000)
         .toISOString()

@@ -1,9 +1,7 @@
-import { getIsoDate, getTargetAdminPassword, loadEnv } from '../.utils/utils.ts';
+import { getIsoDate, getTargetAdminPassword } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
-    loadEnv();
-
     const credentials = {
         password: getTargetAdminPassword(),
     };
@@ -25,7 +23,6 @@ import { runAutomation } from '../.utils/main.ts';
             (await page.locator(`${enableBlockingButtonSelector},${disableBlockingButtonSelector}`).all())
                 .map(async (locator) => locator.waitFor())
         );
-
 
         // Check current blocking status
         const currentMode = await page.locator(disableBlockingButtonSelector).isVisible() ? 'blocking' : 'not-blocking';
