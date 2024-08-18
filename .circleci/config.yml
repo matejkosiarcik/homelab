@@ -13,10 +13,6 @@ jobs:
   azlint:
     docker:
       - image: matejkosiarcik/azlint:0.6.12
-    environment:
-      # TODO: Remove override
-      VALIDATE_NPM_INSTALL: "false"
-      VALIDATE_NPM_INSTALL_LOCK: "false"
     steps:
       - checkout
       - run: |
