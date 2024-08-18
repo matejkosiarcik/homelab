@@ -26,7 +26,6 @@ import { runAutomation } from '../.utils/main.ts';
                 .map(async (locator) => locator.waitFor())
         );
 
-
         // Check current blocking status
         const currentMode = await page.locator(disableBlockingButtonSelector).isVisible() ? 'blocking' : 'not-blocking';
         const targetMode = (process.env['HOMELAB_BLOCK_ADS'] || '1') === '1' ? 'blocking' : 'not-blocking';
