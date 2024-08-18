@@ -57,110 +57,124 @@ services:
         logo: ./assets/icons/other/raspberry-pi.png
         clipboard: ssh matej@10.1.4.3.home
 
-  - name: Apps
-    icon: fa-brands fa-docker
-    items:
-      - name: PiHole (main)
-        type: Ping
-        subtitle: DNS
-        url: https://pihole-main.home
-        logo: ./assets/icons/organizr/pihole.png
-
-      - name: PiHole (main) [backup]
-        type: Ping
-        subtitle: DNS
-        url: https://pihole-main-backup.home
-        logo: ./assets/icons/organizr/pihole.png
-
-      - name: PiHole (work)
-        type: Ping
-        subtitle: DNS
-        url: https://pihole-work.home
-        logo: ./assets/icons/organizr/pihole.png
-
-      - name: PiHole (spouse)
-        type: Ping
-        subtitle: DNS
-        url: https://pihole-spouse.home
-        logo: ./assets/icons/organizr/pihole.png
-
-      - name: PiHole (guests)
-        type: Ping
-        subtitle: DNS
-        url: https://pihole-guests.home
-        logo: ./assets/icons/organizr/pihole.png
-
-      - name: Homer
-        type: Ping
-        subtitle: Dashboard
-        url: https://homer.home
-        logo: ./assets/icons/other/homer.png
-
-      - name: Unifi
-        type: Ping
-        subtitle: Network Controller
-        url: https://unifi.home
-        logo: ./assets/icons/organizr/unifi.png
-
-      - name: TP-Link Omada
-        type: Ping
-        subtitle: Network Controller
-        url: https://omada.home
-        logo: ./assets/icons/other/tp-link-omada.png
-
-      - name: Healthchecks
-        type: Ping
-        subtitle: Cron monitor
-        url: https://healthchecks.home
-        logo: ./assets/icons/organizr/healthchecks.png
-
-      - name: Uptime Kuma
-        type: Ping
-        subtitle: Uptime monitor
-        url: https://uptime-kuma.home
-        logo: ./assets/icons/other/uptime-kuma.png
-
-      - name: Smtp4dev
-        type: Ping
-        subtitle: Mail server
-        url: https://smtp4dev.home
-        logo: ./assets/icons/other/smtp4dev.png
-
-      - name: SpeedTest
-        type: Ping
-        subtitle: Internet speed tracker
-        url: https://speedtest.home
-        logo: ./assets/icons/organizr/speedtest.png
-
-      - name: Netdata
-        type: Ping
-        subtitle: Resource monitor
-        url: https://netdata.home
-        logo: ./assets/icons/organizr/netdata.png
-
-      - name: Prometheus
-        type: Ping
-        subtitle: General monitor
-        url: https://prometheus.home
-        logo: ./assets/icons/other/prometheus.png
-
   - name: Smart Home
     icon: fa-solid fa-house
     items:
       - name: Home Assistant
         type: Ping
         subtitle: "-"
-        url: https://homeassistant.home
+        url: https://home-assistant.home
         logo: ./assets/icons/organizr/homeassistant.png
 
       - name: Desk Lamp
         subtitle: Left
         type: Ping
-        url: https://desklamp1.home
+        url: https://desklamp-1.home
         logo: ./assets/icons/osa/awareness.png
 
       - name: Desk Lamp
         subtitle: Right
         type: Ping
-        url: https://desklamp2.home
+        url: https://desklamp-2.home
         logo: ./assets/icons/osa/awareness.png
+
+  - name: Apps
+    icon: fa-brands fa-docker
+    items:
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: main
+        url: https://pihole-main.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: main (backup)
+        url: https://pihole-main-backup.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: work
+        url: https://pihole-work.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: spouse
+        url: https://pihole-spouse.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: guests
+        url: https://pihole-guests.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      # Dashboard
+      - name: Homer
+        type: Ping
+        subtitle: "-"
+        url: https://homer.home
+        logo: ./assets/icons/other/homer.png
+
+      # SDN Network controller
+      - name: Unifi
+        type: Ping
+        subtitle: "-"
+        url: https://unifi-controller.home
+        logo: ./assets/icons/organizr/unifi.png
+
+      # SDN Network controller
+      - name: TP-Link Omada
+        type: Ping
+        subtitle: "-"
+        url: https://omada-controller.home
+        logo: ./assets/icons/other/tp-link-omada.png
+
+      # Cron monitor
+      - name: Healthchecks
+        type: Ping
+        subtitle: "-"
+        url: https://healthchecks.home
+        logo: ./assets/icons/organizr/healthchecks.png
+
+      # Uptime monitor
+      - name: Uptime Kuma
+        type: Ping
+        subtitle: "-"
+        url: https://uptime-kuma.home
+        logo: ./assets/icons/other/uptime-kuma.png
+
+      # Mail server
+      - name: Smtp4dev
+        type: Ping
+        subtitle: "-"
+        url: https://smtp4dev.home
+        logo: ./assets/icons/other/smtp4dev.png
+
+      # Eh?
+      - name: SpeedTest
+        type: Ping
+        subtitle: "-"
+        url: https://speedtest.home
+        logo: ./assets/icons/organizr/speedtest.png
+
+      # Resource monitor
+      - name: Netdata
+        type: Ping
+        subtitle: "-"
+        url: https://netdata.home
+        logo: ./assets/icons/organizr/netdata.png
+
+      # General monitor
+      - name: Prometheus
+        type: Ping
+        subtitle: "-"
+        url: https://prometheus.home
+        logo: ./assets/icons/other/prometheus.png
