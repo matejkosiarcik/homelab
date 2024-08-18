@@ -70,13 +70,13 @@ services:
         subtitle: Left
         type: Ping
         url: https://desklamp-1.home
-        logo: ./assets/icons/osa/awareness.png
+        logo: ./assets/icons/osa/light-bulb.png
 
       - name: Desk Lamp
         subtitle: Right
         type: Ping
         url: https://desklamp-2.home
-        logo: ./assets/icons/osa/awareness.png
+        logo: ./assets/icons/osa/light-bulb.png
 
   - name: Apps
     icon: fa-brands fa-docker
