@@ -19,7 +19,7 @@ Notes:
 - Set Timezone _Europe/Bratislava_
 - Set username to _matej_
 
-## Other
+## Other
 
 TBD
 
