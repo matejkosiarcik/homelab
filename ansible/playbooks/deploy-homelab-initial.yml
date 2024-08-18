@@ -1,0 +1,63 @@
+- name: Deploy latest homelab services
+  hosts: servers
+  serial: 1
+  any_errors_fatal: true
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+    - name: Initial partial deploy
+      changed_when: true
+      ansible.builtin.shell: |
+        if [ -d "$HOME/git/homelab" ]; then
+          cd "$HOME/git/homelab"
+        else
+          printf 'Directory ~/git/homelab not found\n'
+          exit 1
+        fi
+
+        if [ "$(git status --short)" != '' ]; then
+          printf 'git repository is dirty\n'
+          git status
+          exit 1
+        fi
+
+        if [ ! -e 'machines/.current' ]; then
+          printf 'machine symlink is not setup\n'
+          exit 1
+        fi
+
+        cd machines/.current
+
+        sh deployment.sh start --dry-run
+
+    - name: Reboot
+      when: docker_install.changed
+      throttle: 1
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
+
+    - name: Real deploy
+      changed_when: true
+      ansible.builtin.shell: |
+        if [ -d "$HOME/git/homelab" ]; then
+          cd "$HOME/git/homelab"
+        else
+          printf 'Directory ~/git/homelab not found\n'
+          exit 1
+        fi
+
+        if [ "$(git status --short)" != '' ]; then
+          printf 'git repository is dirty\n'
+          git status
+          exit 1
+        fi
+
+        if [ ! -e 'machines/.current' ]; then
+          printf 'machine symlink is not setup\n'
+          exit 1
+        fi
+
+        cd machines/.current
+
+        sh deployment.sh start
