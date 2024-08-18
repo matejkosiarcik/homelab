@@ -131,7 +131,7 @@ omada-controller)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-pihole | pihole-main)
+pihole*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
