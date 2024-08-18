@@ -1,2 +1,2 @@
-10.1.10.1 pihole-main.home
-10.1.12.1 pihole-main-backup.home
+10.1.10.1 pihole-main-backup.home
+10.1.12.1 pihole-main.home
