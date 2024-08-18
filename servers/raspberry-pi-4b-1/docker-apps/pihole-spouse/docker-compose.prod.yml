@@ -37,7 +37,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.12.1"
+        ipv4_address: "10.1.12.2"
 
   web-backup:
     <<: *common-service-options
