@@ -57,12 +57,15 @@ services:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/web-backup/Dockerfile
+      dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
       main-app:
         condition: service_healthy
     env_file:
       - ./private/web-backup.env
+    environment:
+      <<: *common-env-variables
+      HOMELAB_AUTOMATION_TYPE: backup
     volumes:
       - ./data/web-backup:/backup:rw
       - ./data/web-backup-errors:/error:rw

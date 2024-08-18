@@ -133,8 +133,9 @@ omada-controller)
     ;;
 pihole | pihole-main)
     init_apache_users
-    prepare_healthcheck_url "$output/web-backup.env"
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-backup.env"
+    prepare_healthcheck_url "$output/web-update-gravity.env"
 
     # Precreate passwords
     create_password "$tmpdir/app-password.txt"
@@ -144,6 +145,7 @@ pihole | pihole-main)
 
     # Backups
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-update-gravity.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

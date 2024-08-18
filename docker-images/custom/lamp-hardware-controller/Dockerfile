@@ -20,7 +20,8 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends curl python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
-ENV PATH="/app/vendor/bin:$PATH" \
+ENV HOMELAB_CONTAINER_TYPE=lamp-hardware-controller \
+    PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost || exit 1" ]

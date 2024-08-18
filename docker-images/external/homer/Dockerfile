@@ -3,6 +3,7 @@
 
 FROM b4bz/homer:v24.05.1
 COPY ./external/homer/assets/ /www/assets/
-ENV INIT_ASSETS=0 \
+ENV HOMELAB_CONTAINER_TYPE=homer \
+    INIT_ASSETS=0 \
     PORT=80 \
     TZ=Europe/Bratislava

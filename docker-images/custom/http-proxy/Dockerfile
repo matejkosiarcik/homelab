@@ -19,6 +19,7 @@ EXPOSE 80
 EXPOSE 443
 ENV APACHE_HTTP_PORT_NUMBER=80 \
     APACHE_HTTPS_PORT_NUMBER=443 \
+    HOMELAB_CONTAINER_TYPE=http-proxy \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
 # TODO: Update to --interval=10s --start-period=15s
