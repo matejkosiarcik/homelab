@@ -135,6 +135,7 @@ pihole*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
+    prepare_healthcheck_url "$output/web-setup-blocking.env"
     prepare_healthcheck_url "$output/web-update-gravity.env"
 
     # Precreate passwords
@@ -145,6 +146,7 @@ pihole*)
 
     # Backups
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-setup-blocking.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-update-gravity.env"
 
     # Log results

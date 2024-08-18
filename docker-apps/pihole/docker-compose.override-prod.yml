@@ -36,3 +36,6 @@ services:
 
   web-update-gravity:
     <<: *common-service-options
+
+  web-setup-blocking:
+    <<: *common-service-options

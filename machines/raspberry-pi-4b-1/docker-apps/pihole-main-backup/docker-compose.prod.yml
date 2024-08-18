@@ -45,6 +45,12 @@ services:
       file: *extends-file
       service: web-backup
 
+  web-setup-blocking:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-setup-blocking
+
   web-update-gravity:
     <<: *common-service-options
     extends:
