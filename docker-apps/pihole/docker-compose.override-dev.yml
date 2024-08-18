@@ -36,8 +36,5 @@ services:
   web-backup:
     <<: *common-service-options
 
-  web-update-gravity:
-    <<: *common-service-options
-
-  web-setup-blocking:
+  web-custom-setup:
     <<: *common-service-options
