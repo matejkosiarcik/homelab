@@ -63,13 +63,31 @@ services:
       - name: PiHole (main)
         type: Ping
         subtitle: DNS
-        url: https://pihole.home
+        url: https://pihole-main.home
         logo: ./assets/icons/organizr/pihole.png
 
       - name: PiHole (main) [backup]
         type: Ping
         subtitle: DNS
-        url: https://pihole--backup.home
+        url: https://pihole-main-backup.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      - name: PiHole (work)
+        type: Ping
+        subtitle: DNS
+        url: https://pihole-work.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      - name: PiHole (spouse)
+        type: Ping
+        subtitle: DNS
+        url: https://pihole-spouse.home
+        logo: ./assets/icons/organizr/pihole.png
+
+      - name: PiHole (guests)
+        type: Ping
+        subtitle: DNS
+        url: https://pihole-guests.home
         logo: ./assets/icons/organizr/pihole.png
 
       - name: Homer
