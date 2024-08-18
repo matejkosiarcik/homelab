@@ -66,7 +66,6 @@ START_DATE="$(date +"%Y-%m-%d_%H-%M-%S")"
 export START_DATE
 
 machine_dir="$PWD"
-
 log_dir="$HOME/homelab-log/$START_DATE"
 log_file="$log_dir/install.txt"
 mkdir -p "$log_dir"
