@@ -1,9 +1,7 @@
-import { getIsoDate, getTargetAdminPassword, loadEnv } from '../.utils/utils.ts';
+import { getIsoDate, getTargetAdminPassword } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
-    loadEnv();
-
     const credentials = {
         password: getTargetAdminPassword(),
     };
