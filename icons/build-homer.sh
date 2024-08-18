@@ -7,7 +7,7 @@ tmpdir=''
 . "$(dirname "$0")/.build-utils.sh"
 
 indir="$(git rev-parse --show-toplevel)/icons"
-global_outdir="$(git rev-parse --show-toplevel)/docker-images/homer/assets/icons"
+global_outdir="$(git rev-parse --show-toplevel)/docker-images/external/homer/assets/icons"
 rm -rf "$global_outdir"
 mkdir -p "$global_outdir"
 
