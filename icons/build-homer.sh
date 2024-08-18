@@ -29,7 +29,7 @@ convert_image "$convert_options" "$indir/gitman-repositories/dia-vrt-sheets/SVG/
 
 outdir="$global_outdir/organizr"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$outdir/healthchecks.png"
-convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$outdir/homeassistant.png"
+convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$outdir/home-assistant.png"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/netdata.png" "$outdir/netdata.png"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
 convert_image "$convert_options" "$indir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$outdir/speedtest.png"

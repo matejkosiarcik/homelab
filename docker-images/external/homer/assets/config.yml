@@ -64,7 +64,7 @@ services:
         type: Ping
         subtitle: "-"
         url: https://home-assistant.home
-        logo: ./assets/icons/organizr/homeassistant.png
+        logo: ./assets/icons/organizr/home-assistant.png
 
       - name: Desk Lamp
         subtitle: Left
