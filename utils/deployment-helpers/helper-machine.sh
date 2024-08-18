@@ -72,22 +72,21 @@ log_dir="$HOME/homelab-log/$START_DATE"
 log_file="$log_dir/install.txt"
 mkdir -p "$log_dir"
 
-extra_script_args=''
+script_args="--$mode"
 if [ "$force" = '1' ]; then
-    extra_script_args="$extra_script_args --force"
+    script_args="$script_args --force"
 fi
 if [ "$dry_run" = '1' ]; then
-    extra_script_args="$extra_script_args --dry-run"
+    script_args="$script_args --dry-run"
 fi
-
-mode_arg="--$mode"
 
 machine_stop() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Stop all docker apps\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
-            sh "$dir/deployment.sh" stop "$mode_arg"
+            # shellcheck disable=SC2086
+            sh "$dir/deployment.sh" stop $script_args
         done
     fi
 }
@@ -97,7 +96,8 @@ machine_start() {
         printf 'Start all docker apps\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
-            sh "$dir/deployment.sh" start "$mode_arg"
+            # shellcheck disable=SC2086
+            sh "$dir/deployment.sh" start $script_args
         done
     fi
 }
@@ -107,7 +107,8 @@ machine_init_secrets() {
         printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
-            sh "$dir/deployment.sh" init-secrets "$mode_arg"
+            # shellcheck disable=SC2086
+            sh "$dir/deployment.sh" init-secrets $script_args
         done
     fi
 }

@@ -8,7 +8,7 @@ PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 DOCKER_APPS := $(shell find 'machines' -type f -name 'docker-compose.yml' -exec dirname {} \; | base64)
 DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
 NPM_COMPONENTS := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
-DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8')
+DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8 ' | tr ' ' '\n' | base64)
 
 .POSIX:
 .SILENT:
