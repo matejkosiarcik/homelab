@@ -18,7 +18,7 @@ if [ "${HOMELAB_APP_TYPE-x}" = 'lamp-controller' ]; then
 elif [ "${HOMELAB_APP_TYPE-x}" = 'healthchecks' ]; then
     HOMELAB_UPSTREAM_URL="http://main-app:8000"
 elif [ "${HOMELAB_APP_TYPE-x}" = 'omada-controller' ]; then
-    if [ "${HOMELAB_ENV-x}" = dev ]; then
+    if [ "${HOMELAB_ENV-x}" = 'dev' ]; then
         HOMELAB_UPSTREAM_URL="http://main-app:8080"
     else
         HOMELAB_UPSTREAM_URL="http://main-app"
