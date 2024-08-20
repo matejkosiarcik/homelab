@@ -35,6 +35,9 @@ printf "export HOMELAB_UPSTREAM_URL='%s'\n" "$HOMELAB_UPSTREAM_URL" >>/etc/apach
 
 if [ "${HOMELAB_APP_TYPE-x}" = 'pihole' ]; then
     APACHE_PROXY_PASS_MATCH_NEGATIVE='^/(\.proxy(/.*)?)?$'
+elif [ "${HOMELAB_APP_TYPE-x}" = 'unifi-controller' ]; then
+    echo 'special proxypass'
+    APACHE_PROXY_PASS_MATCH_NEGATIVE='^/((\.proxy(/.*)?)|(setup/favicon.png))$'
 else
     APACHE_PROXY_PASS_MATCH_NEGATIVE='^/\.proxy(/.*)?$'
 fi
