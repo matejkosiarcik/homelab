@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM healthchecks/healthchecks:v3.4
+FROM healthchecks/healthchecks:v3.5.1
 COPY ./external/healthchecks/healthcheck.py /.homelab/healthcheck.py
 ENV DB_NAME=database \
     DB=postgres \
