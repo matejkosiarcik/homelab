@@ -160,6 +160,8 @@ smtp4dev*)
     cat "$user_logfile" >&2
     ;;
 unifi-controller*)
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords

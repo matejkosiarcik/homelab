@@ -18,5 +18,17 @@ services:
     ports:
       - 27017:27017
 
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - "8080:80"
+      - "8443:443"
+
   web-backup:
     <<: *common-service-options

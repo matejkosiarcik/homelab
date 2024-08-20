@@ -15,5 +15,17 @@ services:
   database:
     <<: *common-service-options
 
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - "80:80"
+      - "443:443"
+
   web-backup:
     <<: *common-service-options

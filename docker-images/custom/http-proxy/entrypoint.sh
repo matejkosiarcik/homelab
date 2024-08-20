@@ -23,6 +23,8 @@ elif [ "${HOMELAB_APP_TYPE-x}" = 'omada-controller' ]; then
     else
         HOMELAB_UPSTREAM_URL="http://main-app"
     fi
+elif [ "${HOMELAB_APP_TYPE-x}" = 'unifi-controller' ]; then
+    HOMELAB_UPSTREAM_URL="https://main-app:8443"
 elif [ "${HOMELAB_APP_TYPE-x}" = 'uptime-kuma' ]; then
     HOMELAB_UPSTREAM_URL="http://main-app:3001"
 else
