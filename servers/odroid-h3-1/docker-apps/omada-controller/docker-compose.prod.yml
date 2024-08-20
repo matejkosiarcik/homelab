@@ -16,6 +16,12 @@ services:
       external-network:
         ipv4_address: "10.1.16.5"
 
+  web-backup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-backup
+
 networks:
   external-network:
     driver: macvlan
