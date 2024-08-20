@@ -25,8 +25,9 @@ elif [ "${HOMELAB_APP_TYPE-x}" = 'smtp4dev' ]; then
     # socat TCP4-LISTEN:143,fork,reuseaddr TCP4:main-app:143 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "${HOMELAB_APP_TYPE-x}" = 'unifi-controller' ]; then
-    printf 'Unifi-controller not implemented yet!' >&2
-    exit 1
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+    # TODO: Forward more ports
 elif [ "${HOMELAB_APP_TYPE-x}" = 'uptime-kuma' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &

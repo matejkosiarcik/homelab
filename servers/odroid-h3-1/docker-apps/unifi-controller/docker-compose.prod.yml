@@ -22,6 +22,24 @@ services:
       file: *extends-file
       service: database
 
+  certificate-manager:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: certificate-manager
+
+  http-proxy:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: http-proxy
+
+  socket-proxy:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: socket-proxy
+
   web-backup:
     <<: *common-service-options
     extends:
