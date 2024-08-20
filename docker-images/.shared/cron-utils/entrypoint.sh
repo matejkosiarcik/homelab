@@ -17,21 +17,14 @@ printf 'started\n' >/app/.internal/status
 
 # Determine cronfile
 cronfile=""
-case "$HOMELAB_APP_TYPE" in
-pihole)
-    if [ "$HOMELAB_CONTAINER_TYPE" = 'web-automation' ]; then
-        if [ "$HOMELAB_AUTOMATION_TYPE" = 'backup' ]; then
-            cronfile='/app/crontab-backup.cron'
-        else
-            cronfile='/app/crontab-other.cron'
-        fi
+if [ "$HOMELAB_CONTAINER_TYPE" = 'web-automation' ]; then
+    if [ "$HOMELAB_AUTOMATION_TYPE" = 'backup' ]; then
+        cronfile='/app/crontab-backup.cron'
     else
-        cronfile='/app/crontab.cron'
+        cronfile='/app/crontab-other.cron'
     fi
-    ;;
-*)
+else
     cronfile='/app/crontab.cron'
-    ;;
-esac
+fi
 
 supercronic "$cronfile"
