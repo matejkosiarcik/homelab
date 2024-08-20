@@ -10,7 +10,7 @@ outdir="$(git rev-parse --show-toplevel)/docker-images/custom/http-proxy/www/.pr
 rm -rf "$outdir"
 mkdir -p "$outdir"
 
-### Favicon ###
+### Unifi Controller ###
 
 convert_image 'magick -background none -bordercolor transparent INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$outdir/favicon.png"
 
