@@ -84,7 +84,7 @@ machine_stop() {
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$dir/deployment.sh" stop $script_args
+            sh "$dir/helper.sh" stop $script_args
         done
     fi
 }
@@ -95,7 +95,7 @@ machine_start() {
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$dir/deployment.sh" start $script_args
+            sh "$dir/helper.sh" start $script_args
         done
     fi
 }
@@ -106,7 +106,7 @@ machine_init_secrets() {
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$dir/deployment.sh" init-secrets $script_args
+            sh "$dir/helper.sh" init-secrets $script_args
         done
     fi
 }

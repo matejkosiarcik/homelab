@@ -29,4 +29,4 @@
 
         cd servers/.current
 
-        sh deployment.sh start
+        sh helper.sh start
