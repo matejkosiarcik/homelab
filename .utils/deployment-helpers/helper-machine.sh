@@ -9,7 +9,7 @@ print_help() {
     printf ' install - Install machine scripts and start docker apps\n'
     printf ' start - Start all docker apps\n'
     printf ' stop - Stop all docker apps\n'
-    printf ' init-secrets - Initialize all docker apps secrets\n'
+    printf ' create-secrets - Initialize all docker apps secrets\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -d, --dev     - Dev mode\n'
@@ -100,13 +100,13 @@ machine_start() {
     fi
 }
 
-machine_init_secrets() {
+machine_create_secrets() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$dir/helper.sh" init-secrets $script_args
+            sh "$dir/helper.sh" create-secrets $script_args
         done
     fi
 }
@@ -135,8 +135,8 @@ start)
 stop)
     machine_stop
     ;;
-init-secrets)
-    machine_init_secrets
+create-secrets)
+    machine_create_secrets
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2
