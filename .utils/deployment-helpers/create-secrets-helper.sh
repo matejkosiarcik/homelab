@@ -56,7 +56,7 @@ create_password() {
         printf 'Password123.' >"$output_file" # A simple password for debugging
     else
         # shellcheck disable=SC2086
-        python3 "$helper_script_dir/.shared/password.py" --output "$output_file" $extra_flags
+        python3 "$helper_script_dir/.create-secrets-helpers/password.py" --output "$output_file" $extra_flags
     fi
 }
 
