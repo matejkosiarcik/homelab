@@ -9,7 +9,7 @@ print_help() {
     printf ' install - Install machine scripts and start docker apps\n'
     printf ' start - Start all docker apps\n'
     printf ' stop - Stop all docker apps\n'
-    printf ' create-secrets - Initialize all docker apps secrets\n'
+    printf ' create-secrets - Create secrets for all docker apps\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -d, --dev     - Dev mode\n'
