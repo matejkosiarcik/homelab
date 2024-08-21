@@ -170,7 +170,7 @@ create-secrets)
         create_secrets_args="$create_secrets_args --dev"
     fi
     # shellcheck disable=SC2086
-    sh "$git_dir/.utils/deployment-helpers/create-secrets-helper.sh" $create_secrets_args
+    sh "$git_dir/.utils/deployment-helpers/.create-secrets-helpers/main.sh" $create_secrets_args
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2
