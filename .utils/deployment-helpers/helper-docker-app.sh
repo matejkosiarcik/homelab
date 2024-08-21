@@ -8,7 +8,7 @@ print_help() {
     printf 'Commands:\n'
     printf ' start - Start docker app\n'
     printf ' stop - Stop docker app\n'
-    printf ' init-secrets - Initialize service secrets\n'
+    printf ' create-secrets - Initialize service secrets\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -d, --dev     - Dev mode\n'
@@ -161,16 +161,16 @@ start)
 stop)
     docker_stop
     ;;
-init-secrets)
-    init_secrets_args=''
+create-secrets)
+    create_secrets_args=''
     if [ "$force" -eq '1' ]; then
-        init_secrets_args="$init_secrets_args --force"
+        create_secrets_args="$create_secrets_args --force"
     fi
     if [ "$mode" = 'dev' ]; then
-        init_secrets_args="$init_secrets_args --dev"
+        create_secrets_args="$create_secrets_args --dev"
     fi
     # shellcheck disable=SC2086
-    sh "$git_dir/.utils/init-secrets-helpers/main.sh" $init_secrets_args
+    sh "$git_dir/.utils/create-secrets-helpers/main.sh" $create_secrets_args
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2
