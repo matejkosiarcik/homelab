@@ -8,7 +8,7 @@ print_help() {
     printf 'Commands:\n'
     printf ' start - Start docker app\n'
     printf ' stop - Stop docker app\n'
-    printf ' create-secrets - Initialize service secrets\n'
+    printf ' create-secrets - Create app secrets\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -d, --dev     - Dev mode\n'
