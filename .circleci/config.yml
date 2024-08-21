@@ -77,25 +77,25 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 3B (1)
           command: |
-            bash './servers/raspberry-pi-3b-1/deployment.sh' init-secrets --dev
-            bash './servers/raspberry-pi-3b-1/deployment.sh' start --dev --dry-run
+            bash './servers/raspberry-pi-3b-1/helper.sh' init-secrets --dev
+            bash './servers/raspberry-pi-3b-1/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi 4B (1)
           command: |
-            bash './servers/raspberry-pi-4b-1/deployment.sh' init-secrets --dev
-            bash './servers/raspberry-pi-4b-1/deployment.sh' start --dev --dry-run
+            bash './servers/raspberry-pi-4b-1/helper.sh' init-secrets --dev
+            bash './servers/raspberry-pi-4b-1/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi Zero 2w (1)
           command: |
-            bash './servers/raspberry-pi-zero-2w-1/deployment.sh' init-secrets --dev
-            bash './servers/raspberry-pi-zero-2w-1/deployment.sh' start --dev --dry-run
+            bash './servers/raspberry-pi-zero-2w-1/helper.sh' init-secrets --dev
+            bash './servers/raspberry-pi-zero-2w-1/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi Zero 2w (1)
           command: |
-            bash './servers/raspberry-pi-zero-2w-2/deployment.sh' init-secrets --dev
-            bash './servers/raspberry-pi-zero-2w-2/deployment.sh' start --dev --dry-run
+            bash './servers/raspberry-pi-zero-2w-2/helper.sh' init-secrets --dev
+            bash './servers/raspberry-pi-zero-2w-2/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Odroid H3 (1)
           command: |
-            bash './servers/odroid-h3-1/deployment.sh' init-secrets --dev
-            bash './servers/odroid-h3-1/deployment.sh' start --dev --dry-run
+            bash './servers/odroid-h3-1/helper.sh' init-secrets --dev
+            bash './servers/odroid-h3-1/helper.sh' start --dev --dry-run
