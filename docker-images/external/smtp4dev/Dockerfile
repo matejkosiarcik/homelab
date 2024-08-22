@@ -14,4 +14,4 @@ ENV ASPNETCORE_HTTP_PORTS=80 \
 # ServerOptions__AuthenticationRequired=true
 
 # Note: curl/wget isn't available, so we have to resort to bash
-HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "timeout 1s bash -c ':> /dev/tcp/localhost/80'" ]
+HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "timeout 1s bash -c ':> /dev/tcp/localhost/80'" ]
