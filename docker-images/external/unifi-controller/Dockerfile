@@ -17,4 +17,4 @@ ENV TZ=Europe/Bratislava
 # - MONGO_TLS= # optional
 # - MONGO_AUTHSOURCE= # optional
 
-HEALTHCHECK --interval=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "if [ \"$(curl --insecure https://localhost:8443/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "if [ \"$(curl --insecure https://localhost:8443/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]

@@ -9,4 +9,4 @@ ENV HOMELAB_CONTAINER_TYPE=postgres \
     PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "pg_isready || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "pg_isready || exit 1" ]

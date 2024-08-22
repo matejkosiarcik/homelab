@@ -47,6 +47,6 @@ ENV HOMELAB_CONTAINER_TYPE=postgres-backup \
     PGDATABASE=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=30s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=30s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
