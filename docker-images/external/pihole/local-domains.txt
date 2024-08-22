@@ -2,3 +2,10 @@
 10.1.12.1 pihole-main.home
 10.1.12.2 pihole-spouse.home
 10.1.12.3 pihole-guests.home
+10.1.12.4 pihole-work.home
+10.1.16.1 healthchecks.home
+10.1.16.2 homer.home
+10.1.16.3 omada-controller.home
+10.1.16.4 smtp4dev.home
+10.1.16.5 unifi-controller.home
+10.1.16.6 uptime-kuma.home
