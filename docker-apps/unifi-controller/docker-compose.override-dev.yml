@@ -21,14 +21,13 @@ services:
   certificate-manager:
     <<: *common-service-options
 
-  http-proxy:
-    <<: *common-service-options
-
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "8080:80"
-      - "8443:443"
+      - 8080:8080
+      - 8443:8443
+      - 8843:8843
+      - 8880:8880
 
   web-backup:
     <<: *common-service-options

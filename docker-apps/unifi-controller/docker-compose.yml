@@ -23,18 +23,6 @@ services:
       MONGO_DBNAME: unifi
       MONGO_HOST: database
       MONGO_USER: unifi
-    # TODO: Reenable ports for production
-    # ports:
-    #   - 3478:3478/udp
-    #   - 8080:8080
-    #   - 8443:8443
-    #   - 10001:10001/udp
-    #   # Optional below
-    #   - 1900:1900/udp
-    #   - 5514:5514/udp
-    #   - 6789:6789
-    #   - 8843:8843
-    #   - 8880:8880
     volumes:
       - ./data/app:/config:rw
       - ./private/database-password.txt:/.homelab/database-password.txt:ro
@@ -65,19 +53,6 @@ services:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
 
-  http-proxy:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
-    volumes:
-      - ./log/http-proxy:/log:rw
-      - ./data/certs:/certs:ro
-      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
-
   socket-proxy:
     <<: *common-service-options
     build:
@@ -85,6 +60,17 @@ services:
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
       - ./log/socket-proxy:/log:rw
+    ports:
+      - 3478:3478/udp
+      # - 8080:8080
+      # - 8443:8443
+      - 10001:10001/udp
+      # Optional below
+      - 1900:1900/udp
+      - 5514:5514/udp
+      - 6789:6789
+      # - 8843:8843
+      # - 8880:8880
 
   web-backup:
     <<: *common-service-options
