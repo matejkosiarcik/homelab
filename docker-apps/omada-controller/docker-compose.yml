@@ -19,10 +19,6 @@ services:
       nofile:
         soft: 4096
         hard: 8192
-    ports:
-      - 27001:27001/udp
-      - 29810:29810/udp
-      - 29811-29816:29811-29816
     volumes:
       - ./data/app:/opt/tplink/EAPController/data:rw
       - ./data/certs:/certs:rw
@@ -36,6 +32,10 @@ services:
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
       - ./log/socket-proxy:/log:rw
+    ports:
+      - 27001:27001/udp
+      - 29810:29810/udp
+      - 29811-29816:29811-29816
 
   web-backup:
     <<: *common-service-options
