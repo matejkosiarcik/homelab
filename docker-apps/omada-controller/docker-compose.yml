@@ -29,6 +29,14 @@ services:
       - ./log/app:/opt/tplink/EAPController/logs:rw
     stop_grace_period: 60s
 
+  socket-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+    volumes:
+      - ./log/socket-proxy:/log:rw
+
   web-backup:
     <<: *common-service-options
     build:

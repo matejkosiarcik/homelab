@@ -18,6 +18,9 @@ services:
       MANAGE_HTTPS_PORT: 8443
       PORTAL_HTTP_PORT: 8081
       PORTAL_HTTPS_PORT: 8444
+
+  socket-proxy:
+    <<: *common-service-options
     ports:
       - 8080:8080
       - 8081:8081

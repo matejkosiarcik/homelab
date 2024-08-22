@@ -17,6 +17,9 @@ services:
       MANAGE_HTTPS_PORT: 443
       PORTAL_HTTP_PORT: 81
       PORTAL_HTTPS_PORT: 444
+
+  socket-proxy:
+    <<: *common-service-options
     ports:
       - 80:80
       - 81:81
