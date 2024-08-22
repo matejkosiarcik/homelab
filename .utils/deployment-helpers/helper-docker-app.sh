@@ -104,7 +104,7 @@ fi
 
 docker_stop() {
     printf 'Stop docker containers\n' | tee "$log_file" >&2
-    # shellcheck disable=SC2086
+    # shellcheck disable=SC2086,SC2248
     docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
 }
 
@@ -138,7 +138,7 @@ docker_start() {
 
     # Build docker images
     printf 'Build docker images\n' | tee "$log_file" >&2
-    # shellcheck disable=SC2086
+    # shellcheck disable=SC2086,SC2248
     docker compose $docker_file_args build --pull --with-dependencies $docker_build_args 2>&1 | tee "$log_file" >&2
     printf '\n' | tee "$log_file" >&2
 
