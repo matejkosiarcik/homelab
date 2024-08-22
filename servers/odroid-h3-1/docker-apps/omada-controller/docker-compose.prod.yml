@@ -12,6 +12,12 @@ services:
     extends:
       file: *extends-file
       service: main-app
+
+  socket-proxy:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: socket-proxy
     networks:
       external-network:
         ipv4_address: "10.1.16.3"
