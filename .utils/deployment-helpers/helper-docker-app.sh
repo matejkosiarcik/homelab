@@ -86,6 +86,12 @@ log_dir="$HOME/homelab-log/$START_DATE/$full_service_name"
 log_file="$log_dir/install.txt"
 backup_dir="$HOME/homelab-backup/$START_DATE/$full_service_name"
 
+if [ "$mode" = 'dev' ]; then
+    log_file='/dev/null'
+elif [ "$mode" = 'prod' ]; then
+    mkdir -p "$log_dir" "$backup_dir"
+fi
+
 docker_file_args=''
 if [ "$mode" = 'prod' ]; then
     docker_file_args='--file docker-compose.yml --file docker-compose.prod.yml'
@@ -97,16 +103,8 @@ if [ "$dry_run" = '1' ]; then
 fi
 
 docker_stop() {
-    if [ "$mode" != 'prod' ]; then
-        # shellcheck disable=SC2086,SC2248
-        docker compose $docker_file_args down $docker_dryrun_args
-    else
-        mkdir -p "$log_dir"
-
-        printf 'Stop docker containers\n' | tee "$log_file" >&2
-        # shellcheck disable=SC2086,SC2248
-        docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
-    fi
+    printf 'Stop docker containers\n' | tee "$log_file" >&2
+    docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
 }
 
 docker_start() {
@@ -116,7 +114,6 @@ docker_start() {
     fi
 
     if [ "$mode" = prod ]; then
-        mkdir -p "$backup_dir"
         if [ -d "$app_dir/log" ]; then
             # TODO: Run without sudo?
             sudo cp -R "$app_dir/log/." "$backup_dir/log"
@@ -127,30 +124,37 @@ docker_start() {
         fi
     fi
 
-    if [ "$mode" != 'prod' ]; then
-        # shellcheck disable=SC2086,SC2248
-        docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --build $docker_dryrun_args
-    else
-        mkdir -p "$log_dir"
+    # Pull docker images
+    printf 'Pull docker images\n' | tee "$log_file" >&2
+    # shellcheck disable=SC2086
+    docker compose $docker_file_args pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2
+    printf '\n' | tee "$log_file" >&2
 
-        # Pull docker images
-        printf 'Pull docker images\n' | tee "$log_file" >&2
-        # shellcheck disable=SC2086
-        docker compose $docker_file_args pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2
-        printf '\n' | tee "$log_file" >&2
-
-        # Build docker images
-        printf 'Build docker images\n' | tee "$log_file" >&2
-        # shellcheck disable=SC2086
-        docker compose $docker_file_args build --pull --with-dependencies --quiet 2>&1 | tee "$log_file" >&2
-        printf '\n' | tee "$log_file" >&2
-
-        # Run new services
-        printf 'Start docker containers\n' | tee "$log_file" >&2
-        # shellcheck disable=SC2086,SC2248
-        docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build --detach --wait $docker_dryrun_args 2>&1 | tee "$log_file" >&2
-        printf '\n' | tee "$log_file" >&2
+    docker_build_args=''
+    if [ "$mode" = 'prod' ]; then
+        docker_build_args='--quiet'
     fi
+
+    # Build docker images
+    printf 'Build docker images\n' | tee "$log_file" >&2
+    # shellcheck disable=SC2086
+    docker compose $docker_file_args build --pull --with-dependencies $docker_build_args 2>&1 | tee "$log_file" >&2
+    printf '\n' | tee "$log_file" >&2
+
+    docker_deamon_args=''
+    if [ "$mode" = 'prod' ]; then
+        docker_deamon_args='--detach --wait'
+    fi
+
+    # Run new services
+    printf 'Start docker containers\n' | tee "$log_file" >&2
+    # shellcheck disable=SC2086,SC2248
+    if [ "$mode" = 'prod' ]; then
+        docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_deamon_args $docker_dryrun_args 2>&1 | tee "$log_file" >&2
+    elif [ "$mode" = 'dev' ]; then
+        docker compose --ansi always $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_deamon_args $docker_dryrun_args
+    fi
+    printf '\n' | tee "$log_file" >&2
 }
 
 case "$command" in
