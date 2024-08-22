@@ -104,6 +104,7 @@ fi
 
 docker_stop() {
     printf 'Stop docker containers\n' | tee "$log_file" >&2
+    # shellcheck disable=SC2086
     docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
 }
 
@@ -148,10 +149,11 @@ docker_start() {
 
     # Run new services
     printf 'Start docker containers\n' | tee "$log_file" >&2
-    # shellcheck disable=SC2086,SC2248
     if [ "$mode" = 'prod' ]; then
+        # shellcheck disable=SC2086,SC2248
         docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_deamon_args $docker_dryrun_args 2>&1 | tee "$log_file" >&2
     elif [ "$mode" = 'dev' ]; then
+        # shellcheck disable=SC2086,SC2248
         docker compose --ansi always $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_deamon_args $docker_dryrun_args
     fi
     printf '\n' | tee "$log_file" >&2
