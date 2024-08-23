@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_TYPE: unifi-controller
+    HOMELAB_APP_NAME: unifi-controller
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -63,6 +63,9 @@ services:
     depends_on:
       certificate-manager:
         condition: service_healthy
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: admin
     volumes:
       - ./data/certs:/certs:ro
       - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
@@ -76,6 +79,9 @@ services:
     depends_on:
       certificate-manager:
         condition: service_healthy
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: portal
     volumes:
       - ./data/certs:/certs:ro
       - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro

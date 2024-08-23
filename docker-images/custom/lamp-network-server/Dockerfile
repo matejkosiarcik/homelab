@@ -25,7 +25,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app/ /app/
 WORKDIR /app
-ENV HOMELAB_CONTAINER_TYPE=lamp-network-server \
+ENV HOMELAB_CONTAINER_NAME=lamp-network-server \
     TZ=Europe/Bratislava
 EXPOSE 80
 EXPOSE 443

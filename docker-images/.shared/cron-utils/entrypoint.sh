@@ -17,7 +17,7 @@ printf 'started\n' >/app/.internal/status
 
 # Determine cronfile
 cronfile=""
-if [ "$HOMELAB_CONTAINER_TYPE" = 'web-automation' ]; then
+if [ "$HOMELAB_CONTAINER_NAME" = 'web-automation' ]; then
     if [ "$HOMELAB_AUTOMATION_TYPE" = 'backup' ]; then
         cronfile='/app/crontab-backup.cron'
     else

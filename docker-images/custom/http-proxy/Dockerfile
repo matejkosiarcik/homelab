@@ -19,7 +19,7 @@ EXPOSE 80
 EXPOSE 443
 ENV APACHE_HTTP_PORT_NUMBER=80 \
     APACHE_HTTPS_PORT_NUMBER=443 \
-    HOMELAB_CONTAINER_TYPE=http-proxy \
+    HOMELAB_CONTAINER_NAME=http-proxy \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=5s --start-period=15s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
 ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]

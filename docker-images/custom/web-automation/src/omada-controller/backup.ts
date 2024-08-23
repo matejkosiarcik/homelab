@@ -37,11 +37,11 @@ import { runAutomation } from '../.utils/main.ts';
 
         // Navigate to proper place in settings
         await page.goto('/#maintenance');
-        await page.locator('a.s-button[title="Export"]:has-text("Export")').waitFor({ timeout: 10_000 });
+        await page.locator('a.s-button[title="Export"]:has-text("Export")').waitFor({ timeout: 25_000 });
         await page.locator('a.s-button[title="Export"]:has-text("Export")').scrollIntoViewIfNeeded();
 
         // Initiate download
-        const downloadPromise = page.waitForEvent('download', { timeout: 15_000 });
+        const downloadPromise = page.waitForEvent('download', { timeout: 25_000 });
         await page.locator('a.s-button[title="Export"]:has-text("Export")').click();
 
         // Handle download

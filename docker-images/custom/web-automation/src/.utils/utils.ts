@@ -42,8 +42,8 @@ export function getBrowserPath(): string | undefined {
 }
 
 export function getAppType(): string {
-    const appType = process.env['HOMELAB_APP_TYPE']!;
-    expect(appType, 'HOMELAB_APP_TYPE unset').not.undefined;
+    const appType = process.env['HOMELAB_APP_NAME']!;
+    expect(appType, 'HOMELAB_APP_NAME unset').not.undefined;
     return appType;
 }
 
