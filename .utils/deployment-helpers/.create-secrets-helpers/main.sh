@@ -117,6 +117,7 @@ lamp-controller*)
     cat "$user_logfile" >&2
     ;;
 omada-controller*)
+    prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
