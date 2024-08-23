@@ -19,6 +19,18 @@ services:
       file: *extends-file
       service: certificate-manager
 
+  http-proxy-admin:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: http-proxy-admin
+
+  http-proxy-portal:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: http-proxy-portal
+
   socket-proxy:
     <<: *common-service-options
     extends:

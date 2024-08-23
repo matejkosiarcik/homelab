@@ -16,16 +16,14 @@ elif [ "$HOMELAB_APP_TYPE" = 'lamp-controller' ]; then
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
     # HTTP/S ports
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-admin:443 &
     if [ "$HOMELAB_ENV" = 'prod' ]; then
-        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:main-app:80 &
-        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:main-app:443 &
         socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:81 &
         socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:444 &
     elif [ "$HOMELAB_ENV" = 'dev' ]; then
-        socat TCP4-LISTEN:8080,fork,reuseaddr TCP4:main-app:8080 &
-        socat TCP4-LISTEN:8443,fork,reuseaddr TCP4:main-app:8443 &
-        socat TCP4-LISTEN:8081,fork,reuseaddr TCP4:main-app:8081 &
-        socat TCP4-LISTEN:8444,fork,reuseaddr TCP4:main-app:8444 &
+        socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:8081 &
+        socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:8444 &
     else
         printf 'Unknown ENV "%s"\n' "${HOMELAB_ENV-N/A}" >&2
         exit 1
@@ -51,16 +49,14 @@ elif [ "$HOMELAB_APP_TYPE" = 'smtp4dev' ]; then
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     # HTTP/S ports
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-admin:443 &
     if [ "$HOMELAB_ENV" = 'prod' ]; then
-        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:main-app:80 &
-        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:main-app:443 &
         socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:81 &
         socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:444 &
     elif [ "$HOMELAB_ENV" = 'dev' ]; then
-        socat TCP4-LISTEN:8080,fork,reuseaddr TCP4:main-app:8080 &
-        socat TCP4-LISTEN:8443,fork,reuseaddr TCP4:main-app:8443 &
-        socat TCP4-LISTEN:8081,fork,reuseaddr TCP4:main-app:8081 &
-        socat TCP4-LISTEN:8444,fork,reuseaddr TCP4:main-app:8444 &
+        socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:8081 &
+        socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:8444 &
     else
         printf 'Unknown ENV "%s"\n' "${HOMELAB_ENV-N/A}" >&2
         exit 1
