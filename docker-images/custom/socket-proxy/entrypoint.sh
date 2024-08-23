@@ -27,7 +27,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
         socat TCP4-LISTEN:8081,fork,reuseaddr TCP4:main-app:8081 &
         socat TCP4-LISTEN:8444,fork,reuseaddr TCP4:main-app:8444 &
     else
-        printf 'Unknown env "%s"\n' "${HOMELAB_ENV-N/A}" >&2
+        printf 'Unknown ENV "%s"\n' "${HOMELAB_ENV-N/A}" >&2
         exit 1
     fi
     # Other ports
@@ -62,7 +62,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
         socat TCP4-LISTEN:8081,fork,reuseaddr TCP4:main-app:8081 &
         socat TCP4-LISTEN:8444,fork,reuseaddr TCP4:main-app:8444 &
     else
-        printf 'Unknown env "%s"\n' "${HOMELAB_ENV-N/A}" >&2
+        printf 'Unknown ENV "%s"\n' "${HOMELAB_ENV-N/A}" >&2
         exit 1
     fi
     # Other ports
@@ -75,7 +75,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'uptime-kuma' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 else
-    printf 'Unknown app type "%s"\n' "${HOMELAB_APP_TYPE-N/A}" >&2
+    printf 'Unknown APP "%s"\n' "${HOMELAB_APP_TYPE-N/A}" >&2
     exit 1
 fi
 
