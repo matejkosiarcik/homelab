@@ -19,7 +19,7 @@ import { runAutomation } from '../.utils/main.ts';
         // Wait for either setup-form or login-form to load
         const setupButtonSelector = 'form button[type="submit"]:has-text("Create")';
         const loginButtonSelector = 'form button[type="submit"]:has-text("Login")';
-        await page.locator(`${setupButtonSelector},${loginButtonSelector}`).waitFor();
+        await page.locator(`${setupButtonSelector},${loginButtonSelector}`).waitFor({ timeout: 5000 });
         const isSetupForm = await page.locator(setupButtonSelector).isVisible({ timeout: 0 });
         if (isSetupForm && process.env['CRON'] === '0') {
             console.log('Quitting backup, because app is not setup yet.');
