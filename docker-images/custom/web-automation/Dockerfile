@@ -57,7 +57,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
 COPY --from=prefinal /root/.cache/ms-playwright /root/.cache/ms-playwright
-ENV HOMELAB_CONTAINER_TYPE=web-automation \
+ENV HOMELAB_CONTAINER_NAME=web-automation \
     PATH="$PATH:/app/bin" \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=5s --start-period=60s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]

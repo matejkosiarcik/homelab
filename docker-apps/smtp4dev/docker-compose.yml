@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_TYPE: smtp4dev
+    HOMELAB_APP_NAME: smtp4dev
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

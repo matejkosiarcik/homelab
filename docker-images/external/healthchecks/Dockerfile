@@ -5,7 +5,7 @@ COPY ./external/healthchecks/healthcheck.py /.homelab/healthcheck.py
 ENV DB_NAME=database \
     DB=postgres \
     DEBUG=False \
-    HOMELAB_CONTAINER_TYPE=healthchecks \
+    HOMELAB_CONTAINER_NAME=healthchecks \
     TZ=Europe/Bratislava
 
 # TODO: Enable email integration

@@ -20,7 +20,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends curl python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
-ENV HOMELAB_CONTAINER_TYPE=lamp-hardware-controller \
+ENV HOMELAB_CONTAINER_NAME=lamp-hardware-controller \
     PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava

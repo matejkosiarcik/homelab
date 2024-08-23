@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
 FROM postgres:16.4
-ENV HOMELAB_CONTAINER_TYPE=postgres \
+ENV HOMELAB_CONTAINER_NAME=postgres \
     PGDATA=/var/lib/postgresql/data/pgdata \
     POSTGRES_DB=database \
     POSTGRES_USER=postgres \

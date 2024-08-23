@@ -42,7 +42,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /backup /log
 COPY --from=prefinal /app/ ./
-ENV HOMELAB_CONTAINER_TYPE=postgres-backup \
+ENV HOMELAB_CONTAINER_NAME=postgres-backup \
     PATH="$PATH:/app/bin" \
     PGDATABASE=database \
     PGUSER=postgres \
