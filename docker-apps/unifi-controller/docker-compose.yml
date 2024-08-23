@@ -55,6 +55,32 @@ services:
       - ./data/certs:/certs:rw
       - ./log/certificate-manager:/log:rw
 
+  http-proxy-admin:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./data/certs:/certs:ro
+      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
+      - ./log/http-proxy-admin:/log:rw
+
+  http-proxy-portal:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./data/certs:/certs:ro
+      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
+      - ./log/http-proxy-portal:/log:rw
+
   socket-proxy:
     <<: *common-service-options
     build:

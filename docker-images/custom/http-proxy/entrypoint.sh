@@ -18,13 +18,23 @@ if [ "${HOMELAB_APP_TYPE-x}" = 'lamp-controller' ]; then
 elif [ "${HOMELAB_APP_TYPE-x}" = 'healthchecks' ]; then
     HOMELAB_UPSTREAM_URL="http://main-app:8000"
 elif [ "${HOMELAB_APP_TYPE-x}" = 'omada-controller' ]; then
-    if [ "${HOMELAB_ENV-x}" = 'dev' ]; then
-        HOMELAB_UPSTREAM_URL="http://main-app:8080"
+    if [ "$HOMELAB_ENV" = 'dev' ]; then
+        HOMELAB_UPSTREAM_URL="https://main-app:8443"
+    elif [ "$HOMELAB_ENV" = 'prod' ]; then
+        HOMELAB_UPSTREAM_URL="https://main-app"
     else
-        HOMELAB_UPSTREAM_URL="http://main-app"
+        printf 'Unknown ENV %s\n' "${HOMELAB_ENV-N/A}"
+        exit 1
     fi
 elif [ "${HOMELAB_APP_TYPE-x}" = 'unifi-controller' ]; then
-    HOMELAB_UPSTREAM_URL="https://main-app:8443"
+    if [ "$HOMELAB_ENV" = 'dev' ]; then
+        HOMELAB_UPSTREAM_URL="https://main-app:8443"
+    elif [ "$HOMELAB_ENV" = 'prod' ]; then
+        HOMELAB_UPSTREAM_URL="https://main-app"
+    else
+        printf 'Unknown ENV %s\n' "${HOMELAB_ENV-N/A}"
+        exit 1
+    fi
 elif [ "${HOMELAB_APP_TYPE-x}" = 'uptime-kuma' ]; then
     HOMELAB_UPSTREAM_URL="http://main-app:3001"
 else
