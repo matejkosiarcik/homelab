@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM node:22.6.0-slim AS nodejs-build
+FROM node:22.7.0-slim AS nodejs-build
 WORKDIR /app
 COPY ./custom/lamp-network-server/package.json ./custom/lamp-network-server/package-lock.json ./
 COPY ./custom/lamp-network-server/patches/ ./patches/
@@ -19,7 +19,7 @@ COPY --from=nodejs-build /app/dist/ ./dist/
 COPY --from=nodejs-build /app/node_modules/ ./node_modules/
 COPY --from=nodejs-build /app/package.json ./
 
-FROM node:22.6.0-slim
+FROM node:22.7.0-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
