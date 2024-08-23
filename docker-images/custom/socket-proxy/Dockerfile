@@ -3,7 +3,7 @@
 FROM debian:12.6-slim
 WORKDIR /app
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends ncat socat >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends socat >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./custom/socket-proxy/entrypoint.sh ./
 ENV HOMELAB_CONTAINER_TYPE=socket-proxy \

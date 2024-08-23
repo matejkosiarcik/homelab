@@ -12,9 +12,6 @@ services:
     extends:
       file: *extends-file
       service: main-app
-    networks:
-      external-network:
-        ipv4_address: "10.1.16.5"
 
   database:
     <<: *common-service-options
@@ -28,17 +25,14 @@ services:
       file: *extends-file
       service: certificate-manager
 
-  http-proxy:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: http-proxy
-
   socket-proxy:
     <<: *common-service-options
     extends:
       file: *extends-file
       service: socket-proxy
+    networks:
+      external-network:
+        ipv4_address: "10.1.16.5"
 
   web-backup:
     <<: *common-service-options

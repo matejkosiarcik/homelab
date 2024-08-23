@@ -11,6 +11,11 @@ x-definitions:
 services:
   main-app:
     <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/unifi-controller/Dockerfile
+      args:
+        HOMELAB_BUILD_ENV: prod
 
   database:
     <<: *common-service-options
@@ -18,14 +23,13 @@ services:
   certificate-manager:
     <<: *common-service-options
 
-  http-proxy:
-    <<: *common-service-options
-
   socket-proxy:
     <<: *common-service-options
     ports:
       - "80:80"
+      - "81:81"
       - "443:443"
+      - "444:444"
 
   web-backup:
     <<: *common-service-options
