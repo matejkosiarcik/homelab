@@ -18,16 +18,8 @@ elif [ "$HOMELAB_APP_NAME" = 'omada-controller' ]; then
     # HTTP/S ports
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-admin:443 &
-    if [ "$HOMELAB_ENV" = 'prod' ]; then
-        socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:81 &
-        socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:444 &
-    elif [ "$HOMELAB_ENV" = 'dev' ]; then
-        socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:8081 &
-        socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:8444 &
-    else
-        printf 'Unknown ENV "%s"\n' "${HOMELAB_ENV-N/A}" >&2
-        exit 1
-    fi
+    socat TCP4-LISTEN:81,fork,reuseaddr TCP4:http-proxy-portal:80 &
+    socat TCP4-LISTEN:444,fork,reuseaddr TCP4:http-proxy-portal:443 &
     # Other ports
     socat -T5 UDP4-LISTEN:27001,fork,reuseaddr UDP4:main-app:27001 &
     socat -T5 UDP4-LISTEN:29810,fork,reuseaddr UDP4:main-app:29810 &
@@ -51,16 +43,8 @@ elif [ "$HOMELAB_APP_NAME" = 'unifi-controller' ]; then
     # HTTP/S ports
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-admin:443 &
-    if [ "$HOMELAB_ENV" = 'prod' ]; then
-        socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:81 &
-        socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:444 &
-    elif [ "$HOMELAB_ENV" = 'dev' ]; then
-        socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:8081 &
-        socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:8444 &
-    else
-        printf 'Unknown ENV "%s"\n' "${HOMELAB_ENV-N/A}" >&2
-        exit 1
-    fi
+    socat TCP4-LISTEN:81,fork,reuseaddr TCP4:http-proxy-portal:80 &
+    socat TCP4-LISTEN:444,fork,reuseaddr TCP4:http-proxy-portal:443 &
     # Other ports
     socat -T5 UDP4-LISTEN:1900,fork,reuseaddr UDP4:main-app:1900 &
     socat -T5 UDP4-LISTEN:3478,fork,reuseaddr UDP4:main-app:3478 &
@@ -71,7 +55,7 @@ elif [ "$HOMELAB_APP_NAME" = 'uptime-kuma' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 else
-    printf 'Unknown APP "%s"\n' "${HOMELAB_APP_NAME-N/A}" >&2
+    printf 'Unknown HOMELAB_APP_NAME "%s"\n' "${HOMELAB_APP_NAME-N/A}" >&2
     exit 1
 fi
 

@@ -32,11 +32,8 @@ RewriteCond %{HTTPS} off [NC]
 RewriteCond %{ENV:_ACME} !true [NC]
 RewriteRule ^ - [E=_HTTPS:true,E=_REDIRECT_FOR_HTTPS:true,NE]
 
-# Set custom HTTPS port (non 443)
-# Used when we are using non-standard HTTPS port (eg. on dev machine)
-RewriteRule ^ - [E=_HTTPS_PORT:,NE]
-RewriteCond %{ENV:HOMELAB_ENV} dev [NC]
-RewriteRule ^ - [E=_HTTPS_PORT::8443,NE]
+# Set target port
+RewriteRule ^ - [E=_HTTPS_PORT::%{ENV:PROXY_HTTPS_PORT},NE]
 
 # Use 301/302 for GET & HEAD requests and 308/307 for all others (POST, PUT, ...)
 # Because 301 and 302 are not guaranteed to keep the original request method when client receives it (so it changes eg. from POST to GET)

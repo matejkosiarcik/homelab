@@ -63,6 +63,9 @@ services:
     depends_on:
       certificate-manager:
         condition: service_healthy
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: admin
     volumes:
       - ./data/certs:/certs:ro
       - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
@@ -76,6 +79,9 @@ services:
     depends_on:
       certificate-manager:
         condition: service_healthy
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: portal
     volumes:
       - ./data/certs:/certs:ro
       - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
