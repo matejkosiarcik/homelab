@@ -48,10 +48,17 @@ elif [ "${HOMELAB_APP_TYPE-x}" = 'smtp4dev' ]; then
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "${HOMELAB_APP_TYPE-x}" = 'unifi-controller' ]; then
     # HTTP/S ports
-    socat TCP4-LISTEN:8843,fork,reuseaddr TCP4:main-app:8843 &
-    socat TCP4-LISTEN:8880,fork,reuseaddr TCP4:main-app:8880 &
-    socat TCP4-LISTEN:8080,fork,reuseaddr TCP4:main-app:8080 &
-    socat TCP4-LISTEN:8443,fork,reuseaddr TCP4:main-app:8443 &
+    if [ "$HOMELAB_ENV" = 'prod' ]; then
+        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:main-app:80 &
+        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:main-app:443 &
+        socat TCP4-LISTEN:81,fork,reuseaddr TCP4:main-app:81 &
+        socat TCP4-LISTEN:444,fork,reuseaddr TCP4:main-app:444 &
+    elif [ "$HOMELAB_ENV" = 'dev' ]; then
+        socat TCP4-LISTEN:8080,fork,reuseaddr TCP4:main-app:8080 &
+        socat TCP4-LISTEN:8443,fork,reuseaddr TCP4:main-app:8443 &
+        socat TCP4-LISTEN:8081,fork,reuseaddr TCP4:main-app:8081 &
+        socat TCP4-LISTEN:8444,fork,reuseaddr TCP4:main-app:8444 &
+    fi
     # Other ports
     socat -T5 UDP4-LISTEN:1900,fork,reuseaddr UDP4:main-app:1900 &
     socat -T5 UDP4-LISTEN:3478,fork,reuseaddr UDP4:main-app:3478 &

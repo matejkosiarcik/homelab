@@ -15,6 +15,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/unifi-controller/Dockerfile
+      args:
+        HOMELAB_BUILD_ENV: N/A
     depends_on:
       database:
         condition: service_healthy
@@ -61,16 +63,11 @@ services:
     volumes:
       - ./log/socket-proxy:/log:rw
     ports:
-      - 3478:3478/udp
-      # - 8080:8080
-      # - 8443:8443
-      - 10001:10001/udp
-      # Optional below
       - 1900:1900/udp
+      - 3478:3478/udp
       - 5514:5514/udp
       - 6789:6789
-      # - 8843:8843
-      # - 8880:8880
+      - 10001:10001/udp
 
   web-backup:
     <<: *common-service-options
