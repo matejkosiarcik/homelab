@@ -18,6 +18,9 @@ services:
       PORTAL_HTTP_PORT: 81
       PORTAL_HTTPS_PORT: 444
 
+  certificate-manager:
+    <<: *common-service-options
+
   socket-proxy:
     <<: *common-service-options
     ports:

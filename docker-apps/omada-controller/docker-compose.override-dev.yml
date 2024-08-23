@@ -19,6 +19,9 @@ services:
       PORTAL_HTTP_PORT: 8081
       PORTAL_HTTPS_PORT: 8444
 
+  certificate-manager:
+    <<: *common-service-options
+
   socket-proxy:
     <<: *common-service-options
     ports:

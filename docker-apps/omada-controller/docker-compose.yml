@@ -25,6 +25,17 @@ services:
       - ./log/app:/opt/tplink/EAPController/logs:rw
     stop_grace_period: 60s
 
+  certificate-manager:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./private/certificate-manager.env
+    volumes:
+      - ./data/certs:/certs:rw
+      - ./log/certificate-manager:/log:rw
+
   socket-proxy:
     <<: *common-service-options
     build:

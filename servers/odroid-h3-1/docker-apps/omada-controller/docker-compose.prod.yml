@@ -13,6 +13,12 @@ services:
       file: *extends-file
       service: main-app
 
+  certificate-manager:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: certificate-manager
+
   socket-proxy:
     <<: *common-service-options
     extends:
