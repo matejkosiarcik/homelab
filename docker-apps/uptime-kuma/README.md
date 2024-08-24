@@ -12,3 +12,9 @@
 ## After initial installation
 
 - \[All\] Setup admin _username_ and _password_
+- \[Prod\] Settings setup:
+    - Setup timezone
+    - Setup Primary Base URL
+    - Disallow automatic updates
+    - Setup Email notifications (SMTP)
+    - Modify statistics history persistant interval
