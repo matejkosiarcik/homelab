@@ -161,6 +161,14 @@ smtp4dev*)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+speedtest-tracker*)
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 unifi-controller*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"

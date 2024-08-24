@@ -44,6 +44,8 @@ elif [ "${HOMELAB_APP_NAME-x}" = 'omada-controller' ] || [ "${HOMELAB_APP_NAME-x
     fi
 elif [ "${HOMELAB_APP_NAME-x}" = 'uptime-kuma' ]; then
     PROXY_UPSTREAM_URL="http://main-app:3001"
+elif [ "${HOMELAB_APP_NAME-x}" = 'speedtest-tracker' ]; then
+    PROXY_UPSTREAM_URL="https://main-app"
 else
     PROXY_UPSTREAM_URL="http://main-app"
 fi
