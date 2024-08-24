@@ -70,7 +70,7 @@ services:
       HOMELAB_AUTOMATION_TYPE: backup
     volumes:
       - ./data/web-backup:/backup:rw
-      - ./data/web-backup-errors:/error:rw
+      - ./data/web-backup-errors:/errors:rw
       - ./log/web-backup:/log:rw
 
   web-custom-setup:
@@ -89,7 +89,7 @@ services:
       HOMELAB_BLOCK_ADS: 1
       HOMELAB_REMOVE_DEFAULT_ADLISTS: 0
     volumes:
-      - ./data/web-custom-setup-errors:/error:rw
+      - ./data/web-custom-setup-errors:/errors:rw
       - ./log/web-custom-setup:/log:rw
       - ../../../../docker-images/external/pihole/base-whitelist.txt:/.homelab/domains/base-whitelist.txt:ro
       - ../../../../docker-images/external/pihole/base-blacklist.txt:/.homelab/domains/base-blacklist.txt:ro
