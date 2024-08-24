@@ -4,6 +4,12 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { expect } from 'chai';
 
+export function commonStart() {
+    if (fsSync.existsSync('.env')) {
+        dotenv.config({ path: '.env' });
+    }
+}
+
 export function getIsoDate(): string {
     return new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000)
         .toISOString()
@@ -54,9 +60,16 @@ export async function getBackupDir(): Promise<string> {
     return backupDir;
 }
 
+export async function getDir(name: string): Promise<string> {
+    const appType = getAppType();
+    const directory = process.env[`HOMELAB_${name.toUpperCase()}_DIR`] || (fsSync.existsSync('/.dockerenv') ? `/${name}` : path.join(`.${name}`, appType));
+    await fs.mkdir(directory, { recursive: true });
+    return directory;
+}
+
 export async function getErrorAttachmentDir(): Promise<string> {
     const appType = getAppType();
-    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/error' : path.join('error', appType));
+    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/error' : path.join('.errors', appType));
     await fs.mkdir(errorDir, { recursive: true });
     return errorDir;
 }

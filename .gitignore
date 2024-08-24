@@ -3,6 +3,9 @@
 data/
 log/
 private/
+.errors/
+.export/
+.backup/
 
 # For deployment
 /servers/.current

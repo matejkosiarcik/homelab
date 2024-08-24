@@ -2,11 +2,10 @@ import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
 import { chromium, type Page } from 'playwright';
-import { getAppType, getBackupDir, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
+import { getAppType, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
 
 export async function runAutomation(callback: (page: Page) => Promise<void>, options: { date: string }) {
     const setup = {
-        backupDir: await getBackupDir(),
         errorDir: await getErrorAttachmentDir(),
         isHeadless: getIsHeadless(),
         baseUrl: getTargetUrl(),
