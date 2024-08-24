@@ -3,11 +3,7 @@
   "type": "module",
   "scripts": {
     "build": "rollup --silent --config rollup.config.js",
-    "postinstall": "sh postinstall.sh",
-    "run:pihole": "tsx src/pihole.ts",
-    "run:omada-controller": "tsx src/omada-controller.ts",
-    "run:unifi-controller": "tsx src/unifi-controller.ts",
-    "run:uptime-kuma": "tsx src/uptime-kuma.ts"
+    "postinstall": "sh postinstall.sh"
   },
   "dependencies": {
     "chai": "^5.1.1",
