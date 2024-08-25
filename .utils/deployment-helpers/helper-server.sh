@@ -124,9 +124,7 @@ machine_install() {
 
 case "$command" in
 install)
-    machine_stop
     machine_install
-    machine_start
     ;;
 start)
     machine_stop
