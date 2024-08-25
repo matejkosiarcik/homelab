@@ -35,6 +35,9 @@ export function getTargetUrl(): string {
             case 'unifi-controller': {
                 return 'https://main-app:8443';
             }
+            case 'speedtest-tracker': {
+                return 'https://main-app';
+            }
             default: {
                 return 'http://main-app';
             }
