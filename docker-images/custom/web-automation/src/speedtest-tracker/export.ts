@@ -18,11 +18,19 @@ import { runAutomation } from '../.utils/main.ts';
     await runAutomation(async (page) => {
         // Login
         await page.goto('/admin/login');
-
         await page.locator(`input[id="data.email"]`).fill(options.credentials.username);
         await page.locator(`input[id="data.password"]`).fill(options.credentials.password);
         await page.locator('form#form .fi-form-actions button:has-text("Sign in")').click({ noWaitAfter: true });
         await page.waitForURL('/admin');
+
+        // Wait for login to finish or error message to be visible
+        // TODO: Remove this section after admin credentials are setup via ENV variables
+        // More info: https://github.com/alexjustesen/speedtest-tracker/issues/1597
+        await Promise.any([page.waitForURL('/admin'), page.locator('text="These credentials do not match our records."').waitFor()]);
+        if (page.url().endsWith('/login') && process.env['CRON'] === '0') {
+            console.log('Quitting export, because admin credentials are not setup yet.');
+            return;
+        }
 
         // Navigate to proper place in settings
         await page.goto('/admin/results');
