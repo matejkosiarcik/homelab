@@ -1,6 +1,6 @@
 import path from 'path';
 import { expect } from 'chai';
-import { getDir, getIsoDate, getTargetAdminPassword } from '../.utils/utils.ts';
+import { getDir, getIsoDate, getCredentials } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
@@ -8,7 +8,7 @@ import { runAutomation } from '../.utils/main.ts';
         backupDir: await getDir('backup'),
         currentDate: getIsoDate(),
         credentials: {
-            password: getTargetAdminPassword(),
+            password: getCredentials('password'),
         },
     };
 

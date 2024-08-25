@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import legacyFs from 'fs';
-import { getIsoDate, getTargetAdminPassword } from '../.utils/utils.ts';
+import { getCredentials, getIsoDate } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 import path from 'path';
 
@@ -8,7 +8,7 @@ import path from 'path';
     const options = {
         currentDate: getIsoDate(),
         credentials: {
-            password: getTargetAdminPassword(),
+            password: getCredentials('password'),
         },
     };
 

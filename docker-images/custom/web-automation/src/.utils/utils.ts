@@ -71,14 +71,9 @@ export function getIsHeadless(): boolean {
     return fsSync.existsSync('/.dockerenv') ? true : process.env['HEADLESS'] !== '0';
 }
 
-export function getTargetAdminUsername(): string {
-    const username = process.env['HOMELAB_APP_USERNAME']!;
-    expect(username, 'HOMELAB_APP_USERNAME unset').not.undefined;
-    return username;
-}
-
-export function getTargetAdminPassword(): string {
-    const password = process.env['HOMELAB_APP_PASSWORD']!;
-    expect(password, 'HOMELAB_APP_PASSWORD unset').not.undefined;
-    return password;
+export function getCredentials(credentialType: 'username' | 'password'): string {
+    const envName = `HOMELAB_APP_${credentialType.toUpperCase()}`;
+    const value = process.env[envName]!;
+    expect(value, `Credentials ${envName} unset`).not.undefined;
+    return value;
 }
