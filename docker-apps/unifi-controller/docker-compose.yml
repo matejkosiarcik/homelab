@@ -113,7 +113,7 @@ services:
       - ./private/web-backup.env
     environment:
       <<: *common-env-variables
-      HOMELAB_AUTOMATION_TYPE: backup
+      HOMELAB_CONTAINER_VARIANT: backup
     volumes:
       - ./data/web-backup:/backup:rw
       - ./data/web-backup-errors:/errors:rw

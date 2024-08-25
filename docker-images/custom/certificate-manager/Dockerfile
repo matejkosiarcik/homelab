@@ -41,6 +41,7 @@ RUN apt-get update && \
     mkdir -p /certs /log
 COPY --from=prefinal /app /app
 ENV HOMELAB_CONTAINER_NAME=certificate-manager \
+    HOMELAB_CONTAINER_VARIANT=default \
     PATH="$PATH:/app/bin" \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=5s --start-period=45s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]

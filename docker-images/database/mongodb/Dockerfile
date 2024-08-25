@@ -3,6 +3,7 @@
 FROM mongo:7.0.12
 COPY ./database/mongodb/init-mongo.js /docker-entrypoint-initdb.d/init-mongo.js
 ENV HOMELAB_CONTAINER_NAME=mongodb \
+    HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava \
     DBNAME=database \
     USER=mongo \

@@ -6,6 +6,7 @@ ENV DB_NAME=database \
     DB=postgres \
     DEBUG=False \
     HOMELAB_CONTAINER_NAME=healthchecks \
+    HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 
 # TODO: Enable email integration

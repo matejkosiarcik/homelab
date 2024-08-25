@@ -67,7 +67,7 @@ services:
       - ./private/web-backup.env
     environment:
       <<: *common-env-variables
-      HOMELAB_AUTOMATION_TYPE: backup
+      HOMELAB_CONTAINER_VARIANT: backup
     volumes:
       - ./data/web-backup:/backup:rw
       - ./data/web-backup-errors:/errors:rw
@@ -85,7 +85,7 @@ services:
       - ./private/web-custom-setup.env
     environment:
       <<: *common-env-variables
-      HOMELAB_AUTOMATION_TYPE: custom-setup
+      HOMELAB_CONTAINER_VARIANT: custom-setup
       HOMELAB_BLOCK_ADS: 1
       HOMELAB_REMOVE_DEFAULT_ADLISTS: 0
     volumes:

@@ -26,6 +26,7 @@ RUN cat /defaults/system.properties | \
     printf '\n# -- Custom properties end --\n' >>/defaults/system.properties
 ENV FILE__MONGO_PASS=/.homelab/database-password.txt \
     HOMELAB_CONTAINER_NAME=unifi-controller \
+    HOMELAB_CONTAINER_VARIANT=default \
     MONGO_DBNAME=database \
     MONGO_PORT=27017 \
     MONGO_USER=mongo \
