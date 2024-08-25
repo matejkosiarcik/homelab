@@ -38,7 +38,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.16.1"
+        ipv4_address: "10.1.18.1"
 
 networks:
   external-network:
@@ -48,5 +48,5 @@ networks:
     ipam:
       config:
         - subnet: "10.1.0.0/19"
-          ip_range: "10.1.16.0/24"
-          gateway: "10.1.17.1"
+          ip_range: "10.1.18.0/24"
+          gateway: "10.1.19.1"
