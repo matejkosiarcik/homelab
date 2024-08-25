@@ -77,8 +77,8 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 3B (1)
           command: |
-            bash './servers/raspberry-pi-3b-1/helper.sh' create-secrets --dev
-            bash './servers/raspberry-pi-3b-1/helper.sh' start --dev --dry-run
+            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --dev
+            bash './servers/raspberry-pi-3b/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi 4B (1)
           command: |
