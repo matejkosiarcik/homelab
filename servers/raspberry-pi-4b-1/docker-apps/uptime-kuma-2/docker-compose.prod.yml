@@ -1,0 +1,52 @@
+x-definitions:
+  extends-file: &extends-file ../../../../docker-apps/uptime-kuma/docker-compose.override-prod.yml
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_EXTERNAL_DOMAIN: uptime-kuma-2.home
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+
+services:
+  main-app:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: main-app
+
+  certificate-manager:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: certificate-manager
+
+  http-proxy:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: http-proxy
+
+  socket-proxy:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: socket-proxy
+    networks:
+      external-network:
+        ipv4_address: "10.1.12.6"
+
+  web-backup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-backup
+
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/19"
+          ip_range: "10.1.16.0/24"
+          gateway: "10.1.13.6"
