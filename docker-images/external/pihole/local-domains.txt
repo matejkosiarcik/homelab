@@ -1,8 +1,11 @@
 10.1.10.1 pihole-main-backup.home
-10.1.12.1 pihole-main.home
-10.1.12.2 pihole-spouse.home
-10.1.12.3 pihole-guests.home
-10.1.12.4 pihole-work.home
+
+10.1.12.1 pihole-guests.home
+10.1.12.2 pihole-main.home
+10.1.12.3 pihole-main-work.home
+10.1.12.4 pihole-spouse.home
+10.1.12.5 pihole-spouse-work.home
+
 10.1.16.1 healthchecks.home
 10.1.16.2 homer.home
 10.1.16.3 omada-controller.home
