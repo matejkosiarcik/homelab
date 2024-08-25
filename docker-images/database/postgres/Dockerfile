@@ -2,6 +2,7 @@
 
 FROM postgres:16.4
 ENV HOMELAB_CONTAINER_NAME=postgres \
+    HOMELAB_CONTAINER_VARIANT=default \
     PGDATA=/var/lib/postgresql/data/pgdata \
     POSTGRES_DB=database \
     POSTGRES_USER=postgres \

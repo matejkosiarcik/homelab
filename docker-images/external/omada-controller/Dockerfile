@@ -3,6 +3,7 @@
 
 FROM mbentley/omada-controller:5.14
 ENV HOMELAB_CONTAINER_NAME=omada-controller \
+    HOMELAB_CONTAINER_VARIANT=default \
     PUID=508 \
     PGID=508 \
     PORT_APP_DISCOVERY=27001 \

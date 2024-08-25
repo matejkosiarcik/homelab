@@ -6,6 +6,8 @@ ENV \
     DB_CONNECTION=sqlite \
     DISPLAY_TIMEZONE=Europe/Bratislava \
     FORCE_HTTPS=true \
+    HOMELAB_CONTAINER_NAME=speedtest-tracker \
+    HOMELAB_CONTAINER_VARIANT=default \
     PGID=1000 \
     PUID=1000 \
     TZ=Etc/Utc

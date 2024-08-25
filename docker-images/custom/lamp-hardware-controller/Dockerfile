@@ -21,6 +21,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
 ENV HOMELAB_CONTAINER_NAME=lamp-hardware-controller \
+    HOMELAB_CONTAINER_VARIANT=default \
     PATH="/app/vendor/bin:$PATH" \
     PYTHONPATH=/app/python-vendor \
     TZ=Europe/Bratislava
