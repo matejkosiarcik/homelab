@@ -1,0 +1,60 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_NAME: speedtest-tracker
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common.env
+    networks:
+      internal-network: {}
+
+services:
+  main-app:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/speedtest-tracker/Dockerfile
+    environment:
+      <<: *common-env-variables
+      SPEEDTEST_SCHEDULE: "12-59/30 * * * *"
+    env_file:
+      - ./private/app.env
+    volumes:
+      - ./data/app-data:/config
+      - ./log/main-app:/log:rw
+
+  certificate-manager:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./private/certificate-manager.env
+    volumes:
+      - ./data/certs:/certs:rw
+      - ./log/certificate-manager:/log:rw
+
+  http-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./data/certs:/certs:ro
+      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
+      - ./log/http-proxy:/log:rw
+
+  socket-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+    volumes:
+      - ./log/socket-proxy:/log:rw
+
+networks:
+  internal-network: {}
