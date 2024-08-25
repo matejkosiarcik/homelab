@@ -5,6 +5,7 @@
 10.1.12.3 pihole-main-work.home
 10.1.12.4 pihole-spouse.home
 10.1.12.5 pihole-spouse-work.home
+10.1.12.6 uptime-kuma-2.home
 
 10.1.16.1 healthchecks.home
 10.1.16.2 homer.home
