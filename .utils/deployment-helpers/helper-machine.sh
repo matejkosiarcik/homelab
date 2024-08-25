@@ -6,7 +6,7 @@ print_help() {
     printf 'sh <script.sh> <command> [-f|--force] [-h|--help] [-n|--dry-run]\n'
     printf '\n'
     printf 'Commands:\n'
-    printf ' install - Install machine scripts and start docker apps\n'
+    printf ' install - Install server scripts and start docker apps\n'
     printf ' start - Start all docker apps\n'
     printf ' stop - Stop all docker apps\n'
     printf ' create-secrets - Create secrets for all docker apps\n'
@@ -114,7 +114,7 @@ machine_create_secrets() {
 machine_install() {
     printf 'Installing crontab\n' >&2
     if [ ! -e "$machine_dir/crontab.cron" ]; then
-        printf 'Machine crontab file not found\n' >&2
+        printf 'Server crontab file not found\n' >&2
         exit 1
     fi
     if [ "$dry_run" = '0' ]; then
