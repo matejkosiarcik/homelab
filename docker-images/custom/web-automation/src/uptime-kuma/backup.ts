@@ -4,14 +4,14 @@ import { getDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername } fr
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
-    const setup = {
+    const options = {
         backupDir: await getDir('backup'),
+        currentDate: getIsoDate(),
+        credentials: {
+            username: getTargetAdminUsername(),
+            password: getTargetAdminPassword(),
+        },
     };
-    const credentials = {
-        username: getTargetAdminUsername(),
-        password: getTargetAdminPassword(),
-    };
-    const currentDate = getIsoDate();
 
     await runAutomation(async (page) => {
         await page.goto('/dashboard');
@@ -27,8 +27,8 @@ import { runAutomation } from '../.utils/main.ts';
         }
 
         // Login
-        await page.locator('form input[type="text"][autocomplete="username"]').fill(credentials.username);
-        await page.locator('form input[type="password"][autocomplete="current-password"]').fill(credentials.password);
+        await page.locator('form input[type="text"][autocomplete="username"]').fill(options.credentials.username);
+        await page.locator('form input[type="password"][autocomplete="current-password"]').fill(options.credentials.password);
         await page.locator(loginButtonSelector).click();
         await page.locator('ul.nav .nav-link .profile-pic').waitFor({ timeout: 10_000 });
 
@@ -43,6 +43,6 @@ import { runAutomation } from '../.utils/main.ts';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.json$/);
-        await download.saveAs(path.join(setup.backupDir, `${currentDate}.json`));
-    }, { date: currentDate });
+        await download.saveAs(path.join(options.backupDir, `${options.currentDate}.json`));
+    }, { date: options.currentDate });
 })();

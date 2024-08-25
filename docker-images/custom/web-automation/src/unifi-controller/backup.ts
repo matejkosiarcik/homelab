@@ -4,14 +4,14 @@ import { getDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername } fr
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
-    const setup = {
+    const options = {
         backupDir: await getDir('backup'),
+        currentDate: getIsoDate(),
+        credentials: {
+            username: getTargetAdminUsername(),
+            password: getTargetAdminPassword(),
+        },
     };
-    const credentials = {
-        username: getTargetAdminUsername(),
-        password: getTargetAdminPassword(),
-    };
-    const currentDate = getIsoDate();
 
     await runAutomation(async (page) => {
         // Login
@@ -27,8 +27,8 @@ import { runAutomation } from '../.utils/main.ts';
             return;
         }
 
-        await page.locator(loginNameInputSelector).fill(credentials.username);
-        await page.locator('input[name="password"]').fill(credentials.password);
+        await page.locator(loginNameInputSelector).fill(options.credentials.username);
+        await page.locator('input[name="password"]').fill(options.credentials.password);
         await page.locator('button#loginButton').click({ noWaitAfter: true });
         await page.waitForURL('/manage/default/dashboard');
 
@@ -45,6 +45,6 @@ import { runAutomation } from '../.utils/main.ts';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.unf$/);
-        await download.saveAs(path.join(setup.backupDir, `${currentDate}-settings.unf`));
-    }, { date: currentDate });
+        await download.saveAs(path.join(options.backupDir, `${options.currentDate}-settings.unf`));
+    }, { date: options.currentDate });
 })();

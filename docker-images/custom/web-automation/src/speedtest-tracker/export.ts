@@ -6,21 +6,21 @@ import { runAutomation } from '../.utils/main.ts';
 (async () => {
     commonStart();
 
-    const setup = {
+    const options = {
         exportDir: await getDir('export'),
+        currentDate: getIsoDate(),
         credentials: {
             username: getTargetAdminUsername(),
             password: getTargetAdminPassword(),
         },
-        currentDate: getIsoDate(),
     };
 
     await runAutomation(async (page) => {
         // Login
         await page.goto('/admin/login');
 
-        await page.locator(`input[id="data.email"]`).fill(setup.credentials.username);
-        await page.locator(`input[id="data.password"]`).fill(setup.credentials.password);
+        await page.locator(`input[id="data.email"]`).fill(options.credentials.username);
+        await page.locator(`input[id="data.password"]`).fill(options.credentials.password);
         await page.locator('form#form .fi-form-actions button:has-text("Sign in")').click({ noWaitAfter: true });
         await page.waitForURL('/admin');
 
@@ -59,6 +59,6 @@ import { runAutomation } from '../.utils/main.ts';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.csv$/);
-        await download.saveAs(path.join(setup.exportDir, `${setup.currentDate}.csv`));
-    }, { date: setup.currentDate });
+        await download.saveAs(path.join(options.exportDir, `${options.currentDate}.csv`));
+    }, { date: options.currentDate });
 })();

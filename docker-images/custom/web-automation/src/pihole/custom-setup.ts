@@ -5,18 +5,18 @@ import { runAutomation } from '../.utils/main.ts';
 import path from 'path';
 
 (async () => {
-    const credentials = {
-        password: getTargetAdminPassword(),
-    };
     const options = {
-        date: getIsoDate(),
+        currentDate: getIsoDate(),
+        credentials: {
+            password: getTargetAdminPassword(),
+        },
     };
 
     await runAutomation(async (page) => {
         // Login
         await (async () => {
             await page.goto('/admin/login.php');
-            await page.locator('form#loginform input#loginpw').fill(credentials.password);
+            await page.locator('form#loginform input#loginpw').fill(options.credentials.password);
             await page.locator('form#loginform button[type="submit"]').click({ noWaitAfter: true });
             await page.waitForURL('/admin/index.php');
         })();
@@ -75,5 +75,5 @@ import path from 'path';
             await page.locator('button#gravityBtn:has-text("Update")').click();
             await page.locator('.alert-success').waitFor({ timeout: 15_000 });
         })();
-    }, options);
+    }, { date: options.currentDate });
 })();

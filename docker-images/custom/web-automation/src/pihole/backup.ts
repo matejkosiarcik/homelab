@@ -4,18 +4,19 @@ import { getDir, getIsoDate, getTargetAdminPassword } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
-    const setup = {
+    const options = {
         backupDir: await getDir('backup'),
-    };
-    const credentials = {
-        password: getTargetAdminPassword(),
+        currentDate: getIsoDate(),
+        credentials: {
+            password: getTargetAdminPassword(),
+        },
     };
 
     const currentDate = getIsoDate();
     await runAutomation(async (page) => {
         // Login
         await page.goto('/admin/login.php');
-        await page.locator('form#loginform input#loginpw').fill(credentials.password);
+        await page.locator('form#loginform input#loginpw').fill(options.credentials.password);
         await page.locator('form#loginform button[type="submit"]').click({ noWaitAfter: true });
         await page.waitForURL('/admin/index.php');
 
@@ -29,6 +30,6 @@ import { runAutomation } from '../.utils/main.ts';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.tar\.gz$/);
-        await download.saveAs(path.join(setup.backupDir, `${currentDate}.tar.gz`));
-    }, { date: currentDate });
+        await download.saveAs(path.join(options.backupDir, `${currentDate}.tar.gz`));
+    }, { date: options.currentDate });
 })();
