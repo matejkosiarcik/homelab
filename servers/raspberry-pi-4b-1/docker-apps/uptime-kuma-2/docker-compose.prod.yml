@@ -1,7 +1,7 @@
 x-definitions:
-  extends-file: &extends-file ../../../../docker-apps/unifi-controller/docker-compose.override-prod.yml
+  extends-file: &extends-file ../../../../docker-apps/uptime-kuma/docker-compose.override-prod.yml
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: unifi-controller.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: uptime-kuma-2.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -13,29 +13,17 @@ services:
       file: *extends-file
       service: main-app
 
-  database:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: database
-
   certificate-manager:
     <<: *common-service-options
     extends:
       file: *extends-file
       service: certificate-manager
 
-  http-proxy-admin:
+  http-proxy:
     <<: *common-service-options
     extends:
       file: *extends-file
-      service: http-proxy-admin
-
-  http-proxy-portal:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: http-proxy-portal
+      service: http-proxy
 
   socket-proxy:
     <<: *common-service-options
@@ -44,7 +32,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.16.6"
+        ipv4_address: "10.1.12.6"
 
   web-backup:
     <<: *common-service-options
@@ -61,4 +49,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.16.0/24"
-          gateway: "10.1.17.6"
+          gateway: "10.1.13.6"

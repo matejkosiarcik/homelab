@@ -14,7 +14,7 @@ services:
       service: main-app
     # environment:
     #   <<: *common-env-variables
-    #   FTLCONF_LOCAL_IPV4: "10.1.12.3"
+    #   FTLCONF_LOCAL_IPV4: "10.1.12.1"
     #   VIRTUAL_HOST: pihole-guests.home
     #   PIHOLE_DOMAIN: pihole-guests.home
 
@@ -37,7 +37,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.12.3"
+        ipv4_address: "10.1.12.1"
 
   web-backup:
     <<: *common-service-options
@@ -60,4 +60,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.12.0/24"
-          gateway: "10.1.13.3"
+          gateway: "10.1.13.1"
