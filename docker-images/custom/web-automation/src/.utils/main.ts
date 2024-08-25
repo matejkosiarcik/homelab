@@ -29,8 +29,8 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, _op
         try {
             await callback(page);
         } catch (error) {
-            await page.screenshot({ fullPage: false, path: path.join(options.errorDir, `${options.date}-viewport.png`), timeout: 5000 });
-            await page.screenshot({ fullPage: true, path: path.join(options.errorDir, `${options.date}-fullpage.png`), timeout: 5000 });
+            await page.screenshot({ fullPage: false, path: path.join(options.errorDir, `${options.date}-viewport.png`), timeout: 10_000 });
+            await page.screenshot({ fullPage: true, path: path.join(options.errorDir, `${options.date}-fullpage.png`), timeout: 10_000 });
             throw error;
         } finally {
             await page.close();
