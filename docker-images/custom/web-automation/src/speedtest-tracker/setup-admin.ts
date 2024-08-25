@@ -1,13 +1,13 @@
 import path from 'path';
 import { expect } from 'chai';
-import { commonStart, getDir, getIsoDate, getCredentials } from '../.utils/utils.ts';
+import { preprepare, getDir, getIsoDate, getCredentials } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 // TODO: Remove this script after it is possible to setup credentials via ENV variables
 // https://github.com/alexjustesen/speedtest-tracker/issues/1597
 
 (async () => {
-    commonStart();
+    preprepare();
 
     const options = {
         exportDir: await getDir('export'),

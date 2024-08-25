@@ -1,9 +1,11 @@
 import path from 'path';
 import { expect } from 'chai';
-import { getDir, getIsoDate, getCredentials } from '../.utils/utils.ts';
+import { getDir, getIsoDate, getCredentials, preprepare } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
+    preprepare();
+
     const options = {
         backupDir: await getDir('backup'),
         currentDate: getIsoDate(),

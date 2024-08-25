@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
 import { chromium, type Page } from 'playwright';
-import { getAppType, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
+import { getAppName, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
 
 export async function runAutomation(callback: (page: Page) => Promise<void>, options: { date: string }) {
     const setup = {
@@ -17,7 +17,7 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, opt
     let isBrowserOpen = true;
     try {
         const page = await browser.newPage({ baseURL: setup.baseUrl, strictSelectors: true, ignoreHTTPSErrors: true, recordVideo: { dir: tmpDir } });
-        if (['omada-controller', 'unifi-controller'].includes(getAppType())) {
+        if (['omada-controller', 'unifi-controller'].includes(getAppName())) {
             page.setDefaultNavigationTimeout(15_000);
             page.setDefaultTimeout(5000);
         } else {

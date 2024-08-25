@@ -1,10 +1,10 @@
 import path from 'path';
 import { expect } from 'chai';
-import { commonStart, getDir, getIsoDate, getCredentials } from '../.utils/utils.ts';
+import { preprepare, getDir, getIsoDate, getCredentials } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
-    commonStart();
+    preprepare();
 
     const options = {
         exportDir: await getDir('export'),

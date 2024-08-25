@@ -4,7 +4,8 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { expect } from 'chai';
 
-export function commonStart() {
+export function preprepare() {
+    // Load .env file - Mostly useful for local (non-docker) debugging
     if (fsSync.existsSync('.env')) {
         dotenv.config({ path: '.env' });
     }
@@ -24,7 +25,7 @@ export function getTargetUrl(): string {
     }
 
     if (fsSync.existsSync('/.dockerenv')) {
-        switch (getAppType()) {
+        switch (getAppName()) {
             case 'uptime-kuma': {
                 return 'http://main-app:3001';
             }
@@ -47,22 +48,22 @@ export function getBrowserPath(): string | undefined {
     return process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
 }
 
-export function getAppType(): string {
+export function getAppName(): string {
     const appType = process.env['HOMELAB_APP_NAME']!;
     expect(appType, 'HOMELAB_APP_NAME unset').not.undefined;
     return appType;
 }
 
 export async function getDir(name: string): Promise<string> {
-    const appType = getAppType();
+    const appType = getAppName();
     const directory = process.env[`HOMELAB_${name.toUpperCase()}_DIR`] || (fsSync.existsSync('/.dockerenv') ? `/${name}` : path.join(`.${name}`, appType));
     await fs.mkdir(directory, { recursive: true });
     return directory;
 }
 
 export async function getErrorAttachmentDir(): Promise<string> {
-    const appType = getAppType();
-    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/errors' : path.join('.errors', appType));
+    const appName = getAppName();
+    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/errors' : path.join('.errors', appName));
     await fs.mkdir(errorDir, { recursive: true });
     return errorDir;
 }

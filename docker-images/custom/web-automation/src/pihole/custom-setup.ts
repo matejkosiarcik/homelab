@@ -1,10 +1,12 @@
 import fs from 'fs/promises';
 import legacyFs from 'fs';
-import { getCredentials, getIsoDate } from '../.utils/utils.ts';
+import { getCredentials, getIsoDate, preprepare } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 import path from 'path';
 
 (async () => {
+    preprepare();
+
     const options = {
         currentDate: getIsoDate(),
         credentials: {
