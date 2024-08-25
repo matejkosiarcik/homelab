@@ -53,13 +53,6 @@ export function getAppType(): string {
     return appType;
 }
 
-export async function getBackupDir(): Promise<string> {
-    const appType = getAppType();
-    const backupDir = process.env['HOMELAB_BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : path.join('data', appType));
-    await fs.mkdir(backupDir, { recursive: true });
-    return backupDir;
-}
-
 export async function getDir(name: string): Promise<string> {
     const appType = getAppType();
     const directory = process.env[`HOMELAB_${name.toUpperCase()}_DIR`] || (fsSync.existsSync('/.dockerenv') ? `/${name}` : path.join(`.${name}`, appType));

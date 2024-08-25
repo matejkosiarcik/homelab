@@ -1,11 +1,11 @@
 import path from 'path';
 import { expect } from 'chai';
-import { getBackupDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername } from '../.utils/utils.ts';
+import { getDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
     const setup = {
-        backupDir: await getBackupDir(),
+        backupDir: await getDir('backup'),
     };
     const credentials = {
         username: getTargetAdminUsername(),
