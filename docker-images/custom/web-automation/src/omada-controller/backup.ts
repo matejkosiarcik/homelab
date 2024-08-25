@@ -1,21 +1,21 @@
 import path from 'path';
 import { expect } from 'chai';
-import { getBackupDir, getIsoDate, getTargetAdminPassword, getTargetAdminUsername } from '../.utils/utils.ts';
+import { getCredentials, getDir, getIsoDate, preprepare } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
 (async () => {
-    const setup = {
-        backupDir: await getBackupDir(),
+    preprepare();
+
+    const options = {
+        backupDir: await getDir('backup'),
+        currentDate: getIsoDate(),
+        credentials: {
+            username: getCredentials('username'),
+            password: getCredentials('password'),
+        },
     };
-    const credentials = {
-        username: getTargetAdminUsername(),
-        password: getTargetAdminPassword(),
-    };
-    const currentDate = getIsoDate();
 
     await runAutomation(async (page) => {
-
-
         // Login
         await page.goto('/login');
         await page.locator('#privacy-agree-btn').click(); // Hide cookies
@@ -30,8 +30,8 @@ import { runAutomation } from '../.utils/main.ts';
             return;
         }
 
-        await page.locator('#username input[type="text"]').fill(credentials.username);
-        await page.locator('#password input[type="password"]').fill(credentials.password);
+        await page.locator('#username input[type="text"]').fill(options.credentials.username);
+        await page.locator('#password input[type="password"]').fill(options.credentials.password);
         await page.locator(loginButtonSelector).click({ noWaitAfter: true });
         await page.waitForURL(/.*#dashboardGlobal$/);
 
@@ -47,6 +47,6 @@ import { runAutomation } from '../.utils/main.ts';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.cfg$/);
-        await download.saveAs(path.join(setup.backupDir, `${currentDate}-settings.cfg`));
-    }, { date: currentDate });
+        await download.saveAs(path.join(options.backupDir, `${options.currentDate}-settings.cfg`));
+    }, { date: options.currentDate });
 })();

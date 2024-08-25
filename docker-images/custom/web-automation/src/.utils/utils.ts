@@ -4,6 +4,13 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { expect } from 'chai';
 
+export function preprepare() {
+    // Load .env file - Mostly useful for local (non-docker) debugging
+    if (fsSync.existsSync('.env')) {
+        dotenv.config({ path: '.env' });
+    }
+}
+
 export function getIsoDate(): string {
     return new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000)
         .toISOString()
@@ -18,7 +25,7 @@ export function getTargetUrl(): string {
     }
 
     if (fsSync.existsSync('/.dockerenv')) {
-        switch (getAppType()) {
+        switch (getAppName()) {
             case 'uptime-kuma': {
                 return 'http://main-app:3001';
             }
@@ -27,6 +34,9 @@ export function getTargetUrl(): string {
             }
             case 'unifi-controller': {
                 return 'https://main-app:8443';
+            }
+            case 'speedtest-tracker': {
+                return 'https://main-app';
             }
             default: {
                 return 'http://main-app';
@@ -41,22 +51,22 @@ export function getBrowserPath(): string | undefined {
     return process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
 }
 
-export function getAppType(): string {
+export function getAppName(): string {
     const appType = process.env['HOMELAB_APP_NAME']!;
     expect(appType, 'HOMELAB_APP_NAME unset').not.undefined;
     return appType;
 }
 
-export async function getBackupDir(): Promise<string> {
-    const appType = getAppType();
-    const backupDir = process.env['HOMELAB_BACKUP_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/backup' : path.join('data', appType));
-    await fs.mkdir(backupDir, { recursive: true });
-    return backupDir;
+export async function getDir(name: string): Promise<string> {
+    const appType = getAppName();
+    const directory = process.env[`HOMELAB_${name.toUpperCase()}_DIR`] || (fsSync.existsSync('/.dockerenv') ? `/${name}` : path.join(`.${name}`, appType));
+    await fs.mkdir(directory, { recursive: true });
+    return directory;
 }
 
 export async function getErrorAttachmentDir(): Promise<string> {
-    const appType = getAppType();
-    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/error' : path.join('error', appType));
+    const appName = getAppName();
+    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/errors' : path.join('.errors', appName));
     await fs.mkdir(errorDir, { recursive: true });
     return errorDir;
 }
@@ -65,14 +75,9 @@ export function getIsHeadless(): boolean {
     return fsSync.existsSync('/.dockerenv') ? true : process.env['HEADLESS'] !== '0';
 }
 
-export function getTargetAdminUsername(): string {
-    const username = process.env['HOMELAB_APP_USERNAME']!;
-    expect(username, 'HOMELAB_APP_USERNAME unset').not.undefined;
-    return username;
-}
-
-export function getTargetAdminPassword(): string {
-    const password = process.env['HOMELAB_APP_PASSWORD']!;
-    expect(password, 'HOMELAB_APP_PASSWORD unset').not.undefined;
-    return password;
+export function getCredentials(credentialType: 'username' | 'password'): string {
+    const envName = `HOMELAB_APP_${credentialType.toUpperCase()}`;
+    const value = process.env[envName]!;
+    expect(value, `Credentials ${envName} unset`).not.undefined;
+    return value;
 }

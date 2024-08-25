@@ -71,9 +71,13 @@ init_apache_users() {
     chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
 }
 
+prepare_empty_env() {
+    printf '%s=\n' "$1" >>"$2"
+    printf 'You must configure "%s" in %s\n' "$1" "$(basename "$2")" >>"$user_logfile"
+}
+
 prepare_healthcheck_url() {
-    printf 'HOMELAB_HEALTHCHECK_URL=\n' >>"$1"
-    printf 'You must configure "HOMELAB_HEALTHCHECK_URL" in %s\n' "$(basename "$1")" >>"$user_logfile"
+    prepare_empty_env HOMELAB_HEALTHCHECK_URL "$1"
 }
 
 case "$current_dir" in
@@ -156,6 +160,15 @@ pihole*)
 smtp4dev*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
+speedtest-tracker*)
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_empty_env APP_KEY "$output/app.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

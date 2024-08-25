@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: uptime-kuma
+    HOMELAB_APP_NAME: speedtest-tracker
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -14,10 +14,15 @@ services:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/uptime-kuma/Dockerfile
+      dockerfile: ./external/speedtest-tracker/Dockerfile
+    environment:
+      <<: *common-env-variables
+      SPEEDTEST_SCHEDULE: "12-59/30 * * * *"
+    env_file:
+      - ./private/app.env
     volumes:
-      - ./data/uptime-kuma:/app/data:rw
-    stop_grace_period: 30s
+      - ./data/app-data:/config
+      - ./log/main-app:/log:rw
 
   certificate-manager:
     <<: *common-service-options
@@ -51,23 +56,5 @@ services:
     volumes:
       - ./log/socket-proxy:/log:rw
 
-  web-backup:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      main-app:
-        condition: service_healthy
-    env_file:
-      - ./private/web-backup.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_AUTOMATION_TYPE: backup
-    volumes:
-      - ./data/web-backup:/backup:rw
-      - ./data/web-backup-errors:/errors:rw
-      - ./log/web-backup:/log:rw
-
 networks:
-  internal-network:
+  internal-network: {}

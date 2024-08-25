@@ -38,7 +38,7 @@ if [ "$create_certs" = '1' ]; then
     printf 'Creating certificates\n'
     tmpdir="$(mktemp -d)"
 
-    # TODO: Implement Production certificates
+    # TODO: Implement Let's encrypt certificates
     if [ "$HOMELAB_ENV" = 'dev' ] || [ "$HOMELAB_ENV" = 'prod' ]; then
         openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN=$HOMELAB_APP_EXTERNAL_DOMAIN"
         printf '%s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >"$tmpdir/domain.txt"

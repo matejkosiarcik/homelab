@@ -1,22 +1,24 @@
 import fs from 'fs/promises';
 import legacyFs from 'fs';
-import { getIsoDate, getTargetAdminPassword } from '../.utils/utils.ts';
+import { getCredentials, getIsoDate, preprepare } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 import path from 'path';
 
 (async () => {
-    const credentials = {
-        password: getTargetAdminPassword(),
-    };
+    preprepare();
+
     const options = {
-        date: getIsoDate(),
+        currentDate: getIsoDate(),
+        credentials: {
+            password: getCredentials('password'),
+        },
     };
 
     await runAutomation(async (page) => {
         // Login
         await (async () => {
             await page.goto('/admin/login.php');
-            await page.locator('form#loginform input#loginpw').fill(credentials.password);
+            await page.locator('form#loginform input#loginpw').fill(options.credentials.password);
             await page.locator('form#loginform button[type="submit"]').click({ noWaitAfter: true });
             await page.waitForURL('/admin/index.php');
         })();
@@ -75,5 +77,5 @@ import path from 'path';
             await page.locator('button#gravityBtn:has-text("Update")').click();
             await page.locator('.alert-success').waitFor({ timeout: 15_000 });
         })();
-    }, options);
+    }, { date: options.currentDate });
 })();

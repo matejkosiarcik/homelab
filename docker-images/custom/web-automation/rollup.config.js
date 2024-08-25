@@ -24,6 +24,17 @@ export default [
     },
     {
         input: [
+            'src/speedtest-tracker/export.ts',
+            'src/speedtest-tracker/setup-admin.ts',
+        ],
+        output: {
+            dir: 'dist/speedtest-tracker',
+            format: 'esm',
+        },
+        plugins: [typescript()],
+    },
+    {
+        input: [
             'src/unifi-controller/backup.ts',
         ],
         output: {

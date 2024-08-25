@@ -39,8 +39,11 @@ This is bad (still starting) `/status`:
 
 ## Before initial installation
 
+- \[All\] Create base secrets
 - \[Prod\] Add healthchecks monitor for `web-backup` and configure `HOMELAB_HEALTHCHECK_URL`
 
 ## After initial installation
 
-TODO: TBD
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for admin service
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for portal service
+- \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor for admin service
