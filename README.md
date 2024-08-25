@@ -22,7 +22,7 @@ Common env variables:
 - `HOMELAB_APP_NAME` - Main app name (eg. _pihole_)
 - `HOMELAB_ENV` - Current env type, either _dev_ or _prod_
 - `HOMELAB_APP_EXTERNAL_DOMAIN` - Local domain alias (eg. _pihole.home_)
-- `HOMELAB_HEALTHCHECK_URL` - Healthcheck url to report CRON job status
+- `HOMELAB_HEALTHCHECK_URL` - Healthcheck URL to report CRON job status
 - `HOMELAB_CONTAINER_VARIANT` - In case multiple containers of the same image are used in a single app, this differentiates between them
 - Credentials:
     - `HOMELAB_APP_USERNAME` - Username (or email) for app login
