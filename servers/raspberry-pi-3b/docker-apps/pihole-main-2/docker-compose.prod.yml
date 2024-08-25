@@ -5,6 +5,7 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
+    restart: "no" # TODO: Remove override to restart services
 
 services:
   main-app:
