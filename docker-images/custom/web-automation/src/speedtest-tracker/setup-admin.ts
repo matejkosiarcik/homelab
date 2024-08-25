@@ -1,5 +1,3 @@
-import path from 'path';
-import { expect } from 'chai';
 import { preprepare, getDir, getIsoDate, getCredentials } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 
