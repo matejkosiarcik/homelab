@@ -97,5 +97,5 @@ jobs:
       - run:
           name: Run deployment on Odroid H3 (1)
           command: |
-            bash './servers/odroid-h3-1/helper.sh' create-secrets --dev
-            bash './servers/odroid-h3-1/helper.sh' start --dev --dry-run
+            bash './servers/odroid-h3/helper.sh' create-secrets --dev
+            bash './servers/odroid-h3/helper.sh' start --dev --dry-run
