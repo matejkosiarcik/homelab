@@ -31,31 +31,31 @@ services:
         subtitle: NAS
         type: CopyToClipboard
         logo: ./assets/icons/apple.png
-        clipboard: "ssh matej@10.1.4.1.home"
+        clipboard: "ssh matej@10.1.4.1"
 
       - name: Odroid H3
-        subtitle: App Server
+        subtitle: App Server (General)
         type: CopyToClipboard
         logo: ./assets/icons/odroid.png
-        clipboard: "ssh matej@10.1.4.7.home"
+        clipboard: "ssh matej@10.1.4.8"
 
       - name: RPi 3B
-        subtitle: PiHole
+        subtitle: App Server (Pihole)
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
-        clipboard: ssh matej@10.1.4.4.home
+        clipboard: ssh matej@10.1.4.2
 
       - name: RPi 4B 2GB
-        subtitle: TV?
+        subtitle: App Server (General)
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
-        clipboard: ssh matej@10.1.4.2.home
+        clipboard: ssh matej@10.1.4.3
 
       - name: RPi 4B 4GB
-        subtitle: TV?
+        subtitle: App Server (TV)
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
-        clipboard: ssh matej@10.1.4.3.home
+        clipboard: ssh matej@10.1.4.4
 
   - name: Smart Home
     icon: fa-solid fa-house
