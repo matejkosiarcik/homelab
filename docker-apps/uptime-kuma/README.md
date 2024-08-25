@@ -18,3 +18,4 @@
     - Disallow automatic updates
     - Setup Email notifications (SMTP)
     - Modify statistics history persistant interval
+- \[Prod\] Setup self HTTP/HTTPS monitor

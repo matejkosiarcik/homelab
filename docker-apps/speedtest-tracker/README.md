@@ -15,4 +15,6 @@
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` monitor for HTTP and HTTPS
+- \[All\] Setup custom admin _username_ and _password_
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
+- \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor

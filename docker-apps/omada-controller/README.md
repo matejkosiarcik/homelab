@@ -5,6 +5,7 @@
 
 ## Before initial installation
 
+- \[All\] Create base secrets
 - \[Prod\] Add healthchecks monitor for `web-backup` and configure `HOMELAB_HEALTHCHECK_URL`
 
 ## After initial installation
@@ -16,3 +17,5 @@
     - Setup SMTP server for email
     - Send automatic backups via SFTP
     - Send logs to remote syslog server
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for admin service
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for portal service

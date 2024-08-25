@@ -7,9 +7,10 @@
 
 ## Before initial installation
 
-N/A
+- \[All\] Create base secrets
 
 ## After initial installation
 
 - \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
 - \[Prod\] Add healthchecks monitor for `web-backup` and configure `HOMELAB_HEALTHCHECK_URL`
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
