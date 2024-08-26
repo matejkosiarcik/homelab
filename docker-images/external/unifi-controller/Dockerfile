@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: no need for explicit user
 
-FROM linuxserver/unifi-network-application:8.3.32
+FROM linuxserver/unifi-network-application:8.4.59
 ARG HOMELAB_BUILD_ENV=dev
 RUN cat /defaults/system.properties | \
         grep -v unifi.http.port | \
