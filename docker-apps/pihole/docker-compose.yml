@@ -18,7 +18,7 @@ services:
     volumes:
       - ./data/pihole/etc-pihole:/etc/pihole:rw
       - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - ./private/webpassword.txt:/.homelab/webpassword.txt:ro
+      - ./private/app-password.txt:/.homelab/app-password.txt:ro
       - ../../../../docker-images/external/pihole/local-domains.txt:/etc/pihole/custom.list:ro
       - ./log/main-app:/log:rw
     stop_grace_period: 30s
