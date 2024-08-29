@@ -23,7 +23,7 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, _op
             page.setDefaultTimeout(5000);
         } else {
             page.setDefaultNavigationTimeout(10_000);
-            page.setDefaultTimeout(1000);
+            page.setDefaultTimeout(2000);
         }
 
         try {
