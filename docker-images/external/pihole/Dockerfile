@@ -11,7 +11,7 @@ ENV DHCP_ACTIVE=false \
     PIHOLE_DNS_=1.1.1.1;4.2.2.1;8.8.8.8 \
     QUERY_LOGGING=false \
     TZ=Europe/Bratislava \
-    WEBPASSWORD_FILE=/.homelab/webpassword.txt \
+    WEBPASSWORD_FILE=/.homelab/app-password.txt \
     WEBTHEME=default-darker
 # Trailing underscore for "PIHOLE_DNS_" is intentional
 HEALTHCHECK --interval=5s --start-period=30s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/admin || exit 1" ]

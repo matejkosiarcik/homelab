@@ -28,7 +28,7 @@ import path from 'path';
             const domainTag = '[auto-setup]';
             while (true) {
                 await page.goto('/admin/groups-domains.php');
-                await page.locator('#domainsTable_filter input[type=search]').fill(domainTag);
+                await page.locator('#domainsTable_filter input[type="search"]').fill(domainTag);
                 const removeButtonsCount = await page.locator('button[id^="deleteDomain_"]').count();
                 if (removeButtonsCount === 0) {
                     break;

@@ -147,7 +147,7 @@ pihole*)
     create_password "$tmpdir/app-password.txt"
 
     # App
-    printf '%s' "$(cat "$tmpdir/app-password.txt")" >>"$output/webpassword.txt"
+    printf '%s' "$(cat "$tmpdir/app-password.txt")" >>"$output/app-password.txt"
 
     # Backups
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
