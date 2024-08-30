@@ -73,8 +73,6 @@ jobs:
 
   deployment:
     parameters:
-      mode:
-        type: string
       server:
         type: string
     docker:
