@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises';
 import legacyFs from 'node:fs';
+import path from 'node:path';
 import { getCredentials, getIsoDate, preprepare } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
-import path from 'path';
 
 (async () => {
     preprepare();

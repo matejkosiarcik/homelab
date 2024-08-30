@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { expect } from 'chai';
 import { getCredentials, getDir, getIsoDate, preprepare } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
