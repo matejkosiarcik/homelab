@@ -7,9 +7,9 @@ RUN apt-get update -qq && \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.dependencies/gitman/requirements.txt ./
-RUN python3 -m pip install --requirement requirements.txt --target python-packages --quiet
-ENV PATH="/app/python-packages/bin:$PATH" \
-    PYTHONPATH=/app/python-packages
+RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/app/python-vendor/bin:$PATH" \
+    PYTHONPATH=/app/python-vendor
 COPY ./.dependencies/supercronic/gitman.yml ./
 RUN gitman install --quiet
 
