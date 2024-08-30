@@ -37,6 +37,18 @@ services:
       external-network:
         ipv4_address: "10.1.16.5"
 
+  web-admin-setup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-admin-setup
+
+  # web-export:
+  #   <<: *common-service-options
+  #   extends:
+  #     file: *extends-file
+  #     service: web-export
+
 networks:
   external-network:
     driver: macvlan

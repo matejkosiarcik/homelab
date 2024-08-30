@@ -28,3 +28,9 @@ services:
     ports:
       - 8080:80
       - 8443:443
+
+  web-admin-setup:
+    <<: *common-service-options
+
+  # web-export:
+  #   <<: *common-service-options

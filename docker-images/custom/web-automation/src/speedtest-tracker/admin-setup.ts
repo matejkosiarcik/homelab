@@ -7,6 +7,11 @@ import { runAutomation } from '../.utils/main.ts';
 (async () => {
     preprepare();
 
+    if (process.env['CRON'] === '1') {
+        console.log('Skipping setup schedule');
+        return;
+    }
+
     const options = {
         exportDir: await getDir('export'),
         currentDate: getIsoDate(),

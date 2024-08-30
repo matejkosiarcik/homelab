@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: no need for explicit user
+# checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM louislam/uptime-kuma:1.23.13
 ENV HOMELAB_CONTAINER_NAME=uptime-kuma \

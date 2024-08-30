@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: no need for explicit user
+# checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM rnwood/smtp4dev:3.3.3
 COPY ./external/smtp4dev/icons/favicon.ico /app/wwwroot/favicon.ico
