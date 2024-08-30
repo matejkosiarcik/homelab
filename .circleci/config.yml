@@ -7,7 +7,19 @@ workflows:
       - azlint
       - local_build
       - docker_build
-      - deployment
+      - deployment:
+          matrix:
+            parameters:
+              server:
+                - raspberry-pi-3b
+                - raspberry-pi-4b-2g
+                - raspberry-pi-4b-4g
+                - raspberry-pi-zero-2w-1
+                - raspberry-pi-zero-2w-2
+                - odroid-h3
+              mode:
+                - dev
+                - prod
 
 jobs:
   azlint:
@@ -75,62 +87,7 @@ jobs:
             apk update --no-cache
             apk add --no-cache apache2-utils bash git moreutils python3
       - run:
-          name: Run deployment on Raspberry Pi 3B [dev]
+          name: Run deployment on << parameters.server >> [<< parameters.mode >>]
           command: |
-            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --dev
-            bash './servers/raspberry-pi-3b/helper.sh' start --dev --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi 3B [prod]
-          command: |
-            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --prod --force
-            bash './servers/raspberry-pi-3b/helper.sh' start --prod --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi 4B 2G [dev]
-          command: |
-            bash './servers/raspberry-pi-4b-2g/helper.sh' create-secrets --dev
-            bash './servers/raspberry-pi-4b-2g/helper.sh' start --dev --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi 4B 2G [prod]
-          command: |
-            bash './servers/raspberry-pi-4b-2g/helper.sh' create-secrets --prod --force
-            bash './servers/raspberry-pi-4b-2g/helper.sh' start --prod --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi 4B 4G [dev]
-          command: |
-            bash './servers/raspberry-pi-4b-4g/helper.sh' create-secrets --dev
-            bash './servers/raspberry-pi-4b-4g/helper.sh' start --dev --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi 4B 4G [prod]
-          command: |
-            bash './servers/raspberry-pi-4b-4g/helper.sh' create-secrets --prod --force
-            bash './servers/raspberry-pi-4b-4g/helper.sh' start --prod --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi Zero 2w [1] [dev]
-          command: |
-            bash './servers/raspberry-pi-zero-2w-1/helper.sh' create-secrets --dev
-            bash './servers/raspberry-pi-zero-2w-1/helper.sh' start --dev --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi Zero 2w [1] [prod]
-          command: |
-            bash './servers/raspberry-pi-zero-2w-1/helper.sh' create-secrets --prod --force
-            bash './servers/raspberry-pi-zero-2w-1/helper.sh' start --prod --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi Zero 2w [2] [dev]
-          command: |
-            bash './servers/raspberry-pi-zero-2w-2/helper.sh' create-secrets --dev
-            bash './servers/raspberry-pi-zero-2w-2/helper.sh' start --dev --dry-run
-      - run:
-          name: Run deployment on Raspberry Pi Zero 2w [2] [prod]
-          command: |
-            bash './servers/raspberry-pi-zero-2w-2/helper.sh' create-secrets --prod --force
-            bash './servers/raspberry-pi-zero-2w-2/helper.sh' start --prod --dry-run
-      - run:
-          name: Run deployment on Odroid H3 [dev]
-          command: |
-            bash './servers/odroid-h3/helper.sh' create-secrets --dev
-            bash './servers/odroid-h3/helper.sh' start --dev --dry-run
-      - run:
-          name: Run deployment on Odroid H3 [prod]
-          command: |
-            bash './servers/odroid-h3/helper.sh' create-secrets --prod --force
-            bash './servers/odroid-h3/helper.sh' start --prod --dry-run
+            sh './servers/<< parameters.server >>/helper.sh' create-secrets --<< parameters.mode >>
+            sh './servers/<< parameters.server >>/helper.sh' start --<< parameters.mode >> --dry-run
