@@ -77,7 +77,7 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 3B [dev]
           command: |
-            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --dev --force
+            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --dev
             bash './servers/raspberry-pi-3b/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi 3B [prod]
@@ -87,7 +87,7 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 4B 2G [dev]
           command: |
-            bash './servers/raspberry-pi-4b-2g/helper.sh' create-secrets --dev --force
+            bash './servers/raspberry-pi-4b-2g/helper.sh' create-secrets --dev
             bash './servers/raspberry-pi-4b-2g/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi 4B 2G [prod]
@@ -97,7 +97,7 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi 4B 4G [dev]
           command: |
-            bash './servers/raspberry-pi-4b-4g/helper.sh' create-secrets --dev --force
+            bash './servers/raspberry-pi-4b-4g/helper.sh' create-secrets --dev
             bash './servers/raspberry-pi-4b-4g/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi 4B 4G [prod]
@@ -107,7 +107,7 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi Zero 2w [1] [dev]
           command: |
-            bash './servers/raspberry-pi-zero-2w-1/helper.sh' create-secrets --dev --force
+            bash './servers/raspberry-pi-zero-2w-1/helper.sh' create-secrets --dev
             bash './servers/raspberry-pi-zero-2w-1/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi Zero 2w [1] [prod]
@@ -117,7 +117,7 @@ jobs:
       - run:
           name: Run deployment on Raspberry Pi Zero 2w [2] [dev]
           command: |
-            bash './servers/raspberry-pi-zero-2w-2/helper.sh' create-secrets --dev --force
+            bash './servers/raspberry-pi-zero-2w-2/helper.sh' create-secrets --dev
             bash './servers/raspberry-pi-zero-2w-2/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Raspberry Pi Zero 2w [2] [prod]
@@ -127,7 +127,7 @@ jobs:
       - run:
           name: Run deployment on Odroid H3 [dev]
           command: |
-            bash './servers/odroid-h3/helper.sh' create-secrets --dev --force
+            bash './servers/odroid-h3/helper.sh' create-secrets --dev
             bash './servers/odroid-h3/helper.sh' start --dev --dry-run
       - run:
           name: Run deployment on Odroid H3 [prod]
