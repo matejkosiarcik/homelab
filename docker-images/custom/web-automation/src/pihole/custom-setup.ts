@@ -1,5 +1,5 @@
-import fs from 'fs/promises';
-import legacyFs from 'fs';
+import fs from 'node:fs/promises';
+import legacyFs from 'node:fs';
 import { getCredentials, getIsoDate, preprepare } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
 import path from 'path';

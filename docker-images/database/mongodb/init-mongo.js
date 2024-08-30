@@ -1,5 +1,5 @@
-const fs = require('fs');
-const process = require('process');
+const fs = require('node:fs');
+const process = require('node:process');
 
 const dbName = process.env['DBNAME'];
 const user = process.env['USER'];
