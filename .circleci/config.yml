@@ -17,9 +17,6 @@ workflows:
                 - raspberry-pi-zero-2w-1
                 - raspberry-pi-zero-2w-2
                 - odroid-h3
-              mode:
-                - dev
-                # - prod
 
 jobs:
   azlint:
@@ -92,7 +89,7 @@ jobs:
             apk update --no-cache
             apk add --no-cache apache2-utils bash git moreutils python3
       - run:
-          name: Run deployment on << parameters.server >> [<< parameters.mode >>]
+          name: Run deployment on << parameters.server >>
           command: |
-            sh './servers/<< parameters.server >>/helper.sh' create-secrets --<< parameters.mode >>
-            sh './servers/<< parameters.server >>/helper.sh' start --<< parameters.mode >> --dry-run
+            sh './servers/<< parameters.server >>/helper.sh' create-secrets --dev
+            sh './servers/<< parameters.server >>/helper.sh' start --dev --dry-run
