@@ -9,7 +9,7 @@ CRON='0'
 export CRON
 
 # Run script initially
-sh /app/main.sh
+timeout 10m sh /app/main.sh
 
 # Run cron indefinitely
 CRON=1
