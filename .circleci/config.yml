@@ -75,32 +75,62 @@ jobs:
             apk update --no-cache
             apk add --no-cache apache2-utils bash git moreutils python3
       - run:
-          name: Run deployment on Raspberry Pi 3B
+          name: Run deployment on Raspberry Pi 3B [dev]
           command: |
-            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --dev
+            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --dev --force
             bash './servers/raspberry-pi-3b/helper.sh' start --dev --dry-run
       - run:
-          name: Run deployment on Raspberry Pi 4B 2G
+          name: Run deployment on Raspberry Pi 3B [prod]
           command: |
-            bash './servers/raspberry-pi-4b-2g/helper.sh' create-secrets --dev
+            bash './servers/raspberry-pi-3b/helper.sh' create-secrets --prod --force
+            bash './servers/raspberry-pi-3b/helper.sh' start --prod --dry-run
+      - run:
+          name: Run deployment on Raspberry Pi 4B 2G [dev]
+          command: |
+            bash './servers/raspberry-pi-4b-2g/helper.sh' create-secrets --dev --force
             bash './servers/raspberry-pi-4b-2g/helper.sh' start --dev --dry-run
       - run:
-          name: Run deployment on Raspberry Pi 4B 4G
+          name: Run deployment on Raspberry Pi 4B 2G [prod]
           command: |
-            bash './servers/raspberry-pi-4b-4g/helper.sh' create-secrets --dev
+            bash './servers/raspberry-pi-4b-2g/helper.sh' create-secrets --prod --force
+            bash './servers/raspberry-pi-4b-2g/helper.sh' start --prod --dry-run
+      - run:
+          name: Run deployment on Raspberry Pi 4B 4G [dev]
+          command: |
+            bash './servers/raspberry-pi-4b-4g/helper.sh' create-secrets --dev --force
             bash './servers/raspberry-pi-4b-4g/helper.sh' start --dev --dry-run
       - run:
-          name: Run deployment on Raspberry Pi Zero 2w [1]
+          name: Run deployment on Raspberry Pi 4B 4G [prod]
           command: |
-            bash './servers/raspberry-pi-zero-2w-1/helper.sh' create-secrets --dev
+            bash './servers/raspberry-pi-4b-4g/helper.sh' create-secrets --prod --force
+            bash './servers/raspberry-pi-4b-4g/helper.sh' start --prod --dry-run
+      - run:
+          name: Run deployment on Raspberry Pi Zero 2w [1] [dev]
+          command: |
+            bash './servers/raspberry-pi-zero-2w-1/helper.sh' create-secrets --dev --force
             bash './servers/raspberry-pi-zero-2w-1/helper.sh' start --dev --dry-run
       - run:
-          name: Run deployment on Raspberry Pi Zero 2w [2]
+          name: Run deployment on Raspberry Pi Zero 2w [1] [prod]
           command: |
-            bash './servers/raspberry-pi-zero-2w-2/helper.sh' create-secrets --dev
+            bash './servers/raspberry-pi-zero-2w-1/helper.sh' create-secrets --prod --force
+            bash './servers/raspberry-pi-zero-2w-1/helper.sh' start --prod --dry-run
+      - run:
+          name: Run deployment on Raspberry Pi Zero 2w [2] [dev]
+          command: |
+            bash './servers/raspberry-pi-zero-2w-2/helper.sh' create-secrets --dev --force
             bash './servers/raspberry-pi-zero-2w-2/helper.sh' start --dev --dry-run
       - run:
-          name: Run deployment on Odroid H3
+          name: Run deployment on Raspberry Pi Zero 2w [2] [prod]
           command: |
-            bash './servers/odroid-h3/helper.sh' create-secrets --dev
+            bash './servers/raspberry-pi-zero-2w-2/helper.sh' create-secrets --prod --force
+            bash './servers/raspberry-pi-zero-2w-2/helper.sh' start --prod --dry-run
+      - run:
+          name: Run deployment on Odroid H3 [dev]
+          command: |
+            bash './servers/odroid-h3/helper.sh' create-secrets --dev --force
             bash './servers/odroid-h3/helper.sh' start --dev --dry-run
+      - run:
+          name: Run deployment on Odroid H3 [prod]
+          command: |
+            bash './servers/odroid-h3/helper.sh' create-secrets --prod --force
+            bash './servers/odroid-h3/helper.sh' start --prod --dry-run
