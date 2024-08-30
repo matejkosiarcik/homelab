@@ -53,7 +53,8 @@ create_password() {
     fi
 
     if [ "$dev_mode" = '1' ]; then
-        printf 'Password123.' >"$output_file" # A simple password for debugging
+        # A simple password for debugging
+        printf 'Password123.' >"$output_file"
     else
         # shellcheck disable=SC2086
         python3 "$helper_script_dir/password.py" --output "$output_file" $extra_flags
@@ -168,7 +169,31 @@ smtp4dev*)
 speedtest-tracker*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-admin-setup.env"
+    prepare_healthcheck_url "$output/web-export.env"
     prepare_empty_env APP_KEY "$output/app.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/app-password.txt"
+    if [ "$dev_mode" = '1' ]; then
+        printf 'admin@localhost' >"$tmpdir/app-username.txt"
+    else
+        prepare_empty_env ADMIN_EMAIL "$output/app.env"
+        prepare_empty_env HOMELAB_APP_USERNAME "$output/web-admin-setup.env"
+        prepare_empty_env HOMELAB_APP_USERNAME "$output/web-export.env"
+        printf '' >"$tmpdir/app-username.txt"
+    fi
+
+    # App
+    # TODO: Save username/password to app.env after https://github.com/alexjustesen/speedtest-tracker/issues/1597
+    printf '# ADMIN_EMAIL=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/app.env"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/app.env"
+
+    # Automation
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-admin-setup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-admin-setup.env"
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-export.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-export.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
