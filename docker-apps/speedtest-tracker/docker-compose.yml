@@ -17,7 +17,6 @@ services:
       dockerfile: ./external/speedtest-tracker/Dockerfile
     environment:
       <<: *common-env-variables
-      SPEEDTEST_SCHEDULE: "12-59/30 * * * *"
     env_file:
       - ./private/app.env
     volumes:
@@ -55,6 +54,43 @@ services:
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
       - ./log/socket-proxy:/log:rw
+
+  web-admin-setup:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/web-automation/Dockerfile
+    depends_on:
+      main-app:
+        condition: service_healthy
+    env_file:
+      - ./private/web-admin-setup.env
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: admin-setup
+    volumes:
+      - ./data/web-admin-setup-errors:/errors:rw
+      - ./log/web-admin-setup:/log:rw
+
+  # web-export:
+  #   <<: *common-service-options
+  #   build:
+  #     context: ../../../../docker-images/
+  #     dockerfile: ./custom/web-automation/Dockerfile
+  #   depends_on:
+  #     main-app:
+  #       condition: service_healthy
+  #     web-admin-setup:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ./private/web-export.env
+  #   environment:
+  #     <<: *common-env-variables
+  #     HOMELAB_CONTAINER_VARIANT: export
+  #   volumes:
+  #     - ./data/web-export:/export:rw
+  #     - ./data/web-export-errors:/errors:rw
+  #     - ./log/web-export:/log:rw
 
 networks:
   internal-network: {}

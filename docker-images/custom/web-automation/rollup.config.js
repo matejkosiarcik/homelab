@@ -25,7 +25,7 @@ export default [
     {
         input: [
             'src/speedtest-tracker/export.ts',
-            'src/speedtest-tracker/setup-admin.ts',
+            'src/speedtest-tracker/admin-setup.ts',
         ],
         output: {
             dir: 'dist/speedtest-tracker',
