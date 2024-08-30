@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import express from 'express';
 import { ServerResponse } from 'http';
 
