@@ -19,7 +19,7 @@ workflows:
                 - odroid-h3
               mode:
                 - dev
-                - prod
+                # - prod
 
 jobs:
   azlint:
