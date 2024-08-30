@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: no need for explicit user
+# checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM pihole/pihole:2024.07.0
 ENV DHCP_ACTIVE=false \

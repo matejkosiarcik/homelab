@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: no need for explicit user
+# checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM node:22.7.0-slim AS nodejs-build
 WORKDIR /app

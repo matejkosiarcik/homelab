@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: no need for explicit user
+# checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM linuxserver/unifi-network-application:8.4.59
 ARG HOMELAB_BUILD_ENV=dev
