@@ -75,6 +75,11 @@ jobs:
             make docker-build
 
   deployment:
+    parameters:
+      mode:
+        type: string
+      server:
+        type: string
     docker:
       - image: docker:27.1.2
     steps:
