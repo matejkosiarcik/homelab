@@ -105,7 +105,7 @@ fi
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
     # shellcheck disable=SC2086,SC2248
-    docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
+    docker compose $docker_file_args down 2>&1 | tee "$log_file" >&2
 }
 
 docker_start() {
