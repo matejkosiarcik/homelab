@@ -1,6 +1,6 @@
-import fs from 'fs/promises';
-import fsSync from 'fs';
-import path from 'path';
+import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
+import path from 'node:path';
 import dotenv from 'dotenv';
 import { expect } from 'chai';
 
