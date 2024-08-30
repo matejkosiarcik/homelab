@@ -103,14 +103,14 @@ if [ "$dry_run" = '1' ]; then
 fi
 
 docker_stop() {
-    printf 'Stop docker containers\n' | tee "$log_file" >&2
+    printf 'Stop docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
     # shellcheck disable=SC2086,SC2248
     docker compose $docker_file_args down $docker_dryrun_args 2>&1 | tee "$log_file" >&2
 }
 
 docker_start() {
     if [ ! -e 'private' ]; then
-        printf 'Secrets directory not found. App cannot be run.\n'
+        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_service_name"
         exit 1
     fi
 
@@ -126,7 +126,7 @@ docker_start() {
     fi
 
     # Pull docker images
-    printf 'Pull docker images\n' | tee "$log_file" >&2
+    printf 'Pull docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
     # shellcheck disable=SC2086
     docker compose $docker_file_args pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2
     printf '\n' | tee "$log_file" >&2
@@ -137,7 +137,7 @@ docker_start() {
     fi
 
     # Build docker images
-    printf 'Build docker images\n' | tee "$log_file" >&2
+    printf 'Build docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
     # shellcheck disable=SC2086,SC2248
     docker compose $docker_file_args build --pull --with-dependencies $docker_build_args 2>&1 | tee "$log_file" >&2
     printf '\n' | tee "$log_file" >&2
@@ -148,7 +148,7 @@ docker_start() {
     fi
 
     # Run new services
-    printf 'Start docker containers\n' | tee "$log_file" >&2
+    printf 'Start docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086,SC2248
         docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_deamon_args $docker_dryrun_args 2>&1 | tee "$log_file" >&2

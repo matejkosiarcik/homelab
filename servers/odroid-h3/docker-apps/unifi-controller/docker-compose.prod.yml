@@ -12,6 +12,11 @@ services:
     extends:
       file: *extends-file
       service: main-app
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/unifi-controller/Dockerfile
+      args:
+        HOMELAB_BUILD_ENV: prod
 
   database:
     <<: *common-service-options
