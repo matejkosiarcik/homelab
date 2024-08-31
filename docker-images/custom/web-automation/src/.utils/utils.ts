@@ -48,7 +48,7 @@ export function getTargetUrl(): string {
 }
 
 export function getBrowserPath(): string | undefined {
-    return process.env['BROWSER_PATH'] || (fsSync.existsSync('/.dockerenv') ? '/usr/bin/chromium' : undefined);
+    return process.env['BROWSER_PATH'] || undefined;
 }
 
 export function getAppName(): string {
