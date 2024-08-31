@@ -23,21 +23,27 @@ import { runAutomation } from './.utils/main.ts';
         });
     const args = await argumentParser.parse();
 
-    const currentDate = getIsoDate();
-
-    await runAutomation(async (page) => {
-        page.setDefaultNavigationTimeout(15_000);
-        page.setDefaultTimeout(2000);
-
-        // Login
-        await page.goto('/');
-        await page.locator('input[type="text"][x-clipboard\\.raw]').waitFor({ timeout: 5000 });
-        const text = await page.locator('input[type="text"][x-clipboard\\.raw]').inputValue();
-
-        if (args.output === '-') {
-            process.stdout.write(text);
-        } else {
-            await fs.writeFile(args.output, text);
+    const outputValue = await (async () => {
+        if (process.env['HOMELAB_SPEEDTEST_TRACKER_APP_KEY']) {
+            return process.env['HOMELAB_SPEEDTEST_TRACKER_APP_KEY']!;
         }
-    }, { date: currentDate });
+
+        const currentDate = getIsoDate();
+        return await runAutomation(async (page) => {
+            page.setDefaultNavigationTimeout(15_000);
+            page.setDefaultTimeout(2000);
+
+            // Login
+            await page.goto('/');
+            await page.locator('input[type="text"][x-clipboard\\.raw]').waitFor({ timeout: 5000 });
+            const text = await page.locator('input[type="text"][x-clipboard\\.raw]').inputValue();
+            return text;
+        }, { date: currentDate });
+    })();
+
+    if (args.output === '-') {
+        process.stdout.write(outputValue);
+    } else {
+        await fs.writeFile(args.output, outputValue);
+    }
 })();

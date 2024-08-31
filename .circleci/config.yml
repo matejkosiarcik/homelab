@@ -93,6 +93,8 @@ jobs:
             fi
       - run:
           name: Run deployment on << parameters.server >>
+          environment:
+            HOMELAB_SPEEDTEST_TRACKER_APP_KEY: base64:ZXhhbXBsZQ== # "example"
           command: |
             if find './servers/<< parameters.server >>/docker-apps/' -maxdepth 1 | grep 'speedtest-tracker' >/dev/null 2>&1; then
               npm --prefix './.utils/deployment-helpers/.create-secrets-helpers/playwright' ci
