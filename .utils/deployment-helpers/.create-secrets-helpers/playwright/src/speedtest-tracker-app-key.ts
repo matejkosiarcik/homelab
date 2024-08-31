@@ -23,10 +23,6 @@ import { runAutomation } from './.utils/main.ts';
         });
     const args = await argumentParser.parse();
 
-    const outputStream = args.output === '-' ? process.stdout : fsSync.createWriteStream(args.output);
-    if (args.output !== '-') {
-        await fs.writeFile(args.output, '');
-    }
     const currentDate = getIsoDate();
 
     await runAutomation(async (page) => {
@@ -38,6 +34,10 @@ import { runAutomation } from './.utils/main.ts';
         await page.locator('input[type="text"][x-clipboard\\.raw]').waitFor({ timeout: 5000 });
         const text = await page.locator('input[type="text"][x-clipboard\\.raw]').inputValue();
 
-        outputStream.write(text);
+        if (args.output === '-') {
+            process.stdout.write(text);
+        } else {
+            await fs.writeFile(args.output, text);
+        }
     }, { date: currentDate });
 })();
