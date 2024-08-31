@@ -15,7 +15,6 @@ import { runAutomation } from '../.utils/main.ts';
     };
 
     await runAutomation(async (page) => {
-        page.locator('').textContent();
         // Login
         await page.goto('/admin/login.php');
         await page.locator('form#loginform input#loginpw').fill(options.credentials.password);
