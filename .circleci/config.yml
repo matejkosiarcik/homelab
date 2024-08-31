@@ -98,7 +98,9 @@ jobs:
             BROWSER_PATH: /usr/bin/chromium
           command: |
             if find './servers/<< parameters.server >>/docker-apps/' -maxdepth 1 | grep 'speedtest-tracker' >/dev/null 2>&1; then
-              npm --prefix '.utils/deployment-helpers/.create-secrets-helpers/playwright' ci
+              npm --prefix './.utils/deployment-helpers/.create-secrets-helpers/playwright' ci
+              npm --prefix './docker-images/custom/web-automation' ci
+
             fi
             sh './servers/<< parameters.server >>/helper.sh' create-secrets --dev
             sh './servers/<< parameters.server >>/helper.sh' start --dev --dry-run
