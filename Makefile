@@ -20,7 +20,7 @@ all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
-	(printf '%s\n' "$(NPM_COMPONENTS_ALL)" | base64 -d) | while read -r component; do \
+	printf '%s\n' "$(NPM_COMPONENTS_ALL)" | base64 -d | while read -r component; do \
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
