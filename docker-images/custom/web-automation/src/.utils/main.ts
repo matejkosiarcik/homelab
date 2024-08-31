@@ -2,19 +2,20 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { chromium, type Page } from 'playwright';
-import { getAppName, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
+import { getAppName, getBrowserPath, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from './utils.ts';
 
-export async function runAutomation(callback: (page: Page) => Promise<void>, _options: { date: string }) {
+export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _options: { date: string }): Promise<T> {
     const options = {
         ..._options,
         errorDir: await getErrorAttachmentDir(),
         isHeadless: getIsHeadless(),
         baseUrl: getTargetUrl(),
+        browserPath: getBrowserPath(),
     };
 
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'homelab-'));
 
-    const browser = await chromium.launch({ headless: options.isHeadless });
+    const browser = await chromium.launch({ executablePath: options.browserPath, headless: options.isHeadless });
     let isBrowserOpen = true;
     try {
         const page = await browser.newPage({ baseURL: options.baseUrl, strictSelectors: true, ignoreHTTPSErrors: true, recordVideo: { dir: tmpDir } });
@@ -27,7 +28,7 @@ export async function runAutomation(callback: (page: Page) => Promise<void>, _op
         }
 
         try {
-            await callback(page);
+            return await callback(page);
         } catch (error) {
             await page.screenshot({ fullPage: false, path: path.join(options.errorDir, `${options.date}-viewport.png`), timeout: 10_000 });
             await page.screenshot({ fullPage: true, path: path.join(options.errorDir, `${options.date}-fullpage.png`), timeout: 10_000 });

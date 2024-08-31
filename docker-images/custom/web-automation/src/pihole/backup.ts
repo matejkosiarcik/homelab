@@ -14,7 +14,6 @@ import { runAutomation } from '../.utils/main.ts';
         },
     };
 
-    const currentDate = getIsoDate();
     await runAutomation(async (page) => {
         // Login
         await page.goto('/admin/login.php');
@@ -32,6 +31,6 @@ import { runAutomation } from '../.utils/main.ts';
         // Handle download
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.tar\.gz$/);
-        await download.saveAs(path.join(options.backupDir, `${currentDate}.tar.gz`));
+        await download.saveAs(path.join(options.backupDir, `${options.currentDate}.tar.gz`));
     }, { date: options.currentDate });
 })();
