@@ -7,7 +7,8 @@ PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 DOCKER_APPS := $(shell find 'servers' -type f -name 'docker-compose.yml' -exec dirname {} \; | base64)
 DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
-NPM_COMPONENTS := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
+NPM_COMPONENTS_FOR_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
+NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8 ' | tr ' ' '\n' | base64)
 
 .POSIX:
@@ -19,7 +20,7 @@ all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
-	(printf 'icons\n' && printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d) | while read -r component; do \
+	(printf '%s\n' "$(NPM_COMPONENTS_ALL)" | base64 -d) | while read -r component; do \
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
@@ -43,7 +44,7 @@ bootstrap:
 
 .PHONY: build
 build:
-	printf '%s\n' "$(NPM_COMPONENTS)" | base64 -d | while read -r component; do \
+	printf '%s\n' "$(NPM_COMPONENTS_FOR_BUILD)" | base64 -d | while read -r component; do \
 		printf 'Building %s\n' "$$component" && \
 		npm run build --prefix "$(PROJECT_DIR)/$$component" && \
 		printf '\n\n' && \
