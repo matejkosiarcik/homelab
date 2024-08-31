@@ -20,6 +20,12 @@ all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
+	echo "Raw npm components:"
+	find '.' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \; | base64
+	echo "Saved npm components:"
+	printf '%s' "$(NPM_COMPONENTS_ALL)"
+	echo "end."
+
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | sed -E 's~\n$$~~' | base64 -d | while read -r component; do \
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
