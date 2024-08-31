@@ -22,6 +22,8 @@ all: clean bootstrap build docker-build docker-build-multiarch
 bootstrap:
 	echo "Current npm directories:"
 	find '.' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \;
+	echo "Current npm directories2:"
+	find '.' -type f -name 'package.json' -not -path '*/node_modules/*' -exec dirname {} \; | base64 | base64 -d
 	echo "end."
 
 	printf '%s\n' "$(NPM_COMPONENTS_ALL)" | base64 -d | while read -r component; do \
