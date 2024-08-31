@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { chromium, type Page } from 'playwright';
-import { getAppName, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from "./utils.ts";
+import { getAppName, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from './utils.ts';
 
 export async function runAutomation(callback: (page: Page) => Promise<void>, _options: { date: string }) {
     const options = {
