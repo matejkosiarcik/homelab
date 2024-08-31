@@ -9,7 +9,6 @@
 ## Before initial installation
 
 - \[All\] Create base secrets
-- \[All\] Visit <https://speedtest-tracker.dev> and configure `APP_KEY` for `main-app`
 - \[Prod\] Add healthchecks monitor and configure `HOMELAB_HEALTHCHECK_URL` for:
     - `certificate-manager.env`
     - `web-admin-setup.env`

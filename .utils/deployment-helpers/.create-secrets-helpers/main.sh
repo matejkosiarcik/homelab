@@ -171,7 +171,7 @@ speedtest-tracker*)
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-admin-setup.env"
     prepare_healthcheck_url "$output/web-export.env"
-    prepare_empty_env APP_KEY "$output/app.env"
+    npm --prefix "$helper_script_dir/playwright" run --silent run:speedtest-tracker-app-key -- --output "$tmpdir/app-key.txt"
 
     # Precreate passwords
     create_password "$tmpdir/app-password.txt"
@@ -185,6 +185,7 @@ speedtest-tracker*)
     fi
 
     # App
+    printf 'APP_KEY=%s\n' "$(cat "$tmpdir/app-key.txt")" >>"$output/app.env"
     # TODO: Save username/password to app.env after https://github.com/alexjustesen/speedtest-tracker/issues/1597
     printf '# ADMIN_EMAIL=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/app.env"
     printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/app.env"
