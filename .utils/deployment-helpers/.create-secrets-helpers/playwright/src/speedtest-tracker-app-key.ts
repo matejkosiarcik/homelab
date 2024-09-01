@@ -7,7 +7,7 @@ import { runAutomation } from './.utils/main.ts';
 
 (async () => {
     preprepare();
-    process.env['URL'] = 'https://speedtest-tracker.dev'; // TODO: Change to BASE_URL
+    process.env['URL'] = 'https://speedtest-tracker.dev';
     process.env['HOMELAB_APP_NAME'] = ''; // Must set this to work with web-automation utils
 
     let argumentParser = yargs(hideBin(process.argv))
