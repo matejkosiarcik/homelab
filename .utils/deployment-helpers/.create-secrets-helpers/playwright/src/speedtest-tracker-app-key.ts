@@ -1,9 +1,5 @@
 import fs from 'node:fs/promises';
-import fsSync from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
 import process from 'node:process';
-import { expect } from 'chai';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { getIsoDate, preprepare } from './.utils/utils.ts';
