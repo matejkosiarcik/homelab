@@ -17,12 +17,16 @@ updates:
         patterns:
           - "*"
 
-  # Ansible
+  # Pip
   - package-ecosystem: pip
-    directory: /ansible
+    directories:
+      - /ansible
+      - /docker-images/.dependencies/gitman
+      - /docker-images/custom/lamp-hardware-controller
+      - /icons
     schedule:
       interval: daily
-      time: "02:30"
+      time: "01:30"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -36,205 +40,27 @@ updates:
 
   # Docker
   - package-ecosystem: docker
-    directory: /docker-images/custom/web-automation
+    directories:
+      - /docker-images/custom/certificate-manager
+      - /docker-images/custom/http-proxy
+      - /docker-images/custom/lamp-hardware-controller
+      - /docker-images/custom/lamp-network-server
+      - /docker-images/custom/postgres-backup
+      - /docker-images/custom/socket-proxy
+      - /docker-images/custom/web-automation
+      - /docker-images/database/mongodb
+      - /docker-images/database/postgres
+      - /docker-images/external/healthchecks
+      - /docker-images/external/homer
+      - /docker-images/external/omada-controller
+      - /docker-images/external/pihole
+      - /docker-images/external/smtp4dev
+      - /docker-images/external/speedtest-tracker
+      - /docker-images/external/unifi-controller
+      - /docker-images/external/uptime-kuma
     schedule:
       interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/custom/http-proxy
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/external/homer
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/external/omada-controller
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/database/mongodb
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/external/unifi-controller
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/external/uptime-kuma
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/external/healthchecks
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/custom/socket-proxy
-    schedule:
-      interval: daily
-      time: "01:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/database/postgres
-    schedule:
-      interval: daily
-      time: "01:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/custom/postgres-backup
-    schedule:
-      interval: daily
-      time: "01:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/custom/lamp-hardware-controller
-    schedule:
-      interval: daily
-      time: "01:35"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/custom/lamp-network-server
-    schedule:
-      interval: daily
-      time: "01:35"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      docker:
-        patterns:
-          - "*"
-  - package-ecosystem: docker
-    directory: /docker-images/external/pihole
-    schedule:
-      interval: daily
-      time: "01:35"
+      time: "02:00"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -248,39 +74,11 @@ updates:
 
   # NPM
   - package-ecosystem: npm
-    directory: /docker-images/custom/web-automation
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "01:45"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /icons
-    versioning-strategy: increase
-    schedule:
-      interval: daily
-      time: "02:15"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
-  - package-ecosystem: npm
-    directory: /docker-images/custom/lamp-network-server
+    directories:
+      - /.utils/deployment-helpers/.create-secrets-helpers/playwright
+      - /docker-images/custom/lamp-network-server
+      - /docker-images/custom/web-automation
+      - /icons
     versioning-strategy: increase
     schedule:
       interval: daily
@@ -293,37 +91,5 @@ updates:
     open-pull-requests-limit: 1
     groups:
       npm:
-        patterns:
-          - "*"
-
-  # Pip
-  - package-ecosystem: pip
-    directory: /icons
-    schedule:
-      interval: daily
-      time: "02:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      pip:
-        patterns:
-          - "*"
-  - package-ecosystem: pip
-    directory: /docker-images/custom/lamp-hardware-controller
-    schedule:
-      interval: daily
-      time: "02:30"
-      timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      pip:
         patterns:
           - "*"
