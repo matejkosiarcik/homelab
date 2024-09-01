@@ -28,8 +28,6 @@ import { runAutomation } from './.utils/main.ts';
         return await runAutomation(async (page) => {
             page.setDefaultNavigationTimeout(15_000);
             page.setDefaultTimeout(2000);
-
-            // Login
             await page.goto('/');
             await page.locator('input[type="text"][x-clipboard\\.raw]').waitFor({ timeout: 5000 });
             const text = await page.locator('input[type="text"][x-clipboard\\.raw]').inputValue();
