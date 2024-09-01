@@ -82,6 +82,14 @@ prepare_healthcheck_url() {
 }
 
 case "$current_dir" in
+docker-cache-proxy*)
+    init_apache_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 healthchecks*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
