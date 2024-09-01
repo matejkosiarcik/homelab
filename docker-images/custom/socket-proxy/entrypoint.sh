@@ -4,7 +4,10 @@ set -euf
 mkdir -p /app/.internal
 printf 'starting\n' >/app/.internal/status
 
-if [ "$HOMELAB_APP_NAME" = 'healthchecks' ]; then
+if [ "$HOMELAB_APP_NAME" = 'docker-cache-proxy' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "$HOMELAB_APP_NAME" = 'healthchecks' ]; then
     # TODO: Also forward email SMTP port?
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &

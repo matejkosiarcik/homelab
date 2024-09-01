@@ -24,5 +24,8 @@ services:
       - "80:80"
       - "443:443"
 
+  web-admin-setup:
+    <<: *common-service-options
+
   web-backup:
     <<: *common-service-options

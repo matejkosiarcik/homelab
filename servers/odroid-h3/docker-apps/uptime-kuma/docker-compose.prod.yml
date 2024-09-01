@@ -34,6 +34,12 @@ services:
       external-network:
         ipv4_address: "10.1.16.7"
 
+  web-admin-setup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-admin-setup
+
   web-backup:
     <<: *common-service-options
     extends:

@@ -51,6 +51,24 @@ services:
     volumes:
       - ./log/socket-proxy:/log:rw
 
+  web-admin-setup:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/web-automation/Dockerfile
+    depends_on:
+      main-app:
+        condition: service_healthy
+    env_file:
+      - ./private/web-admin-setup.env
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: admin-setup
+    volumes:
+      - ./data/web-admin-setup:/backup:rw
+      - ./data/web-admin-setup-errors:/errors:rw
+      - ./log/web-admin-setup:/log:rw
+
   web-backup:
     <<: *common-service-options
     build:
@@ -58,6 +76,8 @@ services:
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
       main-app:
+        condition: service_healthy
+      web-admin-setup:
         condition: service_healthy
     env_file:
       - ./private/web-backup.env
