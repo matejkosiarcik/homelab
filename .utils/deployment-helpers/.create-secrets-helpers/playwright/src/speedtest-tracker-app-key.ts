@@ -1,9 +1,5 @@
 import fs from 'node:fs/promises';
-import fsSync from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
 import process from 'node:process';
-import { expect } from 'chai';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { getIsoDate, preprepare } from './.utils/utils.ts';
@@ -11,8 +7,8 @@ import { runAutomation } from './.utils/main.ts';
 
 (async () => {
     preprepare();
-    process.env['URL'] = 'https://speedtest-tracker.dev'; // TODO: Change to BASE_URL
-    process.env['HOMELAB_APP_NAME'] = ''; // Must set this to work with web-automation utils
+    process.env['URL'] = 'https://speedtest-tracker.dev';
+    process.env['HOMELAB_APP_NAME'] = 'N/A'; // Must set this to work with web-automation utils
 
     let argumentParser = yargs(hideBin(process.argv))
         .locale('en')
