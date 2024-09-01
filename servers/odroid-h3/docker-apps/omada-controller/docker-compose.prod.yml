@@ -38,7 +38,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.16.3"
+        ipv4_address: "10.1.16.5"
 
   web-backup:
     <<: *common-service-options
@@ -55,4 +55,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.16.0/24"
-          gateway: "10.1.17.3"
+          gateway: "10.1.17.5"

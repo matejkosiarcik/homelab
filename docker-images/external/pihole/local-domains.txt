@@ -7,10 +7,12 @@
 10.1.12.5 pihole-spouse-work.home
 10.1.12.6 uptime-kuma-2.home
 
-10.1.16.1 healthchecks.home
-10.1.16.2 homer.home
-10.1.16.3 omada-controller.home
-10.1.16.4 smtp4dev.home
-10.1.16.5 speedtest-tracker.home
-10.1.16.6 unifi-controller.home
-10.1.16.7 uptime-kuma.home
+10.1.16.1 docker-cache-proxy.home
+10.1.16.2 healthchecks.home
+10.1.16.3 home-assistant.home
+10.1.16.4 homer.home
+10.1.16.5 omada-controller.home
+10.1.16.6 smtp4dev.home
+10.1.16.7 speedtest-tracker.home
+10.1.16.8 unifi-controller.home
+10.1.16.9 uptime-kuma.home
