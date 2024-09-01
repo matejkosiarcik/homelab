@@ -8,7 +8,7 @@ import { runAutomation } from '../.utils/main.ts';
     preprepare();
 
     if (process.env['CRON'] === '1') {
-        console.log('Skipping setup schedule');
+        console.log('Skipping scheduled admin-setup');
         return;
     }
 

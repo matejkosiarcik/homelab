@@ -24,8 +24,8 @@ export default [
     },
     {
         input: [
-            'src/speedtest-tracker/export.ts',
             'src/speedtest-tracker/admin-setup.ts',
+            'src/speedtest-tracker/export.ts',
         ],
         output: {
             dir: 'dist/speedtest-tracker',
@@ -45,6 +45,7 @@ export default [
     },
     {
         input: [
+            'src/uptime-kuma/admin-setup.ts',
             'src/uptime-kuma/backup.ts',
         ],
         output: {

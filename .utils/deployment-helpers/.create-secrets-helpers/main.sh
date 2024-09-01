@@ -224,13 +224,16 @@ unifi-controller*)
 uptime-kuma*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-admin-setup.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/app-password.txt"
     printf 'admin' >"$tmpdir/app-username.txt"
 
-    # Backups
+    # Automation
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-admin-setup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-admin-setup.env"
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-backup.env"
 
