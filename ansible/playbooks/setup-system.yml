@@ -15,7 +15,6 @@
       become: true
       ansible.builtin.apt:
         pkg:
-          - apache2-utils
           - bash
           - ca-certificates
           - cron
@@ -28,6 +27,8 @@
           - python3
           - rsync
           - wget
+          # Deprecated below:
+          # - apache2-utils # Not necessary to generate secrets "on device" anymore
 
     - name: Vacuum journal logs
       register: journactl_vacuum
