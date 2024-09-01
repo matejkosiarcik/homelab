@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM linuxserver/speedtest-tracker:0.20.6
+FROM lscr.io/linuxserver/speedtest-tracker:0.20.6
 ENV \
     APP_TIMEZONE=Etc/Utc \
     DASHBOARD_POLLING=5s \
