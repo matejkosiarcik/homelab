@@ -125,36 +125,61 @@ docker_start() {
         fi
     fi
 
+    docker_compose_args="$docker_file_args"
+    if [ "$mode" = 'dev' ]; then
+        docker_compose_args="$docker_compose_args --ansi always"
+    fi
+
+    #
     # Pull docker images
+    #
+
+    docker_pull_args="$docker_compose_args pull --ignore-buildable --include-deps"
+    if [ "$mode" = 'prod' ]; then
+        docker_pull_args="$docker_pull_args --policy always --quiet"
+    elif [ "$mode" = 'dev' ]; then
+        docker_pull_args="$docker_pull_args --policy missing"
+    fi
+
     printf 'Pull docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
-    # shellcheck disable=SC2086
-    docker compose $docker_file_args pull --ignore-buildable --include-deps --policy always --quiet 2>&1 | tee "$log_file" >&2
+    if [ "$mode" = 'prod' ]; then
+        docker compose $docker_pull_args 2>&1 | tee "$log_file" >&2
+    elif [ "$mode" = 'dev' ]; then
+        docker compose $docker_pull_args
+    fi
     printf '\n' | tee "$log_file" >&2
 
-    docker_build_args=''
-    if [ "$mode" = 'prod' ]; then
-        docker_build_args='--quiet'
-    fi
-
+    #
     # Build docker images
-    printf 'Build docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
-    # shellcheck disable=SC2086,SC2248
-    docker compose $docker_file_args build --pull --with-dependencies $docker_build_args 2>&1 | tee "$log_file" >&2
-    printf '\n' | tee "$log_file" >&2
+    #
 
-    docker_deamon_args=''
+    docker_build_args="$docker_compose_args build --with-dependencies"
     if [ "$mode" = 'prod' ]; then
-        docker_deamon_args='--detach --wait'
+        docker_build_args="$docker_build_args --pull --quiet"
     fi
 
-    # Run new services
+    printf 'Build docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
+    if [ "$mode" = 'prod' ]; then
+        docker compose $docker_build_args 2>&1 | tee "$log_file" >&2
+    elif [ "$mode" = 'dev' ]; then
+        docker compose $docker_build_args
+    fi
+    printf '\n' | tee "$log_file" >&2
+
+    #
+    # Start docker containers
+    #
+
+    docker_up_args="$docker_compose_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_dryrun_args"
+    if [ "$mode" = 'prod' ]; then
+        docker_up_args="$docker_up_args --detach --wait"
+    fi
+
     printf 'Start docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
-        # shellcheck disable=SC2086,SC2248
-        docker compose $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_deamon_args $docker_dryrun_args 2>&1 | tee "$log_file" >&2
+        docker compose $docker_up_args 2>&1 | tee "$log_file" >&2
     elif [ "$mode" = 'dev' ]; then
-        # shellcheck disable=SC2086,SC2248
-        docker compose --ansi always $docker_file_args up --force-recreate --always-recreate-deps --remove-orphans --no-build $docker_deamon_args $docker_dryrun_args
+        docker compose $docker_up_args
     fi
     printf '\n' | tee "$log_file" >&2
 }
