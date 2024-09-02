@@ -34,6 +34,7 @@ updates:
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole
       - /docker-images/external/smtp4dev
+      - /docker-images/external/sonatype-nexus
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/unifi-controller
       - /docker-images/external/uptime-kuma
