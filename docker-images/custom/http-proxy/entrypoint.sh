@@ -15,7 +15,11 @@ export HOMELAB_APP_NAME
 printf "export HOMELAB_APP_NAME='%s'\n" "$HOMELAB_APP_NAME" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL
-if [ "${HOMELAB_APP_NAME-x}" = 'lamp-controller' ]; then
+if [ "${HOMELAB_APP_NAME-x}" = 'docker-cache-proxy' ]; then
+    PROXY_UPSTREAM_URL="http://main-app:8081"
+elif [ "${HOMELAB_APP_NAME-x}" = 'healthchecks' ]; then
+    PROXY_UPSTREAM_URL="http://main-app:8000"
+elif [ "${HOMELAB_APP_NAME-x}" = 'lamp-controller' ]; then
     PROXY_UPSTREAM_URL="http://app-network-server"
 elif [ "${HOMELAB_APP_NAME-x}" = 'omada-controller' ] || [ "${HOMELAB_APP_NAME-x}" = 'unifi-controller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
@@ -40,8 +44,6 @@ elif [ "${HOMELAB_APP_NAME-x}" = 'omada-controller' ] || [ "${HOMELAB_APP_NAME-x
         printf 'Unknown HOMELAB_ENV %s\n' "${HOMELAB_ENV-N/A}"
         exit 1
     fi
-elif [ "${HOMELAB_APP_NAME-x}" = 'healthchecks' ]; then
-    PROXY_UPSTREAM_URL="http://main-app:8000"
 elif [ "${HOMELAB_APP_NAME-x}" = 'speedtest-tracker' ]; then
     PROXY_UPSTREAM_URL="https://main-app"
 elif [ "${HOMELAB_APP_NAME-x}" = 'uptime-kuma' ]; then
