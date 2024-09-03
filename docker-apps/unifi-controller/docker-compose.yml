@@ -116,7 +116,7 @@ services:
       HOMELAB_CONTAINER_VARIANT: backup
     volumes:
       - ./data/web-backup:/backup:rw
-      - ./data/web-backup-errors:/errors:rw
+      - ./log/web-backup-errors:/errors:rw
       - ./log/web-backup:/log:rw
 
 networks:

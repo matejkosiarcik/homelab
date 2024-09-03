@@ -66,7 +66,7 @@ services:
       HOMELAB_CONTAINER_VARIANT: admin-setup
     volumes:
       - ./data/web-admin-setup:/backup:rw
-      - ./data/web-admin-setup-errors:/errors:rw
+      - ./log/web-admin-setup-errors:/errors:rw
       - ./log/web-admin-setup:/log:rw
 
   web-backup:
@@ -86,7 +86,7 @@ services:
       HOMELAB_CONTAINER_VARIANT: backup
     volumes:
       - ./data/web-backup:/backup:rw
-      - ./data/web-backup-errors:/errors:rw
+      - ./log/web-backup-errors:/errors:rw
       - ./log/web-backup:/log:rw
 
 networks:
