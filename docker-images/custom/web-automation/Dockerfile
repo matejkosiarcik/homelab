@@ -27,7 +27,7 @@ WORKDIR /app
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM node:22.7.0-slim AS nodejs-build
+FROM node:22.8.0-slim AS nodejs-build
 WORKDIR /app
 COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json ./
 COPY ./custom/web-automation/src/ ./src/
@@ -36,7 +36,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:22.7.0-slim AS prefinal
+FROM node:22.8.0-slim AS prefinal
 WORKDIR /app
 COPY --from=nodejs-build /app/package.json ./
 COPY --from=nodejs-build /app/node_modules ./node_modules
@@ -48,7 +48,7 @@ COPY --from=nodejs-build /app/dist ./dist
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-automation/crontab-backup.cron ./custom/web-automation/crontab-other.cron ./custom/web-automation/main.sh ./
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 
-FROM node:22.7.0-slim
+FROM node:22.8.0-slim
 WORKDIR /app
 RUN mkdir -p /backup /log
 COPY --from=prefinal /app/node_modules ./node_modules
