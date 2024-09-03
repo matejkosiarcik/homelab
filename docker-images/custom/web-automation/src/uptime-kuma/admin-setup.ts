@@ -27,10 +27,11 @@ import { runAutomation } from '../.utils/main.ts';
         await page.locator(`${setupButtonSelector},${loginButtonSelector}`).waitFor({ timeout: 5000 });
         const isSetupForm = await page.locator(setupButtonSelector).isVisible({ timeout: 0 });
         if (!isSetupForm) {
-            console.log('Admin credentials already setup');
+            console.log('Skipping admin credentials (already setup)');
             return;
         }
 
+        console.log('Setting up admin credentials');
         // Setup account
         await page.locator('form input[type="text"][placeholder="Username"]').fill(options.credentials.username);
         await page.locator('form input[type="password"][placeholder="Password"]').fill(options.credentials.password);

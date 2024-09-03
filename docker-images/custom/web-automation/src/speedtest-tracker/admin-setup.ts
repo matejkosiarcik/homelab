@@ -33,11 +33,12 @@ import { runAutomation } from '../.utils/main.ts';
         // Wait for login to finish or error message to be visible
         await Promise.any([page.waitForURL('/admin'), page.locator('text="These credentials do not match our records."').waitFor()]);
         if (page.url().endsWith('/login')) {
-            console.log('Admin credentials already setup');
+            console.log('Skipping admin credentials (already setup)');
             return;
         }
 
         // Change credentials
+        console.log('Setting up admin credentials');
         await page.goto('/admin/profile');
         await page.locator('input[id="data.email"]').clear();
         await page.locator('input[id="data.email"]').fill(options.credentials.username);
