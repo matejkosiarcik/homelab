@@ -31,13 +31,13 @@ export function getTargetUrl(): string {
                 return 'http://main-app:8081';
             }
             case 'omada-controller': {
-                return process.env['HOMELAB_ENV'] === 'dev' ? 'http://main-app:8080' : 'http://main-app';
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://main-app:8443' : 'https://main-app';
             }
             case 'speedtest-tracker': {
                 return 'https://main-app';
             }
             case 'unifi-controller': {
-                return process.env['HOMELAB_ENV'] === 'dev' ? 'http://main-app:8080' : 'https://main-app:8443';
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://main-app:8443' : 'https://main-app';
             }
             case 'uptime-kuma': {
                 return 'http://main-app:3001';

@@ -25,10 +25,12 @@ import { runAutomation } from '../.utils/main.ts';
         await page.locator(`${controllerNameInputSelector},${loginNameInputSelector}`).waitFor({ timeout: 5000 });
         const isSetupForm = await page.locator(controllerNameInputSelector).isVisible({ timeout: 0 });
         if (isSetupForm && process.env['CRON'] === '0') {
-            console.log('Quitting backup, because app is not setup yet.');
+            console.log('Skipping backup (app not setup)');
             return;
         }
 
+        // Login
+        console.log('Performing backup');
         await page.locator(loginNameInputSelector).fill(options.credentials.username);
         await page.locator('input[name="password"]').fill(options.credentials.password);
         await page.locator('button#loginButton').click({ noWaitAfter: true });
@@ -36,8 +38,8 @@ import { runAutomation } from '../.utils/main.ts';
 
         // Navigate to proper place in settings
         await page.goto('/manage/default/settings/system');
-        await page.locator('button[data-testid="system-backups-toggle"]').waitFor({ timeout: 10_000 });
-        await page.locator('button[data-testid="system-backups-toggle"]').click();
+        await page.locator('button[data-testid="backups"]').waitFor({ timeout: 10_000 });
+        await page.locator('button[data-testid="backups"]').click();
         await page.locator('button[name="backupDownload"]').click();
 
         // Initiate download
