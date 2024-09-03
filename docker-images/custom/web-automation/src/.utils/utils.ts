@@ -3,6 +3,7 @@ import fsSync from 'node:fs';
 import path from 'node:path';
 import dotenv from 'dotenv';
 import { expect } from 'chai';
+import { type Locator, type Page } from 'playwright';
 
 export function preprepare() {
     // Load .env file - Mostly useful for local (non-docker) debugging
@@ -26,17 +27,20 @@ export function getTargetUrl(): string {
 
     if (fsSync.existsSync('/.dockerenv')) {
         switch (getAppName()) {
-            case 'uptime-kuma': {
-                return 'http://main-app:3001';
+            case 'docker-cache-proxy': {
+                return 'http://main-app:8081';
             }
             case 'omada-controller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'http://main-app:8080' : 'http://main-app';
             }
-            case 'unifi-controller': {
-                return 'https://main-app:8443';
-            }
             case 'speedtest-tracker': {
                 return 'https://main-app';
+            }
+            case 'unifi-controller': {
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'http://main-app:8080' : 'https://main-app:8443';
+            }
+            case 'uptime-kuma': {
+                return 'http://main-app:3001';
             }
             default: {
                 return 'http://main-app';
@@ -80,4 +84,13 @@ export function getCredentials(credentialType: 'username' | 'password'): string 
     const value = process.env[envName]!;
     expect(value, `Credentials ${envName} unset`).not.undefined;
     return value;
+}
+
+export async function getVisibleLocator(page: Page, selector: string): Promise<Locator> {
+    for (const locator of await page.locator(selector).all()) {
+        if (await locator.isVisible({ timeout: 0 })) {
+            return locator;
+        }
+    }
+    throw new Error(`Visible locator for selector '${selector}' not found`);
 }
