@@ -12,7 +12,7 @@ Generic resources:
 - Relevant blogpost: <https://ranchergovernment.com/blog/mitigate-the-docker-dilemma-with-a-proxy-cache>
 
 I also considered the official docker-registry image, but it has a couple downsides.
-Namely 1 instance can only proxy 1 upstream, so you need N instances for N upstreams (dockerhub, ghcr.io, ...) and lacks builtin admin interface, which also needs N instances.
+Namely 1 instance can only proxy 1 upstream, so you need N instances for N upstreams (dockerhub, ghcr.io, ...) and lacks built-in admin interface, which also needs N instances.
 
 - Documentation: <https://docs.docker.com/docker-hub/mirror>
 - DockerHub: <https://hub.docker.com/_/registry>
