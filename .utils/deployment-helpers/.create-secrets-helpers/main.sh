@@ -86,6 +86,14 @@ docker-cache-proxy*)
     init_apache_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
+    # Precreate passwords
+    create_password "$tmpdir/app-password.txt"
+    printf 'admin' >"$tmpdir/app-username.txt"
+
+    # Automation
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-admin-setup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-admin-setup.env"
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2

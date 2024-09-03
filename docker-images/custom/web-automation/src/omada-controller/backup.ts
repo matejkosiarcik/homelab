@@ -26,10 +26,12 @@ import { runAutomation } from '../.utils/main.ts';
         await page.locator(`${setupButtonSelector},${loginButtonSelector}`).waitFor();
         const isSetupForm = await page.locator(setupButtonSelector).isVisible({ timeout: 0 });
         if (isSetupForm && process.env['CRON'] === '0') {
-            console.log('Quitting backup, because app is not setup yet.');
+            console.log('Skipping backup (app not setup)');
             return;
         }
 
+        // Login
+        console.log('Performing backup');
         await page.locator('#username input[type="text"]').fill(options.credentials.username);
         await page.locator('#password input[type="password"]').fill(options.credentials.password);
         await page.locator(loginButtonSelector).click({ noWaitAfter: true });

@@ -95,6 +95,8 @@ machine_start() {
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             # shellcheck disable=SC2086
+            sh "$dir/helper.sh" stop $script_args
+            # shellcheck disable=SC2086
             sh "$dir/helper.sh" start $script_args
         done
     fi
@@ -127,7 +129,6 @@ install)
     machine_install
     ;;
 start)
-    machine_stop
     machine_start
     ;;
 stop)
