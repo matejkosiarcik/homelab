@@ -13,7 +13,7 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
-FROM debian:12.6-slim AS prefinal
+FROM debian:12.7-slim AS prefinal
 WORKDIR /app
 COPY --from=nodejs-build /app/dist/ ./dist/
 COPY --from=nodejs-build /app/node_modules/ ./node_modules/
