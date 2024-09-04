@@ -27,13 +27,13 @@ WORKDIR /app
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:12.6-slim AS prefinal
+FROM debian:12.7-slim AS prefinal
 WORKDIR /app
 RUN mkdir -p /certs /log
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/certificate-manager/crontab.cron ./custom/certificate-manager/main.sh ./
 
-FROM debian:12.6-slim
+FROM debian:12.7-slim
 WORKDIR /app
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends openssl >/dev/null && \

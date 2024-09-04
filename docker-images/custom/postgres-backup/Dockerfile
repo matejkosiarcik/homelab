@@ -27,7 +27,7 @@ WORKDIR /app
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:12.6-slim AS prefinal
+FROM debian:12.7-slim AS prefinal
 WORKDIR /app
 COPY ./custom/postgres-backup/src/ ./src/
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/postgres-backup/crontab.cron ./custom/postgres-backup/main.sh ./

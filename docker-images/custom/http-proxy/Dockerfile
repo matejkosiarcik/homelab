@@ -1,11 +1,11 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM debian:12.6-slim AS prefinal
+FROM debian:12.7-slim AS prefinal
 WORKDIR /app
 COPY ./custom/http-proxy/www/ ./www/
 COPY ./custom/http-proxy/entrypoint.sh ./
 
-FROM debian:12.6-slim
+FROM debian:12.7-slim
 WORKDIR /app
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends apache2 curl inotify-tools && \
