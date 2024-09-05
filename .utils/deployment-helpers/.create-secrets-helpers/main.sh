@@ -89,7 +89,6 @@ prepare_empty_env() {
 case "$current_dir" in
 *docker-cache-proxy*)
     create_http_proxy_auth_users
-    create_http_auth_user docker
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
