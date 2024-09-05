@@ -8,7 +8,8 @@ COPY ./custom/http-proxy/entrypoint.sh ./
 FROM debian:12.7-slim
 WORKDIR /app
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends apache2 curl inotify-tools && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+        apache2 curl inotify-tools && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /certs /log && \
     a2enmod auth_basic env headers http2 log_forensic macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
