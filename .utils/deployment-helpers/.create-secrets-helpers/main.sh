@@ -63,27 +63,33 @@ create_password() {
 
 user_logfile="$tmpdir/user-logs.txt"
 
-init_apache_users() {
-    # Precreate passwords
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+create_http_proxy_auth_users() {
+    create_http_auth_user proxy-status
+}
 
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+create_http_auth_user() {
+    # $1 - user
+    create_password "$tmpdir/http-$1-password.txt" --only-alphanumeric
+    printf '%s:%s\n' "$1" "$(cat "$tmpdir/http-$1-password.txt")" >>"$output/htpasswd-users.txt"
+    chronic htpasswd -c -B -i "$output/http-user--$1.htpasswd" "$1" <"$tmpdir/http-$1-password.txt"
+}
+
+prepare_healthcheck_url() {
+    # $1 - file
+    prepare_empty_env HOMELAB_HEALTHCHECK_URL "$1"
 }
 
 prepare_empty_env() {
+    # $1 - env name
+    # $2 - file
     printf '%s=\n' "$1" >>"$2"
     printf 'You must configure "%s" in %s\n' "$1" "$(basename "$2")" >>"$user_logfile"
 }
 
-prepare_healthcheck_url() {
-    prepare_empty_env HOMELAB_HEALTHCHECK_URL "$1"
-}
-
 case "$current_dir" in
 *docker-cache-proxy*)
-    init_apache_users
+    create_http_proxy_auth_users
+    create_http_auth_user docker
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -97,7 +103,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *healthchecks*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/database-backup.env"
 
@@ -120,7 +126,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *homer*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
@@ -128,7 +134,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *lamp-controller*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
@@ -136,7 +142,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *omada-controller*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -153,7 +159,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *pihole*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
     prepare_healthcheck_url "$output/web-custom-setup.env"
@@ -173,7 +179,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *smtp4dev*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
@@ -181,7 +187,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *speedtest-tracker*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-admin-setup.env"
     prepare_healthcheck_url "$output/web-export.env"
@@ -215,7 +221,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *unifi-controller*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -236,7 +242,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *uptime-kuma*)
-    init_apache_users
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-admin-setup.env"
     prepare_healthcheck_url "$output/web-backup.env"
