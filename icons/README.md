@@ -8,9 +8,11 @@ The Icons are obtained from following locations:
     - Organizr Icons: <https://github.com/causefx/Organizr>
     - OSA Icons: <https://www.opensecurityarchitecture.org/cms/library/icon-library>
 - Individual icons:
+    - Apache: <https://techicons.dev/icons/apache>
     - Apple: <https://en.m.wikipedia.org/wiki/File:Apple_Computer_Logo_rainbow.svg>
     - Homer: <https://github.com/bastienwirtz/homer>
     - Odroid: <https://wiki.odroid.com>
+    - Playwright: <https://playwright.dev>
     - Prometheus: <https://prometheus.io>
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (Server down)
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
