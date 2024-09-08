@@ -1,0 +1,46 @@
+---
+title: Unifi Controller
+---
+%%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
+
+%% TODO: Specify which ports are open
+flowchart LR
+    classDef default fill:#00000000,stroke:#00000000,stroke-width:0px;
+    classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
+    classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
+
+    outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
+    unifi_gear["<img src='../../../../icons/unifi-gear.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Equipment"]
+
+    subgraph app_wrapper[" "]
+        socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
+        http_proxy_1("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
+        http_proxy_2("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
+        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
+        app("<img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Network<br />Application")
+        database("<img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /><br />MongoDB")
+        script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
+
+        class app component
+        class database component
+        class certificate_manager component
+        class http_proxy_1 component
+        class http_proxy_2 component
+        class script_backup component
+        class socket_proxy component
+
+        socket_proxy <--->|:80,443| http_proxy_1 <--->|:443| app
+        socket_proxy <--->|:81,444| http_proxy_2 <--->|:444| app
+        socket_proxy <--->|:...| app
+        http_proxy_1 & http_proxy_2 -..-|fs| certificate_manager
+        app ~~~ script_backup -..->|use| app
+        app -..->|use| database
+    end
+    class app_wrapper section
+
+    s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
+
+    outside_network <-->|:80,81,443,444,...| socket_proxy
+    unifi_gear <-..->|use/control| app_wrapper
+    unifi_gear ~~~~ socket_proxy
+    script_backup -.->|send backup| s3_database

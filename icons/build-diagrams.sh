@@ -16,6 +16,7 @@ convert_options='magick -background none -bordercolor transparent INPUT_FILE -re
 ### OSA Icons ###
 
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$outdir/cloud.png"
+convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/lightbulb.png"
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$outdir/network.png"
 
 ### VRT Icons ###
@@ -26,6 +27,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugin
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$outdir/home-assistant.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$outdir/speedtest-tracker.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/unifi-protect.png" "$outdir/unifi-gear.png"
 
 ### Kubernetes Icons ###
 
@@ -37,9 +39,15 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-comm
 
 ### Homer icons ###
 
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/homer.png" "$outdir/homer.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/letencrypt.png" "$outdir/lets-encrypt.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/minio.png" "$outdir/minio.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/mongodb.svg" "$outdir/mongodb.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$outdir/prometheus.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/omada.png" "$outdir/tp-link-omada.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/tplink.png" "$outdir/tp-link.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$outdir/unifi.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/uptimekuma.svg" "$outdir/uptime-kuma.png"
-convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/lightbulb.png"
 
 ### Other Icons ###
 
