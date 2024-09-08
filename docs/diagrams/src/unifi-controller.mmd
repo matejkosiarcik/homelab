@@ -10,7 +10,7 @@ flowchart LR
     classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
 
     outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
-    unifi_gear["<img src='../../../../icons/unifi-gear.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Equipment"]
+    unifi_equipment["<img src='../../../../icons/unifi-protect.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Equipment"]
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -41,6 +41,6 @@ flowchart LR
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     outside_network <-->|:80,81,443,444,...| socket_proxy
-    unifi_gear <-..->|use/control| app_wrapper
-    unifi_gear ~~~~ socket_proxy
+    unifi_equipment <-..->|use/control| app_wrapper
+    unifi_equipment ~~~~ socket_proxy
     script_backup -.->|send backup| s3_database

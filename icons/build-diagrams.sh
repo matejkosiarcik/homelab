@@ -27,7 +27,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugin
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$outdir/home-assistant.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$outdir/speedtest-tracker.png"
-convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/unifi-protect.png" "$outdir/unifi-gear.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/unifi-protect.png" "$outdir/unifi-protect.png"
 
 ### Kubernetes Icons ###
 
