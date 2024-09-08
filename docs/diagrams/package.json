@@ -3,6 +3,7 @@
   "scripts": {
     "build": "run-p build:*",
     "build:healthchecks": "mmdc --input src/healthchecks.mmd --output out/healthchecks.png",
+    "build:homer": "mmdc --input src/homer.mmd --output out/homer.png",
     "build:lamp-controller": "mmdc --input src/lamp-controller.mmd --output out/lamp-controller.png",
     "build:omada-controller": "mmdc --input src/omada-controller.mmd --output out/omada-controller.png",
     "build:pihole": "mmdc --input src/pihole.mmd --output out/pihole.png",
