@@ -8,7 +8,7 @@ flowchart LR
     classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
     classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
 
-    outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /><br />Home<br />Network"]
+    home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /><br />Home<br />Network"]
     public_dns["<img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' />Public<br />DNS"]
 
     subgraph app_wrapper[" "]
@@ -36,7 +36,7 @@ flowchart LR
 
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
-    outside_network <-->|:53,80,443| socket_proxy
+    home_network <-->|:53,80,443| socket_proxy
     script_setup ~~~ public_dns
     app -..->|DNS queries| public_dns
     script_backup -.->|send backup| s3_database

@@ -8,7 +8,7 @@ flowchart LR
     classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
     classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
 
-    outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
+    home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
     home_assistant["<img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /><br />Home<br />Assistant"]
 
     subgraph app_wrapper[" "]
@@ -36,6 +36,6 @@ flowchart LR
     gpio_button --->|control| app_2
     app_2 --->|control| gpio_lamp
 
-    outside_network <-->|:80,443| socket_proxy
+    home_network <-->|:80,443| socket_proxy
     home_assistant ~~~ socket_proxy
     home_assistant -..->|use| app_wrapper
