@@ -9,7 +9,8 @@ flowchart LR
     classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
 
     outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /><br />Home<br />Network"]
-    public_dns["<img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><br />Public<br />DNS"]
+    public_dns["<img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' />Public<br />DNS"]
+    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph wrapper[" "]
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
@@ -27,13 +28,14 @@ flowchart LR
         class socket_proxy component
 
         pihole ~~~ script_backup & script_setup
-        certificate_manager ~~~ pihole
         socket_proxy <--->|:80,443| http_proxy <--->|:80| pihole
         socket_proxy <--->|:53| pihole
         script_backup & script_setup -..->|use| pihole
-        http_proxy -.- certificate_manager
+        http_proxy -..-|fs| certificate_manager
     end
     class wrapper section
 
     outside_network <-->|:53,80,443| socket_proxy
-    pihole <-..->|DNS queries| public_dns
+    script_setup ~~~ public_dns
+    pihole -..->|DNS queries| public_dns
+    script_backup -.->|send backup| s3_database

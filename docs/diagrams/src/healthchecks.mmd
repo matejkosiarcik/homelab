@@ -10,24 +10,29 @@ flowchart LR
 
     outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
     other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
+    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph wrapper[" "]
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         healthchecks("<img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /><br />Healthchecks")
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
+        db_sync("<img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /><br />Litestream")
 
         class certificate_manager component
         class http_proxy component
         class healthchecks component
         class socket_proxy component
+        class db_sync component
 
-        certificate_manager ~~~ healthchecks
+        healthchecks ~~~ db_sync
         socket_proxy <--->|:80,443| http_proxy <--->|:8000| healthchecks
-        http_proxy -.- certificate_manager
+        http_proxy -..-|fs| certificate_manager
+        db_sync -..->|fs| healthchecks
     end
     class wrapper section
 
     outside_network <-->|:80,443| socket_proxy
     other_apps -..->|cron status| wrapper
     other_apps ~~~~ socket_proxy
+    db_sync -.->|send| s3_database

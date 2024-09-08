@@ -10,13 +10,14 @@ flowchart LR
 
     outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
     other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
+    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph wrapper[" "]
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         uptime_kuma("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma")
         script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
-        script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />Setup<br />script")
+        script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />setup<br />script")
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
 
         class certificate_manager component
@@ -27,12 +28,13 @@ flowchart LR
         class socket_proxy component
 
         uptime_kuma ~~~ script_backup & script_admin_setup
-        certificate_manager ~~~ uptime_kuma
         socket_proxy <--->|:80,443| http_proxy <--->|:3001| uptime_kuma
         script_backup & script_admin_setup -..->|use| uptime_kuma
-        http_proxy -.- certificate_manager
+        http_proxy -..-|fs| certificate_manager
     end
     class wrapper section
 
     outside_network <-->|:80,443| socket_proxy
+    script_admin_setup ~~~ other_apps
+    script_backup -.->|send backup| s3_database
     uptime_kuma -..->|check| other_apps
