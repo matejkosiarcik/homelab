@@ -16,7 +16,7 @@ convert_options='magick -background none -bordercolor transparent INPUT_FILE -re
 
 ### OSA Icons ###
 
-convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/light-bulb.png"
+convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/lightbulb.png"
 
 ### VRT Icons ###
 

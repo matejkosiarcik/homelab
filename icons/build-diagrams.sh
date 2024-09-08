@@ -23,6 +23,7 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$out
 ### Organizr Icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$outdir/healthchecks.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$outdir/home-assistant.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
 
 ### Kubernetes Icons ###
@@ -30,18 +31,21 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugin
 convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "$outdir/apps.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" "$outdir/cronjob.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ing.svg" "$outdir/ingress.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/vol.svg" "$outdir/database.png"
 
 ### Homer icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/letencrypt.png" "$outdir/lets-encrypt.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/uptimekuma.svg" "$outdir/uptime-kuma.png"
+convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/lightbulb.png"
 
 ### Other Icons ###
 
 convert_image "$convert_options" "$input_dir/other/apache.svg.bin" "$outdir/apache.png"
+convert_image "$convert_options" "$input_dir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
 convert_image "$convert_options" "$input_dir/other/smtp4dev - custom.png" "$outdir/smtp4dev.png"
 
-## Combined icons ###
+### Combined icons ###
 
 convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -border 32 -density 1200 OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/png/chromium.png" "$tmpdir/chromium.png"
 convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -border 64 -density 1200 OUTPUT_FILE' "$input_dir/other/playwright.svg.bin" "$tmpdir/playwright.png"

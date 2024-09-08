@@ -3,6 +3,7 @@
   "scripts": {
     "build": "run-p build:*",
     "build:healthchecks": "mmdc --input src/healthchecks.mmd --output out/healthchecks.png",
+    "build:lamp-controller": "mmdc --input src/lamp-controller.mmd --output out/lamp-controller.png",
     "build:pihole": "mmdc --input src/pihole.mmd --output out/pihole.png",
     "build:uptime-kuma": "mmdc --input src/uptime-kuma.mmd --output out/uptime-kuma.png"
   },

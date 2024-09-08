@@ -12,7 +12,7 @@ flowchart LR
     public_dns["<img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' />Public<br />DNS"]
     s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
-    subgraph wrapper[" "]
+    subgraph app_wrapper[" "]
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         pihole("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole")
@@ -33,7 +33,7 @@ flowchart LR
         script_backup & script_setup -..->|use| pihole
         http_proxy -..-|fs| certificate_manager
     end
-    class wrapper section
+    class app_wrapper section
 
     outside_network <-->|:53,80,443| socket_proxy
     script_setup ~~~ public_dns
