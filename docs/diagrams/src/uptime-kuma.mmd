@@ -9,8 +9,6 @@ flowchart LR
     classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
 
     outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
-    other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
-    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -33,6 +31,9 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
     class app_wrapper section
+
+    other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
+    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     outside_network <-->|:80,443| socket_proxy
     script_admin_setup ~~~ other_apps

@@ -10,7 +10,6 @@ flowchart LR
 
     outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
     other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
-    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -31,6 +30,8 @@ flowchart LR
         db_sync -..->|fs| app
     end
     class app_wrapper section
+
+    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     outside_network <-->|:80,443| socket_proxy
     other_apps -..->|cron status| app_wrapper

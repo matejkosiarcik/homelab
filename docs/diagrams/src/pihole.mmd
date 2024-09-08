@@ -10,7 +10,6 @@ flowchart LR
 
     outside_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /><br />Home<br />Network"]
     public_dns["<img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' />Public<br />DNS"]
-    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -34,6 +33,8 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
     class app_wrapper section
+
+    s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     outside_network <-->|:53,80,443| socket_proxy
     script_setup ~~~ public_dns
