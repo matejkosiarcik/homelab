@@ -32,8 +32,7 @@ flowchart LR
     gpio_button("<img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /><br />GPIO<br />Button")
     gpio_lamp("<img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /><br />GPIO<br />Lamp")
 
-    app_2 ~~~ gpio_button
-    gpio_button --->|control| app_2
+    app_2 ~~~ gpio_button --->|control| app_2
     app_2 --->|control| gpio_lamp
 
     home_network <-->|:80,443| socket_proxy

@@ -24,10 +24,9 @@ flowchart LR
         class http_proxy component
         class socket_proxy component
 
-        app ~~~ db_sync
         socket_proxy <--->|:80,443| http_proxy <--->|:8000| app
         http_proxy -..-|fs| certificate_manager
-        db_sync -..->|fs| app
+        app ~~~ db_sync -..->|fs| app
     end
     class app_wrapper section
 

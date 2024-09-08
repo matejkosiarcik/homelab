@@ -26,11 +26,10 @@ flowchart LR
         class script_admin_setup component
         class socket_proxy component
 
-        app ~~~ db_sync & script_admin_setup
         socket_proxy <--->|:80,443| http_proxy <--->|:8000| app
         http_proxy -..-|fs| certificate_manager
-        script_admin_setup -..->|use| app
-        db_sync -..->|fs| app
+        app ~~~ script_admin_setup -..->|use| app
+        app ~~~ db_sync -..->|fs| app
     end
     class app_wrapper section
 

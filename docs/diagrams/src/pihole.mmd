@@ -26,10 +26,9 @@ flowchart LR
         class script_setup component
         class socket_proxy component
 
-        app ~~~ script_backup & script_setup
         socket_proxy <--->|:80,443| http_proxy <--->|:80| app
         socket_proxy <--->|:53| app
-        script_backup & script_setup -..->|use| app
+        app ~~~ script_backup & script_setup -..->|use| app
         http_proxy -..-|fs| certificate_manager
     end
     class app_wrapper section
