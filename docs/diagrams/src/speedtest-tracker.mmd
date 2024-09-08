@@ -12,12 +12,12 @@ flowchart LR
     s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph app_wrapper[" "]
-        app("<img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /><br />Speedtest<br />Tracker")
-        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        db_sync("<img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /><br />Litestream")
-        http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
-        script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />setup<br />script")
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
+        http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
+        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
+        app("<img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /><br />Speedtest<br />Tracker")
+        db_sync("<img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /><br />Litestream")
+        script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />setup<br />script")
 
         class app component
         class certificate_manager component

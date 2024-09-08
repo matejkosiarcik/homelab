@@ -13,23 +13,23 @@ flowchart LR
     s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph app_wrapper[" "]
-        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
+        socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
-        uptime_kuma("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma")
+        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
+        app("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma")
         script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
         script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />setup<br />script")
-        socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
 
+        class app component
         class certificate_manager component
         class http_proxy component
-        class uptime_kuma component
-        class script_backup component
         class script_admin_setup component
+        class script_backup component
         class socket_proxy component
 
-        uptime_kuma ~~~ script_backup & script_admin_setup
-        socket_proxy <--->|:80,443| http_proxy <--->|:3001| uptime_kuma
-        script_backup & script_admin_setup -..->|use| uptime_kuma
+        app ~~~ script_backup & script_admin_setup
+        socket_proxy <--->|:80,443| http_proxy <--->|:3001| app
+        script_backup & script_admin_setup -..->|use| app
         http_proxy -..-|fs| certificate_manager
     end
     class app_wrapper section
@@ -37,4 +37,4 @@ flowchart LR
     outside_network <-->|:80,443| socket_proxy
     script_admin_setup ~~~ other_apps
     script_backup -.->|send backup| s3_database
-    uptime_kuma -..->|check| other_apps
+    app -..->|check| other_apps

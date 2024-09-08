@@ -13,22 +13,22 @@ flowchart LR
     s3_database["<img src='../../../../icons/database.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
     subgraph app_wrapper[" "]
-        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
-        healthchecks("<img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /><br />Healthchecks")
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
+        http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
+        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
+        app("<img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /><br />Healthchecks")
         db_sync("<img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /><br />Litestream")
 
+        class app component
         class certificate_manager component
-        class http_proxy component
-        class healthchecks component
-        class socket_proxy component
         class db_sync component
+        class http_proxy component
+        class socket_proxy component
 
-        healthchecks ~~~ db_sync
-        socket_proxy <--->|:80,443| http_proxy <--->|:8000| healthchecks
+        app ~~~ db_sync
+        socket_proxy <--->|:80,443| http_proxy <--->|:8000| app
         http_proxy -..-|fs| certificate_manager
-        db_sync -..->|fs| healthchecks
+        db_sync -..->|fs| app
     end
     class app_wrapper section
 
