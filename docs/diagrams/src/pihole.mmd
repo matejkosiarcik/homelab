@@ -1,0 +1,37 @@
+---
+title: PiHole
+---
+%%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
+
+flowchart LR
+    classDef default fill:#00000000,stroke:#00000000,stroke-width:0px;
+    classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
+    classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
+
+    outside_network["<img src='../../../../icons/network.png' style='min-width:120px;max-width:120px' /><br/>"]
+
+    subgraph wrapper[" "]
+        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br/>Certificate<br/>Manager")
+        http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br/>Apache")
+        pihole("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br/>PiHole")
+        script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br/>Backup<br/>script")
+        script_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br/>Setup<br/>script")
+        socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br/>Socat")
+
+        class certificate_manager component
+        class http_proxy component
+        class pihole component
+        class script_backup component
+        class script_setup component
+        class socket_proxy component
+
+        pihole ~~~ script_backup & script_setup
+        certificate_manager ~~~ pihole
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| pihole
+        socket_proxy <--->|:53| pihole
+        script_backup & script_setup -..->|use| pihole
+        http_proxy -.- certificate_manager
+    end
+    class wrapper section
+
+    outside_network <-->|:53,80,443| socket_proxy
