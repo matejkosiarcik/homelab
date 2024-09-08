@@ -6,6 +6,7 @@
     "build:lamp-controller": "mmdc --input src/lamp-controller.mmd --output out/lamp-controller.png",
     "build:omada-controller": "mmdc --input src/omada-controller.mmd --output out/omada-controller.png",
     "build:pihole": "mmdc --input src/pihole.mmd --output out/pihole.png",
+    "build:smtp4dev": "mmdc --input src/smtp4dev.mmd --output out/smtp4dev.png",
     "build:speedtest-tracker": "mmdc --input src/speedtest-tracker.mmd --output out/speedtest-tracker.png",
     "build:unifi-controller": "mmdc --input src/unifi-controller.mmd --output out/unifi-controller.png",
     "build:uptime-kuma": "mmdc --input src/uptime-kuma.mmd --output out/uptime-kuma.png"
