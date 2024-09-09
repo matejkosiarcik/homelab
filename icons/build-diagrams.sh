@@ -45,6 +45,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$outdir/prometheus.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/omada.png" "$outdir/tp-link-omada.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/tplink.png" "$outdir/tp-link.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/tvheadend.png" "$outdir/tvheadend.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$outdir/unifi.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/uptimekuma.svg" "$outdir/uptime-kuma.png"
 
