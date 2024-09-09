@@ -2,7 +2,7 @@
 set -euf
 
 if [ "$#" -lt 1 ]; then
-    only_diagram='';
+    only_diagram=''
 else
     only_diagram="$1"
 fi
