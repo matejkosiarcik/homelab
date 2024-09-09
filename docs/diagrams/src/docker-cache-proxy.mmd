@@ -1,5 +1,5 @@
 ---
-title: Speedtest Tracker
+title: Docker Cache Proxy
 ---
 %%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
 
@@ -9,29 +9,27 @@ flowchart LR
     classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
 
     home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
-    s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
+    other_devices["<img src='../../../../icons/.png' style='min-width:80px;max-width:80px' /><br />Other<br />Devices"]
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app("<img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /><br />Speedtest<br />Tracker")
-        db_sync("<img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /><br />Litestream")
-        script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />setup<br />script")
+        app("<img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /><br />Docker<br />Registry")
 
         class app component
         class certificate_manager component
-        class db_sync component
         class http_proxy component
-        class script_admin_setup component
         class socket_proxy component
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:443| app
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| app
         http_proxy -..-|fs| certificate_manager
-        app ~~~ script_admin_setup -..->|use| app
-        app ~~~ db_sync -..->|fs| app
     end
     class app_wrapper section
 
-    home_network <--->|:80,443| socket_proxy
-    db_sync -..->|send| s3_database
+    dockerhub["<img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /><br />DockerHub"]
+
+    home_network <-->|:80,443| socket_proxy
+    other_devices -..->|use| app_wrapper
+    other_devices ~~~~ socket_proxy
+    app -..->|use| dockerhub
