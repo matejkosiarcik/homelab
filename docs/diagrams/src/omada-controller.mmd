@@ -29,7 +29,7 @@ flowchart LR
 
         socket_proxy <--->|:80,443| http_proxy_1 <--->|:443| app
         socket_proxy <--->|:81,444| http_proxy_2 <--->|:444| app
-        socket_proxy <--->|:...| app
+        socket_proxy <--->|:27001,29810-29816| app
         http_proxy_1 & http_proxy_2 -..-|fs| certificate_manager
         app ~~~ script_backup -..->|use| app
     end
@@ -37,7 +37,7 @@ flowchart LR
 
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
 
-    home_network <-->|:80,81,443,444,...| socket_proxy
+    home_network <-->|:80,81,443,444,27001,29810-29816| socket_proxy
     tp_link_equipment <-..->|use/control| app_wrapper
     tp_link_equipment ~~~~ socket_proxy
     script_backup -.->|send backup| s3_database
