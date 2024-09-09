@@ -9,11 +9,13 @@ fi
 
 build_diagram() {
     # $1 - diagram name
+    mkdir -p "$(dirname "out/$1")"
     mmdc --scale 2 --input "src/$1.mmd" --output "out/$1.png"
 }
 
 if [ "$only_diagram" = '' ]; then
-    find src -name '*.mmd' -print0 | xargs -0 -n1 sh -c 'basename "$1" .mmd' - | while read -r diagram; do
+    find src -name '*.mmd' | while read -r file; do
+        diagram="$(printf '%s' "$file" | sed -E 's~^[^/]+/~~;s~\.mmd$~~')"
         build_diagram "$diagram"
     done
 else
