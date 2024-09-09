@@ -2,7 +2,7 @@
 
 The Icons are obtained from following locations:
 
-- Iconpacks:
+- Icon-packs:
     - DIA VRT Icons: <https://github.com/jb-stack/Dia-vrt-sheets>
     - Homer Icons: <https://github.com/NX211/homer-icons>
     - Kubernetes Icons: <https://github.com/kubernetes/community>
