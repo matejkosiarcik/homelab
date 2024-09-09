@@ -10,6 +10,7 @@ The Icons are obtained from following locations:
 - Individual icons:
     - Apache: <https://techicons.dev/icons/apache>
     - Apple: <https://en.m.wikipedia.org/wiki/File:Apple_Computer_Logo_rainbow.svg>
+    - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
     - Homer: <https://github.com/bastienwirtz/homer>
     - Litestream: <https://litestream.io>
     - Odroid: <https://wiki.odroid.com>
