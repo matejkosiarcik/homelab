@@ -62,6 +62,11 @@ convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE
 convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -border 64 -density 1200 OUTPUT_FILE' "$input_dir/other/playwright.svg.bin" "$tmpdir/playwright.png"
 convert_image "magick $tmpdir/chromium.png $tmpdir/playwright.png -gravity Center -geometry 256x256+80+96 -composite -resize 256x256 OUTPUT_FILE" '' "$outdir/chromium+playwright.png"
 
+convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -border 32 -density 1200 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_server.svg" "$tmpdir/server-1.png"
+convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 96x96 -border 32 -density 1200 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_server.svg" "$tmpdir/server-2.png"
+convert_image_draft "magick $tmpdir/server-1.png $tmpdir/server-2.png -gravity Center -geometry 256x256+50+80 -composite -resize 256x256 OUTPUT_FILE" '' "$tmpdir/servers.png"
+convert_image "magick $tmpdir/servers.png $tmpdir/server-2.png -gravity Center -geometry 256x256-50+40 -composite -resize 256x256 OUTPUT_FILE" '' "$outdir/servers.png"
+
 ### Cleanup ###
 
 rm -rf "$tmpdir"
