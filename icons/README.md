@@ -11,6 +11,7 @@ The Icons are obtained from following locations:
     - Apache: <https://techicons.dev/icons/apache>
     - Apple: <https://en.m.wikipedia.org/wiki/File:Apple_Computer_Logo_rainbow.svg>
     - Homer: <https://github.com/bastienwirtz/homer>
+    - Litestream: <https://litestream.io>
     - Odroid: <https://wiki.odroid.com>
     - Playwright: <https://playwright.dev>
     - Prometheus: <https://prometheus.io>
