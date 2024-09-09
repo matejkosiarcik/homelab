@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build": "run-p build:*",
+    "build:docker-cache-proxy": "mmdc --input src/docker-cache-proxy.mmd --output out/docker-cache-proxy.png",
     "build:healthchecks": "mmdc --input src/healthchecks.mmd --output out/healthchecks.png",
     "build:homer": "mmdc --input src/homer.mmd --output out/homer.png",
     "build:lamp-controller": "mmdc --input src/lamp-controller.mmd --output out/lamp-controller.png",
