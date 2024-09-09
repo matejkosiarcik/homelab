@@ -19,8 +19,6 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$o
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/lightbulb.png"
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$outdir/network.png"
 
-### VRT Icons ###
-
 ### Organizr Icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$outdir/healthchecks.png"
