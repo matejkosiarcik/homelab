@@ -2,16 +2,16 @@
   "private": true,
   "scripts": {
     "build": "run-p build:*",
-    "build:docker-cache-proxy": "mmdc --input src/docker-cache-proxy.mmd --output out/docker-cache-proxy.png",
-    "build:healthchecks": "mmdc --input src/healthchecks.mmd --output out/healthchecks.png",
-    "build:homer": "mmdc --input src/homer.mmd --output out/homer.png",
-    "build:lamp-controller": "mmdc --input src/lamp-controller.mmd --output out/lamp-controller.png",
-    "build:omada-controller": "mmdc --input src/omada-controller.mmd --output out/omada-controller.png",
-    "build:pihole": "mmdc --input src/pihole.mmd --output out/pihole.png",
-    "build:smtp4dev": "mmdc --input src/smtp4dev.mmd --output out/smtp4dev.png",
-    "build:speedtest-tracker": "mmdc --input src/speedtest-tracker.mmd --output out/speedtest-tracker.png",
-    "build:unifi-controller": "mmdc --input src/unifi-controller.mmd --output out/unifi-controller.png",
-    "build:uptime-kuma": "mmdc --input src/uptime-kuma.mmd --output out/uptime-kuma.png"
+    "build:docker-cache-proxy": "mmdc --scale 2 --input src/docker-cache-proxy.mmd --output out/docker-cache-proxy.png",
+    "build:healthchecks": "mmdc --scale 2 --input src/healthchecks.mmd --output out/healthchecks.png",
+    "build:homer": "mmdc --scale 2 --input src/homer.mmd --output out/homer.png",
+    "build:lamp-controller": "mmdc --scale 2 --input src/lamp-controller.mmd --output out/lamp-controller.png",
+    "build:omada-controller": "mmdc --scale 2 --input src/omada-controller.mmd --output out/omada-controller.png",
+    "build:pihole": "mmdc --scale 2 --input src/pihole.mmd --output out/pihole.png",
+    "build:smtp4dev": "mmdc --scale 2 --input src/smtp4dev.mmd --output out/smtp4dev.png",
+    "build:speedtest-tracker": "mmdc --scale 2 --input src/speedtest-tracker.mmd --output out/speedtest-tracker.png",
+    "build:unifi-controller": "mmdc --scale 2 --input src/unifi-controller.mmd --output out/unifi-controller.png",
+    "build:uptime-kuma": "mmdc --scale 2 --input src/uptime-kuma.mmd --output out/uptime-kuma.png"
   },
   "dependencies": {
     "@mermaid-js/mermaid-cli": "^10.9.1",
