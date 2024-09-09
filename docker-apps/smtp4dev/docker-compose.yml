@@ -40,7 +40,7 @@ services:
         condition: service_healthy
     volumes:
       - ./data/certs:/certs:ro
-      - ./private/http-proxy-status.htpasswd:/app/misc/http-proxy-status.htpasswd:ro
+      - ./private/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
       - ./log/http-proxy:/log:rw
 
   socket-proxy:

@@ -63,43 +63,46 @@ create_password() {
 
 user_logfile="$tmpdir/user-logs.txt"
 
-init_apache_users() {
-    # Precreate passwords
-    create_password "$tmpdir/http-proxy-status-password.txt" --only-alphanumeric
+create_http_proxy_auth_users() {
+    create_http_auth_user proxy-status
+}
 
-    # HTTP proxy
-    printf 'status - %s\n' "$(cat "$tmpdir/http-proxy-status-password.txt")" >>"$output/http-proxy-users.txt"
-    chronic htpasswd -c -B -i "$output/http-proxy-status.htpasswd" status <"$tmpdir/http-proxy-status-password.txt"
+create_http_auth_user() {
+    # $1 - user
+    create_password "$tmpdir/http-$1-password.txt" --only-alphanumeric
+    printf '%s:%s\n' "$1" "$(cat "$tmpdir/http-$1-password.txt")" >>"$output/htpasswd-users.txt"
+    chronic htpasswd -c -B -i "$output/http-user--$1.htpasswd" "$1" <"$tmpdir/http-$1-password.txt"
+}
+
+prepare_healthcheck_url() {
+    # $1 - file
+    prepare_empty_env HOMELAB_HEALTHCHECK_URL "$1"
 }
 
 prepare_empty_env() {
+    # $1 - env name
+    # $2 - file
     printf '%s=\n' "$1" >>"$2"
     printf 'You must configure "%s" in %s\n' "$1" "$(basename "$2")" >>"$user_logfile"
 }
 
-prepare_healthcheck_url() {
-    prepare_empty_env HOMELAB_HEALTHCHECK_URL "$1"
-}
-
 case "$current_dir" in
-docker-cache-proxy*)
-    init_apache_users
+*docker-cache-proxy*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    create_password "$tmpdir/app-password.txt"
-    printf 'admin' >"$tmpdir/app-username.txt"
+    create_password "$tmpdir/app-http-secret.txt" --only-alphanumeric
 
-    # Automation
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/app-username.txt")" >>"$output/web-admin-setup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/app-password.txt")" >>"$output/web-admin-setup.env"
+    # App
+    printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/app-http-secret.txt")" >>"$output/app.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-healthchecks*)
-    init_apache_users
+*healthchecks*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/database-backup.env"
 
@@ -121,24 +124,24 @@ healthchecks*)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-homer*)
-    init_apache_users
+*homer*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-lamp-controller*)
-    init_apache_users
+*lamp-controller*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-omada-controller*)
-    init_apache_users
+*omada-controller*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -154,8 +157,8 @@ omada-controller*)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-pihole*)
-    init_apache_users
+*pihole*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
     prepare_healthcheck_url "$output/web-custom-setup.env"
@@ -174,16 +177,16 @@ pihole*)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-smtp4dev*)
-    init_apache_users
+*smtp4dev*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-speedtest-tracker*)
-    init_apache_users
+*speedtest-tracker*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-admin-setup.env"
     prepare_healthcheck_url "$output/web-export.env"
@@ -216,8 +219,8 @@ speedtest-tracker*)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-unifi-controller*)
-    init_apache_users
+*unifi-controller*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -237,8 +240,8 @@ unifi-controller*)
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-uptime-kuma*)
-    init_apache_users
+*uptime-kuma*)
+    create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-admin-setup.env"
     prepare_healthcheck_url "$output/web-backup.env"

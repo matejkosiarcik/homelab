@@ -1,0 +1,40 @@
+---
+title: Lamp Controller
+---
+%%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
+
+flowchart LR
+    classDef default fill:#00000000,stroke:#00000000,stroke-width:0px;
+    classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
+    classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
+
+    home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
+    home_assistant["<img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /><br />Home<br />Assistant"]
+
+    subgraph app_wrapper[" "]
+        socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
+        http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
+        certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
+        app_1("<img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /><br />Lamp<br />API<br />server")
+        app_2("<img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /><br />Lamp<br />GPIO<br />Controller")
+
+        class app_1 component
+        class app_2 component
+        class certificate_manager component
+        class http_proxy component
+        class socket_proxy component
+
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| app_1 <--->|:80| app_2
+        http_proxy -..-|fs| certificate_manager
+    end
+    class app_wrapper section
+
+    gpio_button("<img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /><br />GPIO<br />Button")
+    gpio_lamp("<img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /><br />GPIO<br />Lamp")
+
+    app_2 ~~~ gpio_button --->|control| app_2
+    app_2 --->|control| gpio_lamp
+
+    home_network <-->|:80,443| socket_proxy
+    home_assistant ~~~ socket_proxy
+    home_assistant -..->|use| app_wrapper

@@ -16,7 +16,8 @@ RUN gitman install --quiet
 FROM golang:1.23.1-bookworm AS supercronic-build
 WORKDIR /app
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends binutils file >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=supercronic-gitman /app/gitman-repositories/supercronic/ ./supercronic/
 ENV CGO_ENABLED=0
@@ -38,7 +39,8 @@ COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
 FROM debian:trixie-slim
 WORKDIR /app
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends postgresql-client-16 >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        postgresql-client-16 >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /backup /log
 COPY --from=prefinal /app/ ./

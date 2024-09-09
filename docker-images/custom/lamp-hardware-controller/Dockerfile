@@ -3,7 +3,8 @@
 FROM debian:12.7-slim AS python-build
 WORKDIR /app
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends python3 python3-pip python3-dev build-essential >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        python3 python3-pip python3-dev build-essential >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./custom/lamp-hardware-controller/requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -17,7 +18,8 @@ COPY ./custom/lamp-hardware-controller/main.py ./
 FROM debian:12.7-slim
 WORKDIR /app
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends curl python3 >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        curl python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
 ENV HOMELAB_CONTAINER_NAME=lamp-hardware-controller \

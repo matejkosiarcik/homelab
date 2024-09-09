@@ -13,7 +13,7 @@ printf '0\n' >"$statusfile"
 
 # Send start-signal to healthchecks
 if [ -n "${HEALTHCHECK_URL+x}" ]; then
-    printf 'Healthchecks HTTP before: '
+    printf 'Send Healthchecks before job:\n'
     curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error "$HEALTHCHECK_URL/start" || true
     printf '\n'
 else
@@ -26,7 +26,7 @@ fi
 # Send end-signal to healthchecks
 status="$(cat "$statusfile")"
 if [ -n "${HEALTHCHECK_URL+x}" ]; then
-    printf 'Healthchecks HTTP after: '
+    printf 'Send Healthchecks after job:\n'
     curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error --data-binary "@$logfile" "$HEALTHCHECK_URL/$status" || true
     printf '\n'
 fi

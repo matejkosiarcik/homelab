@@ -21,7 +21,8 @@ COPY --from=nodejs-build /app/package.json ./
 
 FROM node:22.8.0-slim
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends curl >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app/ /app/
 WORKDIR /app

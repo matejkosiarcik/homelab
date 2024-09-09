@@ -16,7 +16,8 @@ RUN gitman install --quiet
 FROM golang:1.23.1-bookworm AS supercronic-build
 WORKDIR /app
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends binutils file >/dev/null && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=supercronic-gitman /app/gitman-repositories/supercronic/ ./supercronic/
 ENV CGO_ENABLED=0
@@ -40,10 +41,19 @@ FROM node:22.8.0-slim AS prefinal
 WORKDIR /app
 COPY --from=nodejs-build /app/package.json ./
 COPY --from=nodejs-build /app/node_modules ./node_modules
-RUN apt-get update && \
+# Cache playwright browsers downloads between versions and rebuilds
+# We also have to remove older versions of playwright browsers, to keep the final size down
+RUN --mount=type=cache,target=/root/.cache/ms-playwright \
+    apt-get update && \
     npx --no-install playwright install-deps chromium && \
     npx --no-install playwright install chromium && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    cp -R /root/.cache/ms-playwright/. /root/.cache-ms-playwright && \
+    find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -not -name '.*' | sed 's~^./~~;s~-.*$~~' | sort | uniq | while read -r dir; do \
+        find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -name "$dir"'-*' | sort | head -n -1 | while read -r old_dir; do \
+            rm -rf "$old_dir" && \
+        true; done && \
+    true; done
 COPY --from=nodejs-build /app/dist ./dist
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-automation/crontab-backup.cron ./custom/web-automation/crontab-other.cron ./custom/web-automation/main.sh ./
 COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
@@ -56,7 +66,7 @@ RUN apt-get update && \
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /app /app
-COPY --from=prefinal /root/.cache/ms-playwright /root/.cache/ms-playwright
+COPY --from=prefinal /root/.cache-ms-playwright /root/.cache/ms-playwright
 ENV HOMELAB_CONTAINER_NAME=web-automation \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="$PATH:/app/bin" \
