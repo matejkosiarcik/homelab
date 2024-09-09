@@ -52,9 +52,9 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg
 
 convert_image "$convert_options" "$input_dir/other/apache.svg.bin" "$outdir/apache.png"
 convert_image "$convert_options" "$input_dir/other/button.png" "$outdir/button.png"
+convert_image "$convert_options" "$input_dir/other/litestream - custom.svg.bin" "$outdir/litestream.png"
 convert_image "$convert_options" "$input_dir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
 convert_image "$convert_options" "$input_dir/other/smtp4dev - custom.png" "$outdir/smtp4dev.png"
-convert_image "$convert_options" "$input_dir/other/litestream - custom.svg.bin" "$outdir/litestream.png"
 
 ### Combined icons ###
 
