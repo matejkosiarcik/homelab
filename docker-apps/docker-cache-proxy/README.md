@@ -7,7 +7,9 @@ Generic resources:
 
 - Tutorial for using multiple mirrors: <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>
 - Relevant blogpost: <https://ranchergovernment.com/blog/mitigate-the-docker-dilemma-with-a-proxy-cache>
-- Docker proxy general API: <https://distribution.github.io/distribution/spec/api>
+- <!-- textlint-disable -->
+  Docker proxy general API: <https://distribution.github.io/distribution/spec/api>
+  <!-- textlint-enable -->
 
 ---
 
