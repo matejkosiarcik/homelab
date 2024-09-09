@@ -31,8 +31,6 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugin
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$outdir/pihole.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$outdir/speedtest.png"
 
-### Kubernetes Icons ###
-
 ### Homer icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/apple-alt.png" "$outdir/apple.png"
