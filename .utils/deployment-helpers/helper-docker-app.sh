@@ -144,7 +144,7 @@ docker_start() {
     printf 'Pull docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
-        docker compose $docker_pull_args 2>&1 | tee "$log_file" >&2
+        time docker compose $docker_pull_args 2>&1 | tee "$log_file" >&2
     elif [ "$mode" = 'dev' ]; then
         # shellcheck disable=SC2086
         docker compose $docker_pull_args
@@ -163,7 +163,7 @@ docker_start() {
     printf 'Build docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
-        docker compose $docker_build_args 2>&1 | tee "$log_file" >&2
+        time docker compose $docker_build_args 2>&1 | tee "$log_file" >&2
     elif [ "$mode" = 'dev' ]; then
         # shellcheck disable=SC2086
         docker compose $docker_build_args
@@ -182,7 +182,7 @@ docker_start() {
     printf 'Start docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
-        docker compose $docker_up_args 2>&1 | tee "$log_file" >&2
+        time docker compose $docker_up_args 2>&1 | tee "$log_file" >&2
     elif [ "$mode" = 'dev' ]; then
         # shellcheck disable=SC2086
         docker compose $docker_up_args
