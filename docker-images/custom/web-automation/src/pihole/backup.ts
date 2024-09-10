@@ -23,6 +23,7 @@ import { runAutomation } from '../.utils/main.ts';
 
         // Navigate to proper place in settings
         await page.goto('/admin/settings.php?tab=teleporter');
+        await page.locator('form#takeoutform button[type="submit"]:has-text("Backup")').waitFor({ timeout: 10_000 });
 
         // Initiate download
         const downloadPromise = page.waitForEvent('download', { timeout: 10_000 });
