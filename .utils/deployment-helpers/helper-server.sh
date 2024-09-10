@@ -6,7 +6,7 @@ print_help() {
     printf 'sh <script.sh> <command> [-f|--force] [-h|--help] [-n|--dry-run]\n'
     printf '\n'
     printf 'Commands:\n'
-    printf ' install - Install server scripts and start docker apps\n'
+    printf ' install - Install main server scripts (does not start docker-apps)\n'
     printf ' start - Start all docker apps\n'
     printf ' stop - Stop all docker apps\n'
     printf ' create-secrets - Create secrets for all docker apps\n'
