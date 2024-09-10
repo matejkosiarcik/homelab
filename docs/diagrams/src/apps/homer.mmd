@@ -1,14 +1,14 @@
 ---
 title: Homer
 ---
-%%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
 
 flowchart LR
-    classDef default fill:#00000000,stroke:#00000000,stroke-width:0px;
-    classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
-    classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
 
     home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
+    class home_network dashed_border
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -16,17 +16,12 @@ flowchart LR
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
         app("<img src='../../../../icons/homer.png' style='min-width:80px;max-width:80px' /><br />Homer")
 
-        class app component
-        class certificate_manager component
-        class http_proxy component
-        class socket_proxy component
-
         socket_proxy <--->|:80,443| http_proxy <--->|:80| app
         http_proxy -..-|fs| certificate_manager
     end
-    class app_wrapper section
 
     other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
+    class other_apps dashed_border
 
     home_network <-->|:80,443| socket_proxy
     app -..->|navigate| other_apps
