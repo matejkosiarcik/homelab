@@ -53,17 +53,18 @@ flowchart LR
         healthchecks("<img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /><br />Healthchecks")
         home_assistant("<img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /><br />Home<br />Assistant")
         homer("<img src='../../../../icons/homer.png' style='min-width:80px;max-width:80px' /><br />Homer")
+        minio("<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio")
         omada_controller("<img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /><br />Omada<br />Controller")
         smtp4dev("<img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /><br />Smtp4dev")
         speedtest_tracker("<img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /><br />Speedtest<br />Tracker")
         unifi_controller("<img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Controller")
         uptime_kuma("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma")
-        hidden_2(" ")
 
         class docker_cache_proxy component
         class healthchecks component
         class home_assistant component
         class homer component
+        class minio component
         class omada_controller component
         class smtp4dev component
         class speedtest_tracker component
@@ -74,7 +75,7 @@ flowchart LR
         unifi_controller ~~~ omada_controller
         home_assistant ~~~ healthchecks
         uptime_kuma ~~~ smtp4dev
-        docker_cache_proxy ~~~ hidden_2
+        docker_cache_proxy ~~~ minio
     end
     class odroid_h3 section
 
