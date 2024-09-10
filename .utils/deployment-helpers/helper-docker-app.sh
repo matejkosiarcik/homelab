@@ -156,9 +156,9 @@ docker_start() {
     #
 
     docker_build_args="$docker_compose_args build --with-dependencies"
-    if [ "$mode" = 'prod' ]; then
-        docker_build_args="$docker_build_args" # --quiet
-    fi
+    # if [ "$mode" = 'prod' ]; then
+    #     docker_build_args="$docker_build_args --quiet"
+    # fi
 
     printf 'Build docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
