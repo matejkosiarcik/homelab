@@ -39,7 +39,7 @@ services:
       - DBNAME=unifi
       - USER=unifi
     volumes:
-      - ./app-data/mongodb:/app-data/db:rw
+      - ./app-data/mongodb:/data/db:rw
       - ./config/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./app-secrets/database-password.txt:/.homelab/database-password.txt:ro
     stop_grace_period: 30s
