@@ -18,3 +18,4 @@ If proxy will cause issues see <https://www.reddit.com/r/pihole/comments/tttp7j/
 
 - \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
 - \[Prod\] Setup `uptime-kuma` DNS monitor
+- \[Prod\] Disable default adlists (only some instances)
