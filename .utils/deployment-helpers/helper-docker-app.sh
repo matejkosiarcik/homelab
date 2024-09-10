@@ -102,10 +102,22 @@ if [ "$dry_run" = '1' ]; then
     docker_dryrun_args='--dry-run'
 fi
 
+docker_compose_args="$docker_file_args"
+if [ "$mode" = 'dev' ]; then
+    docker_compose_args="$docker_compose_args --ansi always"
+fi
+
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
-    # shellcheck disable=SC2086,SC2248
-    docker compose $docker_file_args down 2>&1 | tee "$log_file" >&2
+
+    if [ "$mode" = 'prod' ]; then
+        # shellcheck disable=SC2086
+        time docker compose $docker_compose_args down 2>&1 | tee "$log_file" >&2
+    elif [ "$mode" = 'dev' ]; then
+        # shellcheck disable=SC2086
+        docker compose $docker_compose_args down
+    fi
+    printf '\n' | tee "$log_file" >&2
 }
 
 docker_start() {
@@ -123,11 +135,6 @@ docker_start() {
             # TODO: Run without sudo?
             sudo cp -R "$app_dir/data/." "$backup_dir/data"
         fi
-    fi
-
-    docker_compose_args="$docker_file_args"
-    if [ "$mode" = 'dev' ]; then
-        docker_compose_args="$docker_compose_args --ansi always"
     fi
 
     #
