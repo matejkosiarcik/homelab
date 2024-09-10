@@ -1,7 +1,9 @@
 x-definitions:
   extends-file: &extends-file ../../../../docker-apps/pihole/docker-compose.override-prod.yml
+  external-ip: &external-ip "10.1.10.1"
+  external-domain: &external-domain pihole-main-2.home
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: pihole-main-2.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: *external-domain
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -13,11 +15,10 @@ services:
     extends:
       file: *extends-file
       service: main-app
-    # environment:
-    #   <<: *common-env-variables
-    #   FTLCONF_LOCAL_IPV4: "10.1.10.1"
-    #   VIRTUAL_HOST: pihole-main-2.home
-    #   PIHOLE_DOMAIN: pihole-main-2.home
+    environment:
+      <<: *common-env-variables
+      FTLCONF_LOCAL_IPV4: *external-ip
+      VIRTUAL_HOST: *external-domain
 
   certificate-manager:
     <<: *common-service-options
@@ -38,7 +39,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.10.1"
+        ipv4_address: *external-ip
 
   web-backup:
     <<: *common-service-options
