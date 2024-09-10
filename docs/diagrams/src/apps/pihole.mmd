@@ -1,15 +1,16 @@
 ---
 title: PiHole
 ---
-%%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
 
 flowchart LR
-    classDef default fill:#00000000,stroke:#00000000,stroke-width:0px;
-    classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
-    classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
 
     home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /><br />Home<br />Network"]
+    class home_network dashed_border
     public_dns["<img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' />Public<br />DNS"]
+    class public_dns dashed_border
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -19,21 +20,14 @@ flowchart LR
         script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
         script_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Setup<br />script")
 
-        class app component
-        class certificate_manager component
-        class http_proxy component
-        class script_backup component
-        class script_setup component
-        class socket_proxy component
-
         socket_proxy <--->|:80,443| http_proxy <--->|:80| app
         socket_proxy <--->|:53| app
         app ~~~ script_backup & script_setup -..->|use| app
         http_proxy -..-|fs| certificate_manager
     end
-    class app_wrapper section
 
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
+    class s3_database dashed_border
 
     home_network <-->|:53,80,443| socket_proxy
     script_setup ~~~ public_dns

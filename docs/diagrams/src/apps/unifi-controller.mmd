@@ -1,16 +1,16 @@
 ---
 title: Unifi Controller
 ---
-%%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
 
-%% TODO: Specify which ports are open
 flowchart LR
-    classDef default fill:#00000000,stroke:#00000000,stroke-width:0px;
-    classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
-    classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
 
     home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
+    class home_network dashed_border
     unifi_equipment["<img src='../../../../icons/unifi-protect.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Equipment"]
+    class unifi_equipment dashed_border
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -21,14 +21,6 @@ flowchart LR
         database("<img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /><br />MongoDB")
         script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
 
-        class app component
-        class database component
-        class certificate_manager component
-        class http_proxy_1 component
-        class http_proxy_2 component
-        class script_backup component
-        class socket_proxy component
-
         socket_proxy <--->|:80,443| http_proxy_1 <--->|:443| app
         socket_proxy <--->|:81,444| http_proxy_2 <--->|:444| app
         socket_proxy <--->|:1900,3478,5514,6789,10001| app
@@ -36,9 +28,9 @@ flowchart LR
         app ~~~ script_backup -..->|use| app
         app -..->|use| database
     end
-    class app_wrapper section
 
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
+    class s3_database dashed_border
 
     home_network <-->|:80,81,443,444,1900,3478,5514,6789,10001| socket_proxy
     unifi_equipment <-..->|use/control| app_wrapper

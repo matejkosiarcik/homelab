@@ -1,19 +1,15 @@
 ---
-title: Homelab
+title: Homelab Servers
 ---
-%%{ init : { "theme" : "default", "flowchart" : { "curve" : "linear" }}}%%
 
 flowchart LR
-    classDef default fill:#00000000,stroke:#00000000,stroke-width:0px;
-    classDef component fill:#00000000,stroke:#aabbccff,stroke-width:2px;
-    classDef section fill:#00000000,stroke:#aabbccff,stroke-width:3px;
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef no_border stroke:#ffffff00,stroke-width:0px;
 
     subgraph raspberry_pi_3b["Raspberry Pi 3B"]
         pihole_mine_backup("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br />* mine - backup")
-
-        class pihole_mine_backup component
     end
-    class raspberry_pi_3b section
 
     subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2G"]
         pihole_mine("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* mine")
@@ -25,13 +21,7 @@ flowchart LR
         uptime_kuma_backup("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma<br />* backup")
         hidden_1(" ")
 
-        class pihole_guests component
-        class pihole_iot component
-        class pihole_mine component
-        class pihole_mine_work component
-        class pihole_spouse component
-        class pihole_spouse_work component
-        class uptime_kuma_backup component
+        class hidden_1 no_border
 
         pihole_mine ~~~ pihole_mine_work
         pihole_spouse ~~~ pihole_spouse_work
@@ -39,14 +29,10 @@ flowchart LR
         uptime_kuma_backup ~~~ hidden_1
 
     end
-    class raspberry_pi_4b_2g section
 
     subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4G"]
         tvheadend("<img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /><br />TVHeadend")
-
-        class tvheadend component
     end
-    class raspberry_pi_4b_4g section
 
     subgraph odroid_h3["Odroid H3"]
         docker_cache_proxy("<img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /><br />Docker<br />Cache<br />Proxy")
@@ -60,24 +46,12 @@ flowchart LR
         unifi_controller("<img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Controller")
         uptime_kuma("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma")
 
-        class docker_cache_proxy component
-        class healthchecks component
-        class home_assistant component
-        class homer component
-        class minio component
-        class omada_controller component
-        class smtp4dev component
-        class speedtest_tracker component
-        class unifi_controller component
-        class uptime_kuma component
-
         homer ~~~ speedtest_tracker
         unifi_controller ~~~ omada_controller
         home_assistant ~~~ healthchecks
         uptime_kuma ~~~ smtp4dev
         docker_cache_proxy ~~~ minio
     end
-    class odroid_h3 section
 
     odroid_h3 ~~~ raspberry_pi_3b
     raspberry_pi_4b_2g ~~~ raspberry_pi_4b_4g
