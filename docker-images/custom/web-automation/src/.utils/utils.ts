@@ -21,8 +21,8 @@ export function getIsoDate(): string {
 }
 
 export function getTargetUrl(): string {
-    if (process.env['URL']) {
-        return process.env['URL'];
+    if (process.env['HOMELAB_BASE_URL']) {
+        return process.env['HOMELAB_BASE_URL'];
     }
 
     if (fsSync.existsSync('/.dockerenv')) {

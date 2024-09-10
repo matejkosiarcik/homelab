@@ -16,7 +16,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/smtp4dev/Dockerfile
     volumes:
-      - ./data/smtp4dev:/smtp4dev:rw
+      - ./app-data/smtp4dev:/smtp4dev:rw
     stop_grace_period: 30s
 
   certificate-manager:
@@ -25,10 +25,10 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
     env_file:
-      - ./private/certificate-manager.env
+      - ./app-secrets/certificate-manager.env
     volumes:
-      - ./data/certs:/certs:rw
-      - ./log/certificate-manager:/log:rw
+      - ./app-data/certs:/certs:rw
+      - ./app-logs/certificate-manager:/log:rw
 
   http-proxy:
     <<: *common-service-options
@@ -39,9 +39,9 @@ services:
       certificate-manager:
         condition: service_healthy
     volumes:
-      - ./data/certs:/certs:ro
-      - ./private/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./log/http-proxy:/log:rw
+      - ./app-data/certs:/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/log:rw
 
   socket-proxy:
     <<: *common-service-options
@@ -49,7 +49,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
-      - ./log/socket-proxy:/log:rw
+      - ./app-logs/socket-proxy:/log:rw
 
 networks:
   internal-network:

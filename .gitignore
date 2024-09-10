@@ -1,8 +1,8 @@
 # For testing services
 .env
-data/
-log/
-private/
+app-data/
+app-logs/
+app-secrets/
 .errors/
 .export/
 .backup/

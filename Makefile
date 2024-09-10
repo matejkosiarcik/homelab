@@ -7,8 +7,8 @@ PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 DOCKER_APPS := $(shell find 'servers' -type f -name 'docker-compose.yml' -exec dirname {} \; | base64)
 DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
-NPM_COMPONENTS_FOR_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/node_modules/*' -not -path '*/data/*' -not -path '*/gitman-repositories/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
-NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not -path '*/node_modules/*' -not -path '*/data/*' -not -path '*/gitman-repositories/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
+NPM_COMPONENTS_FOR_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/node_modules/*' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
+NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not -path '*/node_modules/*' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8 ' | tr ' ' '\n' | base64)
 
 .POSIX:

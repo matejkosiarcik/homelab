@@ -31,7 +31,7 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-output='private'
+output='app-secrets'
 if [ -e "$output" ]; then
     if [ "$force_mode" -eq 1 ]; then
         rm -rf "$output"
