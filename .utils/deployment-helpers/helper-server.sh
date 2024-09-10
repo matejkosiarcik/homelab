@@ -66,9 +66,14 @@ START_DATE="$(date +"%Y-%m-%d_%H-%M-%S")"
 export START_DATE
 
 machine_dir="$PWD"
-log_dir="$HOME/homelab-log/$START_DATE"
-log_file="$log_dir/install.txt"
-mkdir -p "$log_dir"
+log_dir="$HOME/.homelab-logs/$START_DATE"
+log_file="$log_dir/deploy.txt"
+
+if [ "$mode" = 'dev' ]; then
+    log_file='/dev/null'
+elif [ "$mode" = 'prod' ]; then
+    mkdir -p "$log_dir"
+fi
 
 script_args="--$mode"
 if [ "$force" = '1' ]; then

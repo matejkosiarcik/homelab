@@ -26,8 +26,8 @@ services:
       MONGO_HOST: database
       MONGO_USER: unifi
     volumes:
-      - ./data/app:/config:rw
-      - ./private/database-password.txt:/.homelab/database-password.txt:ro
+      - ./app-data/app:/config:rw
+      - ./app-secrets/database-password.txt:/.homelab/database-password.txt:ro
     stop_grace_period: 60s
 
   database:
@@ -39,9 +39,9 @@ services:
       - DBNAME=unifi
       - USER=unifi
     volumes:
-      - ./data/mongodb:/data/db:rw
+      - ./app-data/mongodb:/app-data/db:rw
       - ./config/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ./private/database-password.txt:/.homelab/database-password.txt:ro
+      - ./app-secrets/database-password.txt:/.homelab/database-password.txt:ro
     stop_grace_period: 30s
 
   certificate-manager:
@@ -50,10 +50,10 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
     env_file:
-      - ./private/certificate-manager.env
+      - ./app-secrets/certificate-manager.env
     volumes:
-      - ./data/certs:/certs:rw
-      - ./log/certificate-manager:/log:rw
+      - ./app-data/certs:/certs:rw
+      - ./app-logs/certificate-manager:/log:rw
 
   http-proxy-admin:
     <<: *common-service-options
@@ -67,9 +67,9 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: admin
     volumes:
-      - ./data/certs:/certs:ro
-      - ./private/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./log/http-proxy-admin:/log:rw
+      - ./app-data/certs:/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy-admin:/log:rw
 
   http-proxy-portal:
     <<: *common-service-options
@@ -83,9 +83,9 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: portal
     volumes:
-      - ./data/certs:/certs:ro
-      - ./private/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./log/http-proxy-portal:/log:rw
+      - ./app-data/certs:/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy-portal:/log:rw
 
   socket-proxy:
     <<: *common-service-options
@@ -93,7 +93,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
-      - ./log/socket-proxy:/log:rw
+      - ./app-logs/socket-proxy:/log:rw
     ports:
       - 1900:1900/udp
       - 3478:3478/udp
@@ -110,14 +110,14 @@ services:
       main-app:
         condition: service_healthy
     env_file:
-      - ./private/web-backup.env
+      - ./app-secrets/web-backup.env
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: backup
     volumes:
-      - ./data/web-backup:/backup:rw
-      - ./log/web-backup-errors:/errors:rw
-      - ./log/web-backup:/log:rw
+      - ./app-data/web-backup:/backup:rw
+      - ./app-logs/web-backup-errors:/errors:rw
+      - ./app-logs/web-backup:/log:rw
 
 networks:
   internal-network: {}

@@ -16,11 +16,11 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
     volumes:
-      - ./data/pihole/etc-pihole:/etc/pihole:rw
-      - ./data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - ./private/app-password.txt:/.homelab/app-password.txt:ro
+      - ./app-data/pihole/etc-pihole:/etc/pihole:rw
+      - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ./app-secrets/app-password.txt:/.homelab/app-password.txt:ro
       - ../../../../docker-images/external/pihole/local-domains.txt:/etc/pihole/custom.list:ro
-      - ./log/main-app:/log:rw
+      - ./app-logs/main-app:/log:rw
     stop_grace_period: 30s
 
   certificate-manager:
@@ -29,10 +29,10 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
     env_file:
-      - ./private/certificate-manager.env
+      - ./app-secrets/certificate-manager.env
     volumes:
-      - ./data/certs:/certs:rw
-      - ./log/certificate-manager:/log:rw
+      - ./app-data/certs:/certs:rw
+      - ./app-logs/certificate-manager:/log:rw
 
   http-proxy:
     <<: *common-service-options
@@ -43,9 +43,9 @@ services:
       certificate-manager:
         condition: service_healthy
     volumes:
-      - ./data/certs:/certs:ro
-      - ./private/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./log/http-proxy:/log:rw
+      - ./app-data/certs:/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/log:rw
 
   socket-proxy:
     <<: *common-service-options
@@ -53,7 +53,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
-      - ./log/socket-proxy:/log:rw
+      - ./app-logs/socket-proxy:/log:rw
 
   web-backup:
     <<: *common-service-options
@@ -66,14 +66,14 @@ services:
       web-custom-setup:
         condition: service_healthy
     env_file:
-      - ./private/web-backup.env
+      - ./app-secrets/web-backup.env
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: backup
     volumes:
-      - ./data/web-backup:/backup:rw
-      - ./log/web-backup-errors:/errors:rw
-      - ./log/web-backup:/log:rw
+      - ./app-data/web-backup:/backup:rw
+      - ./app-logs/web-backup-errors:/errors:rw
+      - ./app-logs/web-backup:/log:rw
 
   web-custom-setup:
     <<: *common-service-options
@@ -84,13 +84,13 @@ services:
       main-app:
         condition: service_healthy
     env_file:
-      - ./private/web-custom-setup.env
+      - ./app-secrets/web-custom-setup.env
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: custom-setup
     volumes:
-      - ./log/web-custom-setup-errors:/errors:rw
-      - ./log/web-custom-setup:/log:rw
+      - ./app-logs/web-custom-setup-errors:/errors:rw
+      - ./app-logs/web-custom-setup:/log:rw
       - ../../../../docker-images/external/pihole/base-whitelist.txt:/.homelab/domains/base-whitelist.txt:ro
       - ../../../../docker-images/external/pihole/base-blacklist.txt:/.homelab/domains/base-blacklist.txt:ro
 
