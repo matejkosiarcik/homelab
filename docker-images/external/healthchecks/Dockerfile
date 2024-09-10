@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM healthchecks/healthchecks:v3.6
-COPY ./external/healthchecks/healthcheck.py /.homelab/healthcheck.py
+COPY ./external/healthchecks/healthcheck.py /homelab/healthcheck.py
 ENV DB_NAME=database \
     DB=postgres \
     DEBUG=False \
@@ -18,4 +18,4 @@ ENV DB_NAME=database \
 # EMAIL_USE_TLS=False # TODO: Set True
 # EMAIL_USE_VERIFICATION=True \
 
-HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /.homelab/healthcheck.py || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]

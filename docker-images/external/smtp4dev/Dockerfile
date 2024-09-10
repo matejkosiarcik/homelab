@@ -11,7 +11,7 @@ ENV ASPNETCORE_HTTP_PORTS=80 \
 # TODO: Enable TLS below
 # ServerOptions__TlsMode=StartTls
 # ServerOptions__SecureConnectionRequired=true
-# ServerOptions__TlsCertificate=/.homelab/certs/server.pem
+# ServerOptions__TlsCertificate=/homelab/certs/server.pem
 # ServerOptions__AuthenticationRequired=true
 
 # Note: curl/wget isn't available, so we have to resort to bash

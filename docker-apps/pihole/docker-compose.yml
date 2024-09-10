@@ -18,7 +18,7 @@ services:
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - ./app-secrets/app-password.txt:/.homelab/app-password.txt:ro
+      - ./app-secrets/app-password.txt:/homelab/app-password.txt:ro
       - ../../../../docker-images/external/pihole/local-domains.txt:/etc/pihole/custom.list:ro
       - ./app-logs/main-app:/log:rw
     stop_grace_period: 30s
@@ -91,8 +91,8 @@ services:
     volumes:
       - ./app-logs/web-custom-setup-errors:/errors:rw
       - ./app-logs/web-custom-setup:/log:rw
-      - ../../../../docker-images/external/pihole/base-whitelist.txt:/.homelab/domains/base-whitelist.txt:ro
-      - ../../../../docker-images/external/pihole/base-blacklist.txt:/.homelab/domains/base-blacklist.txt:ro
+      - ../../../../docker-images/external/pihole/base-whitelist.txt:/homelab/domains/base-whitelist.txt:ro
+      - ../../../../docker-images/external/pihole/base-blacklist.txt:/homelab/domains/base-blacklist.txt:ro
 
 networks:
   internal-network: {}
