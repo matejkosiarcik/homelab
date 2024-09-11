@@ -20,12 +20,12 @@ COPY --from=nodejs-build /homelab/node_modules/ ./node_modules/
 COPY --from=nodejs-build /homelab/package.json ./
 
 FROM node:22.8.0-slim
+WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /homelab/ ./
-WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME=lamp-network-server \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
