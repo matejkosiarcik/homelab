@@ -1,10 +1,10 @@
-10.1.10.1 pihole-main-2.home
+10.1.10.1 pihole-matej-2.home
 
 10.1.12.1 pihole-guests.home
-10.1.12.2 pihole-main.home
-10.1.12.3 pihole-main-work.home
-10.1.12.4 pihole-spouse.home
-10.1.12.5 pihole-spouse-work.home
+10.1.12.2 pihole-matej.home
+10.1.12.3 pihole-matej-work.home
+10.1.12.4 pihole-monika.home
+10.1.12.5 pihole-monika-work.home
 10.1.12.6 uptime-kuma-2.home
 
 10.1.16.1 docker-cache-proxy.home
