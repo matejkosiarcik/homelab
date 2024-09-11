@@ -6,9 +6,11 @@ print_help() {
     printf 'sh <script.sh> <command> [-d|--dev|-p|--prod] [-h|--help] [-f|--force] [-n|--dry-run]\n'
     printf '\n'
     printf 'Commands:\n'
+    printf ' build - Build docker images for current app\n'
     printf ' create-secrets - Create app secrets\n'
-    printf ' start - Start docker app\n'
-    printf ' stop - Stop docker app\n'
+    printf ' deploy - Deploy current docker app [DEFAULT]\n'
+    printf ' start - Start current docker app\n'
+    printf ' stop - Stop current docker app\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -d, --dev     - Dev mode\n'
@@ -126,21 +128,10 @@ docker_stop() {
     printf '\n' | tee "$log_file" >&2
 }
 
-docker_start() {
+docker_build() {
     if [ ! -e 'app-secrets' ]; then
         printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_service_name"
         exit 1
-    fi
-
-    if [ "$mode" = prod ]; then
-        if [ -d "$app_dir/app-logs" ]; then
-            # TODO: Run without sudo?
-            sudo cp -R "$app_dir/app-logs/." "$backup_dir/app-logs"
-        fi
-        if [ -d "$app_dir/app-data" ]; then
-            # TODO: Run without sudo?
-            sudo cp -R "$app_dir/app-data/." "$backup_dir/app-data"
-        fi
     fi
 
     #
@@ -182,6 +173,24 @@ docker_start() {
         docker compose $docker_build_args
     fi
     printf '\n' | tee "$log_file" >&2
+}
+
+docker_start() {
+    if [ ! -e 'app-secrets' ]; then
+        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_service_name"
+        exit 1
+    fi
+
+    if [ "$mode" = prod ]; then
+        if [ -d "$app_dir/app-logs" ]; then
+            # TODO: Run without sudo?
+            sudo cp -R "$app_dir/app-logs/." "$backup_dir/app-logs"
+        fi
+        if [ -d "$app_dir/app-data" ]; then
+            # TODO: Run without sudo?
+            sudo cp -R "$app_dir/app-data/." "$backup_dir/app-data"
+        fi
+    fi
 
     #
     # Start docker containers
@@ -204,12 +213,8 @@ docker_start() {
 }
 
 case "$command" in
-start)
-    docker_stop
-    docker_start
-    ;;
-stop)
-    docker_stop
+build)
+    docker_build
     ;;
 create-secrets)
     create_secrets_args=''
@@ -221,6 +226,17 @@ create-secrets)
     fi
     # shellcheck disable=SC2086
     sh "$git_dir/.utils/deployment-helpers/.create-secrets-helpers/main.sh" $create_secrets_args
+    ;;
+deploy)
+    docker_build
+    docker_stop
+    docker_start
+    ;;
+start)
+    docker_start
+    ;;
+stop)
+    docker_stop
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2

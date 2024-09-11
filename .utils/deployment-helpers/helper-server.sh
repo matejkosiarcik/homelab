@@ -6,7 +6,9 @@ print_help() {
     printf 'sh <script.sh> <command> [-d|--dev|-p|--prod] [-h|--help] [-f|--force] [-n|--dry-run]\n'
     printf '\n'
     printf 'Commands:\n'
+    printf ' build - Build docker images for all docker apps\n'
     printf ' create-secrets - Create secrets for all docker apps\n'
+    printf ' deploy - Deploy all docker apps [DEFAULT]\n'
     printf ' install - Install main server scripts (does not start docker-apps)\n'
     printf ' start - Start all docker apps\n'
     printf ' stop - Stop all docker apps\n'
@@ -94,15 +96,35 @@ machine_stop() {
     fi
 }
 
+machine_build() {
+    if [ -d "$machine_dir/docker-apps" ]; then
+        printf 'Build docker images for all docker apps\n' | tee "$log_file" >&2
+
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
+            # shellcheck disable=SC2086
+            sh "$dir/helper.sh" build $script_args
+        done
+    fi
+}
+
 machine_start() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Start all docker apps\n' | tee "$log_file" >&2
 
         find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$dir/helper.sh" stop $script_args
-            # shellcheck disable=SC2086
             sh "$dir/helper.sh" start $script_args
+        done
+    fi
+}
+
+machine_deploy() {
+    if [ -d "$machine_dir/docker-apps" ]; then
+        printf 'Deploy all docker apps\n' | tee "$log_file" >&2
+
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
+            # shellcheck disable=SC2086
+            sh "$dir/helper.sh" deploy $script_args
         done
     fi
 }
@@ -130,6 +152,9 @@ machine_install() {
 }
 
 case "$command" in
+build)
+    machine_build
+    ;;
 install)
     machine_install
     ;;
