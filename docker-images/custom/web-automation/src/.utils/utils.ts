@@ -70,7 +70,7 @@ export async function getDir(name: string): Promise<string> {
 
 export async function getErrorAttachmentDir(): Promise<string> {
     const appName = getAppName();
-    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/errors' : path.join('.errors', appName));
+    const errorDir = process.env['HOMELAB_ERROR_DIR'] || (fsSync.existsSync('/.dockerenv') ? '/homelab/errors' : path.join('.errors', appName));
     await fs.mkdir(errorDir, { recursive: true });
     return errorDir;
 }
