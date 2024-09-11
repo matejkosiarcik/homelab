@@ -3,7 +3,7 @@ set -eufo pipefail
 # The reason to use `bash` instead of plain `sh` is that we require pipefail
 
 print_help() {
-    printf 'sh <script.sh> <command> [-d|--dev] [-f|--force] [-h|--help] [-n|--dry-run] [-p|--prod]\n'
+    printf 'sh <script.sh> <command> [-d|--dev|-p|--prod] [-h|--help] [-f|--force] [-n|--dry-run]\n'
     printf '\n'
     printf 'Commands:\n'
     printf ' create-secrets - Create app secrets\n'
