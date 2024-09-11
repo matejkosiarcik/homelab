@@ -1,7 +1,7 @@
 x-definitions:
-  extends-file: &extends-file ../../../../docker-apps/omada-controller/docker-compose.override-prod.yml
+  extends-file: &extends-file ../../../../docker-apps/uptime-kuma/docker-compose.override-prod.yml
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: omada-controller.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: uptime-kuma.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -19,17 +19,11 @@ services:
       file: *extends-file
       service: certificate-manager
 
-  http-proxy-admin:
+  http-proxy:
     <<: *common-service-options
     extends:
       file: *extends-file
-      service: http-proxy-admin
-
-  http-proxy-portal:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: http-proxy-portal
+      service: http-proxy
 
   socket-proxy:
     <<: *common-service-options
@@ -38,7 +32,13 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.16.5"
+        ipv4_address: "10.1.16.6"
+
+  web-admin-setup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-admin-setup
 
   web-backup:
     <<: *common-service-options
@@ -55,4 +55,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.16.0/24"
-          gateway: "10.1.17.5"
+          gateway: "10.1.17.6"

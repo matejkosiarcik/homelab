@@ -1,7 +1,7 @@
 x-definitions:
-  extends-file: &extends-file ../../../../docker-apps/speedtest-tracker/docker-compose.override-prod.yml
+  extends-file: &extends-file ../../../../docker-apps/healthchecks/docker-compose.override-prod.yml
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: speedtest-tracker.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: healthchecks.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -14,7 +14,20 @@ services:
       service: main-app
     environment:
       <<: *common-env-variables
-      APP_URL: https://speedtest-tracker.home
+      DEFAULT_FROM_EMAIL: healthchecks@healthchecks.home
+      SITE_ROOT: https://healthchecks.home
+
+  database:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: database
+
+  database-backup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: database-backup
 
   certificate-manager:
     <<: *common-service-options
@@ -35,19 +48,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.16.7"
-
-  web-admin-setup:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: web-admin-setup
-
-  # web-export:
-  #   <<: *common-service-options
-  #   extends:
-  #     file: *extends-file
-  #     service: web-export
+        ipv4_address: "10.1.16.5"
 
 networks:
   external-network:
@@ -58,4 +59,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.16.0/24"
-          gateway: "10.1.17.7"
+          gateway: "10.1.17.5"

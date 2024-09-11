@@ -1,7 +1,7 @@
 x-definitions:
-  extends-file: &extends-file ../../../../docker-apps/uptime-kuma/docker-compose.override-prod.yml
+  extends-file: &extends-file ../../../../docker-apps/smtp4dev/docker-compose.override-prod.yml
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: uptime-kuma.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: smtp4dev.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -12,6 +12,10 @@ services:
     extends:
       file: *extends-file
       service: main-app
+    environment:
+      <<: *common-env-variables
+      HOSTNAME: smtp4dev.home
+      ServerOptions__HostName: smtp4dev.home
 
   certificate-manager:
     <<: *common-service-options
@@ -32,19 +36,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.16.9"
-
-  web-admin-setup:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: web-admin-setup
-
-  web-backup:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: web-backup
+        ipv4_address: "10.1.16.4"
 
 networks:
   external-network:
@@ -55,4 +47,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.16.0/24"
-          gateway: "10.1.17.9"
+          gateway: "10.1.17.4"

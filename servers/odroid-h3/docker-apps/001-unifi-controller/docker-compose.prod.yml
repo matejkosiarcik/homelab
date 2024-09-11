@@ -1,7 +1,7 @@
 x-definitions:
-  extends-file: &extends-file ../../../../docker-apps/healthchecks/docker-compose.override-prod.yml
+  extends-file: &extends-file ../../../../docker-apps/unifi-controller/docker-compose.override-prod.yml
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: healthchecks.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: unifi-controller.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -12,10 +12,11 @@ services:
     extends:
       file: *extends-file
       service: main-app
-    environment:
-      <<: *common-env-variables
-      DEFAULT_FROM_EMAIL: healthchecks@healthchecks.home
-      SITE_ROOT: https://healthchecks.home
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/unifi-controller/Dockerfile
+      args:
+        HOMELAB_BUILD_ENV: prod
 
   database:
     <<: *common-service-options
@@ -23,23 +24,23 @@ services:
       file: *extends-file
       service: database
 
-  database-backup:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: database-backup
-
   certificate-manager:
     <<: *common-service-options
     extends:
       file: *extends-file
       service: certificate-manager
 
-  http-proxy:
+  http-proxy-admin:
     <<: *common-service-options
     extends:
       file: *extends-file
-      service: http-proxy
+      service: http-proxy-admin
+
+  http-proxy-portal:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: http-proxy-portal
 
   socket-proxy:
     <<: *common-service-options
@@ -48,7 +49,13 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.16.2"
+        ipv4_address: "10.1.16.1"
+
+  web-backup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: web-backup
 
 networks:
   external-network:
@@ -59,4 +66,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.16.0/24"
-          gateway: "10.1.17.2"
+          gateway: "10.1.17.1"
