@@ -92,7 +92,7 @@ services:
       - name: PiHole
         type: Ping
         subtitle: main (backup)
-        url: https://pihole-main-2.home
+        url: https://pihole-matej-2.home
         logo: ./assets/icons/pihole.png
 
       # DNS
