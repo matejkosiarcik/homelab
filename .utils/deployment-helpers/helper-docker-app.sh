@@ -106,6 +106,12 @@ docker_compose_args="$docker_file_args"
 if [ "$mode" = 'dev' ]; then
     docker_compose_args="$docker_compose_args --ansi always"
 fi
+if [ -f "$PWD/config/docker-compose.env" ]; then
+    docker_compose_args="$docker_compose_args --env-file $PWD/config/docker-compose.env"
+fi
+if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
+    docker_compose_args="$docker_compose_args --env-file $PWD/config/docker-compose-$mode.env"
+fi
 
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
