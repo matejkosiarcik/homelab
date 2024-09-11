@@ -18,9 +18,9 @@ services:
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - ./app-secrets/app-password.txt:/.homelab/app-password.txt:ro
+      - ./app-secrets/app-password.txt:/homelab/app-password.txt:ro
       - ../../../../docker-images/external/pihole/local-domains.txt:/etc/pihole/custom.list:ro
-      - ./app-logs/main-app:/log:rw
+      - ./app-logs/main-app:/homelab/logs:rw
     stop_grace_period: 30s
 
   certificate-manager:
@@ -31,8 +31,8 @@ services:
     env_file:
       - ./app-secrets/certificate-manager.env
     volumes:
-      - ./app-data/certs:/certs:rw
-      - ./app-logs/certificate-manager:/log:rw
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options
@@ -43,9 +43,9 @@ services:
       certificate-manager:
         condition: service_healthy
     volumes:
-      - ./app-data/certs:/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy:/log:rw
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
 
   socket-proxy:
     <<: *common-service-options
@@ -53,7 +53,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
-      - ./app-logs/socket-proxy:/log:rw
+      - ./app-logs/socket-proxy:/homelab/logs:rw
 
   web-backup:
     <<: *common-service-options
@@ -71,9 +71,9 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: backup
     volumes:
-      - ./app-data/web-backup:/backup:rw
-      - ./app-logs/web-backup-errors:/errors:rw
-      - ./app-logs/web-backup:/log:rw
+      - ./app-data/web-backup:/homelab/backup:rw
+      - ./app-logs/web-backup-errors:/homelab/errors:rw
+      - ./app-logs/web-backup:/homelab/logs:rw
 
   web-custom-setup:
     <<: *common-service-options
@@ -89,10 +89,10 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: custom-setup
     volumes:
-      - ./app-logs/web-custom-setup-errors:/errors:rw
-      - ./app-logs/web-custom-setup:/log:rw
-      - ../../../../docker-images/external/pihole/base-whitelist.txt:/.homelab/domains/base-whitelist.txt:ro
-      - ../../../../docker-images/external/pihole/base-blacklist.txt:/.homelab/domains/base-blacklist.txt:ro
+      - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
+      - ./app-logs/web-custom-setup:/homelab/logs:rw
+      - ../../../../docker-images/external/pihole/base-whitelist.txt:/homelab/domains/base-whitelist.txt:ro
+      - ../../../../docker-images/external/pihole/base-blacklist.txt:/homelab/domains/base-blacklist.txt:ro
 
 networks:
   internal-network: {}

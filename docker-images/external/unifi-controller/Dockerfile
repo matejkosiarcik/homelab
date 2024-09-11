@@ -2,11 +2,7 @@
 
 FROM lscr.io/linuxserver/unifi-network-application:8.4.59
 ARG HOMELAB_BUILD_ENV=dev
-RUN cat /defaults/system.properties | \
-        grep -v unifi.http.port | \
-        grep -v unifi.https.port | \
-        grep -v portal.http.port | \
-        grep -v portal.https.port >/defaults/system.properties-2 && \
+RUN grep -v -e 'unifi.http.port' -e 'unifi.https.port' -e 'portal.http.port' -e 'portal.https.port' </defaults/system.properties >/defaults/system.properties-2 && \
     mv /defaults/system.properties-2 /defaults/system.properties && \
     printf '\n# -- Custom properties start --\n\n' >>/defaults/system.properties && \
     if [ "$HOMELAB_BUILD_ENV" = 'dev' ]; then \
@@ -24,7 +20,7 @@ RUN cat /defaults/system.properties | \
         exit 1 && \
     true; fi && \
     printf '\n# -- Custom properties end --\n' >>/defaults/system.properties
-ENV FILE__MONGO_PASS=/.homelab/database-password.txt \
+ENV FILE__MONGO_PASS=/homelab/database-password.txt \
     HOMELAB_CONTAINER_NAME=unifi-controller \
     HOMELAB_CONTAINER_VARIANT=default \
     MONGO_DBNAME=database \

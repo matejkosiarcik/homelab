@@ -43,11 +43,11 @@ import { runAutomation } from '../.utils/main.ts';
                     }
                 }
 
-                if (!legacyFs.existsSync('/.homelab/domains')) {
+                if (!legacyFs.existsSync('/homelab/domains')) {
                     return;
                 }
 
-                const domainsFiles = (await fs.readdir('/.homelab/domains', { recursive: false, withFileTypes: true }))
+                const domainsFiles = (await fs.readdir('/homelab/domains', { recursive: false, withFileTypes: true }))
                     .filter((el) => el.isFile())
                     .filter((el) => /(blacklist|whitelist)/.test(el.name))
                     .map((el) => path.join(el.parentPath, el.name));

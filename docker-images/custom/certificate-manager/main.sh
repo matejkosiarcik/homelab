@@ -12,12 +12,12 @@ if [ "${HOMELAB_APP_EXTERNAL_DOMAIN-x}" = 'x' ]; then
     exit 1
 fi
 
-if [ ! -e '/certs' ]; then
+if [ ! -e '/homelab/certs' ]; then
     create_certs='1'
 fi
 
-if [ -e '/certs/domain.txt' ]; then
-    old_domain="$(cat '/certs/domain.txt')"
+if [ -e '/homelab/certs/domain.txt' ]; then
+    old_domain="$(cat '/homelab/certs/domain.txt')"
     if [ "$HOMELAB_APP_EXTERNAL_DOMAIN" != "$old_domain" ]; then
         create_certs='1'
     fi
@@ -25,9 +25,9 @@ else
     create_certs='1'
 fi
 
-if [ -e '/certs/certificate.key' ] && [ -e '/certs/certificate.csr' ] && [ -e '/certs/certificate.crt' ]; then
+if [ -e '/homelab/certs/certificate.key' ] && [ -e '/homelab/certs/certificate.csr' ] && [ -e '/homelab/certs/certificate.crt' ]; then
     # Only renew certificate when it's validity is less than 1 month
-    if ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in '/certs/certificate.crt' >/dev/null; then
+    if ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in '/homelab/certs/certificate.crt' >/dev/null; then
         create_certs='1'
     fi
 else
@@ -51,8 +51,8 @@ if [ "$create_certs" = '1' ]; then
         exit 1
     fi
 
-    mkdir -p /certs
-    find /certs -type f -delete
-    find "$tmpdir" -mindepth 1 -maxdepth 1 -type f -exec sh -c 'mv "$1" "/certs/$(basename "$1")"' - {} \;
+    mkdir -p /homelab/certs
+    find /homelab/certs -type f -delete
+    find "$tmpdir" -mindepth 1 -maxdepth 1 -type f -exec sh -c 'mv "$1" "/homelab/certs/$(basename "$1")"' - {} \;
     rm -rf "$tmpdir"
 fi
