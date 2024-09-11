@@ -1,7 +1,7 @@
 x-definitions:
-  extends-file: &extends-file ../../../../docker-apps/pihole/docker-compose.override-prod.yml
+  extends-file: &extends-file ../../../../docker-apps/healthchecks/docker-compose.override-prod.yml
   common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: pihole-guests.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: healthchecks.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -12,11 +12,22 @@ services:
     extends:
       file: *extends-file
       service: main-app
-    # environment:
-    #   <<: *common-env-variables
-    #   FTLCONF_LOCAL_IPV4: "10.1.12.1"
-    #   VIRTUAL_HOST: pihole-guests.home
-    #   PIHOLE_DOMAIN: pihole-guests.home
+    environment:
+      <<: *common-env-variables
+      DEFAULT_FROM_EMAIL: healthchecks@healthchecks.home
+      SITE_ROOT: https://healthchecks.home
+
+  database:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: database
+
+  database-backup:
+    <<: *common-service-options
+    extends:
+      file: *extends-file
+      service: database-backup
 
   certificate-manager:
     <<: *common-service-options
@@ -37,19 +48,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.12.1"
-
-  web-backup:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: web-backup
-
-  web-custom-setup:
-    <<: *common-service-options
-    extends:
-      file: *extends-file
-      service: web-custom-setup
+        ipv4_address: "10.1.16.5"
 
 networks:
   external-network:
@@ -59,5 +58,5 @@ networks:
     ipam:
       config:
         - subnet: "10.1.0.0/19"
-          ip_range: "10.1.12.0/24"
-          gateway: "10.1.13.1"
+          ip_range: "10.1.16.0/24"
+          gateway: "10.1.17.5"
