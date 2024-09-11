@@ -9,7 +9,7 @@ CRON='0'
 export CRON
 
 # Run script initially
-timeout 10m sh /homelab/main.sh
+timeout 5m sh /homelab/main.sh
 
 # Run cron indefinitely
 CRON=1

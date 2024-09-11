@@ -72,6 +72,6 @@ ENV HOMELAB_CONTAINER_NAME=web-automation \
     PATH="$PATH:/homelab/bin" \
     TZ=Europe/Bratislava
 # NOTE: Start-period could be 60s, but is 90s because of low powered RPi3
-HEALTHCHECK --interval=5s --start-period=90s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=360s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
