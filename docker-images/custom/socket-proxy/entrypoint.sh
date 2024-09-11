@@ -1,8 +1,8 @@
 #!/bin/sh
 set -euf
 
-mkdir -p /app/.internal
-printf 'starting\n' >/app/.internal/status
+mkdir -p /homelab/.internal
+printf 'starting\n' >/homelab/.internal/status.txt
 
 if [ "$HOMELAB_APP_NAME" = 'docker-cache-proxy' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
@@ -65,5 +65,5 @@ else
     exit 1
 fi
 
-printf 'started\n' >/app/.internal/status
+printf 'started\n' >/homelab/.internal/status.txt
 sleep infinity

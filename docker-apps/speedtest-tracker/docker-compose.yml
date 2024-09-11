@@ -20,8 +20,8 @@ services:
     env_file:
       - ./app-secrets/app.env
     volumes:
-      - ./app-data/app-data:/config
-      - ./app-logs/main-app:/log:rw
+      - ./app-data/app-data:/config:rw
+      - ./app-logs/main-app:/homelab/log:rw
 
   certificate-manager:
     <<: *common-service-options
@@ -31,8 +31,8 @@ services:
     env_file:
       - ./app-secrets/certificate-manager.env
     volumes:
-      - ./app-data/certs:/certs:rw
-      - ./app-logs/certificate-manager:/log:rw
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/log:rw
 
   http-proxy:
     <<: *common-service-options
@@ -43,9 +43,9 @@ services:
       certificate-manager:
         condition: service_healthy
     volumes:
-      - ./app-data/certs:/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy:/log:rw
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
 
   socket-proxy:
     <<: *common-service-options
@@ -53,7 +53,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
-      - ./app-logs/socket-proxy:/log:rw
+      - ./app-logs/socket-proxy:/homelab/logs:rw
 
   web-admin-setup:
     <<: *common-service-options
@@ -69,8 +69,8 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: admin-setup
     volumes:
-      - ./app-logs/web-admin-setup-errors:/errors:rw
-      - ./app-logs/web-admin-setup:/log:rw
+      - ./app-logs/web-admin-setup-errors:/homelab/errors:rw
+      - ./app-logs/web-admin-setup:/homelab/logs:rw
 
   # web-export:
   #   <<: *common-service-options
@@ -88,9 +88,9 @@ services:
   #     <<: *common-env-variables
   #     HOMELAB_CONTAINER_VARIANT: export
   #   volumes:
-  #     - ./app-data/web-export:/export:rw
-  #     - ./app-logs/web-export-errors:/errors:rw
-  #     - ./app-logs/web-export:/log:rw
+  #     - ./app-data/web-export:/homelab/export:rw
+  #     - ./app-logs/web-export-errors:/homelab/errors:rw
+  #     - ./app-logs/web-export:/homelab/logs:rw
 
 networks:
   internal-network: {}

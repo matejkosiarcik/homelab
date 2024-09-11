@@ -1,35 +1,35 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM python:3.12.6-slim AS supercronic-gitman
-WORKDIR /app
+WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.dependencies/gitman/requirements.txt ./
 RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
-ENV PATH="/app/python-vendor/bin:$PATH" \
-    PYTHONPATH=/app/python-vendor
+ENV PATH="/homelab/python-vendor/bin:$PATH" \
+    PYTHONPATH=/homelab/python-vendor
 COPY ./.dependencies/supercronic/gitman.yml ./
 RUN gitman install --quiet
 
 FROM golang:1.23.1-bookworm AS supercronic-build
-WORKDIR /app
+WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=supercronic-gitman /app/gitman-repositories/supercronic/ ./supercronic/
+COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
 ENV CGO_ENABLED=0
-WORKDIR /app/supercronic
+WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
-WORKDIR /app
+WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
 FROM node:22.8.0-slim AS nodejs-build
-WORKDIR /app
+WORKDIR /homelab
 COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json ./
 COPY ./custom/web-automation/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
@@ -38,11 +38,11 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm prune --production
 
 FROM node:22.8.0-slim AS prefinal
-WORKDIR /app
-COPY --from=nodejs-build /app/package.json ./
-COPY --from=nodejs-build /app/node_modules ./node_modules
+WORKDIR /homelab
+COPY --from=nodejs-build /homelab/package.json ./
+COPY --from=nodejs-build /homelab/node_modules ./node_modules
 # Cache playwright browsers downloads between versions and rebuilds
-# We also have to remove older versions of playwright browsers, to keep the final size down
+# We also have to remove older versions of playwright browsers, to only copy the latest browsers to keep the final size down
 RUN --mount=type=cache,target=/root/.cache/ms-playwright \
     apt-get update && \
     npx --no-install playwright install-deps chromium && \
@@ -54,24 +54,24 @@ RUN --mount=type=cache,target=/root/.cache/ms-playwright \
             rm -rf "$old_dir" && \
         true; done && \
     true; done
-COPY --from=nodejs-build /app/dist ./dist
+COPY --from=nodejs-build /homelab/dist ./dist
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-automation/crontab-backup.cron ./custom/web-automation/crontab-other.cron ./custom/web-automation/main.sh ./
-COPY --from=supercronic-build /app/supercronic/supercronic ./bin/
+COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 
 FROM node:22.8.0-slim
-WORKDIR /app
+WORKDIR /homelab
 RUN mkdir -p /backup /log
-COPY --from=prefinal /app/node_modules ./node_modules
+COPY --from=prefinal /homelab/node_modules ./node_modules
 RUN apt-get update && \
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /app /app
+COPY --from=prefinal /homelab/ ./
 COPY --from=prefinal /root/.cache-ms-playwright /root/.cache/ms-playwright
 ENV HOMELAB_CONTAINER_NAME=web-automation \
     HOMELAB_CONTAINER_VARIANT=default \
-    PATH="$PATH:/app/bin" \
+    PATH="$PATH:/homelab/bin" \
     TZ=Europe/Bratislava
 # NOTE: Start-period could be 60s, but is 90s because of low powered RPi3
-HEALTHCHECK --interval=5s --start-period=90s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /app/.internal/status /dev/stdin >/dev/null 2>&1 || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=90s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
 STOPSIGNAL SIGKILL
-ENTRYPOINT [ "sh", "/app/entrypoint.sh" ]
+ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]

@@ -21,7 +21,7 @@ else
 fi
 
 # Run actual job
-(timeout 10m sh /app/main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile") | tee "$logfile"
+(timeout 10m sh /homelab/main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile") | tee "$logfile"
 
 # Send end-signal to healthchecks
 status="$(cat "$statusfile")"

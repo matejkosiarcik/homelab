@@ -21,7 +21,6 @@ services:
         hard: 8192
     volumes:
       - ./app-data/app:/opt/tplink/EAPController/data:rw
-      - ./app-data/certs:/certs:rw
       - ./app-logs/app:/opt/tplink/EAPController/logs:rw
     stop_grace_period: 60s
 
@@ -33,8 +32,8 @@ services:
     env_file:
       - ./app-secrets/certificate-manager.env
     volumes:
-      - ./app-data/certs:/certs:rw
-      - ./app-logs/certificate-manager:/log:rw
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy-admin:
     <<: *common-service-options
@@ -48,9 +47,9 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: admin
     volumes:
-      - ./app-data/certs:/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy-admin:/log:rw
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy-admin:/homelab/logs:rw
 
   http-proxy-portal:
     <<: *common-service-options
@@ -64,9 +63,9 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: portal
     volumes:
-      - ./app-data/certs:/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy-portal:/log:rw
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy-portal:/homelab/log:rw
 
   socket-proxy:
     <<: *common-service-options
@@ -74,7 +73,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
-      - ./app-logs/socket-proxy:/log:rw
+      - ./app-logs/socket-proxy:/homelab/logs:rw
     ports:
       - 27001:27001/udp
       - 29810:29810/udp
@@ -94,9 +93,9 @@ services:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: backup
     volumes:
-      - ./app-data/web-backup:/backup:rw
-      - ./app-logs/web-backup-errors:/errors:rw
-      - ./app-logs/web-backup:/log:rw
+      - ./app-data/web-backup:/homelab/backup:rw
+      - ./app-logs/web-backup-errors:/homelab/errors:rw
+      - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
   internal-network: {}

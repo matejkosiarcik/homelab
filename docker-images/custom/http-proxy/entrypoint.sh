@@ -2,7 +2,7 @@
 set -euf
 
 # Watch certificates in background
-inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates\n" && apachectl -k restart' - &
+inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates\n" && apachectl -k restart' - &
 
 printf '\n' >>/etc/apache2/envvars
 
@@ -86,8 +86,6 @@ else
 fi
 export PROXY_HTTPS_PORT
 printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envvars
-
-mkdir -p /log/access /log/error /log/forensic
 
 # Start apache
 apachectl -D FOREGROUND

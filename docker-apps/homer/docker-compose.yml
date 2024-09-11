@@ -16,7 +16,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/homer/Dockerfile
     volumes:
-      - ./app-logs/main-app:/log:rw
+      - ./app-logs/main-app:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options
@@ -26,8 +26,8 @@ services:
     env_file:
       - ./app-secrets/certificate-manager.env
     volumes:
-      - ./app-data/certs:/certs:rw
-      - ./app-logs/certificate-manager:/log:rw
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options
@@ -38,9 +38,9 @@ services:
       certificate-manager:
         condition: service_healthy
     volumes:
-      - ./app-data/certs:/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/app/misc/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy:/log:rw
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
 
   socket-proxy:
     <<: *common-service-options
@@ -48,7 +48,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
     volumes:
-      - ./app-logs/socket-proxy:/log:rw
+      - ./app-logs/socket-proxy:/homelab/logs:rw
 
 networks:
   internal-network: {}
