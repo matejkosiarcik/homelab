@@ -32,7 +32,7 @@ services:
       service: socket-proxy
     networks:
       external-network:
-        ipv4_address: "10.1.12.6"
+        ipv4_address: "10.1.12.7"
 
   web-admin-setup:
     <<: *common-service-options
@@ -55,4 +55,4 @@ networks:
       config:
         - subnet: "10.1.0.0/19"
           ip_range: "10.1.16.0/24"
-          gateway: "10.1.13.6"
+          gateway: "10.1.13.7"
