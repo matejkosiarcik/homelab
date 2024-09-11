@@ -24,7 +24,7 @@ export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _op
             page.setDefaultTimeout(5000);
         } else if (['pihole'].includes(getAppName())) {
             page.setDefaultNavigationTimeout(15_000);
-            page.setDefaultTimeout(2000);
+            page.setDefaultTimeout(4000);
         } else {
             page.setDefaultNavigationTimeout(10_000);
             page.setDefaultTimeout(2000);
