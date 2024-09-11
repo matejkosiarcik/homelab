@@ -18,6 +18,10 @@ if [ -n "${HEALTHCHECK_URL+x}" ]; then
     printf '\n'
 else
     printf 'HEALTHCHECK_URL unset\n' >&2
+    # TODO: Enable this after healthchecks are working
+    # if [ "$HOMELAB_ENV" = 'prod' ]; then
+    #     exit 1
+    # fi
 fi
 
 # Run actual job
