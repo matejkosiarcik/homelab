@@ -84,36 +84,50 @@ services:
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: main
-        url: https://pihole-main.home
+        subtitle: Matej
+        url: https://pihole-matej.home
         logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: main (backup)
-        url: https://pihole-main-2.home
+        subtitle: Matej (duplicate)
+        url: https://pihole-matej-2.home
         logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: work
-        url: https://pihole-work.home
+        subtitle: Matej - work
+        url: https://pihole-matej-work.home
         logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: spouse
-        url: https://pihole-spouse.home
+        subtitle: Monika
+        url: https://pihole-monika.home
         logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: guests
+        subtitle: Monika - work
+        url: https://pihole-monika-work.home
+        logo: ./assets/icons/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: Guests
         url: https://pihole-guests.home
+        logo: ./assets/icons/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: IoT
+        url: https://pihole-iot.home
         logo: ./assets/icons/pihole.png
 
       # Dashboard

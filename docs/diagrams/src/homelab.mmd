@@ -8,23 +8,23 @@ flowchart LR
     classDef no_border stroke:#ffffff00,stroke-width:0px;
 
     subgraph raspberry_pi_3b["Raspberry Pi 3B"]
-        pihole_mine_backup("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br />* mine - backup")
+        pihole_matej_2("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br />* matej 2")
     end
 
     subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2G"]
-        pihole_mine("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* mine")
-        pihole_mine_work("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* mine - work")
+        pihole_matej("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* matej")
+        pihole_matej_work("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* matej - work")
         pihole_guests("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* guests")
         pihole_iot("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* IoT")
-        pihole_spouse("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* spouse")
-        pihole_spouse_work("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* spouse - work")
+        pihole_monika("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* monika")
+        pihole_monika_work("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole<br /> <br />* monika - work")
         uptime_kuma_backup("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma<br />* backup")
         hidden_1(" ")
 
         class hidden_1 no_border
 
-        pihole_mine ~~~ pihole_mine_work
-        pihole_spouse ~~~ pihole_spouse_work
+        pihole_matej ~~~ pihole_matej_work
+        pihole_monika ~~~ pihole_monika_work
         pihole_guests ~~~ pihole_iot
         uptime_kuma_backup ~~~ hidden_1
 
