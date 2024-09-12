@@ -22,7 +22,7 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
 
-    dockerhub["<img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /><br />DockerHub"]
+    dockerhub["<img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /><br />DockerHub/ghcr.io/..."]
     class dockerhub dashed_border
 
     home_network <-->|:80,443| socket_proxy
