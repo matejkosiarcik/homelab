@@ -6,6 +6,14 @@ inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt
 
 printf '\n' >>/etc/apache2/envvars
 
+# Set HOMELAB_ENV
+if [ "${HOMELAB_ENV-x}" = 'x' ]; then
+    printf 'HOMELAB_ENV unset\n' >&2
+    exit 1
+fi
+export HOMELAB_ENV
+printf "export HOMELAB_ENV='%s'\n" "$HOMELAB_ENV" >>/etc/apache2/envvars
+
 # Set HOMELAB_APP_NAME
 if [ "${HOMELAB_APP_NAME-x}" = 'x' ]; then
     printf 'HOMELAB_APP_NAME unset\n' >&2
@@ -55,6 +63,11 @@ else
 fi
 export PROXY_UPSTREAM_URL
 printf "export PROXY_UPSTREAM_URL='%s'\n" "$PROXY_UPSTREAM_URL" >>/etc/apache2/envvars
+
+# Set PROXY_UPSTREAM_URL_WS
+PROXY_UPSTREAM_URL_WS="$(printf '%s' "$PROXY_UPSTREAM_URL" | sed 's~https:~wss:~;s~http:~ws:~')"
+export PROXY_UPSTREAM_URL_WS
+printf "export PROXY_UPSTREAM_URL_WS='%s'\n" "$PROXY_UPSTREAM_URL_WS" >>/etc/apache2/envvars
 
 # Set PROXY_URL_REGEX_REVERSE
 if [ "$HOMELAB_APP_NAME" = 'pihole' ]; then
