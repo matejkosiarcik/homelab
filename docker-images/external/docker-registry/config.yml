@@ -1,0 +1,42 @@
+# This is a base config for docker-registry
+# Some settings are left unspecified, you need to configure it with REGISTRY_* variables
+
+version: 0.1
+
+http:
+  addr: 0.0.0.0:80
+  # headers:
+  #   X-Content-Type-Options: [nosniff]
+  #   Access-Control-Allow-Origin: ['*']
+  #   Access-Control-Allow-Credentials: [true]
+  #   Access-Control-Allow-Headers: ['Accept', 'Authorization', 'Cache-Control']
+  #   Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS']
+  #   Access-Control-Expose-Headers: ['Docker-Content-Digest']
+
+# Authentication cannot be enabled, because it doesn't work when configuring this proxy as a mirror on the docker client side
+# auth:
+#   htpasswd:
+#     realm: basic-realm
+#     path: /example.htpasswd
+
+storage:
+  # cache:
+  #   blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /var/lib/registry
+
+# delete:
+#   enabled: true
+
+log:
+  fields:
+    service: docker-registry
+  accesslog:
+    disabled: true
+  level: warn
+
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
