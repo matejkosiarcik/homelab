@@ -29,7 +29,7 @@ Generic resources:
 
 For this purpose I also considered:
 
-### 3rd party docker registry proxy
+### Third-party docker registry proxy
 
 - GitHub: <https://github.com/rpardini/docker-registry-proxy>
 
