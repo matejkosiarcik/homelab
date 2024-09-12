@@ -155,6 +155,12 @@ case "$command" in
 build)
     machine_build
     ;;
+create-secrets)
+    machine_create_secrets
+    ;;
+deploy)
+    machine_deploy
+    ;;
 install)
     machine_install
     ;;
@@ -163,9 +169,6 @@ start)
     ;;
 stop)
     machine_stop
-    ;;
-create-secrets)
-    machine_create_secrets
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2
