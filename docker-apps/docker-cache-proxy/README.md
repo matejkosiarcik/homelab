@@ -14,6 +14,7 @@ Generic resources:
 ## Before initial installation
 
 - \[All\] Create base secrets
+  - \[All\] Set secrets `REGISTRY_PROXY_REMOTEURL`, `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `app.env`
 - \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
 - \[Prod\] Add healthchecks monitor for `admin-setup` and configure `HOMELAB_HEALTHCHECK_URL`
 

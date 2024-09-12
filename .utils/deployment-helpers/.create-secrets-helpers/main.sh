@@ -96,6 +96,9 @@ case "$current_dir" in
 
     # App
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/app-http-secret.txt")" >>"$output/app.env"
+    prepare_empty_env REGISTRY_PROXY_REMOTEURL "$output/app.env"
+    prepare_empty_env REGISTRY_PROXY_USERNAME "$output/app.env"
+    prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/app.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
