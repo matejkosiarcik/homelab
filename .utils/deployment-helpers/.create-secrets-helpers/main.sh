@@ -127,6 +127,17 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*home-assistant*)
+    create_http_proxy_auth_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/app-http-secret.txt" --only-alphanumeric
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *homer*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
