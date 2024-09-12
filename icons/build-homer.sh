@@ -34,6 +34,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugin
 ### Homer icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/apple-alt.png" "$outdir/apple.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$outdir/docker.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/homer.png" "$outdir/homer.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/omada.png" "$outdir/tp-link-omada.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/tplink.png" "$outdir/tp-link.png"

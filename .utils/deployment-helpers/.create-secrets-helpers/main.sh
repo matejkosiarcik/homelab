@@ -96,6 +96,9 @@ case "$current_dir" in
 
     # App
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/app-http-secret.txt")" >>"$output/app.env"
+    prepare_empty_env REGISTRY_PROXY_REMOTEURL "$output/app.env"
+    prepare_empty_env REGISTRY_PROXY_USERNAME "$output/app.env"
+    prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/app.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -119,6 +122,17 @@ case "$current_dir" in
 
     # Database Backups
     printf 'PGPASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-backup.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
+*home-assistant*)
+    create_http_proxy_auth_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/app-http-secret.txt" --only-alphanumeric
 
     # Log results
     printf 'Not all secrets setup\n' >&2

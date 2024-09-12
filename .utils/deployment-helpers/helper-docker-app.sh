@@ -185,6 +185,7 @@ docker_start() {
         if [ -d "$app_dir/app-logs" ]; then
             # TODO: Run without sudo?
             sudo cp -R "$app_dir/app-logs/." "$backup_dir/app-logs"
+            rm -rf "$app_dir/app-logs"
         fi
         if [ -d "$app_dir/app-data" ]; then
             # TODO: Run without sudo?
