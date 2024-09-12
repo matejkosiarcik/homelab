@@ -159,6 +159,7 @@ create-secrets)
     machine_create_secrets
     ;;
 deploy)
+    machine_install
     machine_deploy
     ;;
 install)
