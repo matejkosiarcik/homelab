@@ -11,18 +11,29 @@ Generic resources:
   Docker proxy general API: <https://distribution.github.io/distribution/spec/api>
   <!-- textlint-enable -->
 
----
+## Before initial installation
 
-Other considerations:
+- \[All\] Create base secrets
+- \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
+- \[Prod\] Add healthchecks monitor for `admin-setup` and configure `HOMELAB_HEALTHCHECK_URL`
 
-- Official Docker registry
-    - I also considered the official docker-registry image, but it has a couple downsides.
-      Namely 1 instance can only proxy 1 upstream, so you need N instances for N upstreams (dockerhub, ghcr.io, ...) and lacks built-in admin interface, which also needs N instances
-- Docker registry proxy:
-    - This one looks unmaintained
-    - GitHub: <https://github.com/rpardini/docker-registry-proxy>
+## After initial installation
 
-I also tried _Sonatype Nexus3_:
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
+- \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor for basic API operation
+- \[Prod\] Configure docker mirroring in docker clients according to <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors/> (chapter "A single registry")
+
+## Other Notes
+
+For this purpose I also considered:
+
+### Docker registry proxy:
+
+- GitHub: <https://github.com/rpardini/docker-registry-proxy>
+
+This one looks unmaintained (last commit 2 years ago)
+
+### Sonatype Nexus3
 
 - GitHub: <https://github.com/sonatype/docker-nexus3>
 - DockerHub: <https://hub.docker.com/r/sonatype/nexus3>
@@ -40,15 +51,3 @@ It has a couple pros and cons:
     - Clunky initial setup (must setup admin credentials interactively)
     - Must configure proxies post-install interactively, no configuration as code
     - Consumes a lot of CPU and RAM (when doing nothing consumes 20% CPU and 200MB of RAM)
-
-## Before initial installation
-
-- \[All\] Create base secrets
-- \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
-- \[Prod\] Add healthchecks monitor for `admin-setup` and configure `HOMELAB_HEALTHCHECK_URL`
-
-## After initial installation
-
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
-- \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor for basic API operation
-- \[Prod\] Configure docker-proxy repositories and docker-group with external access according to _Setup Tutorial_ above
