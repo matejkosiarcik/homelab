@@ -19,7 +19,7 @@ services:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./app-secrets/app-password.txt:/homelab/app-password.txt:ro
-      - ../../../../docker-images/external/pihole/local-domains.txt:/etc/pihole/custom.list:ro
+      - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
       - ./app-logs/pihole:/homelab/logs:rw
     stop_grace_period: 30s
 
