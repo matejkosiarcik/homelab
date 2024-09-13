@@ -13,6 +13,16 @@ export default [
     },
     {
         input: [
+            'src/home-assistant/backup.ts',
+        ],
+        output: {
+            dir: 'dist/home-assistant',
+            format: 'esm',
+        },
+        plugins: [typescript()],
+    },
+    {
+        input: [
             'src/omada-controller/backup.ts',
         ],
         output: {
