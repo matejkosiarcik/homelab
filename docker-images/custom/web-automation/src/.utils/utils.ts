@@ -34,6 +34,9 @@ export function getTargetUrl(): string {
             case 'omada-controller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'https://main-app:8443' : 'https://main-app';
             }
+            case 'pihole': {
+                return 'http://pihole';
+            }
             case 'speedtest-tracker': {
                 return 'https://main-app';
             }

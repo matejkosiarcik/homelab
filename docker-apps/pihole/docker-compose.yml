@@ -10,7 +10,7 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  pihole:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -20,7 +20,7 @@ services:
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./app-secrets/app-password.txt:/homelab/app-password.txt:ro
       - ../../../../docker-images/external/pihole/local-domains.txt:/etc/pihole/custom.list:ro
-      - ./app-logs/main-app:/homelab/logs:rw
+      - ./app-logs/pihole:/homelab/logs:rw
     stop_grace_period: 30s
 
   certificate-manager:
@@ -61,7 +61,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      main-app:
+      pihole:
         condition: service_healthy
       web-custom-setup:
         condition: service_healthy
@@ -81,7 +81,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      main-app:
+      pihole:
         condition: service_healthy
     env_file:
       - ./app-secrets/web-custom-setup.env

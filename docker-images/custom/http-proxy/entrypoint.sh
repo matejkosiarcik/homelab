@@ -54,6 +54,8 @@ elif [ "${HOMELAB_APP_NAME-x}" = 'omada-controller' ] || [ "${HOMELAB_APP_NAME-x
         printf 'Unknown HOMELAB_ENV %s\n' "${HOMELAB_ENV-N/A}"
         exit 1
     fi
+elif [ "${HOMELAB_APP_NAME-x}" = 'pihole' ]; then
+    PROXY_UPSTREAM_URL="http://pihole"
 elif [ "${HOMELAB_APP_NAME-x}" = 'speedtest-tracker' ]; then
     PROXY_UPSTREAM_URL="https://main-app"
 elif [ "${HOMELAB_APP_NAME-x}" = 'uptime-kuma' ]; then
