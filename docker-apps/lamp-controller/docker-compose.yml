@@ -16,7 +16,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/lamp-hardware-controller/Dockerfile
     volumes:
-      - ./app-data/lamp-status:/homelab/status:rw
+      - ./app-data/lamp-status:/homelab/lamp-status:rw
       - ./app-logs/lamp-hardware-controller:/homelab/logs:rw
 
   lamp-network-server:
@@ -25,7 +25,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/lamp-network-server/Dockerfile
     volumes:
-      - ./app-data/lamp-status:/homelab/status:rw
+      - ./app-data/lamp-status:/homelab/lamp-status:ro
       - ./app-logs/lamp-network-server:/homelab/logs:rw
 
   certificate-manager:

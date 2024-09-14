@@ -129,7 +129,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="hardware-controller")
-    parser.add_argument("--status-dir", type=str, required=False, default="status")
+    parser.add_argument("--status-dir", type=str, required=False, default="/homelab/lamp-status" if path.exists("/.dockerenv") else "lamp-status")
     args = parser.parse_args(sys.argv[1:])
 
     output_status_file_path = path.realpath(path.join(args.status_dir, "status.txt"))
