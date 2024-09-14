@@ -1,0 +1,62 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_NAME: home-assistant
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common.env
+    networks:
+      internal-network: {}
+
+services:
+  home-assistant:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/home-assistant/Dockerfile
+    volumes:
+      - ./app-data/home-assistant:/config:rw
+      - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:rw
+      # - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    # cap_add:
+    #   - NET_ADMIN
+    #   - NET_RAW
+    # privileged: true
+    stop_grace_period: 30s
+
+  certificate-manager:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./app-secrets/certificate-manager.env
+    volumes:
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
+
+  http-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
+
+  socket-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+    volumes:
+      - ./app-logs/socket-proxy:/homelab/logs:rw
+
+networks:
+  internal-network:
