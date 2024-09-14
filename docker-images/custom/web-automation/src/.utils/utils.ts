@@ -31,6 +31,9 @@ export function getTargetUrl(): string {
             case 'docker-cache-proxy': {
                 return 'http://main-app:8081';
             }
+            case 'home-assistant': {
+                return 'http://home-assistant:8123';
+            }
             case 'omada-controller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'https://main-app:8443' : 'https://main-app';
             }

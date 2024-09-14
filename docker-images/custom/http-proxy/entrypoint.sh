@@ -28,7 +28,7 @@ if [ "${HOMELAB_APP_NAME-x}" = 'docker-cache-proxy' ]; then
 elif [ "${HOMELAB_APP_NAME-x}" = 'healthchecks' ]; then
     PROXY_UPSTREAM_URL="http://main-app:8000"
 elif [ "${HOMELAB_APP_NAME-x}" = 'home-assistant' ]; then
-    PROXY_UPSTREAM_URL="http://main-app:8123"
+    PROXY_UPSTREAM_URL="http://home-assistant:8123"
 elif [ "${HOMELAB_APP_NAME-x}" = 'lamp-controller' ]; then
     PROXY_UPSTREAM_URL="http://app-network-server"
 elif [ "${HOMELAB_APP_NAME-x}" = 'omada-controller' ] || [ "${HOMELAB_APP_NAME-x}" = 'unifi-controller' ]; then
