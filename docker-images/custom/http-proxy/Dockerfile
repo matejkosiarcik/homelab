@@ -23,5 +23,5 @@ ENV APACHE_HTTP_PORT_NUMBER=80 \
     HOMELAB_CONTAINER_NAME=http-proxy \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=15s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=45s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]

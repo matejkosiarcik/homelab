@@ -1,6 +1,16 @@
 #!/bin/sh
 set -euf
 
+# Wait for certificates to exist before starting
+timeout 30s sh <<EOF
+while [ ! -e '/homelab/certs' ]; do
+    sleep 1
+done
+while [ ! "$(find '/homelab/certs' -type f | grep . -c)" -gt 0 ]; do
+    sleep 1
+done
+EOF
+
 # Watch certificates in background
 inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates\n" && apachectl -k restart' - &
 
