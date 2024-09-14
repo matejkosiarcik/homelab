@@ -1,9 +1,14 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
+FROM debian:12.7-slim AS prefinal
+WORKDIR /homelab
+RUN mkdir -p ./healthchecks
+COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
+
 FROM healthchecks/healthchecks:v3.6
-COPY ./external/healthchecks/healthcheck.py /homelab/healthcheck.py
-ENV DB_NAME=database \
-    DB=postgres \
+COPY --from=prefinal /homelab /homelab
+ENV DB=sqlite \
+    DB_NAME=/homelab/healthchecks/database.db \
     DEBUG=False \
     HOMELAB_CONTAINER_NAME=healthchecks \
     HOMELAB_CONTAINER_VARIANT=default \

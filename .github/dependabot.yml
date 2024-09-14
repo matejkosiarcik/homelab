@@ -24,17 +24,16 @@ updates:
       - /docker-images/custom/http-proxy
       - /docker-images/custom/lamp-hardware-controller
       - /docker-images/custom/lamp-network-server
-      - /docker-images/custom/postgres-backup
       - /docker-images/custom/socket-proxy
       - /docker-images/custom/web-automation
       - /docker-images/database/mongodb
-      - /docker-images/database/postgres
+      - /docker-images/external/docker-registry
       - /docker-images/external/healthchecks
+      - /docker-images/external/home-assistant
       - /docker-images/external/homer
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole
       - /docker-images/external/smtp4dev
-      - /docker-images/external/sonatype-nexus
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/unifi-controller
       - /docker-images/external/uptime-kuma

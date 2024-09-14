@@ -15,47 +15,15 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/healthchecks/Dockerfile
-    depends_on:
-      database:
-        condition: service_healthy
     environment:
       <<: *common-env-variables
-      DB: postgres
-      DB_HOST: database
       SITE_NAME: Healthchecks
     env_file:
       - ./app-secrets/healthchecks.env
     volumes:
+      - ./app-data/healthchecks:/homelab/healthchecks:rw
       - ./app-logs/healthchecks:/homelab/logs:rw
     stop_grace_period: 30s
-
-  database:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./database/postgres/Dockerfile
-    volumes:
-      - ./app-data/database-data:/var/lib/postgresql/data:rw
-      - ./app-secrets/database-password.txt:/homelab/database-password.txt:ro
-      - ./app-logs/database:/homelab/logs:rw
-    stop_grace_period: 30s
-
-  database-backup:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/postgres-backup/Dockerfile
-    depends_on:
-      database:
-        condition: service_healthy
-    environment:
-      <<: *common-env-variables
-      PGHOST: database
-    env_file:
-      - ./app-secrets/database-backup.env
-    volumes:
-      - ./app-data/database-backup:/homelab/backup:rw
-      - ./app-logs/database-backup:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options

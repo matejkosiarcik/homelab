@@ -2,5 +2,7 @@
 
 FROM registry:2.8.3
 COPY ./external/docker-registry/config.yml /etc/docker/registry/config.yml
-ENV TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME=docker-registry \
+    HOMELAB_CONTAINER_VARIANT=default \
+    TZ=Europe/Bratislava
 HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost || exit 1" ]

@@ -19,12 +19,6 @@ services:
       DEFAULT_FROM_EMAIL: "healthchecks@${DOCKER_COMPOSE_DOMAIN}"
       SITE_ROOT: "https://${DOCKER_COMPOSE_DOMAIN}"
 
-  database:
-    <<: *common-service-options
-
-  database-backup:
-    <<: *common-service-options
-
   certificate-manager:
     <<: *common-service-options
 
