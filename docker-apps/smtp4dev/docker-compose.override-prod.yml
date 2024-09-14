@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  main-app:
+  smtp4dev:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

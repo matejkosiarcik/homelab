@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  main-app:
+  unifi-network-app:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -18,7 +18,7 @@ services:
       args:
         HOMELAB_BUILD_ENV: prod
 
-  database:
+  mongodb:
     <<: *common-service-options
 
   certificate-manager:

@@ -14,8 +14,8 @@ Generic resources:
 ## Before initial installation
 
 - \[All\] Create base secrets
-    - \[All\] Set secrets `REGISTRY_PROXY_REMOTEURL` in `app.env`
-    - \[Prod\] If the upstream is DockerHub (URL: `https://registry-1.docker.io`) then also set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `app.env`
+    - \[All\] Set secrets `REGISTRY_PROXY_REMOTEURL` in `docker-registry.env`
+    - \[Prod\] If the upstream is DockerHub (URL: `https://registry-1.docker.io`) then also set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `docker-registry.env`
 - \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
 - \[Prod\] Add healthchecks monitor for `admin-setup` and configure `HOMELAB_HEALTHCHECK_URL`
 

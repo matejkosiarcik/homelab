@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  main-app:
+  homer:
     <<: *common-service-options
 
   certificate-manager:

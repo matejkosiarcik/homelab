@@ -10,7 +10,7 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  unifi-network-app:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -18,19 +18,19 @@ services:
       args:
         HOMELAB_BUILD_ENV: N/A
     depends_on:
-      database:
+      mongodb:
         condition: service_healthy
     environment:
       <<: *common-env-variables
       MONGO_DBNAME: unifi
-      MONGO_HOST: database
+      MONGO_HOST: mongodb
       MONGO_USER: unifi
     volumes:
-      - ./app-data/app:/config:rw
-      - ./app-secrets/database-password.txt:/homelab/database-password.txt:ro
+      - ./app-data/unifi-network-app:/config:rw
+      - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
     stop_grace_period: 60s
 
-  database:
+  mongodb:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -40,8 +40,8 @@ services:
       - USER=unifi
     volumes:
       - ./app-data/mongodb:/data/db:rw
-      - ./config/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ./app-secrets/database-password.txt:/homelab/database-password.txt:ro
+      - ./config/mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
     stop_grace_period: 30s
 
   certificate-manager:
@@ -107,7 +107,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      main-app:
+      unifi-network-app:
         condition: service_healthy
     env_file:
       - ./app-secrets/web-backup.env

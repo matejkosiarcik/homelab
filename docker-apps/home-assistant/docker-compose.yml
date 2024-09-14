@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: docker-cache-proxy
+    HOMELAB_APP_NAME: home-assistant
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -10,16 +10,20 @@ x-definitions:
       internal-network: {}
 
 services:
-  docker-registry:
+  home-assistant:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/docker-registry/Dockerfile
-    env_file:
-      - ./app-secrets/docker-registry.env
+      dockerfile: ./external/home-assistant/Dockerfile
     volumes:
-      - ./app-data/docker-registry:/var/lib/registry:rw
-      - ./app-logs/docker-registry:/homelab/logs:rw
+      - ./app-data/home-assistant:/config:rw
+      - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:rw
+      # - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    # cap_add:
+    #   - NET_ADMIN
+    #   - NET_RAW
+    # privileged: true
     stop_grace_period: 30s
 
   certificate-manager:
@@ -55,4 +59,4 @@ services:
       - ./app-logs/socket-proxy:/homelab/logs:rw
 
 networks:
-  internal-network: {}
+  internal-network:

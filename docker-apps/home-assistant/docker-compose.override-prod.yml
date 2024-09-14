@@ -10,37 +10,23 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  omada-controller:
+  home-assistant:
     <<: *common-service-options
-    environment:
-      <<: *common-env-variables
-      MANAGE_HTTP_PORT: 80
-      MANAGE_HTTPS_PORT: 443
-      PORTAL_HTTP_PORT: 81
-      PORTAL_HTTPS_PORT: 444
 
   certificate-manager:
     <<: *common-service-options
 
-  http-proxy-admin:
-    <<: *common-service-options
-
-  http-proxy-portal:
+  http-proxy:
     <<: *common-service-options
 
   socket-proxy:
     <<: *common-service-options
     ports:
-      - 80:80
-      - 81:81
-      - 443:443
-      - 444:444
+      - "80:80"
+      - "443:443"
     networks:
       external-network:
         ipv4_address: "${DOCKER_COMPOSE_NETWORK_IP}"
-
-  web-backup:
-    <<: *common-service-options
 
 networks:
   external-network:

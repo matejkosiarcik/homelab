@@ -14,7 +14,7 @@
     - `web-admin-setup.env`
     - `web-export.env`
 - \[Prod\] Configure `ADMIN_EMAIL` for:
-    - `main-app.env`
+    - `speedtest-tracker.env`
     - `web-admin-setup.env`
     - `web-export.env`
 

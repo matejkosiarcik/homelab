@@ -10,23 +10,23 @@ x-definitions:
       internal-network: {}
 
 services:
-  app-hardware-controller:
+  lamp-hardware-controller:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/lamp-hardware-controller/Dockerfile
     volumes:
-      - ./app-data/status:/homelab/status:rw
-      - ./app-logs/hardware-controller:/homelab/logs:rw
+      - ./app-data/lamp-status:/homelab/lamp-status:rw
+      - ./app-logs/lamp-hardware-controller:/homelab/logs:rw
 
-  app-network-server:
+  lamp-network-server:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/lamp-network-server/Dockerfile
     volumes:
-      - ./app-data/status:/homelab/status:rw
-      - ./app-logs/network-server:/homelab/logs:rw
+      - ./app-data/lamp-status:/homelab/lamp-status:ro
+      - ./app-logs/lamp-network-server:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options

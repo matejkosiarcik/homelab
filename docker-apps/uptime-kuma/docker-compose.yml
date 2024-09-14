@@ -10,7 +10,7 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  uptime-kuma:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -57,7 +57,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      main-app:
+      uptime-kuma:
         condition: service_healthy
     env_file:
       - ./app-secrets/web-admin-setup.env
@@ -75,7 +75,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      main-app:
+      uptime-kuma:
         condition: service_healthy
       web-admin-setup:
         condition: service_healthy

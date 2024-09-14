@@ -1,6 +1,16 @@
 #!/bin/sh
 set -euf
 
+# Wait for certificates to exist before starting
+timeout 30s sh <<EOF
+while [ ! -e '/homelab/certs' ]; do
+    sleep 1
+done
+while [ ! "$(find '/homelab/certs' -type f | grep . -c)" -gt 0 ]; do
+    sleep 1
+done
+EOF
+
 # Watch certificates in background
 inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates\n" && apachectl -k restart' - &
 
@@ -23,43 +33,73 @@ export HOMELAB_APP_NAME
 printf "export HOMELAB_APP_NAME='%s'\n" "$HOMELAB_APP_NAME" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL
-if [ "${HOMELAB_APP_NAME-x}" = 'docker-cache-proxy' ]; then
-    PROXY_UPSTREAM_URL="http://main-app"
-elif [ "${HOMELAB_APP_NAME-x}" = 'healthchecks' ]; then
-    PROXY_UPSTREAM_URL="http://main-app:8000"
-elif [ "${HOMELAB_APP_NAME-x}" = 'home-assistant' ]; then
-    PROXY_UPSTREAM_URL="http://main-app:8123"
-elif [ "${HOMELAB_APP_NAME-x}" = 'lamp-controller' ]; then
-    PROXY_UPSTREAM_URL="http://app-network-server"
-elif [ "${HOMELAB_APP_NAME-x}" = 'omada-controller' ] || [ "${HOMELAB_APP_NAME-x}" = 'unifi-controller' ]; then
+if [ "$HOMELAB_APP_NAME" = 'docker-cache-proxy' ]; then
+    PROXY_UPSTREAM_URL="http://docker-registry"
+elif [ "$HOMELAB_APP_NAME" = 'healthchecks' ]; then
+    PROXY_UPSTREAM_URL="http://healthchecks:8000"
+elif [ "$HOMELAB_APP_NAME" = 'home-assistant' ]; then
+    PROXY_UPSTREAM_URL="http://home-assistant:8123"
+elif [ "$HOMELAB_APP_NAME" = 'homer' ]; then
+    PROXY_UPSTREAM_URL="http://homer"
+elif [ "$HOMELAB_APP_NAME" = 'lamp-controller' ]; then
+    PROXY_UPSTREAM_URL="http://lamp-network-server"
+elif [ "$HOMELAB_APP_NAME" = 'omada-controller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://main-app:8443"
+            PROXY_UPSTREAM_URL="https://omada-controller:8443"
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://main-app:8444"
+            PROXY_UPSTREAM_URL="https://omada-controller:8444"
         else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
             exit 1
         fi
     elif [ "$HOMELAB_ENV" = 'prod' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://main-app"
+            PROXY_UPSTREAM_URL="https://omada-controller"
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://main-app:444"
+            PROXY_UPSTREAM_URL="https://omada-controller:444"
         else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
             exit 1
         fi
     else
-        printf 'Unknown HOMELAB_ENV %s\n' "${HOMELAB_ENV-N/A}"
+        printf 'Unknown HOMELAB_ENV: %s\n' "${HOMELAB_ENV-N/A}"
         exit 1
     fi
-elif [ "${HOMELAB_APP_NAME-x}" = 'speedtest-tracker' ]; then
-    PROXY_UPSTREAM_URL="https://main-app"
-elif [ "${HOMELAB_APP_NAME-x}" = 'uptime-kuma' ]; then
-    PROXY_UPSTREAM_URL="http://main-app:3001"
+elif [ "$HOMELAB_APP_NAME" = 'pihole' ]; then
+    PROXY_UPSTREAM_URL="http://pihole"
+elif [ "$HOMELAB_APP_NAME" = 'smtp4dev' ]; then
+    PROXY_UPSTREAM_URL="http://smtp4dev"
+elif [ "$HOMELAB_APP_NAME" = 'speedtest-tracker' ]; then
+    PROXY_UPSTREAM_URL="https://speedtest-tracker"
+elif [ "$HOMELAB_APP_NAME" = 'unifi-controller' ]; then
+    if [ "$HOMELAB_ENV" = 'dev' ]; then
+        if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
+            PROXY_UPSTREAM_URL="https://unifi-network-app:8443"
+        elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
+            PROXY_UPSTREAM_URL="https://unifi-network-app:8444"
+        else
+            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+            exit 1
+        fi
+    elif [ "$HOMELAB_ENV" = 'prod' ]; then
+        if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
+            PROXY_UPSTREAM_URL="https://unifi-network-app"
+        elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
+            PROXY_UPSTREAM_URL="https://unifi-network-app:444"
+        else
+            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+            exit 1
+        fi
+    else
+        printf 'Unknown HOMELAB_ENV" %s\n' "${HOMELAB_ENV-N/A}"
+        exit 1
+    fi
+elif [ "$HOMELAB_APP_NAME" = 'uptime-kuma' ]; then
+    PROXY_UPSTREAM_URL="http://uptime-kuma:3001"
 else
-    PROXY_UPSTREAM_URL="http://main-app"
+    printf 'Unknown HOMELAB_APP_NAME: %s\n' "${HOMELAB_APP_NAME-N/A}"
+    exit 1
 fi
 export PROXY_UPSTREAM_URL
 printf "export PROXY_UPSTREAM_URL='%s'\n" "$PROXY_UPSTREAM_URL" >>/etc/apache2/envvars

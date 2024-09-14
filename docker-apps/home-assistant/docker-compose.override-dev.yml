@@ -10,12 +10,8 @@ x-definitions:
     restart: "no"
 
 services:
-  speedtest-tracker:
+  home-assistant:
     <<: *common-service-options
-    environment:
-      <<: *common-env-variables
-      APP_URL: https://localhost:8443
-      # SPEEDTEST_SCHEDULE: "* * * * *"
 
   certificate-manager:
     <<: *common-service-options
@@ -26,11 +22,5 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - 8080:80
-      - 8443:443
-
-  web-admin-setup:
-    <<: *common-service-options
-
-  # web-export:
-  #   <<: *common-service-options
+      - "8080:80"
+      - "8443:443"

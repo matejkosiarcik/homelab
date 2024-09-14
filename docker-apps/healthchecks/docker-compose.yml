@@ -10,7 +10,7 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  healthchecks:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -24,9 +24,9 @@ services:
       DB_HOST: database
       SITE_NAME: Healthchecks
     env_file:
-      - ./app-secrets/app.env
+      - ./app-secrets/healthchecks.env
     volumes:
-      - ./app-logs/main-app:/homelab/logs:rw
+      - ./app-logs/healthchecks:/homelab/logs:rw
     stop_grace_period: 30s
 
   database:

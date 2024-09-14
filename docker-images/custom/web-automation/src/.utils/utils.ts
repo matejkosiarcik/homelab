@@ -29,22 +29,40 @@ export function getTargetUrl(): string {
     if (fsSync.existsSync('/.dockerenv')) {
         switch (getAppName()) {
             case 'docker-cache-proxy': {
-                return 'http://main-app:8081';
+                return 'http://docker-registry';
+            }
+            case 'healthchecks': {
+                return 'http://healthchecks:8000';
+            }
+            case 'home-assistant': {
+                return 'http://home-assistant:8123';
+            }
+            case 'homer': {
+                return 'http://homer';
+            }
+            case 'lamp-controller': {
+                return 'http://lamp-network-server';
             }
             case 'omada-controller': {
-                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://main-app:8443' : 'https://main-app';
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://omada-controller:8443' : 'https://omada-controller';
+            }
+            case 'pihole': {
+                return 'http://pihole';
+            }
+            case 'smtp4dev': {
+                return 'http://smtp4dev';
             }
             case 'speedtest-tracker': {
-                return 'https://main-app';
+                return 'https://speedtest-tracker';
             }
             case 'unifi-controller': {
-                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://main-app:8443' : 'https://main-app';
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://unifi-network-app:8443' : 'https://unifi-network-app';
             }
             case 'uptime-kuma': {
-                return 'http://main-app:3001';
+                return 'http://uptime-kuma:3001';
             }
             default: {
-                return 'http://main-app';
+                throw new Error(`Unknow app: ${getAppName()}`);
             }
         }
     }

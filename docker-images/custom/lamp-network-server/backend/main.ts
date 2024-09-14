@@ -37,7 +37,7 @@ import { setupStatusReader } from './utils/status-reader.ts';
 
     initWinston(args.quiet ? 'warning' : args.verbose ? 'debug' : 'info');
 
-    const statusDir = process.env['STATUS_DIR'] || 'status';
+    const statusDir = process.env['STATUS_DIR'] || (fs.existsSync('/.dockerenv') ? '/homelab/lamp-status' : 'lamp-status');
     const statusFile = path.join(statusDir, 'status.txt');
     log.debug(`Status file: ${statusFile}`);
 

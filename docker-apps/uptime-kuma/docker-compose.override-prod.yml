@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  main-app:
+  uptime-kuma:
     <<: *common-service-options
 
   certificate-manager:
