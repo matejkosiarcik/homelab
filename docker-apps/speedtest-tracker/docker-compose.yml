@@ -10,7 +10,7 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  speedtest-tracker:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -18,10 +18,10 @@ services:
     environment:
       <<: *common-env-variables
     env_file:
-      - ./app-secrets/app.env
+      - ./app-secrets/speedtest-tracker.env
     volumes:
-      - ./app-data/app-data:/config:rw
-      - ./app-logs/main-app:/homelab/log:rw
+      - ./app-data/speedtest-tracker:/config:rw
+      - ./app-logs/speedtest-tracker:/homelab/log:rw
 
   certificate-manager:
     <<: *common-service-options
@@ -61,7 +61,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      main-app:
+      speedtest-tracker:
         condition: service_healthy
     env_file:
       - ./app-secrets/web-admin-setup.env
@@ -78,7 +78,7 @@ services:
   #     context: ../../../../docker-images/
   #     dockerfile: ./custom/web-automation/Dockerfile
   #   depends_on:
-  #     main-app:
+  #     speedtest-tracker:
   #       condition: service_healthy
   #     web-admin-setup:
   #       condition: service_healthy

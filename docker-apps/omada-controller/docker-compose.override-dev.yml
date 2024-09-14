@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  main-app:
+  omada-controller:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

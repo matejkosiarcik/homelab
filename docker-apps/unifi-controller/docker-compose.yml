@@ -10,7 +10,7 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  unifi-network-app:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -23,14 +23,14 @@ services:
     environment:
       <<: *common-env-variables
       MONGO_DBNAME: unifi
-      MONGO_HOST: database
+      MONGO_HOST: mongodb
       MONGO_USER: unifi
     volumes:
-      - ./app-data/app:/config:rw
+      - ./app-data/unifi-network-app:/config:rw
       - ./app-secrets/database-password.txt:/homelab/database-password.txt:ro
     stop_grace_period: 60s
 
-  database:
+  mongodb:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -107,7 +107,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      main-app:
+      unifi-network-app:
         condition: service_healthy
     env_file:
       - ./app-secrets/web-backup.env

@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  main-app:
+  healthchecks:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

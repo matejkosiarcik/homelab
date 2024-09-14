@@ -10,13 +10,13 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  homer:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/homer/Dockerfile
     volumes:
-      - ./app-logs/main-app:/homelab/logs:rw
+      - ./app-logs/homer:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options

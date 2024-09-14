@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  main-app:
+  speedtest-tracker:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

@@ -10,16 +10,16 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  docker-registry:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/docker-registry/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ./app-secrets/docker-registry.env
     volumes:
-      - ./app-data/app-registry:/var/lib/registry:rw
-      - ./app-logs/main-app:/homelab/logs:rw
+      - ./app-data/docker-registry:/var/lib/registry:rw
+      - ./app-logs/docker-registry:/homelab/logs:rw
     stop_grace_period: 30s
 
   certificate-manager:

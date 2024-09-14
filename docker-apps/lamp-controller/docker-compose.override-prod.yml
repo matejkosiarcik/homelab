@@ -10,10 +10,10 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  app-hardware-controller:
+  lamp-hardware-controller:
     <<: *common-service-options
 
-  app-network-server:
+  lamp-network-server:
     <<: *common-service-options
 
   certificate-manager:

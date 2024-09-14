@@ -10,7 +10,7 @@ x-definitions:
       internal-network: {}
 
 services:
-  main-app:
+  smtp4dev:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
