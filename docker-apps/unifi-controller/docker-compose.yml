@@ -18,7 +18,7 @@ services:
       args:
         HOMELAB_BUILD_ENV: N/A
     depends_on:
-      database:
+      mongodb:
         condition: service_healthy
     environment:
       <<: *common-env-variables
@@ -27,7 +27,7 @@ services:
       MONGO_USER: unifi
     volumes:
       - ./app-data/unifi-network-app:/config:rw
-      - ./app-secrets/database-password.txt:/homelab/database-password.txt:ro
+      - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
     stop_grace_period: 60s
 
   mongodb:
@@ -40,8 +40,8 @@ services:
       - USER=unifi
     volumes:
       - ./app-data/mongodb:/data/db:rw
-      - ./config/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ./app-secrets/database-password.txt:/homelab/database-password.txt:ro
+      - ./config/mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
     stop_grace_period: 30s
 
   certificate-manager:
