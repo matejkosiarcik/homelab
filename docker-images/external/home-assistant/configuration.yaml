@@ -6,7 +6,3 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - "0.0.0.0/0"
-
-# automation: !include automations.yaml
-# script: !include scripts.yaml
-# scene: !include scenes.yaml
