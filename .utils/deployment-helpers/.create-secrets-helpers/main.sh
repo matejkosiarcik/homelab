@@ -92,10 +92,10 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    create_password "$tmpdir/app-http-secret.txt" --only-alphanumeric
+    create_password "$tmpdir/docker-registry-http-secret.txt" --only-alphanumeric
 
     # App
-    printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/app-http-secret.txt")" >>"$output/docker-registry.env"
+    printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/docker-registry-http-secret.txt")" >>"$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_REMOTEURL "$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_USERNAME "$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/docker-registry.env"
@@ -195,7 +195,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-admin-setup.env"
     prepare_healthcheck_url "$output/web-export.env"
-    npm --prefix "$helper_script_dir/playwright" run --silent run:speedtest-tracker-app-key -- --output "$tmpdir/app-key.txt"
+    npm --prefix "$helper_script_dir/playwright" run --silent run:speedtest-tracker-app-key -- --output "$tmpdir/speedtest-tracker-app-key.txt"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -209,7 +209,7 @@ case "$current_dir" in
     fi
 
     # App
-    printf 'APP_KEY=%s\n' "$(cat "$tmpdir/app-key.txt")" >>"$output/speedtest-tracker.env"
+    printf 'APP_KEY=%s\n' "$(cat "$tmpdir/speedtest-tracker-app-key.txt")" >>"$output/speedtest-tracker.env"
     # TODO: Save username/password to `speedtest-tracker.env` after https://github.com/alexjustesen/speedtest-tracker/issues/1597
     printf '# ADMIN_EMAIL=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/speedtest-tracker.env"
     printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/speedtest-tracker.env"
