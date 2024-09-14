@@ -27,12 +27,13 @@ updates:
       - /docker-images/custom/socket-proxy
       - /docker-images/custom/web-automation
       - /docker-images/database/mongodb
+      - /docker-images/external/docker-registry
       - /docker-images/external/healthchecks
+      - /docker-images/external/home-assistant
       - /docker-images/external/homer
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole
       - /docker-images/external/smtp4dev
-      - /docker-images/external/sonatype-nexus
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/unifi-controller
       - /docker-images/external/uptime-kuma
