@@ -20,14 +20,6 @@ services:
       REGISTRATION_OPEN: "True"
       SITE_ROOT: https://localhost:8443
 
-  database:
-    <<: *common-service-options
-    # ports:
-    #   - "5432:5432"
-
-  database-backup:
-    <<: *common-service-options
-
   certificate-manager:
     <<: *common-service-options
 

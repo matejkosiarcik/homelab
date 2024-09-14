@@ -107,21 +107,12 @@ case "$current_dir" in
 *healthchecks*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/database-backup.env"
 
     # Precreate passwords
-    create_password "$tmpdir/database-password.txt"
-    create_password "$tmpdir/app-secret-key.txt" --only-alphanumeric
+    create_password "$tmpdir/healthchecks-secret-key.txt" --only-alphanumeric
 
     # App
-    printf 'SECRET_KEY=%s\n' "$(cat "$tmpdir/app-secret-key.txt")" >>"$output/healthchecks.env"
-    printf 'DB_PASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/healthchecks.env"
-
-    # Database
-    printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
-
-    # Database Backups
-    printf 'PGPASSWORD=%s\n' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-backup.env"
+    printf 'SECRET_KEY=%s\n' "$(cat "$tmpdir/healthchecks-secret-key.txt")" >>"$output/healthchecks.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
