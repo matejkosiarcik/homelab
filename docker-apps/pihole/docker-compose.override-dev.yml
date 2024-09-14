@@ -1,7 +1,7 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: dev
-    HOMELAB_APP_EXTERNAL_DOMAIN: localhost.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: localhost
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -18,7 +18,7 @@ services:
       # FTLCONF_LOCAL_IPV4: "127.0.0.1"
       # VIRTUAL_HOST: localhost
       # PIHOLE_DOMAIN: localhost
-    hostname: localhost.home # This fixes random container hostname in dashboard header
+    hostname: pihole.localhost # This fixes random container hostname in dashboard header
 
   certificate-manager:
     <<: *common-service-options
