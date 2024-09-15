@@ -2,7 +2,9 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { chromium, type Page } from 'playwright';
-import { getAppName, getBrowserPath, getErrorAttachmentDir, getIsHeadless, getTargetUrl } from './utils.ts';
+import { expect } from 'chai';
+import axios from 'axios';
+import { getAppName, getBrowserPath, getErrorAttachmentDir, getIsHeadless, getTargetUrl, retry } from './utils.ts';
 
 export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _options: { date: string }): Promise<T> {
     const options = {
@@ -12,6 +14,21 @@ export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _op
         baseUrl: getTargetUrl(),
         browserPath: getBrowserPath(),
     };
+
+    // Wait for service behind URL to be available before starting
+    await retry({
+        action: async () => {
+            const response = await axios.head(options.baseUrl, {
+                maxRedirects: 0,
+                validateStatus: () => true,
+            });
+            // Validate status is correct
+            // Event client errors 400s are fine, as long as the service "works" (so no 500s)
+            expect(response.status, 'Could not connect to app successfully').gte(200).lte(499);
+        },
+        retries: 20 - 1,
+        delay: 1000,
+    });
 
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'homelab-'));
 

@@ -10,6 +10,9 @@ x-definitions:
     restart: unless-stopped
 
 services:
+  pihole-pre-setup:
+    <<: *common-service-options
+
   pihole:
     <<: *common-service-options
     environment:
@@ -40,8 +43,8 @@ services:
   web-backup:
     <<: *common-service-options
 
-  web-custom-setup:
-    <<: *common-service-options
+  # web-update-gravity:
+  #   <<: *common-service-options
 
 networks:
   external-network:

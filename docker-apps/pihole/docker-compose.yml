@@ -10,6 +10,26 @@ x-definitions:
       internal-network: {}
 
 services:
+  pihole-pre-setup:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/pihole/Dockerfile
+    volumes:
+      - ./app-data/pihole/etc-pihole:/etc/pihole:rw
+      - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ./app-logs/pihole-pre-setup:/homelab/logs:rw
+    entrypoint:
+      - sh
+      - /homelab/setup.sh
+    healthcheck:
+      test: sh -c "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1"
+      interval: 5s
+      timeout: 1s
+      retries: 1
+      start_period: 20s
+    stop_grace_period: 30s
+
   pihole:
     <<: *common-service-options
     build:
@@ -21,6 +41,9 @@ services:
       - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
       - ./app-logs/pihole:/homelab/logs:rw
+    depends_on:
+      pihole-pre-setup:
+        condition: service_healthy
     stop_grace_period: 30s
 
   certificate-manager:
@@ -63,8 +86,6 @@ services:
     depends_on:
       pihole:
         condition: service_healthy
-      web-custom-setup:
-        condition: service_healthy
     env_file:
       - ./app-secrets/web-backup.env
     environment:
@@ -75,24 +96,23 @@ services:
       - ./app-logs/web-backup-errors:/homelab/errors:rw
       - ./app-logs/web-backup:/homelab/logs:rw
 
-  web-custom-setup:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      pihole:
-        condition: service_healthy
-    env_file:
-      - ./app-secrets/web-custom-setup.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: custom-setup
-    volumes:
-      - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
-      - ./app-logs/web-custom-setup:/homelab/logs:rw
-      - ../../../../docker-images/external/pihole/base-whitelist.txt:/homelab/domains/base-whitelist.txt:ro
-      - ../../../../docker-images/external/pihole/base-blacklist.txt:/homelab/domains/base-blacklist.txt:ro
-
+  # web-update-gravity:
+  #   <<: *common-service-options
+  #   build:
+  #     context: ../../../../docker-images/
+  #     dockerfile: ./custom/web-automation/Dockerfile
+  #   depends_on:
+  #     pihole:
+  #       condition: service_healthy
+  #     web-backup:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ./app-secrets/web-custom-setup.env
+  #   environment:
+  #     <<: *common-env-variables
+  #     HOMELAB_CONTAINER_VARIANT: update-gravity
+  #   volumes:
+  #     - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
+  #     - ./app-logs/web-custom-setup:/homelab/logs:rw
 networks:
   internal-network: {}
