@@ -96,23 +96,23 @@ services:
       - ./app-logs/web-backup-errors:/homelab/errors:rw
       - ./app-logs/web-backup:/homelab/logs:rw
 
-  # web-update-gravity:
-  #   <<: *common-service-options
-  #   build:
-  #     context: ../../../../docker-images/
-  #     dockerfile: ./custom/web-automation/Dockerfile
-  #   depends_on:
-  #     pihole:
-  #       condition: service_healthy
-  #     web-backup:
-  #       condition: service_healthy
-  #   env_file:
-  #     - ./app-secrets/web-custom-setup.env
-  #   environment:
-  #     <<: *common-env-variables
-  #     HOMELAB_CONTAINER_VARIANT: update-gravity
-  #   volumes:
-  #     - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
-  #     - ./app-logs/web-custom-setup:/homelab/logs:rw
+  web-update-gravity:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/web-automation/Dockerfile
+    depends_on:
+      pihole:
+        condition: service_healthy
+      web-backup:
+        condition: service_healthy
+    env_file:
+      - ./app-secrets/web-custom-setup.env
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: update-gravity
+    volumes:
+      - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
+      - ./app-logs/web-custom-setup:/homelab/logs:rw
 networks:
   internal-network: {}
