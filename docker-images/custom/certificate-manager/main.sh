@@ -18,7 +18,7 @@ fi
 
 if [ -e '/homelab/certs/domain.txt' ]; then
     old_domain="$(cat '/homelab/certs/domain.txt')"
-    if [ "$HOMELAB_APP_EXTERNAL_DOMAIN" != "$old_domain" ]; then
+    if [ "$old_domain" != "$HOMELAB_APP_EXTERNAL_DOMAIN" ]; then
         create_certs='1'
     fi
 else
@@ -38,14 +38,21 @@ if [ "$create_certs" = '1' ]; then
     printf 'Creating certificates\n'
     tmpdir="$(mktemp -d)"
 
-    # TODO: Implement Let's encrypt certificates
+    # TODO: Implement Let's encrypt certificates for production
     if [ "$HOMELAB_ENV" = 'dev' ] || [ "$HOMELAB_ENV" = 'prod' ]; then
-        openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Unknown/OU=Org/CN=$HOMELAB_APP_EXTERNAL_DOMAIN"
+        # Set main domain
+        main_new_domain="$(printf '%s' "$HOMELAB_APP_EXTERNAL_DOMAIN" | sed -E 's~,.*$~~')"
+        openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Home/OU=Homelab/CN=$main_new_domain"
+
+        # Set alternative domains
+        subjectAltName="$(printf '%s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" | tr ',' '\n' | sed 's~^~DNS:~' | tr '\n' ',' | sed -E 's~^,~~;s~,$~~')"
+
+        # Create new certificates
         printf '%s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >"$tmpdir/domain.txt"
         openssl genrsa -out "$tmpdir/certificate.key" 4096
         openssl rsa -in "$tmpdir/certificate.key" -out "$tmpdir/certificate.key"
-        openssl req -sha256 -new -key "$tmpdir/certificate.key" -out "$tmpdir/certificate.csr" -subj "$openssl_subj"
-        openssl x509 -req -sha256 -days 365 -in "$tmpdir/certificate.csr" -signkey "$tmpdir/certificate.key" -out "$tmpdir/certificate.crt"
+        openssl req -sha256 -new -key "$tmpdir/certificate.key" -out "$tmpdir/certificate.csr" -subj "$openssl_subj" -addext "subjectAltName=$subjectAltName"
+        openssl x509 -req -sha256 -days 365 -in "$tmpdir/certificate.csr" -signkey "$tmpdir/certificate.key" -out "$tmpdir/certificate.crt" -copy_extensions copyall
     else
         printf 'Unsupported HOMELAB_ENV %s\n' "$HOMELAB_ENV"
         exit 1
