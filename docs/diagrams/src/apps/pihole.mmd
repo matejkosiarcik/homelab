@@ -16,13 +16,15 @@ flowchart LR
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole")
+        pihole("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole")
+        pihole_setup("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />Setup<br />script")
         script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
-        script_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Setup<br />script")
+        script_update_gravity("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Update<br />gravity<br />script")
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:80| app
-        socket_proxy <--->|:53| app
-        app ~~~ script_backup & script_setup -..->|use| app
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| pihole
+        socket_proxy <--->|:53| pihole
+        pihole ~~~ script_backup & script_update_gravity -..->|use| pihole
+        pihole ~~~ pihole_setup -..->|fs| pihole
         http_proxy -..-|fs| certificate_manager
     end
 
@@ -30,6 +32,6 @@ flowchart LR
     class s3_database dashed_border
 
     home_network <-->|:53,80,443| socket_proxy
-    script_setup ~~~ public_dns
-    app -..->|DNS queries| public_dns
+    pihole_setup ~~~ public_dns
+    pihole -..->|DNS queries| public_dns
     script_backup -.->|send backup| s3_database
