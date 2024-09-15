@@ -1,0 +1,28 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/minio/mc.git
+    name: minio-mc
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+sources_locked:
+  - repo: https://github.com/minio/mc.git
+    name: minio-mc
+    rev: bbfe577d2e7465f2b5288acd6240a250dc24592f
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+default_group: ""
+groups:
+  -
