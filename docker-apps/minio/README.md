@@ -20,5 +20,5 @@ Client
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for Api (root and healthcheck)
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for Console (root)
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for API subdomain (root and healthcheck)
+- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for Console subdomain (root)
