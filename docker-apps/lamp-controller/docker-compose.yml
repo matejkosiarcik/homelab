@@ -17,7 +17,6 @@ services:
       dockerfile: ./custom/lamp-hardware-controller/Dockerfile
     volumes:
       - ./app-data/lamp-status:/homelab/lamp-status:rw
-      - ./app-logs/lamp-hardware-controller:/homelab/logs:rw
 
   lamp-network-server:
     <<: *common-service-options
@@ -26,7 +25,6 @@ services:
       dockerfile: ./custom/lamp-network-server/Dockerfile
     volumes:
       - ./app-data/lamp-status:/homelab/lamp-status:ro
-      - ./app-logs/lamp-network-server:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options

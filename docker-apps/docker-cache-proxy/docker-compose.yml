@@ -19,7 +19,6 @@ services:
       - ./app-secrets/docker-registry.env
     volumes:
       - ./app-data/docker-registry:/var/lib/registry:rw
-      - ./app-logs/docker-registry:/homelab/logs:rw
     stop_grace_period: 30s
 
   certificate-manager:

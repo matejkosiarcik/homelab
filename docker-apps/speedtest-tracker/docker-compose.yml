@@ -21,7 +21,6 @@ services:
       - ./app-secrets/speedtest-tracker.env
     volumes:
       - ./app-data/speedtest-tracker:/config:rw
-      - ./app-logs/speedtest-tracker:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options
