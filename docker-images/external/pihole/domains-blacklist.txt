@@ -1,0 +1,2 @@
+# Domains should be in format "example.com [type]", where type is "plain/regex/wildcard"
+.*\.arpa [regex]
