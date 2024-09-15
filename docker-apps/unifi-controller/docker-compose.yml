@@ -53,6 +53,7 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy-admin:
     <<: *common-service-options
@@ -114,6 +115,7 @@ services:
     volumes:
       - ./app-data/web-backup:/homelab/backup:rw
       - ./app-logs/web-backup-errors:/homelab/errors:rw
+      - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
   internal-network: {}

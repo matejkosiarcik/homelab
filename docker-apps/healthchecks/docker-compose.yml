@@ -22,7 +22,6 @@ services:
       - ./app-secrets/healthchecks.env
     volumes:
       - ./app-data/healthchecks:/homelab/healthchecks:rw
-      - ./app-logs/healthchecks:/homelab/logs:rw
     stop_grace_period: 30s
 
   certificate-manager:
@@ -34,6 +33,7 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options

@@ -19,7 +19,6 @@ services:
       - ./app-secrets/minio.env
     volumes:
       - ./app-data/minio:/data
-      - ./app-logs/minio:/homelab/logs:rw
     command: server /data --address ":9000" --console-address ":9001"
 
   minio__cli-setup:
@@ -42,6 +41,7 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy-api:
     <<: *common-service-options

@@ -21,7 +21,6 @@ services:
       - ./app-secrets/speedtest-tracker.env
     volumes:
       - ./app-data/speedtest-tracker:/config:rw
-      - ./app-logs/speedtest-tracker:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options
@@ -32,6 +31,7 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options
@@ -67,6 +67,7 @@ services:
       HOMELAB_CONTAINER_VARIANT: admin-setup
     volumes:
       - ./app-logs/web-admin-setup-errors:/homelab/errors:rw
+      - ./app-logs/web-admin-setup:/homelab/logs:rw
 
   # web-export:
   #   <<: *common-service-options
@@ -86,6 +87,7 @@ services:
   #   volumes:
   #     - ./app-data/web-export:/homelab/export:rw
   #     - ./app-logs/web-export-errors:/homelab/errors:rw
+  #     - ./app-logs/web-export:/homelab/logs:rw
 
 networks:
   internal-network: {}
