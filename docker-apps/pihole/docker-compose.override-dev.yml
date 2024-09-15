@@ -40,5 +40,5 @@ services:
   web-backup:
     <<: *common-service-options
 
-  # web-update-gravity:
-  #   <<: *common-service-options
+  web-update-gravity:
+    <<: *common-service-options

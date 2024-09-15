@@ -21,7 +21,7 @@ services:
       - ./app-secrets/speedtest-tracker.env
     volumes:
       - ./app-data/speedtest-tracker:/config:rw
-      - ./app-logs/speedtest-tracker:/homelab/log:rw
+      - ./app-logs/speedtest-tracker:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options
@@ -32,7 +32,7 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-manager:/homelab/log:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options

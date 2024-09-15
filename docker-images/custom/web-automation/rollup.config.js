@@ -34,7 +34,7 @@ export default [
     {
         input: [
             'src/pihole/backup.ts',
-            'src/pihole/custom-setup.ts',
+            'src/pihole/update-gravity.ts',
         ],
         output: {
             dir: 'dist/pihole',

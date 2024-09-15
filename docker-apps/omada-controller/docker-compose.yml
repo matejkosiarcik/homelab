@@ -65,7 +65,7 @@ services:
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy-portal:/homelab/log:rw
+      - ./app-logs/http-proxy-portal:/homelab/logs:rw
 
   socket-proxy:
     <<: *common-service-options
