@@ -89,7 +89,6 @@ services:
     volumes:
       - ./app-data/web-backup:/homelab/backup:rw
       - ./app-logs/web-backup-errors:/homelab/errors:rw
-      - ./app-logs/web-backup:/homelab/logs:rw
 
   web-update-gravity:
     <<: *common-service-options
@@ -108,6 +107,6 @@ services:
       HOMELAB_CONTAINER_VARIANT: update-gravity
     volumes:
       - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
-      - ./app-logs/web-custom-setup:/homelab/logs:rw
+
 networks:
   internal-network: {}

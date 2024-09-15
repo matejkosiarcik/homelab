@@ -64,7 +64,6 @@ services:
     volumes:
       - ./app-data/web-admin-setup:/backup:rw
       - ./app-logs/web-admin-setup-errors:/homelab/errors:rw
-      - ./app-logs/web-admin-setup:/homelab/logs:rw
 
   web-backup:
     <<: *common-service-options
@@ -84,7 +83,6 @@ services:
     volumes:
       - ./app-data/web-backup:/homelab/backup:rw
       - ./app-logs/web-backup-errors:/homelab/errors:rw
-      - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
   internal-network:

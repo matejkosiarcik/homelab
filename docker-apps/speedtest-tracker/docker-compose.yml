@@ -67,7 +67,6 @@ services:
       HOMELAB_CONTAINER_VARIANT: admin-setup
     volumes:
       - ./app-logs/web-admin-setup-errors:/homelab/errors:rw
-      - ./app-logs/web-admin-setup:/homelab/logs:rw
 
   # web-export:
   #   <<: *common-service-options
@@ -87,7 +86,6 @@ services:
   #   volumes:
   #     - ./app-data/web-export:/homelab/export:rw
   #     - ./app-logs/web-export-errors:/homelab/errors:rw
-  #     - ./app-logs/web-export:/homelab/logs:rw
 
 networks:
   internal-network: {}
