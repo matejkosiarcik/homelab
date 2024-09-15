@@ -145,6 +145,22 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*minio*)
+    create_http_proxy_auth_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/admin-password.txt"
+    printf 'admin' >"$tmpdir/admin-username.txt"
+
+    # Minio
+    printf 'MINIO_ROOT_USER=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/minio.env"
+    printf 'MINIO_ROOT_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/minio.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *omada-controller*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"

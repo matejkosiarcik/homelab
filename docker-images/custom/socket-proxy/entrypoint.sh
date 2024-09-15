@@ -20,6 +20,17 @@ elif [ "$HOMELAB_APP_NAME" = 'homer' ]; then
 elif [ "$HOMELAB_APP_NAME" = 'lamp-controller' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "$HOMELAB_APP_NAME" = 'minio' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
+        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-api:80 &
+        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-api:443 &
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
+        socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-console:80 &
+        socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-console:443 &
+    else
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+        exit 1
+    fi
 elif [ "$HOMELAB_APP_NAME" = 'omada-controller' ]; then
     # HTTP/S ports
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &

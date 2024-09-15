@@ -206,3 +206,10 @@ services:
         subtitle: "-"
         url: https://prometheus.home
         logo: ./assets/icons/prometheus.png
+
+      # S3 Storage
+      - name: MinIO
+        type: Ping
+        subtitle: "-"
+        url: https://console.minio.home
+        logo: ./assets/icons/minio.png

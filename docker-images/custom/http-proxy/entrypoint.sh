@@ -43,6 +43,15 @@ elif [ "$HOMELAB_APP_NAME" = 'homer' ]; then
     PROXY_UPSTREAM_URL="http://homer"
 elif [ "$HOMELAB_APP_NAME" = 'lamp-controller' ]; then
     PROXY_UPSTREAM_URL="http://lamp-network-server"
+elif [ "$HOMELAB_APP_NAME" = 'minio' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
+        PROXY_UPSTREAM_URL="http://minio:9000"
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
+        PROXY_UPSTREAM_URL="http://minio:9001"
+    else
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+        exit 1
+    fi
 elif [ "$HOMELAB_APP_NAME" = 'omada-controller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then

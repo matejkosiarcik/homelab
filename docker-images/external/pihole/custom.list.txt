@@ -17,3 +17,5 @@
 10.1.16.7 home-assistant.home
 10.1.16.8 speedtest-tracker.home
 10.1.16.9 docker-dockerhub-proxy.home
+10.1.16.10 minio.home
+10.1.16.11 console.minio.home
