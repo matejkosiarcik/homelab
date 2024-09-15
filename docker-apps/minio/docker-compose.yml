@@ -19,7 +19,6 @@ services:
       - ./app-secrets/minio.env
     volumes:
       - ./app-data/minio:/data
-      - ./app-logs/minio:/homelab/logs:rw
     command: server /data --address ":9000" --console-address ":9001"
 
   minio__cli-setup:
