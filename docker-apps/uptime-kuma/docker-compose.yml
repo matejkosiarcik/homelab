@@ -48,8 +48,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
-    volumes:
-      - ./app-logs/socket-proxy:/homelab/logs:rw
 
   web-admin-setup:
     <<: *common-service-options

@@ -92,8 +92,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
-    volumes:
-      - ./app-logs/socket-proxy:/homelab/logs:rw
     ports:
       - 1900:1900/udp
       - 3478:3478/udp

@@ -84,8 +84,6 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: api
-    volumes:
-      - ./app-logs/socket-proxy-api:/homelab/logs:rw
 
   socket-proxy-console:
     <<: *common-service-options
@@ -95,8 +93,6 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: console
-    volumes:
-      - ./app-logs/socket-proxy-console:/homelab/logs:rw
 
 networks:
   internal-network: {}
