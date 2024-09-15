@@ -16,10 +16,10 @@ flowchart LR
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app_1("<img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /><br />Lamp<br />API<br />server")
-        app_2("<img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /><br />Lamp<br />GPIO<br />Controller")
+        lamp_network_server("<img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /><br />Lamp<br />API<br />server")
+        lamp_hardware_controller("<img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /><br />Lamp<br />GPIO<br />Controller")
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:80| app_1 <--->|:80| app_2
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| lamp_network_server <--->|:80| lamp_hardware_controller
         http_proxy -..-|fs| certificate_manager
     end
 
@@ -28,8 +28,8 @@ flowchart LR
     gpio_lamp("<img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /><br />GPIO<br />Lamp")
     class gpio_lamp dashed_border
 
-    app_2 ~~~ gpio_button --->|control| app_2
-    app_2 --->|control| gpio_lamp
+    lamp_hardware_controller ~~~ gpio_button --->|control| lamp_hardware_controller
+    lamp_hardware_controller --->|control| gpio_lamp
 
     home_network <-->|:80,443| socket_proxy
     home_assistant ~~~ socket_proxy

@@ -17,16 +17,16 @@ flowchart LR
         http_proxy_1("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         http_proxy_2("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app("<img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Network<br />Application")
+        unifi_network_app("<img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Network<br />Application")
         database("<img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /><br />MongoDB")
         script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
 
-        socket_proxy <--->|:80,443| http_proxy_1 <--->|:443| app
-        socket_proxy <--->|:81,444| http_proxy_2 <--->|:444| app
-        socket_proxy <--->|:1900,3478,5514,6789,10001| app
+        socket_proxy <--->|:80,443| http_proxy_1 <--->|:443| unifi_network_app
+        socket_proxy <--->|:81,444| http_proxy_2 <--->|:444| unifi_network_app
+        socket_proxy <--->|:1900,3478,5514,6789,10001| unifi_network_app
         http_proxy_1 & http_proxy_2 -..-|fs| certificate_manager
-        app ~~~ script_backup -..->|use| app
-        app -..->|use| database
+        unifi_network_app ~~~ script_backup -..->|use| unifi_network_app
+        unifi_network_app -..->|use| database
     end
 
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]

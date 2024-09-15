@@ -16,14 +16,14 @@ flowchart LR
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app("<img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /><br />Speedtest<br />Tracker")
+        speedtest_tracker("<img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /><br />Speedtest<br />Tracker")
         db_sync("<img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /><br />Litestream")
         script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />setup<br />script")
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:443| app
+        socket_proxy <--->|:80,443| http_proxy <--->|:443| speedtest_tracker
         http_proxy -..-|fs| certificate_manager
-        app ~~~ script_admin_setup -..->|use| app
-        app ~~~ db_sync -..->|fs| app
+        speedtest_tracker ~~~ script_admin_setup -..->|use| speedtest_tracker
+        speedtest_tracker ~~~ db_sync -..->|fs| speedtest_tracker
     end
 
     home_network <--->|:80,443| socket_proxy

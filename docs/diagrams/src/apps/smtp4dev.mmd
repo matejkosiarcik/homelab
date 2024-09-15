@@ -16,10 +16,10 @@ flowchart LR
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app("<img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /><br />Smtp4dev")
+        smtp4dev("<img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /><br />Smtp4dev")
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:80| app
-        socket_proxy <--->|:25| app
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| smtp4dev
+        socket_proxy <--->|:25| smtp4dev
         http_proxy -..-|fs| certificate_manager
     end
 
