@@ -14,12 +14,12 @@ flowchart LR
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma")
+        uptime_kuma("<img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /><br />Uptime<br />Kuma")
         script_backup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Backup<br />script")
         script_admin_setup("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/chromium+playwright.png' style='min-width:80px;max-width:80px' /><br />Admin<br />setup<br />script")
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:3001| app
-        app ~~~ script_backup & script_admin_setup -..->|use| app
+        socket_proxy <--->|:80,443| http_proxy <--->|:3001| uptime_kuma
+        uptime_kuma ~~~ script_backup & script_admin_setup -..->|use| uptime_kuma
         http_proxy -..-|fs| certificate_manager
     end
 
@@ -31,4 +31,4 @@ flowchart LR
     home_network <-->|:80,443| socket_proxy
     script_admin_setup ~~~ other_apps
     script_backup -.->|send backup| s3_database
-    app -..->|check| other_apps
+    uptime_kuma -..->|check| other_apps

@@ -16,9 +16,9 @@ flowchart LR
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        app("<img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /><br />Docker<br />Registry")
+        docker_registry("<img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /><br />Docker<br />Registry")
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:80| app
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| docker_registry
         http_proxy -..-|fs| certificate_manager
     end
 
@@ -28,4 +28,4 @@ flowchart LR
     home_network <-->|:80,443| socket_proxy
     other_devices -..->|use| app_wrapper
     other_devices ~~~~ socket_proxy
-    app -..->|use| dockerhub
+    docker_registry -..->|use| dockerhub
