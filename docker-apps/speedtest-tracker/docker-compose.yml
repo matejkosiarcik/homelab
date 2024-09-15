@@ -32,7 +32,6 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options
@@ -52,8 +51,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
-    volumes:
-      - ./app-logs/socket-proxy:/homelab/logs:rw
 
   web-admin-setup:
     <<: *common-service-options
@@ -70,7 +67,6 @@ services:
       HOMELAB_CONTAINER_VARIANT: admin-setup
     volumes:
       - ./app-logs/web-admin-setup-errors:/homelab/errors:rw
-      - ./app-logs/web-admin-setup:/homelab/logs:rw
 
   # web-export:
   #   <<: *common-service-options
@@ -90,7 +86,6 @@ services:
   #   volumes:
   #     - ./app-data/web-export:/homelab/export:rw
   #     - ./app-logs/web-export-errors:/homelab/errors:rw
-  #     - ./app-logs/web-export:/homelab/logs:rw
 
 networks:
   internal-network: {}

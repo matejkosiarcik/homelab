@@ -42,7 +42,6 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy-api:
     <<: *common-service-options
@@ -84,8 +83,6 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: api
-    volumes:
-      - ./app-logs/socket-proxy-api:/homelab/logs:rw
 
   socket-proxy-console:
     <<: *common-service-options
@@ -95,8 +92,6 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: console
-    volumes:
-      - ./app-logs/socket-proxy-console:/homelab/logs:rw
 
 networks:
   internal-network: {}

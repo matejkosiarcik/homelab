@@ -18,7 +18,6 @@ services:
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - ./app-logs/pihole-pre-setup:/homelab/logs:rw
     entrypoint:
       - sh
       - /homelab/setup.sh
@@ -40,7 +39,6 @@ services:
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
-      - ./app-logs/pihole:/homelab/logs:rw
     depends_on:
       pihole-pre-setup:
         condition: service_healthy
@@ -55,7 +53,6 @@ services:
       - ./app-secrets/certificate-manager.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-manager:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options
@@ -75,8 +72,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
-    volumes:
-      - ./app-logs/socket-proxy:/homelab/logs:rw
 
   web-backup:
     <<: *common-service-options
@@ -94,7 +89,6 @@ services:
     volumes:
       - ./app-data/web-backup:/homelab/backup:rw
       - ./app-logs/web-backup-errors:/homelab/errors:rw
-      - ./app-logs/web-backup:/homelab/logs:rw
 
   web-update-gravity:
     <<: *common-service-options
@@ -113,6 +107,6 @@ services:
       HOMELAB_CONTAINER_VARIANT: update-gravity
     volumes:
       - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
-      - ./app-logs/web-custom-setup:/homelab/logs:rw
+
 networks:
   internal-network: {}
