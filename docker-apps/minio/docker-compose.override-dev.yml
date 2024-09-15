@@ -1,0 +1,41 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: dev
+    HOMELAB_APP_EXTERNAL_DOMAIN: localhost
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common-dev.env
+    restart: "no"
+
+services:
+  minio:
+    <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      MINIO_BROWSER_REDIRECT_URL: https://localhost:8444
+
+  minio__cli-setup:
+    <<: *common-service-options
+
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy-api:
+    <<: *common-service-options
+
+  http-proxy-console:
+    <<: *common-service-options
+
+  socket-proxy-api:
+    <<: *common-service-options
+    ports:
+      - "8080:80"
+      - "8443:443"
+
+  socket-proxy-console:
+    <<: *common-service-options
+    ports:
+      - "8081:80"
+      - "8444:443"
