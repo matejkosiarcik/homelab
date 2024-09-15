@@ -29,7 +29,7 @@ mc ping minio --exit
 
 # Create new buckets
 while read -r bucket; do
-    if ! ( mc ls minio | grep "$bucket/" >/dev/null ); then
+    if ! (mc ls minio | grep "$bucket/" >/dev/null); then
         mc mb "minio/$bucket"
     fi
 done <"$script_dir/buckets.txt"
