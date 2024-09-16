@@ -1,3 +1,4 @@
+# hadolint ignore=DL3007
 FROM linuxserver/tvheadend:latest
 ENV HOMELAB_CONTAINER_NAME=tvheadend \
     HOMELAB_CONTAINER_VARIANT=default \
