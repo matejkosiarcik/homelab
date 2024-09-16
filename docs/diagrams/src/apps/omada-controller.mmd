@@ -30,7 +30,7 @@ flowchart LR
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
     class s3_database dashed_border
 
-    home_network <-->|:80,81,443,444,27001,29810-29816| socket_proxy
+    home_network <--->|:80,81,443,444,27001,29810-29816| socket_proxy
     tp_link_equipment <-..->|use/control| app_wrapper
     tp_link_equipment ~~~~ socket_proxy
     script_backup -.->|send backup| s3_database

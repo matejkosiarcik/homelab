@@ -23,5 +23,5 @@ flowchart LR
     other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
     class other_apps dashed_border
 
-    home_network <-->|:80,443| socket_proxy
+    home_network <--->|:80,443| socket_proxy
     homer -..->|navigate| other_apps

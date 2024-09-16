@@ -31,6 +31,6 @@ flowchart LR
     lamp_hardware_controller ~~~ gpio_button --->|control| lamp_hardware_controller
     lamp_hardware_controller --->|control| gpio_lamp
 
-    home_network <-->|:80,443| socket_proxy
+    home_network <--->|:80,443| socket_proxy
     home_assistant ~~~ socket_proxy
     home_assistant -..->|control| app_wrapper

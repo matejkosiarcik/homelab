@@ -27,7 +27,7 @@ flowchart LR
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
     class s3_database dashed_border
 
-    home_network <-->|:80,443| socket_proxy
+    home_network <--->|:80,443| socket_proxy
     other_apps -..->|cron status| app_wrapper
     other_apps ~~~~ socket_proxy
     db_sync -.->|send| s3_database
