@@ -13,6 +13,10 @@ mkdir -p "$outdir"
 
 convert_options='magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -density 1200 OUTPUT_FILE'
 
+### Bash logo ###
+
+convert_image "$convert_options" "$input_dir/gitman-repositories/official-bash-logo/assets/Logos/Icons/SVG/512x512.svg" "$outdir/bash.png"
+
 ### OSA Icons ###
 
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$outdir/cloud.png"
@@ -37,6 +41,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-comm
 
 ### Homer icons ###
 
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/chromium.png" "$outdir/chromium.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$outdir/docker.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/homer.png" "$outdir/homer.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/letencrypt.png" "$outdir/lets-encrypt.png"
@@ -54,6 +59,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg
 convert_image "$convert_options" "$input_dir/other/apache.svg.bin" "$outdir/apache.png"
 convert_image "$convert_options" "$input_dir/other/button.png" "$outdir/button.png"
 convert_image "$convert_options" "$input_dir/other/litestream - custom.svg.bin" "$outdir/litestream.png"
+convert_image "$convert_options" "$input_dir/other/playwright.svg.bin" "$outdir/playwright.png"
 convert_image "$convert_options" "$input_dir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
 convert_image "$convert_options" "$input_dir/other/smtp4dev - custom.png" "$outdir/smtp4dev.png"
 
