@@ -12,6 +12,8 @@ x-definitions:
 services:
   home-assistant:
     <<: *common-service-options
+    volumes:
+      - /run/dbus:/run/dbus:ro
 
   certificate-manager:
     <<: *common-service-options

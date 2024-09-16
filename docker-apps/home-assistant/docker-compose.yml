@@ -19,7 +19,6 @@ services:
       - ./app-data/home-assistant:/config:rw
       - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:rw
       # - /etc/localtime:/etc/localtime:ro
-      - /run/dbus:/run/dbus:ro
     # cap_add:
     #   - NET_ADMIN
     #   - NET_RAW
