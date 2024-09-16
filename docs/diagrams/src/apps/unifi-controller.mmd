@@ -9,7 +9,7 @@ flowchart LR
 
     home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br />Network"]
     class home_network dashed_border
-    unifi_equipment["<img src='../../../../icons/unifi-protect.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Equipment"]
+    unifi_equipment["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/unifi-protect.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Equipment"]
     class unifi_equipment dashed_border
 
     subgraph app_wrapper[" "]
@@ -29,7 +29,7 @@ flowchart LR
         unifi_network_app -..->|use| database
     end
 
-    s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
+    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>Minio"]
     class s3_database dashed_border
 
     home_network <--->|:80,81,443,444,1900,3478,5514,6789,10001| socket_proxy

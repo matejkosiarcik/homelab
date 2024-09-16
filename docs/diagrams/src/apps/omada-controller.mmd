@@ -9,7 +9,7 @@ flowchart LR
 
     home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br />Network"]
     class home_network dashed_border
-    tp_link_equipment["<img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /><br />TP Link<br />Equipment"]
+    tp_link_equipment["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /></div>TP Link<br />Equipment"]
     class tp_link_equipment dashed_border
 
     subgraph app_wrapper[" "]
@@ -27,7 +27,7 @@ flowchart LR
         omada_controller ~~~ script_backup -..->|use| omada_controller
     end
 
-    s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
+    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>Minio"]
     class s3_database dashed_border
 
     home_network <--->|:80,81,443,444,27001,29810-29816| socket_proxy

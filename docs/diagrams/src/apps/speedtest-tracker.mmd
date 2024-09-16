@@ -9,8 +9,6 @@ flowchart LR
 
     home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br />Network"]
     class home_network dashed_border
-    s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
-    class s3_database dashed_border
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
@@ -25,6 +23,9 @@ flowchart LR
         speedtest_tracker ~~~ script_admin_setup -..->|use| speedtest_tracker
         speedtest_tracker ~~~ db_sync -..->|fs| speedtest_tracker
     end
+
+    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>Minio"]
+    class s3_database dashed_border
 
     home_network <--->|:80,443| socket_proxy
     db_sync -..->|send| s3_database
