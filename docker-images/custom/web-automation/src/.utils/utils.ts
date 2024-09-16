@@ -31,26 +31,14 @@ export function getTargetUrl(): string {
             case 'docker-cache-proxy': {
                 return 'http://docker-registry';
             }
-            case 'healthchecks': {
-                return 'http://healthchecks:8000';
-            }
             case 'home-assistant': {
                 return 'http://home-assistant:8123';
-            }
-            case 'homer': {
-                return 'http://homer';
-            }
-            case 'lamp-controller': {
-                return 'http://lamp-network-server';
             }
             case 'omada-controller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'https://omada-controller:8443' : 'https://omada-controller';
             }
             case 'pihole': {
                 return 'http://pihole';
-            }
-            case 'smtp4dev': {
-                return 'http://smtp4dev';
             }
             case 'speedtest-tracker': {
                 return 'https://speedtest-tracker';
