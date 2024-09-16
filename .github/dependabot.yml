@@ -37,6 +37,7 @@ updates:
       - /docker-images/external/pihole
       - /docker-images/external/smtp4dev
       - /docker-images/external/speedtest-tracker
+      - /docker-images/external/tvheadend
       - /docker-images/external/unifi-controller
       - /docker-images/external/uptime-kuma
     schedule:
