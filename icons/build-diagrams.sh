@@ -13,6 +13,10 @@ mkdir -p "$outdir"
 
 convert_options='magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -density 1200 OUTPUT_FILE'
 
+### Bash logo ###
+
+convert_image "$convert_options" "$input_dir/gitman-repositories/official-bash-logo/assets/Logos/Icons/SVG/512x512.svg" "$outdir/bash.png"
+
 ### OSA Icons ###
 
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$outdir/cloud.png"

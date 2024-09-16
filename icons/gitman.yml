@@ -44,6 +44,17 @@ sources:
       -
     scripts:
       -
+  - repo: https://github.com/odb/official-bash-logo.git
+    name: official-bash-logo
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
 sources_locked:
   - repo: https://github.com/jb-stack/Dia-vrt-sheets.git
     name: dia-vrt-sheets
@@ -81,6 +92,17 @@ sources_locked:
   - repo: https://github.com/NX211/homer-icons.git
     name: homer-icons
     rev: 691dc315413a0b644ffbd3b9702f63ebb53a36a5
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/odb/official-bash-logo.git
+    name: official-bash-logo
+    rev: e44dab9f89aadd410ff04825b2692eab16711211
     type: git
     params:
     sparse_paths:
