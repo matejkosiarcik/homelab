@@ -1,4 +1,6 @@
-# Unifi Network Application
+# Unifi Controller
+
+![diagram](../../docs/diagrams/out/apps/unifi-controller.png)
 
 - GitHub: <https://github.com/linuxserver/docker-unifi-network-application>
 - DockerHub: <https://hub.docker.com/r/linuxserver/unifi-network-application>

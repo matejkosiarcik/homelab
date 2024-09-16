@@ -1,5 +1,5 @@
 ---
-title: Unifi Controller
+title: Home Assistant
 ---
 
 flowchart LR
@@ -9,30 +9,25 @@ flowchart LR
 
     home_network["<img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' />Home<br />Network"]
     class home_network dashed_border
-    unifi_equipment["<img src='../../../../icons/unifi-protect.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Equipment"]
-    class unifi_equipment dashed_border
+    smart_home_equipment["<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div><br />Smart<br />Home"]
+    class smart_home_equipment dashed_border
 
     subgraph app_wrapper[" "]
         socket_proxy("<img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /><br />Socat")
-        http_proxy_1("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
-        http_proxy_2("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
+        http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
-        unifi_network_app("<img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /><br />Unifi<br />Network<br />Application")
-        database("<img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /><br />MongoDB")
+        home_assistant("<img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /><br />Home<br />Assistant")
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div><br />Backup<br />script")
 
-        socket_proxy <--->|:80,443| http_proxy_1 <--->|:443| unifi_network_app
-        socket_proxy <--->|:81,444| http_proxy_2 <--->|:444| unifi_network_app
-        socket_proxy <--->|:1900,3478,5514,6789,10001| unifi_network_app
-        http_proxy_1 & http_proxy_2 -..-|fs| certificate_manager
-        unifi_network_app ~~~ script_backup -..->|use| unifi_network_app
-        unifi_network_app -..->|use| database
+        socket_proxy <--->|:80,443| http_proxy <--->|:8123| home_assistant
+        http_proxy -..-|fs| certificate_manager
+        home_assistant ~~~ script_backup -..->|use| home_assistant
     end
 
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
     class s3_database dashed_border
 
-    home_network <-->|:80,81,443,444,1900,3478,5514,6789,10001| socket_proxy
-    unifi_equipment <-..->|use/control| app_wrapper
-    unifi_equipment ~~~~ socket_proxy
+    home_network <-->|:80,443| socket_proxy
+    smart_home_equipment <-..->|use/control| app_wrapper
+    smart_home_equipment ~~~~ socket_proxy
     script_backup -.->|send backup| s3_database

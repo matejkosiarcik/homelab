@@ -1,5 +1,7 @@
 # SpeedTest Tracker
 
+![diagram](../../docs/diagrams/out/apps/speedtest-tracker.png)
+
 - Main page: <https://speedtest-tracker.dev>
 - Docs: <https://docs.speedtest-tracker.dev>
 - GitHub: <https://github.com/alexjustesen/speedtest-tracker>

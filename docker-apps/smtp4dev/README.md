@@ -2,6 +2,8 @@
 
 > Local smtp server for development
 
+![diagram](../../docs/diagrams/out/apps/smtp4dev.png)
+
 - GitHub: <https://github.com/rnwood/smtp4dev>
 - DockerHub: <https://hub.docker.com/r/rnwood/smtp4dev>
 - Docs guide: <https://mailosaur.com/blog/a-guide-to-smtp4dev>

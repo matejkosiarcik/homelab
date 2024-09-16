@@ -1,5 +1,7 @@
 # Uptime Kuma
 
+![diagram](../../docs/diagrams/out/apps/uptime-kuma.png)
+
 - GitHub: <https://github.com/louislam/uptime-kuma>
 - DockerHub: <https://hub.docker.com/r/louislam/uptime-kuma>
 - Docs: <https://github.com/louislam/uptime-kuma/wiki>

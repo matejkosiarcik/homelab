@@ -1,5 +1,7 @@
 # MinIO
 
+![diagram](../../docs/diagrams/out/apps/minio.png)
+
 General (Server)
 
 - DockerHub: <https://hub.docker.com/r/minio/minio>
