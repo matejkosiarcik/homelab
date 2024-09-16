@@ -22,7 +22,7 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
 
-    dockerhub["<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/cloud.png' style='min-width:100%;max-width:100%' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div><br />Public<br />container<br />registry"]
+    dockerhub["<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div><br />Public<br />container<br />registry"]
     class dockerhub dashed_border
 
     home_network <-->|:80,443| socket_proxy
