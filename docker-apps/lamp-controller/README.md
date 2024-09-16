@@ -1,5 +1,7 @@
 # Lamp Controller
 
+![diagram](../../docs/diagrams/out/apps/lamp-controller.png)
+
 Main documentation found at
 [lamp-network-server](../../docker-images/custom/lamp-network-server/README.md)
 and

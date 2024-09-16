@@ -1,5 +1,7 @@
 # Home Assistant
 
+![diagram](../../docs/diagrams/out/apps/home-assistant.png)
+
 - Generic installation tutorial: <https://www.home-assistant.io/installation>
 - Container installation tutorial: <https://www.home-assistant.io/installation/linux#install-home-assistant-container>
 - Configuration guide: <https://www.home-assistant.io/docs/configuration>

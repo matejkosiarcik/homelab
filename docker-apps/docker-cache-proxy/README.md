@@ -1,5 +1,7 @@
 # Docker cache proxy
 
+![diagram](../../docs/diagrams/out/apps/docker-cache-proxy.png)
+
 - Documentation: <https://docs.docker.com/docker-hub/mirror>
 - DockerHub: <https://hub.docker.com/_/registry>
 
