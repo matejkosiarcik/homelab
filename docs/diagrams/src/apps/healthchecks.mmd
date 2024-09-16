@@ -24,7 +24,7 @@ flowchart LR
         healthchecks ~~~ db_sync -..->|fs| healthchecks
     end
 
-    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>Minio"]
+    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
     class s3_database dashed_border
 
     home_network <--->|:80,443| socket_proxy

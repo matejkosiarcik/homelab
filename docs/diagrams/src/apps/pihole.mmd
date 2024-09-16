@@ -15,8 +15,8 @@ flowchart LR
         http_proxy("<img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /><br />Apache")
         certificate_manager("<img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /><br />Certificate<br />Manager")
         pihole("<img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><br />PiHole")
-        pihole_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/bash.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-10px;right:0' /></div><br />Setup<br />script")
-        script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div><br />Backup<br />script")
+        pihole_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/bash.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-10px;right:0' /></div>Setup<br />script")
+        script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br />script")
 
         socket_proxy <--->|:80,443| http_proxy <--->|:80| pihole
         socket_proxy <--->|:53| pihole
@@ -25,9 +25,9 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
 
-    public_dns["<div style='position:relative;width:80px;height:80px;margin:0 auto'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dns.png' style='min-width:40px;max-width:40px;position:absolute;bottom:10px;right:0' /></div>Public<br />DNS"]
+    public_dns["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dns.png' style='min-width:40px;max-width:40px;position:absolute;bottom:10px;right:0' /></div>Public<br />DNS"]
     class public_dns dashed_border
-    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>Minio"]
+    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
     class s3_database dashed_border
 
     home_network <--->|:53,80,443| socket_proxy

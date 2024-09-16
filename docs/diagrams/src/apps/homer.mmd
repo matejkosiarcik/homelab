@@ -20,7 +20,7 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
 
-    other_apps["<img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><br />Other<br />Apps"]
+    other_apps["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br />Apps"]
     class other_apps dashed_border
 
     home_network <--->|:80,443| socket_proxy

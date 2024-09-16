@@ -153,7 +153,7 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
 
-    # Minio
+    # App
     printf 'MINIO_ROOT_USER=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/minio.env"
     printf 'MINIO_ROOT_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/minio.env"
 

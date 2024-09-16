@@ -23,9 +23,9 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
 
-    gpio_button("<img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /><br />GPIO<br />Button")
+    gpio_button("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /></div>GPIO<br />Button")
     class gpio_button dashed_border
-    gpio_lamp("<img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /><br />GPIO<br />Lamp")
+    gpio_lamp("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /></div>GPIO<br />Lamp")
     class gpio_lamp dashed_border
 
     lamp_hardware_controller ~~~ gpio_button --->|control| lamp_hardware_controller
