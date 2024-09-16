@@ -11,6 +11,7 @@ The Icons are obtained from following locations:
 - Individual icons:
     - Apache: <https://techicons.dev/icons/apache>
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
+    - IoT: <https://www.flaticon.com/free-icon/iot_10355707>
     - Litestream: <https://litestream.io>
     - Odroid: <https://wiki.odroid.com>
     - Playwright: <https://playwright.dev>
