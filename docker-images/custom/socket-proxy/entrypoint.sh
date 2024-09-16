@@ -59,6 +59,12 @@ elif [ "$HOMELAB_APP_NAME" = 'smtp4dev' ]; then
 elif [ "$HOMELAB_APP_NAME" = 'speedtest-tracker' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "$HOMELAB_APP_NAME" = 'tvheadend' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+    # TODO: Remove following ports
+    socat TCP4-LISTEN:9981,fork,reuseaddr TCP4:tvheadend:9981 &
+    socat TCP4-LISTEN:9982,fork,reuseaddr TCP4:tvheadend:9982 &
 elif [ "$HOMELAB_APP_NAME" = 'unifi-controller' ]; then
     # HTTP/S ports
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &

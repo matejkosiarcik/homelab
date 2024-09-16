@@ -62,6 +62,7 @@ create_password() {
 }
 
 user_logfile="$tmpdir/user-logs.txt"
+touch "$user_logfile"
 
 create_http_proxy_auth_users() {
     create_http_auth_user proxy-status
@@ -235,6 +236,26 @@ case "$current_dir" in
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-admin-setup.env"
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-export.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-export.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
+*tvheadend*)
+    create_http_proxy_auth_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/admin-password.txt"
+    printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/user-password.txt" --only-alphanumeric
+    printf 'user' >"$tmpdir/user-username.txt"
+
+    # App
+    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/tvheadend.env"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/tvheadend.env"
+    printf '# USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/tvheadend.env"
+    printf '# USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/tvheadend.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
