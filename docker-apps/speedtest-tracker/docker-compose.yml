@@ -15,8 +15,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/speedtest-tracker/Dockerfile
-    environment:
-      <<: *common-env-variables
     env_file:
       - ./app-secrets/speedtest-tracker.env
     volumes:
