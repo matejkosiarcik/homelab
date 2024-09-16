@@ -27,6 +27,6 @@ flowchart LR
         minio ~~~ minio_setup -..->|use| minio
     end
 
-    home_network <-->|:80,443| socket_proxy_1 & socket_proxy_2
+    home_network <--->|:80,443| socket_proxy_1 & socket_proxy_2
     other_apps -..->|use| app_wrapper
     other_apps ~~~~ socket_proxy_2

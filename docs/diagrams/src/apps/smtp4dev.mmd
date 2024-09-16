@@ -23,5 +23,5 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
 
-    home_network <-->|:25,80,443| socket_proxy
+    home_network <--->|:25,80,443| socket_proxy
     other_apps -->|send email| app_wrapper

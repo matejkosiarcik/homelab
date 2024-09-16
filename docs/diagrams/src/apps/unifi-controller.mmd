@@ -32,7 +32,7 @@ flowchart LR
     s3_database["<img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /><br />Minio"]
     class s3_database dashed_border
 
-    home_network <-->|:80,81,443,444,1900,3478,5514,6789,10001| socket_proxy
+    home_network <--->|:80,81,443,444,1900,3478,5514,6789,10001| socket_proxy
     unifi_equipment <-..->|use/control| app_wrapper
     unifi_equipment ~~~~ socket_proxy
     script_backup -.->|send backup| s3_database
