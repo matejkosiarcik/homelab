@@ -21,4 +21,6 @@
 ## After initial installation
 
 - \[Prod\] Configure settings
+- \[Prod\] Connect smart devices
+- \[Prod\] Setup 2FA - <https://www.home-assistant.io/docs/authentication/multi-factor-auth>
 - _TBD_
