@@ -9,8 +9,10 @@
 Generic resources:
 
 - Config file format: <https://distribution.github.io/distribution/about/configuration>
-- Docker registry API: <https://distribution.github.io/distribution/spec/api>
-- Tutorial for using multiple mirrors (client side): <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>
+- <!-- textlint-disable -->
+  Docker registry API: <https://distribution.github.io/distribution/spec/api>
+  <!-- textlint-enable -->
+- Tutorial for using multiple mirrors (client-side): <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>
 - Relevant blogpost: <https://ranchergovernment.com/blog/mitigate-the-docker-dilemma-with-a-proxy-cache>
 - <!-- textlint-disable -->
   Docker proxy general API: <https://distribution.github.io/distribution/spec/api>
