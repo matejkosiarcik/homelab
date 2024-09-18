@@ -16,8 +16,6 @@ RUN apt-get update -qq && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
 COPY ./custom/http-proxy/apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY --from=prefinal /homelab/ ./
-EXPOSE 80
-EXPOSE 443
 ENV APACHE_HTTP_PORT_NUMBER=80 \
     APACHE_HTTPS_PORT_NUMBER=443 \
     HOMELAB_CONTAINER_NAME=http-proxy \
