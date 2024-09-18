@@ -29,7 +29,5 @@ COPY --from=prefinal /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=lamp-network-server \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-EXPOSE 80
-EXPOSE 443
 HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/api/status || exit 1" ]
 ENTRYPOINT [ "sh", "-c", "node /homelab/dist/backend/main.js" ]

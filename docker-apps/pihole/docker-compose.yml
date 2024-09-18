@@ -110,5 +110,6 @@ services:
     volumes:
       - ./app-logs/web-custom-setup-errors:/homelab/errors:rw
       - ./app-logs/web-custom-setup:/homelab/logs:rw
+
 networks:
   internal-network: {}
