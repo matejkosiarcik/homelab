@@ -1,0 +1,25 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: dev
+    HOMELAB_APP_EXTERNAL_DOMAIN: localhost
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common-dev.env
+    restart: "no"
+
+services:
+  smb:
+    <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      SAMBA_TITLE: "samba.localhost"
+    volumes:
+      - ./app-data/samba-data:/data:rw
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - "8139:139"
+      - "8445:445"
