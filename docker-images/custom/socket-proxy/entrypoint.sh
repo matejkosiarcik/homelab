@@ -51,6 +51,9 @@ elif [ "$HOMELAB_APP_NAME" = 'pihole' ]; then
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
     socat TCP4-LISTEN:53,fork,reuseaddr TCP4:pihole:53 &
     socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:pihole:53 &
+elif [ "$HOMELAB_APP_NAME" = 'smb' ]; then
+    socat TCP4-LISTEN:139,fork,reuseaddr TCP4:smb:139 &
+    socat TCP4-LISTEN:445,fork,reuseaddr TCP4:smb:445 &
 elif [ "$HOMELAB_APP_NAME" = 'smtp4dev' ]; then
     socat TCP4-LISTEN:25,fork,reuseaddr TCP4:smtp4dev:25 &
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
