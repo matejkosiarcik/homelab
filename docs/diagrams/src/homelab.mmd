@@ -19,8 +19,8 @@ flowchart LR
         pihole_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika")
         pihole_monika_work("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika<br />(work)")
         uptime_kuma_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma<br />(duplicate)")
-        hidden_1(" ")
 
+        hidden_1(" ")
         class hidden_1 no_border
 
         pihole_matej ~~~ pihole_matej_work
@@ -41,16 +41,21 @@ flowchart LR
         homer("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homer.png' style='min-width:80px;max-width:80px' /></div>Homer")
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         omada_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br />Controller")
+        smb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/filebrowser.png' style='min-width:80px;max-width:80px' /></div>SMB")
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br />Tracker")
         unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Controller")
         uptime_kuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma")
+
+        hidden_2(" ")
+        class hidden_2 no_border
 
         homer ~~~ speedtest_tracker
         unifi_controller ~~~ omada_controller
         home_assistant ~~~ healthchecks
         uptime_kuma ~~~ smtp4dev
         docker_cache_proxy ~~~ minio
+        smb ~~~ hidden_2
     end
 
     odroid_h3 ~~~ raspberry_pi_3b
