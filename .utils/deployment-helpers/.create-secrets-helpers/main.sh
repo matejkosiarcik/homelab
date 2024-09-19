@@ -199,6 +199,18 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*smb*)
+    create_password "$tmpdir/smb-password.txt"
+    printf 'smb' >"$tmpdir/smb-username.txt"
+
+    # Samba
+    printf 'SAMBA_PASSWORD=%s\n' "$(cat "$tmpdir/smb-password.txt")" >>"$output/samba.env"
+    printf 'SAMBA_USERNAME=%s\n' "$(cat "$tmpdir/smb-username.txt")" >>"$output/samba.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *smtp4dev*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"

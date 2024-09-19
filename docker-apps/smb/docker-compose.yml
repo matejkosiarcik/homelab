@@ -1,0 +1,30 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_NAME: smb
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common.env
+    networks:
+      internal-network: {}
+
+services:
+  smb:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/samba/Dockerfile
+    env_file:
+      - ./app-secrets/samba.env
+    volumes:
+      - ./app-logs/samba:/var/log/samba:rw
+
+  socket-proxy:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+
+networks:
+  internal-network: {}

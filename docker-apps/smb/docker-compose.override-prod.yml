@@ -1,0 +1,39 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: prod
+    HOMELAB_APP_EXTERNAL_DOMAIN: "${DOCKER_COMPOSE_DOMAIN}"
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    # env_file:
+    #   - ./config/common-prod.env
+    restart: unless-stopped
+
+services:
+  smb:
+    <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      SAMBA_TITLE: "${DOCKER_COMPOSE_DOMAIN}"
+    volumes:
+      - "${DOCKER_COMPOSE_SAMBA_PATH}:/data:rw"
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - "139:139"
+      - "445:445"
+    networks:
+      external-network:
+        ipv4_address: "${DOCKER_COMPOSE_NETWORK_IP}"
+
+networks:
+  external-network:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "10.1.0.0/17"
+          ip_range: "${DOCKER_COMPOSE_NETWORK_RANGE}"
+          gateway: "${DOCKER_COMPOSE_NETWORK_GATEWAY}"
