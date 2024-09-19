@@ -3,8 +3,7 @@ set -euf
 
 SAMBA_GROUP="$SAMBA_USERNAME-group"
 
-cat /etc/samba/smb.conf | \
-    sed "s~#smb-title#~$SAMBA_TITLE~;s~#smb-user#~$SAMBA_USERNAME~;s~#smb-group#~$SAMBA_GROUP~" | \
+sed "s~#smb-title#~$SAMBA_TITLE~;s~#smb-user#~$SAMBA_USERNAME~;s~#smb-group#~$SAMBA_GROUP~" </etc/samba/smb.conf |
     sponge /etc/samba/smb.conf
 
 groupadd "$SAMBA_GROUP"
