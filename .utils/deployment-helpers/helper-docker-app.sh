@@ -236,6 +236,7 @@ deploy)
     docker_build
     docker_stop
     docker_start
+    printf 'Deployment of %s successful\n' "$full_service_name"
     ;;
 start)
     docker_start
