@@ -17,6 +17,8 @@
       changed_when: "'CHANGED' in update_git_homelab.stdout"
       register: update_git_homelab
       ansible.builtin.shell: |
+        set -eufo pipefail
+
         if [ -d "$HOME/git/homelab" ]; then
           cd "$HOME/git/homelab"
         else
