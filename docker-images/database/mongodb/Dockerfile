@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM mongo:7.0.14
+FROM mongo:8.0.0
 COPY ./database/mongodb/init-mongo.js /docker-entrypoint-initdb.d/init-mongo.js
 ENV HOMELAB_CONTAINER_NAME=mongodb \
     HOMELAB_CONTAINER_VARIANT=default \
