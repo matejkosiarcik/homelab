@@ -45,8 +45,8 @@
       register: log2ram_install
       changed_when: "'INSTALLED' in log2ram_install.stdout"
       ansible.builtin.shell: |
-        if ! command -v log2ram >/dev/null 2>&1 && [ "$(uname -n)" = raspberrypi ]; then
         set -eufo pipefail
+        if ! command -v log2ram >/dev/null 2>&1 && uname -n | grep raspberry; then
           echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
             | sudo tee /etc/apt/sources.list.d/azlux.list
           sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
@@ -121,22 +121,23 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Configure docker logging driver
-      changed_when: "'CHANGED' in docker_logdriver.stdout"
-      register: docker_logdriver
-      ansible.builtin.shell: |
-        filecontent='{
-          "log-driver": "local",
-          "log-opts": {
-            "max-size": "10m"
-          }
-        }'
-        filepath='/etc/docker/daemon.json'
-        oldfilecontent="$(cat /etc/docker/daemon.json)"
-        if "$filecontent" != "$oldfilecontent"; then
-          printf '%s' "$filecontent" >"$filepath"
-          printf 'CHANGED\n'
-        fi
+    # - name: Configure docker logging driver
+    #   changed_when: "'CHANGED' in docker_logdriver.stdout"
+    #   register: docker_logdriver
+    #   ansible.builtin.shell: |
+    #     set -eufo pipefail
+    #     filecontent='{
+    #       "log-driver": "local",
+    #       "log-opts": {
+    #         "max-size": "10m"
+    #       }
+    #     }'
+    #     filepath='/etc/docker/daemon.json'
+    #     oldfilecontent="$(cat /etc/docker/daemon.json)"
+    #     if "$filecontent" != "$oldfilecontent"; then
+    #       printf '%s' "$filecontent" >"$filepath"
+    #       printf 'CHANGED\n'
+    #     fi
 
     - name: Git clone homelab
       changed_when: "'CHANGED' in git_clone_homelab.stdout"
@@ -146,6 +147,17 @@
         if [ ! -e "$HOME/git/homelab" ]; then
           mkdir -p "$HOME/git"
           git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
+          printf 'CHANGED\n'
+        fi
+
+    - name: Setup current server symlink
+      changed_when: "'CHANGED' in git_current_symlink.stdout"
+      register: git_current_symlink
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        if [ ! -e "$HOME/git/homelab/servers/.current" ]; then
+          cd "$HOME/git/homelab/servers"
+          ln -s "$(uname -n)" .current
           printf 'CHANGED\n'
         fi
 

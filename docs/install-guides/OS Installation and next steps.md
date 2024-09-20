@@ -13,7 +13,7 @@ Install OS via RaspberryPi Imager
 Notes:
 
 - Set _homelab_ public SSH key
-- Disable hostname
+- Set custom hostname
 - Disable SSH authentication via password
 - Disable Wi-Fi
 - Set Timezone _Europe/Bratislava_
@@ -42,15 +42,6 @@ TL;DR:
 cd "$(git rev-parse --show-toplevel)/ansible"
 . ./venv/bin/activate
 ansible-playbook --limit <machine-name> playbooks/setup-system.yml
-```
-
-## Postinstall - Link current machine
-
-TL;DR:
-
-```sh
-cd "$HOME/git/homelab/servers"
-ln -s <machine-name> .current
 ```
 
 ## Postinstall - Deploy homelab
