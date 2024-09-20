@@ -281,10 +281,10 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
-    create_password "$tmpdir/database-password.txt"
+    create_password "$tmpdir/mongodb-password.txt"
 
     # Database
-    printf '%s' "$(cat "$tmpdir/database-password.txt")" >>"$output/database-password.txt"
+    printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
 
     # Backups
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"

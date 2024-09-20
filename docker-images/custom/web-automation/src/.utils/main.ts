@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
 import { chromium, type Page } from 'playwright';
@@ -21,6 +22,9 @@ export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _op
             const response = await axios.head(options.baseUrl, {
                 maxRedirects: 0,
                 validateStatus: () => true,
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: false,
+                }),
             });
             // Validate status is correct
             // Event client errors 400s are fine, as long as the service "works" (so no 500s)
