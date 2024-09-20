@@ -20,7 +20,7 @@ RUN grep -v -e 'unifi.http.port' -e 'unifi.https.port' -e 'portal.http.port' -e 
         exit 1 && \
     true; fi && \
     printf '\n# -- Custom properties end --\n' >>/defaults/system.properties
-ENV FILE__MONGO_PASS=/homelab/database-password.txt \
+ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     HOMELAB_CONTAINER_NAME=unifi-controller \
     HOMELAB_CONTAINER_VARIANT=default \
     MONGO_DBNAME=database \
