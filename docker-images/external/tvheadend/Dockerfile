@@ -1,8 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
-# hadolint ignore=DL3007
-
 FROM python:3.12.6-slim AS tvhadmin-js-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
@@ -16,6 +14,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 COPY ./.dependencies/tvhadmin-js/gitman.yml ./
 RUN gitman install --quiet
 
+# hadolint ignore=DL3007
 FROM linuxserver/tvheadend:latest
 COPY --from=tvhadmin-js-gitman /homelab/gitman-repositories/TVHadmin-JS/ /usr/share/tvheadend/src/webui/static/TVHadmin-JS
 ENV HOMELAB_CONTAINER_NAME=tvheadend \
