@@ -34,6 +34,7 @@
       register: journactl_vacuum
       changed_when: "'Deleted archived journal' in journactl_vacuum.stdout or journactl_vacuum.stdout | regex_search('Vacuuming done, freed [1-9]')"
       ansible.builtin.shell: |
+        set -eufo pipefail
         if [ ! -e /var/log/journal ]; then
           exit 0
         fi
@@ -44,8 +45,8 @@
       register: log2ram_install
       changed_when: "'INSTALLED' in log2ram_install.stdout"
       ansible.builtin.shell: |
-        set -o pipefail
         if ! command -v log2ram >/dev/null 2>&1 && [ "$(uname -n)" = raspberrypi ]; then
+        set -eufo pipefail
           echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
             | sudo tee /etc/apt/sources.list.d/azlux.list
           sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
@@ -65,14 +66,14 @@
     - name: Verify log2ram installation
       changed_when: false
       ansible.builtin.shell: |
-        set -o pipefail
+        set -eufo pipefail
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
 
     - name: Install docker
       changed_when: "'INSTALLED' in docker_install.stdout"
       register: docker_install
       ansible.builtin.shell: |
-        set -o pipefail
+        set -eufo pipefail
         if ! command -v docker >/dev/null 2>&1; then
           sudo install -m 0755 -d /etc/apt/keyrings
           sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
@@ -91,6 +92,7 @@
     - name: Verify docker installation
       changed_when: false
       ansible.builtin.shell: |
+        set -eufo pipefail
         sudo docker run hello-world
 
     - name: Reboot
@@ -102,12 +104,14 @@
     - name: Verify docker installation
       changed_when: false
       ansible.builtin.shell: |
+        set -eufo pipefail
         docker run hello-world
 
     - name: Start docker on startup
       changed_when: "'CHANGED' in docker_startup.stdout"
       register: docker_startup
       ansible.builtin.shell: |
+        set -eufo pipefail
         if ! sudo systemctl status docker.service >/dev/null 2>&1; then
           sudo systemctl enable docker.service
           printf 'CHANGED\n'
@@ -138,6 +142,7 @@
       changed_when: "'CHANGED' in git_clone_homelab.stdout"
       register: git_clone_homelab
       ansible.builtin.shell: |
+        set -eufo pipefail
         if [ ! -e "$HOME/git/homelab" ]; then
           mkdir -p "$HOME/git"
           git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
@@ -148,6 +153,7 @@
       changed_when: "'CHANGED' in create_cron_log_dir.stdout"
       register: create_cron_log_dir
       ansible.builtin.shell: |
+        set -eufo pipefail
         if [ ! -e "$HOME/.log" ]; then
           mkdir -p "$HOME/.log"
           printf 'CHANGED\n'
@@ -157,4 +163,5 @@
       when: ansible_facts['os_family'] == "Debian"
       become: true
       ansible.builtin.shell: |
+        set -eufo pipefail
         locale-gen en_US.UTF-8
