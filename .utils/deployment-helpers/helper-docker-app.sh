@@ -213,11 +213,7 @@ docker_start() {
     printf '\n' | tee "$log_file" >&2
 }
 
-case "$command" in
-build)
-    docker_build
-    ;;
-create-secrets)
+create_secrets() {
     create_secrets_args=''
     if [ "$force" -eq '1' ]; then
         create_secrets_args="$create_secrets_args --force"
@@ -227,6 +223,14 @@ create-secrets)
     fi
     # shellcheck disable=SC2086
     sh "$git_dir/.utils/deployment-helpers/.create-secrets-helpers/main.sh" $create_secrets_args
+}
+
+case "$command" in
+build)
+    docker_build
+    ;;
+create-secrets)
+    create_secrets
     ;;
 deploy)
     docker_build
