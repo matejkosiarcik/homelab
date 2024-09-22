@@ -1,0 +1,2 @@
+healthchecks-litestream
+speedtest-tracker-litestream

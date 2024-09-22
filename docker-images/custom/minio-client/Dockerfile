@@ -31,7 +31,7 @@ RUN sh validate-executable.sh ./minio-mc/mc
 FROM debian:12.7-slim AS prefinal
 WORKDIR /homelab
 COPY --from=minio-mc-build /homelab/minio-mc/mc ./bin/
-COPY ./custom/minio-client/buckets.txt ./custom/minio-client/entrypoint.sh ./custom/minio-client/main.sh ./
+COPY ./custom/minio-client/entrypoint.sh ./custom/minio-client/main.sh ./custom/minio-client/plain-buckets.txt ./custom/minio-client/versioned-buckets.txt ./
 
 FROM debian:12.7-slim
 WORKDIR /homelab
