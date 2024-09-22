@@ -3,16 +3,6 @@ import typescript from '@rollup/plugin-typescript';
 export default [
     {
         input: [
-            'src/docker-cache-proxy/admin-setup.ts',
-        ],
-        output: {
-            dir: 'dist/docker-cache-proxy',
-            format: 'esm',
-        },
-        plugins: [typescript()],
-    },
-    {
-        input: [
             'src/home-assistant/backup.ts',
         ],
         output: {
