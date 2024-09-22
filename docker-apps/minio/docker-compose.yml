@@ -27,7 +27,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/minio-client/Dockerfile
     env_file:
-      - ./app-secrets/minio.env
+      - ./app-secrets/minio-setup.env
     depends_on:
       minio:
         condition: service_healthy

@@ -161,10 +161,18 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/user-password.txt"
+    printf 'user' >"$tmpdir/user-username.txt"
 
     # App
     printf 'MINIO_ROOT_USER=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/minio.env"
     printf 'MINIO_ROOT_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/minio.env"
+
+    # Setup
+    printf 'HOMELAB_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/minio-setup.env"
+    printf 'HOMELAB_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/minio-setup.env"
+    printf 'HOMELAB_USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/minio-setup.env"
+    printf 'HOMELAB_USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/minio-setup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
