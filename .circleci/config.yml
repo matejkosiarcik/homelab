@@ -101,5 +101,5 @@ jobs:
               npm --prefix './.utils/deployment-helpers/.create-secrets-helpers/playwright' ci
               npm --prefix './docker-images/custom/web-automation' ci
             fi
-            sh './servers/<< parameters.server >>/helper.sh' create-secrets --dev
+            yes | sh './servers/<< parameters.server >>/helper.sh' create-secrets --dev
             sh './servers/<< parameters.server >>/helper.sh' start --dev --dry-run
