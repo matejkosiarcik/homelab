@@ -67,25 +67,5 @@ services:
       - ./app-logs/web-admin-setup-errors:/homelab/errors:rw
       - ./app-logs/web-admin-setup:/homelab/logs:rw
 
-  # web-export:
-  #   <<: *common-service-options
-  #   build:
-  #     context: ../../../../docker-images/
-  #     dockerfile: ./custom/web-automation/Dockerfile
-  #   depends_on:
-  #     speedtest-tracker:
-  #       condition: service_healthy
-  #     web-admin-setup:
-  #       condition: service_healthy
-  #   env_file:
-  #     - ./app-secrets/web-export.env
-  #   environment:
-  #     <<: *common-env-variables
-  #     HOMELAB_CONTAINER_VARIANT: export
-  #   volumes:
-  #     - ./app-data/web-export:/homelab/export:rw
-  #     - ./app-logs/web-export-errors:/homelab/errors:rw
-  #     - ./app-logs/web-export:/homelab/logs:rw
-
 networks:
   internal-network: {}

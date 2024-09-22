@@ -34,9 +34,6 @@ services:
   web-admin-setup:
     <<: *common-service-options
 
-  # web-export:
-  #   <<: *common-service-options
-
 networks:
   external-network:
     driver: macvlan
