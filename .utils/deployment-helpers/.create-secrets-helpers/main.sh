@@ -89,9 +89,13 @@ prepare_empty_env() {
 
 case "$current_dir" in
 *docker-cache-proxy*)
-    printf 'Please enter upstream registry URL: '
-    read -r upstream_url
-    printf '\n'
+    if [ "${HOMELAB_FAKE_INPUT-0}" = '1' ]; then
+        upstream_url='https://example.com'
+    else
+        printf 'Please enter upstream registry URL: '
+        read -r upstream_url
+        printf '\n'
+    fi
 
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
