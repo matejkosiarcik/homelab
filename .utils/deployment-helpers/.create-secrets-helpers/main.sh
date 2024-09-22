@@ -90,7 +90,7 @@ prepare_empty_env() {
 case "$current_dir" in
 *docker-cache-proxy*)
     printf 'Please enter upstream registry URL: '
-    read upstream_url
+    read -r upstream_url
 
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
