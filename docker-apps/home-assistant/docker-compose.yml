@@ -17,7 +17,7 @@ services:
       dockerfile: ./external/home-assistant/Dockerfile
     volumes:
       - ./app-data/home-assistant:/config:rw
-      - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:rw
+      - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
       # - /etc/localtime:/etc/localtime:ro
     # cap_add:
     #   - NET_ADMIN
