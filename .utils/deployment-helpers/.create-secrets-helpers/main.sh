@@ -89,6 +89,14 @@ prepare_empty_env() {
 
 case "$current_dir" in
 *docker-cache-proxy*)
+    if [ "${HOMELAB_FAKE_INPUT-0}" = '1' ]; then
+        upstream_url='https://example.com'
+    else
+        printf 'Please enter upstream registry URL: '
+        read -r upstream_url
+        printf '\n'
+    fi
+
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
@@ -97,7 +105,7 @@ case "$current_dir" in
 
     # App
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/docker-registry-http-secret.txt")" >>"$output/docker-registry.env"
-    prepare_empty_env REGISTRY_PROXY_REMOTEURL "$output/docker-registry.env"
+    printf 'REGISTRY_PROXY_REMOTEURL=%s\n' "$upstream_url" >>"$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_USERNAME "$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/docker-registry.env"
 

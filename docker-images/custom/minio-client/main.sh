@@ -32,4 +32,9 @@ while read -r bucket; do
     if ! (mc ls minio | grep "$bucket/" >/dev/null); then
         mc mb "minio/$bucket"
     fi
-done <"$script_dir/buckets.txt"
+done <"$script_dir/plain-buckets.txt"
+while read -r bucket; do
+    if ! (mc ls minio | grep "$bucket/" >/dev/null); then
+        mc mb --with-versioning "minio/$bucket"
+    fi
+done <"$script_dir/versioned-buckets.txt"

@@ -94,6 +94,7 @@ jobs:
       - run:
           name: Run deployment on << parameters.server >>
           environment:
+            HOMELAB_FAKE_INPUT: 1
             HOMELAB_SPEEDTEST_TRACKER_APP_KEY: base64:ZXhhbXBsZQ== # "example"
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
