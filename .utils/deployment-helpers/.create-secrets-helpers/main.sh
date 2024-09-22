@@ -91,6 +91,7 @@ case "$current_dir" in
 *docker-cache-proxy*)
     printf 'Please enter upstream registry URL: '
     read -r upstream_url
+    printf '\n'
 
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
