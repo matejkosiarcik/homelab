@@ -27,5 +27,5 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "8080:80"
-      - "8443:443"
+      - 8080:80
+      - 8443:443
