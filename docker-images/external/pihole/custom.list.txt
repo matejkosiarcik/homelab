@@ -8,6 +8,10 @@
 10.1.12.6 pihole-iot.home
 10.1.12.7 uptime-kuma-2.home
 
+10.1.14.1 pihole-matej-2.home
+10.1.14.2 tvheadend.home
+10.1.14.3 jellyfin.home
+
 10.1.16.1 unifi-controller.home
 10.1.16.2 omada-controller.home
 10.1.16.3 homer.home
