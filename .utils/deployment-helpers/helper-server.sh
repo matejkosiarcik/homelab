@@ -161,6 +161,7 @@ create-secrets)
 deploy)
     machine_install
     machine_deploy
+    printf '\nAll apps deployed successfully\n'
     ;;
 install)
     machine_install
