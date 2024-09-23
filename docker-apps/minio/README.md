@@ -13,7 +13,7 @@ Client
 
 - GitHub: <https://github.com/minio/mc>
 - Docs: <https://min.io/docs/minio/linux/reference/minio-mc.html>
-- DockerHub: <https://hub.docker.com/r/minio/mc/> (unused)
+- DockerHub: <https://hub.docker.com/r/minio/mc> (unused)
 
 ## Before initial installation
 
