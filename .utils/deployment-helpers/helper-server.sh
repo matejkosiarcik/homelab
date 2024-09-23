@@ -89,7 +89,7 @@ machine_stop() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Stop all docker apps\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$dir/helper.sh" stop $script_args
         done
@@ -100,7 +100,7 @@ machine_build() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Build docker images for all docker apps\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$dir/helper.sh" build $script_args
         done
@@ -111,7 +111,7 @@ machine_start() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Start all docker apps\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$dir/helper.sh" start $script_args
         done
@@ -122,7 +122,7 @@ machine_deploy() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Deploy all docker apps\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$dir/helper.sh" deploy $script_args
         done
@@ -133,7 +133,7 @@ machine_create_secrets() {
     if [ -d "$machine_dir/docker-apps" ]; then
         printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
 
-        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | while read -r dir; do
+        find "$machine_dir/docker-apps" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$dir/helper.sh" create-secrets $script_args
         done
