@@ -10,25 +10,6 @@ x-definitions:
       internal-network: {}
 
 services:
-  pihole-pre-setup:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./external/pihole/Dockerfile
-    volumes:
-      - ./app-data/pihole/etc-pihole:/etc/pihole:rw
-      - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-    entrypoint:
-      - sh
-      - /homelab/setup.sh
-    healthcheck:
-      test: sh -c "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1"
-      interval: 5s
-      timeout: 1s
-      retries: 1
-      start_period: 20s
-    stop_grace_period: 30s
-
   pihole:
     <<: *common-service-options
     build:
@@ -39,9 +20,28 @@ services:
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
+    stop_grace_period: 30s
+
+  pihole-post-setup:
+    <<: *common-service-options
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/pihole/Dockerfile
+    volumes:
+      - ./app-data/pihole/etc-pihole:/etc/pihole:rw
+      - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+    entrypoint:
+      - sh
+      - /homelab/setup.sh
     depends_on:
-      pihole-pre-setup:
+      pihole:
         condition: service_healthy
+    healthcheck:
+      test: sh -c "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1"
+      interval: 5s
+      timeout: 1s
+      retries: 1
+      start_period: 20s
     stop_grace_period: 30s
 
   certificate-manager:

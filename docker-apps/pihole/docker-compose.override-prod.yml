@@ -10,9 +10,6 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  pihole-pre-setup:
-    <<: *common-service-options
-
   pihole:
     <<: *common-service-options
     environment:
@@ -22,6 +19,9 @@ services:
       # FTLCONF_RATE_LIMIT: "100000/60" # Only for debugging
       VIRTUAL_HOST: ${DOCKER_COMPOSE_DOMAIN}
     hostname: ${DOCKER_COMPOSE_DOMAIN} # This fixes random container hostname in dashboard header
+
+  pihole-post-setup:
+    <<: *common-service-options
 
   certificate-manager:
     <<: *common-service-options
