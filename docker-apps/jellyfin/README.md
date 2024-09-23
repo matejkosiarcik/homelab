@@ -28,4 +28,4 @@
         - Enable "Hide Tvheadend Recordings channel"
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
 - \[Prod\] Create extra users (matej, monika)
-  - \[Prod\] Unselect "Prefer fMP4-HLS Media Container" for each user (location: Settings -> Playback)
+    - \[Prod\] Unselect "Prefer fMP4-HLS Media Container" for each user (location: Settings -> Playback)
