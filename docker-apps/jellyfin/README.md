@@ -4,6 +4,7 @@
 
 - DockerHub: <https://hub.docker.com/r/linuxserver/jellyfin>
 - Linuxserver docs: <https://docs.linuxserver.io/images/docker-jellyfin>
+- GitHub: <https://github.com/linuxserver/docker-jellyfin>
 - Jellyfin docs: <https://jellyfin.org/docs/general/quick-start>
 
 ## Before initial installation
@@ -28,4 +29,5 @@
         - Enable "Hide Tvheadend Recordings channel"
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
 - \[Prod\] Create extra users (matej, monika)
-    - \[Prod\] Unselect "Prefer fMP4-HLS Media Container" for each user (location: Settings -> Playback)
+
+NOTE: Some clients may require unchecking "Prefer fMP4-HLS Media Container" for each user/client, because it is stored on the client side in `localStorage` (location: Settings -> Playback)
