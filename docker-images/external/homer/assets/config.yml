@@ -213,3 +213,17 @@ services:
         subtitle: "-"
         url: https://console.minio.home
         logo: ./assets/icons/minio.png
+
+      # Live TV
+      - name: Tvheadend
+        type: Ping
+        subtitle: "-"
+        url: https://tvheadend.home
+        logo: ./assets/icons/tvheadend.png
+
+      # Media + Live TV
+      - name: Jellyfin
+        type: Ping
+        subtitle: "-"
+        url: https://jellyfin.home
+        logo: ./assets/icons/jellyfin.png
