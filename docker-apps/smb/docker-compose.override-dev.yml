@@ -21,5 +21,5 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "8139:139"
-      - "8445:445"
+      - 8139:139
+      - 8445:445

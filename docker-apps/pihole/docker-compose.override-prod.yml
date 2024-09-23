@@ -32,10 +32,10 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "80:80"
-      - "443:443"
+      - 53:53/tcp
+      - 53:53/udp
+      - 80:80
+      - 443:443
     networks:
       external-network:
         ipv4_address: "${DOCKER_COMPOSE_NETWORK_IP}"

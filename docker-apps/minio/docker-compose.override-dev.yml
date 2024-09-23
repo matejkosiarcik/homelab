@@ -31,11 +31,11 @@ services:
   socket-proxy-api:
     <<: *common-service-options
     ports:
-      - "8080:80"
-      - "8443:443"
+      - 8080:80
+      - 8443:443
 
   socket-proxy-console:
     <<: *common-service-options
     ports:
-      - "8081:80"
-      - "8444:443"
+      - 8081:80
+      - 8444:443

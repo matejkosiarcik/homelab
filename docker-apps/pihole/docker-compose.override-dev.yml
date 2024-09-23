@@ -32,10 +32,10 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "8053:53/tcp"
-      - "8053:53/udp"
-      - "8080:80"
-      - "8443:443"
+      - 8053:53/tcp
+      - 8053:53/udp
+      - 8080:80
+      - 8443:443
 
   web-backup:
     <<: *common-service-options

@@ -21,8 +21,8 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "139:139"
-      - "445:445"
+      - 139:139
+      - 445:445
     networks:
       external-network:
         ipv4_address: "${DOCKER_COMPOSE_NETWORK_IP}"

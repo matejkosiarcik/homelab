@@ -26,10 +26,10 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "25:25"
-      - "80:80"
-      # - "143:143"
-      - "443:443"
+      - 25:25
+      - 80:80
+      # - 143:143
+      - 443:443
     networks:
       external-network:
         ipv4_address: "${DOCKER_COMPOSE_NETWORK_IP}"
