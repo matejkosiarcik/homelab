@@ -24,9 +24,8 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - "80:80"
-      - "443:443"
-      # TODO: Remove following ports
+      - 80:80
+      - 443:443
       - 9981:9981
       - 9982:9982
     networks:

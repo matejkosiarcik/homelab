@@ -24,6 +24,5 @@ services:
     ports:
       - 8080:80
       - 8443:443
-      # TODO: Remove following ports
       - 9981:9981
       - 9982:9982
