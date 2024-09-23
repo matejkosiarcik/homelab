@@ -10,9 +10,6 @@ x-definitions:
     restart: "no"
 
 services:
-  pihole-pre-setup:
-    <<: *common-service-options
-
   pihole:
     <<: *common-service-options
     environment:
@@ -22,6 +19,9 @@ services:
       # VIRTUAL_HOST: localhost
       # PIHOLE_DOMAIN: localhost
     hostname: pihole.localhost # This fixes random container hostname in dashboard header
+
+  pihole-post-setup:
+    <<: *common-service-options
 
   certificate-manager:
     <<: *common-service-options
