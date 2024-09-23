@@ -31,7 +31,8 @@ Generic resources:
 
 - \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
 - \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor for basic API operation
-- \[Prod\] Configure docker mirroring in docker clients according to <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors/> (chapter "A single registry") (*example below)
+- \[Prod\] Configure docker mirroring in docker clients according to
+  <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>, chapter "A single registry" (*example below)
 
 *The following docker config:
 
