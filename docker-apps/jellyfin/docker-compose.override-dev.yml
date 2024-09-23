@@ -10,12 +10,13 @@ x-definitions:
     restart: "no"
 
 services:
-  speedtest-tracker:
+  jellyfin:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      APP_URL: https://localhost:8443
-      # SPEEDTEST_SCHEDULE: "* * * * *"
+      JELLYFIN_PublishedServerUrl: localhost
+    # ports:
+    #   - 8096:8096
 
   certificate-manager:
     <<: *common-service-options
@@ -26,8 +27,5 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - 8080:80
-      - 8443:443
-
-  web-admin-setup:
-    <<: *common-service-options
+      - "8080:80"
+      - "8443:443"

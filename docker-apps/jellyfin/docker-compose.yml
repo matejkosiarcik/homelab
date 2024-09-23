@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: tvheadend
+    HOMELAB_APP_NAME: jellyfin
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -10,14 +10,13 @@ x-definitions:
       internal-network: {}
 
 services:
-  tvheadend:
+  jellyfin:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/tvheadend/Dockerfile
+      dockerfile: ./external/jellyfin/Dockerfile
     volumes:
-      - ./app-data/tvheadend-data:/config
-      # - ./app-data/tvheadend-recordings:/recordings
+      - ./app-data/jellyfin-data:/config
 
   certificate-manager:
     <<: *common-service-options
@@ -39,9 +38,9 @@ services:
       certificate-manager:
         condition: service_healthy
     volumes:
+      - ./app-logs/http-proxy:/homelab/logs:rw
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy:/homelab/logs:rw
 
   socket-proxy:
     <<: *common-service-options

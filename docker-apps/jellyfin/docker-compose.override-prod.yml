@@ -10,11 +10,11 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  speedtest-tracker:
+  jellyfin:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      APP_URL: "https://${DOCKER_COMPOSE_DOMAIN}"
+      JELLYFIN_PublishedServerUrl: "${DOCKER_COMPOSE_DOMAIN}"
 
   certificate-manager:
     <<: *common-service-options
@@ -30,9 +30,6 @@ services:
     networks:
       external-network:
         ipv4_address: "${DOCKER_COMPOSE_NETWORK_IP}"
-
-  web-admin-setup:
-    <<: *common-service-options
 
 networks:
   external-network:

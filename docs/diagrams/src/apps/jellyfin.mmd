@@ -1,5 +1,5 @@
 ---
-title: Tvheadend
+title: Jellyfin
 ---
 
 flowchart LR
@@ -16,13 +16,16 @@ flowchart LR
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache")
         certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br />Manager")
-        tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+        jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
 
-        socket_proxy <--->|:80,443| http_proxy <--->|:9981| tvheadend
-        socket_proxy <--->|:9981,9982| tvheadend
+        socket_proxy <--->|:80,443| http_proxy <--->|:8096| jellyfin
         http_proxy -..-|fs| certificate_manager
     end
 
-    home_network <--->|:80,443,9981,9982| socket_proxy
+    tvheadend["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend"]
+    class tvheadend dashed_border
+
+    home_network <--->|:80,443| socket_proxy
     personal_devices ~~~~ socket_proxy
     personal_devices -..->|view| app_wrapper
+    jellyfin -..->|use| tvheadend
