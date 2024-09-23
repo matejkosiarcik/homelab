@@ -23,7 +23,7 @@
     - Verify "Server Name"
 - \[Prod\] Connect to Tvheadend
     - Install Tvheadend plugin (location: Settings -> Administration -> Plugins -> Catalog)
-    - Restart Jellyfin
+    - Restart Jellyfin (location: Settings -> Dashboard)
     - Configure Tvheadend plugin details (location: Settings -> Administration -> Plugins -> My Plugins -> Tvheadend)
         - Tvheadend address, credentials
         - Enable "Hide Tvheadend Recordings channel"
