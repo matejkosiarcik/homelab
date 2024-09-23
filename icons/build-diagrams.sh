@@ -47,6 +47,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/azuredns.png" "$outdir/dns.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/filebrowser.svg" "$outdir/filebrowser.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/homer.png" "$outdir/homer.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/jellyfin.svg" "$outdir/jellyfin.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/letencrypt.png" "$outdir/lets-encrypt.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/minio.png" "$outdir/minio.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/mongodb.svg" "$outdir/mongodb.png"
