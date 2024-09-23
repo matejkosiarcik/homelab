@@ -30,4 +30,5 @@
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
 - \[Prod\] Create extra users (matej, monika)
 
-NOTE: Some clients may require unchecking "Prefer fMP4-HLS Media Container" for each user/client, because it is stored on the client side in `localStorage` (location: Settings -> Playback)
+NOTE: Some clients may require unchecking "Prefer fMP4-HLS Media Container" for each user/client,
+because it is stored on the client-side in browser `localStorage` (location: Settings -> Playback).
