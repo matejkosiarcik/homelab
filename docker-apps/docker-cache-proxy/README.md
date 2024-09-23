@@ -31,19 +31,21 @@ Generic resources:
 
 - \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
 - \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor for basic API operation
-- \[Prod\] Configure docker mirroring in docker clients according to <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors/> (chapter "A single registry")
-  TL;DR The following docker config:
-  ```json
-  {
-    ...
-    "insecure-registries": [
-      "hostname:443"
-    ],
-    "registry-mirrors": [
-      "https://[hostname]:443"
-    ]
-  }
-  ```
+- \[Prod\] Configure docker mirroring in docker clients according to <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors/> (chapter "A single registry") (*example below)
+
+*The following docker config:
+
+```json
+{
+  ...
+  "insecure-registries": [
+    "hostname:443"
+  ],
+  "registry-mirrors": [
+    "https://[hostname]:443"
+  ]
+}
+```
 
 ## Other Notes
 
