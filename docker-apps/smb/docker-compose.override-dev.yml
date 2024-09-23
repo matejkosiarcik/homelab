@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      SAMBA_TITLE: "samba.localhost"
+      SAMBA_TITLE: samba.localhost
     volumes:
       - ./app-data/samba-data:/data:rw
 
