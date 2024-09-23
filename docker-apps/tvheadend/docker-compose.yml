@@ -17,7 +17,7 @@ services:
       dockerfile: ./external/tvheadend/Dockerfile
     volumes:
       - ./app-data/tvheadend-data:/config
-      - ./app-data/tvheadend-recordings:/recordings
+      # - ./app-data/tvheadend-recordings:/recordings
 
   certificate-manager:
     <<: *common-service-options
