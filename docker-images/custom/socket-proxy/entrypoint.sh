@@ -17,6 +17,9 @@ elif [ "$HOMELAB_APP_NAME" = 'home-assistant' ]; then
 elif [ "$HOMELAB_APP_NAME" = 'homer' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "$HOMELAB_APP_NAME" = 'jellyfin' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_NAME" = 'lamp-controller' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
