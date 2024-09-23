@@ -19,5 +19,9 @@
     - Setup SMTP server for email
     - Send automatic backups via SFTP
     - Send logs to remote syslog server
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for admin service
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for portal service
+- \[Prod\] Setup `uptime-kuma` monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports
+    - HTTP/HTTPS monitor (admin service)
+    - HTTP/HTTPS monitor (portal service)
+    - TBD: HTTPS JSON query monitor for basic API operation?

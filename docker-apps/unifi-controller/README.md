@@ -46,6 +46,9 @@ This is bad (still starting) `/status`:
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for admin service
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor for portal service
-- \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor for admin service
+- \[Prod\] Setup `uptime-kuma` monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports
+    - HTTP/HTTPS monitor (admin service)
+    - HTTP/HTTPS monitor (portal service)
+    - HTTPS JSON query monitor (admin service)

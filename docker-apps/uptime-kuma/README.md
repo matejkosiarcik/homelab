@@ -21,4 +21,8 @@
     - Disallow automatic updates
     - Setup Email notifications (SMTP)
     - Modify statistics history persistant interval
-- \[Prod\] Setup self HTTP/HTTPS monitor
+- \[Prod\] Setup self monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports
+    - HTTP/HTTPS monitor
+    - TBD: HTTPS JSON query monitor for basic API operation?
