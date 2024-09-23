@@ -22,5 +22,8 @@
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
-- \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor
+- \[Prod\] Setup `uptime-kuma` monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports
+    - HTTP/HTTPS monitor
+    - HTTPS JSON query monitor for basic API operation

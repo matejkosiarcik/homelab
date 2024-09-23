@@ -29,8 +29,11 @@ Generic resources:
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
-- \[Prod\] Setup `uptime-kuma` HTTPS JSON query monitor for basic API operation
+- \[Prod\] Setup `uptime-kuma` monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports
+    - HTTP/HTTPS monitor
+    - HTTPS JSON query monitor for basic API operation
 - \[Prod\] Configure docker mirroring in docker clients according to
   <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>, chapter "A single registry" (*example below)
 

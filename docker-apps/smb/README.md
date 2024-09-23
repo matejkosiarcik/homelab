@@ -11,5 +11,6 @@
 
 ## After initial installation
 
-- \[Prod\] Setup `smb` Ping IP monitor
-- \[Prod\] Setup `smb` TCP monitor for all open ports
+- \[Prod\] Setup `uptime-kuma` monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports

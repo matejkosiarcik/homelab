@@ -20,6 +20,10 @@ The setup script is inspired by: <https://www.devwithimagination.com/2021/01/05/
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
-- \[Prod\] Setup `uptime-kuma` DNS monitor
 - \[Prod\] Disable default adlists (only some instances)
+- \[Prod\] Setup `uptime-kuma` monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports
+    - HTTP/HTTPS monitor
+    - DNS monitor
+    - TBD: HTTPS JSON query monitor for basic API operation?

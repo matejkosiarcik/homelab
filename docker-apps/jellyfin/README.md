@@ -14,7 +14,6 @@
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` HTTP/HTTPS monitor
 - \[Prod\] Complete initial setup wizard
     - Create "admin" user
     - Disable remote connections
@@ -29,6 +28,10 @@
         - Enable "Hide Tvheadend Recordings channel"
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
 - \[Prod\] Create extra users (matej, monika)
+- \[Prod\] Setup `uptime-kuma` monitoring:
+    - IP (ping) monitor
+    - TCP monitor for all open ports
+    - HTTP/HTTPS monitor
 
 NOTE: Some clients may require unchecking "Prefer fMP4-HLS Media Container" for each user/client,
 because it is stored on the client-side in browser `localStorage` (location: Settings -> Playback).
