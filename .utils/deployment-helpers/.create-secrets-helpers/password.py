@@ -22,7 +22,7 @@ if __name__ == "__main__":
     password_chars = lowercase_chars + uppercase_chars + numbers_chars
 
     if not only_alphanumeric:
-        special_chars = random.choices("$&*%<>?!_+-|", k=random.randint(6, 8))
+        special_chars = random.choices("<>?!_+-|", k=random.randint(6, 8))
         password_chars += special_chars
 
     random.shuffle(password_chars)
