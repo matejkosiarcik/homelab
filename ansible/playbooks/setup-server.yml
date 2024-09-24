@@ -64,7 +64,7 @@
         reboot_command: sudo reboot
 
     - name: Verify log2ram installation
-      changed_when: false
+      changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
@@ -96,7 +96,7 @@
         fi
 
     - name: Verify docker installation
-      changed_when: false
+      changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         sudo docker run hello-world
@@ -108,7 +108,7 @@
         reboot_command: sudo reboot
 
     - name: Verify docker installation
-      changed_when: false
+      changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         docker run hello-world
