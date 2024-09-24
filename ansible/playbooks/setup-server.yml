@@ -15,20 +15,20 @@
       become: true
       ansible.builtin.apt:
         pkg:
+          - apache2-utils # Maybe remove this in the future
           - bash
           - ca-certificates
           - cron
           - curl
           - dnsutils
           - git
+          - lm-sensors
           - moreutils
           - openssl
           - python-is-python3
           - python3
           - rsync
           - wget
-          # Deprecated below:
-          # - apache2-utils # Not necessary to generate secrets "on device" anymore
 
     - name: Vacuum journal logs
       register: journactl_vacuum
@@ -64,10 +64,17 @@
         reboot_command: sudo reboot
 
     - name: Verify log2ram installation
-      changed_when: false
+      changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
+
+    - name: Configure sensors
+      changed_when: "True"
+      become: true
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        (yes || true) | sudo sensors-detect
 
     - name: Install docker
       changed_when: "'INSTALLED' in docker_install.stdout"
@@ -90,7 +97,7 @@
         fi
 
     - name: Verify docker installation
-      changed_when: false
+      changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         sudo docker run hello-world
@@ -102,7 +109,7 @@
         reboot_command: sudo reboot
 
     - name: Verify docker installation
-      changed_when: false
+      changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         docker run hello-world

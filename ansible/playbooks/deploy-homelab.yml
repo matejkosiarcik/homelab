@@ -7,7 +7,7 @@
       ansible.builtin.ping:
 
     - name: Deploy homelab
-      changed_when: true
+      changed_when: "True"
       ansible.builtin.shell: |
         set -eufo pipefail
 

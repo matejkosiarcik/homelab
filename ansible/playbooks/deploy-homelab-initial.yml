@@ -7,7 +7,7 @@
       ansible.builtin.ping:
 
     - name: Initial partial deploy
-      changed_when: true
+      changed_when: "True"
       ansible.builtin.shell: |
         set -eufo pipefail
 
@@ -40,7 +40,7 @@
         reboot_command: sudo reboot
 
     - name: Real deploy
-      changed_when: true
+      changed_when: "True"
       ansible.builtin.shell: |
         set -eufo pipefail
 
