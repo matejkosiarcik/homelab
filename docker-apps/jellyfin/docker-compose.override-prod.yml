@@ -15,10 +15,6 @@ services:
     environment:
       <<: *common-env-variables
       JELLYFIN_PublishedServerUrl: ${DOCKER_COMPOSE_DOMAIN}
-    devices:
-      - /dev/video10:/dev/video10
-      - /dev/video11:/dev/video11
-      - /dev/video12:/dev/video12
 
   certificate-manager:
     <<: *common-service-options
