@@ -21,4 +21,4 @@
     - TCP monitor for all open ports
     - HTTP/HTTPS monitor
 - \[Prod\] Setup anonymous user, in order to allow jellyfin to load channel logos, accordingly:
-    - ![](./anonymous%20user.png)
+    - ![anonymous user](./anonymous%20user.png)
