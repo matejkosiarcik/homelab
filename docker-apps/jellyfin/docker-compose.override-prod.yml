@@ -12,6 +12,7 @@ x-definitions:
 services:
   jellyfin:
     <<: *common-service-options
+    privileged: true
     environment:
       <<: *common-env-variables
       JELLYFIN_PublishedServerUrl: ${DOCKER_COMPOSE_DOMAIN}
