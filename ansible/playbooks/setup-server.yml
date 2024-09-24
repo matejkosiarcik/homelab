@@ -71,9 +71,10 @@
 
     - name: Configure sensors
       changed_when: "True"
+      become: true
       ansible.builtin.shell: |
         set -eufo pipefail
-        yes | sudo sensors-detect
+        (yes || true) | sudo sensors-detect
 
     - name: Install docker
       changed_when: "'INSTALLED' in docker_install.stdout"
