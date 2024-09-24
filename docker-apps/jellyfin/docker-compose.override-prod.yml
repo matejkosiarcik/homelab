@@ -12,15 +12,9 @@ x-definitions:
 services:
   jellyfin:
     <<: *common-service-options
-    privileged: true
     environment:
       <<: *common-env-variables
-      JELLYFIN_PublishedServerUrl: ${DOCKER_COMPOSE_DOMAIN}
-    devices:
-      - /dev/video10:/dev/video10
-      - /dev/video11:/dev/video11
-      - /dev/video12:/dev/video12
-      - /dev/dri/:/dev/dri/
+      JELLYFIN_PublishedServerUrl: https://${DOCKER_COMPOSE_DOMAIN}
 
   certificate-manager:
     <<: *common-service-options
