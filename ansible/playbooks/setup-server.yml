@@ -69,6 +69,12 @@
         set -eufo pipefail
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
 
+    - name: Configure sensors
+      changed_when: "True"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        yes | sudo sensors-detect
+
     - name: Install docker
       changed_when: "'INSTALLED' in docker_install.stdout"
       register: docker_install
