@@ -11,22 +11,19 @@ router_name="$1"
 external_ip="$2"
 internal_docker_ip="$3"
 
-interface_is_found='0'
+# Get appropriate network interface
+has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
+has_enp1s0="$(ip link show enp1s0 >/dev/null 2>/dev/null || printf '0\n')"
 found_interface=''
-find_network_interface() {
-    printf 'eth0\nenp1s0\n' | while read -r potential_interface; do
-        interface_is_found='1'
-        ip link show "$potential_interface" >/dev/null 2>/dev/null || interface_is_found='0'
-        if [ "$interface_is_found" -eq 1 ]; then
-            found_interface="$potential_interface"
-            break
-        fi
-    done
-
+if [ "$has_eth0" = '' ]; then
+    found_interface='eth0'
+elif [ "$has_enp1s0" = '' ]; then
+    found_interface='enp1s0'
+fi
+if [ "$found_interface" = '' ]; then
     printf 'No suitable network interface found\n'
     exit 1
-}
-find_network_interface
+fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
