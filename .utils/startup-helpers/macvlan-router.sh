@@ -11,15 +11,16 @@ router_name="$1"
 external_ip="$2"
 internal_docker_ip="$3"
 
-interface="$(sh <<EOF
-printf 'eth0\nenp1s0\n' | while read -r interface; do
-    found='1'
-    ip link show "$interface" >/dev/null 2>/dev/null || found='0'
-    if [ "$found" -eq 1 ]; then
-        printf '%s\n' "$interface"
-        break
-    fi
-done
+interface="$(
+    sh <<EOF
+    printf 'eth0\nenp1s0\n' | while read -r interface; do
+        found='1'
+        ip link show "$interface" >/dev/null 2>/dev/null || found='0'
+        if [ "$found" -eq 1 ]; then
+            printf '%s\n' "$interface"
+            break
+        fi
+    done
 EOF
 )"
 
