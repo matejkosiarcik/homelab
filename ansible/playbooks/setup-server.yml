@@ -185,5 +185,5 @@
       ansible.builtin.shell: |
         set -eufo pipefail
         if uname -n | grep raspberry >/dev/null; then
-          locale-gen en_US.UTF-8
+          sudo locale-gen en_US.UTF-8
         fi
