@@ -8,3 +8,5 @@ git_dir="$(cd "$(dirname "$(realpath "$0")")" >/dev/null 2>&1 && git rev-parse -
 seq 1 1 | while read -r index; do
     sh "$git_dir/.utils/startup-helpers/macvlan-router.sh" "macvlan-$(printf '%03d' "$index")" "10.1.21.$index" "10.1.20.$index"
 done
+
+sh "$git_dir/.utils/startup-helpers/rfkill.sh"

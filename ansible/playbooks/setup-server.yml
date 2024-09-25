@@ -21,12 +21,15 @@
           - cron
           - curl
           - dnsutils
+          - firmware-linux-nonfree
           - git
           - lm-sensors
+          - lshw
           - moreutils
           - openssl
           - python-is-python3
           - python3
+          - rfkill
           - rsync
           - wget
 
