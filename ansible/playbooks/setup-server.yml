@@ -35,10 +35,12 @@
       changed_when: "'Deleted archived journal' in journactl_vacuum.stdout or journactl_vacuum.stdout | regex_search('Vacuuming done, freed [1-9]')"
       ansible.builtin.shell: |
         set -eufo pipefail
-        if [ ! -e /var/log/journal ]; then
-          exit 0
+        if uname -n | grep raspberry >/dev/null; then
+          if [ ! -e /var/log/journal ]; then
+            exit 0
+          fi
+          sudo journalctl --vacuum-time=2d --vacuum-size=5M --rotate 2>&1
         fi
-        sudo journalctl --vacuum-time=2d --vacuum-size=5M --rotate 2>&1
 
     - name: Install log2ram
       when: ansible_facts['os_family'] == "Debian"
@@ -46,7 +48,7 @@
       changed_when: "'INSTALLED' in log2ram_install.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        if ! command -v log2ram >/dev/null 2>&1 && uname -n | grep raspberry; then
+        if ! command -v log2ram >/dev/null 2>&1 && uname -n | grep raspberry >/dev/null; then
           echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
             | sudo tee /etc/apt/sources.list.d/azlux.list
           sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
@@ -64,6 +66,7 @@
         reboot_command: sudo reboot
 
     - name: Verify log2ram installation
+      when: log2ram_install.changed
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
@@ -71,7 +74,6 @@
 
     - name: Configure sensors
       changed_when: "True"
-      become: true
       ansible.builtin.shell: |
         set -eufo pipefail
         (yes || true) | sudo sensors-detect
@@ -180,7 +182,8 @@
 
     - name: Setup locale
       when: ansible_facts['os_family'] == "Debian"
-      become: true
       ansible.builtin.shell: |
         set -eufo pipefail
-        locale-gen en_US.UTF-8
+        if uname -n | grep raspberry >/dev/null; then
+          locale-gen en_US.UTF-8
+        fi
