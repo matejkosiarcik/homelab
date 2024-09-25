@@ -53,7 +53,7 @@ networks:
   external-network:
     driver: macvlan
     driver_opts:
-      parent: eth0
+      parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}
     ipam:
       config:
         - subnet: 10.1.0.0/17
