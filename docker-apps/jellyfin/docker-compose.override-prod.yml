@@ -27,6 +27,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 8096:8096 # TODO: Probably remove this port
     networks:
       external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
