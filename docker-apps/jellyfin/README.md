@@ -6,6 +6,7 @@
 - Linuxserver docs: <https://docs.linuxserver.io/images/docker-jellyfin>
 - GitHub: <https://github.com/linuxserver/docker-jellyfin>
 - Jellyfin docs: <https://jellyfin.org/docs/general/quick-start>
+- Jellyfin Hardware Acceleration docs: <https://jellyfin.org/docs/general/administration/hardware-acceleration> and <https://jellyfin.org/docs/general/administration/hardware-acceleration/intel>
 
 ## Before initial installation
 
@@ -28,6 +29,15 @@
         - Enable "Hide Tvheadend Recordings channel"
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
 - \[Prod\] Create extra users (matej, monika)
+- \[Prod\] Enable Hardware Acceleration:
+    - This requires the host system to support it - additional system packages required, follow Jellyfin docs from above to install them
+    - Then enable Hardware Acceleration in settings accordingly (location: Settings -> Administration -> Playback):
+        - Enable HWA via VAAPI
+        - Enable all supported codecs for decoding (depends on current machine CPU/GPU)
+        - Also enable encoding in HEVC
+        - Enable low power encoding
+        - Limit encoding threads to 1 (this is enough when HWA is enabled, even for multiple streams, and plays nicely with other things running on the host machine)
+        - In summary, all the settings from this screenshot (taken on Odroid H3): ![Playback settings](./Playback%20settings.png)
 - \[Prod\] Setup `uptime-kuma` monitoring:
     - IP (ping) monitor
     - TCP monitor for all open ports
