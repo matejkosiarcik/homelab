@@ -12,18 +12,21 @@ external_ip="$2"
 internal_docker_ip="$3"
 
 interface_is_found='0'
-found_interface="$(
-    sh <<EOF
+found_interface=''
+find_network_interface() {
     printf 'eth0\nenp1s0\n' | while read -r potential_interface; do
         interface_is_found='1'
         ip link show "$potential_interface" >/dev/null 2>/dev/null || interface_is_found='0'
         if [ "$interface_is_found" -eq 1 ]; then
-            printf '%s\n' "$potential_interface"
+            found_interface="$potential_interface"
             break
         fi
     done
-EOF
-)"
+
+    printf 'No suitable network interface found\n'
+    exit 1
+}
+find_network_interface
 
 printf 'Found network interface %s\n' "$found_interface"
 
