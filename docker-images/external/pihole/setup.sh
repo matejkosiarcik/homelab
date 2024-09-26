@@ -43,7 +43,16 @@ sed -E 's~#.*$~~' <'/homelab/domains-blacklist.txt' | grep -E '.+' | while read 
     fi
 done
 
-# TODO: Setup custom adlists too
+# Custom adlists
+sqlite3 /etc/pihole/gravity.db 'DELETE FROM adlist;'
+sed -E 's~#.*$~~' <'/homelab/adlists.txt' | grep -E '.+' | while read -r entry; do
+    adlist="$(printf '%s' "$entry" | sed -E 's~ .*$~~')"
+    echo "New adlist: $adlist"
+    sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('$adlist', 1, 'custom');"
+done
+
+# Update gravity after changing adlists
+pihole updateGravity
 
 printf 'started\n' >/homelab/.internal/status.txt
 sleep infinity

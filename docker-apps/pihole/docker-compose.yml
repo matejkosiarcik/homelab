@@ -22,7 +22,7 @@ services:
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
     stop_grace_period: 30s
 
-  pihole-post-setup:
+  pihole-setup:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -30,6 +30,7 @@ services:
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ../../../../docker-images/external/pihole/adlists-${DOCKER_COMPOSE_PIHOLE_ADLISTS-default}.txt:/homelab/adlists.txt:ro
     entrypoint:
       - sh
       - /homelab/setup.sh

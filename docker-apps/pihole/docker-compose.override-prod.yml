@@ -20,7 +20,7 @@ services:
       VIRTUAL_HOST: ${DOCKER_COMPOSE_DOMAIN}
     hostname: ${DOCKER_COMPOSE_DOMAIN} # This fixes random container hostname in dashboard header
 
-  pihole-post-setup:
+  pihole-setup:
     <<: *common-service-options
 
   certificate-manager:
