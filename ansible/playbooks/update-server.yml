@@ -49,3 +49,18 @@
           git pull --ff-only
           printf 'CHANGED\n'
         fi
+
+    - name: Install global server scripts
+      register: git_install
+      when: update_git_homelab.changed
+      changed_when: "True"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        cd "$HOME/git/homelab/servers/.current"
+        sh helper.sh install --prod
+
+    - name: Reboot
+      when: git_install.changed
+      throttle: 1
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
