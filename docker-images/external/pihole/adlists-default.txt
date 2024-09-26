@@ -1,1 +1,1 @@
-https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts # default pihole
+https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts # Default in PiHole
