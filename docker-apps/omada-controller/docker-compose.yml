@@ -77,23 +77,5 @@ services:
       - 29810:29810/udp
       - 29811-29816:29811-29816
 
-  web-backup:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      omada-controller:
-        condition: service_healthy
-    env_file:
-      - ./app-secrets/web-backup.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: backup
-    volumes:
-      - ./app-data/web-backup:/homelab/backup:rw
-      - ./app-logs/web-backup-errors:/homelab/errors:rw
-      - ./app-logs/web-backup:/homelab/logs:rw
-
 networks:
   internal-network: {}

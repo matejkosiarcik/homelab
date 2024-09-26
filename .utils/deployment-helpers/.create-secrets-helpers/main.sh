@@ -217,15 +217,10 @@ case "$current_dir" in
 *omada-controller*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
-
-    # Backups
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -234,18 +229,12 @@ case "$current_dir" in
 *pihole*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
-    prepare_healthcheck_url "$output/web-custom-setup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
 
     # App
     printf '%s' "$(cat "$tmpdir/admin-password.txt")" >>"$output/pihole-password.txt"
-
-    # Backups
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-custom-setup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -274,8 +263,6 @@ case "$current_dir" in
 *speedtest-tracker*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-admin-setup.env"
-    prepare_healthcheck_url "$output/web-export.env"
     npm --prefix "$helper_script_dir/playwright" run --silent run:speedtest-tracker-app-key -- --output "$tmpdir/speedtest-tracker-app-key.txt"
 
     # Precreate passwords
@@ -291,12 +278,6 @@ case "$current_dir" in
     # TODO: Save username/password to `speedtest-tracker.env` after https://github.com/alexjustesen/speedtest-tracker/issues/1597
     printf '# ADMIN_EMAIL=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/speedtest-tracker.env"
     printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/speedtest-tracker.env"
-
-    # Automation
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-admin-setup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-admin-setup.env"
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-export.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-export.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -325,7 +306,6 @@ case "$current_dir" in
 *unifi-controller*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -335,10 +315,6 @@ case "$current_dir" in
     # Database
     printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
 
-    # Backups
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
-
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
@@ -346,18 +322,10 @@ case "$current_dir" in
 *uptime-kuma*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-admin-setup.env"
-    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
-
-    # Automation
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-admin-setup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-admin-setup.env"
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

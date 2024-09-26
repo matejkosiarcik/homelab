@@ -42,7 +42,6 @@ This is bad (still starting) `/status`:
 ## Before initial installation
 
 - \[All\] Create base secrets
-- \[Prod\] Add healthchecks monitor for `web-backup` and configure `HOMELAB_HEALTHCHECK_URL`
 
 ## After initial installation
 
