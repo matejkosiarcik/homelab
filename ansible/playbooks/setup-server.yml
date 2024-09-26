@@ -31,6 +31,7 @@
           - python3
           - rfkill
           - rsync
+          - smartmontools
           - wget
 
     - name: Vacuum journal logs
