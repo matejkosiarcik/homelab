@@ -22,7 +22,7 @@ services:
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
     stop_grace_period: 30s
 
-  pihole-post-setup:
+  pihole-setup:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/

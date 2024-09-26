@@ -20,7 +20,7 @@ services:
       # PIHOLE_DOMAIN: localhost
     hostname: pihole.localhost # This fixes random container hostname in dashboard header
 
-  pihole-post-setup:
+  pihole-setup:
     <<: *common-service-options
 
   certificate-manager:
