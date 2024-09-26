@@ -186,8 +186,20 @@
 
     - name: Setup locale
       when: ansible_facts['os_family'] == "Debian"
+      changed_when: "'CHANGED' in setup_locale.stdout"
+      register: setup_locale
       ansible.builtin.shell: |
         set -eufo pipefail
-        if uname -n | grep raspberry >/dev/null; then
-          sudo locale-gen en_US.UTF-8
+        sudo localedef -i en_US -f UTF-8 en_US.UTF-8
+        before_sha="$(shasum /etc/default/locale)"
+        sudo sh -c "printf 'LANGUAGE=en_US.UTF-8\nLC_ALL=en_US.UTF-8\nLANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n' >/etc/default/locale"
+        after_sha="$(shasum /etc/default/locale)"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
         fi
+
+    - name: Reboot
+      when: setup_locale.changed
+      throttle: 1
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
