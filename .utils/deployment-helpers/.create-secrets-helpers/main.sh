@@ -12,16 +12,20 @@ export LC_ALL
 LC_CTYPE=en_US.UTF-8
 export LC_CTYPE
 
-dev_mode='0'
+mode=''
 force_mode='0'
 while [ "$#" -gt 0 ]; do
     case "$1" in
     -d | --dev)
-        dev_mode='1'
+        mode='dev'
         shift
         ;;
     -f | --force)
         force_mode='1'
+        shift
+        ;;
+    -p | --prod)
+        mode='prod'
         shift
         ;;
     *)
@@ -45,6 +49,14 @@ mkdir "$output"
 current_dir="$(basename "$PWD")"
 tmpdir="$(mktemp -d)"
 
+# Load custom docker-compose overrides if available
+if [ -f "$PWD/config/docker-compose.env" ]; then
+    . "$PWD/config/docker-compose.env"
+fi
+if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
+    . "$PWD/config/docker-compose-$mode.env"
+fi
+
 create_password() {
     output_file="$1"
     extra_flags=''
@@ -52,7 +64,7 @@ create_password() {
         extra_flags="$2"
     fi
 
-    if [ "$dev_mode" = '1' ]; then
+    if [ "$mode" = 'dev' ]; then
         # A simple password for debugging
         printf 'Password123.' >"$output_file"
     else
@@ -266,13 +278,10 @@ case "$current_dir" in
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
-    if [ "$dev_mode" = '1' ]; then
+    if [ "$mode" = 'dev' ]; then
         printf 'admin@localhost' >"$tmpdir/admin-username.txt"
     else
-        prepare_empty_env ADMIN_EMAIL "$output/speedtest-tracker.env"
-        prepare_empty_env HOMELAB_APP_USERNAME "$output/web-admin-setup.env"
-        prepare_empty_env HOMELAB_APP_USERNAME "$output/web-export.env"
-        printf '' >"$tmpdir/admin-username.txt"
+        printf 'admin@%s' "$DOCKER_COMPOSE_DOMAIN" >"$tmpdir/admin-username.txt"
     fi
 
     # App

@@ -214,12 +214,9 @@ docker_start() {
 }
 
 create_secrets() {
-    create_secrets_args=''
+    create_secrets_args="--$mode"
     if [ "$force" -eq '1' ]; then
         create_secrets_args="$create_secrets_args --force"
-    fi
-    if [ "$mode" = 'dev' ]; then
-        create_secrets_args="$create_secrets_args --dev"
     fi
     # shellcheck disable=SC2086
     sh "$git_dir/.utils/deployment-helpers/.create-secrets-helpers/main.sh" $create_secrets_args
