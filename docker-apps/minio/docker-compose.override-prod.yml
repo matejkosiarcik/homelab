@@ -16,7 +16,7 @@ services:
       <<: *common-env-variables
       MINIO_BROWSER_REDIRECT_URL: ${DOCKER_COMPOSE_DOMAIN_2}
 
-  minio__cli-setup:
+  minio-setup:
     <<: *common-service-options
 
   certificate-manager:

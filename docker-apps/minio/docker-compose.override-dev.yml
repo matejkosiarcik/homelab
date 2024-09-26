@@ -16,7 +16,7 @@ services:
       <<: *common-env-variables
       MINIO_BROWSER_REDIRECT_URL: https://localhost:8444
 
-  minio__cli-setup:
+  minio-setup:
     <<: *common-service-options
 
   certificate-manager:

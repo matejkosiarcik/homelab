@@ -21,7 +21,7 @@ services:
       - ./app-data/minio:/data
     command: server /data --address ":9000" --console-address ":9001"
 
-  minio__cli-setup:
+  minio-setup:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
