@@ -160,9 +160,9 @@ case "$current_dir" in
     printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/jellyfin-users.txt"
     printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/jellyfin-users.txt"
     printf '# MATEJ_USERNAME=%s\n' "$(cat "$tmpdir/matej-username.txt")" >>"$output/jellyfin-users.txt"
-    printf '# MATEJ_PASSWORD=%s\n' >>"$output/jellyfin-users.txt"
+    printf '# MATEJ_PASSWORD=\n' >>"$output/jellyfin-users.txt"
     printf '# MONIKA_USERNAME=%s\n' "$(cat "$tmpdir/monika-username.txt")" >>"$output/jellyfin-users.txt"
-    printf '# MONIKA_PASSWORD=%s\n' >>"$output/jellyfin-users.txt"
+    printf '# MONIKA_PASSWORD=\n' >>"$output/jellyfin-users.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
