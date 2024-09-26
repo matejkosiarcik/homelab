@@ -5,18 +5,20 @@
       ansible.builtin.ping:
 
     - name: Update APT index
-      when: ansible_facts['os_family'] == "Debian"
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       become: true
       ansible.builtin.apt:
         update_cache: true
 
     - name: Install base APT packages
-      when: ansible_facts['os_family'] == "Debian"
+      register: apt_packages
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       become: true
       ansible.builtin.apt:
         pkg:
           - apache2-utils # Maybe remove this in the future
           - bash
+          - build-essential
           - ca-certificates
           - cron
           - curl
@@ -36,23 +38,22 @@
 
     - name: Vacuum journal logs
       register: journactl_vacuum
+      when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
       changed_when: "'Deleted archived journal' in journactl_vacuum.stdout or journactl_vacuum.stdout | regex_search('Vacuuming done, freed [1-9]')"
       ansible.builtin.shell: |
         set -eufo pipefail
-        if uname -n | grep raspberry >/dev/null; then
-          if [ ! -e /var/log/journal ]; then
-            exit 0
-          fi
-          sudo journalctl --vacuum-time=2d --vacuum-size=5M --rotate 2>&1
+        if [ ! -e /var/log/journal ]; then
+          exit 0
         fi
+        sudo journalctl --vacuum-time=2d --vacuum-size=5M --rotate 2>&1
 
     - name: Install log2ram
-      when: ansible_facts['os_family'] == "Debian"
       register: log2ram_install
-      changed_when: "'INSTALLED' in log2ram_install.stdout"
+      when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
+      changed_when: "'CHANGED' in log2ram_install.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        if ! command -v log2ram >/dev/null 2>&1 && uname -n | grep raspberry >/dev/null; then
+        if ! command -v log2ram >/dev/null 2>&1; then
           echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
             | sudo tee /etc/apt/sources.list.d/azlux.list
           sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
@@ -60,7 +61,7 @@
           sudo apt-get install --yes log2ram
           # Modify settings (disable email)
           sed 's~MAIL=true~MAIL=false~' </etc/log2ram.conf | sudo sponge /etc/log2ram.conf
-          printf 'INSTALLED\n'
+          printf 'CHANGED\n'
         fi
 
     - name: Reboot
@@ -77,14 +78,16 @@
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
 
     - name: Configure sensors
+      when: apt_packages.changed
       changed_when: "True"
       ansible.builtin.shell: |
         set -eufo pipefail
         (yes || true) | sudo sensors-detect
 
     - name: Install docker
-      changed_when: "'INSTALLED' in docker_install.stdout"
       register: docker_install
+      when: ansible_facts['system'] == 'Linux'
+      changed_when: "'CHANGED' in docker_install.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
         if ! command -v docker >/dev/null 2>&1; then
@@ -99,10 +102,11 @@
           sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
           # sudo groupadd docker # Already exists
           sudo usermod -aG docker "$(whoami)"
-          printf 'INSTALLED\n'
+          printf 'CHANGED\n'
         fi
 
     - name: Verify docker installation
+      when: docker_install.changed
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
@@ -115,14 +119,16 @@
         reboot_command: sudo reboot
 
     - name: Verify docker installation
+      when: docker_install.changed
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         docker run hello-world
 
     - name: Start docker on startup
-      changed_when: "'CHANGED' in docker_startup.stdout"
       register: docker_startup
+      when: ansible_facts['system'] == 'Linux'
+      changed_when: "'CHANGED' in docker_startup.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
         if ! sudo systemctl status docker.service >/dev/null 2>&1; then
@@ -135,8 +141,8 @@
         fi
 
     # - name: Configure docker logging driver
-    #   changed_when: "'CHANGED' in docker_logdriver.stdout"
     #   register: docker_logdriver
+    #   changed_when: "'CHANGED' in docker_logdriver.stdout"
     #   ansible.builtin.shell: |
     #     set -eufo pipefail
     #     filecontent='{
@@ -152,42 +158,10 @@
     #       printf 'CHANGED\n'
     #     fi
 
-    - name: Git clone homelab
-      changed_when: "'CHANGED' in git_clone_homelab.stdout"
-      register: git_clone_homelab
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        if [ ! -e "$HOME/git/homelab" ]; then
-          mkdir -p "$HOME/git"
-          git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
-          printf 'CHANGED\n'
-        fi
-
-    - name: Setup current server symlink
-      changed_when: "'CHANGED' in git_current_symlink.stdout"
-      register: git_current_symlink
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        if [ ! -e "$HOME/git/homelab/servers/.current" ]; then
-          cd "$HOME/git/homelab/servers"
-          ln -s "$(uname -n)" .current
-          printf 'CHANGED\n'
-        fi
-
-    - name: Create cron log directory
-      changed_when: "'CHANGED' in create_cron_log_dir.stdout"
-      register: create_cron_log_dir
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        if [ ! -e "$HOME/.log" ]; then
-          mkdir -p "$HOME/.log"
-          printf 'CHANGED\n'
-        fi
-
     - name: Setup locale
-      when: ansible_facts['os_family'] == "Debian"
-      changed_when: "'CHANGED' in setup_locale.stdout"
       register: setup_locale
+      when: ansible_facts['system'] == 'Linux'
+      changed_when: "'CHANGED' in setup_locale.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
         sudo localedef -i en_US -f UTF-8 en_US.UTF-8
@@ -200,6 +174,53 @@
 
     - name: Reboot
       when: setup_locale.changed
+      throttle: 1
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
+
+    - name: Create cron log directory
+      register: create_cron_log_dir
+      changed_when: "'CHANGED' in create_cron_log_dir.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        if [ ! -e "$HOME/.log" ]; then
+          mkdir -p "$HOME/.log"
+          printf 'CHANGED\n'
+        fi
+
+    - name: Git clone homelab
+      register: git_clone_homelab
+      changed_when: "'CHANGED' in git_clone_homelab.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        if [ ! -e "$HOME/git/homelab" ]; then
+          mkdir -p "$HOME/git"
+          git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
+          printf 'CHANGED\n'
+        fi
+
+    - name: Setup current server symlink
+      register: git_current_symlink
+      changed_when: "'CHANGED' in git_current_symlink.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        if [ ! -e "$HOME/git/homelab/servers/.current" ]; then
+          cd "$HOME/git/homelab/servers"
+          ln -s "$(uname -n)" .current
+          printf 'CHANGED\n'
+        fi
+
+    - name: Install global server scripts
+      register: git_install
+      when: git_clone_homelab.changed or git_current_symlink.changed
+      changed_when: "True"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        cd "$HOME/git/homelab/servers/.current"
+        sh helper.sh install --prod
+
+    - name: Reboot
+      when: git_install.changed
       throttle: 1
       ansible.builtin.reboot:
         reboot_command: sudo reboot
