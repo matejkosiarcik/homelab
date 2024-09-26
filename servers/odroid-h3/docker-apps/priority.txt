@@ -1,0 +1,32 @@
+# Cache for external services
+docker-cache-proxy
+# Placeholder: apt cache proxy
+# Placeholder: npm cache proxy
+# Placeholder: pypi cache proxy
+# Placeholder: gem cache proxy
+# Placeholder: cargo cache proxy
+
+# Storage services
+smb
+minio
+
+# Mail
+smtp4dev
+
+# Network controllers
+unifi-controller
+omada-controller
+
+# Monitoring
+uptime-kuma
+healthchecks
+
+# Home automation
+home-assistant
+
+# Media
+jellyfin
+
+# Misc
+speedtest-tracker
+homer

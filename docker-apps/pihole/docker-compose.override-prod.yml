@@ -40,12 +40,6 @@ services:
       external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
 
-  web-backup:
-    <<: *common-service-options
-
-  web-update-gravity:
-    <<: *common-service-options
-
 networks:
   external-network:
     driver: macvlan

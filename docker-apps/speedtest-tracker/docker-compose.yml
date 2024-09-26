@@ -50,22 +50,5 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
-  web-admin-setup:
-    <<: *common-service-options
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      speedtest-tracker:
-        condition: service_healthy
-    env_file:
-      - ./app-secrets/web-admin-setup.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: admin-setup
-    volumes:
-      - ./app-logs/web-admin-setup-errors:/homelab/errors:rw
-      - ./app-logs/web-admin-setup:/homelab/logs:rw
-
 networks:
   internal-network: {}

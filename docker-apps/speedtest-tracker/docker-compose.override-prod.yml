@@ -31,9 +31,6 @@ services:
       external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
 
-  web-admin-setup:
-    <<: *common-service-options
-
 networks:
   external-network:
     driver: macvlan

@@ -36,9 +36,3 @@ services:
       - 8053:53/udp
       - 8080:80
       - 8443:443
-
-  web-backup:
-    <<: *common-service-options
-
-  web-update-gravity:
-    <<: *common-service-options

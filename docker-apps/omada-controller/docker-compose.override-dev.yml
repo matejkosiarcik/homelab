@@ -35,6 +35,3 @@ services:
       - 8081:81
       - 8443:443
       - 8444:444
-
-  web-backup:
-    <<: *common-service-options

@@ -13,12 +13,6 @@
 - \[All\] Create base secrets
 - \[Prod\] Add healthchecks monitor and configure `HOMELAB_HEALTHCHECK_URL` for:
     - `certificate-manager.env`
-    - `web-admin-setup.env`
-    - `web-export.env`
-- \[Prod\] Configure `ADMIN_EMAIL` for:
-    - `speedtest-tracker.env`
-    - `web-admin-setup.env`
-    - `web-export.env`
 
 ## After initial installation
 
