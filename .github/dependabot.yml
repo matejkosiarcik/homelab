@@ -60,6 +60,7 @@ updates:
       - /.utils/deployment-helpers/.create-secrets-helpers/playwright
       - /docker-images/custom/lamp-network-server
       - /docker-images/custom/web-automation
+      - /docs/diagrams
       - /icons
     versioning-strategy: increase
     schedule:
