@@ -5,7 +5,7 @@
       ansible.builtin.ping:
 
     - name: Update APT packages
-      when: ansible_facts['os_family'] == "Debian"
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == "Debian"
       become: true
       ansible.builtin.apt:
         update_cache: true
@@ -14,8 +14,8 @@
         autoremove: true
 
     - name: Update homelab repository
-      changed_when: "'CHANGED' in update_git_homelab.stdout"
       register: update_git_homelab
+      changed_when: "'CHANGED' in update_git_homelab.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
 
