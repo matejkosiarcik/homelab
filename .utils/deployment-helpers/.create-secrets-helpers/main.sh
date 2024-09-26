@@ -51,9 +51,11 @@ tmpdir="$(mktemp -d)"
 
 # Load custom docker-compose overrides if available
 if [ -f "$PWD/config/docker-compose.env" ]; then
+    # shellcheck source=/dev/null
     . "$PWD/config/docker-compose.env"
 fi
 if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
+    # shellcheck source=/dev/null
     . "$PWD/config/docker-compose-$mode.env"
 fi
 
