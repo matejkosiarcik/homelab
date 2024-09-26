@@ -150,6 +150,20 @@ case "$current_dir" in
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
+    # Precreate passwords
+    create_password "$tmpdir/admin-password.txt"
+    printf 'admin' >"$tmpdir/admin-username.txt"
+    printf 'matej' >"$tmpdir/matej-username.txt"
+    printf 'monika' >"$tmpdir/monika-username.txt"
+
+    # App
+    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/jellyfin-users.txt"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/jellyfin-users.txt"
+    printf '# MATEJ_USERNAME=%s\n' "$(cat "$tmpdir/matej-username.txt")" >>"$output/jellyfin-users.txt"
+    printf '# MATEJ_PASSWORD=%s\n' >>"$output/jellyfin-users.txt"
+    printf '# MONIKA_USERNAME=%s\n' "$(cat "$tmpdir/monika-username.txt")" >>"$output/jellyfin-users.txt"
+    printf '# MONIKA_PASSWORD=%s\n' >>"$output/jellyfin-users.txt"
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
