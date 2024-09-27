@@ -26,6 +26,7 @@
           - firmware-linux-nonfree
           - git
           - lm-sensors
+          - locales
           - lshw
           - moreutils
           - openssl
@@ -164,6 +165,7 @@
       changed_when: "'CHANGED' in setup_locale.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        sudo locale-gen en_US.UTF-8
         sudo localedef -i en_US -f UTF-8 en_US.UTF-8
         before_sha="$(shasum /etc/default/locale)"
         sudo sh -c "printf 'LANGUAGE=en_US.UTF-8\nLC_ALL=en_US.UTF-8\nLANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n' >/etc/default/locale"
