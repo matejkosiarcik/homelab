@@ -24,6 +24,12 @@ else
     # fi
 fi
 
+if [ "$CRON" = '1' ]; then
+    delay="$(bash -c 'echo $((1 + RANDOM % 60))')"
+    printf 'Waiting %ss before starting cron job\n' "$delay"
+    sleep "$delay"
+fi
+
 # Run actual job
 (timeout 5m sh /homelab/main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile") | tee "$logfile"
 

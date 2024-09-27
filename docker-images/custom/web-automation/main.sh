@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-if [ "$CRON" != 1 ]; then
+if [ "$CRON" != '1' ]; then
     printf '%s - Skipping initial run\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
     exit
 fi
