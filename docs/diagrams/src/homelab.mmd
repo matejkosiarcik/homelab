@@ -9,6 +9,7 @@ flowchart LR
 
     subgraph raspberry_pi_3b["Raspberry Pi 3B"]
         tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+        pihole_matej_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />matej<br />(duplicate)")
     end
 
     subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2G"]
@@ -18,7 +19,7 @@ flowchart LR
         pihole_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />IoT")
         pihole_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika")
         pihole_monika_work("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika<br />(work)")
-        uptime_kuma_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma<br />(duplicate)")
+        uptime_kuma_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma<br />(duplicate)")
 
         hidden_1(" ")
         class hidden_1 no_border
@@ -26,12 +27,12 @@ flowchart LR
         pihole_matej ~~~ pihole_matej_work
         pihole_monika ~~~ pihole_monika_work
         pihole_guests ~~~ pihole_iot
-        uptime_kuma_backup ~~~ hidden_1
+        uptime_kuma_2 ~~~ hidden_1
     end
 
     subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4G"]
-        pihole_matej_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />matej<br />(duplicate)")
-        jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
+        hidden_2(" ")
+        class hidden_2 no_border
     end
 
     subgraph odroid_h3["Odroid H3"]
@@ -46,16 +47,17 @@ flowchart LR
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br />Tracker")
         unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Controller")
         uptime_kuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma")
+        jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
 
-        hidden_2(" ")
-        class hidden_2 no_border
+        hidden_3(" ")
+        class hidden_3 no_border
 
-        homer ~~~ speedtest_tracker
         unifi_controller ~~~ omada_controller
-        home_assistant ~~~ healthchecks
-        uptime_kuma ~~~ smtp4dev
+        home_assistant ~~~ smtp4dev
+        uptime_kuma ~~~ healthchecks
         docker_cache_proxy ~~~ minio
-        smb ~~~ hidden_2
+        homer ~~~ speedtest_tracker
+        jellyfin ~~~ smb
     end
 
     odroid_h3 ~~~ raspberry_pi_3b
