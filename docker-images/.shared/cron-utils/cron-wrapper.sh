@@ -25,7 +25,7 @@ else
 fi
 
 if [ "$CRON" = '1' ]; then
-    delay="$((1 + $RANDOM % 60))"
+    delay="$((1 + RANDOM % 60))"
     printf 'Waiting %ss before starting cron job\n' "$delay"
     sleep "$delay"
 fi
