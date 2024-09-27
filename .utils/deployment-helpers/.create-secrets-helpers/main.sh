@@ -144,6 +144,7 @@ case "$current_dir" in
 *home-assistant*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -222,6 +223,7 @@ case "$current_dir" in
 *omada-controller*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -238,6 +240,7 @@ case "$current_dir" in
 *pihole*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -318,6 +321,7 @@ case "$current_dir" in
 *unifi-controller*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -338,6 +342,7 @@ case "$current_dir" in
 *uptime-kuma*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
