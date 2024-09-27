@@ -159,7 +159,7 @@ docker_build() {
     # Build docker images
     #
 
-    docker_build_args="$docker_compose_args build --with-dependencies"
+    docker_build_args="$docker_compose_args build --with-dependencies --pull"
     # if [ "$mode" = 'prod' ]; then
     #     docker_build_args="$docker_build_args --quiet"
     # fi
