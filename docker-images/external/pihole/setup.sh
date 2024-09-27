@@ -14,7 +14,7 @@ pihole --wild --nuke
 pihole --regex --nuke
 
 # Update whitelist
-sed -E 's~#.*$~~' <'/homelab/domains-whitelist.txt' | grep -E '.+' | while read -r entry; do
+sed -E 's~#.*$~~' <'/homelab/domains-whitelist.txt' | (grep -E '.+' || true) | while read -r entry; do
     domain="$(printf '%s' "$entry" | sed -E 's~ .*$~~')"
     if (printf '%s' "$entry" | grep -- '\[wildcard\]' >/dev/null 2>&1); then
         printf 'Add whitelist [wildcard]: %s\n' "$domain"
@@ -29,7 +29,7 @@ sed -E 's~#.*$~~' <'/homelab/domains-whitelist.txt' | grep -E '.+' | while read 
 done
 
 # Update blacklist
-sed -E 's~#.*$~~' <'/homelab/domains-blacklist.txt' | grep -E '.+' | while read -r entry; do
+sed -E 's~#.*$~~' <'/homelab/domains-blacklist.txt' | (grep -E '.+' || true) | while read -r entry; do
     domain="$(printf '%s' "$entry" | sed -E 's~ .*$~~')"
     if (printf '%s' "$entry" | grep -- '\[wildcard\]' >/dev/null 2>&1); then
         printf 'Add blacklist [wildcard]: %s\n' "$domain"
@@ -45,7 +45,7 @@ done
 
 # Custom adlists
 sqlite3 /etc/pihole/gravity.db 'DELETE FROM adlist;'
-sed -E 's~#.*$~~' <'/homelab/adlists.txt' | grep -E '.+' | while read -r entry; do
+sed -E 's~#.*$~~' <'/homelab/adlists.txt' | (grep -E '.+' || true) | while read -r entry; do
     adlist="$(printf '%s' "$entry" | sed -E 's~ .*$~~')"
     echo "New adlist: $adlist"
     sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('$adlist', 1, 'custom');"
