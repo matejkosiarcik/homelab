@@ -1,1 +1,0 @@
-30 03 * * * sh /homelab/cron-wrapper.sh >>/homelab/logs/cron.log 2>&1
