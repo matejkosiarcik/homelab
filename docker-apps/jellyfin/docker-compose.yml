@@ -12,6 +12,7 @@ x-definitions:
 services:
   jellyfin:
     <<: *common-service-options
+    hostname: ${DOCKER_COMPOSE_DOMAIN_PREFIX} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/jellyfin/Dockerfile
