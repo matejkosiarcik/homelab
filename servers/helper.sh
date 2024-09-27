@@ -68,7 +68,6 @@ create_all_secrets() {
         create_secrets_args="$create_secrets_args --force"
     fi
 
-    printf 'Init all docker apps secrets\n' >&2
     find . -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r server; do
         # shellcheck disable=SC2086
         sh "$server/helper.sh" create-secrets $create_secrets_args

@@ -14,8 +14,8 @@ minio
 smtp4dev
 
 # Network controllers
-unifi-controller
 omada-controller
+unifi-controller
 
 # Monitoring
 uptime-kuma

@@ -12,13 +12,13 @@ x-definitions:
 services:
   pihole:
     <<: *common-service-options
+    hostname: pihole.localhost # This fixes random container hostname in dashboard header
     environment:
       <<: *common-env-variables
       FTLCONF_PRIVACYLEVEL: "0"
       # FTLCONF_LOCAL_IPV4: "127.0.0.1"
       # VIRTUAL_HOST: localhost
       # PIHOLE_DOMAIN: localhost
-    hostname: pihole.localhost # This fixes random container hostname in dashboard header
 
   pihole-setup:
     <<: *common-service-options
@@ -36,3 +36,6 @@ services:
       - 8053:53/udp
       - 8080:80
       - 8443:443
+
+  web-backup:
+    <<: *common-service-options

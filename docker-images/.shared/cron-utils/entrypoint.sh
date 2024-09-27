@@ -16,15 +16,16 @@ CRON=1
 printf 'started\n' >/homelab/.internal/status.txt
 
 # Determine cronfile
-cronfile=""
+cronfile=''
 if [ "$HOMELAB_CONTAINER_NAME" = 'web-automation' ]; then
-    if [ "$HOMELAB_CONTAINER_VARIANT" = 'backup' ]; then
-        cronfile='/homelab/crontab-backup.cron'
-    else
-        cronfile='/homelab/crontab-other.cron'
-    fi
+    cronfile="/homelab/crontab-$HOMELAB_APP_NAME-$HOMELAB_CONTAINER_VARIANT.cron"
 else
     cronfile='/homelab/crontab.cron'
+fi
+
+if [ ! -e "$cronfile" ]; then
+    printf 'crontab file %s not found\n' "$cronfile"
+    exit 1
 fi
 
 supercronic "$cronfile"
