@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      MINIO_BROWSER_REDIRECT_URL: ${DOCKER_COMPOSE_DOMAIN_2}
+      MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_DOMAIN_2}
 
   minio-setup:
     <<: *common-service-options
