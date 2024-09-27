@@ -70,6 +70,7 @@ export START_DATE
 machine_dir="$PWD"
 log_dir="$HOME/.homelab-logs/$START_DATE"
 log_file="$log_dir/deploy.txt"
+server_name="$(basename "$PWD")"
 
 if [ "$mode" = 'dev' ]; then
     log_file='/dev/null'
@@ -87,56 +88,66 @@ fi
 
 machine_stop() {
     if [ -d "$machine_dir/docker-apps" ]; then
-        printf 'Stop all docker apps\n' | tee "$log_file" >&2
+        printf 'Stop all docker apps in %s\n' "$server_name" | tee "$log_file" >&2
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$machine_dir/docker-apps/$dir/helper.sh" stop $script_args
         done
+
+        printf '\n'
     fi
 }
 
 machine_build() {
     if [ -d "$machine_dir/docker-apps" ]; then
-        printf 'Build docker images for all docker apps\n' | tee "$log_file" >&2
+        printf 'Build docker images for all docker apps in %s\n' "$server_name" | tee "$log_file" >&2
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$machine_dir/docker-apps/$dir/helper.sh" build $script_args
         done
+
+        printf '\n'
     fi
 }
 
 machine_start() {
     if [ -d "$machine_dir/docker-apps" ]; then
-        printf 'Start all docker apps\n' | tee "$log_file" >&2
+        printf 'Start all docker apps in %s\n' "$server_name" | tee "$log_file" >&2
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$machine_dir/docker-apps/$dir/helper.sh" start $script_args
         done
+
+        printf '\n'
     fi
 }
 
 machine_deploy() {
     if [ -d "$machine_dir/docker-apps" ]; then
-        printf 'Deploy all docker apps\n' | tee "$log_file" >&2
+        printf 'Deploy all docker apps in %s\n' "$server_name" | tee "$log_file" >&2
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$machine_dir/docker-apps/$dir/helper.sh" deploy $script_args
         done
+
+        printf '\n'
     fi
 }
 
 machine_create_secrets() {
     if [ -d "$machine_dir/docker-apps" ]; then
-        printf 'Init all docker apps secrets\n' | tee "$log_file" >&2
+        printf 'Init all docker apps secrets in %s\n' "$server_name" | tee "$log_file" >&2
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$machine_dir/docker-apps/$dir/helper.sh" create-secrets $script_args
         done
+
+        printf '\n'
     fi
 }
 
