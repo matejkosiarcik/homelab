@@ -12,6 +12,7 @@ x-definitions:
 services:
   jellyfin:
     <<: *common-service-options
+    hostname: ${DOCKER_COMPOSE_DOMAIN} # This fixes random container hostname in settings and server picker
     environment:
       <<: *common-env-variables
       JELLYFIN_PublishedServerUrl: https://${DOCKER_COMPOSE_DOMAIN}
