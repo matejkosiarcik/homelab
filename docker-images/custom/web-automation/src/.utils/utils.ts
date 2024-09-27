@@ -28,9 +28,6 @@ export function getTargetUrl(): string {
 
     if (fsSync.existsSync('/.dockerenv')) {
         switch (getAppName()) {
-            case 'docker-cache-proxy': {
-                return 'http://docker-registry';
-            }
             case 'home-assistant': {
                 return 'http://home-assistant:8123';
             }
@@ -39,9 +36,6 @@ export function getTargetUrl(): string {
             }
             case 'pihole': {
                 return 'http://pihole';
-            }
-            case 'speedtest-tracker': {
-                return 'https://speedtest-tracker';
             }
             case 'unifi-controller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'https://unifi-network-app:8443' : 'https://unifi-network-app';
