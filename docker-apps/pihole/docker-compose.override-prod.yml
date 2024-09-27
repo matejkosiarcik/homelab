@@ -12,13 +12,13 @@ x-definitions:
 services:
   pihole:
     <<: *common-service-options
+    hostname: ${DOCKER_COMPOSE_DOMAIN} # This fixes random container hostname in dashboard header
     environment:
       <<: *common-env-variables
       FTLCONF_LOCAL_IPV4: ${DOCKER_COMPOSE_NETWORK_IP}
       FTLCONF_PRIVACYLEVEL: "0"
       # FTLCONF_RATE_LIMIT: "100000/60" # Only for debugging
       VIRTUAL_HOST: ${DOCKER_COMPOSE_DOMAIN}
-    hostname: ${DOCKER_COMPOSE_DOMAIN} # This fixes random container hostname in dashboard header
 
   pihole-setup:
     <<: *common-service-options
