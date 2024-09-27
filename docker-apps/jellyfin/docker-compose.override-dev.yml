@@ -12,10 +12,9 @@ x-definitions:
 services:
   jellyfin:
     <<: *common-service-options
-    hostname: jellyfin.localhost # This fixes random container hostname in settings and server picker
     environment:
       <<: *common-env-variables
-      JELLYFIN_PublishedServerUrl: localhost
+      JELLYFIN_PublishedServerUrl: https://localhost:8443
     # ports:
     #   - 8096:8096
 
