@@ -146,7 +146,12 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    create_password "$tmpdir/app-http-secret.txt" --only-alphanumeric
+    create_password "$tmpdir/admin-password.txt"
+    printf 'admin' >"$tmpdir/admin-username.txt"
+
+    # Web backup
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -222,6 +227,10 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
 
+    # Web backup
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
@@ -235,6 +244,9 @@ case "$current_dir" in
 
     # App
     printf '%s' "$(cat "$tmpdir/admin-password.txt")" >>"$output/pihole-password.txt"
+
+    # Web backup
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -315,6 +327,10 @@ case "$current_dir" in
     # Database
     printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
 
+    # Web backup
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
@@ -326,6 +342,10 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
+
+    # Web backup
+    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
