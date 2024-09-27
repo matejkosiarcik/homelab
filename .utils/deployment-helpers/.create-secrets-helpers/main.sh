@@ -154,6 +154,10 @@ case "$current_dir" in
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
+    # Private usage
+    printf 'ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/home-assistant-users.txt"
+    printf 'ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/home-assistant-users.txt"
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
@@ -173,16 +177,10 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
-    printf 'matej' >"$tmpdir/matej-username.txt"
-    printf 'monika' >"$tmpdir/monika-username.txt"
 
-    # App
-    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/jellyfin-users.txt"
-    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/jellyfin-users.txt"
-    printf '# MATEJ_USERNAME=%s\n' "$(cat "$tmpdir/matej-username.txt")" >>"$output/jellyfin-users.txt"
-    printf '# MATEJ_PASSWORD=\n' >>"$output/jellyfin-users.txt"
-    printf '# MONIKA_USERNAME=%s\n' "$(cat "$tmpdir/monika-username.txt")" >>"$output/jellyfin-users.txt"
-    printf '# MONIKA_PASSWORD=\n' >>"$output/jellyfin-users.txt"
+    # Private usage
+    printf 'ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/jellyfin-users.txt"
+    printf 'ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/jellyfin-users.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -351,6 +349,10 @@ case "$current_dir" in
     # Web backup
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
+
+    # Private usage
+    printf 'ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/uptime-kuma-users.txt"
+    printf 'ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/uptime-kuma-users.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
