@@ -1,7 +1,7 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_1}
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -12,7 +12,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_DOMAIN_2}
+      MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_DOMAIN_PREFIX_2}.home
 
   minio-setup:
     <<: *common-service-options
@@ -21,7 +21,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_1},${DOCKER_COMPOSE_DOMAIN_2}
+      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home,${DOCKER_COMPOSE_DOMAIN_PREFIX_2}.home
 
   http-proxy-api:
     <<: *common-service-options
