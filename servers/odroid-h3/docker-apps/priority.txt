@@ -22,7 +22,6 @@ smtp4dev
 
 # Network controllers
 omada-controller
-unifi-controller
 
 # Monitoring
 uptime-kuma
