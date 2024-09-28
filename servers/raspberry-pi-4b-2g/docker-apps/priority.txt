@@ -5,6 +5,3 @@ pihole-monika
 pihole-monika-work
 pihole-guests
 pihole-iot
-
-# Monitoring
-uptime-kuma-2
