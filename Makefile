@@ -42,6 +42,10 @@ bootstrap:
 
 	printf '\n\n'
 
+.PHONY: bootstrap-secrets
+bootstrap-secrets:
+	npm ci --prefix "$(PROJECT_DIR)/.utils/deployment-helpers/.create-secrets-helpers/playwright" --no-progress --no-audit --no-fund --loglevel=error
+
 .PHONY: build
 build:
 	printf '%s' "$(NPM_COMPONENTS_FOR_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
