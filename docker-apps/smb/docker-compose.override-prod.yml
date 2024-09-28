@@ -1,7 +1,7 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN}
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -10,11 +10,11 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  smb:
+  samba:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      SAMBA_TITLE: ${DOCKER_COMPOSE_DOMAIN}
+      SAMBA_TITLE: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
     volumes:
       - ${DOCKER_COMPOSE_SAMBA_PATH}:/data:rw
 

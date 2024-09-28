@@ -12,16 +12,16 @@ x-definitions:
 services:
   lamp-hardware-controller:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-lamp-hardware-controller
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/lamp-hardware-controller/Dockerfile
-    env_file:
-      - ./app-secrets/lamp-controller.env
     volumes:
       - ./app-data/lamp-status:/homelab/lamp-status:rw
 
   lamp-network-server:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-lamp-network-server
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/lamp-network-server/Dockerfile
@@ -30,6 +30,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -41,6 +42,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -54,6 +56,7 @@ services:
 
   socket-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile

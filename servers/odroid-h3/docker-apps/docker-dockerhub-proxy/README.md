@@ -1,3 +1,3 @@
-# Docker cache proxy
+# Docker dockerhub proxy
 
 For `docker-cache-proxy` docs see [/docker-apps/docker-cache-proxy/README.md](../../../../docker-apps/docker-cache-proxy/README.md)

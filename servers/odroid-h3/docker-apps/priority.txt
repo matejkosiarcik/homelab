@@ -1,5 +1,5 @@
 # Cache for external services
-docker-cache-proxy
+docker-dockerhub-proxy
 # Placeholder: apt cache proxy
 # Placeholder: npm cache proxy
 # Placeholder: pypi cache proxy

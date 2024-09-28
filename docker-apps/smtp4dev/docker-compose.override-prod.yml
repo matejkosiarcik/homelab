@@ -1,7 +1,7 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN}
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -14,8 +14,8 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      HOSTNAME: ${DOCKER_COMPOSE_DOMAIN}
-      ServerOptions__HostName: ${DOCKER_COMPOSE_DOMAIN}
+      HOSTNAME: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
+      ServerOptions__HostName: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
 
   certificate-manager:
     <<: *common-service-options

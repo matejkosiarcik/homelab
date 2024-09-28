@@ -12,6 +12,7 @@ x-definitions:
 services:
   omada-controller:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-omada-controller
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/omada-controller/Dockerfile
@@ -28,6 +29,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -39,6 +41,7 @@ services:
 
   http-proxy-admin:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-admin
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -55,6 +58,7 @@ services:
 
   http-proxy-portal:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-portal
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -71,6 +75,7 @@ services:
 
   socket-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
@@ -81,6 +86,7 @@ services:
 
   web-backup:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-web-backup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile

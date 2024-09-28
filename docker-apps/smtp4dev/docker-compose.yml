@@ -12,17 +12,17 @@ x-definitions:
 services:
   smtp4dev:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-smtp4dev
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/smtp4dev/Dockerfile
-    env_file:
-      - ./app-secrets/smtp4dev.env
     volumes:
       - ./app-data/smtp4dev:/smtp4dev:rw
     stop_grace_period: 30s
 
   certificate-manager:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -34,6 +34,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -47,6 +48,7 @@ services:
 
   socket-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile

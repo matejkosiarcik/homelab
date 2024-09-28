@@ -102,15 +102,7 @@ prepare_empty_env() {
 }
 
 case "$current_dir" in
-*docker-cache-proxy*)
-    if [ "${HOMELAB_FAKE_INPUT-0}" = '1' ]; then
-        upstream_url='https://example.com'
-    else
-        printf 'Please enter upstream registry URL: '
-        read -r upstream_url
-        printf '\n'
-    fi
-
+*docker-*-proxy*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
@@ -119,7 +111,6 @@ case "$current_dir" in
 
     # App
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/docker-registry-http-secret.txt")" >>"$output/docker-registry.env"
-    printf 'REGISTRY_PROXY_REMOTEURL=%s\n' "$upstream_url" >>"$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_USERNAME "$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/docker-registry.env"
 
@@ -167,7 +158,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # App
-    touch "$output/homer.env" # Empty
+    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -194,7 +185,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # App
-    touch "$output/lamp-controller.env" # Empty
+    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -254,7 +245,7 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
 
     # App
-    touch "$output/pihole.env" # Empty
+    printf 'PIHOLE_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
     printf '%s' "$(cat "$tmpdir/admin-password.txt")" >>"$output/pihole-password.txt"
 
     # Web backup
@@ -281,7 +272,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # App
-    touch "$output/smtp4dev.env" # Empty
+    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
