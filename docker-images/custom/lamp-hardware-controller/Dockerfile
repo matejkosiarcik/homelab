@@ -27,5 +27,5 @@ ENV HOMELAB_CONTAINER_NAME=lamp-hardware-controller \
     PATH="/homelab/vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost || exit 1" ]
 ENTRYPOINT [ "python3", "/homelab/main.py" ]
