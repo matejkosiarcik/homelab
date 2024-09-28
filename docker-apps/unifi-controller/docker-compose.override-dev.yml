@@ -12,7 +12,7 @@ services:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/unifi-controller/Dockerfile
+      dockerfile: ./external/unifi-network-app/Dockerfile
       args:
         HOMELAB_BUILD_ENV: dev
 
