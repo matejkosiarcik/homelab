@@ -18,6 +18,7 @@ services:
       dockerfile: ./external/docker-registry/Dockerfile
     env_file:
       - ./app-secrets/docker-registry.env
+      - ./config/docker-registry.env
     volumes:
       - ./app-data/docker-registry:/var/lib/registry:rw
     stop_grace_period: 30s

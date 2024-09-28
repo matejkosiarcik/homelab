@@ -119,7 +119,6 @@ case "$current_dir" in
 
     # App
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/docker-registry-http-secret.txt")" >>"$output/docker-registry.env"
-    printf 'REGISTRY_PROXY_REMOTEURL=%s\n' "$upstream_url" >>"$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_USERNAME "$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/docker-registry.env"
 
