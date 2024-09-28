@@ -280,6 +280,9 @@ case "$current_dir" in
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
+    # App
+    touch "$output/smtp4dev.env" # Empty
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
