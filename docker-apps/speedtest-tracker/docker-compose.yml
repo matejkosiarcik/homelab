@@ -4,8 +4,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    # env_file:
-    #   - ./config/common.env
     networks:
       internal-network: {}
 
