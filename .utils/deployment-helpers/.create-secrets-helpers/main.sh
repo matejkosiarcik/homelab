@@ -166,7 +166,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # App
-    touch "$output/homer.env" # Empty
+    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -193,7 +193,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # App
-    touch "$output/lamp-controller.env" # Empty
+    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -253,7 +253,7 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
 
     # App
-    touch "$output/pihole.env" # Empty
+    printf 'PIHOLE_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
     printf '%s' "$(cat "$tmpdir/admin-password.txt")" >>"$output/pihole-password.txt"
 
     # Web backup
@@ -280,7 +280,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # App
-    touch "$output/smtp4dev.env" # Empty
+    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

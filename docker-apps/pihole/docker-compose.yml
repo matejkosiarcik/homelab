@@ -16,8 +16,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
-    env_file:
-      - ./app-secrets/pihole.env
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
@@ -31,8 +29,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
-    env_file:
-      - ./app-secrets/pihole.env
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw

@@ -18,8 +18,6 @@ services:
       dockerfile: ./external/homer/Dockerfile
     volumes:
       - ./app-logs/homer:/homelab/logs:rw
-    env_file:
-      - ./app-secrets/homer.env
 
   certificate-manager:
     <<: *common-service-options

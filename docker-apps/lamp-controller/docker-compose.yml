@@ -16,8 +16,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/lamp-hardware-controller/Dockerfile
-    env_file:
-      - ./app-secrets/lamp-controller.env
     volumes:
       - ./app-data/lamp-status:/homelab/lamp-status:rw
 
