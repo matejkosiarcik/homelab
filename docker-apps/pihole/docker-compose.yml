@@ -19,6 +19,7 @@ services:
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
+      - ../../../../docker-images/external/pihole/adlists-${DOCKER_COMPOSE_PIHOLE_ADLISTS-default}.txt:/homelab/adlists.txt:ro
     stop_grace_period: 30s
 
   pihole-setup:
@@ -26,24 +27,15 @@ services:
     container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-pihole-setup
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/pihole/Dockerfile
-    volumes:
-      - ./app-data/pihole/etc-pihole:/etc/pihole:rw
-      - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - ../../../../docker-images/external/pihole/adlists-${DOCKER_COMPOSE_PIHOLE_ADLISTS-default}.txt:/homelab/adlists.txt:ro
-    entrypoint:
-      - sh
-      - /homelab/setup.sh
+      dockerfile: ./custom/pihole-setup/Dockerfile
+    environment:
+      <<: *common-env-variables
+      HOMELAB_PIHOLE_CONTAINER: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-pihole
     depends_on:
       pihole:
         condition: service_healthy
-    healthcheck:
-      test: sh -c "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1"
-      interval: 5s
-      timeout: 1s
-      retries: 1
-      start_period: 20s
-    stop_grace_period: 30s
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   certificate-manager:
     <<: *common-service-options
