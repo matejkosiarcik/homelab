@@ -306,7 +306,7 @@ case "$current_dir" in
     if [ "$mode" = 'dev' ]; then
         printf 'admin@localhost' >"$tmpdir/admin-username.txt"
     else
-        printf 'admin@%s' "$DOCKER_COMPOSE_DOMAIN" >"$tmpdir/admin-username.txt"
+        printf 'admin@%s.home' "$DOCKER_COMPOSE_DOMAIN_PREFIX" >"$tmpdir/admin-username.txt"
     fi
 
     # App
