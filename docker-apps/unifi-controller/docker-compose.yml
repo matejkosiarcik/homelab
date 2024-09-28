@@ -40,8 +40,8 @@ services:
       - USER=unifi
     volumes:
       - ./app-data/mongodb:/data/db:rw
-      - ./config/mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
+      - ../../../../docker-images/database/mongodb/init-mongo-unifi-controller.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     stop_grace_period: 30s
 
   certificate-manager:
