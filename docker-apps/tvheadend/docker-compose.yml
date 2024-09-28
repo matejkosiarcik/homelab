@@ -16,8 +16,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/tvheadend/Dockerfile
-    env_file:
-      - ./app-secrets/tvheadend.env
     volumes:
       - ./app-data/tvheadend-data:/config
       # - ./app-data/tvheadend-recordings:/recordings
