@@ -4,6 +4,30 @@ set -euf
 mkdir -p /homelab/.internal
 printf 'starting\n' >/homelab/.internal/status.txt
 
+db_log='0'
+while [ ! -e '/etc/pihole/gravity.db' ]; do
+    if [ "$db_log" -eq '0' ]; then
+        db_log='1'
+        printf 'Waiting for database\n'
+    fi
+    sleep 1
+done
+printf 'Database found\n'
+
+db_log='0'
+while true; do
+    count="$(sqlite3 /etc/pihole/gravity.db 'SELECT count(*) FROM sqlite_master WHERE type="table" AND name="main.gravity";')"
+    if [ "$count" -gt '0' ]; then
+        break;
+    fi
+    if [ "$db_log" -eq '0' ]; then
+        db_log='1'
+        printf 'Waiting for database table\n'
+    fi
+    sleep 1
+done
+printf 'Main table found\n'
+
 # Clean lists before making changes
 printf 'Wipe existing blacklists and whitelists\n'
 pihole whitelist --nuke
