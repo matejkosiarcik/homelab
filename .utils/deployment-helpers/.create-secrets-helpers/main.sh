@@ -102,7 +102,7 @@ prepare_empty_env() {
 }
 
 case "$current_dir" in
-*docker-cache-proxy*)
+*docker-*-proxy*)
     if [ "${HOMELAB_FAKE_INPUT-0}" = '1' ]; then
         upstream_url='https://example.com'
     else
