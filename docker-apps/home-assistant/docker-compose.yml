@@ -16,8 +16,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/home-assistant/Dockerfile
-    env_file:
-      - ./app-secrets/home-assistant.env
     volumes:
       - ./app-data/home-assistant:/config:rw
       - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro

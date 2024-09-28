@@ -20,8 +20,6 @@ services:
       nofile:
         soft: 4096
         hard: 8192
-    env_file:
-      - ./app-secrets/omada-controller.env
     volumes:
       - ./app-data/omada-controller:/opt/tplink/EAPController/data:rw
       - ./app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
