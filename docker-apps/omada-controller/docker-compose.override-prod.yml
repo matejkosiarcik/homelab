@@ -42,6 +42,7 @@ services:
 
 networks:
   external-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-external-network
     driver: macvlan
     driver_opts:
       parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}

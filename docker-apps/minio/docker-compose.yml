@@ -99,4 +99,5 @@ services:
       HOMELAB_CONTAINER_VARIANT: console
 
 networks:
-  internal-network: {}
+  internal-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network

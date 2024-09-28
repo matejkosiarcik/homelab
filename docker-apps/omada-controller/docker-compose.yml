@@ -100,4 +100,5 @@ services:
       - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
-  internal-network: {}
+  internal-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
