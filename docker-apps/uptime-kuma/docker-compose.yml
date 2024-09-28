@@ -74,3 +74,4 @@ services:
 
 networks:
   internal-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network

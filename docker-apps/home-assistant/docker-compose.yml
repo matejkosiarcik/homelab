@@ -4,8 +4,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    # env_file:
-    #   - ./config/common.env
     networks:
       internal-network: {}
 
@@ -80,3 +78,4 @@ services:
 
 networks:
   internal-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network

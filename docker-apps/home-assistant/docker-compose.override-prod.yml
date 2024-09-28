@@ -5,8 +5,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    # env_file:
-    #   - ./config/common-prod.env
     restart: unless-stopped
 
 services:
@@ -35,6 +33,7 @@ services:
 
 networks:
   external-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-external-network
     driver: macvlan
     driver_opts:
       parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}

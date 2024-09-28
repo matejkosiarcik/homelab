@@ -4,8 +4,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    # env_file:
-    #   - ./config/common.env
     networks:
       internal-network: {}
 
@@ -101,4 +99,5 @@ services:
       HOMELAB_CONTAINER_VARIANT: console
 
 networks:
-  internal-network: {}
+  internal-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
