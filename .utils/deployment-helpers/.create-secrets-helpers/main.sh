@@ -127,12 +127,15 @@ case "$current_dir" in
 
     # Precreate passwords
     create_password "$tmpdir/healthchecks-secret-key.txt" --only-alphanumeric
+    printf 'admin@%s.home' "$DOCKER_COMPOSE_DOMAIN_PREFIX" >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
 
     # App
     printf 'SECRET_KEY=%s\n' "$(cat "$tmpdir/healthchecks-secret-key.txt")" >>"$output/healthchecks.env"
 
     # Misc
-    printf '# Placeholder\n' >>"$output/all-credentials.txt"
+    printf 'HEALTHCHECKS_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
+    printf 'HEALTHCHECKS_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -144,8 +147,8 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
 
     # Web backup
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
@@ -175,8 +178,8 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
 
     # Misc
     printf 'JELLYFIN_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
@@ -202,10 +205,10 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
-    create_password "$tmpdir/user-password.txt"
+    create_password "$tmpdir/admin-password.txt"
     printf 'user' >"$tmpdir/user-username.txt"
+    create_password "$tmpdir/user-password.txt"
 
     # App
     printf 'MINIO_ROOT_USER=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/minio.env"
@@ -233,8 +236,8 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
 
     # Web backup
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
@@ -328,10 +331,10 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
-    create_password "$tmpdir/user-password.txt" --only-alphanumeric
+    create_password "$tmpdir/admin-password.txt"
     printf 'user' >"$tmpdir/user-username.txt"
+    create_password "$tmpdir/user-password.txt" --only-alphanumeric
 
     # Misc
     printf 'TVHEADEND_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
@@ -349,8 +352,8 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
     create_password "$tmpdir/mongodb-password.txt"
 
     # Database
@@ -375,8 +378,8 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
 
     # Web backup
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
