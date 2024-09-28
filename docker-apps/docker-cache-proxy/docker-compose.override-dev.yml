@@ -12,7 +12,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      REGISTRY_HTTP_HOST: "https://localhost:8443"
+      REGISTRY_HTTP_HOST: https://localhost:8443
 
   certificate-manager:
     <<: *common-service-options
