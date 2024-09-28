@@ -16,6 +16,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/jellyfin/Dockerfile
+    env_file:
+      - ./app-secrets/jellyfin.env
     volumes:
       - ./app-data/jellyfin-data:/config
 
