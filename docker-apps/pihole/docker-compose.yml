@@ -12,9 +12,12 @@ x-definitions:
 services:
   pihole:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-pihole
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
+    env_file:
+      - ./app-secrets/pihole.env
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
@@ -24,9 +27,12 @@ services:
 
   pihole-setup:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-pihole-setup
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
+    env_file:
+      - ./app-secrets/pihole.env
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
@@ -47,6 +53,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -58,6 +65,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -71,12 +79,14 @@ services:
 
   socket-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
   web-backup:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-web-backup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
@@ -94,4 +104,5 @@ services:
       - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
-  internal-network: {}
+  internal-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network

@@ -20,6 +20,8 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
+    env_file:
+      - ./app-secrets/unifi-network-app.env
     environment:
       <<: *common-env-variables
       MONGO_DBNAME: unifi

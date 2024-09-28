@@ -150,13 +150,13 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
 
+    # App
+    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/home-assistant.env"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/home-assistant.env"
+
     # Web backup
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
-
-    # Private usage
-    printf 'ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/home-assistant-users.txt"
-    printf 'ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/home-assistant-users.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -165,6 +165,9 @@ case "$current_dir" in
 *homer*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # App
+    touch "$output/homer.env" # Empty
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -178,9 +181,9 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
 
-    # Private usage
-    printf 'ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/jellyfin-users.txt"
-    printf 'ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/jellyfin-users.txt"
+    # App
+    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/jellyfin.env"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/jellyfin.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -189,6 +192,9 @@ case "$current_dir" in
 *lamp-controller*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # App
+    touch "$output/lamp-controller.env" # Empty
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -227,6 +233,10 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
 
+    # App
+    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/omada-controller.env"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/omada-controller.env"
+
     # Web backup
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
@@ -244,6 +254,7 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
 
     # App
+    touch "$output/pihole.env" # Empty
     printf '%s' "$(cat "$tmpdir/admin-password.txt")" >>"$output/pihole-password.txt"
 
     # Web backup
@@ -268,6 +279,9 @@ case "$current_dir" in
 *smtp4dev*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # App
+    touch "$output/smtp4dev.env" # Empty
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -326,6 +340,10 @@ case "$current_dir" in
     printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/mongodb-password.txt"
 
+    # App
+    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/unifi-network-app.env"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/unifi-network-app.env"
+
     # Database
     printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
 
@@ -346,13 +364,13 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
     printf 'admin' >"$tmpdir/admin-username.txt"
 
+    # App
+    printf '# ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/uptime-kuma.env"
+    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/uptime-kuma.env"
+
     # Web backup
     printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
-
-    # Private usage
-    printf 'ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/uptime-kuma-users.txt"
-    printf 'ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/uptime-kuma-users.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
