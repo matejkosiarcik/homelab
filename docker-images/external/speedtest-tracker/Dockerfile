@@ -16,4 +16,4 @@ ENV APP_TIMEZONE=Etc/Utc \
     SPEEDTEST_SCHEDULE="15 * * * *" \
     TZ=Etc/Utc
 
-HEALTHCHECK --interval=5s --start-period=30s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/api/healthcheck || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/api/healthcheck || exit 1" ]

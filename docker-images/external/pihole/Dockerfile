@@ -15,4 +15,4 @@ ENV DHCP_ACTIVE=false \
     WEBPASSWORD_FILE=/homelab/pihole-password.txt \
     WEBTHEME=default-darker
 # Trailing underscore for "PIHOLE_DNS_" is intentional
-HEALTHCHECK --interval=5s --start-period=30s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/admin || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/admin || exit 1" ]
