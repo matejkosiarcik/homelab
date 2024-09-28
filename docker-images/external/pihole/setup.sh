@@ -16,7 +16,7 @@ printf 'Database found\n'
 
 db_log='0'
 while true; do
-    count="$(sqlite3 /etc/pihole/gravity.db 'SELECT count(*) FROM sqlite_master WHERE type="table" AND name="main.gravity";')"
+    count="$(sqlite3 /etc/pihole/gravity.db 'SELECT count(*) FROM sqlite_master WHERE type="table" AND name="gravity";')"
     if [ "$count" -gt '0' ]; then
         break
     fi
