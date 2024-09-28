@@ -10,8 +10,9 @@ x-definitions:
       internal-network: {}
 
 services:
-  smb:
+  samba:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-samba
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/samba/Dockerfile
@@ -22,6 +23,7 @@ services:
 
   socket-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile

@@ -12,6 +12,7 @@ x-definitions:
 services:
   minio:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-minio
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/minio-server/Dockerfile
@@ -23,6 +24,7 @@ services:
 
   minio-setup:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-minio-setup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/minio-client/Dockerfile
@@ -34,6 +36,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -45,6 +48,7 @@ services:
 
   http-proxy-api:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-api
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -61,6 +65,7 @@ services:
 
   http-proxy-console:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-console
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -77,6 +82,7 @@ services:
 
   socket-proxy-api:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy-api
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
@@ -86,6 +92,7 @@ services:
 
   socket-proxy-console:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy-console
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile

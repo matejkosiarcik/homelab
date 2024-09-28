@@ -12,6 +12,7 @@ x-definitions:
 services:
   homer:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-homer
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/homer/Dockerfile
@@ -22,6 +23,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -33,6 +35,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -46,6 +49,7 @@ services:
 
   socket-proxy:
     <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile

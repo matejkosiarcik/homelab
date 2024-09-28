@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  smb:
+  samba:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
