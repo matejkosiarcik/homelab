@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM docker:27.2.1
+FROM docker:27.3.1
 COPY ./custom/pihole-setup/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=pihole-setup \
     HOMELAB_CONTAINER_VARIANT=default \
