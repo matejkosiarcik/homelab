@@ -1,9 +1,6 @@
 #!/bin/sh
 set -euf
 
-mkdir -p /homelab/.internal
-printf 'starting\n' >/homelab/.internal/status.txt
-
 db_log='0'
 while [ ! -e '/etc/pihole/gravity.db' ]; do
     if [ "$db_log" -eq '0' ]; then
@@ -77,6 +74,3 @@ done
 
 # Update gravity after changing adlists
 pihole updateGravity
-
-printf 'started\n' >/homelab/.internal/status.txt
-sleep infinity
