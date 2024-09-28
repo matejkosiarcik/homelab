@@ -7,7 +7,6 @@ docker-cache-proxy
 # Placeholder: cargo cache proxy
 
 # Storage services
-smb
 minio
 
 # Mail
