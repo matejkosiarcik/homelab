@@ -5,9 +5,9 @@ storage:
 metrics: true
 
 default-icmp: &default-icmp
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+  interval: 10m
+  conditions:
+    - "[CONNECTED] == true"
 
 default-tcp: &default-tcp
   interval: 30m
