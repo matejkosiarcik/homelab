@@ -1,3 +1,2 @@
 tvheadend
 pihole-matej-2
-uptime-kuma-2
