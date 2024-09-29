@@ -173,7 +173,21 @@ services:
         logo: ./assets/icons/uptime-kuma.png
 
       # Uptime monitor
-      - name: Docker Mirror
+      - name: Gatus
+        type: Ping
+        subtitle: "1"
+        url: https://gatus.home
+        logo: ./assets/icons/gatus.png
+
+      # Uptime monitor
+      - name: Gatus
+        type: Ping
+        subtitle: "2"
+        url: https://gatus-2.home
+        logo: ./assets/icons/gatus.png
+
+      # Docker cache proxy
+      - name: DockerHub Mirror
         type: Ping
         subtitle: DockerHub
         url: https://docker-dockerhub-proxy.home
