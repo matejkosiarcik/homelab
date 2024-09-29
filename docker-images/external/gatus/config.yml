@@ -4,6 +4,11 @@ storage:
 
 metrics: true
 
+default-icmp: &default-icmp
+    interval: 10m
+    conditions:
+      - "[CONNECTED] == true"
+
 default-tcp: &default-tcp
   interval: 30m
   conditions:
@@ -30,106 +35,78 @@ endpoints:
   - name: External DNS - Google 1
     group: External DNS
     url: icmp://8.8.8.8
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: External DNS - Google 2
     group: External DNS
     url: icmp://8.8.4.4
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: External DNS - Cloudflare
     group: External DNS
     url: icmp://1.1.1.1
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: External DNS - Level3
     group: External DNS
     url: icmp://4.2.2.1
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   ### Group: Network equipment ###
 
   - name: Router - TP-Link ER605
     group: Network equipment
     url: icmp://10.1.0.1
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Router - UPC Router
     group: Network equipment
     url: icmp://192.168.0.1
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: WiFi AP - Unifi U6
     group: Network equipment
     url: icmp://10.1.0.2
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Smart switch - TP-Link SG108E
     group: Network equipment
     url: icmp://10.1.0.3
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   ### Group: Servers ###
 
   - name: Odroid H3
     group: Servers
     url: icmp://10.1.4.8
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi 3B
     group: Servers
     url: icmp://10.1.4.2
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi 4B 2G
     group: Servers
     url: icmp://10.1.4.3
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi 4B 4G
     group: Servers
     url: icmp://10.1.4.4
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi Zero 2W 1
     group: Servers
     url: icmp://10.1.4.6
-    interval: 10m
+    <<: *default-icmp
     enabled: false # TODO: Reenable
-    conditions:
-      - "[CONNECTED] == true"
 
   - name: Raspberry Pi Zero 2W 2
     group: Servers
     url: icmp://10.1.4.7
-    interval: 10m
+    <<: *default-icmp
     enabled: false # TODO: Reenable
-    conditions:
-      - "[CONNECTED] == true"
 
   ### Group: App - Dockerhub proxy ###
 
