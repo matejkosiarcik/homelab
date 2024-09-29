@@ -106,7 +106,6 @@ machine_build() {
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$machine_dir/docker-apps/$dir/helper.sh" build $script_args
-            sleep 15 # Throttle deployment a bit to maybe fix network problems
         done
 
         printf '\n'
@@ -133,7 +132,6 @@ machine_deploy() {
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
             sh "$machine_dir/docker-apps/$dir/helper.sh" deploy $script_args
-            sleep 15 # Throttle deployment a bit to maybe fix network problems
         done
 
         printf '\n'

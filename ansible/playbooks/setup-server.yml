@@ -141,23 +141,29 @@
           printf 'CHANGED\n'
         fi
 
-    # - name: Configure docker logging driver
-    #   register: docker_logdriver
-    #   changed_when: "'CHANGED' in docker_logdriver.stdout"
-    #   ansible.builtin.shell: |
-    #     set -eufo pipefail
-    #     filecontent='{
-    #       "log-driver": "local",
-    #       "log-opts": {
-    #         "max-size": "10m"
-    #       }
-    #     }'
-    #     filepath='/etc/docker/daemon.json'
-    #     oldfilecontent="$(cat /etc/docker/daemon.json)"
-    #     if "$filecontent" != "$oldfilecontent"; then
-    #       printf '%s' "$filecontent" >"$filepath"
-    #       printf 'CHANGED\n'
-    #     fi
+    - name: Docker config
+      register: docker_config
+      changed_when: "'CHANGED' in docker_config.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        new_config='{
+          "log-driver": "local",
+          "log-opts": {
+            "max-size": "100m"
+          },
+          "insecure-registries": [
+            "10.1.16.7"
+          ],
+          "registry-mirrors": [
+            "https://10.1.16.7"
+          ]
+        }'
+        before_sha="$(shasum '/etc/docker/daemon.json' || true)"
+        printf '%s\n' "$new_config" | sudo tee '/etc/docker/daemon.json' >/dev/null
+        after_sha="$(shasum '/etc/docker/daemon.json')"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
 
     - name: Setup locale
       register: setup_locale
@@ -167,9 +173,9 @@
         set -eufo pipefail
         sudo locale-gen en_US.UTF-8
         sudo localedef -i en_US -f UTF-8 en_US.UTF-8
-        before_sha="$(shasum /etc/default/locale)"
-        sudo sh -c "printf 'LANGUAGE=en_US.UTF-8\nLC_ALL=en_US.UTF-8\nLANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n' >/etc/default/locale"
-        after_sha="$(shasum /etc/default/locale)"
+        before_sha="$(shasum '/etc/default/locale')"
+        printf 'LANGUAGE=en_US.UTF-8\nLC_ALL=en_US.UTF-8\nLANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n' | sudo tee '/etc/default/locale' >/dev/null
+        after_sha="$(shasum '/etc/default/locale')"
         if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
