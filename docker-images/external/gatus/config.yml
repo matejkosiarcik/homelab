@@ -110,23 +110,23 @@ endpoints:
 
   ### Group: App - Dockerhub proxy ###
 
-  - name: DockerHub mirror HTTP
-    group: App - DockerHub mirror
+  - name: DockerHub proxy HTTP
+    group: App - DockerHub proxy
     url: http://dockerhub-proxy.home
     <<: *default-http
 
-  - name: DockerHub mirror HTTPS
-    group: App - DockerHub mirror
+  - name: DockerHub proxy HTTPS
+    group: App - DockerHub proxy
     url: https://dockerhub-proxy.home
     <<: *default-http
 
-  - name: DockerHub mirror TCP:80
-    group: App - DockerHub mirror
+  - name: DockerHub proxy TCP:80
+    group: App - DockerHub proxy
     url: tcp://dockerhub-proxy.home:80
     <<: *default-tcp
 
-  - name: DockerHub mirror TCP:443
-    group: App - DockerHub mirror
+  - name: DockerHub proxy TCP:443
+    group: App - DockerHub proxy
     url: tcp://dockerhub-proxy.home:443
     <<: *default-tcp
 
