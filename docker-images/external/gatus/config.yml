@@ -179,6 +179,40 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
+  ### Group: App - Dockerhub proxy ###
+
+  - name: Homer HTTP
+    group: App - Homer
+    url: http://10.1.16.18 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Homer HTTPS
+    group: App - Homer
+    url: https://10.1.16.18 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Homer TCP:80
+    group: App - Homer
+    url: tcp://10.1.16.18:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Homer TCP:443
+    group: App - Homer
+    url: tcp://10.1.16.18:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
   ### Group: App - Jellyfin ###
 
   - name: Jellyfin HTTP
@@ -276,6 +310,66 @@ endpoints:
   - name: Pihole (matej) TCP:443
     group: App - Pihole (matej)
     url: tcp://10.1.16.1:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Pihole (matej-2) ###
+
+  - name: Pihole (matej-2) HTTP
+    group: App - Pihole (matej-2)
+    url: http://10.1.10.2 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (matej-2) HTTPS
+    group: App - Pihole (matej-2)
+    url: https://10.1.10.2 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (matej-2) DNS
+    group: App - Pihole (matej-2)
+    url: "10.1.10.2" # TODO: Use domain
+    interval: 30m
+    dns:
+      query-name: "example.com"
+      query-type: "A"
+    client:
+      insecure: true
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: Pihole (matej-2) TCP:53
+    group: App - Pihole (matej-2)
+    url: tcp://10.1.10.2:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (matej-2) UDP:53
+    group: App - Pihole (matej-2)
+    url: udp://10.1.10.2:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (matej-2) TCP:80
+    group: App - Pihole (matej-2)
+    url: tcp://10.1.10.2:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (matej-2) TCP:443
+    group: App - Pihole (matej-2)
+    url: tcp://10.1.10.2:443 # TODO: Use domain
     interval: 30m
     conditions:
       - "[CONNECTED] == true"
