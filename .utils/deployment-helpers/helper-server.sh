@@ -170,9 +170,10 @@ create-secrets)
     machine_create_secrets
     ;;
 deploy)
+    date_start="$(date '+%Y-%m-%d_%H-%M-%S')"
     machine_install
     machine_deploy
-    printf '\n%s - All apps deployed successfully\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
+    printf '\nAll apps deployed successfully - from %s to %s\n' "$date_start" "$(date '+%Y-%m-%d_%H-%M-%S')"
     ;;
 install)
     machine_install
