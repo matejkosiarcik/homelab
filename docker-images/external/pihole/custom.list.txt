@@ -1,14 +1,14 @@
 10.1.10.1 tvheadend.home
-10.1.10.2 pihole-matej-2.home
+10.1.10.2 pihole-2.home
 10.1.10.3 uptime-kuma-2.home
 
-10.1.16.1 pihole-matej.home
+10.1.16.1 pihole.home
 10.1.16.2 pihole-matej-work.home
 10.1.16.3 pihole-monika.home
 10.1.16.4 pihole-monika-work.home
 10.1.16.5 pihole-guests.home
 10.1.16.6 pihole-iot.home
-10.1.16.7 docker-cache-proxy.home
+10.1.16.7 dockerhub-proxy.home
 10.1.16.8 omada-controller.home
 10.1.16.9 home-assistant.home
 10.1.16.10 jellyfin.home

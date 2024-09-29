@@ -4,6 +4,11 @@ storage:
 
 metrics: true
 
+default-icmp: &default-icmp
+  interval: 10m
+  conditions:
+    - "[CONNECTED] == true"
+
 default-tcp: &default-tcp
   interval: 30m
   conditions:
@@ -30,487 +35,459 @@ endpoints:
   - name: External DNS - Google 1
     group: External DNS
     url: icmp://8.8.8.8
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: External DNS - Google 2
     group: External DNS
     url: icmp://8.8.4.4
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: External DNS - Cloudflare
     group: External DNS
     url: icmp://1.1.1.1
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: External DNS - Level3
     group: External DNS
     url: icmp://4.2.2.1
-    interval: 1h
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   ### Group: Network equipment ###
 
   - name: Router - TP-Link ER605
     group: Network equipment
     url: icmp://10.1.0.1
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Router - UPC Router
     group: Network equipment
     url: icmp://192.168.0.1
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: WiFi AP - Unifi U6
     group: Network equipment
     url: icmp://10.1.0.2
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Smart switch - TP-Link SG108E
     group: Network equipment
     url: icmp://10.1.0.3
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   ### Group: Servers ###
 
   - name: Odroid H3
     group: Servers
     url: icmp://10.1.4.8
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi 3B
     group: Servers
     url: icmp://10.1.4.2
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi 4B 2G
     group: Servers
     url: icmp://10.1.4.3
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi 4B 4G
     group: Servers
     url: icmp://10.1.4.4
-    interval: 10m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-icmp
 
   - name: Raspberry Pi Zero 2W 1
     group: Servers
     url: icmp://10.1.4.6
-    interval: 10m
+    <<: *default-icmp
     enabled: false # TODO: Reenable
-    conditions:
-      - "[CONNECTED] == true"
 
   - name: Raspberry Pi Zero 2W 2
     group: Servers
     url: icmp://10.1.4.7
-    interval: 10m
+    <<: *default-icmp
     enabled: false # TODO: Reenable
-    conditions:
-      - "[CONNECTED] == true"
 
   ### Group: App - Dockerhub proxy ###
 
   - name: DockerHub mirror HTTP
     group: App - DockerHub mirror
-    url: http://10.1.16.7 # TODO: Use domain
+    url: http://dockerhub-proxy.home
     <<: *default-http
 
   - name: DockerHub mirror HTTPS
     group: App - DockerHub mirror
-    url: https://10.1.16.7 # TODO: Use domain
+    url: https://dockerhub-proxy.home
     <<: *default-http
 
   - name: DockerHub mirror TCP:80
     group: App - DockerHub mirror
-    url: tcp://10.1.16.7:80 # TODO: Use domain
+    url: tcp://dockerhub-proxy.home:80
     <<: *default-tcp
 
   - name: DockerHub mirror TCP:443
     group: App - DockerHub mirror
-    url: tcp://10.1.16.7:443 # TODO: Use domain
+    url: tcp://dockerhub-proxy.home:443
     <<: *default-tcp
 
   ### Group: App - Gatus ###
 
   - name: Gatus HTTP
     group: App - Gatus
-    url: http://10.1.16.15 # TODO: Use domain
+    url: http://gatus.home
     <<: *default-http
 
   - name: Gatus HTTPS
     group: App - Gatus
-    url: https://10.1.16.15 # TODO: Use domain
+    url: https://gatus.home
     <<: *default-http
 
   - name: Gatus TCP:80
     group: App - Gatus
-    url: tcp://10.1.16.15:80 # TODO: Use domain
+    url: tcp://gatus.home:80
     <<: *default-tcp
 
   - name: Gatus TCP:443
     group: App - Gatus
-    url: tcp://10.1.16.15:443 # TODO: Use domain
+    url: tcp://gatus.home:443
     <<: *default-tcp
 
   ### Group: App - Dockerhub proxy ###
 
   - name: Homer HTTP
     group: App - Homer
-    url: http://10.1.16.18 # TODO: Use domain
+    url: http://homer.home
     <<: *default-http
 
   - name: Homer HTTPS
     group: App - Homer
-    url: https://10.1.16.18 # TODO: Use domain
+    url: https://homer.home
     <<: *default-http
 
   - name: Homer TCP:80
     group: App - Homer
-    url: tcp://10.1.16.18:80 # TODO: Use domain
+    url: tcp://homer.home:80
     <<: *default-tcp
 
   - name: Homer TCP:443
     group: App - Homer
-    url: tcp://10.1.16.18:443 # TODO: Use domain
+    url: tcp://homer.home:443
     <<: *default-tcp
 
   ### Group: App - Jellyfin ###
 
   - name: Jellyfin HTTP
     group: App - Jellyfin
-    url: http://10.1.16.10 # TODO: Use domain
+    url: http://jellyfin.home
     <<: *default-http
 
   - name: Jellyfin HTTPS
     group: App - Jellyfin
-    url: https://10.1.16.10 # TODO: Use domain
+    url: https://jellyfin.home
     <<: *default-http
 
   - name: Jellyfin TCP:80
     group: App - Jellyfin
-    url: tcp://10.1.16.10:80 # TODO: Use domain
+    url: tcp://jellyfin.home:80
     <<: *default-tcp
 
   - name: Jellyfin TCP:443
     group: App - Jellyfin
-    url: tcp://10.1.16.10:443 # TODO: Use domain
+    url: tcp://jellyfin.home:443
     <<: *default-tcp
 
   - name: Jellyfin TCP:8096
     group: App - Jellyfin
-    url: tcp://10.1.16.10:8096 # TODO: Use domain
+    url: tcp://jellyfin.home:8096
     <<: *default-tcp
 
   ### Group: App - Pihole (matej) ###
 
   - name: Pihole (matej) HTTP
     group: App - Pihole (matej)
-    url: http://10.1.16.1 # TODO: Use domain
+    url: http://pihole.home
     <<: *default-http
 
   - name: Pihole (matej) HTTPS
     group: App - Pihole (matej)
-    url: https://10.1.16.1 # TODO: Use domain
+    url: https://pihole.home
     <<: *default-http
 
   - name: Pihole (matej) DNS
     group: App - Pihole (matej)
-    url: "10.1.16.1" # TODO: Use domain
+    url: pihole.home
     <<: *default-dns
 
   - name: Pihole (matej) TCP:53
     group: App - Pihole (matej)
-    url: tcp://10.1.16.1:53 # TODO: Use domain
+    url: tcp://pihole.home:53
     <<: *default-tcp
 
   - name: Pihole (matej) UDP:53
     group: App - Pihole (matej)
-    url: udp://10.1.16.1:53 # TODO: Use domain
+    url: udp://pihole.home:53
     <<: *default-tcp
 
   - name: Pihole (matej) TCP:80
     group: App - Pihole (matej)
-    url: tcp://10.1.16.1:80 # TODO: Use domain
+    url: tcp://pihole.home:80
     <<: *default-tcp
 
   - name: Pihole (matej) TCP:443
     group: App - Pihole (matej)
-    url: tcp://10.1.16.1:443 # TODO: Use domain
+    url: tcp://pihole.home:443
     <<: *default-tcp
 
   ### Group: App - Pihole (matej-2) ###
 
   - name: Pihole (matej-2) HTTP
     group: App - Pihole (matej-2)
-    url: http://10.1.10.2 # TODO: Use domain
+    url: http://pihole-2.home
     <<: *default-http
 
   - name: Pihole (matej-2) HTTPS
     group: App - Pihole (matej-2)
-    url: https://10.1.10.2 # TODO: Use domain
+    url: https://pihole-2.home
     <<: *default-http
 
   - name: Pihole (matej-2) DNS
     group: App - Pihole (matej-2)
-    url: "10.1.10.2" # TODO: Use domain
+    url: pihole-2.home
     <<: *default-dns
 
   - name: Pihole (matej-2) TCP:53
     group: App - Pihole (matej-2)
-    url: tcp://10.1.10.2:53 # TODO: Use domain
+    url: tcp://pihole-2.home:53
     <<: *default-tcp
 
   - name: Pihole (matej-2) UDP:53
     group: App - Pihole (matej-2)
-    url: udp://10.1.10.2:53 # TODO: Use domain
+    url: udp://pihole-2.home:53
     <<: *default-tcp
 
   - name: Pihole (matej-2) TCP:80
     group: App - Pihole (matej-2)
-    url: tcp://10.1.10.2:80 # TODO: Use domain
+    url: tcp://pihole-2.home:80
     <<: *default-tcp
 
   - name: Pihole (matej-2) TCP:443
     group: App - Pihole (matej-2)
-    url: tcp://10.1.10.2:443 # TODO: Use domain
+    url: tcp://pihole-2.home:443
     <<: *default-tcp
 
   ### Group: App - Pihole (matej-work) ###
 
   - name: Pihole (matej-work) HTTP
     group: App - Pihole (matej-work)
-    url: http://10.1.16.2 # TODO: Use domain
+    url: http://pihole-matej-work.home
     <<: *default-http
 
   - name: Pihole (matej-work) HTTPS
     group: App - Pihole (matej-work)
-    url: https://10.1.16.2 # TODO: Use domain
+    url: https://pihole-matej-work.home
     <<: *default-http
 
   - name: Pihole (matej-work) DNS
     group: App - Pihole (matej-work)
-    url: "10.1.16.2" # TODO: Use domain
+    url: pihole-matej-work.home
     <<: *default-dns
 
   - name: Pihole (matej-work) TCP:53
     group: App - Pihole (matej-work)
-    url: tcp://10.1.16.2:53 # TODO: Use domain
+    url: tcp://pihole-matej-work.home:53
     <<: *default-tcp
 
   - name: Pihole (matej-work) UDP:53
     group: App - Pihole (matej-work)
-    url: udp://10.1.16.2:53 # TODO: Use domain
+    url: udp://pihole-matej-work.home:53
     <<: *default-tcp
 
   - name: Pihole (matej-work) TCP:80
     group: App - Pihole (matej-work)
-    url: tcp://10.1.16.2:80 # TODO: Use domain
+    url: tcp://pihole-matej-work.home:80
     <<: *default-tcp
 
   - name: Pihole (matej-work) TCP:443
     group: App - Pihole (matej-work)
-    url: tcp://10.1.16.2:443 # TODO: Use domain
+    url: tcp://pihole-matej-work.home:443
     <<: *default-tcp
 
   ### Group: App - Pihole (monika) ###
 
   - name: Pihole (monika) HTTP
     group: App - Pihole (monika)
-    url: http://10.1.16.3 # TODO: Use domain
+    url: http://pihole-monika.home
     <<: *default-http
 
   - name: Pihole (monika) HTTPS
     group: App - Pihole (monika)
-    url: https://10.1.16.3 # TODO: Use domain
+    url: https://pihole-monika.home
     <<: *default-http
 
   - name: Pihole (monika) DNS
     group: App - Pihole (monika)
-    url: "10.1.16.3" # TODO: Use domain
+    url: pihole-monika.home
     <<: *default-dns
 
   - name: Pihole (monika) TCP:53
     group: App - Pihole (monika)
-    url: tcp://10.1.16.3:53 # TODO: Use domain
+    url: tcp://pihole-monika.home:53
     <<: *default-tcp
 
   - name: Pihole (monika) UDP:53
     group: App - Pihole (monika)
-    url: udp://10.1.16.3:53 # TODO: Use domain
+    url: udp://pihole-monika.home:53
     <<: *default-tcp
 
   - name: Pihole (monika) TCP:80
     group: App - Pihole (monika)
-    url: tcp://10.1.16.3:80 # TODO: Use domain
+    url: tcp://pihole-monika.home:80
     <<: *default-tcp
 
   - name: Pihole (monika) TCP:443
     group: App - Pihole (monika)
-    url: tcp://10.1.16.3:443 # TODO: Use domain
+    url: tcp://pihole-monika.home:443
     <<: *default-tcp
 
   ### Group: App - Pihole (monika-work) ###
 
   - name: Pihole (monika-work) HTTP
     group: App - Pihole (monika-work)
-    url: http://10.1.16.4 # TODO: Use domain
+    url: http://pihole-monika-work.home
     <<: *default-http
 
   - name: Pihole (monika-work) HTTPS
     group: App - Pihole (monika-work)
-    url: https://10.1.16.4 # TODO: Use domain
+    url: https://pihole-monika-work.home
     <<: *default-http
 
   - name: Pihole (monika-work) DNS
     group: App - Pihole (monika-work)
-    url: "10.1.16.4" # TODO: Use domain
+    url: pihole-monika-work.home
     <<: *default-dns
 
   - name: Pihole (monika-work) TCP:53
     group: App - Pihole (monika-work)
-    url: tcp://10.1.16.4:53 # TODO: Use domain
+    url: tcp://pihole-monika-work.home:53
     <<: *default-tcp
 
   - name: Pihole (monika-work) UDP:53
     group: App - Pihole (monika-work)
-    url: udp://10.1.16.4:53 # TODO: Use domain
+    url: udp://pihole-monika-work.home:53
     <<: *default-tcp
 
   - name: Pihole (monika-work) TCP:80
     group: App - Pihole (monika-work)
-    url: tcp://10.1.16.4:80 # TODO: Use domain
+    url: tcp://pihole-monika-work.home:80
     <<: *default-tcp
 
   - name: Pihole (monika-work) TCP:443
     group: App - Pihole (monika-work)
-    url: tcp://10.1.16.4:443 # TODO: Use domain
+    url: tcp://pihole-monika-work.home:443
     <<: *default-tcp
 
   ### Group: App - Pihole (guests) ###
 
   - name: Pihole (guests) HTTP
     group: App - Pihole (guests)
-    url: http://10.1.16.5 # TODO: Use domain
+    url: http://pihole-guests.home
     <<: *default-http
 
   - name: Pihole (guests) HTTPS
     group: App - Pihole (guests)
-    url: https://10.1.16.5 # TODO: Use domain
+    url: https://pihole-guests.home
     <<: *default-http
 
   - name: Pihole (guests) DNS
     group: App - Pihole (guests)
-    url: "10.1.16.5" # TODO: Use domain
+    url: pihole-guests.home
     <<: *default-dns
 
   - name: Pihole (guests) TCP:53
     group: App - Pihole (guests)
-    url: tcp://10.1.16.5:53 # TODO: Use domain
+    url: tcp://pihole-guests.home:53
     <<: *default-tcp
 
   - name: Pihole (guests) UDP:53
     group: App - Pihole (guests)
-    url: udp://10.1.16.5:53 # TODO: Use domain
+    url: udp://pihole-guests.home:53
     <<: *default-tcp
 
   - name: Pihole (guests) TCP:80
     group: App - Pihole (guests)
-    url: tcp://10.1.16.5:80 # TODO: Use domain
+    url: tcp://pihole-guests.home:80
     <<: *default-tcp
 
   - name: Pihole (guests) TCP:443
     group: App - Pihole (guests)
-    url: tcp://10.1.16.5:443 # TODO: Use domain
+    url: tcp://pihole-guests.home:443
     <<: *default-tcp
 
   ### Group: App - Pihole (iot) ###
 
   - name: Pihole (iot) HTTP
     group: App - Pihole (iot)
-    url: http://10.1.16.6 # TODO: Use domain
+    url: http://pihole-iot.home
     <<: *default-http
 
   - name: Pihole (iot) HTTPS
     group: App - Pihole (iot)
-    url: https://10.1.16.6 # TODO: Use domain
+    url: https://pihole-iot.home
     <<: *default-http
 
   - name: Pihole (iot) DNS
     group: App - Pihole (iot)
-    url: "10.1.16.6" # TODO: Use domain
+    url: pihole-iot.home
     <<: *default-dns
 
   - name: Pihole (iot) TCP:53
     group: App - Pihole (iot)
-    url: tcp://10.1.16.6:53 # TODO: Use domain
+    url: tcp://pihole-iot.home:53
     <<: *default-tcp
 
   - name: Pihole (iot) UDP:53
     group: App - Pihole (iot)
-    url: udp://10.1.16.6:53 # TODO: Use domain
+    url: udp://pihole-iot.home:53
     <<: *default-tcp
 
   - name: Pihole (iot) TCP:80
     group: App - Pihole (iot)
-    url: tcp://10.1.16.6:80 # TODO: Use domain
+    url: tcp://pihole-iot.home:80
     <<: *default-tcp
 
   - name: Pihole (iot) TCP:443
     group: App - Pihole (iot)
-    url: tcp://10.1.16.6:443 # TODO: Use domain
+    url: tcp://pihole-iot.home:443
     <<: *default-tcp
 
   ### Group: App - Tvheadend ###
 
   - name: Tvheadend HTTP
     group: App - Tvheadend
-    url: http://10.1.10.1 # TODO: Use domain
+    url: http://tvheadend.home
     <<: *default-http
 
   - name: Tvheadend HTTPS
     group: App - Tvheadend
-    url: https://10.1.10.1 # TODO: Use domain
+    url: https://tvheadend.home
     <<: *default-http
 
   - name: Tvheadend TCP:80
     group: App - Tvheadend
-    url: tcp://10.1.10.1:80 # TODO: Use domain
+    url: tcp://tvheadend.home:80
     <<: *default-tcp
 
   - name: Tvheadend TCP:443
     group: App - Tvheadend
-    url: tcp://10.1.10.1:443 # TODO: Use domain
+    url: tcp://tvheadend.home:443
     <<: *default-tcp
 
   - name: Tvheadend TCP:9981
     group: App - Tvheadend
-    url: tcp://10.1.10.1:9981 # TODO: Use domain
+    url: tcp://tvheadend.home:9981
     <<: *default-tcp
 
   - name: Tvheadend TCP:9982
     group: App - Tvheadend
-    url: tcp://10.1.10.1:9982 # TODO: Use domain
+    url: tcp://tvheadend.home:9982
     <<: *default-tcp

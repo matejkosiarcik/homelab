@@ -11,6 +11,9 @@ x-definitions:
 services:
   gatus:
     <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      GATUS_DELAY_START_SECONDS: 90
 
   certificate-manager:
     <<: *common-service-options
