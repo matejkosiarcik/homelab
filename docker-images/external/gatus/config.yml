@@ -2,9 +2,111 @@ storage:
   type: sqlite
   path: /data/gatus.db
 
+metrics: true
+
 endpoints:
-  - name: example.com
-    url: https://example.com
-    interval: 1m
+  ### Group: External DNS ###
+
+  - name: External DNS - Google 1
+    group: External DNS
+    url: icmp://8.8.8.8
+    interval: 1h
     conditions:
-      - "[STATUS] == 200"
+      - "[CONNECTED] == true"
+
+  - name: External DNS - Google 2
+    group: External DNS
+    url: icmp://8.8.4.4
+    interval: 1h
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: External DNS - Cloudflare
+    group: External DNS
+    url: icmp://1.1.1.1
+    interval: 1h
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: External DNS - Level3
+    group: External DNS
+    url: icmp://4.2.2.1
+    interval: 1h
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: Network equipment ###
+
+  - name: Router - TP-Link ER605
+    group: Network equipment
+    url: icmp://10.1.0.1
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Router - UPC Router
+    group: Network equipment
+    url: icmp://192.168.0.1
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: WiFi AP - Unifi U6
+    group: Network equipment
+    url: icmp://10.1.0.2
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Smart switch - TP-Link SG108E
+    group: Network equipment
+    url: icmp://10.1.0.3
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: Servers ###
+
+  - name: Odroid H3
+    group: Servers
+    url: icmp://10.1.4.8
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Raspberry Pi 3B
+    group: Servers
+    url: icmp://10.1.4.2
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Raspberry Pi 4B 2G
+    group: Servers
+    url: icmp://10.1.4.3
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Raspberry Pi 4B 4G
+    group: Servers
+    url: icmp://10.1.4.4
+    interval: 5m
+    conditions:
+      - "[CONNECTED] == true"
+
+  # TODO: Reenable
+  # - name: Raspberry Pi Zero 2W 1
+  #   group: Servers
+  #   url: icmp://10.1.4.6
+  #   interval: 5m
+  #   conditions:
+  #     - "[CONNECTED] == true"
+
+  # TODO: Reenable
+  # - name: Raspberry Pi Zero 2W 2
+  #   group: Servers
+  #   url: icmp://10.1.4.7
+  #   interval: 5m
+  #   conditions:
+  #     - "[CONNECTED] == true"
