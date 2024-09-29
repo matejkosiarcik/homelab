@@ -12,6 +12,7 @@ ENV DB=sqlite \
     DEBUG=False \
     HOMELAB_CONTAINER_NAME=healthchecks \
     HOMELAB_CONTAINER_VARIANT=default \
+    INTEGRATIONS_ALLOW_PRIVATE_IPS=True \
     TZ=Europe/Bratislava
 
 # TODO: Enable email integration
