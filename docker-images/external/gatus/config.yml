@@ -113,7 +113,7 @@ endpoints:
 
   ### Group: App - Dockerhub proxy ###
 
-  - name: Dockerhub proxy HTTP
+  - name: DockerHub mirror HTTP
     group: App - DockerHub mirror
     url: http://10.1.16.7 # TODO: Use domain
     interval: 30m
@@ -122,7 +122,7 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
 
-  - name: Dockerhub proxy HTTPS
+  - name: DockerHub mirror HTTPS
     group: App - DockerHub mirror
     url: https://10.1.16.7 # TODO: Use domain
     interval: 30m
@@ -131,14 +131,14 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
 
-  - name: Dockerhub proxy TCP:80
+  - name: DockerHub mirror TCP:80
     group: App - DockerHub mirror
     url: tcp://10.1.16.7:80 # TODO: Use domain
     interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
-  - name: Dockerhub proxy TCP:443
+  - name: DockerHub mirror TCP:443
     group: App - DockerHub mirror
     url: tcp://10.1.16.7:443 # TODO: Use domain
     interval: 30m
@@ -175,6 +175,47 @@ endpoints:
   - name: Gatus TCP:443
     group: App - Gatus
     url: tcp://10.1.16.15:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Jellyfin ###
+
+  - name: Jellyfin HTTP
+    group: App - Jellyfin
+    url: http://10.1.16.10 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Jellyfin HTTPS
+    group: App - Jellyfin
+    url: https://10.1.16.10 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Jellyfin TCP:80
+    group: App - Jellyfin
+    url: tcp://10.1.16.10:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Jellyfin TCP:443
+    group: App - Jellyfin
+    url: tcp://10.1.16.10:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Jellyfin TCP:8096
+    group: App - Jellyfin
+    url: tcp://10.1.16.10:8096 # TODO: Use domain
     interval: 30m
     conditions:
       - "[CONNECTED] == true"
@@ -535,6 +576,54 @@ endpoints:
   - name: Pihole (iot) TCP:443
     group: App - Pihole (iot)
     url: tcp://10.1.16.6:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Tvheadend ###
+
+  - name: Tvheadend HTTP
+    group: App - Tvheadend
+    url: http://10.1.10.1 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Tvheadend HTTPS
+    group: App - Tvheadend
+    url: https://10.1.10.1 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Tvheadend TCP:80
+    group: App - Tvheadend
+    url: tcp://10.1.10.1:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Tvheadend TCP:443
+    group: App - Tvheadend
+    url: tcp://10.1.10.1:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Tvheadend TCP:9981
+    group: App - Tvheadend
+    url: tcp://10.1.10.1:9981 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Tvheadend TCP:9982
+    group: App - Tvheadend
+    url: tcp://10.1.10.1:9982 # TODO: Use domain
     interval: 30m
     conditions:
       - "[CONNECTED] == true"
