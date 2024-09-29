@@ -152,10 +152,10 @@
             "max-size": "100m"
           },
           "insecure-registries": [
-            "10.1.16.7"
+            "10.1.16.8"
           ],
           "registry-mirrors": [
-            "https://10.1.16.7"
+            "https://10.1.16.8"
           ]
         }'
         before_sha="$(shasum '/etc/docker/daemon.json' || true)"
