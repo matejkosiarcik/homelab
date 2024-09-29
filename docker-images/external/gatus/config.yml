@@ -4,9 +4,6 @@ storage:
 
 metrics: true
 
-client:
-  insecure: true
-
 endpoints:
   ### Group: External DNS ###
 
@@ -119,16 +116,18 @@ endpoints:
   - name: Dockerhub proxy HTTP
     group: App - DockerHub mirror
     url: http://10.1.16.7 # TODO: Use domain
-    insecure: true # TODO: Necessary?
     interval: 5m
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
 
   - name: Dockerhub proxy HTTPS
     group: App - DockerHub mirror
     url: https://10.1.16.7 # TODO: Use domain
-    insecure: true # TODO: Necessary?
     interval: 5m
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
 
