@@ -14,24 +14,25 @@ docker-dockerhub-proxy
 # Placeholder: gem cache proxy
 # Placeholder: cargo cache proxy
 
-# Storage services
-minio
-
-# Mail
-smtp4dev
-
 # Network controllers
 omada-controller
-
-# Monitoring
-uptime-kuma
-healthchecks
 
 # Home automation
 home-assistant
 
 # Media
 jellyfin
+
+# Mail
+smtp4dev
+
+# Storage services
+minio
+
+# Monitoring
+healthchecks
+uptime-kuma
+# gatus
 
 # Misc
 speedtest-tracker
