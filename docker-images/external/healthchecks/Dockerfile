@@ -7,11 +7,14 @@ COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
 
 FROM healthchecks/healthchecks:v3.6
 COPY --from=prefinal /homelab /homelab
+COPY ./external/healthchecks/icons/healthchecks.png /opt/healthchecks/static-collected/img/custom-healthchecks.png
 ENV DB=sqlite \
     DB_NAME=/homelab/healthchecks/database.db \
     DEBUG=False \
     HOMELAB_CONTAINER_NAME=healthchecks \
     HOMELAB_CONTAINER_VARIANT=default \
+    INTEGRATIONS_ALLOW_PRIVATE_IPS=True \
+    SITE_LOGO_URL=/static/img/custom-healthchecks.png \
     TZ=Europe/Bratislava
 
 # TODO: Enable email integration
