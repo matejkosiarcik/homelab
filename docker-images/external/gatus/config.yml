@@ -239,7 +239,7 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
-  ### Group: App - Pihole (matej) ###
+  ### Group: App - Pihole (matej-work) ###
 
   - name: Pihole (matej-work) HTTP
     group: App - Pihole (matej-work)
@@ -295,6 +295,246 @@ endpoints:
   - name: Pihole (matej-work) TCP:443
     group: App - Pihole (matej-work)
     url: tcp://10.1.16.2:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Pihole (monika) ###
+
+  - name: Pihole (monika) HTTP
+    group: App - Pihole (monika)
+    url: http://10.1.16.3 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (monika) HTTPS
+    group: App - Pihole (monika)
+    url: https://10.1.16.3 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (monika) DNS
+    group: App - Pihole (monika)
+    url: "10.1.16.3" # TODO: Use domain
+    interval: 30m
+    dns:
+      query-name: "example.com"
+      query-type: "A"
+    client:
+      insecure: true
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: Pihole (monika) TCP:53
+    group: App - Pihole (monika)
+    url: tcp://10.1.16.3:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (monika) UDP:53
+    group: App - Pihole (monika)
+    url: udp://10.1.16.3:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (monika) TCP:80
+    group: App - Pihole (monika)
+    url: tcp://10.1.16.3:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (monika) TCP:443
+    group: App - Pihole (monika)
+    url: tcp://10.1.16.3:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Pihole (monika-work) ###
+
+  - name: Pihole (monika-work) HTTP
+    group: App - Pihole (monika-work)
+    url: http://10.1.16.4 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (monika-work) HTTPS
+    group: App - Pihole (monika-work)
+    url: https://10.1.16.4 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (monika-work) DNS
+    group: App - Pihole (monika-work)
+    url: "10.1.16.4" # TODO: Use domain
+    interval: 30m
+    dns:
+      query-name: "example.com"
+      query-type: "A"
+    client:
+      insecure: true
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: Pihole (monika-work) TCP:53
+    group: App - Pihole (monika-work)
+    url: tcp://10.1.16.4:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (monika-work) UDP:53
+    group: App - Pihole (monika-work)
+    url: udp://10.1.16.4:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (monika-work) TCP:80
+    group: App - Pihole (monika-work)
+    url: tcp://10.1.16.4:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (monika-work) TCP:443
+    group: App - Pihole (monika-work)
+    url: tcp://10.1.16.4:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Pihole (guests) ###
+
+  - name: Pihole (guests) HTTP
+    group: App - Pihole (guests)
+    url: http://10.1.16.5 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (guests) HTTPS
+    group: App - Pihole (guests)
+    url: https://10.1.16.5 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (guests) DNS
+    group: App - Pihole (guests)
+    url: "10.1.16.5" # TODO: Use domain
+    interval: 30m
+    dns:
+      query-name: "example.com"
+      query-type: "A"
+    client:
+      insecure: true
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: Pihole (guests) TCP:53
+    group: App - Pihole (guests)
+    url: tcp://10.1.16.5:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (guests) UDP:53
+    group: App - Pihole (guests)
+    url: udp://10.1.16.5:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (guests) TCP:80
+    group: App - Pihole (guests)
+    url: tcp://10.1.16.5:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (guests) TCP:443
+    group: App - Pihole (guests)
+    url: tcp://10.1.16.5:443 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Pihole (iot) ###
+
+  - name: Pihole (iot) HTTP
+    group: App - Pihole (iot)
+    url: http://10.1.16.6 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (iot) HTTPS
+    group: App - Pihole (iot)
+    url: https://10.1.16.6 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (iot) DNS
+    group: App - Pihole (iot)
+    url: "10.1.16.6" # TODO: Use domain
+    interval: 30m
+    dns:
+      query-name: "example.com"
+      query-type: "A"
+    client:
+      insecure: true
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: Pihole (iot) TCP:53
+    group: App - Pihole (iot)
+    url: tcp://10.1.16.6:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (iot) UDP:53
+    group: App - Pihole (iot)
+    url: udp://10.1.16.6:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (iot) TCP:80
+    group: App - Pihole (iot)
+    url: tcp://10.1.16.6:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (iot) TCP:443
+    group: App - Pihole (iot)
+    url: tcp://10.1.16.6:443 # TODO: Use domain
     interval: 30m
     conditions:
       - "[CONNECTED] == true"
