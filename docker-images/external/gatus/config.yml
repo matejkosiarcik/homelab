@@ -149,7 +149,7 @@ endpoints:
 
   - name: Gatus HTTP
     group: App - Gatus
-    url: http://10.1.16.16 # TODO: Use domain
+    url: http://10.1.16.15 # TODO: Use domain
     interval: 30m
     client:
       insecure: true
@@ -158,7 +158,7 @@ endpoints:
 
   - name: Gatus HTTPS
     group: App - Gatus
-    url: https://10.1.16.16 # TODO: Use domain
+    url: https://10.1.16.15 # TODO: Use domain
     interval: 30m
     client:
       insecure: true
@@ -167,14 +167,14 @@ endpoints:
 
   - name: Gatus TCP:80
     group: App - Gatus
-    url: tcp://10.1.16.16:80 # TODO: Use domain
+    url: tcp://10.1.16.15:80 # TODO: Use domain
     interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Gatus TCP:443
     group: App - Gatus
-    url: tcp://10.1.16.16:443 # TODO: Use domain
+    url: tcp://10.1.16.15:443 # TODO: Use domain
     interval: 30m
     conditions:
       - "[CONNECTED] == true"
