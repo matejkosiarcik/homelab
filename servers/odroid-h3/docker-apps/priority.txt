@@ -1,18 +1,14 @@
-# DNS
+# Super important first
 pihole
+dockerhub-proxy
+
+# DNS
+pihole-matej
 pihole-matej-work
 pihole-monika
 pihole-monika-work
 pihole-guests
 pihole-iot
-
-# Cache for external services
-dockerhub-proxy
-# Placeholder: apt cache proxy
-# Placeholder: npm cache proxy
-# Placeholder: pypi cache proxy
-# Placeholder: gem cache proxy
-# Placeholder: cargo cache proxy
 
 # Network controllers
 omada-controller
@@ -32,7 +28,6 @@ minio
 # Monitoring
 healthchecks
 gatus
-uptime-kuma
 
 # Misc
 speedtest-tracker
