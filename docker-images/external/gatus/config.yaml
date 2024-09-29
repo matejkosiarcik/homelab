@@ -1,0 +1,10 @@
+storage:
+  type: sqlite
+  path: /data/gatus.db
+
+endpoints:
+  - name: example.com
+    url: https://example.com
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
