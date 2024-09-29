@@ -62,6 +62,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg
 
 convert_image "$convert_options" "$input_dir/other/apache.svg.bin" "$outdir/apache.png"
 convert_image "$convert_options" "$input_dir/other/button.png" "$outdir/button.png"
+convert_image "$convert_options" "$input_dir/other/gatus.png" "$outdir/gatus.png"
 convert_image "$convert_options" "$input_dir/other/iot.png" "$outdir/iot.png"
 convert_image "$convert_options" "$input_dir/other/litestream - custom.svg.bin" "$outdir/litestream.png"
 convert_image "$convert_options" "$input_dir/other/playwright.svg.bin" "$outdir/playwright.png"
