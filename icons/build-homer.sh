@@ -47,6 +47,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg
 
 ### Other Icons ###
 
+convert_image "$convert_options" "$input_dir/other/gatus.png" "$outdir/gatus.png"
 convert_image "$convert_options" "$input_dir/other/odroid.png" "$outdir/odroid.png"
 convert_image "$convert_options" "$input_dir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
 convert_image "$convert_options" "$input_dir/other/smtp4dev - custom.png" "$outdir/smtp4dev.png"

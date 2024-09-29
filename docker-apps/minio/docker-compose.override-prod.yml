@@ -2,6 +2,7 @@ x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
     HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
+    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP_1}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -22,6 +23,7 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home,${DOCKER_COMPOSE_DOMAIN_PREFIX_2}.home
+      HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP_1},${DOCKER_COMPOSE_NETWORK_IP_2}
 
   http-proxy-api:
     <<: *common-service-options

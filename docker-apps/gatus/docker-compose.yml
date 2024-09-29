@@ -1,0 +1,56 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_NAME: gatus
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    networks:
+      internal-network: {}
+
+services:
+  gatus:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-gatus
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/gatus/Dockerfile
+    volumes:
+      - ./app-data/gatus:/data:rw
+    stop_grace_period: 30s
+
+  certificate-manager:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./app-secrets/certificate-manager.env
+    volumes:
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
+
+  http-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
+
+  socket-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+
+networks:
+  internal-network:
+    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
