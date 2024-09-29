@@ -1,8 +1,8 @@
 10.1.10.1 tvheadend.home
-10.1.10.2 pihole-matej-2.home
+10.1.10.2 pihole-2.home
 10.1.10.3 uptime-kuma-2.home
 
-10.1.16.1 pihole-matej.home
+10.1.16.1 pihole.home
 10.1.16.2 pihole-matej-work.home
 10.1.16.3 pihole-monika.home
 10.1.16.4 pihole-monika-work.home

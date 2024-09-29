@@ -85,14 +85,14 @@ services:
       - name: PiHole
         type: Ping
         subtitle: Matej
-        url: https://pihole-matej.home
+        url: https://pihole.home
         logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
         subtitle: Matej (duplicate)
-        url: https://pihole-matej-2.home
+        url: https://pihole-2.home
         logo: ./assets/icons/pihole.png
 
       # DNS

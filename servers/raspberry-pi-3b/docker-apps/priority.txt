@@ -1,2 +1,2 @@
 tvheadend
-pihole-matej-2
+pihole-2
