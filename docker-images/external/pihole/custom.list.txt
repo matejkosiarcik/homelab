@@ -16,8 +16,8 @@
 10.1.16.12 minio.home
 10.1.16.13 console.minio.home
 10.1.16.14 healthchecks.home
-10.1.16.15 uptime-kuma.home
-10.1.16.16 gatus.home
+10.1.16.15 gatus.home
+10.1.16.16 uptime-kuma.home
 10.1.16.17 speedtest-tracker.home
 10.1.16.18 homer.home
 10.1.16.19 homepage.home

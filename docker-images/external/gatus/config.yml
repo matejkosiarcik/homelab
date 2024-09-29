@@ -40,28 +40,28 @@ endpoints:
   - name: Router - TP-Link ER605
     group: Network equipment
     url: icmp://10.1.0.1
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Router - UPC Router
     group: Network equipment
     url: icmp://192.168.0.1
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
   - name: WiFi AP - Unifi U6
     group: Network equipment
     url: icmp://10.1.0.2
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Smart switch - TP-Link SG108E
     group: Network equipment
     url: icmp://10.1.0.3
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
@@ -70,35 +70,35 @@ endpoints:
   - name: Odroid H3
     group: Servers
     url: icmp://10.1.4.8
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Raspberry Pi 3B
     group: Servers
     url: icmp://10.1.4.2
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Raspberry Pi 4B 2G
     group: Servers
     url: icmp://10.1.4.3
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Raspberry Pi 4B 4G
     group: Servers
     url: icmp://10.1.4.4
-    interval: 5m
+    interval: 10m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Raspberry Pi Zero 2W 1
     group: Servers
     url: icmp://10.1.4.6
-    interval: 5m
+    interval: 10m
     enabled: false # TODO: Reenable
     conditions:
       - "[CONNECTED] == true"
@@ -106,7 +106,7 @@ endpoints:
   - name: Raspberry Pi Zero 2W 2
     group: Servers
     url: icmp://10.1.4.7
-    interval: 5m
+    interval: 10m
     enabled: false # TODO: Reenable
     conditions:
       - "[CONNECTED] == true"
@@ -116,7 +116,7 @@ endpoints:
   - name: Dockerhub proxy HTTP
     group: App - DockerHub mirror
     url: http://10.1.16.7 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     client:
       insecure: true
     conditions:
@@ -125,23 +125,23 @@ endpoints:
   - name: Dockerhub proxy HTTPS
     group: App - DockerHub mirror
     url: https://10.1.16.7 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     client:
       insecure: true
     conditions:
       - "[STATUS] == 200"
 
-  - name: Dockerhub proxy :80
+  - name: Dockerhub proxy TCP:80
     group: App - DockerHub mirror
     url: tcp://10.1.16.7:80 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
-  - name: Dockerhub proxy :443
+  - name: Dockerhub proxy TCP:443
     group: App - DockerHub mirror
     url: tcp://10.1.16.7:443 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
@@ -149,8 +149,8 @@ endpoints:
 
   - name: Gatus HTTP
     group: App - Gatus
-    url: http://10.1.16.16 # TODO: Use domain
-    interval: 5m
+    url: http://10.1.16.15 # TODO: Use domain
+    interval: 30m
     client:
       insecure: true
     conditions:
@@ -158,24 +158,24 @@ endpoints:
 
   - name: Gatus HTTPS
     group: App - Gatus
-    url: https://10.1.16.16 # TODO: Use domain
-    interval: 5m
+    url: https://10.1.16.15 # TODO: Use domain
+    interval: 30m
     client:
       insecure: true
     conditions:
       - "[STATUS] == 200"
 
-  - name: Gatus :80
+  - name: Gatus TCP:80
     group: App - Gatus
-    url: tcp://10.1.16.16:80 # TODO: Use domain
-    interval: 5m
+    url: tcp://10.1.16.15:80 # TODO: Use domain
+    interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
-  - name: Gatus :443
+  - name: Gatus TCP:443
     group: App - Gatus
-    url: tcp://10.1.16.16:443 # TODO: Use domain
-    interval: 5m
+    url: tcp://10.1.16.15:443 # TODO: Use domain
+    interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
@@ -184,7 +184,7 @@ endpoints:
   - name: Pihole (matej) HTTP
     group: App - Pihole (matej)
     url: http://10.1.16.1 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     client:
       insecure: true
     conditions:
@@ -193,7 +193,7 @@ endpoints:
   - name: Pihole (matej) HTTPS
     group: App - Pihole (matej)
     url: https://10.1.16.1 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     client:
       insecure: true
     conditions:
@@ -202,7 +202,7 @@ endpoints:
   - name: Pihole (matej) DNS
     group: App - Pihole (matej)
     url: "10.1.16.1" # TODO: Use domain
-    interval: 5m
+    interval: 30m
     dns:
       query-name: "example.com"
       query-type: "A"
@@ -211,23 +211,90 @@ endpoints:
     conditions:
       - "[DNS_RCODE] == NOERROR"
 
-  - name: Pihole (matej) :53
+  - name: Pihole (matej) TCP:53
     group: App - Pihole (matej)
     url: tcp://10.1.16.1:53 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
-  - name: Pihole (matej) :80
+  - name: Pihole (matej) UDP:53
+    group: App - Pihole (matej)
+    url: udp://10.1.16.1:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (matej) TCP:80
     group: App - Pihole (matej)
     url: tcp://10.1.16.1:80 # TODO: Use domain
-    interval: 5m
+    interval: 30m
     conditions:
       - "[CONNECTED] == true"
 
-  - name: Pihole (matej) :443
+  - name: Pihole (matej) TCP:443
     group: App - Pihole (matej)
     url: tcp://10.1.16.1:443 # TODO: Use domain
-    interval: 5m
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  ### Group: App - Pihole (matej) ###
+
+  - name: Pihole (matej-work) HTTP
+    group: App - Pihole (matej-work)
+    url: http://10.1.16.2 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (matej-work) HTTPS
+    group: App - Pihole (matej-work)
+    url: https://10.1.16.2 # TODO: Use domain
+    interval: 30m
+    client:
+      insecure: true
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Pihole (matej-work) DNS
+    group: App - Pihole (matej-work)
+    url: "10.1.16.2" # TODO: Use domain
+    interval: 30m
+    dns:
+      query-name: "example.com"
+      query-type: "A"
+    client:
+      insecure: true
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: Pihole (matej-work) TCP:53
+    group: App - Pihole (matej-work)
+    url: tcp://10.1.16.2:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (matej-work) UDP:53
+    group: App - Pihole (matej-work)
+    url: udp://10.1.16.2:53 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (matej-work) TCP:80
+    group: App - Pihole (matej-work)
+    url: tcp://10.1.16.2:80 # TODO: Use domain
+    interval: 30m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Pihole (matej-work) TCP:443
+    group: App - Pihole (matej-work)
+    url: tcp://10.1.16.2:443 # TODO: Use domain
+    interval: 30m
     conditions:
       - "[CONNECTED] == true"
