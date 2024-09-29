@@ -4,6 +4,26 @@ storage:
 
 metrics: true
 
+default-tcp: &default-tcp
+  interval: 30m
+  conditions:
+    - "[CONNECTED] == true"
+
+default-dns: &default-dns
+  interval: 30m
+  dns:
+    query-name: "example.com"
+    query-type: "A"
+  conditions:
+    - "[DNS_RCODE] == NOERROR"
+
+default-http: &default-http
+  interval: 30m
+  client:
+    insecure: true
+  conditions:
+    - "[STATUS] == 200"
+
 endpoints:
   ### Group: External DNS ###
 
@@ -116,608 +136,381 @@ endpoints:
   - name: DockerHub mirror HTTP
     group: App - DockerHub mirror
     url: http://10.1.16.7 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: DockerHub mirror HTTPS
     group: App - DockerHub mirror
     url: https://10.1.16.7 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: DockerHub mirror TCP:80
     group: App - DockerHub mirror
     url: tcp://10.1.16.7:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: DockerHub mirror TCP:443
     group: App - DockerHub mirror
     url: tcp://10.1.16.7:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Gatus ###
 
   - name: Gatus HTTP
     group: App - Gatus
     url: http://10.1.16.15 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Gatus HTTPS
     group: App - Gatus
     url: https://10.1.16.15 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Gatus TCP:80
     group: App - Gatus
     url: tcp://10.1.16.15:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Gatus TCP:443
     group: App - Gatus
     url: tcp://10.1.16.15:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Dockerhub proxy ###
 
   - name: Homer HTTP
     group: App - Homer
     url: http://10.1.16.18 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Homer HTTPS
     group: App - Homer
     url: https://10.1.16.18 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Homer TCP:80
     group: App - Homer
     url: tcp://10.1.16.18:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Homer TCP:443
     group: App - Homer
     url: tcp://10.1.16.18:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Jellyfin ###
 
   - name: Jellyfin HTTP
     group: App - Jellyfin
     url: http://10.1.16.10 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Jellyfin HTTPS
     group: App - Jellyfin
     url: https://10.1.16.10 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Jellyfin TCP:80
     group: App - Jellyfin
     url: tcp://10.1.16.10:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Jellyfin TCP:443
     group: App - Jellyfin
     url: tcp://10.1.16.10:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Jellyfin TCP:8096
     group: App - Jellyfin
     url: tcp://10.1.16.10:8096 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Pihole (matej) ###
 
   - name: Pihole (matej) HTTP
     group: App - Pihole (matej)
     url: http://10.1.16.1 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (matej) HTTPS
     group: App - Pihole (matej)
     url: https://10.1.16.1 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (matej) DNS
     group: App - Pihole (matej)
     url: "10.1.16.1" # TODO: Use domain
-    interval: 30m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    client:
-      insecure: true
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
+    <<: *default-dns
 
   - name: Pihole (matej) TCP:53
     group: App - Pihole (matej)
     url: tcp://10.1.16.1:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej) UDP:53
     group: App - Pihole (matej)
     url: udp://10.1.16.1:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej) TCP:80
     group: App - Pihole (matej)
     url: tcp://10.1.16.1:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej) TCP:443
     group: App - Pihole (matej)
     url: tcp://10.1.16.1:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Pihole (matej-2) ###
 
   - name: Pihole (matej-2) HTTP
     group: App - Pihole (matej-2)
     url: http://10.1.10.2 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (matej-2) HTTPS
     group: App - Pihole (matej-2)
     url: https://10.1.10.2 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (matej-2) DNS
     group: App - Pihole (matej-2)
     url: "10.1.10.2" # TODO: Use domain
-    interval: 30m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    client:
-      insecure: true
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
+    <<: *default-dns
 
   - name: Pihole (matej-2) TCP:53
     group: App - Pihole (matej-2)
     url: tcp://10.1.10.2:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej-2) UDP:53
     group: App - Pihole (matej-2)
     url: udp://10.1.10.2:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej-2) TCP:80
     group: App - Pihole (matej-2)
     url: tcp://10.1.10.2:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej-2) TCP:443
     group: App - Pihole (matej-2)
     url: tcp://10.1.10.2:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Pihole (matej-work) ###
 
   - name: Pihole (matej-work) HTTP
     group: App - Pihole (matej-work)
     url: http://10.1.16.2 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (matej-work) HTTPS
     group: App - Pihole (matej-work)
     url: https://10.1.16.2 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (matej-work) DNS
     group: App - Pihole (matej-work)
     url: "10.1.16.2" # TODO: Use domain
-    interval: 30m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    client:
-      insecure: true
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
+    <<: *default-dns
 
   - name: Pihole (matej-work) TCP:53
     group: App - Pihole (matej-work)
     url: tcp://10.1.16.2:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej-work) UDP:53
     group: App - Pihole (matej-work)
     url: udp://10.1.16.2:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej-work) TCP:80
     group: App - Pihole (matej-work)
     url: tcp://10.1.16.2:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (matej-work) TCP:443
     group: App - Pihole (matej-work)
     url: tcp://10.1.16.2:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Pihole (monika) ###
 
   - name: Pihole (monika) HTTP
     group: App - Pihole (monika)
     url: http://10.1.16.3 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (monika) HTTPS
     group: App - Pihole (monika)
     url: https://10.1.16.3 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (monika) DNS
     group: App - Pihole (monika)
     url: "10.1.16.3" # TODO: Use domain
-    interval: 30m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    client:
-      insecure: true
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
+    <<: *default-dns
 
   - name: Pihole (monika) TCP:53
     group: App - Pihole (monika)
     url: tcp://10.1.16.3:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (monika) UDP:53
     group: App - Pihole (monika)
     url: udp://10.1.16.3:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (monika) TCP:80
     group: App - Pihole (monika)
     url: tcp://10.1.16.3:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (monika) TCP:443
     group: App - Pihole (monika)
     url: tcp://10.1.16.3:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Pihole (monika-work) ###
 
   - name: Pihole (monika-work) HTTP
     group: App - Pihole (monika-work)
     url: http://10.1.16.4 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (monika-work) HTTPS
     group: App - Pihole (monika-work)
     url: https://10.1.16.4 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (monika-work) DNS
     group: App - Pihole (monika-work)
     url: "10.1.16.4" # TODO: Use domain
-    interval: 30m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    client:
-      insecure: true
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
+    <<: *default-dns
 
   - name: Pihole (monika-work) TCP:53
     group: App - Pihole (monika-work)
     url: tcp://10.1.16.4:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (monika-work) UDP:53
     group: App - Pihole (monika-work)
     url: udp://10.1.16.4:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (monika-work) TCP:80
     group: App - Pihole (monika-work)
     url: tcp://10.1.16.4:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (monika-work) TCP:443
     group: App - Pihole (monika-work)
     url: tcp://10.1.16.4:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Pihole (guests) ###
 
   - name: Pihole (guests) HTTP
     group: App - Pihole (guests)
     url: http://10.1.16.5 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (guests) HTTPS
     group: App - Pihole (guests)
     url: https://10.1.16.5 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (guests) DNS
     group: App - Pihole (guests)
     url: "10.1.16.5" # TODO: Use domain
-    interval: 30m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    client:
-      insecure: true
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
+    <<: *default-dns
 
   - name: Pihole (guests) TCP:53
     group: App - Pihole (guests)
     url: tcp://10.1.16.5:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (guests) UDP:53
     group: App - Pihole (guests)
     url: udp://10.1.16.5:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (guests) TCP:80
     group: App - Pihole (guests)
     url: tcp://10.1.16.5:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (guests) TCP:443
     group: App - Pihole (guests)
     url: tcp://10.1.16.5:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Pihole (iot) ###
 
   - name: Pihole (iot) HTTP
     group: App - Pihole (iot)
     url: http://10.1.16.6 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (iot) HTTPS
     group: App - Pihole (iot)
     url: https://10.1.16.6 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Pihole (iot) DNS
     group: App - Pihole (iot)
     url: "10.1.16.6" # TODO: Use domain
-    interval: 30m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    client:
-      insecure: true
-    conditions:
-      - "[DNS_RCODE] == NOERROR"
+    <<: *default-dns
 
   - name: Pihole (iot) TCP:53
     group: App - Pihole (iot)
     url: tcp://10.1.16.6:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (iot) UDP:53
     group: App - Pihole (iot)
     url: udp://10.1.16.6:53 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (iot) TCP:80
     group: App - Pihole (iot)
     url: tcp://10.1.16.6:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Pihole (iot) TCP:443
     group: App - Pihole (iot)
     url: tcp://10.1.16.6:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   ### Group: App - Tvheadend ###
 
   - name: Tvheadend HTTP
     group: App - Tvheadend
     url: http://10.1.10.1 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Tvheadend HTTPS
     group: App - Tvheadend
     url: https://10.1.10.1 # TODO: Use domain
-    interval: 30m
-    client:
-      insecure: true
-    conditions:
-      - "[STATUS] == 200"
+    <<: *default-http
 
   - name: Tvheadend TCP:80
     group: App - Tvheadend
     url: tcp://10.1.10.1:80 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Tvheadend TCP:443
     group: App - Tvheadend
     url: tcp://10.1.10.1:443 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Tvheadend TCP:9981
     group: App - Tvheadend
     url: tcp://10.1.10.1:9981 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
 
   - name: Tvheadend TCP:9982
     group: App - Tvheadend
     url: tcp://10.1.10.1:9982 # TODO: Use domain
-    interval: 30m
-    conditions:
-      - "[CONNECTED] == true"
+    <<: *default-tcp
