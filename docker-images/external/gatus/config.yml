@@ -201,77 +201,77 @@ endpoints:
     url: tcp://jellyfin.home:8096
     <<: *default-tcp
 
-  ### Group: App - Pihole (matej) ###
+  ### Group: App - Pihole ###
 
-  - name: Pihole (matej) HTTP
-    group: App - Pihole (matej)
+  - name: Pihole HTTP
+    group: App - Pihole
     url: http://pihole.home
     <<: *default-http
 
-  - name: Pihole (matej) HTTPS
-    group: App - Pihole (matej)
+  - name: Pihole HTTPS
+    group: App - Pihole
     url: https://pihole.home
     <<: *default-http
 
-  - name: Pihole (matej) DNS
-    group: App - Pihole (matej)
+  - name: Pihole DNS
+    group: App - Pihole
     url: pihole.home
     <<: *default-dns
 
-  - name: Pihole (matej) TCP:53
-    group: App - Pihole (matej)
+  - name: Pihole TCP:53
+    group: App - Pihole
     url: tcp://pihole.home:53
     <<: *default-tcp
 
-  - name: Pihole (matej) UDP:53
-    group: App - Pihole (matej)
+  - name: Pihole UDP:53
+    group: App - Pihole
     url: udp://pihole.home:53
     <<: *default-tcp
 
-  - name: Pihole (matej) TCP:80
-    group: App - Pihole (matej)
+  - name: Pihole TCP:80
+    group: App - Pihole
     url: tcp://pihole.home:80
     <<: *default-tcp
 
-  - name: Pihole (matej) TCP:443
-    group: App - Pihole (matej)
+  - name: Pihole TCP:443
+    group: App - Pihole
     url: tcp://pihole.home:443
     <<: *default-tcp
 
-  ### Group: App - Pihole (matej-2) ###
+  ### Group: App - Pihole (2) ###
 
-  - name: Pihole (matej-2) HTTP
-    group: App - Pihole (matej-2)
+  - name: Pihole (2) HTTP
+    group: App - Pihole (2)
     url: http://pihole-2.home
     <<: *default-http
 
-  - name: Pihole (matej-2) HTTPS
-    group: App - Pihole (matej-2)
+  - name: Pihole (2) HTTPS
+    group: App - Pihole (2)
     url: https://pihole-2.home
     <<: *default-http
 
-  - name: Pihole (matej-2) DNS
-    group: App - Pihole (matej-2)
+  - name: Pihole (2) DNS
+    group: App - Pihole (2)
     url: pihole-2.home
     <<: *default-dns
 
-  - name: Pihole (matej-2) TCP:53
-    group: App - Pihole (matej-2)
+  - name: Pihole (2) TCP:53
+    group: App - Pihole (2)
     url: tcp://pihole-2.home:53
     <<: *default-tcp
 
-  - name: Pihole (matej-2) UDP:53
-    group: App - Pihole (matej-2)
+  - name: Pihole (2) UDP:53
+    group: App - Pihole (2)
     url: udp://pihole-2.home:53
     <<: *default-tcp
 
-  - name: Pihole (matej-2) TCP:80
-    group: App - Pihole (matej-2)
+  - name: Pihole (2) TCP:80
+    group: App - Pihole (2)
     url: tcp://pihole-2.home:80
     <<: *default-tcp
 
-  - name: Pihole (matej-2) TCP:443
-    group: App - Pihole (matej-2)
+  - name: Pihole (2) TCP:443
+    group: App - Pihole (2)
     url: tcp://pihole-2.home:443
     <<: *default-tcp
 
