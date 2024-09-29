@@ -118,30 +118,30 @@ endpoints:
 
   - name: Dockerhub proxy HTTP
     group: App - DockerHub mirror
-    url: http://10.1.16.7  # TODO: Use domain
-    insecure: true  # TODO: Necessary?
+    url: http://10.1.16.7 # TODO: Use domain
+    insecure: true # TODO: Necessary?
     interval: 5m
     conditions:
       - "[STATUS] == 200"
 
   - name: Dockerhub proxy HTTPS
     group: App - DockerHub mirror
-    url: https://10.1.16.7  # TODO: Use domain
-    insecure: true  # TODO: Necessary?
+    url: https://10.1.16.7 # TODO: Use domain
+    insecure: true # TODO: Necessary?
     interval: 5m
     conditions:
       - "[STATUS] == 200"
 
   - name: Dockerhub proxy :80
     group: App - DockerHub mirror
-    url: tcp://10.1.16.7:80  # TODO: Use domain
+    url: tcp://10.1.16.7:80 # TODO: Use domain
     interval: 5m
     conditions:
       - "[CONNECTED] == true"
 
   - name: Dockerhub proxy :443
     group: App - DockerHub mirror
-    url: tcp://10.1.16.7:443  # TODO: Use domain
+    url: tcp://10.1.16.7:443 # TODO: Use domain
     interval: 5m
     conditions:
       - "[CONNECTED] == true"
