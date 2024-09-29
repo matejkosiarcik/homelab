@@ -22,8 +22,7 @@ Generic resources:
 ## Before initial installation
 
 - \[All\] Create base secrets
-    - \[All\] Set secrets `REGISTRY_PROXY_REMOTEURL` in `docker-registry.env`
-    - \[Prod\] If the upstream is DockerHub (URL: `https://registry-1.docker.io`) then also set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `docker-registry.env`
+    - \[Prod\] Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `docker-registry.env` for authenticated mirror
 - \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
 - \[Prod\] Add healthchecks monitor for `admin-setup` and configure `HOMELAB_HEALTHCHECK_URL`
 
@@ -37,16 +36,16 @@ Generic resources:
 - \[Prod\] Configure docker mirroring in docker clients according to
   <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>, chapter "A single registry" (*example below)
 
-*The following docker config:
+*The following docker config (replace `example.com` with your target IP/domain):
 
 ```json
 {
   ...
   "insecure-registries": [
-    "hostname:443"
+    "example.com"
   ],
   "registry-mirrors": [
-    "https://[hostname]:443"
+    "https://example.com"
   ]
 }
 ```
