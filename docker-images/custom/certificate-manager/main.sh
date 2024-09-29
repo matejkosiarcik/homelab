@@ -61,8 +61,11 @@ if [ "$create_certs" = '1' ]; then
         subjectAltName_ips="$(printf '%s\n' "$HOMELAB_APP_EXTERNAL_IP" | tr ',' '\n' | sed 's~^~IP:~' | tr '\n' ',' | sed -E 's~^,~~;s~,$~~')"
         subjectAltName="$subjectAltName_domains,$subjectAltName_ips"
 
-        # Create new certificates
+        # Cache current Domains and IPs
         printf '%s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >"$tmpdir/domain.txt"
+        printf '%s\n' "$HOMELAB_APP_EXTERNAL_IP" >"$tmpdir/ip.txt"
+
+        # Create new certificates
         openssl genrsa -out "$tmpdir/certificate.key" 4096
         openssl rsa -in "$tmpdir/certificate.key" -out "$tmpdir/certificate.key"
         openssl req -sha256 -new -key "$tmpdir/certificate.key" -out "$tmpdir/certificate.csr" -subj "$openssl_subj" -addext "subjectAltName=$subjectAltName"
