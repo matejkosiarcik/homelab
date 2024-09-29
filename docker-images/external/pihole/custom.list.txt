@@ -8,7 +8,7 @@
 10.1.16.4 pihole-monika-work.home
 10.1.16.5 pihole-guests.home
 10.1.16.6 pihole-iot.home
-10.1.16.7 docker-cache-proxy.home
+10.1.16.7 dockerhub-proxy.home
 10.1.16.8 omada-controller.home
 10.1.16.9 home-assistant.home
 10.1.16.10 jellyfin.home
