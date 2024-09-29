@@ -31,8 +31,8 @@ minio
 
 # Monitoring
 healthchecks
+gatus
 uptime-kuma
-# gatus
 
 # Misc
 speedtest-tracker
