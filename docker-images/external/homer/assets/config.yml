@@ -84,15 +84,22 @@ services:
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: Matej
+        subtitle: Main
         url: https://pihole.home
         logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: Matej (duplicate)
+        subtitle: Main (duplicate)
         url: https://pihole-2.home
+        logo: ./assets/icons/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: Matej
+        url: https://pihole-matej.home
         logo: ./assets/icons/pihole.png
 
       # DNS
@@ -190,7 +197,7 @@ services:
       - name: DockerHub Mirror
         type: Ping
         subtitle: DockerHub
-        url: https://docker-dockerhub-proxy.home
+        url: https://dockerhub-proxy.home
         logo: ./assets/icons/docker.png
 
       # Mail server

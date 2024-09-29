@@ -275,6 +275,43 @@ endpoints:
     url: tcp://pihole-2.home:443
     <<: *default-tcp
 
+  ### Group: App - Pihole (matej) ###
+
+  - name: Pihole (matej) HTTP
+    group: App - Pihole (matej)
+    url: http://pihole-matej.home
+    <<: *default-http
+
+  - name: Pihole (matej) HTTPS
+    group: App - Pihole (matej)
+    url: https://pihole-matej.home
+    <<: *default-http
+
+  - name: Pihole (matej) DNS
+    group: App - Pihole (matej)
+    url: pihole-matej.home
+    <<: *default-dns
+
+  - name: Pihole (matej) TCP:53
+    group: App - Pihole (matej)
+    url: tcp://pihole-matej.home:53
+    <<: *default-tcp
+
+  - name: Pihole (matej) UDP:53
+    group: App - Pihole (matej)
+    url: udp://pihole-matej.home:53
+    <<: *default-tcp
+
+  - name: Pihole (matej) TCP:80
+    group: App - Pihole (matej)
+    url: tcp://pihole-matej.home:80
+    <<: *default-tcp
+
+  - name: Pihole (matej) TCP:443
+    group: App - Pihole (matej)
+    url: tcp://pihole-matej.home:443
+    <<: *default-tcp
+
   ### Group: App - Pihole (matej-work) ###
 
   - name: Pihole (matej-work) HTTP

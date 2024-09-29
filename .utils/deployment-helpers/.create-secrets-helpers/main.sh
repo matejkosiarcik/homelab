@@ -102,7 +102,7 @@ prepare_empty_env() {
 }
 
 case "$current_dir" in
-*docker-*-proxy*)
+*docker*-proxy*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"
 
