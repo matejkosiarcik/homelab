@@ -6,7 +6,7 @@ COPY ./external/gatus/main.go ./external/gatus/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 FROM twinproduction/gatus:v5.12.1
-COPY ./external/gatus/config.yaml /config/config.yaml
+COPY ./external/gatus/config.yml /config/config.yaml
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 ENV HOMELAB_CONTAINER_NAME=gatus \
     HOMELAB_CONTAINER_VARIANT=default \
