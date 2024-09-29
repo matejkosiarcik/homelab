@@ -172,7 +172,7 @@ create-secrets)
 deploy)
     machine_install
     machine_deploy
-    printf '\nAll apps deployed successfully\n'
+    printf '\n%s - All apps deployed successfully\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
     ;;
 install)
     machine_install
