@@ -7,7 +7,7 @@ printf 'starting\n' >/homelab/.internal/status.txt
 if [ "$HOMELAB_APP_NAME" = 'docker-cache-proxy' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
-if [ "$HOMELAB_APP_NAME" = 'gatus' ]; then
+elif [ "$HOMELAB_APP_NAME" = 'gatus' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_NAME" = 'healthchecks' ]; then

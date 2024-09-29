@@ -35,7 +35,7 @@ printf "export HOMELAB_APP_NAME='%s'\n" "$HOMELAB_APP_NAME" >>/etc/apache2/envva
 # Set PROXY_UPSTREAM_URL
 if [ "$HOMELAB_APP_NAME" = 'docker-cache-proxy' ]; then
     PROXY_UPSTREAM_URL="http://docker-registry"
-if [ "$HOMELAB_APP_NAME" = 'gatus' ]; then
+elif [ "$HOMELAB_APP_NAME" = 'gatus' ]; then
     PROXY_UPSTREAM_URL="http://gatus:8080"
 elif [ "$HOMELAB_APP_NAME" = 'healthchecks' ]; then
     PROXY_UPSTREAM_URL="http://healthchecks:8000"
