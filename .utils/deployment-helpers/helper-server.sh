@@ -153,8 +153,15 @@ machine_create_secrets() {
 
 machine_install() {
     printf 'Installing crontab\n' >&2
+    if [ ! -e "$machine_dir/startup.sh" ]; then
+        printf 'Server startu script not found\n' >&2
+        exit 1
+    fi
+    if [ "$dry_run" = '0' ]; then
+        cp "$machine_dir/startup.sh" "$HOME/startup.sh"
+    fi
     if [ ! -e "$machine_dir/crontab.cron" ]; then
-        printf 'Server crontab file not found\n' >&2
+        printf 'Server crontab not found\n' >&2
         exit 1
     fi
     if [ "$dry_run" = '0' ]; then

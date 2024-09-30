@@ -6,8 +6,34 @@
     - name: Ping
       ansible.builtin.ping:
 
+    - name: Install global server scripts
+      register: install
+      changed_when: "'CHANGED' in install.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        cd "$HOME/git/homelab/servers/.current"
+
+        crontab_shasum_before="$(crontab -l | shasum)"
+        startup_script_shasum_before="$(shasum ~/startup.sh || true)"
+
+        sh helper.sh install --prod
+
+        crontab_shasum_after="$(crontab -l | shasum)"
+        startup_script_shasum_after="$(shasum ~/startup.sh)"
+
+        if [ "$crontab_shasum_before" != "$crontab_shasum_after" ] || [ "$startup_script_shasum_before" != "$startup_script_shasum_after" ]; then
+          printf 'CHANGED\n'
+        fi
+
+    - name: Reboot
+      when: install.changed
+      throttle: 1
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
+
     - name: Deploy homelab
       changed_when: "True"
+      throttle: 1
       ansible.builtin.shell: |
         set -eufo pipefail
 
