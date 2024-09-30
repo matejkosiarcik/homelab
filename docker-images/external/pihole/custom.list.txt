@@ -1,6 +1,9 @@
 10.1.10.1 tvheadend.home
 10.1.10.2 pihole-2.home
 
+10.1.14.1 unifi-controller.home
+10.1.14.2 pihole-3.home
+
 10.1.16.1 pihole.home
 10.1.16.2 pihole-matej.home
 10.1.16.3 pihole-matej-work.home
@@ -21,6 +24,3 @@
 10.1.16.18 speedtest-tracker.home
 10.1.16.19 homer.home
 10.1.16.20 homepage.home
-
-10.1.14.1 unifi-controller.home
-10.1.14.2 pihole-3.home
