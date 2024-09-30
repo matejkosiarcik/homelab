@@ -152,10 +152,10 @@
             "max-size": "100m"
           },
           "insecure-registries": [
-            "10.1.10.8"
+            "dockerhub-proxy.home"
           ],
           "registry-mirrors": [
-            "https://10.1.10.8"
+            "https://dockerhub-proxy.home"
           ]
         }'
         before_sha="$(shasum '/etc/docker/daemon.json' || true)"
