@@ -14,7 +14,7 @@
         autoremove: true
 
     - name: Update homelab repository
-      register: update_git_homela
+      register: update_git_homelab
       changed_when: "'CHANGED' in update_git_homelab.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail

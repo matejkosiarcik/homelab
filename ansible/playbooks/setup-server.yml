@@ -225,6 +225,7 @@
         fi
 
     - name: Validate current server symlink
+      changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         if [ ! -e "$HOME/git/homelab/servers/.current/startup.sh" ]; then
