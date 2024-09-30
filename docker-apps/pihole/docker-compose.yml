@@ -20,6 +20,12 @@ services:
       - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
       - ../../../../docker-images/external/pihole/adlists-${DOCKER_COMPOSE_PIHOLE_ADLISTS-default}.txt:/homelab/adlists.txt:ro
+    # Hard-coded DNS is necessary because of bootstrapping problem
+    # Basically if PiHole needs functional DNS (to eg. update adlists before starting), which it can't do until it started
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+      - 4.2.2.1
     stop_grace_period: 30s
 
   pihole-setup:
