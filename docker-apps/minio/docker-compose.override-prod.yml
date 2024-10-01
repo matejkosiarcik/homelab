@@ -13,7 +13,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_DOMAIN_PREFIX_2}.home
+      MINIO_BROWSER_REDIRECT_URL: https://console.${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
 
   minio-setup:
     <<: *common-service-options
@@ -22,7 +22,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home,${DOCKER_COMPOSE_DOMAIN_PREFIX_2}.home
+      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home,console.${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
       HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP_1},${DOCKER_COMPOSE_NETWORK_IP_2}
 
   http-proxy-api:
