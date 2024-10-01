@@ -135,7 +135,7 @@ case "$current_dir" in
 
     # Precreate passwords
     create_password "$tmpdir/healthchecks-secret-key.txt" --only-alphanumeric
-    printf 'admin@%s.home' "$DOCKER_COMPOSE_DOMAIN_PREFIX" >"$tmpdir/admin-username.txt"
+    printf 'admin@%s.home' "$DOCKER_COMPOSE_APP_NAME" >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
 
     # App
@@ -317,7 +317,7 @@ case "$current_dir" in
     if [ "$mode" = 'dev' ]; then
         printf 'admin@localhost' >"$tmpdir/admin-username.txt"
     else
-        printf 'admin@%s.home' "$DOCKER_COMPOSE_DOMAIN_PREFIX" >"$tmpdir/admin-username.txt"
+        printf 'admin@%s.home' "$DOCKER_COMPOSE_APP_NAME" >"$tmpdir/admin-username.txt"
     fi
 
     # App

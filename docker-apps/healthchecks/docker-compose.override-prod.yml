@@ -1,7 +1,7 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_APP_NAME}.home
     HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
   common-service-options: &common-service-options
     environment:
@@ -15,8 +15,8 @@ services:
       <<: *common-env-variables
       # EMAIL_HOST: smtp4dev.home
       REGISTRATION_OPEN: "False"
-      DEFAULT_FROM_EMAIL: healthchecks@${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
-      SITE_ROOT: https://${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
+      DEFAULT_FROM_EMAIL: healthchecks@${DOCKER_COMPOSE_APP_NAME}.home
+      SITE_ROOT: https://${DOCKER_COMPOSE_APP_NAME}.home
 
   certificate-manager:
     <<: *common-service-options
@@ -35,7 +35,7 @@ services:
 
 networks:
   external-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-external-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: macvlan
     driver_opts:
       parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}

@@ -10,7 +10,7 @@ x-definitions:
 services:
   speedtest-tracker:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-speedtest-tracker
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-speedtest-tracker
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/speedtest-tracker/Dockerfile
@@ -21,7 +21,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -33,7 +33,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -47,11 +47,11 @@ services:
 
   socket-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
 networks:
   internal-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network

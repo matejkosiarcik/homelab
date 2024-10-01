@@ -10,7 +10,7 @@ x-definitions:
 services:
   home-assistant:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-home-assistant
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-home-assistant
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/home-assistant/Dockerfile
@@ -26,7 +26,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -38,7 +38,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -52,14 +52,14 @@ services:
 
   socket-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
   web-backup:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-web-backup
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
@@ -78,4 +78,4 @@ services:
 
 networks:
   internal-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
