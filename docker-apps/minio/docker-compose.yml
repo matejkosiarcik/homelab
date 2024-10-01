@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: minio
+    HOMELAB_APP_TYPE: minio
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -10,7 +10,7 @@ x-definitions:
 services:
   minio:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-minio
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-minio
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/minio-server/Dockerfile
@@ -22,7 +22,7 @@ services:
 
   minio-setup:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-minio-setup
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-minio-setup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/minio-client/Dockerfile
@@ -34,7 +34,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -46,7 +46,7 @@ services:
 
   http-proxy-api:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-api
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-api
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -63,7 +63,7 @@ services:
 
   http-proxy-console:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-console
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-console
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -80,7 +80,7 @@ services:
 
   socket-proxy-api:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy-api
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy-api
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
@@ -90,7 +90,7 @@ services:
 
   socket-proxy-console:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy-console
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy-console
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
@@ -100,4 +100,4 @@ services:
 
 networks:
   internal-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network

@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: uptime-kuma
+    HOMELAB_APP_TYPE: uptime-kuma
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -10,7 +10,7 @@ x-definitions:
 services:
   uptime-kuma:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-uptime-kuma
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-uptime-kuma
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/uptime-kuma/Dockerfile
@@ -20,7 +20,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -32,7 +32,7 @@ services:
 
   http-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -46,30 +46,11 @@ services:
 
   socket-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
-  web-backup:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-web-backup
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      uptime-kuma:
-        condition: service_healthy
-    env_file:
-      - ./app-secrets/web-backup.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: backup
-    volumes:
-      - ./app-data/web-backup:/homelab/backup:rw
-      - ./app-logs/web-backup-errors:/homelab/errors:rw
-      - ./app-logs/web-backup:/homelab/logs:rw
-
 networks:
   internal-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network

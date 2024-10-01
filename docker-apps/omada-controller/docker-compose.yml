@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: omada-controller
+    HOMELAB_APP_TYPE: omada-controller
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -10,7 +10,7 @@ x-definitions:
 services:
   omada-controller:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-omada-controller
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-omada-controller
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/omada-controller/Dockerfile
@@ -25,7 +25,7 @@ services:
 
   certificate-manager:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-certificate-manager
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -37,7 +37,7 @@ services:
 
   http-proxy-admin:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-admin
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-admin
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -54,7 +54,7 @@ services:
 
   http-proxy-portal:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-http-proxy-portal
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-portal
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -71,7 +71,7 @@ services:
 
   socket-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
@@ -82,7 +82,7 @@ services:
 
   web-backup:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-web-backup
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
@@ -101,4 +101,4 @@ services:
 
 networks:
   internal-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network

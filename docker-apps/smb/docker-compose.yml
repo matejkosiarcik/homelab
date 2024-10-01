@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: smb
+    HOMELAB_APP_TYPE: smb
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -10,7 +10,7 @@ x-definitions:
 services:
   samba:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-samba
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-samba
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/samba/Dockerfile
@@ -21,11 +21,11 @@ services:
 
   socket-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-socket-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
 
 networks:
   internal-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-internal-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network

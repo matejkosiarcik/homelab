@@ -1,7 +1,7 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_APP_NAME}.home
     HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
   common-service-options: &common-service-options
     environment:
@@ -11,13 +11,13 @@ x-definitions:
 services:
   pihole:
     <<: *common-service-options
-    hostname: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home # This fixes random container hostname in dashboard header
+    hostname: ${DOCKER_COMPOSE_APP_NAME}.home # This fixes random container hostname in dashboard header
     environment:
       <<: *common-env-variables
       FTLCONF_LOCAL_IPV4: ${DOCKER_COMPOSE_NETWORK_IP}
       FTLCONF_PRIVACYLEVEL: "0"
       # FTLCONF_RATE_LIMIT: "100000/60" # Only for debugging
-      VIRTUAL_HOST: ${DOCKER_COMPOSE_DOMAIN_PREFIX}.home
+      VIRTUAL_HOST: ${DOCKER_COMPOSE_APP_NAME}.home
 
   pihole-setup:
     <<: *common-service-options
@@ -39,12 +39,9 @@ services:
       external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
 
-  web-backup:
-    <<: *common-service-options
-
 networks:
   external-network:
-    name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-external-network
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: macvlan
     driver_opts:
       parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}

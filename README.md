@@ -19,7 +19,7 @@ Below is a general format for this repository:
 
 Common env variables:
 
-- `HOMELAB_APP_NAME` - Main app name (eg. _pihole_)
+- `HOMELAB_APP_TYPE` - Main app name (eg. _pihole_)
 - `HOMELAB_ENV` - Current env type, either _dev_ or _prod_
 - `HOMELAB_APP_EXTERNAL_DOMAIN` - Local domain alias (eg. _pihole.home_)
 - `HOMELAB_HEALTHCHECK_URL` - Healthcheck URL to report CRON job status
