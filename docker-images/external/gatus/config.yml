@@ -152,7 +152,51 @@ endpoints:
     url: tcp://gatus.home:443
     <<: *default-tcp
 
-  ### Group: App - Dockerhub proxy ###
+  ### Group: App - Healthchecks ###
+
+  - name: Healthchecks HTTP
+    group: App - Healthchecks
+    url: http://healthchecks.home
+    <<: *default-http
+
+  - name: Healthchecks HTTPS
+    group: App - Healthchecks
+    url: https://healthchecks.home
+    <<: *default-http
+
+  - name: Healthchecks TCP:80
+    group: App - Healthchecks
+    url: tcp://healthchecks.home:80
+    <<: *default-tcp
+
+  - name: Healthchecks TCP:443
+    group: App - Healthchecks
+    url: tcp://healthchecks.home:443
+    <<: *default-tcp
+
+  ### Group: App - Home Assistant ###
+
+  - name: Home Assistant HTTP
+    group: App - Home Assistant
+    url: http://home-assistant.home
+    <<: *default-http
+
+  - name: Home Assistant HTTPS
+    group: App - Home Assistant
+    url: https://home-assistant.home
+    <<: *default-http
+
+  - name: Home Assistant TCP:80
+    group: App - Home Assistant
+    url: tcp://home-assistant.home:80
+    <<: *default-tcp
+
+  - name: Home Assistant TCP:443
+    group: App - Home Assistant
+    url: tcp://home-assistant.home:443
+    <<: *default-tcp
+
+  ### Group: App - Homer ###
 
   - name: Homer HTTP
     group: App - Homer
@@ -186,6 +230,11 @@ endpoints:
     url: https://jellyfin.home
     <<: *default-http
 
+  - name: Jellyfin HTTP:8096
+    group: App - Jellyfin
+    url: http://jellyfin.home:8096
+    <<: *default-http
+
   - name: Jellyfin TCP:80
     group: App - Jellyfin
     url: tcp://jellyfin.home:80
@@ -199,6 +248,120 @@ endpoints:
   - name: Jellyfin TCP:8096
     group: App - Jellyfin
     url: tcp://jellyfin.home:8096
+    <<: *default-tcp
+
+  ### Group: App - Minio ###
+
+  - name: Minio HTTP
+    group: App - Minio
+    url: http://minio.home
+    <<: *default-http
+
+  - name: Minio HTTPS
+    group: App - Minio
+    url: https://minio.home
+    <<: *default-http
+
+  - name: Minio HTTP
+    group: App - Minio Console
+    url: http://console.minio.home
+    <<: *default-http
+
+  - name: Minio HTTPS
+    group: App - Minio Console
+    url: https://console.minio.home
+    <<: *default-http
+
+  - name: Minio TCP:80
+    group: App - Minio
+    url: tcp://minio.home:80
+    <<: *default-tcp
+
+  - name: Minio TCP:443
+    group: App - Minio
+    url: tcp://minio.home:443
+    <<: *default-tcp
+
+  - name: Minio TCP:80
+    group: App - Minio
+    url: tcp://console.minio.home:80
+    <<: *default-tcp
+
+  - name: Minio TCP:443
+    group: App - Minio
+    url: tcp://console.minio.home:443
+    <<: *default-tcp
+
+  ### Group: App - Omada Controller ###
+
+  - name: Omada Controller Admin HTTP
+    group: App - Omada Controller
+    url: http://omada-controller.home
+    <<: *default-http
+
+  - name: Omada Controller Admin HTTPS
+    group: App - Omada Controller
+    url: https://omada-controller.home
+    <<: *default-http
+
+  - name: Omada Controller Portal HTTP
+    group: App - Omada Controller
+    url: http://omada-controller.home:81
+    <<: *default-http
+
+  - name: Omada Controller Portal HTTPS
+    group: App - Omada Controller
+    url: https://omada-controller.home:444
+    <<: *default-http
+
+  - name: Omada Controller TCP:80
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:80
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:81
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:81
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:443
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:443
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:444
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:444
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:29811
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:29811
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:29812
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:29812
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:29813
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:29813
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:29814
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:29814
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:29815
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:29815
+    <<: *default-tcp
+
+  - name: Omada Controller TCP:29816
+    group: App - Omada Controller
+    url: tcp://omada-controller.home:29816
     <<: *default-tcp
 
   ### Group: App - Pihole ###
@@ -273,6 +436,43 @@ endpoints:
   - name: Pihole (2) TCP:443
     group: App - Pihole (2)
     url: tcp://pihole-2.home:443
+    <<: *default-tcp
+
+  ### Group: App - Pihole (3) ###
+
+  - name: Pihole (3) HTTP
+    group: App - Pihole (3)
+    url: http://pihole-3.home
+    <<: *default-http
+
+  - name: Pihole (3) HTTPS
+    group: App - Pihole (3)
+    url: https://pihole-3.home
+    <<: *default-http
+
+  - name: Pihole (3) DNS
+    group: App - Pihole (3)
+    url: pihole-3.home
+    <<: *default-dns
+
+  - name: Pihole (3) TCP:53
+    group: App - Pihole (3)
+    url: tcp://pihole-3.home:53
+    <<: *default-tcp
+
+  - name: Pihole (3) UDP:53
+    group: App - Pihole (3)
+    url: udp://pihole-3.home:53
+    <<: *default-tcp
+
+  - name: Pihole (3) TCP:80
+    group: App - Pihole (3)
+    url: tcp://pihole-3.home:80
+    <<: *default-tcp
+
+  - name: Pihole (3) TCP:443
+    group: App - Pihole (3)
+    url: tcp://pihole-3.home:443
     <<: *default-tcp
 
   ### Group: App - Pihole (matej) ###
@@ -497,6 +697,55 @@ endpoints:
     url: tcp://pihole-iot.home:443
     <<: *default-tcp
 
+  ### Group: App - Smtp4dev ###
+
+  - name: Smtp4dev HTTP
+    group: App - Smtp4dev
+    url: http://smtp4dev.home
+    <<: *default-http
+
+  - name: Smtp4dev HTTPS
+    group: App - Smtp4dev
+    url: https://smtp4dev.home
+    <<: *default-http
+
+  - name: Smtp4dev TCP:25
+    group: App - Smtp4dev
+    url: tcp://smtp4dev.home:25
+    <<: *default-tcp
+
+  - name: Smtp4dev TCP:80
+    group: App - Smtp4dev
+    url: tcp://smtp4dev.home:80
+    <<: *default-tcp
+
+  - name: Smtp4dev TCP:443
+    group: App - Smtp4dev
+    url: tcp://smtp4dev.home:443
+    <<: *default-tcp
+
+  ### Group: App - Speedtest Tracker ###
+
+  - name: Speedtest Tracker HTTP
+    group: App - Speedtest Tracker
+    url: http://speedtest-tracker.home
+    <<: *default-http
+
+  - name: Speedtest Tracker HTTPS
+    group: App - Speedtest Tracker
+    url: https://speedtest-tracker.home
+    <<: *default-http
+
+  - name: Speedtest Tracker TCP:80
+    group: App - Speedtest Tracker
+    url: tcp://speedtest-tracker.home:80
+    <<: *default-tcp
+
+  - name: Speedtest Tracker TCP:443
+    group: App - Speedtest Tracker
+    url: tcp://speedtest-tracker.home:443
+    <<: *default-tcp
+
   ### Group: App - Tvheadend ###
 
   - name: Tvheadend HTTP
@@ -507,6 +756,11 @@ endpoints:
   - name: Tvheadend HTTPS
     group: App - Tvheadend
     url: https://tvheadend.home
+    <<: *default-http
+
+  - name: Tvheadend HTTP:9981
+    group: App - Tvheadend
+    url: http://tvheadend.home:9981
     <<: *default-http
 
   - name: Tvheadend TCP:80
@@ -527,4 +781,51 @@ endpoints:
   - name: Tvheadend TCP:9982
     group: App - Tvheadend
     url: tcp://tvheadend.home:9982
+    <<: *default-tcp
+
+  ### Group: App - Unifi Controller ###
+
+  - name: Unifi Controller Admin HTTP
+    group: App - Unifi Controller
+    url: http://unifi-controller.home
+    <<: *default-http
+
+  - name: Unifi Controller Admin HTTPS
+    group: App - Unifi Controller
+    url: https://unifi-controller.home
+    <<: *default-http
+
+  - name: Unifi Controller Portal HTTP
+    group: App - Unifi Controller
+    url: http://unifi-controller.home:81
+    <<: *default-http
+
+  - name: Unifi Controller Portal HTTPS
+    group: App - Unifi Controller
+    url: https://unifi-controller.home:444
+    <<: *default-http
+
+  - name: Unifi Controller TCP:80
+    group: App - Unifi Controller
+    url: tcp://unifi-controller.home:80
+    <<: *default-tcp
+
+  - name: Unifi Controller TCP:81
+    group: App - Unifi Controller
+    url: tcp://unifi-controller.home:81
+    <<: *default-tcp
+
+  - name: Unifi Controller TCP:443
+    group: App - Unifi Controller
+    url: tcp://unifi-controller.home:443
+    <<: *default-tcp
+
+  - name: Unifi Controller TCP:444
+    group: App - Unifi Controller
+    url: tcp://unifi-controller.home:444
+    <<: *default-tcp
+
+  - name: Unifi Controller TCP:6789
+    group: App - Unifi Controller
+    url: tcp://unifi-controller.home:6789
     <<: *default-tcp
