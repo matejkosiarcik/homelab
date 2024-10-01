@@ -39,9 +39,6 @@ services:
       external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
 
-  web-backup:
-    <<: *common-service-options
-
 networks:
   external-network:
     name: ${DOCKER_COMPOSE_DOMAIN_PREFIX}-external-network
