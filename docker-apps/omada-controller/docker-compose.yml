@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: omada-controller
+    HOMELAB_APP_TYPE: omada-controller
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

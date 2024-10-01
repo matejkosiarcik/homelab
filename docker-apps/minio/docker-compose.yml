@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: minio
+    HOMELAB_APP_TYPE: minio
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_NAME: homer
+    HOMELAB_APP_TYPE: homer
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

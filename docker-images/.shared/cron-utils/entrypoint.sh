@@ -18,7 +18,7 @@ printf 'started\n' >/homelab/.internal/status.txt
 # Determine cronfile
 cronfile=''
 if [ "$HOMELAB_CONTAINER_NAME" = 'web-automation' ]; then
-    cronfile="/homelab/crontab-$HOMELAB_APP_NAME-$HOMELAB_CONTAINER_VARIANT.cron"
+    cronfile="/homelab/crontab-$HOMELAB_APP_TYPE-$HOMELAB_CONTAINER_VARIANT.cron"
 else
     cronfile='/homelab/crontab.cron'
 fi
