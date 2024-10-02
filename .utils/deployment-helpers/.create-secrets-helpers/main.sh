@@ -365,7 +365,7 @@ case "$current_dir" in
     create_password "$tmpdir/mongodb-password.txt"
 
     # Database
-    printf 'PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb.env"
+    printf 'MONGO_PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb.env"
     printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
 
     # Web backup
@@ -375,7 +375,7 @@ case "$current_dir" in
     # Misc
     printf 'UNIFI_NETWORK_APP_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
     printf 'UNIFI_NETWORK_APP_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
-    printf 'MONGODB_PASSWORD=%s\n' "$tmpdir/mongodb-password.txt" >>"$output/all-credentials.txt"
+    printf 'MONGO_PASSWORD=%s\n' "$tmpdir/mongodb-password.txt" >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

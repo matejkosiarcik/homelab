@@ -5,13 +5,13 @@ let password = '';
 // The following try/catch is to ensure this script works in both `mongo` and `mongosh`
 try {
     process = require('node:process');
-    dbName = process.env['DBNAME'];
-    user = process.env['USER'];
-    password = process.env['PASSWORD'];
+    dbName = process.env['MONGO_DBNAME'];
+    user = process.env['MONGO_USER'];
+    password = process.env['MONGO_PASSWORD'];
 } catch {
-    dbName = _getEnv('DBNAME');
-    user = _getEnv('USER');
-    password = _getEnv('PASSWORD');
+    dbName = _getEnv('MONGO_DBNAME');
+    user = _getEnv('MONGO_USER');
+    password = _getEnv('MONGO_PASSWORD');
 }
 
 db.getSiblingDB(dbName).createUser({
