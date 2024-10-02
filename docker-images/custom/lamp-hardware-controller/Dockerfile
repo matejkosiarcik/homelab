@@ -7,6 +7,7 @@ RUN apt-get update && \
         python3 python3-pip python3-dev build-essential >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./custom/lamp-hardware-controller/requirements.txt ./
+ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --no-cache-dir
 

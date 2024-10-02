@@ -7,6 +7,7 @@ RUN apt-get update -qq && \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.dependencies/gitman/requirements.txt ./
+ENV PIP_ROOT_USER_ACTION=ignore
 RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
