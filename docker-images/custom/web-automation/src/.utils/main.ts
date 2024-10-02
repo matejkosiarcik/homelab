@@ -7,9 +7,11 @@ import { expect } from 'chai';
 import axios from 'axios';
 import { getAppName, getBrowserPath, getErrorAttachmentDir, getIsHeadless, getTargetUrl, retry } from './utils.ts';
 
-export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _options: { date: string }): Promise<T> {
+export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _options: { date: string, skipInitial?: boolean | undefined }): Promise<T | undefined> {
     const options = {
         ..._options,
+        date: _options.date,
+        skipInitial: _options.skipInitial ?? false,
         errorDir: await getErrorAttachmentDir(),
         isHeadless: getIsHeadless(),
         baseUrl: getTargetUrl(),
@@ -33,6 +35,11 @@ export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _op
         retries: 20 - 1,
         delay: 1000,
     });
+
+    if (options.skipInitial) {
+        console.log(`${options.date} - Skipping initial run`);
+        return;
+    }
 
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'homelab-'));
 
