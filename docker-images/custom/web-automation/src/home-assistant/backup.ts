@@ -67,5 +67,5 @@ import { runAutomation } from '../.utils/main.ts';
                 retries: 2,
             });
         }
-    }, { date: options.currentDate });
+    }, { date: options.currentDate, skipInitial: true });
 })();

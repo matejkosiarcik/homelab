@@ -50,5 +50,5 @@ import { runAutomation } from '../.utils/main.ts';
         const download = await downloadPromise;
         expect(download.suggestedFilename(), `Unknown extension for downloaded file: ${download.suggestedFilename()}`).match(/\.unf$/);
         await download.saveAs(path.join(options.backupDir, `${options.currentDate}-settings.unf`));
-    }, { date: options.currentDate });
+    }, { date: options.currentDate, skipInitial: true });
 })();
