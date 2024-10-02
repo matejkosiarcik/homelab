@@ -90,18 +90,18 @@ elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-app:8443"
+            PROXY_UPSTREAM_URL="https://unifi-network-application:8443"
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-app:8444"
+            PROXY_UPSTREAM_URL="https://unifi-network-application:8444"
         else
             printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
             exit 1
         fi
     elif [ "$HOMELAB_ENV" = 'prod' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-app"
+            PROXY_UPSTREAM_URL="https://unifi-network-application"
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-app:444"
+            PROXY_UPSTREAM_URL="https://unifi-network-application:444"
         else
             printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
             exit 1
