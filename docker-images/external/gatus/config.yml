@@ -74,6 +74,11 @@ endpoints:
     url: icmp://10.1.0.3
     <<: *default-icmp
 
+  - name: Smart switch - TP-Link SG105E
+    group: Network equipment
+    url: icmp://10.1.0.4
+    <<: *default-icmp
+
   ### Group: Servers ###
 
   - name: Odroid H3
