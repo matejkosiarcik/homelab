@@ -21,9 +21,7 @@ services:
         condition: service_healthy
     environment:
       <<: *common-env-variables
-      MONGO_DBNAME: unifi
       MONGO_HOST: mongodb
-      MONGO_USER: unifi
     volumes:
       - ./app-data/unifi-network-application:/config:rw
       - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
@@ -36,12 +34,12 @@ services:
       context: ${DOCKER_COMPOSE_MONGODB_BUILD_CONTEXT}
       dockerfile: ${DOCKER_COMPOSE_MONGODB_BUILD_DOCKERFILE}
     environment:
-      DBNAME: unifi
       HOMELAB_CONTAINER_NAME: mongodb
       HOMELAB_CONTAINER_VARIANT: default
+      MONGO_DBNAME: unifi
+      MONGO_USER: unifi
       PORT: 27017
       TZ: Europe/Bratislava
-      USER: unifi
     env_file:
       - ./app-secrets/mongodb.env
     command: --auth --quiet --logpath /dev/null

@@ -13,4 +13,4 @@ else
     exit 1
 fi
 
-printf "show databases\n" | "$mongo_shell" "localhost:$PORT/$DBNAME" --username "$USER" --password "$PASSWORD" --quiet || exit 1
+printf "show databases\n" | "$mongo_shell" "localhost:$PORT/$MONGO_DBNAME" --username "$MONGO_USER" --password "$MONGO_PASSWORD" --quiet || exit 1

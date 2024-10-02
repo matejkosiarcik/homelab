@@ -23,9 +23,9 @@ RUN grep -v -e 'unifi.http.port' -e 'unifi.https.port' -e 'portal.http.port' -e 
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     HOMELAB_CONTAINER_NAME=unifi-controller \
     HOMELAB_CONTAINER_VARIANT=default \
-    MONGO_DBNAME=database \
+    MONGO_DBNAME=unifi \
     MONGO_PORT=27017 \
-    MONGO_USER=mongo \
+    MONGO_USER=unifi \
     PGID=1000 \
     PUID=1000
 # checkov:skip=CKV_SECRET_6: false positive in timezone
