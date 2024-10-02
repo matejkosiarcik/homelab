@@ -38,7 +38,7 @@ export function getTargetUrl(): string {
                 return 'http://pihole';
             }
             case 'unifi-controller': {
-                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://unifi-network-app:8443' : 'https://unifi-network-app';
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://unifi-network-application:8443' : 'https://unifi-network-application';
             }
             case 'uptime-kuma': {
                 return 'http://uptime-kuma:3001';

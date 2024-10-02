@@ -1,0 +1,28 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/themattman/mongodb-raspberrypi-docker.git
+    name: mongodb-raspberrypi-docker
+    rev: main
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+sources_locked:
+  - repo: https://github.com/themattman/mongodb-raspberrypi-docker.git
+    name: mongodb-raspberrypi-docker
+    rev: fbd5280dde07efdea1b4c23c953ebb999ded8693
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+default_group: ""
+groups:
+  -

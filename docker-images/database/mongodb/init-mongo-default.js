@@ -1,9 +1,18 @@
-const fs = require('node:fs');
-const process = require('node:process');
+let dbName = '';
+let user = '';
+let password = '';
 
-const dbName = process.env['DBNAME'];
-const user = process.env['USER'];
-const password = fs.readFileSync('/homelab/mongodb-password.txt', 'utf8').trim();
+// The following try/catch is to ensure this script works in both `mongo` and `mongosh`
+try {
+    process = require('node:process');
+    dbName = process.env['DBNAME'];
+    user = process.env['USER'];
+    password = process.env['PASSWORD'];
+} catch {
+    dbName = _getEnv('DBNAME');
+    user = _getEnv('USER');
+    password = _getEnv('PASSWORD');
+}
 
 db.getSiblingDB(dbName).createUser({
     user: user,

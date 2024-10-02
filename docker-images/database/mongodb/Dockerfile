@@ -2,11 +2,12 @@
 
 FROM mongo:8.0.0
 COPY ./database/mongodb/init-mongo-default.js /docker-entrypoint-initdb.d/init-mongo.js
-ENV HOMELAB_CONTAINER_NAME=mongodb \
+COPY ./database/mongodb/healthcheck.sh /homelab/
+ENV DBNAME=database \
+    HOMELAB_CONTAINER_NAME=mongodb \
     HOMELAB_CONTAINER_VARIANT=default \
+    PORT=27017 \
     TZ=Europe/Bratislava \
-    DBNAME=database \
-    USER=mongo \
-    PORT=27017
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "bash", "-c", "printf 'show databases\n' | mongosh \"localhost:${PORT}/${DBNAME}\" --username \"${USER}\" --password \"$(cat /homelab/mongodb-password.txt)\" --quiet || exit 1" ]
+    USER=mongo
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "/homelab/healthcheck.sh" ]
 CMD [ "--auth", "--quiet", "--logpath", "/dev/null" ]

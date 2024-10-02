@@ -9,11 +9,11 @@ x-definitions:
     restart: "no"
 
 services:
-  unifi-network-app:
+  unifi-network-application:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/unifi-network-app/Dockerfile
+      dockerfile: ./external/unifi-network-application/Dockerfile
       args:
         HOMELAB_BUILD_ENV: dev
 
