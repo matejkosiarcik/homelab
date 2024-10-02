@@ -13,7 +13,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 COPY ./.dependencies/minio-mc/gitman.yml ./
 RUN gitman install --quiet
 
-FROM golang:1.23.1-bookworm AS minio-mc-build
+FROM golang:1.23.2-bookworm AS minio-mc-build
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
