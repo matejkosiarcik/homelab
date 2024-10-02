@@ -45,7 +45,7 @@ services:
     command: --auth --quiet --logpath /dev/null
     volumes:
       - ./app-data/mongodb:/data/db:rw
-      - ../../../../docker-images/database/mongodb/init-mongo-unifi-controller.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ../../../../docker-images/external/unifi-network-application/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ../../../../docker-images/database/mongodb/healthcheck.sh:/homelab/healthcheck.sh:ro
     healthcheck:
       interval: 5s

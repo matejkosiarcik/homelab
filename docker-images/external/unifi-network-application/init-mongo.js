@@ -14,8 +14,6 @@ try {
     password = _getEnv('MONGO_PASSWORD');
 }
 
-// This differs a little from the official README, because of authorization problems with the "_stat" database when using mongo's --auth
-// See discussion at https://github.com/linuxserver/docker-unifi-network-application/issues/29
 db.getSiblingDB(dbName).createUser({
     user: user,
     pwd: password,
