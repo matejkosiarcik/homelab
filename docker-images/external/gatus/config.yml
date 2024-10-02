@@ -267,13 +267,13 @@ endpoints:
     url: https://minio.home
     <<: *default-http
 
-  - name: Minio HTTP
-    group: App - Minio Console
+  - name: Minio Console HTTP
+    group: App - Minio
     url: http://console.minio.home
     <<: *default-http
 
-  - name: Minio HTTPS
-    group: App - Minio Console
+  - name: Minio Console HTTPS
+    group: App - Minio
     url: https://console.minio.home
     <<: *default-http
 
@@ -287,12 +287,12 @@ endpoints:
     url: tcp://minio.home:443
     <<: *default-tcp
 
-  - name: Minio TCP:80
+  - name: Minio Console TCP:80
     group: App - Minio
     url: tcp://console.minio.home:80
     <<: *default-tcp
 
-  - name: Minio TCP:443
+  - name: Minio Console TCP:443
     group: App - Minio
     url: tcp://console.minio.home:443
     <<: *default-tcp
