@@ -27,7 +27,7 @@ services:
     volumes:
       - ./app-data/unifi-network-application:/config:rw
       - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
-    stop_grace_period: 60s
+    stop_grace_period: 30s
 
   mongodb:
     <<: *common-service-options
