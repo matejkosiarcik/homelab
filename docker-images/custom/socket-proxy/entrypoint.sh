@@ -81,11 +81,11 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     socat TCP4-LISTEN:81,fork,reuseaddr TCP4:http-proxy-portal:80 &
     socat TCP4-LISTEN:444,fork,reuseaddr TCP4:http-proxy-portal:443 &
     # Other ports
-    socat -T5 UDP4-LISTEN:1900,fork,reuseaddr UDP4:unifi-network-application:1900 &
-    socat -T5 UDP4-LISTEN:3478,fork,reuseaddr UDP4:unifi-network-application:3478 &
-    socat -T5 UDP4-LISTEN:5514,fork,reuseaddr UDP4:unifi-network-application:5514 &
+    socat -T30 UDP4-LISTEN:1900,fork,reuseaddr UDP4:unifi-network-application:1900 &
+    socat -T30 UDP4-LISTEN:3478,fork,reuseaddr UDP4:unifi-network-application:3478 &
+    socat -T30 UDP4-LISTEN:5514,fork,reuseaddr UDP4:unifi-network-application:5514 &
     socat TCP4-LISTEN:6789,fork,reuseaddr TCP4:unifi-network-application:6789 &
-    socat -T5 UDP4-LISTEN:10001,fork,reuseaddr UDP4:unifi-network-application:10001 &
+    socat -T30 UDP4-LISTEN:10001,fork,reuseaddr UDP4:unifi-network-application:10001 &
 elif [ "$HOMELAB_APP_TYPE" = 'uptime-kuma' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
