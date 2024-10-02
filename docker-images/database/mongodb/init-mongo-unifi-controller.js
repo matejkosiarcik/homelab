@@ -1,10 +1,21 @@
-const fs = require('node:fs');
-const process = require('node:process');
+let dbName = '';
+let dbName2 = '';
+let user = '';
+let password = '';
 
-const dbName = process.env['DBNAME'];
-const dbName2 = `${process.env['DBNAME']}_stat`;
-const user = process.env['USER'];
-const password = fs.readFileSync('/homelab/mongodb-password.txt', 'utf8').trim();
+// The following try/catch is to ensure this script works in both `mongo` and `mongosh`
+try {
+    process = require('node:process');
+    dbName = process.env['DBNAME'];
+    dbName2 = `${process.env['DBNAME']}_stat`;
+    user = process.env['USER'];
+    password = process.env['PASSWORD'];
+} catch {
+    dbName = _getEnv('DBNAME');
+    dbName2 = `${_getEnv('DBNAME')}_stat`;
+    user = _getEnv('USER');
+    password = _getEnv('PASSWORD');
+}
 
 // This differs a little from the official README, because of authorization problems with the "_stat" database when using mongo's --auth
 // See discussion at https://github.com/linuxserver/docker-unifi-network-application/issues/29

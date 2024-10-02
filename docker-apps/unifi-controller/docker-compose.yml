@@ -33,16 +33,28 @@ services:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
     build:
-      context: ../../../../docker-images/
-      dockerfile: ./database/mongodb/Dockerfile
+      context: ${DOCKER_COMPOSE_MONGODB_BUILD_CONTEXT}
+      dockerfile: ${DOCKER_COMPOSE_MONGODB_BUILD_DOCKERFILE}
     environment:
-      - DBNAME=unifi
-      - USER=unifi
+      DBNAME: unifi
+      HOMELAB_CONTAINER_NAME: mongodb
+      HOMELAB_CONTAINER_VARIANT: default
+      PORT: 27017
+      TZ: Europe/Bratislava
+      USER: unifi
+    env_file:
+      - ./app-secrets/mongodb.env
+    command: --auth --quiet --logpath /dev/null
     volumes:
       - ./app-data/mongodb:/data/db:rw
-      - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
       - ../../../../docker-images/database/mongodb/init-mongo-unifi-controller.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-    stop_grace_period: 30s
+      - ../../../../docker-images/database/mongodb/healthcheck.sh:/homelab/healthcheck.sh:ro
+    healthcheck:
+      interval: 5s
+      start_period: 60s
+      timeout: 2s
+      retries: 1
+      test: sh '/homelab/healthcheck.sh'
 
   certificate-manager:
     <<: *common-service-options

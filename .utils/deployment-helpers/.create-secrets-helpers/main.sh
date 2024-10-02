@@ -365,6 +365,7 @@ case "$current_dir" in
     create_password "$tmpdir/mongodb-password.txt"
 
     # Database
+    printf 'PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb.env"
     printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
 
     # Web backup
