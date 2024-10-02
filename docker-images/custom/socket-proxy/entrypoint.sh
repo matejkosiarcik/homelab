@@ -80,7 +80,6 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     # socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-admin:443 &
     # socat TCP4-LISTEN:81,fork,reuseaddr TCP4:http-proxy-portal:80 &
     # socat TCP4-LISTEN:444,fork,reuseaddr TCP4:http-proxy-portal:443 &
-    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:unifi-network-application:443 &
     socat TCP4-LISTEN:8080,fork,reuseaddr TCP4:unifi-network-application:8080 &
     socat TCP4-LISTEN:8443,fork,reuseaddr TCP4:unifi-network-application:8443 &
     socat TCP4-LISTEN:8843,fork,reuseaddr TCP4:unifi-network-application:8843 &
