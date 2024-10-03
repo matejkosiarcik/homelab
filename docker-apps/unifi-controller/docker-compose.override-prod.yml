@@ -26,20 +26,19 @@ services:
   http-proxy-admin:
     <<: *common-service-options
 
+  http-proxy-admin-2:
+    <<: *common-service-options
+
   http-proxy-portal:
     <<: *common-service-options
 
   socket-proxy:
     <<: *common-service-options
     ports:
-      # - 80:80
-      # - 81:81
-      # - 443:443
-      # - 444:444
+      - 80:80
+      - 443:443
       - 8080:8080
       - 8443:8443
-      - 8843:8843
-      - 8880:8880
     networks:
       external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}

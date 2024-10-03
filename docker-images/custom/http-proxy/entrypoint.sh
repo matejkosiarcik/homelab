@@ -88,26 +88,12 @@ elif [ "$HOMELAB_APP_TYPE" = 'speedtest-tracker' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     PROXY_UPSTREAM_URL="http://tvheadend:9981"
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
-    if [ "$HOMELAB_ENV" = 'dev' ]; then
-        if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-application:8443"
-        elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-application:8444"
-        else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
-            exit 1
-        fi
-    elif [ "$HOMELAB_ENV" = 'prod' ]; then
-        if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-application"
-        elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://unifi-network-application:444"
-        else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
-            exit 1
-        fi
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-2' ]; then
+        PROXY_UPSTREAM_URL="https://unifi-network-application:8443"
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
+        PROXY_UPSTREAM_URL="https://unifi-network-application:8444"
     else
-        printf 'Unknown HOMELAB_ENV" %s\n' "${HOMELAB_ENV-N/A}"
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'uptime-kuma' ]; then
@@ -127,13 +113,25 @@ printf "export PROXY_UPSTREAM_URL_WS='%s'\n" "$PROXY_UPSTREAM_URL_WS" >>/etc/apa
 # Set PROXY_URL_REGEX_REVERSE
 if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_URL_REGEX_REVERSE='^/(\.proxy(/.*)?)?$'
-elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && ( [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-2' ] ); then
     PROXY_URL_REGEX_REVERSE='^/((\.proxy(/.*)?)|(setup/favicon.png))$'
 else
     PROXY_URL_REGEX_REVERSE='^/\.proxy(/.*)?$'
 fi
 export PROXY_URL_REGEX_REVERSE
 printf "export PROXY_URL_REGEX_REVERSE='%s'\n" "$PROXY_URL_REGEX_REVERSE" >>/etc/apache2/envvars
+
+# Set PROXY_HTTP_PORT
+if [ "$HOMELAB_ENV" = 'prod' ]; then
+    PROXY_HTTP_PORT='80'
+elif [ "$HOMELAB_ENV" = 'dev' ]; then
+    PROXY_HTTP_PORT='8080'
+else
+    printf 'Unknown HOMELAB_ENV %s\n' "$HOMELAB_ENV" >&2
+    exit 1
+fi
+export PROXY_HTTP_PORT
+printf "export PROXY_HTTP_PORT='%s'\n" "$PROXY_HTTP_PORT" >>/etc/apache2/envvars
 
 # Set PROXY_HTTPS_PORT
 if [ "$HOMELAB_ENV" = 'prod' ]; then
