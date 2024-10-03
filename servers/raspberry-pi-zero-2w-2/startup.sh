@@ -6,8 +6,8 @@ git_dir="$HOME/git/homelab"
 
 # disable-swap.sh is skipped, because with it this RPi frequently freezes during heavy operation (such as docker-builds)
 
+sh "$git_dir/.utils/startup-helpers/rfkill.sh"
+
 seq 1 255 | while read -r index; do
     sh "$git_dir/.utils/startup-helpers/macvlan-router.sh" "macvlan-$(printf '%03d' "$index")" "10.1.21.$index" "10.1.20.$index"
 done
-
-sh "$git_dir/.utils/startup-helpers/rfkill.sh"
