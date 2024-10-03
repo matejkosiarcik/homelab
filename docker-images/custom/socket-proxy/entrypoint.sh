@@ -82,7 +82,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-admin:443 &
     if [ "$HOMELAB_ENV" = 'prod' ]; then
         # In production we must also expose 8080, because unifi equipment depends on it
-        # socat TCP4-LISTEN:8080,fork,reuseaddr TCP4:unifi-network-application:8080 &
+        socat TCP4-LISTEN:8080,fork,reuseaddr TCP4:unifi-network-application:8080 &
         socat TCP4-LISTEN:8443,fork,reuseaddr TCP4:unifi-network-application:8443 &
     fi
     # Reenable below for captive portal:
