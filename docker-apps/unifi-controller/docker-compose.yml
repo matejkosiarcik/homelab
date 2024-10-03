@@ -117,6 +117,19 @@ services:
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy-portal:/homelab/logs:rw
 
+  http-redirect-raw:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-redirect-raw
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-redirect/Dockerfile
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: raw
+    volumes:
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro # TODO: Rename to "apache-status"
+      - ./app-logs/http-redirect-raw:/homelab/logs:rw
+
   socket-proxy:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy

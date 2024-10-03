@@ -34,6 +34,9 @@ services:
   http-proxy-portal:
     <<: *common-service-options
 
+  http-redirect-raw:
+    <<: *common-service-options
+
   socket-proxy:
     <<: *common-service-options
     ports:
