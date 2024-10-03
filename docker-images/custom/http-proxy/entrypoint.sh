@@ -32,6 +32,14 @@ fi
 export HOMELAB_APP_TYPE
 printf "export HOMELAB_APP_TYPE='%s'\n" "$HOMELAB_APP_TYPE" >>/etc/apache2/envvars
 
+# Set HOMELAB_APP_EXTERNAL_DOMAIN
+if [ "${HOMELAB_APP_EXTERNAL_DOMAIN-x}" = 'x' ]; then
+    printf 'HOMELAB_APP_EXTERNAL_DOMAIN unset\n' >&2
+    exit 1
+fi
+export HOMELAB_APP_EXTERNAL_DOMAIN
+printf "export HOMELAB_APP_EXTERNAL_DOMAIN='%s'\n" "$HOMELAB_APP_EXTERNAL_DOMAIN" >>/etc/apache2/envvars
+
 # Set PROXY_UPSTREAM_URL
 if [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
     PROXY_UPSTREAM_URL="http://docker-registry"

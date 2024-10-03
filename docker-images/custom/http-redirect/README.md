@@ -1,3 +1,3 @@
 # HTTP Redirect
 
-This image just redirects HTTP traffic to HTTPS on the same host.
+This image just redirects HTTP to HTTPS on the same host.

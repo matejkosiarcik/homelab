@@ -2,7 +2,7 @@
 
 FROM debian:12.7-slim AS prefinal
 WORKDIR /homelab
-RUN mkdir -p ./certs ./logs
+RUN mkdir -p ./logs
 COPY ./custom/http-redirect/www/ ./www/
 COPY ./custom/http-redirect/entrypoint.sh ./
 
