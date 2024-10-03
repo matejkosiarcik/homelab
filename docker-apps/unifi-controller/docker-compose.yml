@@ -8,13 +8,19 @@ x-definitions:
     #   internal-network: {}
     dns:
       - 10.1.10.1
-    # dns_search: .
+      - 8.8.4.4
+    links:
+      - unifi-network-application:unifi-network-application
+      - mongodb:mongodb
+      - certificate-manager:certificate-manager
+      - http-proxy-admin:http-proxy-admin
+      - socket-proxy:socket-proxy
+      - web-backup:web-backup
 
 services:
   unifi-network-application:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-unifi-network-application
-    # hostname: unifi-network-application
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/unifi-network-application/Dockerfile
@@ -34,7 +40,6 @@ services:
   mongodb:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
-    # hostname: mongodb
     build:
       context: ${DOCKER_COMPOSE_MONGODB_BUILD_CONTEXT}
       dockerfile: ${DOCKER_COMPOSE_MONGODB_BUILD_DOCKERFILE}
@@ -62,7 +67,6 @@ services:
   certificate-manager:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
-    # hostname: certificate-manager
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -75,7 +79,6 @@ services:
   http-proxy-admin:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-admin
-    # hostname: http-proxy-admin
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -93,7 +96,6 @@ services:
   socket-proxy:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    # hostname: socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile
@@ -107,7 +109,6 @@ services:
   web-backup:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
-    # hostname: web-backup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
