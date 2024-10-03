@@ -83,23 +83,6 @@ services:
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy-admin:/homelab/logs:rw
 
-  http-proxy-portal:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-portal
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: portal
-    volumes:
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy-portal:/homelab/logs:rw
-
   socket-proxy:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy

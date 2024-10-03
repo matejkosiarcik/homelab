@@ -24,9 +24,6 @@ services:
   http-proxy-admin:
     <<: *common-service-options
 
-  http-proxy-portal:
-    <<: *common-service-options
-
   socket-proxy:
     <<: *common-service-options
     ports:

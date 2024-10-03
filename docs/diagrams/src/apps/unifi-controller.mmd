@@ -14,25 +14,23 @@ flowchart LR
 
     subgraph app_wrapper[" "]
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
-        http_proxy_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache")
-        http_proxy_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache")
+        http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br />proxy")
         certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br />Manager")
-        unifi_network_app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Network<br />Application")
+        unifi_network_application("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Network<br />Application")
         database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /></div>MongoDB")
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br />script")
 
-        socket_proxy <--->|:80,443| http_proxy_1 <--->|:443| unifi_network_app
-        socket_proxy <--->|:81,444| http_proxy_2 <--->|:444| unifi_network_app
-        socket_proxy <--->|:1900,3478,5514,6789,10001| unifi_network_app
-        http_proxy_1 & http_proxy_2 -..-|fs| certificate_manager
-        unifi_network_app ~~~ script_backup -..->|use| unifi_network_app
-        unifi_network_app -..->|use| database
+        socket_proxy <--->|:80,443| http_proxy <--->|:8443| unifi_network_application
+        socket_proxy <--->|:8080,8443,1900,3478,5514,6789,10001| unifi_network_application
+        http_proxy -..-|fs| certificate_manager
+        unifi_network_application ~~~ script_backup -..->|use| unifi_network_application
+        unifi_network_application -..->|use| database
     end
 
     s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
     class s3_database dashed_border
 
-    home_network <--->|:80,81,443,444,1900,3478,5514,6789,10001| socket_proxy
+    home_network <--->|:80,443,8080,8443,1900,3478,5514,6789,10001| socket_proxy
     unifi_equipment <-..->|use/control| app_wrapper
     unifi_equipment ~~~~ socket_proxy
     script_backup -.->|send backup| s3_database

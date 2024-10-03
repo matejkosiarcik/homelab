@@ -19,7 +19,7 @@ services:
 
   mongodb:
     <<: *common-service-options
-    # ports:
+    # ports: # Only for local debugging
     #   - 27017:27017
 
   certificate-manager:
@@ -28,16 +28,11 @@ services:
   http-proxy-admin:
     <<: *common-service-options
 
-  http-proxy-portal:
-    <<: *common-service-options
-
   socket-proxy:
     <<: *common-service-options
     ports:
       - 8080:80
-      - 8081:81
       - 8443:443
-      - 8444:444
 
   web-backup:
     <<: *common-service-options
