@@ -313,34 +313,14 @@ endpoints:
     url: https://omada-controller.home
     <<: *default-http
 
-  - name: Omada Controller Portal HTTP
-    group: App - Omada Controller
-    url: http://omada-controller.home:81
-    <<: *default-http
-
-  - name: Omada Controller Portal HTTPS
-    group: App - Omada Controller
-    url: https://omada-controller.home:444
-    <<: *default-http
-
   - name: Omada Controller TCP:80
     group: App - Omada Controller
     url: tcp://omada-controller.home:80
     <<: *default-tcp
 
-  - name: Omada Controller TCP:81
-    group: App - Omada Controller
-    url: tcp://omada-controller.home:81
-    <<: *default-tcp
-
   - name: Omada Controller TCP:443
     group: App - Omada Controller
     url: tcp://omada-controller.home:443
-    <<: *default-tcp
-
-  - name: Omada Controller TCP:444
-    group: App - Omada Controller
-    url: tcp://omada-controller.home:444
     <<: *default-tcp
 
   - name: Omada Controller TCP:29811
