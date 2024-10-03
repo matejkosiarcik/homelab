@@ -6,7 +6,7 @@ tmpdir=''
 . "$(dirname "$0")/.build-utils.sh"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
-outdir="$(git rev-parse --show-toplevel)/docker-images/custom/http-proxy/www/.proxy/icons/unifi-controller"
+outdir="$(git rev-parse --show-toplevel)/docker-images/custom/http-proxy/www/.apache/icons/unifi-controller"
 rm -rf "$outdir"
 mkdir -p "$outdir"
 

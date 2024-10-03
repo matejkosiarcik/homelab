@@ -125,11 +125,11 @@ printf "export PROXY_UPSTREAM_URL_WS='%s'\n" "$PROXY_UPSTREAM_URL_WS" >>/etc/apa
 
 # Set PROXY_URL_REGEX_REVERSE
 if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
-    PROXY_URL_REGEX_REVERSE='^/(\.proxy(/.*)?)?$'
+    PROXY_URL_REGEX_REVERSE='^/(\.apache(/.*)?)?$'
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-    PROXY_URL_REGEX_REVERSE='^/((\.proxy(/.*)?)|(setup/favicon.png))$'
+    PROXY_URL_REGEX_REVERSE='^/((\.apache(/.*)?)|(setup/favicon.png))$'
 else
-    PROXY_URL_REGEX_REVERSE='^/\.proxy(/.*)?$'
+    PROXY_URL_REGEX_REVERSE='^/\.apache(/.*)?$'
 fi
 export PROXY_URL_REGEX_REVERSE
 printf "export PROXY_URL_REGEX_REVERSE='%s'\n" "$PROXY_URL_REGEX_REVERSE" >>/etc/apache2/envvars
