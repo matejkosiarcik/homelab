@@ -4,8 +4,8 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    networks:
-      internal-network: {}
+    # networks:
+    #   internal-network: {}
 
 services:
   unifi-network-application:
@@ -116,5 +116,10 @@ services:
       - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+  # internal-network:
+  #   name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: ${DOCKER_COMPOSE_APP_NAME}-default-network
+      com.docker.network.enable_ipv6: "false"
