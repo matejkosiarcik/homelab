@@ -118,10 +118,10 @@ services:
       - ./app-logs/web-backup-errors:/homelab/errors:rw
       - ./app-logs/web-backup:/homelab/logs:rw
 
-networks:
-  # internal-network:
-  #   name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-  default:
-    driver: bridge
-    driver_opts:
-      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
+# networks:
+#   # internal-network:
+#   #   name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+#   # default:
+#   #   driver: bridge
+#   #   driver_opts:
+#   #     com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
