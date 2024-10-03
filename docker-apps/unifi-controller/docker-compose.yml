@@ -8,6 +8,7 @@ x-definitions:
     #   internal-network: {}
     dns:
       - 10.1.10.1
+    dns_search: .
 
 services:
   unifi-network-application:
