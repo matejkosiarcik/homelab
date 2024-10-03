@@ -93,4 +93,4 @@ RewriteRule ^ /admin [L,R=307]
 # Serve custom favicon.png for unifi-controller
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
 RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
-RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
+RewriteRule ^ /.apache/icons/unifi-controller/favicon.png [L]
