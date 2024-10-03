@@ -121,5 +121,5 @@ networks:
   default:
     driver: bridge
     driver_opts:
-      com.docker.network.bridge.name: ${DOCKER_COMPOSE_APP_NAME}-default-network
+      com.docker.network.bridge.name: ${DOCKER_COMPOSE_APP_NAME}-network
       com.docker.network.enable_ipv6: "false"
