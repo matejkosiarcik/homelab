@@ -313,34 +313,14 @@ endpoints:
     url: https://omada-controller.home
     <<: *default-http
 
-  - name: Omada Controller Portal HTTP
-    group: App - Omada Controller
-    url: http://omada-controller.home:81
-    <<: *default-http
-
-  - name: Omada Controller Portal HTTPS
-    group: App - Omada Controller
-    url: https://omada-controller.home:444
-    <<: *default-http
-
   - name: Omada Controller TCP:80
     group: App - Omada Controller
     url: tcp://omada-controller.home:80
     <<: *default-tcp
 
-  - name: Omada Controller TCP:81
-    group: App - Omada Controller
-    url: tcp://omada-controller.home:81
-    <<: *default-tcp
-
   - name: Omada Controller TCP:443
     group: App - Omada Controller
     url: tcp://omada-controller.home:443
-    <<: *default-tcp
-
-  - name: Omada Controller TCP:444
-    group: App - Omada Controller
-    url: tcp://omada-controller.home:444
     <<: *default-tcp
 
   - name: Omada Controller TCP:29811
@@ -804,14 +784,14 @@ endpoints:
     url: https://unifi-controller.home
     <<: *default-http
 
-  - name: Unifi Controller Portal HTTP
+  - name: Unifi Controller Admin HTTP (raw)
     group: App - Unifi Controller
-    url: http://unifi-controller.home:81
+    url: http://unifi-controller.home:8080
     <<: *default-http
 
-  - name: Unifi Controller Portal HTTPS
+  - name: Unifi Controller Portal HTTPS (raw)
     group: App - Unifi Controller
-    url: https://unifi-controller.home:444
+    url: https://unifi-controller.home:8443
     <<: *default-http
 
   - name: Unifi Controller TCP:80
@@ -819,9 +799,9 @@ endpoints:
     url: tcp://unifi-controller.home:80
     <<: *default-tcp
 
-  - name: Unifi Controller TCP:81
+  - name: Unifi Controller TCP:8080
     group: App - Unifi Controller
-    url: tcp://unifi-controller.home:81
+    url: tcp://unifi-controller.home:8080
     <<: *default-tcp
 
   - name: Unifi Controller TCP:443
@@ -829,9 +809,9 @@ endpoints:
     url: tcp://unifi-controller.home:443
     <<: *default-tcp
 
-  - name: Unifi Controller TCP:444
+  - name: Unifi Controller TCP:8443
     group: App - Unifi Controller
-    url: tcp://unifi-controller.home:444
+    url: tcp://unifi-controller.home:8443
     <<: *default-tcp
 
   - name: Unifi Controller TCP:6789
