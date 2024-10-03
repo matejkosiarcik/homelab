@@ -6,9 +6,9 @@ x-definitions:
       <<: *common-env-variables
     # networks:
     #   internal-network: {}
-    dns:
-      - 8.8.4.4
-      - 10.1.10.1
+    # dns:
+    #   - 8.8.4.4
+    #   - 10.1.10.1
 
 services:
   unifi-network-application:
