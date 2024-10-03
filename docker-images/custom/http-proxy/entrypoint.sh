@@ -96,7 +96,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'speedtest-tracker' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     PROXY_UPSTREAM_URL="http://tvheadend:9981"
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
-    if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-2' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
         PROXY_UPSTREAM_URL="https://unifi-network-application:8443"
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
         PROXY_UPSTREAM_URL="https://unifi-network-application:8444"
@@ -113,6 +113,11 @@ fi
 export PROXY_UPSTREAM_URL
 printf "export PROXY_UPSTREAM_URL='%s'\n" "$PROXY_UPSTREAM_URL" >>/etc/apache2/envvars
 
+# Set PROXY_FORCE_HTTPS
+PROXY_FORCE_HTTPS='1'
+export PROXY_FORCE_HTTPS
+printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
+
 # Set PROXY_UPSTREAM_URL_WS
 PROXY_UPSTREAM_URL_WS="$(printf '%s' "$PROXY_UPSTREAM_URL" | sed 's~https:~wss:~;s~http:~ws:~')"
 export PROXY_UPSTREAM_URL_WS
@@ -121,7 +126,7 @@ printf "export PROXY_UPSTREAM_URL_WS='%s'\n" "$PROXY_UPSTREAM_URL_WS" >>/etc/apa
 # Set PROXY_URL_REGEX_REVERSE
 if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_URL_REGEX_REVERSE='^/(\.proxy(/.*)?)?$'
-elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && ( [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-2' ] ); then
+elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
     PROXY_URL_REGEX_REVERSE='^/((\.proxy(/.*)?)|(setup/favicon.png))$'
 else
     PROXY_URL_REGEX_REVERSE='^/\.proxy(/.*)?$'

@@ -28,15 +28,6 @@ services:
   http-proxy-admin:
     <<: *common-service-options
 
-  http-proxy-admin-2:
-    <<: *common-service-options
-
-  http-proxy-portal:
-    <<: *common-service-options
-
-  http-redirect-raw:
-    <<: *common-service-options
-
   socket-proxy:
     <<: *common-service-options
     ports:
