@@ -21,5 +21,5 @@ ENV APACHE_HTTP_PORT_NUMBER=80 \
     HOMELAB_CONTAINER_NAME=http-redirect \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.apache || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail http://localhost/.apache || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
