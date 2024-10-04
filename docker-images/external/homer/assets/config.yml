@@ -193,13 +193,6 @@ services:
         logo: ./assets/icons/uptime-kuma.png
 
       # Uptime monitor
-      - name: Uptime Kuma
-        type: Ping
-        subtitle: "2"
-        url: https://uptime-kuma-2.home
-        logo: ./assets/icons/uptime-kuma.png
-
-      # Uptime monitor
       - name: Gatus
         type: Ping
         subtitle: "1"
@@ -214,7 +207,7 @@ services:
         logo: ./assets/icons/gatus.png
 
       # Docker cache proxy
-      - name: DockerHub Mirror
+      - name: DockerHub Proxy
         type: Ping
         subtitle: DockerHub
         url: https://dockerhub-proxy.home
@@ -233,20 +226,6 @@ services:
         subtitle: "-"
         url: https://speedtest.home
         logo: ./assets/icons/speedtest.png
-
-      # Resource monitor
-      - name: Netdata
-        type: Ping
-        subtitle: "-"
-        url: https://netdata.home
-        logo: ./assets/icons/netdata.png
-
-      # General monitor
-      - name: Prometheus
-        type: Ping
-        subtitle: "-"
-        url: https://prometheus.home
-        logo: ./assets/icons/prometheus.png
 
       # S3 Storage
       - name: MinIO
