@@ -124,4 +124,4 @@ networks:
     driver: none
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    internal: true
+    # internal: true
