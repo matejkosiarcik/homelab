@@ -113,6 +113,28 @@ endpoints:
     <<: *default-icmp
     enabled: false # TODO: Reenable
 
+  ### Group: App - Changedetection.io ###
+
+  - name: Changedetection.io HTTP
+    group: App - Changedetection.io
+    url: http://changedetection.home
+    <<: *default-http
+
+  - name: Changedetection.io HTTPS
+    group: App - Changedetection.io
+    url: https://changedetection.home
+    <<: *default-http
+
+  - name: Changedetection.io TCP:80
+    group: App - Changedetection.io
+    url: tcp://changedetection.home:80
+    <<: *default-tcp
+
+  - name: Changedetection.io TCP:443
+    group: App - Changedetection.io
+    url: tcp://changedetection.home:443
+    <<: *default-tcp
+
   ### Group: App - Dockerhub proxy ###
 
   - name: DockerHub proxy HTTP
