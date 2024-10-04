@@ -31,8 +31,10 @@ updates:
       - /docker-images/custom/web-automation
       - /docker-images/database/mongodb
       - /docker-images/external/docker-registry
+      - /docker-images/external/gatus
       - /docker-images/external/healthchecks
       - /docker-images/external/home-assistant
+      - /docker-images/external/homepage
       - /docker-images/external/homer
       - /docker-images/external/jellyfin
       - /docker-images/external/minio-server
@@ -63,6 +65,7 @@ updates:
       - /.utils/deployment-helpers/.create-secrets-helpers/playwright
       - /docker-images/custom/lamp-network-server
       - /docker-images/custom/web-automation
+      - /docker-images/external/homepage
       - /docs/diagrams
       - /icons
     versioning-strategy: increase
