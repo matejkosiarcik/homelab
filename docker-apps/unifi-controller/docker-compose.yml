@@ -120,14 +120,8 @@ services:
       - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
-  default:
+  default: # Just disable default network
     driver: none
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    # driver: bridge
     internal: true
-
-#     driver: bridge
-#     # internal: true
-#   #   driver_opts:
-#   #     com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
