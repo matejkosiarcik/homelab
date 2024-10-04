@@ -44,49 +44,49 @@
 - Servers:
     - Odroid H3:
         description: App server
-        href: javascript:copyURL('ssh matej@10.1.4.8')
+        href: javascript:copyUrl('ssh matej@10.1.4.8')
         ping: "10.1.4.8"
         icon: /icons/odroid.png
         target: _self
 
     - Raspberry Pi 3B:
         description: App server
-        href: javascript:copyURL('ssh matej@10.1.4.2')
+        href: javascript:copyUrl('ssh matej@10.1.4.2')
         ping: "10.1.4.2"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 2G:
         description: App server
-        href: javascript:copyURL('ssh matej@10.1.4.3')
+        href: javascript:copyUrl('ssh matej@10.1.4.3')
         ping: "10.1.4.3"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 4G:
         description: App server
-        href: javascript:copyURL('ssh matej@10.1.4.4')
+        href: javascript:copyUrl('ssh matej@10.1.4.4')
         ping: "10.1.4.4"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - MacBook Pro 2012:
         description: NAS
-        href: javascript:copyURL('ssh matej@10.1.4.1')
+        href: javascript:copyUrl('ssh matej@10.1.4.1')
         ping: "10.1.4.1"
         icon: /icons/apple.png
         target: _self
 
     - Raspberry Pi Zero 2W 1:
         description: IoT device
-        href: javascript:copyURL('ssh matej@10.1.4.6')
+        href: javascript:copyUrl('ssh matej@10.1.4.6')
         ping: "10.1.4.6"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi Zero 2W 2:
         description: IoT device
-        href: javascript:copyURL('ssh matej@10.1.4.7')
+        href: javascript:copyUrl('ssh matej@10.1.4.7')
         ping: "10.1.4.7"
         icon: /icons/raspberry-pi.png
         target: _self
