@@ -7,8 +7,12 @@ x-definitions:
     # networks:
     #   internal-network: {}
     # dns:
-    #   - 8.8.4.4
     #   - 10.1.10.1
+      # - 8.8.4.4
+    dns_opt:
+      - single-request
+    # sysctls:
+    #   net.ipv6.conf.all.disable_ipv6: 1
 
 services:
   unifi-network-application:
@@ -121,7 +125,8 @@ services:
 # networks:
 #   # internal-network:
 #   #   name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-#   # default:
-#   #   driver: bridge
+#   default:
+#     driver: bridge
+#     # internal: true
 #   #   driver_opts:
 #   #     com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
