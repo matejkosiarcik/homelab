@@ -4,8 +4,8 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    # networks:
-    #   internal-network: {}
+    networks:
+      internal-network: {}
     dns_opt:
       - single-request
     sysctls:
@@ -119,9 +119,9 @@ services:
       - ./app-logs/web-backup-errors:/homelab/errors:rw
       - ./app-logs/web-backup:/homelab/logs:rw
 
-# networks:
-#   # internal-network:
-#   #   name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+networks:
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
 #   default:
 #     driver: bridge
 #     # internal: true
