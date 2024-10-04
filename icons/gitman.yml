@@ -1,7 +1,40 @@
 location: gitman-repositories/
 sources:
+  - repo: https://github.com/odb/official-bash-logo.git
+    name: bash-logo
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/walkxcode/dashboard-icons.git
+    name: dashboard-icons
+    rev: main
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
   - repo: https://github.com/jb-stack/Dia-vrt-sheets.git
     name: dia-vrt-sheets
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/NX211/homer-icons.git
+    name: homer-icons
     rev: master
     type: git
     params:
@@ -33,54 +66,32 @@ sources:
       -
     scripts:
       -
-  - repo: https://github.com/NX211/homer-icons.git
-    name: homer-icons
-    rev: master
-    type: git
-    params:
-    sparse_paths:
-      -
-    links:
-      -
-    scripts:
-      -
-  - repo: https://github.com/odb/official-bash-logo.git
-    name: official-bash-logo
-    rev: master
-    type: git
-    params:
-    sparse_paths:
-      -
-    links:
-      -
-    scripts:
-      -
 sources_locked:
+  - repo: https://github.com/odb/official-bash-logo.git
+    name: bash-logo
+    rev: e44dab9f89aadd410ff04825b2692eab16711211
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/walkxcode/dashboard-icons.git
+    name: dashboard-icons
+    rev: be82e22c418f5980ee2a13064d50f1483df39c8c
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
   - repo: https://github.com/jb-stack/Dia-vrt-sheets.git
     name: dia-vrt-sheets
     rev: 086b91951338a3633fff59bf6b5facceec93a88f
-    type: git
-    params:
-    sparse_paths:
-      -
-    links:
-      -
-    scripts:
-      -
-  - repo: https://github.com/kubernetes/community.git
-    name: kubernetes-community
-    rev: 495011674de058660011593e6c6c842c83a1fd24
-    type: git
-    params:
-    sparse_paths:
-      -
-    links:
-      -
-    scripts:
-      -
-  - repo: https://github.com/causefx/Organizr.git
-    name: organizr
-    rev: b8344ba52dc91c5159914e5d9a536d9ae0a38a3c
     type: git
     params:
     sparse_paths:
@@ -100,9 +111,20 @@ sources_locked:
       -
     scripts:
       -
-  - repo: https://github.com/odb/official-bash-logo.git
-    name: official-bash-logo
-    rev: e44dab9f89aadd410ff04825b2692eab16711211
+  - repo: https://github.com/kubernetes/community.git
+    name: kubernetes-community
+    rev: c05216bf79888805a143126fc2a4f8f36e880797
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+  - repo: https://github.com/causefx/Organizr.git
+    name: organizr
+    rev: b8344ba52dc91c5159914e5d9a536d9ae0a38a3c
     type: git
     params:
     sparse_paths:
