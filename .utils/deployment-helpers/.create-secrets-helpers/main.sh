@@ -102,6 +102,20 @@ prepare_empty_env() {
 }
 
 case "$current_dir" in
+*changedetection*)
+    create_http_proxy_auth_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/admin-password.txt"
+
+    # Misc
+    printf 'CHANGEDETECTION_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *docker*-proxy*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"

@@ -41,7 +41,9 @@ export HOMELAB_APP_EXTERNAL_DOMAIN
 printf "export HOMELAB_APP_EXTERNAL_DOMAIN='%s'\n" "$HOMELAB_APP_EXTERNAL_DOMAIN" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL
-if [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
+    PROXY_UPSTREAM_URL="http://changedetection:5000"
+elif [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
     PROXY_UPSTREAM_URL="http://docker-registry"
 elif [ "$HOMELAB_APP_TYPE" = 'gatus' ]; then
     PROXY_UPSTREAM_URL="http://gatus:8080"

@@ -15,7 +15,7 @@ convert_options='magick -background none -bordercolor transparent INPUT_FILE -re
 
 ### Bash icon ###
 
-convert_image "$convert_options" "$input_dir/gitman-repositories/official-bash-logo/assets/Logos/Icons/SVG/512x512.svg" "$outdir/bash.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/bash-logo/assets/Logos/Icons/SVG/512x512.svg" "$outdir/bash.png"
 
 ### OSA Icons ###
 
@@ -46,6 +46,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-comm
 
 ### Homer icons ###
 
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/changedetection.svg" "$outdir/changedetection.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/chromium.png" "$outdir/chromium.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$outdir/docker.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/azuredns.png" "$outdir/dns.png"
