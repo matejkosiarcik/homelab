@@ -17,6 +17,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'healthchecks' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'home-assistant' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "$HOMELAB_APP_TYPE" = 'homepage' ]; then
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'homer' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
