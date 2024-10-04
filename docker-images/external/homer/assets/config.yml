@@ -84,15 +84,22 @@ services:
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: Main
+        subtitle: Main-1
         url: https://pihole.home
         logo: ./assets/icons/pihole.png
 
       # DNS
       - name: PiHole
         type: Ping
-        subtitle: Main (duplicate)
+        subtitle: Main-2
         url: https://pihole-2.home
+        logo: ./assets/icons/pihole.png
+
+      # DNS
+      - name: PiHole
+        type: Ping
+        subtitle: Main-3
+        url: https://pihole-3.home
         logo: ./assets/icons/pihole.png
 
       # DNS
