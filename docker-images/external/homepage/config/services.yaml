@@ -44,50 +44,50 @@
 - Servers:
     - Odroid H3:
         description: App server
-        href: javascript:window.alert("UNIMPLEMENTED")
-        ping: "10.1.4.8" # TODO: odroid-h3.home
+        href: javascript:copyURL('ssh matej@10.1.4.8')
+        ping: "10.1.4.8"
         icon: /icons/odroid.png
         target: _self
 
     - Raspberry Pi 3B:
         description: App server
-        href: javascript:window.alert("UNIMPLEMENTED")
-        ping: "10.1.4.2" # TODO: raspberry-pi-3b.home
+        href: javascript:copyURL('ssh matej@10.1.4.2')
+        ping: "10.1.4.2"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 2G:
         description: App server
-        href: javascript:window.alert("UNIMPLEMENTED")
-        ping: "10.1.4.3" # TODO: raspberry-pi-4b-2g.home
+        href: javascript:copyURL('ssh matej@10.1.4.3')
+        ping: "10.1.4.3"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 4G:
         description: App server
-        href: javascript:window.alert("UNIMPLEMENTED")
-        ping: "10.1.4.4" # TODO: raspberry-pi-4b-4g.home
+        href: javascript:copyURL('ssh matej@10.1.4.4')
+        ping: "10.1.4.4"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - MacBook Pro 2012:
         description: NAS
-        href: javascript:window.alert("UNIMPLEMENTED")
-        ping: "10.1.4.1" # TODO: macbook-pro-2012.home
+        href: javascript:copyURL('ssh matej@10.1.4.1')
+        ping: "10.1.4.1"
         icon: /icons/apple.png
         target: _self
 
     - Raspberry Pi Zero 2W 1:
         description: IoT device
-        href: javascript:window.alert("UNIMPLEMENTED")
-        ping: "10.1.4.6" # TODO: raspberry-pi-zero-2w-1.home
+        href: javascript:copyURL('ssh matej@10.1.4.6')
+        ping: "10.1.4.6"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi Zero 2W 2:
         description: IoT device
-        href: javascript:window.alert("UNIMPLEMENTED")
-        ping: "10.1.4.7" # TODO: raspberry-pi-zero-2w-2.home
+        href: javascript:copyURL('ssh matej@10.1.4.7')
+        ping: "10.1.4.7"
         icon: /icons/raspberry-pi.png
         target: _self
 
