@@ -6,6 +6,10 @@ x-definitions:
       <<: *common-env-variables
     networks:
       internal-network: {}
+    dns_opt:
+      - single-request
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
 
 services:
   tvheadend:
@@ -52,5 +56,8 @@ services:
       dockerfile: ./custom/socket-proxy/Dockerfile
 
 networks:
+  default: # Just disable default network
+    driver: none
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    internal: true

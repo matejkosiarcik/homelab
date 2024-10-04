@@ -31,6 +31,6 @@ printf 'Creating new router %s with IP %s for network %s\n' "$router_name" "$ext
 
 # Add macvlan-shim "router" to be able to access containers from host
 sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
-sudo ip addr add "$external_ip/32" dev "$router_name"
+sudo ip addr add "$external_ip/24" dev "$router_name"
 sudo ip link set "$router_name" up
-sudo ip route add "$internal_docker_ip/32" dev "$router_name"
+sudo ip route add "$internal_docker_ip/24" dev "$router_name"
