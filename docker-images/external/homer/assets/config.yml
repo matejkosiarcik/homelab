@@ -18,10 +18,16 @@ services:
         logo: ./assets/icons/router.png
         url: https://10.1.0.1
 
-      - name: Smart Switch
+      - name: Smart Switch 8-port
         logo: ./assets/icons/switch.png
-        subtitle: Tp-Link SG108E
+        subtitle: TP-Link SG108E
         url: http://10.1.0.3
+        method: get
+
+      - name: Smart Switch 5-port
+        logo: ./assets/icons/switch.png
+        subtitle: TP-Link SG105E
+        url: http://10.1.0.4
         method: get
 
   - name: Servers (SSH)
