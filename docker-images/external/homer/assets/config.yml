@@ -157,6 +157,13 @@ services:
         url: https://homer.home
         logo: ./assets/icons/homer.png
 
+      # Dashboard
+      - name: Homepage
+        type: Ping
+        subtitle: "-"
+        url: https://homepage.home
+        logo: ./assets/icons/homepage.png
+
       # SDN Network controller
       - name: Unifi
         type: Ping
