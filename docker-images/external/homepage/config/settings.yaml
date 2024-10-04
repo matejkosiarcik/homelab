@@ -1,0 +1,26 @@
+title: Homelab Homepage
+theme: dark
+color: gray
+
+layout:
+  Network:
+    style: row
+    columns: 4
+  Servers:
+    style: row
+    columns: 4
+  DNS:
+    style: row
+    columns: 4
+  Smart Home:
+    style: row
+    columns: 4
+  Media:
+    style: row
+    columns: 4
+  Monitoring:
+    style: row
+    columns: 4
+  Other Apps:
+    style: row
+    columns: 4
