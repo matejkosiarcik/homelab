@@ -201,6 +201,28 @@ endpoints:
     url: tcp://home-assistant.home:443
     <<: *default-tcp
 
+  ### Group: App - Homepage ###
+
+  - name: Homepage HTTP
+    group: App - Homepage
+    url: http://homepage.home
+    <<: *default-http
+
+  - name: Homepage HTTPS
+    group: App - Homepage
+    url: https://homepage.home
+    <<: *default-http
+
+  - name: Homepage TCP:80
+    group: App - Homepage
+    url: tcp://homepage.home:80
+    <<: *default-tcp
+
+  - name: Homepage TCP:443
+    group: App - Homepage
+    url: tcp://homepage.home:443
+    <<: *default-tcp
+
   ### Group: App - Homer ###
 
   - name: Homer HTTP
