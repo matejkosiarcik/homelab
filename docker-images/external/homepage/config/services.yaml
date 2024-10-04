@@ -1,241 +1,241 @@
 - Network:
-  - UPC Router:
-      description: ...
-      href: http://192.168.0.1
-      ping: "192.168.0.1"
-      icon: /icons/upc.png
+    - UPC Router:
+        description: ...
+        href: http://192.168.0.1
+        ping: "192.168.0.1"
+        icon: /icons/upc.png
 
-  - Main Router:
-      description: TP-Link ER605
-      href: https://10.1.0.1
-      ping: "10.1.0.1"
-      icon: /icons/router.png
+    - Main Router:
+        description: TP-Link ER605
+        href: https://10.1.0.1
+        ping: "10.1.0.1"
+        icon: /icons/router.png
 
-  - Wifi AP:
-      description: Unifi U6 Mesh
-      href: ""
-      ping: "10.1.0.2"
-      icon: /icons/wifi-ap.png
+    - Wifi AP:
+        description: Unifi U6 Mesh
+        href: ""
+        ping: "10.1.0.2"
+        icon: /icons/wifi-ap.png
 
-  - Smart Switch 8-port:
-      description: TP-Link SG108E
-      href: http://10.1.0.3
-      ping: "10.1.0.3"
-      icon: /icons/switch.png
+    - Smart Switch 8-port:
+        description: TP-Link SG108E
+        href: http://10.1.0.3
+        ping: "10.1.0.3"
+        icon: /icons/switch.png
 
-  - Smart Switch 5-port:
-      description: TP-Link SG105E
-      href: http://10.1.0.4
-      ping: "10.1.0.4"
-      icon: /icons/switch.png
+    - Smart Switch 5-port:
+        description: TP-Link SG105E
+        href: http://10.1.0.4
+        ping: "10.1.0.4"
+        icon: /icons/switch.png
 
-  - Unifi Controller:
-      description: ...
-      href: https://unifi-controller.home
-      ping: unifi-controller.home
-      icon: /icons/unifi.png
+    - Unifi Controller:
+        description: ...
+        href: https://unifi-controller.home
+        ping: unifi-controller.home
+        icon: /icons/unifi.png
 
-  - Omada Controller:
-      description: ...
-      href: https://omada-controller.home
-      ping: omada-controller.home
-      icon: /icons/tp-link-omada.png
+    - Omada Controller:
+        description: ...
+        href: https://omada-controller.home
+        ping: omada-controller.home
+        icon: /icons/tp-link-omada.png
 
 - Servers:
-  - Odroid H3:
-      description: App server
-      href: javascript:window.alert("UNIMPLEMENTED")
-      ping: "10.1.4.8" # TODO: odroid-h3.home
-      icon: /icons/odroid.png
-      target: _self
+    - Odroid H3:
+        description: App server
+        href: javascript:window.alert("UNIMPLEMENTED")
+        ping: "10.1.4.8" # TODO: odroid-h3.home
+        icon: /icons/odroid.png
+        target: _self
 
-  - Raspberry Pi 3B:
-      description: App server
-      href: javascript:window.alert("UNIMPLEMENTED")
-      ping: "10.1.4.2" # TODO: raspberry-pi-3b.home
-      icon: /icons/raspberry-pi.png
-      target: _self
+    - Raspberry Pi 3B:
+        description: App server
+        href: javascript:window.alert("UNIMPLEMENTED")
+        ping: "10.1.4.2" # TODO: raspberry-pi-3b.home
+        icon: /icons/raspberry-pi.png
+        target: _self
 
-  - Raspberry Pi 4B 2G:
-      description: App server
-      href: javascript:window.alert("UNIMPLEMENTED")
-      ping: "10.1.4.3" # TODO: raspberry-pi-4b-2g.home
-      icon: /icons/raspberry-pi.png
-      target: _self
+    - Raspberry Pi 4B 2G:
+        description: App server
+        href: javascript:window.alert("UNIMPLEMENTED")
+        ping: "10.1.4.3" # TODO: raspberry-pi-4b-2g.home
+        icon: /icons/raspberry-pi.png
+        target: _self
 
-  - Raspberry Pi 4B 4G:
-      description: App server
-      href: javascript:window.alert("UNIMPLEMENTED")
-      ping: "10.1.4.4" # TODO: raspberry-pi-4b-4g.home
-      icon: /icons/raspberry-pi.png
-      target: _self
+    - Raspberry Pi 4B 4G:
+        description: App server
+        href: javascript:window.alert("UNIMPLEMENTED")
+        ping: "10.1.4.4" # TODO: raspberry-pi-4b-4g.home
+        icon: /icons/raspberry-pi.png
+        target: _self
 
-  - MacBook Pro 2012:
-      description: NAS
-      href: javascript:window.alert("UNIMPLEMENTED")
-      ping: "10.1.4.1" # TODO: macbook-pro-2012.home
-      icon: /icons/apple.png
-      target: _self
+    - MacBook Pro 2012:
+        description: NAS
+        href: javascript:window.alert("UNIMPLEMENTED")
+        ping: "10.1.4.1" # TODO: macbook-pro-2012.home
+        icon: /icons/apple.png
+        target: _self
 
-  - Raspberry Pi Zero 2W 1:
-      description: IoT device
-      href: javascript:window.alert("UNIMPLEMENTED")
-      ping: "10.1.4.6" # TODO: raspberry-pi-zero-2w-1.home
-      icon: /icons/raspberry-pi.png
-      target: _self
+    - Raspberry Pi Zero 2W 1:
+        description: IoT device
+        href: javascript:window.alert("UNIMPLEMENTED")
+        ping: "10.1.4.6" # TODO: raspberry-pi-zero-2w-1.home
+        icon: /icons/raspberry-pi.png
+        target: _self
 
-  - Raspberry Pi Zero 2W 2:
-      description: IoT device
-      href: javascript:window.alert("UNIMPLEMENTED")
-      ping: "10.1.4.7" # TODO: raspberry-pi-zero-2w-2.home
-      icon: /icons/raspberry-pi.png
-      target: _self
+    - Raspberry Pi Zero 2W 2:
+        description: IoT device
+        href: javascript:window.alert("UNIMPLEMENTED")
+        ping: "10.1.4.7" # TODO: raspberry-pi-zero-2w-2.home
+        icon: /icons/raspberry-pi.png
+        target: _self
 
 - DNS:
-  - PiHole:
-      description: Main-1
-      href: https://pihole.home
-      ping: pihole.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Main-1
+        href: https://pihole.home
+        ping: pihole.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: Main-2
-      href: https://pihole-2.home
-      ping: pihole-2.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Main-2
+        href: https://pihole-2.home
+        ping: pihole-2.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: Main-3
-      href: https://pihole-3.home
-      ping: pihole-3.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Main-3
+        href: https://pihole-3.home
+        ping: pihole-3.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: Guests
-      href: https://pihole-guests.home
-      ping: pihole-guests.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Guests
+        href: https://pihole-guests.home
+        ping: pihole-guests.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: Matej
-      href: https://pihole-matej.home
-      ping: pihole-matej.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Matej
+        href: https://pihole-matej.home
+        ping: pihole-matej.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: Matej (work)
-      href: https://pihole-matej-work.home
-      ping: pihole-matej-work.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Matej (work)
+        href: https://pihole-matej-work.home
+        ping: pihole-matej-work.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: Monika
-      href: https://pihole-monika.home
-      ping: pihole-monika.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Monika
+        href: https://pihole-monika.home
+        ping: pihole-monika.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: Monika (work)
-      href: https://pihole-monika-work.home
-      ping: pihole-monika-work.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: Monika (work)
+        href: https://pihole-monika-work.home
+        ping: pihole-monika-work.home
+        icon: /icons/pihole.png
 
-  - PiHole:
-      description: IoT
-      href: https://pihole-iot.home
-      ping: pihole-iot.home
-      icon: /icons/pihole.png
+    - PiHole:
+        description: IoT
+        href: https://pihole-iot.home
+        ping: pihole-iot.home
+        icon: /icons/pihole.png
 
 - Smart Home:
-  - Home Assistant:
-      description: Home Assistant
-      href: https://home-assistant.home
-      ping: home-assistant.home
-      icon: /icons/home-assistant.png
+    - Home Assistant:
+        description: Home Assistant
+        href: https://home-assistant.home
+        ping: home-assistant.home
+        icon: /icons/home-assistant.png
 
-  - Desklamp (left):
-      description: ...
-      href: https://desklamp-1.home
-      ping: desklamp-1.home
-      icon: /icons/lightbulb.png
+    - Desklamp (left):
+        description: ...
+        href: https://desklamp-1.home
+        ping: desklamp-1.home
+        icon: /icons/lightbulb.png
 
-  - Desklamp (right):
-      description: ...
-      href: https://desklamp-2.home
-      ping: desklamp-2.home
-      icon: /icons/lightbulb.png
+    - Desklamp (right):
+        description: ...
+        href: https://desklamp-2.home
+        ping: desklamp-2.home
+        icon: /icons/lightbulb.png
 
 - Media:
-  - Tvheadend:
-      description: ...
-      href: https://tvheadend.home
-      ping: tvheadend.home
-      icon: /icons/tvheadend.png
+    - Tvheadend:
+        description: ...
+        href: https://tvheadend.home
+        ping: tvheadend.home
+        icon: /icons/tvheadend.png
 
-  - Jellyfin:
-      description: ...
-      href: https://jellyfin.home
-      ping: jellyfin.home
-      icon: /icons/jellyfin.png
+    - Jellyfin:
+        description: ...
+        href: https://jellyfin.home
+        ping: jellyfin.home
+        icon: /icons/jellyfin.png
 
 - Monitoring:
-  - Healthchecks:
-      description: ...
-      href: https://healthchecks.home
-      ping: healthchecks.home
-      icon: /icons/healthchecks.png
+    - Healthchecks:
+        description: ...
+        href: https://healthchecks.home
+        ping: healthchecks.home
+        icon: /icons/healthchecks.png
 
-  - Gatus:
-      description: "(Main)"
-      href: https://gatus.home
-      ping: gatus.home
-      icon: /icons/gatus.png
+    - Gatus:
+        description: "(Main)"
+        href: https://gatus.home
+        ping: gatus.home
+        icon: /icons/gatus.png
 
-  - Gatus 2:
-      description: "(Backup)"
-      href: https://gatus-2.home
-      ping: gatus-2.home
-      icon: /icons/gatus.png
+    - Gatus 2:
+        description: "(Backup)"
+        href: https://gatus-2.home
+        ping: gatus-2.home
+        icon: /icons/gatus.png
 
-  - Uptime Kuma:
-      description: ...
-      href: https://uptime-kuma.home
-      ping: uptime-kuma.home
-      icon: /icons/uptime-kuma.png
+    - Uptime Kuma:
+        description: ...
+        href: https://uptime-kuma.home
+        ping: uptime-kuma.home
+        icon: /icons/uptime-kuma.png
 
-  - SpeedTest Tracker:
-      description: ...
-      href: https://speedtest-tracker.home
-      ping: speedtest-tracker.home
-      icon: /icons/speedtest.png
+    - SpeedTest Tracker:
+        description: ...
+        href: https://speedtest-tracker.home
+        ping: speedtest-tracker.home
+        icon: /icons/speedtest.png
 
 - Other Apps:
-  - Homepage:
-      description: ...
-      href: https://homepage.home
-      ping: homepage.home
-      icon: /icons/homepage.png
+    - Homepage:
+        description: ...
+        href: https://homepage.home
+        ping: homepage.home
+        icon: /icons/homepage.png
 
-  - Homer:
-      description: ...
-      href: https://homer.home
-      ping: homer.home
-      icon: /icons/homer.png
+    - Homer:
+        description: ...
+        href: https://homer.home
+        ping: homer.home
+        icon: /icons/homer.png
 
-  - Dockerhub proxy:
-      description: ...
-      href: https://dockerhub-proxy.home
-      ping: dockerhub-proxy.home
-      icon: /icons/docker.png
+    - Dockerhub proxy:
+        description: ...
+        href: https://dockerhub-proxy.home
+        ping: dockerhub-proxy.home
+        icon: /icons/docker.png
 
-  - Smtp4dev:
-      description: ...
-      href: https://smtp4dev.home
-      ping: smtp4dev.home
-      icon: /icons/smtp4dev.png
+    - Smtp4dev:
+        description: ...
+        href: https://smtp4dev.home
+        ping: smtp4dev.home
+        icon: /icons/smtp4dev.png
 
-  - Minio:
-      description: ...
-      href: https://console.minio.home
-      ping: console.minio.home
-      icon: /icons/minio.png
+    - Minio:
+        description: ...
+        href: https://console.minio.home
+        ping: console.minio.home
+        icon: /icons/minio.png
