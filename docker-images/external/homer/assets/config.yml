@@ -40,28 +40,40 @@ services:
         clipboard: ssh matej@10.1.4.1
 
       - name: Odroid H3
-        subtitle: App Server (General)
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/odroid.png
         clipboard: ssh matej@10.1.4.8
 
-      - name: RPi 3B
-        subtitle: App Server (Pihole)
+      - name: Raspberry Pi 3B
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.2
 
-      - name: RPi 4B 2GB
-        subtitle: App Server (General)
+      - name: Raspberry Pi 4B 2GB
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.3
 
-      - name: RPi 4B 4GB
-        subtitle: App Server (TV)
+      - name: Raspberry Pi 4B 4GB
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.4
+
+      - name: Raspberry Pi Zero 2W 1
+        subtitle: IoT device
+        type: CopyToClipboard
+        logo: ./assets/icons/raspberry-pi.png
+        clipboard: ssh matej@10.1.4.6
+
+      - name: Raspberry Pi Zero 2W 2
+        subtitle: IoT device
+        type: CopyToClipboard
+        logo: ./assets/icons/raspberry-pi.png
+        clipboard: ssh matej@10.1.4.7
 
   - name: Smart Home
     icon: fa-solid fa-house
