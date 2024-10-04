@@ -32,3 +32,4 @@ gatus
 # Misc
 speedtest-tracker
 homer
+homepage

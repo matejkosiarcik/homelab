@@ -18,10 +18,16 @@ services:
         logo: ./assets/icons/router.png
         url: https://10.1.0.1
 
-      - name: Smart Switch
+      - name: Smart Switch 8-port
         logo: ./assets/icons/switch.png
-        subtitle: Tp-Link SG108E
+        subtitle: TP-Link SG108E
         url: http://10.1.0.3
+        method: get
+
+      - name: Smart Switch 5-port
+        logo: ./assets/icons/switch.png
+        subtitle: TP-Link SG105E
+        url: http://10.1.0.4
         method: get
 
   - name: Servers (SSH)
@@ -34,28 +40,40 @@ services:
         clipboard: ssh matej@10.1.4.1
 
       - name: Odroid H3
-        subtitle: App Server (General)
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/odroid.png
         clipboard: ssh matej@10.1.4.8
 
-      - name: RPi 3B
-        subtitle: App Server (Pihole)
+      - name: Raspberry Pi 3B
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.2
 
-      - name: RPi 4B 2GB
-        subtitle: App Server (General)
+      - name: Raspberry Pi 4B 2GB
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.3
 
-      - name: RPi 4B 4GB
-        subtitle: App Server (TV)
+      - name: Raspberry Pi 4B 4GB
+        subtitle: App Server
         type: CopyToClipboard
         logo: ./assets/icons/raspberry-pi.png
         clipboard: ssh matej@10.1.4.4
+
+      - name: Raspberry Pi Zero 2W 1
+        subtitle: IoT device
+        type: CopyToClipboard
+        logo: ./assets/icons/raspberry-pi.png
+        clipboard: ssh matej@10.1.4.6
+
+      - name: Raspberry Pi Zero 2W 2
+        subtitle: IoT device
+        type: CopyToClipboard
+        logo: ./assets/icons/raspberry-pi.png
+        clipboard: ssh matej@10.1.4.7
 
   - name: Smart Home
     icon: fa-solid fa-house
@@ -151,6 +169,13 @@ services:
         url: https://homer.home
         logo: ./assets/icons/homer.png
 
+      # Dashboard
+      - name: Homepage
+        type: Ping
+        subtitle: "-"
+        url: https://homepage.home
+        logo: ./assets/icons/homepage.png
+
       # SDN Network controller
       - name: Unifi
         type: Ping
@@ -180,13 +205,6 @@ services:
         logo: ./assets/icons/uptime-kuma.png
 
       # Uptime monitor
-      - name: Uptime Kuma
-        type: Ping
-        subtitle: "2"
-        url: https://uptime-kuma-2.home
-        logo: ./assets/icons/uptime-kuma.png
-
-      # Uptime monitor
       - name: Gatus
         type: Ping
         subtitle: "1"
@@ -201,7 +219,7 @@ services:
         logo: ./assets/icons/gatus.png
 
       # Docker cache proxy
-      - name: DockerHub Mirror
+      - name: DockerHub Proxy
         type: Ping
         subtitle: DockerHub
         url: https://dockerhub-proxy.home
@@ -220,20 +238,6 @@ services:
         subtitle: "-"
         url: https://speedtest.home
         logo: ./assets/icons/speedtest.png
-
-      # Resource monitor
-      - name: Netdata
-        type: Ping
-        subtitle: "-"
-        url: https://netdata.home
-        logo: ./assets/icons/netdata.png
-
-      # General monitor
-      - name: Prometheus
-        type: Ping
-        subtitle: "-"
-        url: https://prometheus.home
-        logo: ./assets/icons/prometheus.png
 
       # S3 Storage
       - name: MinIO

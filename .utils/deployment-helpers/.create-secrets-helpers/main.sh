@@ -170,6 +170,17 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*homepage*)
+    create_http_proxy_auth_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Misc
+    printf '# Placeholder\n' >>"$output/all-credentials.txt"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *homer*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"

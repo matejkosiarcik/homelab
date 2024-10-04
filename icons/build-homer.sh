@@ -17,11 +17,16 @@ convert_options='magick -background none -bordercolor transparent INPUT_FILE -re
 ### OSA Icons ###
 
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/lightbulb.png"
+convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_wireless_network.svg" "$outdir/wifi-ap.png"
 
 ### VRT Icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$outdir/router.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$outdir/switch.png"
+
+### Dashboard Icons ###
+
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$outdir/homepage.png"
 
 ### Organizr Icons ###
 

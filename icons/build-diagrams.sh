@@ -24,6 +24,10 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_home.svg" "$ou
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$outdir/lightbulb.png"
 convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$outdir/network.png"
 
+### Dashboard Icons ###
+
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$outdir/homepage.png"
+
 ### Organizr Icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$outdir/healthchecks.png"

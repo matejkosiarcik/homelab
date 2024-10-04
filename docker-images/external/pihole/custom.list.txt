@@ -17,6 +17,7 @@
 10.1.10.17 uptime-kuma.home
 10.1.10.18 speedtest-tracker.home
 10.1.10.19 homer.home
+10.1.10.20 homepage.home
 
 10.1.12.1 tvheadend.home
 10.1.12.2 pihole-2.home
