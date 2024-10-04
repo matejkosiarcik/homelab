@@ -6,13 +6,10 @@ x-definitions:
       <<: *common-env-variables
     # networks:
     #   internal-network: {}
-    # dns:
-    #   - 10.1.10.1
-      # - 8.8.4.4
     dns_opt:
       - single-request
-    # sysctls:
-    #   net.ipv6.conf.all.disable_ipv6: 1
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
 
 services:
   unifi-network-application:
