@@ -6,6 +6,10 @@
 - DockerHub: <https://hub.docker.com/r/linuxserver/unifi-network-application>
 - Open Ports overview: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
 
+For compatibility reasons, this app is using MongoDB from <https://github.com/themattman/mongodb-raspberrypi-docker>, instead of the official version, in order to run it on Raspberry Pi 4B.
+This is necessary, because the official version requires `ARMv8.2`, and this Raspberry Pi only has `ARMv8.0`.
+This is connected to required AVX extensions, same as the official x64 MongoDB version (which coincidentally also can't run on my Ordroid H3).
+
 ## Note for Healtcheck
 
 This is good `/status`:
