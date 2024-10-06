@@ -38,6 +38,6 @@ networks:
       parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}
     ipam:
       config:
-        - subnet: 10.1.0.0/17
+        - subnet: 10.1.0.0/16
           ip_range: ${DOCKER_COMPOSE_NETWORK_RANGE}
           gateway: ${DOCKER_COMPOSE_NETWORK_GATEWAY}

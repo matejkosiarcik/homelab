@@ -18,8 +18,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/homer/Dockerfile
-    volumes:
-      - ./app-logs/homer:/homelab/logs:rw
+    # volumes:
+    #   - ./app-logs/homer:/homelab/logs:rw
 
   certificate-manager:
     <<: *common-service-options
