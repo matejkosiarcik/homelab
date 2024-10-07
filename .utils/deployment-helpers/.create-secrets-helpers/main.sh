@@ -382,7 +382,7 @@ case "$current_dir" in
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
-    printf 'mongo,%s\n' "$(cat "$tmpdir/mongodb-password.txt")" t >>"$output/all-credentials.csv"
+    printf 'mongo,%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
