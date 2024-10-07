@@ -14,7 +14,7 @@
 ## After initial installation
 
 - \[Prod\] Setup admin password in `/settings#general`
-- \[Prod\] Setup notifications (mailto & ntfy)
+- \[Prod\] Setup notifications (ntfy)
 - \[Prod\] Setup `uptime-kuma` monitoring:
     - IP (ping) monitor
     - TCP monitor for all open ports
