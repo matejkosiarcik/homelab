@@ -45,6 +45,7 @@ if [ -e "$output" ]; then
     fi
 fi
 mkdir "$output"
+printf 'user,password\n' >"$output/all-credentials.csv"
 
 current_dir="$(basename "$PWD")"
 tmpdir="$(mktemp -d)"
@@ -85,7 +86,7 @@ create_http_proxy_auth_users() {
 create_http_auth_user() {
     # $1 - user
     create_password "$tmpdir/http-$1-password.txt" --only-alphanumeric
-    printf '%s:%s\n' "$1" "$(cat "$tmpdir/http-$1-password.txt")" >>"$output/htpasswd-users.txt"
+    printf '%s,%s\n' "$1" "$(cat "$tmpdir/http-$1-password.txt")" >>"$output/all-credentials.csv"
     chronic htpasswd -c -B -i "$output/http-user--$1.htpasswd" "$1" <"$tmpdir/http-$1-password.txt"
 }
 
@@ -258,6 +259,29 @@ case "$current_dir" in
     printf 'MINIO_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
     printf 'MINIO_USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/all-credentials.txt"
     printf 'MINIO_USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.txt"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
+*ntfy*)
+    create_http_auth_user proxy-status
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/admin-password.txt"
+    create_password "$tmpdir/user-password.txt"
+    create_password "$tmpdir/publisher-password.txt" --only-alphanumeric
+
+    # App
+    printf 'NTFY_PASSWORD_ADMIN=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/ntfy.env"
+    printf 'NTFY_PASSWORD_USER=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/ntfy.env"
+    printf 'NTFY_PASSWORD_PUBLISHER=%s\n' "$(cat "$tmpdir/publisher-password.txt")" >>"$output/ntfy.env"
+
+    # Misc
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'user,%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.csv"
+    printf 'publisher,%s\n' "$(cat "$tmpdir/publisher-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

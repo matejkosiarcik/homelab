@@ -19,6 +19,7 @@
 10.1.10.19 homer.home
 10.1.10.20 homepage.home
 10.1.10.21 changedetection.home
+10.1.10.22 ntfy.home
 
 10.1.12.1 tvheadend.home
 10.1.12.2 pihole-2.home

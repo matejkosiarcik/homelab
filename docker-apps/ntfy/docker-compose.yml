@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_TYPE: pihole
+    HOMELAB_APP_TYPE: ntfy
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -12,37 +12,30 @@ x-definitions:
       net.ipv6.conf.all.disable_ipv6: 1
 
 services:
-  pihole:
+  ntfy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-pihole
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-ntfy
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/pihole/Dockerfile
+      dockerfile: ./external/ntfy/Dockerfile
+    env_file:
+      - ./app-secrets/ntfy.env
     volumes:
-      - ./app-data/pihole/etc-pihole:/etc/pihole:rw
-      - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
-      - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
-      - ../../../../docker-images/external/pihole/adlists-${DOCKER_COMPOSE_PIHOLE_ADLISTS-default}.txt:/homelab/adlists.txt:ro
-    # Hard-coded DNS is necessary because of bootstrapping problem
-    # Basically if PiHole needs functional DNS (to eg. update adlists before starting), which it can't do until it started
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-      - 4.2.2.1
-    stop_grace_period: 30s
+      - ./app-data/ntfy-cache:/var/cache/ntfy:rw
+      - ./app-data/ntfy-lib:/var/lib/ntfy:rw
+      # - ./app-data/ntfy-etc:/etc/ntfy:rw
 
-  pihole-setup:
+  ntfy-setup:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-pihole-setup
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-ntfy-setup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/docker-setup/Dockerfile
     environment:
       <<: *common-env-variables
-      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-pihole
+      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-ntfy
     depends_on:
-      pihole:
+      ntfy:
         condition: service_healthy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

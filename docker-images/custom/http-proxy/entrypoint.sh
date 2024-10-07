@@ -68,6 +68,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
         exit 1
     fi
+elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
+    PROXY_UPSTREAM_URL="http://ntfy"
 elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
@@ -117,26 +119,10 @@ fi
 export PROXY_UPSTREAM_URL
 printf "export PROXY_UPSTREAM_URL='%s'\n" "$PROXY_UPSTREAM_URL" >>/etc/apache2/envvars
 
-# Set PROXY_FORCE_HTTPS
-PROXY_FORCE_HTTPS='1'
-export PROXY_FORCE_HTTPS
-printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
-
 # Set PROXY_UPSTREAM_URL_WS
 PROXY_UPSTREAM_URL_WS="$(printf '%s' "$PROXY_UPSTREAM_URL" | sed 's~https:~wss:~;s~http:~ws:~')"
 export PROXY_UPSTREAM_URL_WS
 printf "export PROXY_UPSTREAM_URL_WS='%s'\n" "$PROXY_UPSTREAM_URL_WS" >>/etc/apache2/envvars
-
-# Set PROXY_URL_REGEX_REVERSE
-if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
-    PROXY_URL_REGEX_REVERSE='^/(\.apache(/.*)?)?$'
-elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-    PROXY_URL_REGEX_REVERSE='^/((\.apache(/.*)?)|(setup/favicon.png))$'
-else
-    PROXY_URL_REGEX_REVERSE='^/\.apache(/.*)?$'
-fi
-export PROXY_URL_REGEX_REVERSE
-printf "export PROXY_URL_REGEX_REVERSE='%s'\n" "$PROXY_URL_REGEX_REVERSE" >>/etc/apache2/envvars
 
 # Set PROXY_HTTP_PORT
 if [ "$HOMELAB_ENV" = 'prod' ]; then
@@ -171,6 +157,15 @@ else
 fi
 export PROXY_HTTPS_PORT
 printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envvars
+
+# Set PROXY_FORCE_HTTPS
+if [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
+    PROXY_FORCE_HTTPS='false'
+else
+    PROXY_FORCE_HTTPS='true'
+fi
+export PROXY_FORCE_HTTPS
+printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
 
 # Start apache
 apachectl -D FOREGROUND

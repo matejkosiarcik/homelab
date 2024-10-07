@@ -25,6 +25,7 @@ updates:
       - /docker-images/custom/lamp-hardware-controller
       - /docker-images/custom/lamp-network-server
       - /docker-images/custom/minio-client
+      - /docker-images/custom/ntfy-setup
       - /docker-images/custom/pihole-setup
       - /docker-images/custom/samba
       - /docker-images/custom/socket-proxy
@@ -39,6 +40,7 @@ updates:
       - /docker-images/external/homer
       - /docker-images/external/jellyfin
       - /docker-images/external/minio-server
+      - /docker-images/external/ntfy
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole
       - /docker-images/external/smtp4dev
