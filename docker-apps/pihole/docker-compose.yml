@@ -40,7 +40,7 @@ services:
       dockerfile: ./custom/pihole-setup/Dockerfile
     environment:
       <<: *common-env-variables
-      HOMELAB_PIHOLE_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-pihole
+      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-pihole
     depends_on:
       pihole:
         condition: service_healthy

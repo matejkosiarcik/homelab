@@ -31,7 +31,7 @@ services:
       dockerfile: ./custom/ntfy-setup/Dockerfile
     environment:
       <<: *common-env-variables
-      HOMELAB_NTFY_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-ntfy
+      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-ntfy
     depends_on:
       ntfy:
         condition: service_healthy
