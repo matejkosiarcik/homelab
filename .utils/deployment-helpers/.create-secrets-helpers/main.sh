@@ -79,10 +79,6 @@ create_password() {
 user_logfile="$tmpdir/user-logs.txt"
 touch "$user_logfile"
 
-create_http_proxy_auth_users() {
-    create_http_auth_user proxy-status
-}
-
 create_http_auth_user() {
     # $1 - user
     create_password "$tmpdir/http-$1-password.txt" --only-alphanumeric
@@ -104,7 +100,7 @@ prepare_empty_env() {
 
 case "$current_dir" in
 *changedetection*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -118,7 +114,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *docker*-proxy*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -137,7 +133,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *gatus*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
@@ -145,7 +141,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *healthchecks*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -165,7 +161,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *home-assistant*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -186,7 +182,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *homepage*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Misc
@@ -197,7 +193,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *homer*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Misc
@@ -208,7 +204,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *jellyfin*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -224,7 +220,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *lamp-controller*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Misc
@@ -235,7 +231,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *minio*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -288,7 +284,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *omada-controller*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -309,7 +305,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *pihole*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -346,7 +342,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *smtp4dev*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Misc
@@ -357,7 +353,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *speedtest-tracker*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     npm --prefix "$helper_script_dir/playwright" run --silent run:speedtest-tracker-app-key -- --output "$tmpdir/speedtest-tracker-app-key.txt"
 
@@ -384,7 +380,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *tvheadend*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -404,7 +400,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *unifi-controller*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
@@ -431,7 +427,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *uptime-kuma*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
