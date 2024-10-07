@@ -19,15 +19,16 @@ home-assistant
 # Media
 jellyfin
 
-# Mail
-smtp4dev
-
-# Storage services
-minio
-
 # Monitoring
 healthchecks
 gatus
+
+# Notifications
+smtp4dev
+ntfy
+
+# Storage services
+minio
 
 # Misc
 speedtest-tracker
