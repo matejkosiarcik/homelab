@@ -27,6 +27,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/dia-vrt-sheets/
 ### Dashboard Icons ###
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$outdir/homepage.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$outdir/ntfy.png"
 
 ### Organizr Icons ###
 

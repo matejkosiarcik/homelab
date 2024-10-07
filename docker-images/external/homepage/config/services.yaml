@@ -239,3 +239,9 @@
         href: https://console.minio.home
         ping: console.minio.home
         icon: /icons/minio.png
+
+    - Ntfy:
+        description: ...
+        href: https://ntfy.home
+        ping: ntfy.home
+        icon: /icons/ntfy.png
