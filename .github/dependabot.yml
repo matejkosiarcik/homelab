@@ -21,12 +21,11 @@ updates:
   - package-ecosystem: docker
     directories:
       - /docker-images/custom/certificate-manager
+      - /docker-images/custom/docker-setup
       - /docker-images/custom/http-proxy
       - /docker-images/custom/lamp-hardware-controller
       - /docker-images/custom/lamp-network-server
       - /docker-images/custom/minio-client
-      - /docker-images/custom/ntfy-setup
-      - /docker-images/custom/pihole-setup
       - /docker-images/custom/samba
       - /docker-images/custom/socket-proxy
       - /docker-images/custom/web-automation
