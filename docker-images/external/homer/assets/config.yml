@@ -259,3 +259,9 @@ services:
         subtitle: "-"
         url: https://jellyfin.home
         logo: ./assets/icons/jellyfin.png
+
+      - name: Ntfy
+        type: Ping
+        subtitle: "-"
+        url: https://ntfy.home
+        logo: ./assets/icons/ntfy.png
