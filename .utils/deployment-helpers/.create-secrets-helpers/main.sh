@@ -79,10 +79,6 @@ create_password() {
 user_logfile="$tmpdir/user-logs.txt"
 touch "$user_logfile"
 
-create_http_proxy_auth_users() {
-    create_http_auth_user proxy-status
-}
-
 create_http_auth_user() {
     # $1 - user
     create_password "$tmpdir/http-$1-password.txt" --only-alphanumeric
@@ -104,21 +100,21 @@ prepare_empty_env() {
 
 case "$current_dir" in
 *changedetection*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
 
     # Misc
-    printf 'CHANGEDETECTION_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *docker*-proxy*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -129,15 +125,12 @@ case "$current_dir" in
     prepare_empty_env REGISTRY_PROXY_USERNAME "$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/docker-registry.env"
 
-    # Misc
-    printf '# Placeholder\n' >>"$output/all-credentials.txt"
-
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *gatus*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
@@ -145,7 +138,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *healthchecks*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
@@ -157,108 +150,90 @@ case "$current_dir" in
     printf 'SECRET_KEY=%s\n' "$(cat "$tmpdir/healthchecks-secret-key.txt")" >>"$output/healthchecks.env"
 
     # Misc
-    printf 'HEALTHCHECKS_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'HEALTHCHECKS_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf '%s,%s\n' "$(cat "$tmpdir/admin-username.txt")" "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *home-assistant*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
 
     # Web backup
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Misc
-    printf 'HOME_ASSISTANT_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'HOME_ASSISTANT_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *homepage*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-
-    # Misc
-    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *homer*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-
-    # Misc
-    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *jellyfin*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
 
     # Misc
-    printf 'JELLYFIN_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'JELLYFIN_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *lamp-controller*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-
-    # Misc
-    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *minio*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
-    printf 'user' >"$tmpdir/user-username.txt"
     create_password "$tmpdir/user-password.txt"
 
     # App
-    printf 'MINIO_ROOT_USER=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/minio.env"
+    printf 'MINIO_ROOT_USER=admin\n' >>"$output/minio.env"
     printf 'MINIO_ROOT_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/minio.env"
 
     # Setup
-    printf 'HOMELAB_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/minio-setup.env"
+    printf 'HOMELAB_ADMIN_USERNAME=admin\n' >>"$output/minio-setup.env"
     printf 'HOMELAB_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/minio-setup.env"
-    printf 'HOMELAB_USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/minio-setup.env"
+    printf 'HOMELAB_USER_USERNAME=user\n' >>"$output/minio-setup.env"
     printf 'HOMELAB_USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/minio-setup.env"
 
     # Misc
-    printf 'MINIO_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'MINIO_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
-    printf 'MINIO_USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/all-credentials.txt"
-    printf 'MINIO_USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'user,%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -288,30 +263,27 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *omada-controller*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
 
     # Web backup
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Misc
-    printf 'OMADA_CONTROLLER_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'OMADA_CONTROLLER_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *pihole*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -319,11 +291,8 @@ case "$current_dir" in
     # App
     printf '%s' "$(cat "$tmpdir/admin-password.txt")" >>"$output/pihole-password.txt"
 
-    # Web backup
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
-
     # Misc
-    printf 'PIHOLE_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -338,26 +307,22 @@ case "$current_dir" in
     printf 'SAMBA_USERNAME=%s\n' "$(cat "$tmpdir/smb-username.txt")" >>"$output/samba.env"
 
     # Misc
-    printf 'SAMBA_USER_USERNAME=%s\n' "$(cat "$tmpdir/smb-username.txt")" >>"$output/all-credentials.txt"
-    printf 'SAMBA_USER_PASSWORD=%s\n' "$(cat "$tmpdir/smb-password.txt")" >>"$output/all-credentials.txt"
+    printf '%s,%s\n' "$(cat "$tmpdir/smb-username.txt")" "$(cat "$tmpdir/smb-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *smtp4dev*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-
-    # Misc
-    printf '# Placeholder\n' >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *speedtest-tracker*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     npm --prefix "$helper_script_dir/playwright" run --silent run:speedtest-tracker-app-key -- --output "$tmpdir/speedtest-tracker-app-key.txt"
 
@@ -376,40 +341,34 @@ case "$current_dir" in
     printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/speedtest-tracker.env"
 
     # Misc
-    printf 'SPEEDTEST_TRACKER_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'SPEEDTEST_TRACKER_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf '%s,%s\n' "$(cat "$tmpdir/admin-username.txt")" "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *tvheadend*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
-    printf 'user' >"$tmpdir/user-username.txt"
     create_password "$tmpdir/user-password.txt" --only-alphanumeric
 
     # Misc
-    printf 'TVHEADEND_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'TVHEADEND_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
-    printf 'TVHEADEND_USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/all-credentials.txt"
-    printf 'TVHEADEND_USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'user,%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *unifi-controller*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
     create_password "$tmpdir/mongodb-password.txt"
 
@@ -418,34 +377,31 @@ case "$current_dir" in
     printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
 
     # Web backup
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Misc
-    printf 'UNIFI_NETWORK_APP_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'UNIFI_NETWORK_APP_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
-    printf 'MONGO_PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" t >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'mongo,%s\n' "$(cat "$tmpdir/mongodb-password.txt")" t >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *uptime-kuma*)
-    create_http_proxy_auth_users
+    create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
-    printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
 
     # Web backup
-    printf 'HOMELAB_APP_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/web-backup.env"
+    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
     printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Misc
-    printf 'UPTIME_KUMA_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
-    printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
