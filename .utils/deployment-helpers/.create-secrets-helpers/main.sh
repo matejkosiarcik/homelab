@@ -263,6 +263,22 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*ntfy*)
+    create_http_proxy_auth_users
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
+
+    # Misc
+    printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'NTFY_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *omada-controller*)
     create_http_proxy_auth_users
     prepare_healthcheck_url "$output/certificate-manager.env"

@@ -44,6 +44,10 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
         exit 1
     fi
+elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
+    socat TCP4-LISTEN:25,fork,reuseaddr TCP4:http-proxy:25 &
+    socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
     # HTTP/S ports
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &
