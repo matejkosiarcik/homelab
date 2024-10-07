@@ -12,7 +12,7 @@ done
 EOF
 
 printf '%s - Starting setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
-docker exec "$HOMELAB_PIHOLE_CONTAINER" sh /homelab/setup.sh
+docker exec "$HOMELAB_NTFY_CONTAINER" sh /homelab/setup.sh
 printf '%s - Finished setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 
 printf 'started\n' >/homelab/.internal/status.txt
