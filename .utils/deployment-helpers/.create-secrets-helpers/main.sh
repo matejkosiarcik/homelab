@@ -270,10 +270,20 @@ case "$current_dir" in
     # Precreate passwords
     printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
+    printf 'user' >"$tmpdir/user-username.txt"
+    create_password "$tmpdir/user-password.txt"
+
+    # App
+    printf 'NTFY_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/ntfy.env"
+    printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/ntfy.env"
+    printf 'NTFY_USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/ntfy.env"
+    printf 'NTFY_USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/ntfy.env"
 
     # Misc
-    printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
     printf 'NTFY_ADMIN_USERNAME=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/all-credentials.txt"
+    printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.txt"
+    printf 'NTFY_USER_USERNAME=%s\n' "$(cat "$tmpdir/user-username.txt")" >>"$output/all-credentials.txt"
+    printf 'NTFY_USER_PASSWORD=%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.txt"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
