@@ -6,7 +6,7 @@ printf 'starting\n' >/homelab/.internal/status.txt
 
 # Wait for target container to start
 timeout 30s sh <<EOF
-while [ "$(docker ps --filter "name=^$HOMELAB_NTFY_CONTAINER\$" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER" || true)" -eq '0' ]; do
+while [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER" || true)" -eq '0' ]; do
     sleep 1
 done
 EOF

@@ -28,7 +28,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-ntfy-setup
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/ntfy-setup/Dockerfile
+      dockerfile: ./custom/docker-setup/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-ntfy

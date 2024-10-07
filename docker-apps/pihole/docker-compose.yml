@@ -37,7 +37,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-pihole-setup
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/pihole-setup/Dockerfile
+      dockerfile: ./custom/docker-setup/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-pihole
