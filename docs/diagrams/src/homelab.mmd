@@ -9,61 +9,64 @@ flowchart LR
 
     subgraph raspberry_pi_3b["Raspberry Pi 3B"]
         tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
-        pihole_matej_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />matej<br />(duplicate)")
+
+        %% hidden_raspberry_pi_3b(" ")
+        %% class hidden_raspberry_pi_3b no_border
     end
 
     subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2G"]
-        pihole_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />matej")
-        pihole_matej_work("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />matej<br />(work)")
-        pihole_guests("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />guests")
-        pihole_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />IoT")
-        pihole_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika")
-        pihole_monika_work("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika<br />(work)")
-        uptime_kuma_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma<br />(duplicate)")
+        %% TODO: Mark TeamViewer / AnyDesk here
 
-        hidden_1(" ")
-        class hidden_1 no_border
-
-        pihole_matej ~~~ pihole_matej_work
-        pihole_monika ~~~ pihole_monika_work
-        pihole_guests ~~~ pihole_iot
-        uptime_kuma_2 ~~~ hidden_1
+        hidden_raspberry_pi_4b_2g(" ")
+        class hidden_raspberry_pi_4b_2g no_border
     end
 
     subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4G"]
-        hidden_2(" ")
-        class hidden_2 no_border
+        pihole_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole-2")
+        unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Controller")
+
+        %% hidden_raspberry_pi_4b_4g(" ")
+        %% class hidden_raspberry_pi_4b_4g no_border
     end
 
     subgraph odroid_h3["Odroid H3"]
-        docker_cache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br />Cache<br />Proxy")
+        changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection.io")
+        dockerhub_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>DockerHub<br />cache<br />proxy")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         home_assistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /></div>Home<br />Assistant")
         homer("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homer.png' style='min-width:80px;max-width:80px' /></div>Homer")
+        jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
+        ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
         omada_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br />Controller")
-        smb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/filebrowser.png' style='min-width:80px;max-width:80px' /></div>SMB")
+        pihole_guests("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />guests")
+        pihole_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />IoT")
+        pihole_matej_work("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />matej<br />(work)")
+        pihole_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />matej")
+        pihole_monika_work("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika<br />(work)")
+        pihole_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole<br />monika")
+        pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br />Tracker")
-        unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Controller")
         uptime_kuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma")
-        jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
-        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection.io")
-        ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
 
-        hidden_3(" ")
-        class hidden_3 no_border
+        hidden_odroid_h3(" ")
+        class hidden_odroid_h3 no_border
 
-        unifi_controller ~~~ omada_controller
-        home_assistant ~~~ smtp4dev
-        uptime_kuma ~~~ healthchecks
-        docker_cache_proxy ~~~ minio
-        homer ~~~ speedtest_tracker
-        jellyfin ~~~ smb
-        gatus ~~~ changedetection
-        ntfy ~~~ hidden_3
+        changedetection ~~~ dockerhub_proxy ~~~ gatus
+        healthchecks ~~~ home_assistant ~~~ homer
+        jellyfin ~~~ minio ~~~ ntfy
+        omada_controller ~~~ pihole ~~~ pihole_guests
+        pihole_iot ~~~ pihole_matej ~~~ pihole_matej_work
+        pihole_monika ~~~ pihole_monika_work ~~~ smtp4dev
+        speedtest_tracker ~~~ uptime_kuma ~~~ hidden_odroid_h3
     end
 
-    odroid_h3 ~~~ raspberry_pi_3b
-    raspberry_pi_4b_2g ~~~ raspberry_pi_4b_4g
+    odroid_h3
+    raspberry_pi_3b
+    raspberry_pi_4b_2g
+    raspberry_pi_4b_4g
+
+    %% Note: Enable in future:
+    %% smb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/filebrowser.png' style='min-width:80px;max-width:80px' /></div>SMB")
