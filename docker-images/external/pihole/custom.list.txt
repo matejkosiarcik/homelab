@@ -22,7 +22,6 @@
 10.1.10.22 ntfy.home
 
 10.1.12.1 tvheadend.home
-10.1.12.2 pihole-2.home
 
 10.1.16.1 unifi-controller.home
-10.1.16.2 pihole-3.home
+10.1.16.2 pihole-2.home
