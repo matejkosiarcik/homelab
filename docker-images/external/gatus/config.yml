@@ -32,828 +32,828 @@ default-http: &default-http
 endpoints:
   ### Group: External DNS ###
 
-  - name: External DNS - Google 1
+  - <<: *default-icmp
+    name: External DNS - Google 1
     group: External DNS
     url: icmp://8.8.8.8
-    <<: *default-icmp
 
-  - name: External DNS - Google 2
+  - <<: *default-icmp
+    name: External DNS - Google 2
     group: External DNS
     url: icmp://8.8.4.4
-    <<: *default-icmp
 
-  - name: External DNS - Cloudflare
+  - <<: *default-icmp
+    name: External DNS - Cloudflare
     group: External DNS
     url: icmp://1.1.1.1
-    <<: *default-icmp
 
-  - name: External DNS - Level3
+  - <<: *default-icmp
+    name: External DNS - Level3
     group: External DNS
     url: icmp://4.2.2.1
-    <<: *default-icmp
 
   ### Group: Network equipment ###
 
-  - name: Router - TP-Link ER605
+  - <<: *default-icmp
+    name: Router - TP-Link ER605
     group: Network equipment
     url: icmp://10.1.0.1
-    <<: *default-icmp
 
-  - name: Router - UPC Router
+  - <<: *default-icmp
+    name: Router - UPC Router
     group: Network equipment
     url: icmp://192.168.0.1
-    <<: *default-icmp
 
-  - name: WiFi AP - Unifi U6
+  - <<: *default-icmp
+    name: WiFi AP - Unifi U6
     group: Network equipment
     url: icmp://10.1.0.2
-    <<: *default-icmp
 
-  - name: Smart switch - TP-Link SG108E
+  - <<: *default-icmp
+    name: Smart switch - TP-Link SG108E
     group: Network equipment
     url: icmp://10.1.0.3
-    <<: *default-icmp
 
-  - name: Smart switch - TP-Link SG105E
+  - <<: *default-icmp
+    name: Smart switch - TP-Link SG105E
     group: Network equipment
     url: icmp://10.1.0.4
-    <<: *default-icmp
 
   ### Group: Servers ###
 
-  - name: Odroid H3
+  - <<: *default-icmp
+    name: Odroid H3
     group: Servers
     url: icmp://10.1.4.8
-    <<: *default-icmp
 
-  - name: Raspberry Pi 3B
+  - <<: *default-icmp
+    name: Raspberry Pi 3B
     group: Servers
     url: icmp://10.1.4.2
-    <<: *default-icmp
 
-  - name: Raspberry Pi 4B 2G
+  - <<: *default-icmp
+    name: Raspberry Pi 4B 2G
     group: Servers
     url: icmp://10.1.4.3
-    <<: *default-icmp
 
-  - name: Raspberry Pi 4B 4G
+  - <<: *default-icmp
+    name: Raspberry Pi 4B 4G
     group: Servers
     url: icmp://10.1.4.4
-    <<: *default-icmp
 
-  - name: Raspberry Pi Zero 2W 1
+  - <<: *default-icmp
+    name: Raspberry Pi Zero 2W 1
     group: Servers
     url: icmp://10.1.4.6
-    <<: *default-icmp
     enabled: false # TODO: Reenable
 
-  - name: Raspberry Pi Zero 2W 2
+  - <<: *default-icmp
+    name: Raspberry Pi Zero 2W 2
     group: Servers
     url: icmp://10.1.4.7
-    <<: *default-icmp
     enabled: false # TODO: Reenable
 
   ### Group: App - Changedetection.io ###
 
-  - name: Changedetection.io HTTP
+  - <<: *default-http
+    name: Changedetection.io HTTP
     group: App - Changedetection.io
     url: http://changedetection.home
-    <<: *default-http
 
-  - name: Changedetection.io HTTPS
+  - <<: *default-http
+    name: Changedetection.io HTTPS
     group: App - Changedetection.io
     url: https://changedetection.home
-    <<: *default-http
 
-  - name: Changedetection.io TCP:80
+  - <<: *default-tcp
+    name: Changedetection.io TCP:80
     group: App - Changedetection.io
     url: tcp://changedetection.home:80
-    <<: *default-tcp
 
-  - name: Changedetection.io TCP:443
+  - <<: *default-tcp
+    name: Changedetection.io TCP:443
     group: App - Changedetection.io
     url: tcp://changedetection.home:443
-    <<: *default-tcp
 
   ### Group: App - Dockerhub proxy ###
 
-  - name: DockerHub proxy HTTP
+  - <<: *default-http
+    name: DockerHub proxy HTTP
     group: App - DockerHub proxy
     url: http://dockerhub-proxy.home
-    <<: *default-http
 
-  - name: DockerHub proxy HTTPS
+  - <<: *default-http
+    name: DockerHub proxy HTTPS
     group: App - DockerHub proxy
     url: https://dockerhub-proxy.home
-    <<: *default-http
 
-  - name: DockerHub proxy TCP:80
+  - <<: *default-tcp
+    name: DockerHub proxy TCP:80
     group: App - DockerHub proxy
     url: tcp://dockerhub-proxy.home:80
-    <<: *default-tcp
 
-  - name: DockerHub proxy TCP:443
+  - <<: *default-tcp
+    name: DockerHub proxy TCP:443
     group: App - DockerHub proxy
     url: tcp://dockerhub-proxy.home:443
-    <<: *default-tcp
 
   ### Group: App - Gatus ###
 
-  - name: Gatus HTTP
+  - <<: *default-http
+    name: Gatus HTTP
     group: App - Gatus
     url: http://gatus.home
-    <<: *default-http
 
-  - name: Gatus HTTPS
+  - <<: *default-http
+    name: Gatus HTTPS
     group: App - Gatus
     url: https://gatus.home
-    <<: *default-http
 
-  - name: Gatus TCP:80
+  - <<: *default-tcp
+    name: Gatus TCP:80
     group: App - Gatus
     url: tcp://gatus.home:80
-    <<: *default-tcp
 
-  - name: Gatus TCP:443
+  - <<: *default-tcp
+    name: Gatus TCP:443
     group: App - Gatus
     url: tcp://gatus.home:443
-    <<: *default-tcp
 
   ### Group: App - Healthchecks ###
 
-  - name: Healthchecks HTTP
+  - <<: *default-http
+    name: Healthchecks HTTP
     group: App - Healthchecks
     url: http://healthchecks.home
-    <<: *default-http
 
-  - name: Healthchecks HTTPS
+  - <<: *default-http
+    name: Healthchecks HTTPS
     group: App - Healthchecks
     url: https://healthchecks.home
-    <<: *default-http
 
-  - name: Healthchecks TCP:80
+  - <<: *default-tcp
+    name: Healthchecks TCP:80
     group: App - Healthchecks
     url: tcp://healthchecks.home:80
-    <<: *default-tcp
 
-  - name: Healthchecks TCP:443
+  - <<: *default-tcp
+    name: Healthchecks TCP:443
     group: App - Healthchecks
     url: tcp://healthchecks.home:443
-    <<: *default-tcp
 
   ### Group: App - Home Assistant ###
 
-  - name: Home Assistant HTTP
+  - <<: *default-http
+    name: Home Assistant HTTP
     group: App - Home Assistant
     url: http://home-assistant.home
-    <<: *default-http
 
-  - name: Home Assistant HTTPS
+  - <<: *default-http
+    name: Home Assistant HTTPS
     group: App - Home Assistant
     url: https://home-assistant.home
-    <<: *default-http
 
-  - name: Home Assistant TCP:80
+  - <<: *default-tcp
+    name: Home Assistant TCP:80
     group: App - Home Assistant
     url: tcp://home-assistant.home:80
-    <<: *default-tcp
 
-  - name: Home Assistant TCP:443
+  - <<: *default-tcp
+    name: Home Assistant TCP:443
     group: App - Home Assistant
     url: tcp://home-assistant.home:443
-    <<: *default-tcp
 
   ### Group: App - Homepage ###
 
-  - name: Homepage HTTP
+  - <<: *default-http
+    name: Homepage HTTP
     group: App - Homepage
     url: http://homepage.home
-    <<: *default-http
 
-  - name: Homepage HTTPS
+  - <<: *default-http
+    name: Homepage HTTPS
     group: App - Homepage
     url: https://homepage.home
-    <<: *default-http
 
-  - name: Homepage TCP:80
+  - <<: *default-tcp
+    name: Homepage TCP:80
     group: App - Homepage
     url: tcp://homepage.home:80
-    <<: *default-tcp
 
-  - name: Homepage TCP:443
+  - <<: *default-tcp
+    name: Homepage TCP:443
     group: App - Homepage
     url: tcp://homepage.home:443
-    <<: *default-tcp
 
   ### Group: App - Homer ###
 
-  - name: Homer HTTP
+  - <<: *default-http
+    name: Homer HTTP
     group: App - Homer
     url: http://homer.home
-    <<: *default-http
 
-  - name: Homer HTTPS
+  - <<: *default-http
+    name: Homer HTTPS
     group: App - Homer
     url: https://homer.home
-    <<: *default-http
 
-  - name: Homer TCP:80
+  - <<: *default-tcp
+    name: Homer TCP:80
     group: App - Homer
     url: tcp://homer.home:80
-    <<: *default-tcp
 
-  - name: Homer TCP:443
+  - <<: *default-tcp
+    name: Homer TCP:443
     group: App - Homer
     url: tcp://homer.home:443
-    <<: *default-tcp
 
   ### Group: App - Jellyfin ###
 
-  - name: Jellyfin HTTP
+  - <<: *default-http
+    name: Jellyfin HTTP
     group: App - Jellyfin
     url: http://jellyfin.home
-    <<: *default-http
 
-  - name: Jellyfin HTTPS
+  - <<: *default-http
+    name: Jellyfin HTTPS
     group: App - Jellyfin
     url: https://jellyfin.home
-    <<: *default-http
 
-  - name: Jellyfin HTTP:8096
+  - <<: *default-http
+    name: Jellyfin HTTP:8096
     group: App - Jellyfin
     url: http://jellyfin.home:8096
-    <<: *default-http
 
-  - name: Jellyfin TCP:80
+  - <<: *default-tcp
+    name: Jellyfin TCP:80
     group: App - Jellyfin
     url: tcp://jellyfin.home:80
-    <<: *default-tcp
 
-  - name: Jellyfin TCP:443
+  - <<: *default-tcp
+    name: Jellyfin TCP:443
     group: App - Jellyfin
     url: tcp://jellyfin.home:443
-    <<: *default-tcp
 
-  - name: Jellyfin TCP:8096
+  - <<: *default-tcp
+    name: Jellyfin TCP:8096
     group: App - Jellyfin
     url: tcp://jellyfin.home:8096
-    <<: *default-tcp
 
   ### Group: App - Minio ###
 
-  - name: Minio Api HTTP
+  - <<: *default-http
+    name: Minio Api HTTP
     group: App - Minio
     url: http://minio.home
-    <<: *default-http
     conditions:
       - "[STATUS] < 500"
 
-  - name: Minio Api HTTPS
+  - <<: *default-http
+    name: Minio Api HTTPS
     group: App - Minio
     url: https://minio.home
-    <<: *default-http
     conditions:
       - "[STATUS] < 500"
 
-  - name: Minio Console HTTP
+  - <<: *default-http
+    name: Minio Console HTTP
     group: App - Minio
     url: http://console.minio.home
-    <<: *default-http
 
-  - name: Minio Console HTTPS
+  - <<: *default-http
+    name: Minio Console HTTPS
     group: App - Minio
     url: https://console.minio.home
-    <<: *default-http
 
-  - name: Minio APi TCP:80
+  - <<: *default-tcp
+    name: Minio APi TCP:80
     group: App - Minio
     url: tcp://minio.home:80
-    <<: *default-tcp
 
-  - name: Minio Api TCP:443
+  - <<: *default-tcp
+    name: Minio Api TCP:443
     group: App - Minio
     url: tcp://minio.home:443
-    <<: *default-tcp
 
-  - name: Minio Console TCP:80
+  - <<: *default-tcp
+    name: Minio Console TCP:80
     group: App - Minio
     url: tcp://console.minio.home:80
-    <<: *default-tcp
 
-  - name: Minio Console TCP:443
+  - <<: *default-tcp
+    name: Minio Console TCP:443
     group: App - Minio
     url: tcp://console.minio.home:443
-    <<: *default-tcp
 
   ### Group: App - Ntfy ###
 
-  - name: Ntfy HTTP
+  - <<: *default-http
+    name: Ntfy HTTP
     group: App - Ntfy
     url: http://ntfy.home
-    <<: *default-http
 
-  - name: Ntfy HTTPS
+  - <<: *default-http
+    name: Ntfy HTTPS
     group: App - Ntfy
     url: https://ntfy.home
-    <<: *default-http
 
-  - name: Ntfy TCP:25
+  - <<: *default-tcp
+    name: Ntfy TCP:25
     group: App - Ntfy
     url: tcp://ntfy.home:25
-    <<: *default-tcp
 
-  - name: Ntfy TCP:80
+  - <<: *default-tcp
+    name: Ntfy TCP:80
     group: App - Ntfy
     url: tcp://ntfy.home:80
-    <<: *default-tcp
 
-  - name: Ntfy TCP:443
+  - <<: *default-tcp
+    name: Ntfy TCP:443
     group: App - Ntfy
     url: tcp://ntfy.home:443
-    <<: *default-tcp
 
   ### Group: App - Omada Controller ###
 
-  - name: Omada Controller Admin HTTP
+  - <<: *default-http
+    name: Omada Controller Admin HTTP
     group: App - Omada Controller
     url: http://omada-controller.home
-    <<: *default-http
 
-  - name: Omada Controller Admin HTTPS
+  - <<: *default-http
+    name: Omada Controller Admin HTTPS
     group: App - Omada Controller
     url: https://omada-controller.home
-    <<: *default-http
 
-  - name: Omada Controller TCP:80
+  - <<: *default-tcp
+    name: Omada Controller TCP:80
     group: App - Omada Controller
     url: tcp://omada-controller.home:80
-    <<: *default-tcp
 
-  - name: Omada Controller TCP:443
+  - <<: *default-tcp
+    name: Omada Controller TCP:443
     group: App - Omada Controller
     url: tcp://omada-controller.home:443
-    <<: *default-tcp
 
-  - name: Omada Controller TCP:29811
+  - <<: *default-tcp
+    name: Omada Controller TCP:29811
     group: App - Omada Controller
     url: tcp://omada-controller.home:29811
-    <<: *default-tcp
 
-  - name: Omada Controller TCP:29812
+  - <<: *default-tcp
+    name: Omada Controller TCP:29812
     group: App - Omada Controller
     url: tcp://omada-controller.home:29812
-    <<: *default-tcp
 
-  - name: Omada Controller TCP:29813
+  - <<: *default-tcp
+    name: Omada Controller TCP:29813
     group: App - Omada Controller
     url: tcp://omada-controller.home:29813
-    <<: *default-tcp
 
-  - name: Omada Controller TCP:29814
+  - <<: *default-tcp
+    name: Omada Controller TCP:29814
     group: App - Omada Controller
     url: tcp://omada-controller.home:29814
-    <<: *default-tcp
 
-  - name: Omada Controller TCP:29815
+  - <<: *default-tcp
+    name: Omada Controller TCP:29815
     group: App - Omada Controller
     url: tcp://omada-controller.home:29815
-    <<: *default-tcp
 
-  - name: Omada Controller TCP:29816
+  - <<: *default-tcp
+    name: Omada Controller TCP:29816
     group: App - Omada Controller
     url: tcp://omada-controller.home:29816
-    <<: *default-tcp
 
   ### Group: App - Pihole ###
 
-  - name: Pihole HTTP
+  - <<: *default-http
+    name: Pihole HTTP
     group: App - Pihole
     url: http://pihole.home
-    <<: *default-http
 
-  - name: Pihole HTTPS
+  - <<: *default-http
+    name: Pihole HTTPS
     group: App - Pihole
     url: https://pihole.home
-    <<: *default-http
 
-  - name: Pihole DNS
+  - <<: *default-dns
+    name: Pihole DNS
     group: App - Pihole
     url: pihole.home
-    <<: *default-dns
 
-  - name: Pihole TCP:53
+  - <<: *default-tcp
+    name: Pihole TCP:53
     group: App - Pihole
     url: tcp://pihole.home:53
-    <<: *default-tcp
 
-  - name: Pihole UDP:53
+  - <<: *default-tcp
+    name: Pihole UDP:53
     group: App - Pihole
     url: udp://pihole.home:53
-    <<: *default-tcp
 
-  - name: Pihole TCP:80
+  - <<: *default-tcp
+    name: Pihole TCP:80
     group: App - Pihole
     url: tcp://pihole.home:80
-    <<: *default-tcp
 
-  - name: Pihole TCP:443
+  - <<: *default-tcp
+    name: Pihole TCP:443
     group: App - Pihole
     url: tcp://pihole.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (2) ###
 
-  - name: Pihole (2) HTTP
+  - <<: *default-http
+    name: Pihole (2) HTTP
     group: App - Pihole (2)
     url: http://pihole-2.home
-    <<: *default-http
 
-  - name: Pihole (2) HTTPS
+  - <<: *default-http
+    name: Pihole (2) HTTPS
     group: App - Pihole (2)
     url: https://pihole-2.home
-    <<: *default-http
 
-  - name: Pihole (2) DNS
+  - <<: *default-dns
+    name: Pihole (2) DNS
     group: App - Pihole (2)
     url: pihole-2.home
-    <<: *default-dns
 
-  - name: Pihole (2) TCP:53
+  - <<: *default-tcp
+    name: Pihole (2) TCP:53
     group: App - Pihole (2)
     url: tcp://pihole-2.home:53
-    <<: *default-tcp
 
-  - name: Pihole (2) UDP:53
+  - <<: *default-tcp
+    name: Pihole (2) UDP:53
     group: App - Pihole (2)
     url: udp://pihole-2.home:53
-    <<: *default-tcp
 
-  - name: Pihole (2) TCP:80
+  - <<: *default-tcp
+    name: Pihole (2) TCP:80
     group: App - Pihole (2)
     url: tcp://pihole-2.home:80
-    <<: *default-tcp
 
-  - name: Pihole (2) TCP:443
+  - <<: *default-tcp
+    name: Pihole (2) TCP:443
     group: App - Pihole (2)
     url: tcp://pihole-2.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (3) ###
 
-  - name: Pihole (3) HTTP
+  - <<: *default-http
+    name: Pihole (3) HTTP
     group: App - Pihole (3)
     url: http://pihole-3.home
-    <<: *default-http
 
-  - name: Pihole (3) HTTPS
+  - <<: *default-http
+    name: Pihole (3) HTTPS
     group: App - Pihole (3)
     url: https://pihole-3.home
-    <<: *default-http
 
-  - name: Pihole (3) DNS
+  - <<: *default-dns
+    name: Pihole (3) DNS
     group: App - Pihole (3)
     url: pihole-3.home
-    <<: *default-dns
 
-  - name: Pihole (3) TCP:53
+  - <<: *default-tcp
+    name: Pihole (3) TCP:53
     group: App - Pihole (3)
     url: tcp://pihole-3.home:53
-    <<: *default-tcp
 
-  - name: Pihole (3) UDP:53
+  - <<: *default-tcp
+    name: Pihole (3) UDP:53
     group: App - Pihole (3)
     url: udp://pihole-3.home:53
-    <<: *default-tcp
 
-  - name: Pihole (3) TCP:80
+  - <<: *default-tcp
+    name: Pihole (3) TCP:80
     group: App - Pihole (3)
     url: tcp://pihole-3.home:80
-    <<: *default-tcp
 
-  - name: Pihole (3) TCP:443
+  - <<: *default-tcp
+    name: Pihole (3) TCP:443
     group: App - Pihole (3)
     url: tcp://pihole-3.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (matej) ###
 
-  - name: Pihole (matej) HTTP
+  - <<: *default-http
+    name: Pihole (matej) HTTP
     group: App - Pihole (matej)
     url: http://pihole-matej.home
-    <<: *default-http
 
-  - name: Pihole (matej) HTTPS
+  - <<: *default-http
+    name: Pihole (matej) HTTPS
     group: App - Pihole (matej)
     url: https://pihole-matej.home
-    <<: *default-http
 
-  - name: Pihole (matej) DNS
+  - <<: *default-dns
+    name: Pihole (matej) DNS
     group: App - Pihole (matej)
     url: pihole-matej.home
-    <<: *default-dns
 
-  - name: Pihole (matej) TCP:53
+  - <<: *default-tcp
+    name: Pihole (matej) TCP:53
     group: App - Pihole (matej)
     url: tcp://pihole-matej.home:53
-    <<: *default-tcp
 
-  - name: Pihole (matej) UDP:53
+  - <<: *default-tcp
+    name: Pihole (matej) UDP:53
     group: App - Pihole (matej)
     url: udp://pihole-matej.home:53
-    <<: *default-tcp
 
-  - name: Pihole (matej) TCP:80
+  - <<: *default-tcp
+    name: Pihole (matej) TCP:80
     group: App - Pihole (matej)
     url: tcp://pihole-matej.home:80
-    <<: *default-tcp
 
-  - name: Pihole (matej) TCP:443
+  - <<: *default-tcp
+    name: Pihole (matej) TCP:443
     group: App - Pihole (matej)
     url: tcp://pihole-matej.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (matej-work) ###
 
-  - name: Pihole (matej-work) HTTP
+  - <<: *default-http
+    name: Pihole (matej-work) HTTP
     group: App - Pihole (matej-work)
     url: http://pihole-matej-work.home
-    <<: *default-http
 
-  - name: Pihole (matej-work) HTTPS
+  - <<: *default-http
+    name: Pihole (matej-work) HTTPS
     group: App - Pihole (matej-work)
     url: https://pihole-matej-work.home
-    <<: *default-http
 
-  - name: Pihole (matej-work) DNS
+  - <<: *default-dns
+    name: Pihole (matej-work) DNS
     group: App - Pihole (matej-work)
     url: pihole-matej-work.home
-    <<: *default-dns
 
-  - name: Pihole (matej-work) TCP:53
+  - <<: *default-tcp
+    name: Pihole (matej-work) TCP:53
     group: App - Pihole (matej-work)
     url: tcp://pihole-matej-work.home:53
-    <<: *default-tcp
 
-  - name: Pihole (matej-work) UDP:53
+  - <<: *default-tcp
+    name: Pihole (matej-work) UDP:53
     group: App - Pihole (matej-work)
     url: udp://pihole-matej-work.home:53
-    <<: *default-tcp
 
-  - name: Pihole (matej-work) TCP:80
+  - <<: *default-tcp
+    name: Pihole (matej-work) TCP:80
     group: App - Pihole (matej-work)
     url: tcp://pihole-matej-work.home:80
-    <<: *default-tcp
 
-  - name: Pihole (matej-work) TCP:443
+  - <<: *default-tcp
+    name: Pihole (matej-work) TCP:443
     group: App - Pihole (matej-work)
     url: tcp://pihole-matej-work.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (monika) ###
 
-  - name: Pihole (monika) HTTP
+  - <<: *default-http
+    name: Pihole (monika) HTTP
     group: App - Pihole (monika)
     url: http://pihole-monika.home
-    <<: *default-http
 
-  - name: Pihole (monika) HTTPS
+  - <<: *default-http
+    name: Pihole (monika) HTTPS
     group: App - Pihole (monika)
     url: https://pihole-monika.home
-    <<: *default-http
 
-  - name: Pihole (monika) DNS
+  - <<: *default-dns
+    name: Pihole (monika) DNS
     group: App - Pihole (monika)
     url: pihole-monika.home
-    <<: *default-dns
 
-  - name: Pihole (monika) TCP:53
+  - <<: *default-tcp
+    name: Pihole (monika) TCP:53
     group: App - Pihole (monika)
     url: tcp://pihole-monika.home:53
-    <<: *default-tcp
 
-  - name: Pihole (monika) UDP:53
+  - <<: *default-tcp
+    name: Pihole (monika) UDP:53
     group: App - Pihole (monika)
     url: udp://pihole-monika.home:53
-    <<: *default-tcp
 
-  - name: Pihole (monika) TCP:80
+  - <<: *default-tcp
+    name: Pihole (monika) TCP:80
     group: App - Pihole (monika)
     url: tcp://pihole-monika.home:80
-    <<: *default-tcp
 
-  - name: Pihole (monika) TCP:443
+  - <<: *default-tcp
+    name: Pihole (monika) TCP:443
     group: App - Pihole (monika)
     url: tcp://pihole-monika.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (monika-work) ###
 
-  - name: Pihole (monika-work) HTTP
+  - <<: *default-http
+    name: Pihole (monika-work) HTTP
     group: App - Pihole (monika-work)
     url: http://pihole-monika-work.home
-    <<: *default-http
 
-  - name: Pihole (monika-work) HTTPS
+  - <<: *default-http
+    name: Pihole (monika-work) HTTPS
     group: App - Pihole (monika-work)
     url: https://pihole-monika-work.home
-    <<: *default-http
 
-  - name: Pihole (monika-work) DNS
+  - <<: *default-dns
+    name: Pihole (monika-work) DNS
     group: App - Pihole (monika-work)
     url: pihole-monika-work.home
-    <<: *default-dns
 
-  - name: Pihole (monika-work) TCP:53
+  - <<: *default-tcp
+    name: Pihole (monika-work) TCP:53
     group: App - Pihole (monika-work)
     url: tcp://pihole-monika-work.home:53
-    <<: *default-tcp
 
-  - name: Pihole (monika-work) UDP:53
+  - <<: *default-tcp
+    name: Pihole (monika-work) UDP:53
     group: App - Pihole (monika-work)
     url: udp://pihole-monika-work.home:53
-    <<: *default-tcp
 
-  - name: Pihole (monika-work) TCP:80
+  - <<: *default-tcp
+    name: Pihole (monika-work) TCP:80
     group: App - Pihole (monika-work)
     url: tcp://pihole-monika-work.home:80
-    <<: *default-tcp
 
-  - name: Pihole (monika-work) TCP:443
+  - <<: *default-tcp
+    name: Pihole (monika-work) TCP:443
     group: App - Pihole (monika-work)
     url: tcp://pihole-monika-work.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (guests) ###
 
-  - name: Pihole (guests) HTTP
+  - <<: *default-http
+    name: Pihole (guests) HTTP
     group: App - Pihole (guests)
     url: http://pihole-guests.home
-    <<: *default-http
 
-  - name: Pihole (guests) HTTPS
+  - <<: *default-http
+    name: Pihole (guests) HTTPS
     group: App - Pihole (guests)
     url: https://pihole-guests.home
-    <<: *default-http
 
-  - name: Pihole (guests) DNS
+  - <<: *default-dns
+    name: Pihole (guests) DNS
     group: App - Pihole (guests)
     url: pihole-guests.home
-    <<: *default-dns
 
-  - name: Pihole (guests) TCP:53
+  - <<: *default-tcp
+    name: Pihole (guests) TCP:53
     group: App - Pihole (guests)
     url: tcp://pihole-guests.home:53
-    <<: *default-tcp
 
-  - name: Pihole (guests) UDP:53
+  - <<: *default-tcp
+    name: Pihole (guests) UDP:53
     group: App - Pihole (guests)
     url: udp://pihole-guests.home:53
-    <<: *default-tcp
 
-  - name: Pihole (guests) TCP:80
+  - <<: *default-tcp
+    name: Pihole (guests) TCP:80
     group: App - Pihole (guests)
     url: tcp://pihole-guests.home:80
-    <<: *default-tcp
 
-  - name: Pihole (guests) TCP:443
+  - <<: *default-tcp
+    name: Pihole (guests) TCP:443
     group: App - Pihole (guests)
     url: tcp://pihole-guests.home:443
-    <<: *default-tcp
 
   ### Group: App - Pihole (iot) ###
 
-  - name: Pihole (iot) HTTP
+  - <<: *default-http
+    name: Pihole (iot) HTTP
     group: App - Pihole (iot)
     url: http://pihole-iot.home
-    <<: *default-http
 
-  - name: Pihole (iot) HTTPS
+  - <<: *default-http
+    name: Pihole (iot) HTTPS
     group: App - Pihole (iot)
     url: https://pihole-iot.home
-    <<: *default-http
 
-  - name: Pihole (iot) DNS
+  - <<: *default-dns
+    name: Pihole (iot) DNS
     group: App - Pihole (iot)
     url: pihole-iot.home
-    <<: *default-dns
 
-  - name: Pihole (iot) TCP:53
+  - <<: *default-tcp
+    name: Pihole (iot) TCP:53
     group: App - Pihole (iot)
     url: tcp://pihole-iot.home:53
-    <<: *default-tcp
 
-  - name: Pihole (iot) UDP:53
+  - <<: *default-tcp
+    name: Pihole (iot) UDP:53
     group: App - Pihole (iot)
     url: udp://pihole-iot.home:53
-    <<: *default-tcp
 
-  - name: Pihole (iot) TCP:80
+  - <<: *default-tcp
+    name: Pihole (iot) TCP:80
     group: App - Pihole (iot)
     url: tcp://pihole-iot.home:80
-    <<: *default-tcp
 
-  - name: Pihole (iot) TCP:443
+  - <<: *default-tcp
+    name: Pihole (iot) TCP:443
     group: App - Pihole (iot)
     url: tcp://pihole-iot.home:443
-    <<: *default-tcp
 
   ### Group: App - Smtp4dev ###
 
-  - name: Smtp4dev HTTP
+  - <<: *default-http
+    name: Smtp4dev HTTP
     group: App - Smtp4dev
     url: http://smtp4dev.home
-    <<: *default-http
 
-  - name: Smtp4dev HTTPS
+  - <<: *default-http
+    name: Smtp4dev HTTPS
     group: App - Smtp4dev
     url: https://smtp4dev.home
-    <<: *default-http
 
-  - name: Smtp4dev TCP:25
+  - <<: *default-tcp
+    name: Smtp4dev TCP:25
     group: App - Smtp4dev
     url: tcp://smtp4dev.home:25
-    <<: *default-tcp
 
-  - name: Smtp4dev TCP:80
+  - <<: *default-tcp
+    name: Smtp4dev TCP:80
     group: App - Smtp4dev
     url: tcp://smtp4dev.home:80
-    <<: *default-tcp
 
-  - name: Smtp4dev TCP:443
+  - <<: *default-tcp
+    name: Smtp4dev TCP:443
     group: App - Smtp4dev
     url: tcp://smtp4dev.home:443
-    <<: *default-tcp
 
   ### Group: App - Speedtest Tracker ###
 
-  - name: Speedtest Tracker HTTP
+  - <<: *default-http
+    name: Speedtest Tracker HTTP
     group: App - Speedtest Tracker
     url: http://speedtest-tracker.home
-    <<: *default-http
 
-  - name: Speedtest Tracker HTTPS
+  - <<: *default-http
+    name: Speedtest Tracker HTTPS
     group: App - Speedtest Tracker
     url: https://speedtest-tracker.home
-    <<: *default-http
 
-  - name: Speedtest Tracker TCP:80
+  - <<: *default-tcp
+    name: Speedtest Tracker TCP:80
     group: App - Speedtest Tracker
     url: tcp://speedtest-tracker.home:80
-    <<: *default-tcp
 
-  - name: Speedtest Tracker TCP:443
+  - <<: *default-tcp
+    name: Speedtest Tracker TCP:443
     group: App - Speedtest Tracker
     url: tcp://speedtest-tracker.home:443
-    <<: *default-tcp
 
   ### Group: App - Tvheadend ###
 
-  - name: Tvheadend HTTP
+  - <<: *default-http
+    name: Tvheadend HTTP
     group: App - Tvheadend
     url: http://tvheadend.home
-    <<: *default-http
 
-  - name: Tvheadend HTTPS
+  - <<: *default-http
+    name: Tvheadend HTTPS
     group: App - Tvheadend
     url: https://tvheadend.home
-    <<: *default-http
 
-  - name: Tvheadend HTTP:9981
+  - <<: *default-http
+    name: Tvheadend HTTP:9981
     group: App - Tvheadend
     url: http://tvheadend.home:9981
-    <<: *default-http
 
-  - name: Tvheadend TCP:80
+  - <<: *default-tcp
+    name: Tvheadend TCP:80
     group: App - Tvheadend
     url: tcp://tvheadend.home:80
-    <<: *default-tcp
 
-  - name: Tvheadend TCP:443
+  - <<: *default-tcp
+    name: Tvheadend TCP:443
     group: App - Tvheadend
     url: tcp://tvheadend.home:443
-    <<: *default-tcp
 
-  - name: Tvheadend TCP:9981
+  - <<: *default-tcp
+    name: Tvheadend TCP:9981
     group: App - Tvheadend
     url: tcp://tvheadend.home:9981
-    <<: *default-tcp
 
-  - name: Tvheadend TCP:9982
+  - <<: *default-tcp
+    name: Tvheadend TCP:9982
     group: App - Tvheadend
     url: tcp://tvheadend.home:9982
-    <<: *default-tcp
 
   ### Group: App - Unifi Controller ###
 
-  - name: Unifi Controller Admin HTTP
+  - <<: *default-http
+    name: Unifi Controller Admin HTTP
     group: App - Unifi Controller
     url: http://unifi-controller.home
-    <<: *default-http
 
-  - name: Unifi Controller Admin HTTPS
+  - <<: *default-http
+    name: Unifi Controller Admin HTTPS
     group: App - Unifi Controller
     url: https://unifi-controller.home
-    <<: *default-http
 
   - <<: *default-http
     name: Unifi Controller Admin Api
@@ -864,37 +864,37 @@ endpoints:
       - "[BODY].rc == \"ok\""
       - "[BODY].up == true"
 
-  - name: Unifi Controller Admin HTTP (raw)
+  - <<: *default-http
+    name: Unifi Controller Admin HTTP (raw)
     group: App - Unifi Controller
     url: http://unifi-controller.home:8080
-    <<: *default-http
 
-  - name: Unifi Controller Admin HTTPS (raw)
+  - <<: *default-http
+    name: Unifi Controller Admin HTTPS (raw)
     group: App - Unifi Controller
     url: https://unifi-controller.home:8443
-    <<: *default-http
 
-  - name: Unifi Controller TCP:80
+  - <<: *default-tcp
+    name: Unifi Controller TCP:80
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:80
-    <<: *default-tcp
 
-  - name: Unifi Controller TCP:8080
+  - <<: *default-tcp
+    name: Unifi Controller TCP:8080
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:8080
-    <<: *default-tcp
 
-  - name: Unifi Controller TCP:443
+  - <<: *default-tcp
+    name: Unifi Controller TCP:443
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:443
-    <<: *default-tcp
 
-  - name: Unifi Controller TCP:8443
+  - <<: *default-tcp
+    name: Unifi Controller TCP:8443
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:8443
-    <<: *default-tcp
 
-  - name: Unifi Controller TCP:6789
+  - <<: *default-tcp
+    name: Unifi Controller TCP:6789
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:6789
-    <<: *default-tcp
