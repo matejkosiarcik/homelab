@@ -14,6 +14,11 @@ default-tcp: &default-tcp
   conditions:
     - "[CONNECTED] == true"
 
+default-udp: &default-udp
+  interval: 30m
+  conditions:
+    - "[CONNECTED] == true"
+
 default-dns: &default-dns
   interval: 30m
   dns:
@@ -446,7 +451,7 @@ endpoints:
     group: App - Pihole
     url: tcp://pihole.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole UDP:53
     group: App - Pihole
     url: udp://pihole.home:53
@@ -483,7 +488,7 @@ endpoints:
     group: App - Pihole (2)
     url: tcp://pihole-2.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (2) UDP:53
     group: App - Pihole (2)
     url: udp://pihole-2.home:53
@@ -520,7 +525,7 @@ endpoints:
     group: App - Pihole (3)
     url: tcp://pihole-3.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (3) UDP:53
     group: App - Pihole (3)
     url: udp://pihole-3.home:53
@@ -557,7 +562,7 @@ endpoints:
     group: App - Pihole (matej)
     url: tcp://pihole-matej.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (matej) UDP:53
     group: App - Pihole (matej)
     url: udp://pihole-matej.home:53
@@ -594,7 +599,7 @@ endpoints:
     group: App - Pihole (matej-work)
     url: tcp://pihole-matej-work.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (matej-work) UDP:53
     group: App - Pihole (matej-work)
     url: udp://pihole-matej-work.home:53
@@ -631,7 +636,7 @@ endpoints:
     group: App - Pihole (monika)
     url: tcp://pihole-monika.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (monika) UDP:53
     group: App - Pihole (monika)
     url: udp://pihole-monika.home:53
@@ -668,7 +673,7 @@ endpoints:
     group: App - Pihole (monika-work)
     url: tcp://pihole-monika-work.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (monika-work) UDP:53
     group: App - Pihole (monika-work)
     url: udp://pihole-monika-work.home:53
@@ -705,7 +710,7 @@ endpoints:
     group: App - Pihole (guests)
     url: tcp://pihole-guests.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (guests) UDP:53
     group: App - Pihole (guests)
     url: udp://pihole-guests.home:53
@@ -742,7 +747,7 @@ endpoints:
     group: App - Pihole (iot)
     url: tcp://pihole-iot.home:53
 
-  - <<: *default-tcp
+  - <<: *default-udp
     name: Pihole (iot) UDP:53
     group: App - Pihole (iot)
     url: udp://pihole-iot.home:53
