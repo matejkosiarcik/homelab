@@ -331,7 +331,7 @@ endpoints:
     url: https://console.minio.home
 
   - <<: *default-tcp
-    name: Minio APi TCP:80
+    name: Minio Api TCP:80
     group: App - Minio
     url: tcp://minio.home:80
 
