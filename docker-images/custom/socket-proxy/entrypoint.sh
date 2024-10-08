@@ -4,6 +4,12 @@ set -euf
 mkdir -p /homelab/.internal
 printf 'starting\n' >/homelab/.internal/status.txt
 
+if [ "$HOMELAB_ENV" = 'prod' ]; then
+    delay="$(bash -c 'echo $((1 + RANDOM % 5))')"
+    printf 'Delaying start for %ss\n' "$delay"
+    sleep "$delay"
+fi
+
 if [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
     socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
