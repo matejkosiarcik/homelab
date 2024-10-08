@@ -828,12 +828,21 @@ endpoints:
     url: https://unifi-controller.home
     <<: *default-http
 
+  - name: Unifi Controller Admin Api
+    group: App - Unifi Controller
+    url: https://unifi-controller.home/status
+    <<: *default-http
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].rc == \"ok\""
+      - "[BODY].up == true"
+
   - name: Unifi Controller Admin HTTP (raw)
     group: App - Unifi Controller
     url: http://unifi-controller.home:8080
     <<: *default-http
 
-  - name: Unifi Controller Portal HTTPS (raw)
+  - name: Unifi Controller Admin HTTPS (raw)
     group: App - Unifi Controller
     url: https://unifi-controller.home:8443
     <<: *default-http
