@@ -2,6 +2,7 @@ title: Homelab Homepage
 theme: dark
 color: gray
 statusStyle: dot
+disableCollapse: true
 
 layout:
   Network:
