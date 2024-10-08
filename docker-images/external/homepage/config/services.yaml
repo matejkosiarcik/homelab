@@ -105,12 +105,6 @@
         icon: /icons/pihole.png
 
     - PiHole:
-        description: Main-3
-        href: https://pihole-3.home
-        ping: pihole-3.home
-        icon: /icons/pihole.png
-
-    - PiHole:
         description: Guests
         href: https://pihole-guests.home
         ping: pihole-guests.home
