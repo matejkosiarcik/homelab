@@ -879,8 +879,8 @@ endpoints:
     url: https://unifi-controller.home/status
     conditions:
       - "[STATUS] == 200"
-      - '[BODY].rc == "ok"'
-      - "[BODY].up == true"
+      - '[BODY].meta.rc == "ok"'
+      - "[BODY].meta.up == true"
 
   - <<: *default-http
     name: Unifi Controller Admin HTTP (raw)
