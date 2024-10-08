@@ -11,6 +11,7 @@ if [ "$HOMELAB_ENV" = 'prod' ]; then
 fi
 
 respawn() {
+    # shellcheck disable=SC2068
     (until $@; do
         printf 'Process "%s" crashed with exit code %s. Restarting...' "$@" "$?" >&2
         sleep 1
