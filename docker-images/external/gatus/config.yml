@@ -4,6 +4,19 @@ storage:
 
 metrics: true
 
+alerting:
+  ntfy:
+    url: https://ntfy.home
+    topic: gatus
+    priority: 3
+    token: ${NTFY_TOKEN}
+    default-alert:
+      enabled: true
+      failure-threshold: 2
+      success-threshold: 1
+      send-on-resolved: true
+      description: Gatus healthcheck failed
+
 default-icmp: &default-icmp
   interval: 10m
   conditions:
