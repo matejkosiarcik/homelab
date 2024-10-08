@@ -866,7 +866,7 @@ endpoints:
     url: https://unifi-controller.home/status
     conditions:
       - "[STATUS] == 200"
-      - "[BODY].rc == \"ok\""
+      - '[BODY].rc == "ok"'
       - "[BODY].up == true"
 
   - <<: *default-http
