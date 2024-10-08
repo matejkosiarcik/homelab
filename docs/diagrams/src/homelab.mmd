@@ -48,6 +48,9 @@ flowchart LR
         unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Controller")
         uptime_kuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma")
         jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection.io")
+        ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
 
         hidden_3(" ")
         class hidden_3 no_border
@@ -58,6 +61,8 @@ flowchart LR
         docker_cache_proxy ~~~ minio
         homer ~~~ speedtest_tracker
         jellyfin ~~~ smb
+        gatus ~~~ changedetection
+        ntfy ~~~ hidden_3
     end
 
     odroid_h3 ~~~ raspberry_pi_3b

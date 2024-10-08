@@ -133,6 +133,9 @@ case "$current_dir" in
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
+    # App
+    prepare_empty_env NTFY_TOKEN "$output/gatus.env"
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2

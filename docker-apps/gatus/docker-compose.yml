@@ -20,6 +20,8 @@ services:
       dockerfile: ./external/gatus/Dockerfile
     volumes:
       - ./app-data/gatus:/data:rw
+    env_file:
+      - ./app-secrets/gatus.env
     stop_grace_period: 30s
 
   certificate-manager:
