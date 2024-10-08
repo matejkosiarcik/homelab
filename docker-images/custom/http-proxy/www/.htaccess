@@ -9,7 +9,8 @@ RewriteEngine On
 RewriteBase /
 
 # Remove port from _HOST if applicable
-RewriteCond %{HTTP_HOST} ^(.*):.*$ [NC]
+RewriteRule ^ - [E=_HOST:%{HTTP_HOST},NE]
+RewriteCond %{ENV:_HOST} ^(.*):.*$ [NC]
 RewriteRule ^ - [E=_HOST:%1,NE]
 
 # Set _FORCE_HTTPS if applicable
