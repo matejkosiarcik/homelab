@@ -842,7 +842,7 @@ endpoints:
     url: https://unifi-controller.home/status
     conditions:
       - "[STATUS] == 200"
-      - '[BODY].meta.rc == ok'
+      - "[BODY].meta.rc == ok"
       - "[BODY].meta.up == true"
 
   - <<: *default-http
