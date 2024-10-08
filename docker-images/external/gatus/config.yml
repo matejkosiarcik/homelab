@@ -855,10 +855,10 @@ endpoints:
     url: https://unifi-controller.home
     <<: *default-http
 
-  - name: Unifi Controller Admin Api
+  - <<: *default-http
+    name: Unifi Controller Admin Api
     group: App - Unifi Controller
     url: https://unifi-controller.home/status
-    <<: *default-http
     conditions:
       - "[STATUS] == 200"
       - "[BODY].rc == \"ok\""
