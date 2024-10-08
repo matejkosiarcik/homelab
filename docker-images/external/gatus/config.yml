@@ -516,43 +516,6 @@ endpoints:
     group: App - Pihole (2)
     url: tcp://pihole-2.home:443
 
-  ### Group: App - Pihole (3) ###
-
-  - <<: *default-http
-    name: Pihole (3) HTTP
-    group: App - Pihole (3)
-    url: http://pihole-3.home
-
-  - <<: *default-http
-    name: Pihole (3) HTTPS
-    group: App - Pihole (3)
-    url: https://pihole-3.home
-
-  - <<: *default-dns
-    name: Pihole (3) DNS
-    group: App - Pihole (3)
-    url: pihole-3.home
-
-  - <<: *default-tcp
-    name: Pihole (3) TCP:53
-    group: App - Pihole (3)
-    url: tcp://pihole-3.home:53
-
-  - <<: *default-udp
-    name: Pihole (3) UDP:53
-    group: App - Pihole (3)
-    url: udp://pihole-3.home:53
-
-  - <<: *default-tcp
-    name: Pihole (3) TCP:80
-    group: App - Pihole (3)
-    url: tcp://pihole-3.home:80
-
-  - <<: *default-tcp
-    name: Pihole (3) TCP:443
-    group: App - Pihole (3)
-    url: tcp://pihole-3.home:443
-
   ### Group: App - Pihole (matej) ###
 
   - <<: *default-http
