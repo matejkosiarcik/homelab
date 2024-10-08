@@ -345,6 +345,33 @@ endpoints:
     url: tcp://console.minio.home:443
     <<: *default-tcp
 
+  ### Group: App - Ntfy ###
+
+  - name: Ntfy HTTP
+    group: App - Ntfy
+    url: http://ntfy.home
+    <<: *default-http
+
+  - name: Ntfy HTTPS
+    group: App - Ntfy
+    url: https://ntfy.home
+    <<: *default-http
+
+  - name: Ntfy TCP:25
+    group: App - Ntfy
+    url: tcp://ntfy.home:25
+    <<: *default-tcp
+
+  - name: Ntfy TCP:80
+    group: App - Ntfy
+    url: tcp://ntfy.home:80
+    <<: *default-tcp
+
+  - name: Ntfy TCP:443
+    group: App - Ntfy
+    url: tcp://ntfy.home:443
+    <<: *default-tcp
+
   ### Group: App - Omada Controller ###
 
   - name: Omada Controller Admin HTTP
