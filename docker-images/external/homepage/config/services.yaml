@@ -160,17 +160,17 @@
         icon: /icons/lightbulb.png
 
 - Media:
-    - Tvheadend:
-        description: ...
-        href: https://tvheadend.home
-        ping: tvheadend.home
-        icon: /icons/tvheadend.png
-
     - Jellyfin:
         description: ...
         href: https://jellyfin.home
         ping: jellyfin.home
         icon: /icons/jellyfin.png
+
+    - Tvheadend:
+        description: ...
+        href: https://tvheadend.home
+        ping: tvheadend.home
+        icon: /icons/tvheadend.png
 
 - Monitoring:
     - Healthchecks:
