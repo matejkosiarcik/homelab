@@ -211,6 +211,13 @@ services:
         url: https://gatus-2.home
         logo: ./assets/icons/gatus.png
 
+      # Webpage monitor
+      - name: Changedetection
+        type: Ping
+        subtitle: "-"
+        url: https://changedetection.home
+        logo: ./assets/icons/changedetection.png
+
       # Docker cache proxy
       - name: DockerHub Proxy
         type: Ping

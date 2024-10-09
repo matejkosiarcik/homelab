@@ -203,6 +203,12 @@
         ping: speedtest-tracker.home
         icon: /icons/speedtest.png
 
+    - Changedetection:
+        description: ...
+        href: https://changedetection.home
+        ping: changedetection.home
+        icon: /icons/changedetection.png
+
 - Other Apps:
     - Homepage:
         description: ...
