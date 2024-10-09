@@ -131,7 +131,7 @@ endpoints:
     url: icmp://10.1.4.7
     enabled: false # TODO: Reenable
 
-  ### Group: App - Changedetection.io ###
+  ### Group: App - Changedetection ###
 
   - <<: *default-http
     name: Changedetection.io HTTP
@@ -196,6 +196,28 @@ endpoints:
     name: Gatus TCP:443
     group: App - Gatus
     url: tcp://gatus.home:443
+
+  ### Group: App - Gatus (2) ###
+
+  - <<: *default-http
+    name: Gatus HTTP
+    group: App - Gatus (2)
+    url: http://gatus-2.home
+
+  - <<: *default-http
+    name: Gatus HTTPS
+    group: App - Gatus (2)
+    url: https://gatus-2.home
+
+  - <<: *default-tcp
+    name: Gatus TCP:80
+    group: App - Gatus (2)
+    url: tcp://gatus-2.home:80
+
+  - <<: *default-tcp
+    name: Gatus TCP:443
+    group: App - Gatus (2)
+    url: tcp://gatus-2.home:443
 
   ### Group: App - Healthchecks ###
 
