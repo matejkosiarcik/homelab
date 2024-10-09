@@ -26,7 +26,7 @@
     "cors": "^2.8.5",
     "cross-fetch": "^4.0.0",
     "dotenv": "^16.4.5",
-    "express": "^4.21.0",
+    "express": "^4.21.1",
     "express-json-validator-middleware": "^3.0.1",
     "express-prom-bundle": "^7.0.0",
     "punycode": "^2.3.1",
@@ -55,7 +55,7 @@
     "sass": "^1.79.4",
     "terser": "^5.34.1",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.2",
+    "typescript": "^5.6.3",
     "vite": "^5.4.8",
     "vue": "^3.5.11",
     "vue-tsc": "^2.1.6"
