@@ -134,23 +134,23 @@ endpoints:
   ### Group: App - Changedetection ###
 
   - <<: *default-http
-    name: Changedetection.io HTTP
-    group: App - Changedetection.io
+    name: Changedetection HTTP
+    group: App - Changedetection
     url: http://changedetection.home
 
   - <<: *default-http
-    name: Changedetection.io HTTPS
-    group: App - Changedetection.io
+    name: Changedetection HTTPS
+    group: App - Changedetection
     url: https://changedetection.home
 
   - <<: *default-tcp
-    name: Changedetection.io TCP:80
-    group: App - Changedetection.io
+    name: Changedetection TCP:80
+    group: App - Changedetection
     url: tcp://changedetection.home:80
 
   - <<: *default-tcp
-    name: Changedetection.io TCP:443
-    group: App - Changedetection.io
+    name: Changedetection TCP:443
+    group: App - Changedetection
     url: tcp://changedetection.home:443
 
   ### Group: App - Dockerhub proxy ###
