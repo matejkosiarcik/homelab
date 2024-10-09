@@ -47,7 +47,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/kubernetes-comm
 
 ### Homer icons ###
 
-convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/changedetection.svg" "$outdir/changedetection.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/changedetection.png" "$outdir/changedetection.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/chromium.png" "$outdir/chromium.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$outdir/docker.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/azuredns.png" "$outdir/dns.png"
