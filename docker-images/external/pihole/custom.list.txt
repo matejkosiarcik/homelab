@@ -25,3 +25,4 @@
 
 10.1.16.1 unifi-controller.home
 10.1.16.2 pihole-2.home
+10.1.16.3 gatus-2.home
