@@ -1,4 +1,4 @@
-# Changedetection.io
+# Changedetection
 
 ![diagram](../../docs/diagrams/out/apps/changedetection.png)
 
