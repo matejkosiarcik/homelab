@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM mongo:8.0.0
+FROM mongo:8.0.1
 COPY ./database/mongodb/init-mongo-default.js /docker-entrypoint-initdb.d/init-mongo.js
 COPY ./database/mongodb/healthcheck.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=mongodb \
