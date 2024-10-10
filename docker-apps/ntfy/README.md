@@ -24,13 +24,13 @@
 
 ## Publishing notifications
 
-For publishing notifications to ntfy (see also: https://github.com/caronc/apprise/wiki/Notify_ntfy):
+For publishing notifications to ntfy (see also: <https://github.com/caronc/apprise/wiki/Notify_ntfy>):
 
 ```txt
 ntfy://publisher:<password>@<domain>/<topic>
 ```
 
-Alternatively you can also publish via email (see also https://github.com/caronc/apprise/wiki/Notify_email):
+Alternatively you can also publish via email (see also <https://github.com/caronc/apprise/wiki/Notify_email>):
 
 ```txt
 mailto://ntfy-<topic>+<token>@<domain>
