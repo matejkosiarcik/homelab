@@ -20,3 +20,20 @@
     - IP (ping) monitor
     - TCP monitor for all open ports
     - HTTP/HTTPS monitor
+- \[Prod\] Create any necessary Auth tokens
+
+## Publishing notifications
+
+For publishing notifications to ntfy (see also: https://github.com/caronc/apprise/wiki/Notify_ntfy):
+
+```txt
+ntfy://publisher:<password>@<domain>/<topic>
+```
+
+Alternatively you can also publish via email (see also https://github.com/caronc/apprise/wiki/Notify_email):
+
+```txt
+mailto://ntfy-<topic>+<token>@<domain>
+```
+
+Obviously replace `<domain>`, `<passowrd>`, `<token>` and `<topic>` with their respective values (remove enclosing `<>`).
