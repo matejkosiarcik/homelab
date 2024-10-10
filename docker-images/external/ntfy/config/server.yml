@@ -1,5 +1,5 @@
 # Server config
-base-url: https://ntfy.home
+base-url: http://ntfy.home
 behind-proxy: true
 upstream-base-url: https://ntfy.sh
 
