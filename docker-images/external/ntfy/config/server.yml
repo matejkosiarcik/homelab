@@ -22,4 +22,4 @@ smtp-server-addr-prefix: ntfy-
 enable-metrics: true
 
 # Logging
-log-level: warn
+log-level: debug
