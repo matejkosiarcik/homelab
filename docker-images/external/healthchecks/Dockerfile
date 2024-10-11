@@ -1,4 +1,5 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM debian:12.7-slim AS prefinal
 WORKDIR /homelab
