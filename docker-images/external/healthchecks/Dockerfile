@@ -11,19 +11,21 @@ COPY ./external/healthchecks/icons/healthchecks.png /opt/healthchecks/static-col
 ENV DB=sqlite \
     DB_NAME=/homelab/healthchecks/database.db \
     DEBUG=False \
+    EMAIL_PORT=25 \
+    EMAIL_USE_SSL=False \
+    EMAIL_USE_TLS=False \
     HOMELAB_CONTAINER_NAME=healthchecks \
     HOMELAB_CONTAINER_VARIANT=default \
     INTEGRATIONS_ALLOW_PRIVATE_IPS=True \
+    PROMETHEUS_ENABLED=True \
+    REGISTRATION_OPEN=False \
     SITE_LOGO_URL=/static/img/custom-healthchecks.png \
     TZ=Europe/Bratislava
 
-# TODO: Enable email integration
-# TODO: EMAIL_HOST ???
-# EMAIL_HOST_PASSWORD= # TODO: Set ?
-# EMAIL_HOST_USER= # TODO: Set ?
-# EMAIL_PORT=8025 # TODO: Unset
-# EMAIL_USE_SSL=False # TODO: Remove
-# EMAIL_USE_TLS=False # TODO: Set True
-# EMAIL_USE_VERIFICATION=True \
+# TODO: Enable secure emails
+# EMAIL_HOST_PASSWORD=
+# EMAIL_HOST_USER=
+# EMAIL_USE_SSL=False
+# EMAIL_USE_TLS=True
 
 HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
