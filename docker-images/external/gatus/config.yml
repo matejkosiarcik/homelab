@@ -346,11 +346,10 @@ endpoints:
     group: App - Home Assistant
     url: https://home-assistant.home
 
-  # - <<: *default-http
-  #   name: Home Assistant Api Metrics
-  #   group: App - Home Assistant
-  #   url: https://home-assistant.home/api/prometheus
-  # TODO: Finish this check and setup token authentication with HOME_ASSISTANT_TOKEN
+  - <<: *default-http
+    name: Home Assistant Api Metrics
+    group: App - Home Assistant
+    url: https://home-assistant.home/api/prometheus
 
   - <<: *default-tcp
     name: Home Assistant TCP:80

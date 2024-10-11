@@ -6,6 +6,7 @@ system_health:
 
 # Enable prometheus integration
 prometheus:
+  requires_auth: false
 
 # Allow reverse proxy to work
 http:
