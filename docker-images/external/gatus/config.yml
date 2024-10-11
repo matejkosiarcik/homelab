@@ -5,8 +5,21 @@ storage:
 metrics: true
 
 alerting:
+  email:
+    from: gatus@gatus.home
+    host: smtp4dev.home
+    port: 25
+    to: notifications@gatus.home
+    client:
+      insecure: true
+    default-alert:
+      enabled: true
+      failure-threshold: 2
+      success-threshold: 1
+      send-on-resolved: true
+      description: Gatus healthcheck failed
   ntfy:
-    url: https://ntfy.home
+    url: http://ntfy.home # TODO: Change to HTTPS once real certificates are implemented
     topic: gatus
     priority: 3
     token: ${NTFY_TOKEN}
@@ -22,22 +35,31 @@ alerting:
 #     target: 10.1.0.1
 #     interval: 15s
 
+default-alerts: &default-alerts
+  alerts:
+    - type: ntfy
+    - type: email
+
 default-icmp: &default-icmp
+  <<: *default-alerts
   interval: 10m
   conditions:
     - "[CONNECTED] == true"
 
 default-tcp: &default-tcp
+  <<: *default-alerts
   interval: 30m
   conditions:
     - "[CONNECTED] == true"
 
 default-udp: &default-udp
+  <<: *default-alerts
   interval: 30m
   conditions:
     - "[CONNECTED] == true"
 
 default-dns: &default-dns
+  <<: *default-alerts
   interval: 30m
   dns:
     query-name: "example.com"
@@ -46,6 +68,7 @@ default-dns: &default-dns
     - "[DNS_RCODE] == NOERROR"
 
 default-http: &default-http
+  <<: *default-alerts
   interval: 30m
   client:
     insecure: true
