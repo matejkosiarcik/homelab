@@ -15,4 +15,4 @@
 
 ## After initial installation
 
-Empty
+- \[Prod\] Temporarily turn on registrations and create admin account
