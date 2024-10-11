@@ -1,4 +1,5 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM debian:12.7-slim AS prefinal
 WORKDIR /homelab
@@ -27,5 +28,9 @@ ENV DB=sqlite \
 # EMAIL_HOST_USER=
 # EMAIL_USE_SSL=False
 # EMAIL_USE_TLS=True
+
+# User is necessary in production
+# hadolint ignore=DL3002
+USER root
 
 HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
