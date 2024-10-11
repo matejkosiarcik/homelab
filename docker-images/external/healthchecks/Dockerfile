@@ -15,6 +15,7 @@ ENV DB=sqlite \
     HOMELAB_CONTAINER_VARIANT=default \
     INTEGRATIONS_ALLOW_PRIVATE_IPS=True \
     PROMETHEUS_ENABLED=True \
+    REGISTRATION_OPEN=False \
     SITE_LOGO_URL=/static/img/custom-healthchecks.png \
     TZ=Europe/Bratislava
 
