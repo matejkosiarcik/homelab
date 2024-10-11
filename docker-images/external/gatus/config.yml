@@ -324,6 +324,14 @@ endpoints:
     group: App - Healthchecks
     url: https://healthchecks.home
 
+  - <<: *default-http
+    name: Healthchecks Api Health
+    group: App - Healthchecks
+    url: https://healthchecks.home/api/v3/status/
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == OK"
+
   - <<: *default-tcp
     name: Healthchecks TCP:80
     group: App - Healthchecks
