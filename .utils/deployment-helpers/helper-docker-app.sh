@@ -232,6 +232,7 @@ create-secrets)
 deploy)
     docker_build
     docker_stop
+    docker network prune -f # Might help with services problems sometimes not able to bind ports
     docker_start
     printf 'Deployment of %s successful\n\n' "$full_service_name"
     ;;
