@@ -11,6 +11,4 @@
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
+Empty

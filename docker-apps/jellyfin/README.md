@@ -39,10 +39,6 @@
         - Enable low power encoding
         - Limit encoding threads to 1 (this is enough when HWA is enabled, even for multiple streams, and plays nicely with other things running on the host machine)
         - In summary, all the settings from this screenshot (taken on Odroid H3): ![Playback settings](./Playback%20settings.png)
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor
 
 NOTE: Some clients may require unchecking "Prefer fMP4-HLS Media Container" for each user/client,
 because it is stored on the client-side in browser `localStorage` (location: Settings -> Playback).

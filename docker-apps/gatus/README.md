@@ -9,11 +9,10 @@
 
 - \[All\] Create base secrets
 - \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
-- \[Prod\] Configure `NTFY_TOKEN`
+- \[Prod\] Configure access tokens for some services:
+    - `HOME_ASSISTANT_TOKEN`
+    - `NTFY_TOKEN`
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor
+Empty

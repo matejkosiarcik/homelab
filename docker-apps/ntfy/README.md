@@ -16,11 +16,7 @@
 ## After initial installation
 
 - \[Prod\] Configure basic settings
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor
-- \[Prod\] Create any necessary Auth tokens
+- \[Prod\] Create any necessary Auth tokens for publishing notifications
 
 ## Publishing notifications
 

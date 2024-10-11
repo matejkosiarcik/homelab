@@ -19,10 +19,5 @@
 ## After initial installation
 
 - \[Prod\] Configure settings
-- \[Prod\] Connect smart devices
 - \[Prod\] Setup 2FA - <https://www.home-assistant.io/docs/authentication/multi-factor-auth>
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor
-    - TBD: HTTPS JSON query monitor for basic API operation?
+- \[Prod\] Connect smart devices

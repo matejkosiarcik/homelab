@@ -50,9 +50,7 @@ This is bad (still starting) `/status`:
 
 ## After initial installation
 
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor (admin service)
-    - HTTP/HTTPS monitor (portal service)
-    - HTTPS JSON query monitor (admin service)
+- \[All\] Complete initial wizard / restore from backup
+    - Setup admin _username_, _password_ and _email_
+- \[Prod\] Configure basic settings
+- \[Prod\] Connect and configure Unifi devices
