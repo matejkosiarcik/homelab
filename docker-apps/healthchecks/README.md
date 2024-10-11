@@ -15,4 +15,7 @@
 
 ## After initial installation
 
-Empty
+- \[Prod\] Temporarily turn on registrations and create admin account
+- \[Prod\] Configure individual healthchecks
+- \[Prod\] Configure notifications (ntfy, smtp)
+    - For ntfy see [ntfy/README.md](../ntfy/README.md)

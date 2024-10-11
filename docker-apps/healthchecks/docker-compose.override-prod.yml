@@ -16,7 +16,7 @@ services:
       ALLOWED_HOSTS: ${DOCKER_COMPOSE_APP_NAME}.home
       DEFAULT_FROM_EMAIL: healthchecks@${DOCKER_COMPOSE_APP_NAME}.home
       EMAIL_HOST: smtp4dev.home
-      REGISTRATION_OPEN: "True"
+      REGISTRATION_OPEN: "False"
       SITE_ROOT: https://${DOCKER_COMPOSE_APP_NAME}.home
 
   certificate-manager:

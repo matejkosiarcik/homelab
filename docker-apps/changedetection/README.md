@@ -14,4 +14,5 @@
 ## After initial installation
 
 - \[Prod\] Setup admin password in `/settings#general`
-- \[Prod\] Setup notifications - see [ntfy/README.md](../ntfy/README.md)
+- \[Prod\] Setup notifications (ntfy, smtp)
+    - For ntfy see [ntfy/README.md](../ntfy/README.md)
