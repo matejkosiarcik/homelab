@@ -577,6 +577,16 @@ endpoints:
     group: App - Omada Controller
     url: tcp://omada-controller.home:443
 
+  - <<: *default-udp
+    name: Omada Controller UDP:27001
+    group: App - Omada Controller
+    url: udp://omada-controller.home:27001
+
+  - <<: *default-udp
+    name: Omada Controller UDP:29810
+    group: App - Omada Controller
+    url: udp://omada-controller.home:29810
+
   - <<: *default-tcp
     name: Omada Controller TCP:29811
     group: App - Omada Controller
@@ -1043,6 +1053,26 @@ endpoints:
     name: Unifi Controller TCP:80
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:80
+
+  - <<: *default-udp
+    name: Unifi Controller UDP:1900
+    group: App - Unifi Controller
+    url: udp://unifi-controller.home:1900
+
+  - <<: *default-udp
+    name: Unifi Controller UDP:3478
+    group: App - Unifi Controller
+    url: udp://unifi-controller.home:3478
+
+  - <<: *default-udp
+    name: Unifi Controller UDP:5514
+    group: App - Unifi Controller
+    url: udp://unifi-controller.home:5514
+
+  - <<: *default-udp
+    name: Unifi Controller UDP:10001
+    group: App - Unifi Controller
+    url: udp://unifi-controller.home:10001
 
   - <<: *default-tcp
     name: Unifi Controller TCP:8080
