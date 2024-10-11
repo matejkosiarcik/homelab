@@ -16,9 +16,5 @@
 
 - \[Prod\] Setup Tvheadend:
     - Finish "setup wizard" according to <https://docs.linuxserver.io/images/docker-tvheadend/#application-setup>, TL;DR: goto `Configuration > General > Base > Start Wizard`
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor
 - \[Prod\] Setup anonymous user, in order to allow jellyfin to load channel logos, accordingly:
     - ![anonymous user](./anonymous%20user.png)

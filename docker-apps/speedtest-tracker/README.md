@@ -17,8 +17,3 @@
 ## After initial installation
 
 - Change admin credentials (defaults are `admin@example.com`/`password`)
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor
-    - HTTPS JSON query monitor for basic API operation

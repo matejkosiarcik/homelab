@@ -13,14 +13,8 @@
 
 - \[All\] Setup admin _username_, _password_ and _email_
 - \[All\] Setup initial settings + initial login to finish the wizard
-- \[Prod\] Setup more settings
+- \[Prod\] Configure basic settings
     - General config and settings customization
     - Setup SMTP server for email
     - Send automatic backups via SFTP
     - Send logs to remote syslog server
-- \[Prod\] Setup `uptime-kuma` monitoring:
-    - IP (ping) monitor
-    - TCP monitor for all open ports
-    - HTTP/HTTPS monitor (admin service)
-    - HTTP/HTTPS monitor (portal service)
-    - TBD: HTTPS JSON query monitor for basic API operation?
