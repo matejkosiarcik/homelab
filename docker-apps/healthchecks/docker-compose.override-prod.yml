@@ -14,7 +14,7 @@ services:
     environment:
       <<: *common-env-variables
       # EMAIL_HOST: smtp4dev.home
-      REGISTRATION_OPEN: "False"
+      REGISTRATION_OPEN: "True"
       DEFAULT_FROM_EMAIL: healthchecks@${DOCKER_COMPOSE_APP_NAME}.home
       SITE_ROOT: https://${DOCKER_COMPOSE_APP_NAME}.home
 
