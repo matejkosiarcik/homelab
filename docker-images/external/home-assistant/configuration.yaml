@@ -1,6 +1,12 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
+# System health is already included in default_config, but we can set it explicitly anyway
+system_health:
+
+# Enable prometheus integration
+prometheus:
+
 # Allow reverse proxy to work
 http:
   use_x_forwarded_for: true
