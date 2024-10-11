@@ -10,8 +10,8 @@
 - \[All\] Create base secrets
 - \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
 - \[Prod\] Configure access tokens for some services:
-  - `HOME_ASSISTANT_TOKEN`
-  - `NTFY_TOKEN`
+    - `HOME_ASSISTANT_TOKEN`
+    - `NTFY_TOKEN`
 
 ## After initial installation
 
