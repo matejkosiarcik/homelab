@@ -134,6 +134,7 @@ case "$current_dir" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # App
+    prepare_empty_env HOME_ASSISTANT_TOKEN "$output/gatus.env"
     prepare_empty_env NTFY_TOKEN "$output/gatus.env"
 
     # Log results

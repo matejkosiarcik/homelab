@@ -17,6 +17,11 @@ alerting:
       send-on-resolved: true
       description: Gatus healthcheck failed
 
+# connectivity:
+#   checker:
+#     target: 10.1.0.1
+#     interval: 15s
+
 default-icmp: &default-icmp
   interval: 10m
   conditions:
@@ -153,6 +158,76 @@ endpoints:
     group: App - Changedetection
     url: tcp://changedetection.home:443
 
+  ### Group: App - Desklamp-1 ###
+
+  - <<: *default-http
+    name: Desklamp-1 HTTP
+    group: App - Desklamp-1
+    url: http://desklamp-1.home
+    enabled: false
+
+  - <<: *default-http
+    name: Desklamp-1 HTTPS
+    group: App - Desklamp-1
+    url: https://desklamp-1.home
+    enabled: false
+
+  - <<: *default-http
+    name: Desklamp-1 Api Health
+    group: App - Desklamp-1
+    url: https://desklamp-1.home/api/status
+    conditions:
+      - "[STATUS] == 200"
+      - "has([BODY].status) == true"
+    enabled: false
+
+  - <<: *default-tcp
+    name: Desklamp-1 TCP:80
+    group: App - Desklamp-1
+    url: tcp://desklamp-1.home:80
+    enabled: false
+
+  - <<: *default-tcp
+    name: Desklamp-1 TCP:443
+    group: App - Desklamp-1
+    url: tcp://desklamp-1.home:443
+    enabled: false
+
+  ### Group: App - Desklamp-2 ###
+
+  - <<: *default-http
+    name: Desklamp-2 HTTP
+    group: App - Desklamp-2
+    url: http://desklamp-1.home
+    enabled: false
+
+  - <<: *default-http
+    name: Desklamp-2 HTTPS
+    group: App - Desklamp-2
+    url: https://desklamp-1.home
+    enabled: false
+
+  - <<: *default-http
+    name: Desklamp-2 Api Health
+    group: App - Desklamp-2
+    url: https://desklamp-1.home/api/status
+    conditions:
+      - "[STATUS] == 200"
+      - "has([BODY].status) == true"
+    enabled: false
+
+  - <<: *default-tcp
+    name: Desklamp-2 TCP:80
+    group: App - Desklamp-2
+    url: tcp://desklamp-1.home:80
+    enabled: false
+
+  - <<: *default-tcp
+    name: Desklamp-2 TCP:443
+    group: App - Desklamp-2
+    url: tcp://desklamp-1.home:443
+    enabled: false
+
   ### Group: App - Dockerhub proxy ###
 
   - <<: *default-http
@@ -164,6 +239,14 @@ endpoints:
     name: DockerHub proxy HTTPS
     group: App - DockerHub proxy
     url: https://dockerhub-proxy.home
+
+  - <<: *default-http
+    name: DockerHub proxy Api
+    group: App - DockerHub proxy
+    url: https://dockerhub-proxy.home/v2/_catalog
+    conditions:
+      - "[STATUS] == 200"
+      - "has([BODY].repositories) == true"
 
   - <<: *default-tcp
     name: DockerHub proxy TCP:80
@@ -187,6 +270,11 @@ endpoints:
     group: App - Gatus
     url: https://gatus.home
 
+  - <<: *default-http
+    name: Gatus Api Metrics
+    group: App - Gatus
+    url: https://gatus.home/metrics
+
   - <<: *default-tcp
     name: Gatus TCP:80
     group: App - Gatus
@@ -208,6 +296,11 @@ endpoints:
     name: Gatus HTTPS
     group: App - Gatus (2)
     url: https://gatus-2.home
+
+  - <<: *default-http
+    name: Gatus Api Metrics
+    group: App - Gatus (2)
+    url: https://gatus-2.home/metrics
 
   - <<: *default-tcp
     name: Gatus TCP:80
@@ -252,6 +345,12 @@ endpoints:
     name: Home Assistant HTTPS
     group: App - Home Assistant
     url: https://home-assistant.home
+
+  # - <<: *default-http
+  #   name: Home Assistant Api Metrics
+  #   group: App - Home Assistant
+  #   url: https://home-assistant.home/api/prometheus
+  # TODO: Finish this check and setup token authentication with HOME_ASSISTANT_TOKEN
 
   - <<: *default-tcp
     name: Home Assistant TCP:80
@@ -320,6 +419,14 @@ endpoints:
     url: https://jellyfin.home
 
   - <<: *default-http
+    name: Jellyfin Api Health
+    group: App - Jellyfin
+    url: https://jellyfin.home/health
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == Healthy"
+
+  - <<: *default-http
     name: Jellyfin HTTP:8096
     group: App - Jellyfin
     url: http://jellyfin.home:8096
@@ -354,6 +461,21 @@ endpoints:
     url: https://minio.home
     conditions:
       - "[STATUS] < 500"
+
+  - <<: *default-http
+    name: Minio Api Health
+    group: App - Minio
+    url: https://minio.home/minio/health/live
+
+  - <<: *default-http
+    name: Minio Api Health cluster write
+    group: App - Minio
+    url: https://minio.home/minio/health/cluster
+
+  - <<: *default-http
+    name: Minio Api Health cluster read
+    group: App - Minio
+    url: https://minio.home/minio/health/cluster/read
 
   - <<: *default-http
     name: Minio Console HTTP
@@ -397,6 +519,14 @@ endpoints:
     group: App - Ntfy
     url: https://ntfy.home
 
+  - <<: *default-http
+    name: Ntfy Api Health
+    group: App - Ntfy
+    url: https://ntfy.home/v1/health
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].healthy == true"
+
   - <<: *default-tcp
     name: Ntfy TCP:25
     group: App - Ntfy
@@ -423,6 +553,19 @@ endpoints:
     name: Omada Controller Admin HTTPS
     group: App - Omada Controller
     url: https://omada-controller.home
+
+  - <<: *default-http
+    name: Omada Controller Api Health
+    group: App - Omada Controller
+    url: https://omada-controller.home/api/v2/anon/info
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].errorCode == 0"
+      - "has([BODY].msg) == true"
+      - "has([BODY].result) == true"
+      - "has([BODY].result.apiVer) == true"
+      - "has([BODY].result.controllerVer) == true"
+      - "[BODY].result.configured == true"
 
   - <<: *default-tcp
     name: Omada Controller TCP:80
@@ -799,6 +942,14 @@ endpoints:
     group: App - Speedtest Tracker
     url: https://speedtest-tracker.home
 
+  - <<: *default-http
+    name: Speedtest Tracker Api Health
+    group: App - Speedtest Tracker
+    url: https://speedtest-tracker.home/api/healthcheck
+    conditions:
+      - "[STATUS] == 200"
+      - "has([BODY].message) == true"
+
   - <<: *default-tcp
     name: Speedtest Tracker TCP:80
     group: App - Speedtest Tracker
@@ -820,6 +971,17 @@ endpoints:
     name: Tvheadend HTTPS
     group: App - Tvheadend
     url: https://tvheadend.home
+
+  - <<: *default-http
+    name: Tvheadend Api Health
+    group: App - Tvheadend
+    url: https://tvheadend.home/api/serverinfo
+    conditions:
+      - "[STATUS] == 200"
+      - "has([BODY].capabilities) == true"
+      - "has([BODY].sw_version) == true"
+      - "has([BODY].api_version) == true"
+      - "has([BODY].name) == true"
 
   - <<: *default-http
     name: Tvheadend HTTP:9981
@@ -859,7 +1021,7 @@ endpoints:
     url: https://unifi-controller.home
 
   - <<: *default-http
-    name: Unifi Controller Admin Api
+    name: Unifi Controller Admin Api Health
     group: App - Unifi Controller
     url: https://unifi-controller.home/status
     conditions:
