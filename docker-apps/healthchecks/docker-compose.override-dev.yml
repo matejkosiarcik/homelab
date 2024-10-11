@@ -13,7 +13,8 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      # DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      # DEBUG: "True" # Enable for debugging
       DEFAULT_FROM_EMAIL: healthchecks@localhost
       EMAIL_HOST: smtp4dev.home
       REGISTRATION_OPEN: "True"
