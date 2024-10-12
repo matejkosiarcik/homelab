@@ -14,8 +14,6 @@ services:
     environment:
       <<: *common-env-variables
       JELLYFIN_PublishedServerUrl: https://localhost:8443
-    # ports:
-    #   - 8096:8096
 
   certificate-manager:
     <<: *common-service-options
@@ -23,8 +21,12 @@ services:
   http-proxy:
     <<: *common-service-options
 
+  http-proxy-direct:
+    <<: *common-service-options
+
   socket-proxy:
     <<: *common-service-options
     ports:
       - 8080:80
       - 8443:443
+      - 8096:8096 # TODO: Remove this port after Let's Encrypt certificates
