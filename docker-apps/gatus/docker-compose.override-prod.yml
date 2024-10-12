@@ -30,7 +30,7 @@ services:
       external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
       external-network2:
-        ipv4_address: "10.2.12.3"
+        ipv4_address: "10.2.12.129"
 
 networks:
   external-network:
@@ -47,9 +47,9 @@ networks:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network2
     driver: macvlan
     driver_opts:
-      parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}.12
+      parent: vlan12
     ipam:
       config:
-        - subnet: "10.2.12.0/24"
-          ip_range: "10.2.12.3/32"
-          gateway: "10.2.12.1"
+        - subnet: "10.2.12.128/30"
+          ip_range: "10.2.12.129/32"
+          gateway: "10.2.12.128"
