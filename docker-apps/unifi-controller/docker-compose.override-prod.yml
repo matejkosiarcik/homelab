@@ -26,7 +26,10 @@ services:
   http-proxy-admin:
     <<: *common-service-options
 
-  http-proxy-admin-raw:
+  http-proxy-admin-raw-secure:
+    <<: *common-service-options
+
+  http-proxy-admin-raw-insecure:
     <<: *common-service-options
 
   socket-proxy:
