@@ -165,6 +165,8 @@ if [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_FORCE_HTTPS='false'
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
+elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'direct' ]; then
+    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 else
     PROXY_FORCE_HTTPS='true'
 fi

@@ -98,7 +98,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'speedtest-tracker' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
-    respawn socat TCP4-LISTEN:9981,fork,reuseaddr TCP4:tvheadend:9981 &
+    respawn socat TCP4-LISTEN:9981,fork,reuseaddr TCP4:http-proxy-direct:80 &
     respawn socat TCP4-LISTEN:9982,fork,reuseaddr TCP4:tvheadend:9982 &
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     # HTTP/S ports
