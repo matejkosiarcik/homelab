@@ -102,7 +102,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'speedtest-tracker' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     PROXY_UPSTREAM_URL="http://tvheadend:9981"
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
-    if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw-secure' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw-secure' ]; then
         PROXY_UPSTREAM_URL="https://unifi-network-application:8443"
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw-insecure' ]; then
         PROXY_UPSTREAM_URL="http://unifi-network-application:8080"
@@ -164,6 +164,8 @@ printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envva
 if [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_FORCE_HTTPS='false'
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw-insecure' ]; then
+    PROXY_FORCE_HTTPS='false'
+elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false'
 else
     PROXY_FORCE_HTTPS='true'
