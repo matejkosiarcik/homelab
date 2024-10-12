@@ -35,7 +35,7 @@ networks:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: macvlan
     driver_opts:
-      parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}
+      parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}.26
     ipam:
       config:
         - subnet: 10.1.0.0/16
