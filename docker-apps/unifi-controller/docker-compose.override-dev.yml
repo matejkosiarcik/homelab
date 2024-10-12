@@ -31,12 +31,6 @@ services:
   http-proxy-admin-raw:
     <<: *common-service-options
 
-  # http-proxy-admin-raw-secure:
-  #   <<: *common-service-options
-
-  # http-proxy-admin-raw-insecure:
-  #   <<: *common-service-options
-
   socket-proxy:
     <<: *common-service-options
     ports:
