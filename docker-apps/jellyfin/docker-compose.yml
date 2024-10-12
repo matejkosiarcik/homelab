@@ -57,6 +57,9 @@ services:
     depends_on:
       certificate-manager:
         condition: service_healthy
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: direct
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
