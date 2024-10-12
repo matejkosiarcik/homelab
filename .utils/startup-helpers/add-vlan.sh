@@ -27,6 +27,6 @@ fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
-sudo ip link add link "$found_interface" name vlan12 type vlan id 12
+sudo ip link add vlan12 link "$found_interface" name vlan12 type vlan id 12
 sudo ip address add 10.2.12.128/30 dev vlan12
 sudo ip link set vlan12 up
