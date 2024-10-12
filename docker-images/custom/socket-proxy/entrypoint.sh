@@ -128,4 +128,4 @@ else
 fi
 
 printf 'started\n' >/homelab/.internal/status.txt
-sleep infinity
+while true; do sleep infinity; done

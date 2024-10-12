@@ -16,4 +16,4 @@ docker exec "$HOMELAB_SETUP_TARGET_CONTAINER" sh /homelab/setup.sh
 printf '%s - Finished setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 
 printf 'started\n' >/homelab/.internal/status.txt
-sleep infinity
+while true; do sleep infinity; done

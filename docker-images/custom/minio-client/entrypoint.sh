@@ -7,4 +7,4 @@ printf 'starting\n' >/homelab/.internal/status.txt
 sh /homelab/main.sh
 
 printf 'started\n' >/homelab/.internal/status.txt
-sleep infinity
+while true; do sleep infinity; done
