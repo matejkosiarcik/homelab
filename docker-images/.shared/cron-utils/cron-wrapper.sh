@@ -12,12 +12,12 @@ touch "$statusfile" "$logfile"
 printf '0\n' >"$statusfile"
 
 # Send start-signal to healthchecks
-if [ -n "${HEALTHCHECK_URL+x}" ]; then
+if [ -n "${HOMELAB_HEALTHCHECK_URL+x}" ]; then
     printf 'Send Healthchecks before job:\n'
-    curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error "$HEALTHCHECK_URL/start" || true
+    curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error "$HOMELAB_HEALTHCHECK_URL/start" || true
     printf '\n'
 else
-    printf 'HEALTHCHECK_URL unset\n' >&2
+    printf 'HOMELAB_HEALTHCHECK_URL unset\n' >&2
     # TODO: Enable this after healthchecks are working
     # if [ "$HOMELAB_ENV" = 'prod' ]; then
     #     exit 1
@@ -35,9 +35,9 @@ fi
 
 # Send end-signal to healthchecks
 status="$(cat "$statusfile")"
-if [ -n "${HEALTHCHECK_URL+x}" ]; then
+if [ -n "${HOMELAB_HEALTHCHECK_URL+x}" ]; then
     printf 'Send Healthchecks after job:\n'
-    curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error --data-binary "@$logfile" "$HEALTHCHECK_URL/$status" || true
+    curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error --data-binary "@$logfile" "$HOMELAB_HEALTHCHECK_URL/$status" || true
     printf '\n'
 fi
 
