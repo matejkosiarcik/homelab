@@ -20,6 +20,10 @@ services:
   http-proxy:
     <<: *common-service-options
 
+  # TODO: Remove direct proxy after Let's Encrypt certificates
+  http-proxy-direct:
+    <<: *common-service-options
+
   socket-proxy:
     <<: *common-service-options
     ports:

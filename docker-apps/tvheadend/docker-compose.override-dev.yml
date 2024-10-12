@@ -15,6 +15,10 @@ services:
   certificate-manager:
     <<: *common-service-options
 
+  # TODO: Remove direct proxy after Let's Encrypt certificates
+  http-proxy-direct:
+    <<: *common-service-options
+
   http-proxy:
     <<: *common-service-options
 
