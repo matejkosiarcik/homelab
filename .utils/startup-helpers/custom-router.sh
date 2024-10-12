@@ -13,8 +13,8 @@ WANIF='eth0.26'
 LANIF='foo'
 
 # enable ip forwarding in the kernel
-echo 'Enabling Kernel IP forwarding...'
-/bin/echo 1 > /proc/sys/net/ipv4/ip_forward
+# echo 'Enabling Kernel IP forwarding...'
+# sudo printf '1\n' >/proc/sys/net/ipv4/ip_forward
 
 # flush rules and delete chains
 echo 'Flushing rules and deleting existing chains...'
