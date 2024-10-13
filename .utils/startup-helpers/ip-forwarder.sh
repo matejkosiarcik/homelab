@@ -7,9 +7,9 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder14"
+router_name="forwarder15"
 router_name_2="macvlan-shim"
-external_ip="10.1.27.14" # TODO: Can this be in 10.1.17.x range?
+external_ip="10.1.27.15" # TODO: Can this be in 10.1.17.x range?
 external_ip_2="10.1.17.0"
 internal_docker_ip="10.1.16.3"
 
@@ -37,6 +37,7 @@ sudo ip link set "$router_name" up
 # sudo ip route add "$internal_docker_ip/32" dev "$router_name"
 
 sudo iptables -t nat -A PREROUTING -i "$router_name" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
+sudo iptables -t nat -A POSTROUTING -o "$router_name" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
 
 # sudo ip addr add "$external_ip_2/32" dev eth0
 
