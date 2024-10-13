@@ -46,8 +46,17 @@ sudo ip link set "$router_name" up
 # sudo iptables -t nat -A POSTROUTING -o "$found_interface" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
 # # sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
 
-sudo iptables -t nat -A PREROUTING -p tcp -i "$router_name" --dport 80 -j DNAT --to-destination "$another_docker_ip:80"
-sudo iptables -t nat -A POSTROUTING -o "$router_name" -j SNAT --to-source "$external_ip"
+# sudo iptables -t nat -A PREROUTING -p tcp -i "$router_name" --dport 80 -j DNAT --to-destination "$another_docker_ip:80"
+# sudo iptables -t nat -A POSTROUTING -o "$router_name" -j SNAT --to-source "$external_ip"
+
+sudo iptables -t nat -A POSTROUTING -o "$router_name" -j MASQUERADE
+# iptables -t nat -A POSTROUTING -o end0 -j MASQUERADE
+
+sudo iptables -t nat -A PREROUTING -p tcp -d "$external_ip" -j DNAT --to "$another_docker_ip"
+sudo iptables -A FORWARD -p tcp -d "$another_docker_ip" -j ACCEPT
+
+# sudo iptables -t nat -A PREROUTING -p tcp -d 172.30.220.17  -j DNAT --to 192.168.3.2
+# sudo iptables -A FORWARD -p tcp -d 192.168.3.2  -j ACCEPT
 
 # sudo iptables -A FORWARD -d "$internal_docker_ip" -i "$found_interface" -p tcp -m tcp --dport 80 -j ACCEPT
 
