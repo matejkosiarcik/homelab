@@ -7,9 +7,9 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder13"
+router_name="forwarder14"
 router_name_2="macvlan-shim"
-external_ip="10.1.27.13" # TODO: Can this be in 10.1.17.x range?
+external_ip="10.1.27.14" # TODO: Can this be in 10.1.17.x range?
 external_ip_2="10.1.17.0"
 internal_docker_ip="10.1.16.3"
 
@@ -36,6 +36,8 @@ sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
 # sudo ip route add "$internal_docker_ip/32" dev "$router_name"
 
+sudo iptables -t nat -A PREROUTING -i "$router_name" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
+
 # sudo ip addr add "$external_ip_2/32" dev eth0
 
 # sudo iptables -t nat -A PREROUTING -i "$router_name" -s "$external_ip" -d "$external_ip_2" -j DNAT --to-destination "$internal_docker_ip"
@@ -55,6 +57,9 @@ sudo ip link set "$router_name" up
 # sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 # sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$external_ip"
 
-sudo iptables -A FORWARD -i "$router_name" -o "$router_name_2" -j ACCEPT
-sudo iptables -A FORWARD -i "$router_name_2" -o "$router_name" -m state --state ESTABLISHED,RELATED -j ACCEPT
-sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -j MASQUERADE
+# sudo iptables -A FORWARD -i "$router_name" -o "$router_name_2" -j ACCEPT
+# sudo iptables -A FORWARD -i "$router_name_2" -o "$router_name" -m state --state ESTABLISHED,RELATED -j ACCEPT
+# sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -j MASQUERADE
+
+# iptables -t nat -A PREROUTING -i "$router_name" -j DNAT --to "$internal_docker_ip"
+# iptables -t nat -A POSTROUTING -i "$router_name" -s 192.168.1.0/24 -j SNAT --to-source 192.168.42.13
