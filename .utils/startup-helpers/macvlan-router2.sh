@@ -14,16 +14,16 @@ internal_docker_ip="$3"
 # Get appropriate network interface
 has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
 has_enp1s0="$(ip link show enp1s0 >/dev/null 2>/dev/null || printf '0\n')"
-found_interface=''
-if [ "$has_eth0" = '' ]; then
-    found_interface='eth0'
-elif [ "$has_enp1s0" = '' ]; then
-    found_interface='enp1s0'
-fi
-if [ "$found_interface" = '' ]; then
-    printf 'No suitable network interface found\n'
-    exit 1
-fi
+found_interface='vlan12'
+# if [ "$has_eth0" = '' ]; then
+#     found_interface='eth0'
+# elif [ "$has_enp1s0" = '' ]; then
+#     found_interface='enp1s0'
+# fi
+# if [ "$found_interface" = '' ]; then
+#     printf 'No suitable network interface found\n'
+#     exit 1
+# fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
