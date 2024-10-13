@@ -7,9 +7,9 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder2"
-# external_ip="$2"
-# internal_docker_ip="$3"
+router_name="forwarder4"
+external_ip="10.1.27.4" # TODO: Can this be in 10.1.17.x range?
+internal_docker_ip="10.1.16.3"
 
 # Get appropriate network interface
 has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
@@ -29,8 +29,10 @@ printf 'Found network interface %s\n' "$found_interface"
 
 sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
 # sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
-sudo ip address add 10.1.27.3/32 dev "$router_name" # TODO: Can this be in 10.1.17.x range?
+sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
 
-sudo iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
-sudo iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
+# sudo iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
+# sudo iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
+
+ip route add "$internal_docker_ip/32" via "$external_ip" dev eth0
