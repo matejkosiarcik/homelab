@@ -11,6 +11,8 @@ while [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" | grep -
 done
 EOF
 
+sleep 5
+
 printf '%s - Starting setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 docker exec "$HOMELAB_SETUP_TARGET_CONTAINER" sh /homelab/setup.sh
 printf '%s - Finished setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
