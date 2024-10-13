@@ -29,16 +29,16 @@ fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
-sudo ip addr add "$external_ip/16" dev "$found_interface"
+# sudo ip addr add "$external_ip/16" dev "$found_interface"
 
-# sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
-# # sudo ip link add "$router_name" link "$found_interface" type bridge
-# # sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
-# sudo ip address add "$external_ip/32" dev "$router_name"
-# sudo ip link set "$router_name" up
+sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
+# sudo ip link add "$router_name" link "$found_interface" type bridge
+# sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
+sudo ip address add "$external_ip/32" dev "$router_name"
+sudo ip link set "$router_name" up
 
-# # sudo ip route add "$internal_docker_ip/32" dev "$router_name"
-# # sudo ip addr add "$external_ip/16" dev "$found_interface"
+sudo ip route add "$internal_docker_ip/32" dev "$router_name"
+# sudo ip addr add "$external_ip/16" dev "$found_interface"
 
 sudo iptables -t nat -A PREROUTING -i"$found_interface" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
 # # sudo iptables -t nat -A PREROUTING -i "$router_name_2" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
