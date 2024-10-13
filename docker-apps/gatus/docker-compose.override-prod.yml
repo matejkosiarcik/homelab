@@ -50,7 +50,7 @@ networks:
     # driver: ipvlan
     driver_opts:
       parent: vlan12
-      macvlan_mode: passthru
+      macvlan_mode: bridge
       # ipvlan_mode: l2
     ipam:
       config:
