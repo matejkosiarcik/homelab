@@ -9,7 +9,7 @@ set -euf
 
 router_name="forwarder15"
 router_name_2="macvlan-shim"
-external_ip="10.1.27.15" # TODO: Can this be in 10.1.17.x range?
+external_ip="10.1.27.0" # TODO: Can this be in 10.1.17.x range?
 external_ip_2="10.1.17.0"
 internal_docker_ip="10.1.16.3"
 another_docker_ip="10.1.12.1"
@@ -36,7 +36,7 @@ printf 'Found network interface %s\n' "$found_interface"
 sudo ip link add "$router_name" link "$found_interface" type bridge
 # sudo ip link add "$router_name" link "$found_interface" type bridge
 # sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
-sudo ip address add "$external_ip/32" dev "$router_name"
+sudo ip address add "$external_ip/24" dev "$router_name"
 sudo ip link set "$router_name" up
 
 # sudo ip route add "$internal_docker_ip/32" dev "$router_name"
