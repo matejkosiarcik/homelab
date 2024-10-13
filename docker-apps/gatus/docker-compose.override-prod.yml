@@ -46,8 +46,11 @@ networks:
   external-network2:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network2
     driver: macvlan
+    # driver: ipvlan
     driver_opts:
       parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}.12
+      macvlan_mode: passthru
+      # ipvlan_mode: l2
     ipam:
       config:
         - subnet: "10.2.12.128/30"
