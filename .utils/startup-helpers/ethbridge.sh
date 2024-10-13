@@ -2,17 +2,17 @@
 set -euf
 # This script sets up macvlan-shim "router" to be able to access containers running in macvlan network from current host
 
-# if [ "$#" -lt 1 ]; then
-#     printf 'Not enough arguments\n' >&2
-#     exit 1
-# fi
+if [ "$#" -lt 2 ]; then
+    printf 'Not enough arguments\n' >&2
+    exit 1
+fi
 
-router_name="forwarder15"
-router_name_2="macvlan-shim"
-external_ip="10.1.27.0" # TODO: Can this be in 10.1.17.x range?
-external_ip_2="10.1.17.0"
-internal_docker_ip="10.1.16.3"
-another_docker_ip="10.1.12.1"
+router_name="$1"
+# router_name_2="macvlan-shim"
+external_ip="$2" # TODO: Can this be in 10.1.17.x range?
+# external_ip_2="10.1.17.0"
+# internal_docker_ip="10.1.16.3"
+# another_docker_ip="10.1.12.1"
 
 # Get appropriate network interface
 has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
@@ -36,7 +36,7 @@ printf 'Found network interface %s\n' "$found_interface"
 sudo ip link add "$router_name" link "$found_interface" type bridge
 # sudo ip link add "$router_name" link "$found_interface" type bridge
 # sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
-sudo ip address add "$external_ip/24" dev "$router_name"
+sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
 
 # sudo ip route add "$internal_docker_ip/32" dev "$router_name"

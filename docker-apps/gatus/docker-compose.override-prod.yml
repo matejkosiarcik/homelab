@@ -24,18 +24,18 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - 10.1.27.15:80:80
-      - 10.1.27.15:443:443
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
     networks:
-      external-network-raw:
+      external-network:
       # external-network:
       #   ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
       # external-network2:
       #   ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
 
 networks:
-  external-network-raw:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network-raw
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
   # external-network:
   #   name: ${DOCKER_COMPOSE_APP_NAME}-external-network

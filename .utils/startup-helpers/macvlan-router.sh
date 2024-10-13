@@ -2,7 +2,7 @@
 set -euf
 # This script sets up macvlan-shim "router" to be able to access containers running in macvlan network from current host
 
-if [ "$#" -lt 2 ]; then
+if [ "$#" -lt 3 ]; then
     printf 'Not enough arguments\n' >&2
     exit 1
 fi
