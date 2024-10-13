@@ -35,4 +35,4 @@ sudo ip link set "$router_name" up
 # sudo iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
 # sudo iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
 
-ip route add "$internal_docker_ip/32" via "$external_ip" dev eth0
+sudo ip route add "$internal_docker_ip/32" via "$external_ip" dev eth0
