@@ -2,14 +2,14 @@
 set -euf
 # This script sets up macvlan-shim "router" to be able to access containers running in macvlan network from current host
 
-if [ "$#" -lt 2 ]; then
-    printf 'Not enough arguments\n' >&2
-    exit 1
-fi
+# if [ "$#" -lt 1 ]; then
+#     printf 'Not enough arguments\n' >&2
+#     exit 1
+# fi
 
-router_name="$1"
-external_ip="$2"
-internal_docker_ip="$3"
+router_name="forwarder1"
+# external_ip="$2"
+# internal_docker_ip="$3"
 
 # Get appropriate network interface
 has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
@@ -27,10 +27,10 @@ fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
-printf 'Creating new router %s with IP %s for network %s\n' "$router_name" "$external_ip" "$internal_docker_ip"
-
-# Add macvlan-shim "router" to be able to access containers from host
 sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
-sudo ip addr add "$external_ip/24" dev "$router_name" # TODO: Can this be /32?
+# sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
+sudo ip address add 10.1.27.3/32 dev "$router_name" # TODO: Can this be in 10.1.17.x range?
 sudo ip link set "$router_name" up
-sudo ip route add "$internal_docker_ip/24" dev "$router_name"
+
+iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
+iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
