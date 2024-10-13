@@ -7,8 +7,9 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder9"
-external_ip="10.1.27.9" # TODO: Can this be in 10.1.17.x range?
+router_name="forwarder10"
+external_ip="10.1.27.10" # TODO: Can this be in 10.1.17.x range?
+external_ip_2="10.1.28.10"
 internal_docker_ip="10.1.12.1"
 
 # Get appropriate network interface
@@ -28,9 +29,16 @@ fi
 printf 'Found network interface %s\n' "$found_interface"
 
 sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
+# sudo ip link add "$router_name" link "$found_interface" type bridge
 # sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
 sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
+sudo ip route add "$internal_docker_ip/32" dev "$router_name"
+
+sudo ip addr add "$external_ip_2/32" dev eth0
+
+iptables -t nat -A PREROUTING -i eth0 -s "$external_ip_2" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
+iptables -t nat -A POSTROUTING -o "$router_name" -d "$internal_docker_ip" -j MASQUERADE
 
 # sudo iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
 # sudo iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
@@ -42,6 +50,6 @@ sudo ip link set "$router_name" up
 # sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination "$internal_docker_ip:443"
 # sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$external_ip"
 
-sudo iptables -t nat -A PREROUTING  -i eth0 -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+# sudo iptables -t nat -A PREROUTING -i eth0 -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
+# sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 # sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$external_ip"
