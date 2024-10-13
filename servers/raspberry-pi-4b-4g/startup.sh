@@ -11,5 +11,5 @@ sh "$git_dir/.utils/startup-helpers/rfkill.sh"
 # sh "$git_dir/.utils/startup-helpers/add-vlan.sh"
 
 seq 1 255 | while read -r i; do
-    sh "$git_dir/.utils/startup-helpers/ethbridge.sh" 'ethbridge-$i' "10.1.16.$i"
+    sh "$git_dir/.utils/startup-helpers/ethbridge.sh" "ethbridge-$i" "10.1.16.$i"
 done
