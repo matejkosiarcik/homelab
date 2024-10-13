@@ -19,10 +19,6 @@ home-assistant
 # Media
 jellyfin
 
-# Monitoring
-healthchecks
-gatus
-
 # Notifications
 smtp4dev
 ntfy
@@ -34,3 +30,8 @@ minio
 speedtest-tracker
 homer
 homepage
+
+# Monitoring
+changedetection
+healthchecks
+gatus
