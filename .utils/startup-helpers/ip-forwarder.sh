@@ -50,8 +50,21 @@ sudo ip link set "$router_name" up
 # sudo iptables -t nat -A PREROUTING -p tcp -i "$router_name" --dport 80 -j DNAT --to-destination "$another_docker_ip:80"
 # sudo iptables -t nat -A POSTROUTING -o "$router_name" -j SNAT --to-source "$external_ip"
 
-sudo iptables -t nat -A PREROUTING -i "$router_name" -p tcp --dport 80 -j DNAT --to-destination "$another_docker_ip:80"
-sudo iptables -t nat -A POSTROUTING -o "$router_name" -j SNAT --to-source "$external_ip"
+# sudo iptables -t nat -A PREROUTING -i "$router_name" -p tcp --dport 80 -j DNAT --to-destination "$another_docker_ip:80"
+# sudo iptables -t nat -A POSTROUTING -o "$router_name" -j SNAT --to-source "$external_ip"
+
+# modify to suit
+# EXTERNAL="eth0"
+# OLDSERVER="10.10.10.1"
+# NEWSERVER="10.10.20.2"
+
+sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+sudo iptables -A FORWARD -i $router_name -o $router_name -p tcp --dport 80 -d $external_ip -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -t nat -A PREROUTING -i $router_name -p tcp --dport 80 -d $external_ip -j DNAT --to-destination $another_docker_ip
+sudo iptables -t nat -A POSTROUTING -p tcp --dport 80 -d $another_docker_ip -j SNAT --to $external_ip
 
 # sudo iptables -t nat -A POSTROUTING -o "$router_name" -j MASQUERADE
 # # iptables -t nat -A POSTROUTING -o end0 -j MASQUERADE
