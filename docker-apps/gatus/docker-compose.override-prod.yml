@@ -28,37 +28,37 @@ services:
       - 443:443
     networks:
       # external-network-raw:
-      # external-network:
-      #   ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
-      external-network2:
+      external-network:
         ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
+      # external-network2:
+      #   ipv4_address: ${DOCKER_COMPOSE_NETWORK_IP}
 
 networks:
   # external-network-raw:
   #   name: ${DOCKER_COMPOSE_APP_NAME}-external-network-raw
   #   driver: bridge
-  # external-network:
-  #   name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-  #   driver: macvlan
-  #   driver_opts:
-  #     # macvlan_mode: passthru
-  #     parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}
-  #   ipam:
-  #     config:
-  #       - subnet: "10.1.0.0/16"
-  #         ip_range: ${DOCKER_COMPOSE_NETWORK_RANGE}
-  #         gateway: ${DOCKER_COMPOSE_NETWORK_GATEWAY}
-  external-network2:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network2
-    driver: ipvlan
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: macvlan
     driver_opts:
-      parent: eth0
-      ipvlan_mode: l3s
+      # macvlan_mode: passthru
+      parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}
     ipam:
       config:
         - subnet: "10.1.0.0/16"
+          ip_range: ${DOCKER_COMPOSE_NETWORK_RANGE}
           gateway: ${DOCKER_COMPOSE_NETWORK_GATEWAY}
-          # ip_range: ${DOCKER_COMPOSE_NETWORK_RANGE}
-        # - subnet: "10.2.12.128/29"
-        #   ip_range: "10.2.12.130/32"
-        #   gateway: "10.2.12.129"
+  # external-network2:
+  #   name: ${DOCKER_COMPOSE_APP_NAME}-external-network2
+  #   driver: ipvlan
+  #   driver_opts:
+  #     parent: eth0
+  #     ipvlan_mode: l3s
+  #   ipam:
+  #     config:
+  #       - subnet: "10.1.0.0/16"
+  #         gateway: ${DOCKER_COMPOSE_NETWORK_GATEWAY}
+  #         # ip_range: ${DOCKER_COMPOSE_NETWORK_RANGE}
+  #       # - subnet: "10.2.12.128/29"
+  #       #   ip_range: "10.2.12.130/32"
+  #       #   gateway: "10.2.12.129"
