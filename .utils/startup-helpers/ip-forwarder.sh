@@ -12,6 +12,7 @@ router_name_2="macvlan-shim"
 external_ip="10.1.27.15" # TODO: Can this be in 10.1.17.x range?
 external_ip_2="10.1.17.0"
 internal_docker_ip="10.1.16.3"
+another_docker_ip="10.1.12.1"
 
 # Get appropriate network interface
 has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
@@ -37,13 +38,16 @@ sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
 sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
 
-sudo ip route add "$internal_docker_ip/32" dev "$router_name"
+# sudo ip route add "$internal_docker_ip/32" dev "$router_name"
 # sudo ip addr add "$external_ip/16" dev "$found_interface"
 
-sudo iptables -t nat -A PREROUTING -i"$found_interface" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
+# sudo iptables -t nat -A PREROUTING -i"$found_interface" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
 # # sudo iptables -t nat -A PREROUTING -i "$router_name_2" -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
-sudo iptables -t nat -A POSTROUTING -o "$found_interface" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
+# sudo iptables -t nat -A POSTROUTING -o "$found_interface" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
 # # sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
+
+iptables -t nat -A PREROUTING -p tcp -i "$router_name" --dport 80 -j DNAT --to-destination "$another_docker_ip:80"
+iptables -t nat -A POSTROUTING -o "$router_name" -j SNAT --to-source "$external_ip"
 
 # sudo iptables -A FORWARD -d "$internal_docker_ip" -i "$found_interface" -p tcp -m tcp --dport 80 -j ACCEPT
 
