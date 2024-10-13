@@ -32,7 +32,8 @@ printf 'Found network interface %s\n' "$found_interface"
 
 # sudo ip addr add "$external_ip/16" dev "$found_interface"
 
-sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
+# sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
+sudo ip link add "$router_name" link "$found_interface" type bridge
 # sudo ip link add "$router_name" link "$found_interface" type bridge
 # sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
 sudo ip address add "$external_ip/32" dev "$router_name"
