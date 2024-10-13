@@ -28,7 +28,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-json-validator-middleware": "^3.0.1",
-    "express-prom-bundle": "^7.0.0",
+    "express-prom-bundle": "^8.0.0",
     "punycode": "^2.3.1",
     "tslib": "^2.7.0",
     "vue-toast-notification": "^3.1.3",
