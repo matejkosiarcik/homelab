@@ -53,7 +53,7 @@ networks:
     driver: ipvlan
     driver_opts:
       parent: eth0
-      ipvlan_mode: l2
+      ipvlan_mode: l3
     ipam:
       config:
         - subnet: "10.1.0.0/16"
