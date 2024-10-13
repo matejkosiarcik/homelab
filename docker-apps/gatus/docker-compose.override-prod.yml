@@ -33,3 +33,4 @@ networks:
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
+    internal: false
