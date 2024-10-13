@@ -54,6 +54,6 @@ networks:
       # ipvlan_mode: l2
     ipam:
       config:
-        - subnet: "10.2.12.128/30"
+        - subnet: "10.2.12.128/29"
           ip_range: "10.2.12.130/32"
           gateway: "10.2.12.129"
