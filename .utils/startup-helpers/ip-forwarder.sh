@@ -7,7 +7,7 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder1"
+router_name="forwarder2"
 # external_ip="$2"
 # internal_docker_ip="$3"
 
