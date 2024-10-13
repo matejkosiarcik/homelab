@@ -45,11 +45,11 @@ sudo ip addr add "$external_ip/16" dev "$found_interface"
 # # sudo iptables -t nat -A POSTROUTING -o "$router_name" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
 # # sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -s "$internal_docker_ip" -p tcp --dport 80 -j SNAT --to "$external_ip:80"
 
-# sudo iptables -A FORWARD -d "$internal_docker_ip" -i "$router_name" -p tcp -m tcp --dport 80 -j ACCEPT
+sudo iptables -A FORWARD -d "$internal_docker_ip" -i "$found_interface" -p tcp -m tcp --dport 80 -j ACCEPT
 
-# sudo iptables -t nat -A PREROUTING -d "$external_ip" -p tcp -m tcp --dport 80 -j DNAT --to-destination "$internal_docker_ip"
+sudo iptables -t nat -A PREROUTING -d "$external_ip" -p tcp -m tcp --dport 80 -j DNAT --to-destination "$internal_docker_ip"
 
-# sudo iptables -t nat -A POSTROUTING -o "$router_name" -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -o "$found_interface" -j MASQUERADE
 
 # sudo ip addr add "$external_ip_2/32" dev eth0
 
