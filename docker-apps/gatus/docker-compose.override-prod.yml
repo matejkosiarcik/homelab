@@ -37,7 +37,7 @@ networks:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: macvlan
     driver_opts:
-      macvlan_mode: passthru
+      macvlan_mode: vepa
       parent: ${DOCKER_COMPOSE_NETWORK_INTERFACE}
     ipam:
       config:
