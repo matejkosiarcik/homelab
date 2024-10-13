@@ -32,5 +32,5 @@ sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
 sudo ip address add 10.1.27.3/32 dev "$router_name" # TODO: Can this be in 10.1.17.x range?
 sudo ip link set "$router_name" up
 
-iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
-iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
+sudo iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
+sudo iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
