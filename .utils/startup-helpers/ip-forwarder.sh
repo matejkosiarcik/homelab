@@ -7,9 +7,9 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder12"
+router_name="forwarder13"
 router_name_2="macvlan-shim"
-external_ip="10.1.27.12" # TODO: Can this be in 10.1.17.x range?
+external_ip="10.1.27.13" # TODO: Can this be in 10.1.17.x range?
 external_ip_2="10.1.17.0"
 internal_docker_ip="10.1.16.3"
 
@@ -34,12 +34,12 @@ sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
 # sudo ip link add link "$found_interface" name forwarder1 type vlan id 12
 sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
-sudo ip route add "$internal_docker_ip/32" dev "$router_name"
+# sudo ip route add "$internal_docker_ip/32" dev "$router_name"
 
 # sudo ip addr add "$external_ip_2/32" dev eth0
 
-sudo iptables -t nat -A PREROUTING -i "$router_name" -s "$external_ip" -d "$external_ip_2" -j DNAT --to-destination "$internal_docker_ip"
-sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -d "$internal_docker_ip" -j MASQUERADE
+# sudo iptables -t nat -A PREROUTING -i "$router_name" -s "$external_ip" -d "$external_ip_2" -j DNAT --to-destination "$internal_docker_ip"
+# sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -d "$internal_docker_ip" -j MASQUERADE
 
 # sudo iptables -t nat -A PREROUTING -i eth0 -s 10.1.27.3 -d 10.1.16.3 -j DNAT --to-destination 10.1.16.3
 # sudo iptables -t nat -A POSTROUTING -o eth0 -d 10.1.16.3 -j MASQUERADE
@@ -54,3 +54,7 @@ sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -d "$internal_docker_ip"
 # sudo iptables -t nat -A PREROUTING -i eth0 -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
 # sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 # sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$external_ip"
+
+sudo iptables -A FORWARD -i "$router_name" -o "$router_name_2" -j ACCEPT
+sudo iptables -A FORWARD -i "$router_name_2" -o "$router_name" -m state --state ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -t nat -A POSTROUTING -o "$router_name_2" -j MASQUERADE
