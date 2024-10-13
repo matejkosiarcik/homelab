@@ -7,8 +7,8 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder4"
-external_ip="10.1.27.4" # TODO: Can this be in 10.1.17.x range?
+router_name="forwarder5"
+external_ip="10.1.27.5" # TODO: Can this be in 10.1.17.x range?
 internal_docker_ip="10.1.16.3"
 
 # Get appropriate network interface
