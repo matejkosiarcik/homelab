@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM homeassistant/home-assistant:2024.10.1
+FROM homeassistant/home-assistant:2024.10.2
 # Also available on: ghcr.io/home-assistant/home-assistant:...
 ENV HOMELAB_CONTAINER_NAME=home-assistant \
     HOMELAB_CONTAINER_VARIANT=default \
