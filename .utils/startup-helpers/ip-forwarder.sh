@@ -7,8 +7,8 @@ set -euf
 #     exit 1
 # fi
 
-router_name="forwarder8"
-external_ip="10.1.27.8" # TODO: Can this be in 10.1.17.x range?
+router_name="forwarder9"
+external_ip="10.1.27.9" # TODO: Can this be in 10.1.17.x range?
 internal_docker_ip="10.1.12.1"
 
 # Get appropriate network interface
@@ -43,4 +43,5 @@ sudo ip link set "$router_name" up
 # sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$external_ip"
 
 sudo iptables -t nat -A PREROUTING  -i eth0 -d "$external_ip" -j DNAT --to-destination "$internal_docker_ip"
-sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$external_ip"
+sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+# sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$external_ip"
