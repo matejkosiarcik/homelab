@@ -4,9 +4,12 @@
 
 - Official docs: <https://docs.tvheadend.org/documentation>
 - Official repo: <https://github.com/tvheadend/tvheadend>
-- Linuxserver docs: <https://docs.linuxserver.io/images/docker-tvheadend>
-- Linuxserver DockerHub: <https://hub.docker.com/r/linuxserver/tvheadend>
-- Linuxserver GitHub: <https://github.com/linuxserver/docker-tvheadend>
+
+---
+
+- LinuxServer docs: <https://docs.linuxserver.io/images/docker-tvheadend>
+- LinuxServer GitHub: <https://github.com/linuxserver/docker-tvheadend>
+- LinuxServer DockerHub: <https://hub.docker.com/r/linuxserver/tvheadend>
 
 ## Before initial installation
 

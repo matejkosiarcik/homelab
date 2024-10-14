@@ -5,8 +5,12 @@
 - Main page: <https://speedtest-tracker.dev>
 - Docs: <https://docs.speedtest-tracker.dev>
 - GitHub: <https://github.com/alexjustesen/speedtest-tracker>
-- GitHub: <https://github.com/linuxserver/docker-speedtest-tracker>
-- DockerHub: <https://hub.docker.com/r/linuxserver/speedtest-tracker>
+
+---
+
+- LinuxServer docs: <https://docs.linuxserver.io/images/docker-speedtest-tracker/>
+- LinuxServer GitHub: <https://github.com/linuxserver/docker-speedtest-tracker>
+- LinuxServer DockerHub: <https://hub.docker.com/r/linuxserver/speedtest-tracker>
 
 ## Before initial installation
 

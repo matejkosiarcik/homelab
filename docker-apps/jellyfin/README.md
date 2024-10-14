@@ -2,11 +2,14 @@
 
 ![diagram](../../docs/diagrams/out/apps/jellyfin.png)
 
-- DockerHub: <https://hub.docker.com/r/linuxserver/jellyfin>
-- Linuxserver docs: <https://docs.linuxserver.io/images/docker-jellyfin>
-- GitHub: <https://github.com/linuxserver/docker-jellyfin>
 - Jellyfin docs: <https://jellyfin.org/docs/general/quick-start>
 - Jellyfin Hardware Acceleration docs: <https://jellyfin.org/docs/general/administration/hardware-acceleration> and <https://jellyfin.org/docs/general/administration/hardware-acceleration/intel>
+
+---
+
+- LinuxServer docs: <https://docs.linuxserver.io/images/docker-jellyfin>
+- LinuxServer GitHub: <https://github.com/linuxserver/docker-jellyfin>
+- LinuxServer DockerHub: <https://hub.docker.com/r/linuxserver/jellyfin>
 
 ## Before initial installation
 

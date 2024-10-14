@@ -2,9 +2,14 @@
 
 ![diagram](../../docs/diagrams/out/apps/unifi-controller.png)
 
-- GitHub: <https://github.com/linuxserver/docker-unifi-network-application>
-- DockerHub: <https://hub.docker.com/r/linuxserver/unifi-network-application>
+
 - Open Ports overview: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
+
+---
+
+- LinuxServer docs: <https://docs.linuxserver.io/images/docker-unifi-network-application/>
+- LinuxServer GitHub: <https://github.com/linuxserver/docker-unifi-network-application>
+- LinuxServer DockerHub: <https://hub.docker.com/r/linuxserver/unifi-network-application>
 
 For compatibility reasons, this app is using MongoDB from <https://github.com/themattman/mongodb-raspberrypi-docker>,
 instead of the official version, in order to run it on Raspberry Pi 4B.
