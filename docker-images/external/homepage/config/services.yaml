@@ -142,7 +142,7 @@
 
 - Smart Home:
     - Home Assistant:
-        description: Home Assistant
+        description: ...
         href: https://home-assistant.home
         ping: home-assistant.home
         icon: /icons/home-assistant.png
