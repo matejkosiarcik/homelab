@@ -13,7 +13,7 @@ ENV APP_TIMEZONE=Etc/Utc \
     PUBLIC_DASHBOARD=true \
     PUID=1000 \
     RESULTS_POLLING=5s \
-    SPEEDTEST_SCHEDULE="15 * * * *" \
+    SPEEDTEST_SCHEDULE="15 */4 * * *" \
     TZ=Etc/Utc
 
 HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/api/healthcheck || exit 1" ]
