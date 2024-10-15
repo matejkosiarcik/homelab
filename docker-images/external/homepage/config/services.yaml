@@ -209,12 +209,6 @@
         ping: changedetection.home
         icon: /icons/changedetection.png
 
-    - OpenSpeedTest:
-        description: "(Main)"
-        href: https://openspeedtest.home
-        ping: openspeedtest.home
-        icon: /icons/openspeedtest.png
-
 - Other Apps:
     - Homepage:
         description: ...
@@ -251,3 +245,9 @@
         href: https://ntfy.home
         ping: ntfy.home
         icon: /icons/ntfy.png
+
+    - OpenSpeedTest:
+        description: "(Main)"
+        href: https://openspeedtest.home
+        ping: openspeedtest.home
+        icon: /icons/openspeedtest.png
