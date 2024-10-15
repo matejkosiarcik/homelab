@@ -1,6 +1,6 @@
 # Template
 
-![diagram](../../docs/diagrams/out/apps/PLACEHOLDER.png)
+![diagram](../../docs/diagrams/out/apps/.placeholder.png)
 
 - _Fill in docs and useful links here_
 
