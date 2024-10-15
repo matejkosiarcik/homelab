@@ -20,7 +20,7 @@ services:
       dockerfile: ./external/openspeedtest/Dockerfile
     environment:
       <<: *common-env-variables
-      ENABLE_LETSENCRYPT: False
+      ENABLE_LETSENCRYPT: "False"
 
   certificate-manager:
     <<: *common-service-options
