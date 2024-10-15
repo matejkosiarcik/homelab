@@ -265,3 +265,9 @@ services:
         subtitle: "-"
         url: https://ntfy.home
         logo: ./assets/icons/ntfy.png
+
+      - name: OpenSpeedTest
+        type: Ping
+        subtitle: "-"
+        url: https://openspeedtest.home
+        logo: ./assets/icons/openspeedtest.png
