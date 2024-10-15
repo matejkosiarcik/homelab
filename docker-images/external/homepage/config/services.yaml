@@ -247,7 +247,13 @@
         icon: /icons/ntfy.png
 
     - OpenSpeedTest:
-        description: ...
+        description: Secure
         href: https://openspeedtest.home
+        ping: openspeedtest.home
+        icon: /icons/openspeedtest.png
+
+    - OpenSpeedTest:
+        description: Insecure
+        href: http://openspeedtest.home
         ping: openspeedtest.home
         icon: /icons/openspeedtest.png
