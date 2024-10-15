@@ -2,7 +2,6 @@
 
 ![diagram](../../docs/diagrams/out/apps/unifi-controller.png)
 
-
 - Open Ports overview: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
 
 ---
