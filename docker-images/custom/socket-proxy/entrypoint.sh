@@ -79,6 +79,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
     respawn socat TCP4-LISTEN:29814,fork,reuseaddr TCP4:omada-controller:29814 &
     respawn socat TCP4-LISTEN:29815,fork,reuseaddr TCP4:omada-controller:29815 &
     respawn socat TCP4-LISTEN:29816,fork,reuseaddr TCP4:omada-controller:29816 &
+elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
+    respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &

@@ -221,19 +221,19 @@ endpoints:
   - <<: *default-http
     name: Desklamp-2 HTTP
     group: App - Desklamp-2
-    url: http://desklamp-1.home
+    url: http://desklamp-2.home
     enabled: false
 
   - <<: *default-http
     name: Desklamp-2 HTTPS
     group: App - Desklamp-2
-    url: https://desklamp-1.home
+    url: https://desklamp-2.home
     enabled: false
 
   - <<: *default-http
     name: Desklamp-2 Api Health
     group: App - Desklamp-2
-    url: https://desklamp-1.home/api/status
+    url: https://desklamp-2.home/api/status
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].status) == true"
@@ -242,13 +242,13 @@ endpoints:
   - <<: *default-tcp
     name: Desklamp-2 TCP:80
     group: App - Desklamp-2
-    url: tcp://desklamp-1.home:80
+    url: tcp://desklamp-2.home:80
     enabled: false
 
   - <<: *default-tcp
     name: Desklamp-2 TCP:443
     group: App - Desklamp-2
-    url: tcp://desklamp-1.home:443
+    url: tcp://desklamp-2.home:443
     enabled: false
 
   ### Group: App - Dockerhub proxy ###
@@ -646,6 +646,32 @@ endpoints:
     name: Omada Controller TCP:29816
     group: App - Omada Controller
     url: tcp://omada-controller.home:29816
+
+  ### Group: App - OpenSpeedTest ###
+
+  - <<: *default-http
+    name: OpenSpeedTest HTTP
+    group: App - OpenSpeedTest
+    url: http://openspeedtest.home
+    enabled: false
+
+  - <<: *default-http
+    name: OpenSpeedTest HTTPS
+    group: App - OpenSpeedTest
+    url: https://openspeedtest.home
+    enabled: false
+
+  - <<: *default-tcp
+    name: OpenSpeedTest TCP:80
+    group: App - OpenSpeedTest
+    url: tcp://openspeedtest.home:80
+    enabled: false
+
+  - <<: *default-tcp
+    name: OpenSpeedTest TCP:443
+    group: App - OpenSpeedTest
+    url: tcp://openspeedtest.home:443
+    enabled: false
 
   ### Group: App - Pihole ###
 

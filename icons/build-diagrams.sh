@@ -28,6 +28,7 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$out
 
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$outdir/homepage.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$outdir/ntfy.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$outdir/openspeedtest.png"
 
 ### Organizr Icons ###
 

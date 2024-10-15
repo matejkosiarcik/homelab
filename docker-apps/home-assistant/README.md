@@ -5,11 +5,14 @@
 - Generic installation tutorial: <https://www.home-assistant.io/installation>
 - Container installation tutorial: <https://www.home-assistant.io/installation/linux#install-home-assistant-container>
 - Configuration guide: <https://www.home-assistant.io/docs/configuration>
-- DockerHub: <https://hub.docker.com/r/homeassistant/home-assistant>
+- Official DockerHub: <https://hub.docker.com/r/homeassistant/home-assistant>
 
 ---
 
+Note: LinuxServer Unused
+
 - LinuxServer docs: <https://docs.linuxserver.io/images/docker-homeassistant>
+- LinuxServer GitHub: <https://github.com/linuxserver/docker-homeassistant>
 - LinuxServer DockerHub: <https://hub.docker.com/r/linuxserver/homeassistant>
 
 ## Before initial installation

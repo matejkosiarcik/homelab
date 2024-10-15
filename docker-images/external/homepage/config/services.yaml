@@ -142,7 +142,7 @@
 
 - Smart Home:
     - Home Assistant:
-        description: Home Assistant
+        description: ...
         href: https://home-assistant.home
         ping: home-assistant.home
         icon: /icons/home-assistant.png
@@ -208,6 +208,12 @@
         href: https://changedetection.home
         ping: changedetection.home
         icon: /icons/changedetection.png
+
+    - OpenSpeedTest:
+        description: "(Main)"
+        href: https://openspeedtest.home
+        ping: openspeedtest.home
+        icon: /icons/openspeedtest.png
 
 - Other Apps:
     - Homepage:

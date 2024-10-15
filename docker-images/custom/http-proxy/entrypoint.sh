@@ -93,6 +93,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
         printf 'Unknown HOMELAB_ENV: %s\n' "${HOMELAB_ENV-N/A}"
         exit 1
     fi
+elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
+    PROXY_UPSTREAM_URL="http://openspeedtest:3000" # HTTPS endpoint is also available, but plain HTTP results in better performance
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_UPSTREAM_URL="http://pihole"
 elif [ "$HOMELAB_APP_TYPE" = 'smtp4dev' ]; then
@@ -169,6 +171,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ] && [ "$HOMELAB_CONTAINER_VARIANT" = '
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'direct' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
+elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
+    PROXY_FORCE_HTTPS='false' # TODO: Maybe enable HTTPS redirection if it doesn't slow down production server
 else
     PROXY_FORCE_HTTPS='true'
 fi
