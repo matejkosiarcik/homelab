@@ -3,7 +3,7 @@
 ![diagram](../../docs/diagrams/out/apps/tvheadend.png)
 
 - Official docs: <https://docs.tvheadend.org/documentation>
-- Official repo: <https://github.com/tvheadend/tvheadend>
+- Official repository: <https://github.com/tvheadend/tvheadend>
 
 ---
 
