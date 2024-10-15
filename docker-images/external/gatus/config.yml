@@ -647,6 +647,32 @@ endpoints:
     group: App - Omada Controller
     url: tcp://omada-controller.home:29816
 
+  ### Group: App - OpenSpeedTest ###
+
+  - <<: *default-http
+    name: OpenSpeedTest HTTP
+    group: App - OpenSpeedTest
+    url: http://openspeedtest.home
+    enabled: false
+
+  - <<: *default-http
+    name: OpenSpeedTest HTTPS
+    group: App - OpenSpeedTest
+    url: https://openspeedtest.home
+    enabled: false
+
+  - <<: *default-tcp
+    name: OpenSpeedTest TCP:80
+    group: App - OpenSpeedTest
+    url: tcp://openspeedtest.home:80
+    enabled: false
+
+  - <<: *default-tcp
+    name: OpenSpeedTest TCP:443
+    group: App - OpenSpeedTest
+    url: tcp://openspeedtest.home:443
+    enabled: false
+
   ### Group: App - Pihole ###
 
   - <<: *default-http
