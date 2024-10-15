@@ -27,9 +27,10 @@ ntfy
 minio
 
 # Misc
-speedtest-tracker
-homer
 homepage
+homer
+openspeedtest
+speedtest-tracker
 
 # Monitoring
 changedetection

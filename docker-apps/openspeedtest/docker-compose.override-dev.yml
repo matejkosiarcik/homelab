@@ -1,0 +1,32 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: dev
+    HOMELAB_APP_EXTERNAL_DOMAIN: localhost
+    HOMELAB_APP_EXTERNAL_IP: "127.0.0.1"
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    restart: "no"
+
+services:
+  openspeedtest:
+    <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      DOMAIN_NAME: localhost
+      USER_EMAIL: admin@openspeedtest.localhost
+    # ports:
+    #   - 3000:3000
+    #   - 3001:3001
+
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+
+  socket-proxy:
+    <<: *common-service-options
+    ports:
+      - 8080:80
+      - 8443:443
