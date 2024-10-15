@@ -247,7 +247,7 @@
         icon: /icons/ntfy.png
 
     - OpenSpeedTest:
-        description: "(Main)"
+        description: ...
         href: https://openspeedtest.home
         ping: openspeedtest.home
         icon: /icons/openspeedtest.png
