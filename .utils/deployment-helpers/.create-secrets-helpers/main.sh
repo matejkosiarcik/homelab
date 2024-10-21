@@ -76,6 +76,14 @@ create_password() {
     fi
 }
 
+create_secret() {
+    output_file="$1"
+    length="$2"
+
+    # shellcheck disable=SC2086
+    python3 "$helper_script_dir/generic-secret.py" --output "$output_file" --length "$length"
+}
+
 user_logfile="$tmpdir/user-logs.txt"
 touch "$user_logfile"
 
