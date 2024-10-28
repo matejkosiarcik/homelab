@@ -28,7 +28,6 @@ minio
 
 # Misc
 homepage
-homer
 openspeedtest
 speedtest-tracker
 

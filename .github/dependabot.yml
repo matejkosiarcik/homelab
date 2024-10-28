@@ -34,7 +34,6 @@ updates:
       - /docker-images/external/healthchecks
       - /docker-images/external/home-assistant
       - /docker-images/external/homepage
-      - /docker-images/external/homer
       - /docker-images/external/jellyfin
       - /docker-images/external/minio-server
       - /docker-images/external/ntfy

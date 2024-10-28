@@ -37,7 +37,6 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         home_assistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /></div>Home<br />Assistant")
         homepage("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
-        homer("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homer.png' style='min-width:80px;max-width:80px' /></div>Homer")
         jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
@@ -53,16 +52,16 @@ flowchart LR
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br />Tracker")
         uptime_kuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma")
 
-        %% hidden_odroid_h3(" ")
-        %% class hidden_odroid_h3 no_border
+        hidden_odroid_h3(" ")
+        class hidden_odroid_h3 no_border
 
         changedetection ~~~ dockerhub_proxy ~~~ gatus
         healthchecks ~~~ home_assistant ~~~ homepage
-        homer ~~~ jellyfin ~~~ minio
-        ntfy ~~~ omada_controller ~~~ pihole
-        pihole_guests ~~~ pihole_iot ~~~ pihole_matej
-        pihole_matej_work ~~~ pihole_monika ~~~ pihole_monika_work
-        smtp4dev ~~~ speedtest_tracker ~~~ uptime_kuma
+        jellyfin ~~~ minio ~~~ ntfy
+        omada_controller ~~~ pihole ~~~ pihole_guests
+        pihole_iot ~~~ pihole_matej ~~~ pihole_matej_work
+        pihole_monika ~~~ pihole_monika_work ~~~ smtp4dev
+        speedtest_tracker ~~~ uptime_kuma ~~~ hidden_odroid_h3
     end
 
     odroid_h3
