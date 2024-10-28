@@ -9,16 +9,16 @@
     "axios": "^1.7.7",
     "chai": "^5.1.2",
     "dotenv": "^16.4.5",
-    "playwright": "^1.48.1"
+    "playwright": "^1.48.2"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.1",
-    "@tsconfig/recommended": "^1.0.7",
+    "@tsconfig/recommended": "^1.0.8",
     "@types/chai": "^5.0.0",
-    "@types/node": "^22.7.9",
-    "rollup": "^4.24.0",
+    "@types/node": "^22.8.1",
+    "rollup": "^4.24.2",
     "tslib": "^2.8.0",
-    "tsx": "^4.19.1",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
 }
