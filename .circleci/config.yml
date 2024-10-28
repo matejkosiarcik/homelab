@@ -11,12 +11,12 @@ workflows:
           matrix:
             parameters:
               server:
+                - odroid-h3
                 - raspberry-pi-3b
                 - raspberry-pi-4b-2g
                 - raspberry-pi-4b-4g
-                - raspberry-pi-zero-2w-1
-                - raspberry-pi-zero-2w-2
-                - odroid-h3
+                # - raspberry-pi-zero-2w-1
+                # - raspberry-pi-zero-2w-2
 
 jobs:
   azlint:
