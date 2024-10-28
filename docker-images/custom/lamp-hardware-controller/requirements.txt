@@ -1,5 +1,0 @@
-gpiozero==2.0.1
-RPi.GPIO==0.7.1
-lgpio==0.2.2.0
-pigpio==1.78
-jsonschema==4.23.0
