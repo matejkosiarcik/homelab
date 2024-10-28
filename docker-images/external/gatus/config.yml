@@ -93,10 +93,11 @@ endpoints:
     group: External DNS
     url: icmp://1.1.1.1
 
-  - <<: *default-icmp
-    name: External DNS - Level3
-    group: External DNS
-    url: icmp://4.2.2.1
+  # Disabled because of flakiness
+  # - <<: *default-icmp
+  #   name: External DNS - Level3
+  #   group: External DNS
+  #   url: icmp://4.2.2.1
 
   ### Group: Network equipment ###
 
