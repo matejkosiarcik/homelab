@@ -187,7 +187,6 @@ endpoints:
     name: Desklamp-1 HTTP
     group: App - Desklamp-1
     url: http://desklamp-1.home
-    enabled: false
 
   - <<: *default-http
     name: Desklamp-1 HTTPS
@@ -198,17 +197,15 @@ endpoints:
   - <<: *default-http
     name: Desklamp-1 Api Health
     group: App - Desklamp-1
-    url: https://desklamp-1.home/api/status
+    url: http://desklamp-1.home/api/status
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].status) == true"
-    enabled: false
 
   - <<: *default-tcp
     name: Desklamp-1 TCP:80
     group: App - Desklamp-1
     url: tcp://desklamp-1.home:80
-    enabled: false
 
   - <<: *default-tcp
     name: Desklamp-1 TCP:443
@@ -222,7 +219,6 @@ endpoints:
     name: Desklamp-2 HTTP
     group: App - Desklamp-2
     url: http://desklamp-2.home
-    enabled: false
 
   - <<: *default-http
     name: Desklamp-2 HTTPS
@@ -233,17 +229,15 @@ endpoints:
   - <<: *default-http
     name: Desklamp-2 Api Health
     group: App - Desklamp-2
-    url: https://desklamp-2.home/api/status
+    url: http://desklamp-2.home/api/status
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].status) == true"
-    enabled: false
 
   - <<: *default-tcp
     name: Desklamp-2 TCP:80
     group: App - Desklamp-2
     url: tcp://desklamp-2.home:80
-    enabled: false
 
   - <<: *default-tcp
     name: Desklamp-2 TCP:443
