@@ -3,7 +3,7 @@
 > My personal homelab
 
 This is my personal homelab config.
-Given the nature of this project, as it applies only to me, 3rd-party pull requests are not expected.
+Given the nature of this project, as it applies only to me, third-party pull requests are not expected.
 
 TL;DR:
 
