@@ -216,12 +216,6 @@
         ping: homepage.home
         icon: /icons/homepage.png
 
-    - Homer:
-        description: ...
-        href: https://homer.home
-        ping: homer.home
-        icon: /icons/homer.png
-
     - Dockerhub proxy:
         description: ...
         href: https://dockerhub-proxy.home

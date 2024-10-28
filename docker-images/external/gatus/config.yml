@@ -409,28 +409,6 @@ endpoints:
     group: App - Homepage
     url: tcp://homepage.home:443
 
-  ### Group: App - Homer ###
-
-  - <<: *default-http
-    name: Homer HTTP
-    group: App - Homer
-    url: http://homer.home
-
-  - <<: *default-http
-    name: Homer HTTPS
-    group: App - Homer
-    url: https://homer.home
-
-  - <<: *default-tcp
-    name: Homer TCP:80
-    group: App - Homer
-    url: tcp://homer.home:80
-
-  - <<: *default-tcp
-    name: Homer TCP:443
-    group: App - Homer
-    url: tcp://homer.home:443
-
   ### Group: App - Jellyfin ###
 
   - <<: *default-http

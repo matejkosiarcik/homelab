@@ -6,5 +6,6 @@
     - Add all usual scaffolding (certificate-manager, http-proxy, socket-proxy)
     - Specific scaffolding (litestream?, custom-setup?, custom-backup?)
 3. Add directory in a specific `servers/<server>/docker-apps/` that will use the app
-4. Check if the main image has a favicon in browser -> If not add a custom one
-5. Add this app to _homer_ dashboard
+4. Check if the main image has a favicon and it displays in web browser
+    - If not -> Add a custom one in the service image (preferred) or in apache proxy (fallback)
+5. Add this app to _homepage_ dashboard
