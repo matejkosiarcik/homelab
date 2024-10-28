@@ -146,6 +146,10 @@ void sendClientResponse(EthernetClient& client, int status, String body) {
     client.stop();
 }
 
+void handleGetRoot(EthernetClient& client) {
+    sendClientResponse(client, 200, "");
+}
+
 void handleGetStatus(EthernetClient& client) {
     String status = currentLightStatus ? "on" : "off";
     sendClientResponse(client, 200, "{ \"status\": \"" + status + "\" }");
@@ -207,7 +211,9 @@ void loopNetworkServer() {
     String path = request.substring(method.length() + 1, method.length() + 1 + request.substring(method.length() + 1).indexOf(" "));
     String body = request.indexOf("\r\n\r\n") == -1 ? "" : request.substring(request.indexOf("\r\n\r\n") + 4);
 
-    if (method.compareTo("GET") == 0 && path.compareTo("/api/status") == 0) {
+    if (method.compareTo("GET") == 0 && path.compareTo("/") == 0) {
+        handleGetRoot(client);
+    } else if (method.compareTo("GET") == 0 && path.compareTo("/api/status") == 0) {
         handleGetStatus(client);
     } else if (method.compareTo("POST") == 0 && path.compareTo("/api/turn-on") == 0) {
         handlePostTurnOnOff(client, true);
