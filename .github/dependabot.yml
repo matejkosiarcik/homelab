@@ -28,6 +28,7 @@ updates:
       - /docker-images/custom/socket-proxy
       - /docker-images/custom/web-automation
       - /docker-images/database/mongodb
+      - /docker-images/external/actualbudget
       - /docker-images/external/changedetection
       - /docker-images/external/docker-registry
       - /docker-images/external/gatus

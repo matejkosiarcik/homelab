@@ -66,6 +66,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg
 
 ### Other Icons ###
 
+convert_image "$convert_options" "$input_dir/other/actualbudget.png" "$outdir/actualbudget.png"
 convert_image "$convert_options" "$input_dir/other/apache.svg.bin" "$outdir/apache.png"
 convert_image "$convert_options" "$input_dir/other/button.png" "$outdir/button.png"
 convert_image "$convert_options" "$input_dir/other/gatus.png" "$outdir/gatus.png"

@@ -18,7 +18,10 @@ respawn() {
     done)
 }
 
-if [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'actualbudget' ]; then
+    respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
