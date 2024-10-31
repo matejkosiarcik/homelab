@@ -16,3 +16,55 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 0.0.0.0/0
+
+binary_sensor:
+  - unique_id: light_desklamp_left_status
+    platform: rest
+    resource: http://desklamp-left.home/api/status
+    method: GET
+    name: Desklamp - left
+    device_class: light
+    value_template: "{{ value_json.status }}"
+    scan_interval: 2
+  - unique_id: light_desklamp_right_status
+    platform: rest
+    resource: http://desklamp-right.home/api/status
+    method: GET
+    name: Desklamp - right
+    device_class: light
+    value_template: "{{ value_json.status }}"
+    scan_interval: 2
+
+rest_command:
+  desklamp_left_on:
+    url: http://desklamp-left.home/api/turn-on
+    method: POST
+  desklamp_left_off:
+    url: http://desklamp-left.home/api/turn-off
+    method: POST
+  desklamp_right_on:
+    url: http://desklamp-right.home/api/turn-on
+    method: POST
+  desklamp_right_off:
+    url: http://desklamp-right.home/api/turn-off
+    method: POST
+
+light:
+  - platform: template
+    lights:
+      desklamp_left:
+        friendly_name: Desklamp - Left
+        unique_id: light.desklamp_left
+        turn_on:
+          action: rest_command.desklamp_left_on
+        turn_off:
+          action: rest_command.desklamp_left_off
+        value_template: "{{ is_state('binary_sensor.desklamp_left', 'on') }}" # NOTE: Where is binary_sensor.desklamp_left defined?
+      desklamp_right:
+        friendly_name: Desklamp - Right
+        unique_id: light.desklamp_right
+        turn_on:
+          action: rest_command.desklamp_right_on
+        turn_off:
+          action: rest_command.desklamp_right_off
+        value_template: "{{ is_state('binary_sensor.desklamp_right', 'on') }}" # NOTE: Where is binary_sensor.desklamp_left defined?
