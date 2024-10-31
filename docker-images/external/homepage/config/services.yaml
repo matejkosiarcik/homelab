@@ -148,17 +148,17 @@
         ping: home-assistant.home
         icon: /icons/home-assistant.png
 
-    # - Desklamp - left:
-    #     description: ...
-    #     href: http://desklamp-left.home
-    #     ping: desklamp-left.home
-    #     icon: /icons/lightbulb.png
+    - Desklamp - left:
+        description: ...
+        href: http://desklamp-left.home
+        ping: desklamp-left.home
+        icon: /icons/lightbulb.png
 
-    # - Desklamp - right:
-    #     description: ...
-    #     href: http://desklamp-right.home
-    #     ping: desklamp-right.home
-    #     icon: /icons/lightbulb.png
+    - Desklamp - right:
+        description: ...
+        href: http://desklamp-right.home
+        ping: desklamp-right.home
+        icon: /icons/lightbulb.png
 
 - Media:
     - Jellyfin:
