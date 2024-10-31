@@ -168,10 +168,10 @@ void handleNotFound(EthernetClient& client) {
 void loopNetworkServer() {
     if (!ethernetInitialized) {
         Serial.println("Ethernet not configured yet");
-        const auto result = Ethernet.begin(macAddress, 10000);
+        const auto result = Ethernet.begin(macAddress, 5000);
         if (result != 1) {
             Serial.println("Ethernet configuration failed");
-            delay(100);
+            delay(500);
             return;
         } else {
             Serial.println("Initial Ethernet configuration succeeded");
@@ -188,7 +188,7 @@ void loopNetworkServer() {
         const auto result = Ethernet.begin(macAddress, 5000);
         if (result != 1) {
             Serial.println("Ethernet reconfiguration failed");
-            delay(100);
+            delay(500);
             return;
         } else {
             Serial.println("Ethernet reconnection succeeded");
