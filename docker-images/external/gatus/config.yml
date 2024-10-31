@@ -189,11 +189,11 @@ endpoints:
     group: App - Desklamp-1
     url: http://desklamp-1.home
 
-  - <<: *default-http
-    name: Desklamp-1 HTTPS
-    group: App - Desklamp-1
-    url: https://desklamp-1.home
-    enabled: false
+  # - <<: *default-http
+  #   name: Desklamp-1 HTTPS
+  #   group: App - Desklamp-1
+  #   url: https://desklamp-1.home
+  #   enabled: false
 
   - <<: *default-http
     name: Desklamp-1 Api Health
@@ -221,11 +221,11 @@ endpoints:
     group: App - Desklamp-2
     url: http://desklamp-2.home
 
-  - <<: *default-http
-    name: Desklamp-2 HTTPS
-    group: App - Desklamp-2
-    url: https://desklamp-2.home
-    enabled: false
+  # - <<: *default-http
+  #   name: Desklamp-2 HTTPS
+  #   group: App - Desklamp-2
+  #   url: https://desklamp-2.home
+  #   enabled: false
 
   - <<: *default-http
     name: Desklamp-2 Api Health
