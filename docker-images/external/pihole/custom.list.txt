@@ -20,6 +20,7 @@
 10.1.10.21 changedetection.home
 10.1.10.22 ntfy.home
 10.1.10.23 openspeedtest.home
+10.1.10.24 actualbudget.home
 
 10.1.12.1 tvheadend.home
 

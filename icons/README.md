@@ -11,6 +11,7 @@ The Icons are obtained from following locations:
     - Organizr Icons: <https://github.com/causefx/Organizr>
     - OSA Icons: <https://www.opensecurityarchitecture.org/cms/library/icon-library>
 - Individual icons:
+    - ActualBudget: <https://github.com/actualbudget>
     - Apache: <https://techicons.dev/icons/apache>
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
     - Gatus: <https://github.com/TwiN/gatus>

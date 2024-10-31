@@ -107,6 +107,20 @@ prepare_empty_env() {
 }
 
 case "$current_dir" in
+*actualbudget*)
+    create_http_auth_user proxy-status
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/admin-password.txt"
+
+    # Misc
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *changedetection*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"

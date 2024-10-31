@@ -216,6 +216,12 @@
         ping: homepage.home
         icon: /icons/homepage.png
 
+    - ActualBudget:
+        description: ...
+        href: https://actualbudget.home
+        ping: actualbudget.home
+        icon: /icons/actualbudget.png
+
     - Dockerhub proxy:
         description: ...
         href: https://dockerhub-proxy.home

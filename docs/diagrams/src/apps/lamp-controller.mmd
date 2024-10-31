@@ -13,24 +13,17 @@ flowchart LR
     class home_assistant dashed_border
 
     subgraph app_wrapper[" "]
-        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
-        http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br />proxy")
-        certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br />Manager")
-        lamp_network_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp<br />API<br />server")
-        lamp_hardware_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp<br />GPIO<br />Controller")
-
-        socket_proxy <--->|:80,443| http_proxy <--->|:80| lamp_network_server <--->|:80| lamp_hardware_controller
-        http_proxy -..-|fs| certificate_manager
+        lamp_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp controller")
     end
 
-    gpio_button("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /></div>GPIO<br />Button")
+    gpio_button("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /></div>Button")
     class gpio_button dashed_border
-    gpio_lamp("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /></div>GPIO<br />Lamp")
+    gpio_lamp("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /></div>Lamp")
     class gpio_lamp dashed_border
 
-    lamp_hardware_controller ~~~ gpio_button --->|control| lamp_hardware_controller
-    lamp_hardware_controller --->|control| gpio_lamp
+    lamp_controller ~~~ gpio_button --->|GPIO 2| lamp_controller
+    lamp_controller --->|GPIO 14| gpio_lamp
 
-    home_network <--->|:80,443| socket_proxy
-    home_assistant ~~~ socket_proxy
+    home_network <--->|:80| lamp_controller
+    home_assistant ~~~ lamp_controller
     home_assistant -..->|control| app_wrapper

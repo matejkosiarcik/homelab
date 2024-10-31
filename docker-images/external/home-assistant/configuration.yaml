@@ -1,8 +1,11 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
-# System health is already included in default_config, but we can set it explicitly anyway
+# This is already included in default_config, but we set it explicitly anyway
 system_health:
+
+# This is already included in default_config, but we set it explicitly anyway
+mobile_app:
 
 # Enable prometheus integration
 prometheus:

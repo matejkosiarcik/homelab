@@ -1,0 +1,12 @@
+diff --git a/app.js b/app.js
+index 6dbf350..9910e8f 100644
+--- a/app.js
++++ b/app.js
+@@ -13,6 +13,7 @@ import * as simpleFinApp from './app-simplefin/app-simplefin.js';
+ import * as secretApp from './app-secrets.js';
+
+ const app = express();
++app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
+
+ process.on('unhandledRejection', (reason) => {
+   console.log('Rejection:', reason);
