@@ -77,19 +77,20 @@
         icon: /icons/apple.png
         target: _self
 
-    - Raspberry Pi Zero 2W 1:
-        description: IoT device
-        href: javascript:copyUrl('ssh matej@10.1.4.6')
-        ping: "10.1.4.6"
-        icon: /icons/raspberry-pi.png
-        target: _self
+    # Disable for indeterminate time
+    # - Raspberry Pi Zero 2W 1:
+    #     description: IoT device
+    #     href: javascript:copyUrl('ssh matej@10.1.4.6')
+    #     ping: "10.1.4.6"
+    #     icon: /icons/raspberry-pi.png
+    #     target: _self
 
-    - Raspberry Pi Zero 2W 2:
-        description: IoT device
-        href: javascript:copyUrl('ssh matej@10.1.4.7')
-        ping: "10.1.4.7"
-        icon: /icons/raspberry-pi.png
-        target: _self
+    # - Raspberry Pi Zero 2W 2:
+    #     description: IoT device
+    #     href: javascript:copyUrl('ssh matej@10.1.4.7')
+    #     ping: "10.1.4.7"
+    #     icon: /icons/raspberry-pi.png
+    #     target: _self
 
 - DNS:
     - PiHole:
@@ -147,16 +148,16 @@
         ping: home-assistant.home
         icon: /icons/home-assistant.png
 
-    - Desklamp (left):
+    - Desklamp - left:
         description: ...
-        href: https://desklamp-1.home
-        ping: desklamp-1.home
+        href: http://desklamp-left.home
+        ping: desklamp-left.home
         icon: /icons/lightbulb.png
 
-    - Desklamp (right):
+    - Desklamp - right:
         description: ...
-        href: https://desklamp-2.home
-        ping: desklamp-2.home
+        href: http://desklamp-right.home
+        ping: desklamp-right.home
         icon: /icons/lightbulb.png
 
 - Media:
@@ -247,13 +248,13 @@
         icon: /icons/ntfy.png
 
     - OpenSpeedTest:
-        description: Secure
+        description: Secure / HTTPS
         href: https://openspeedtest.home
         ping: openspeedtest.home
         icon: /icons/openspeedtest.png
 
     - OpenSpeedTest:
-        description: Insecure
+        description: Insecure / HTTP
         href: http://openspeedtest.home
         ping: openspeedtest.home
         icon: /icons/openspeedtest.png
