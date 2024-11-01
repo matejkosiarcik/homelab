@@ -16,7 +16,7 @@
         crontab_shasum_before="$(crontab -l | shasum)"
         startup_script_shasum_before="$(shasum "$HOME/startup.sh" || true)"
 
-        sh helper.sh install --prod
+        sh main.sh install --prod
 
         crontab_shasum_after="$(crontab -l | shasum)"
         startup_script_shasum_after="$(shasum "$HOME/startup.sh")"
@@ -57,4 +57,4 @@
 
         cd servers/.current
 
-        sh helper.sh deploy --prod
+        sh main.sh deploy --prod
