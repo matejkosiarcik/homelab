@@ -16,7 +16,6 @@ services:
       <<: *common-env-variables
       FTLCONF_LOCAL_IPV4: ${DOCKER_COMPOSE_NETWORK_IP}
       FTLCONF_PRIVACYLEVEL: "0"
-      # FTLCONF_RATE_LIMIT: "100000/60" # Only for debugging
       VIRTUAL_HOST: ${DOCKER_COMPOSE_APP_NAME}.home
 
   pihole-setup:

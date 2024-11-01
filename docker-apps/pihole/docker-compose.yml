@@ -18,6 +18,9 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
+    environment:
+      <<: *common-env-variables
+      FTLCONF_RATE_LIMIT: "0/0" # Necessary because of https://www.reddit.com/r/pihole/comments/osm2fn/psa_if_you_are_having_random_dns_resolution
     volumes:
       - ./app-data/pihole/etc-pihole:/etc/pihole:rw
       - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
