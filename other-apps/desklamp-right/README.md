@@ -1,4 +1,4 @@
-# Lamp controller
+# Desklamp - Right
 
 ![diagram](../../docs/diagrams/out/apps/lamp-controller.png)
 
