@@ -192,12 +192,6 @@
         ping: gatus-2.home
         icon: /icons/gatus.png
 
-    - Uptime Kuma:
-        description: ...
-        href: https://uptime-kuma.home
-        ping: uptime-kuma.home
-        icon: /icons/uptime-kuma.png
-
     - SpeedTest Tracker:
         description: ...
         href: https://speedtest-tracker.home

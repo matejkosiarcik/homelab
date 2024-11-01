@@ -112,8 +112,6 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
         exit 1
     fi
-elif [ "$HOMELAB_APP_TYPE" = 'uptime-kuma' ]; then
-    PROXY_UPSTREAM_URL="http://uptime-kuma:3001"
 else
     printf 'Unknown HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}"
     exit 1

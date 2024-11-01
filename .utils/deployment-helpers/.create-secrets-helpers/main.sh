@@ -405,25 +405,6 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-*uptime-kuma*)
-    create_http_auth_user proxy-status
-    prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
-
-    # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
-
-    # Web backup
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
-
-    # Misc
-    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
-
-    # Log results
-    printf 'Not all secrets setup\n' >&2
-    cat "$user_logfile" >&2
-    ;;
 *)
     printf 'Unknown app directory name: %s\n' "$current_dir" >&2
     exit 1
