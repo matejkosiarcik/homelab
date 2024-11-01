@@ -14,7 +14,7 @@ x-definitions:
 services:
   speedtest-tracker:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-speedtest-tracker
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/speedtest-tracker/Dockerfile

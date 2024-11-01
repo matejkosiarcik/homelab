@@ -14,7 +14,7 @@ x-definitions:
 services:
   docker-registry:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-docker-registry
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/docker-registry/Dockerfile

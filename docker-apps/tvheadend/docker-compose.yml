@@ -14,7 +14,7 @@ x-definitions:
 services:
   tvheadend:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-tvheadend
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/tvheadend/Dockerfile

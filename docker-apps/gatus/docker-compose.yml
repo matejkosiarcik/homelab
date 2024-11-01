@@ -14,7 +14,7 @@ x-definitions:
 services:
   gatus:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-gatus
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/gatus/Dockerfile

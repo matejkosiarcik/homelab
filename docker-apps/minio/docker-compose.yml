@@ -14,7 +14,7 @@ x-definitions:
 services:
   minio:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-minio
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/minio-server/Dockerfile
@@ -26,7 +26,7 @@ services:
 
   minio-setup:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-minio-setup
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/minio-client/Dockerfile

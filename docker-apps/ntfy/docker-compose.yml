@@ -14,7 +14,7 @@ x-definitions:
 services:
   ntfy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-ntfy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/ntfy/Dockerfile
@@ -27,13 +27,13 @@ services:
 
   ntfy-setup:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-ntfy-setup
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/docker-setup/Dockerfile
     environment:
       <<: *common-env-variables
-      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-ntfy
+      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
     depends_on:
       ntfy:
         condition: service_healthy

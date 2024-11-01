@@ -14,7 +14,7 @@ x-definitions:
 services:
   actualbudget:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-actualbudget
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/actualbudget/Dockerfile

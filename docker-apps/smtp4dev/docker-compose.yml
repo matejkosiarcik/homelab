@@ -14,7 +14,7 @@ x-definitions:
 services:
   smtp4dev:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-smtp4dev
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/smtp4dev/Dockerfile
