@@ -14,7 +14,7 @@ x-definitions:
 services:
   openspeedtest:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-openspeedtest
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/openspeedtest/Dockerfile

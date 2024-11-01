@@ -14,7 +14,7 @@ x-definitions:
 services:
   unifi-network-application:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-unifi-network-application
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/unifi-network-application/Dockerfile

@@ -92,7 +92,7 @@ machine_stop() {
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$machine_dir/docker-apps/$dir/helper.sh" stop $script_args
+            sh "$machine_dir/docker-apps/$dir/main.sh" stop $script_args
         done
 
         printf '\n'
@@ -105,7 +105,7 @@ machine_build() {
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$machine_dir/docker-apps/$dir/helper.sh" build $script_args
+            sh "$machine_dir/docker-apps/$dir/main.sh" build $script_args
         done
 
         printf '\n'
@@ -118,7 +118,7 @@ machine_start() {
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$machine_dir/docker-apps/$dir/helper.sh" start $script_args
+            sh "$machine_dir/docker-apps/$dir/main.sh" start $script_args
         done
 
         printf '\n'
@@ -131,7 +131,7 @@ machine_deploy() {
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$machine_dir/docker-apps/$dir/helper.sh" deploy $script_args
+            sh "$machine_dir/docker-apps/$dir/main.sh" deploy $script_args
         done
 
         printf '\n'
@@ -144,7 +144,7 @@ machine_create_secrets() {
 
         sed -E 's~#.*$~~' <"$machine_dir/docker-apps/priority.txt" | (grep -E '.+' || true) | while read -r dir; do
             # shellcheck disable=SC2086
-            sh "$machine_dir/docker-apps/$dir/helper.sh" create-secrets $script_args
+            sh "$machine_dir/docker-apps/$dir/main.sh" create-secrets $script_args
         done
 
         printf '\n'

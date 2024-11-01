@@ -14,7 +14,7 @@ x-definitions:
 services:
   pihole:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-pihole
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
@@ -33,13 +33,13 @@ services:
 
   pihole-setup:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-pihole-setup
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/docker-setup/Dockerfile
     environment:
       <<: *common-env-variables
-      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-pihole
+      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
     depends_on:
       pihole:
         condition: service_healthy

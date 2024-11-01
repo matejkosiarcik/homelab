@@ -70,7 +70,7 @@ create_all_secrets() {
 
     find . -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r server; do
         # shellcheck disable=SC2086
-        sh "$server/helper.sh" create-secrets $create_secrets_args
+        sh "$server/main.sh" create-secrets $create_secrets_args
     done
 }
 

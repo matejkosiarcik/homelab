@@ -14,7 +14,7 @@ x-definitions:
 services:
   healthchecks:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-healthchecks
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/healthchecks/Dockerfile
