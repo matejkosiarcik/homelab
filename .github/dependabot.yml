@@ -44,7 +44,6 @@ updates:
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/tvheadend
       - /docker-images/external/unifi-network-application
-      - /docker-images/external/uptime-kuma
     schedule:
       interval: daily
       time: "01:30"

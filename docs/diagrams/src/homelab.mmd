@@ -50,7 +50,6 @@ flowchart LR
         pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br />Tracker")
-        uptime_kuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptime-kuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br />Kuma")
 
         hidden_odroid_h3(" ")
         class hidden_odroid_h3 no_border
@@ -61,7 +60,7 @@ flowchart LR
         omada_controller ~~~ pihole ~~~ pihole_guests
         pihole_iot ~~~ pihole_matej ~~~ pihole_matej_work
         pihole_monika ~~~ pihole_monika_work ~~~ smtp4dev
-        speedtest_tracker ~~~ uptime_kuma ~~~ hidden_odroid_h3
+        speedtest_tracker ~~~ hidden_odroid_h3
     end
 
     odroid_h3
