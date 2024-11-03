@@ -1,10 +1,5 @@
 10.1.10.1 pihole.home
-10.1.10.2 pihole-matej.home
-10.1.10.3 pihole-matej-work.home
-10.1.10.4 pihole-monika.home
-10.1.10.5 pihole-monika-work.home
-10.1.10.6 pihole-guests.home
-10.1.10.7 pihole-iot.home
+10.1.10.2 pihole-open.home
 10.1.10.8 dockerhub-proxy.home
 10.1.10.9 omada-controller.home
 10.1.10.10 home-assistant.home
@@ -23,9 +18,10 @@
 
 10.1.12.1 tvheadend.home
 
-10.1.16.1 unifi-controller.home
-10.1.16.2 pihole-2.home
-10.1.16.3 gatus-2.home
+10.1.16.1 pihole-2.home
+10.1.16.2 pihole-2-open.home
+10.1.16.3 unifi-controller.home
+10.1.16.4 gatus-2.home
 
 10.1.4.201 desklamp-left.home
 10.1.4.202 desklamp-right.home

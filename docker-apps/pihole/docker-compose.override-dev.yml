@@ -28,10 +28,16 @@ services:
   http-proxy:
     <<: *common-service-options
 
-  socket-proxy:
+  default-socket-proxy:
     <<: *common-service-options
     ports:
       - 8053:53/tcp
       - 8053:53/udp
       - 8080:80
       - 8443:443
+
+  open-socket-proxy:
+    <<: *common-service-options
+    ports:
+      - 8853:53/tcp
+      - 8853:53/udp

@@ -2,14 +2,6 @@
 pihole
 dockerhub-proxy
 
-# DNS
-pihole-matej
-pihole-matej-work
-pihole-monika
-pihole-monika-work
-pihole-guests
-pihole-iot
-
 # Network controllers
 omada-controller
 
