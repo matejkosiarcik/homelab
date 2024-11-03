@@ -22,11 +22,10 @@ services:
       <<: *common-env-variables
       FTLCONF_RATE_LIMIT: "0/0" # Necessary because of https://www.reddit.com/r/pihole/comments/osm2fn/psa_if_you_are_having_random_dns_resolution
     volumes:
-      - ./app-data/pihole/etc-pihole:/etc/pihole:rw
-      - ./app-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - ./app-data/pihole-data:/etc/pihole:rw
+      - ./app-data/pihole-dnsmasq.d:/etc/dnsmasq.d:rw
       - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
       - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
-      - ../../../../docker-images/external/pihole/adlists-${DOCKER_COMPOSE_PIHOLE_ADLISTS-default}.txt:/homelab/adlists.txt:ro
     # Hard-coded DNS is necessary because of bootstrapping problem
     # Basically PiHole needs functional DNS in order to start (eg. to update adlists before start - which it can't do until it itself started, when it's the only DNS server on network)
     dns:
@@ -75,9 +74,16 @@ services:
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
 
-  socket-proxy:
+  default-socket-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-default-socket-proxy
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
+
+  open-socket-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-open-socket-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/socket-proxy/Dockerfile

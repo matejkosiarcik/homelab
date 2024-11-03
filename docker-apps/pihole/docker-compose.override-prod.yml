@@ -27,13 +27,21 @@ services:
   http-proxy:
     <<: *common-service-options
 
-  socket-proxy:
+  default-socket-proxy:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+    networks:
+      external-network:
+
+  open-socket-proxy:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP_2}:53:53/tcp
+      - ${DOCKER_COMPOSE_NETWORK_IP_2}:53:53/udp
     networks:
       external-network:
 

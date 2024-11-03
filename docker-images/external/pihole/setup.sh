@@ -25,7 +25,7 @@ while true; do
 done
 printf 'Main table found\n'
 
-# Clean lists before making changes
+# Clean custom lists before making changes
 printf 'Wipe existing blacklists and whitelists\n'
 pihole whitelist --nuke
 pihole --white-wild --nuke
@@ -34,7 +34,14 @@ pihole blacklist --nuke
 pihole --wild --nuke
 pihole --regex --nuke
 
+# Wipe other existing entities
+sqlite3 /etc/pihole/gravity.db 'DELETE FROM adlist;'
+sqlite3 /etc/pihole/gravity.db 'DELETE FROM client;'
+sqlite3 /etc/pihole/gravity.db 'DELETE FROM client_by_group;'
+sqlite3 /etc/pihole/gravity.db 'DELETE FROM [group] WHERE id!=0;'
+
 # Update whitelist
+# Note: Only applies to default group
 sed -E 's~#.*$~~' <'/homelab/domains-whitelist.txt' | (grep -E '.+' || true) | while read -r entry; do
     domain="$(printf '%s' "$entry" | sed -E 's~ .*$~~')"
     if (printf '%s' "$entry" | grep -- '\[wildcard\]' >/dev/null 2>&1); then
@@ -50,6 +57,7 @@ sed -E 's~#.*$~~' <'/homelab/domains-whitelist.txt' | (grep -E '.+' || true) | w
 done
 
 # Update blacklist
+# Note: Only applies to default group
 sed -E 's~#.*$~~' <'/homelab/domains-blacklist.txt' | (grep -E '.+' || true) | while read -r entry; do
     domain="$(printf '%s' "$entry" | sed -E 's~ .*$~~')"
     if (printf '%s' "$entry" | grep -- '\[wildcard\]' >/dev/null 2>&1); then
@@ -64,13 +72,34 @@ sed -E 's~#.*$~~' <'/homelab/domains-blacklist.txt' | (grep -E '.+' || true) | w
     fi
 done
 
+# Custom group
+default_group_id='0'
+sqlite3 /etc/pihole/gravity.db "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Open', 0, 0, 'custom');"
+open_group_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM [group] WHERE name='Open';")"
+
+# Custom clients
+# - Default client
+default_socket_proxy_ip="$(dig +short default-socket-proxy)"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$default_socket_proxy_ip', 0, 0, 'custom');"
+default_socket_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$default_socket_proxy_ip';")"
+# - Open client
+open_socket_proxy_ip="$(dig +short open-socket-proxy)"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$open_socket_proxy_ip', 0, 0, 'custom');"
+open_socket_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$open_socket_proxy_ip';")"
+
+# Assign clients to groups
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$default_socket_proxy_client_id;"
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$open_socket_proxy_client_id;"
+
 # Custom adlists
-sqlite3 /etc/pihole/gravity.db 'DELETE FROM adlist;'
-sed -E 's~#.*$~~' <'/homelab/adlists.txt' | (grep -E '.+' || true) | while read -r entry; do
+sed -E 's~#.*$~~' <'/homelab/adlists-default.txt' | (grep -E '.+' || true) | while read -r entry; do
     adlist="$(printf '%s' "$entry" | sed -E 's~ .*$~~')"
-    echo "New adlist: $adlist"
     sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('$adlist', 1, 'custom');"
+    # Adlists are automatically assigned to default group
 done
+
+# Assign whitelist+blacklist domains also to secondary group
+sqlite3 /etc/pihole/gravity.db "INSERT INTO domainlist_by_group (domainlist_id, group_id) SELECT domainlist_id, $open_group_id FROM domainlist_by_group WHERE group_id=$default_group_id;"
 
 # Update gravity after changing adlists
 pihole updateGravity
