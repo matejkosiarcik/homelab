@@ -646,79 +646,113 @@ endpoints:
     url: tcp://openspeedtest.home:443
     enabled: false
 
-  ### Group: App - Pihole ###
+  ### Group: App - Pihole [default] ###
 
   - <<: *default-http
-    name: Pihole HTTP
-    group: App - Pihole
+    name: Pihole [default] HTTP
+    group: App - Pihole [default]
     url: http://pihole.home
 
   - <<: *default-http
-    name: Pihole HTTPS
-    group: App - Pihole
+    name: Pihole [default] HTTPS
+    group: App - Pihole [default]
     url: https://pihole.home
 
   - <<: *default-dns
-    name: Pihole DNS
-    group: App - Pihole
+    name: Pihole [default] DNS
+    group: App - Pihole [default]
     url: pihole.home
 
   - <<: *default-tcp
-    name: Pihole TCP:53
-    group: App - Pihole
+    name: Pihole [default] TCP:53
+    group: App - Pihole [default]
     url: tcp://pihole.home:53
 
   - <<: *default-udp
-    name: Pihole UDP:53
-    group: App - Pihole
+    name: Pihole [default] UDP:53
+    group: App - Pihole [default]
     url: udp://pihole.home:53
 
   - <<: *default-tcp
-    name: Pihole TCP:80
-    group: App - Pihole
+    name: Pihole [default] TCP:80
+    group: App - Pihole [default]
     url: tcp://pihole.home:80
 
   - <<: *default-tcp
-    name: Pihole TCP:443
-    group: App - Pihole
+    name: Pihole [default] TCP:443
+    group: App - Pihole [default]
     url: tcp://pihole.home:443
 
-  ### Group: App - Pihole (2) ###
+  ### Group: App - Pihole [open] ###
+
+  - <<: *default-dns
+    name: Pihole [open] DNS
+    group: App - Pihole [open]
+    url: pihole.home
+
+  - <<: *default-tcp
+    name: Pihole [open] TCP:53
+    group: App - Pihole [open]
+    url: tcp://pihole.home:53
+
+  - <<: *default-udp
+    name: Pihole [open] UDP:53
+    group: App - Pihole [open]
+    url: udp://pihole.home:53
+
+  ### Group: App - Pihole (2) [default] ###
 
   - <<: *default-http
-    name: Pihole (2) HTTP
-    group: App - Pihole (2)
+    name: Pihole (2) [default] HTTP
+    group: App - Pihole (2) [default]
     url: http://pihole-2.home
 
   - <<: *default-http
-    name: Pihole (2) HTTPS
-    group: App - Pihole (2)
+    name: Pihole (2) [default] HTTPS
+    group: App - Pihole (2) [default]
     url: https://pihole-2.home
 
   - <<: *default-dns
-    name: Pihole (2) DNS
-    group: App - Pihole (2)
+    name: Pihole (2) [default] DNS
+    group: App - Pihole (2) [default]
     url: pihole-2.home
 
   - <<: *default-tcp
-    name: Pihole (2) TCP:53
-    group: App - Pihole (2)
+    name: Pihole (2) [default] TCP:53
+    group: App - Pihole (2) [default]
     url: tcp://pihole-2.home:53
 
   - <<: *default-udp
-    name: Pihole (2) UDP:53
-    group: App - Pihole (2)
+    name: Pihole (2) [default] UDP:53
+    group: App - Pihole (2) [default]
     url: udp://pihole-2.home:53
 
   - <<: *default-tcp
-    name: Pihole (2) TCP:80
-    group: App - Pihole (2)
+    name: Pihole (2) [default] TCP:80
+    group: App - Pihole (2) [default]
     url: tcp://pihole-2.home:80
 
   - <<: *default-tcp
-    name: Pihole (2) TCP:443
-    group: App - Pihole (2)
+    name: Pihole (2) [default] TCP:443
+    group: App - Pihole (2) [default]
     url: tcp://pihole-2.home:443
+
+  ### Group: App - Pihole (2) [open] ###
+
+  - <<: *default-dns
+    name: Pihole (2) [open] DNS
+    group: App - Pihole (2) [open]
+    url: pihole-2-open.home
+
+  - <<: *default-tcp
+    name: Pihole (2) [open] TCP:53
+    group: App - Pihole (2) [open]
+    url: tcp://pihole-2-open.home:53
+
+  - <<: *default-udp
+    name: Pihole (2) [open] UDP:53
+    group: App - Pihole (2) [open]
+    url: udp://pihole-2-open.home:53
 
   ### Group: App - Smtp4dev ###
 
