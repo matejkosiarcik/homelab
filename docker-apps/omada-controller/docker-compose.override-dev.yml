@@ -27,10 +27,10 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - 8080:80
-      - 8081:81
-      - 8443:443
-      - 8444:444
+      - 127.0.0.1:8080:80
+      - 127.0.0.1:8081:81
+      - 127.0.0.1:8443:443
+      - 127.0.0.1:8444:444
 
   web-backup:
     <<: *common-service-options
