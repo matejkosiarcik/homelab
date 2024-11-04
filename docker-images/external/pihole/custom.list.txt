@@ -1,3 +1,9 @@
+10.1.4.1 macbook-pro-2012.server.home
+10.1.4.2 raspberry-pi-3b.server.home
+10.1.4.3 raspberry-pi-4b-2g.server.home
+10.1.4.4 raspberry-pi-4b-4g.server.home
+10.1.4.8 odroid-h3.server.home
+
 10.1.10.1 pihole.home
 10.1.10.2 pihole-open.home
 10.1.10.8 dockerhub-proxy.home
