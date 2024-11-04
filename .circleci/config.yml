@@ -7,7 +7,7 @@ workflows:
       - azlint
       - local_build
       - docker_build
-      - deployment:
+      - dryrun_deployment:
           matrix:
             parameters:
               server:
@@ -73,7 +73,7 @@ jobs:
           command: |
             make docker-build
 
-  deployment:
+  dryrun_deployment:
     parameters:
       server:
         type: string
@@ -92,7 +92,7 @@ jobs:
               apk add --no-cache nodejs npm
             fi
       - run:
-          name: Run deployment on << parameters.server >>
+          name: Prepare secrets on << parameters.server >>
           environment:
             HOMELAB_SPEEDTEST_TRACKER_APP_KEY: base64:ZXhhbXBsZQ== # "example"
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
@@ -102,4 +102,11 @@ jobs:
               npm --prefix './docker-images/custom/web-automation' ci
             fi
             sh './servers/<< parameters.server >>/main.sh' create-secrets --dev
+      # - run:
+      #     name: Build apps on << parameters.server >>
+      #     command: |
+      #       sh './servers/<< parameters.server >>/main.sh' build --dev
+      - run:
+          name: Run dry-run deployment on << parameters.server >>
+          command: |
             sh './servers/<< parameters.server >>/main.sh' start --dev --dry-run
