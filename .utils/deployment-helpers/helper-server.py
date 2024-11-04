@@ -12,20 +12,18 @@ from os import path
 from typing import List
 
 
-start_date = datetime.datetime.now().strftime(f"%Y-%m-%d_%H-%M-%S")
+start_date = datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
 os.environ["START_DATE"] = start_date
 
 server_dir = path.abspath(path.curdir)
+server_name = path.basename(server_dir)
+
 log_dir = path.join(path.expanduser("~"), ".homelab-logs", start_date)
 log_file = path.join(log_dir, "log.txt")
-server_name = path.basename(server_dir)
+os.makedirs(log_dir, exist_ok=True)
 
 docker_args = []
 dryrun = False
-force = False
-
-
-os.makedirs(log_dir, exist_ok=True)
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -35,7 +33,7 @@ log.addHandler(logging.FileHandler(log_file))
 
 def read_priority_apps_list() -> List[str]:
     file = path.join(server_dir, "docker-apps", "priority.txt")
-    with open(file, "r") as file:
+    with open(file, "r", encoding="utf-8") as file:
         lines = file.readlines()
     lines = [x.strip() for x in lines]
     lines = [re.sub(r"#.*$", "", x) for x in lines]
@@ -44,7 +42,7 @@ def read_priority_apps_list() -> List[str]:
 
 
 def main(argv: List[str]) -> int:
-    global docker_args, dryrun, force
+    global dryrun
     parser = argparse.ArgumentParser(prog="main.sh")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -137,7 +135,7 @@ def server_install():
 
     assert path.exists(path.join(server_dir, "crontab.cron")), "Server crontab.cron not found"
     if not dryrun:
-        with open(path.join(server_dir, "crontab.cron")) as file:
+        with open(path.join(server_dir, "crontab.cron"), encoding="utf-8") as file:
             subprocess.check_call(["crontab", "-"], stdin=file)
 
 
