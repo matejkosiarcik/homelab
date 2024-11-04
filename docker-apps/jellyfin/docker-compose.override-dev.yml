@@ -27,6 +27,6 @@ services:
   socket-proxy:
     <<: *common-service-options
     ports:
-      - 8080:80
-      - 8443:443
-      - 8096:8096 # TODO: Remove this port after Let's Encrypt certificates
+      - 127.0.0.1:8080:80
+      - 127.0.0.1:8443:443
+      - 127.0.0.1:8096:8096 # TODO: Remove this port after Let's Encrypt certificates
