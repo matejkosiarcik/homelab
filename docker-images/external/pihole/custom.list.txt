@@ -26,8 +26,8 @@
 
 10.1.16.1 pihole-2.home
 10.1.16.2 pihole-2-open.home
-10.1.16.3 unifi-controller.home
-10.1.16.4 gatus-2.home
+10.1.16.10 unifi-controller.home
+10.1.16.11 gatus-2.home
 
 10.1.4.201 desklamp-left.home
 10.1.4.202 desklamp-right.home
