@@ -23,6 +23,7 @@ os.makedirs(log_dir, exist_ok=True)
 
 docker_args = []
 dryrun = False
+applist = []
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -40,7 +41,7 @@ def read_priority_apps_list() -> List[str]:
 
 
 def main(argv: List[str]):
-    global dryrun  # pylint: disable=global-statement
+    global applist, dryrun  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="main.sh")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -63,10 +64,9 @@ def main(argv: List[str]):
         group.add_argument("-p", "--prod", action="store_true", help="Production mode")
     args = parser.parse_args(argv)
 
-    apps_list = str(args.only).split(",") if args.only is not None else read_priority_apps_list()
-    for app in apps_list:
-        if not path.exists(path.join(server_dir, "docker-apps", app)):
-            raise FileNotFoundError(f'App "{app}" not found')
+    applist = str(args.only).split(",") if args.only is not None else read_priority_apps_list()
+    for app in applist:
+        assert path.exists(path.join(server_dir, "docker-apps", app)), f'App "{app}" not found'
 
     command = args.subcommand
     force = args.force
@@ -79,58 +79,23 @@ def main(argv: List[str]):
     if force:
         docker_args.append("--force")
 
-    if command == "build":
-        server_build(apps_list)
-    elif command == "create-secrets":
-        server_create_secrets(apps_list)
-    elif command == "deploy":
+    if command in ["deploy", "install"]:
         server_install()
-        server_deploy(apps_list)
-    elif command == "install":
-        server_install()
-    elif command == "start":
-        server_start(apps_list)
-    elif command == "stop":
-        server_stop(apps_list)
+
+    if command in ["build", "create-secrets", "deploy", "start", "stop"]:
+        server_docker_action(command)
 
 
-def server_build(applist: List[str]):
-    log.info("Build docker apps in %s", server_name)
+def server_docker_action(action: str):
+    action_log = action.capitalize() if action != "create-secrets" else "Create-secrets for"
+    log.info("%s docker apps", action_log)
     for app in applist:
-        subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "build"] + docker_args)
-    log.info("All docker apps built successfully in %s", server_name)
-
-
-def server_start(applist: List[str]):
-    log.info("Start docker apps in %s", server_name)
-    for app in applist:
-        subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "start"] + docker_args)
-    log.info("All docker apps started successfully in %s", server_name)
-
-
-def server_stop(applist: List[str]):
-    log.info("Stop docker apps in %s", server_name)
-    for app in applist:
-        subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "stop"] + docker_args)
-    log.info("All docker apps stopped successfully in %s", server_name)
-
-
-def server_deploy(applist: List[str]):
-    log.info("Deploy docker apps in %s", server_name)
-    for app in applist:
-        subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "deploy"] + docker_args)
-    log.info("All docker apps deployed successfully in %s", server_name)
-
-
-def server_create_secrets(applist: List[str]):
-    log.info("Create docker apps secrets in %s", server_name)
-    for app in applist:
-        subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "create-secrets"] + docker_args)
-    log.info("All docker apps secrets created successfully in %s", server_name)
+        subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), action] + docker_args)
+    log.info("%s docker apps - SUCCESS on %s", action_log, datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
 
 
 def server_install():
-    log.info("Installing global scripts in %s", server_name)
+    log.info("Installing global scripts")
 
     assert path.exists(path.join(server_dir, "startup.sh")), "Server startup.sh not found"
     if not dryrun:
@@ -140,6 +105,8 @@ def server_install():
     if not dryrun:
         with open(path.join(server_dir, "crontab.cron"), encoding="utf-8") as file:
             subprocess.check_call(["crontab", "-"], stdin=file)
+
+    log.info("Installing global scripts - SUCCESS on %s", datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
 
 
 if __name__ == "__main__":
