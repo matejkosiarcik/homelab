@@ -11,7 +11,6 @@ import sys
 from os import path
 from typing import List
 
-
 start_date = datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
 os.environ["START_DATE"] = start_date
 
@@ -68,7 +67,7 @@ def main(argv: List[str]) -> int:
     apps_list = str(args.only).split(",") if args.only is not None else read_priority_apps_list()
     for app in apps_list:
         if not path.exists(path.join(server_dir, "docker-apps", app)):
-            raise FileNotFoundError(f"App \"{app}\" not found")
+            raise FileNotFoundError(f'App "{app}" not found')
 
     command = args.subcommand
     force = args.force
@@ -97,37 +96,37 @@ def main(argv: List[str]) -> int:
 
 
 def server_build(applist: List[str]):
-    log.info(f"Build docker apps in {server_name}")
+    log.info("Build docker apps in %", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "build"] + docker_args)
 
 
 def server_start(applist: List[str]):
-    log.info(f"Start docker apps in {server_name}")
+    log.info("Start docker apps in %", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "start"] + docker_args)
 
 
 def server_stop(applist: List[str]):
-    log.info(f"Stop docker apps in {server_name}")
+    log.info("Stop docker apps in %", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "stop"] + docker_args)
 
 
 def server_deploy(applist: List[str]):
-    log.info(f"Deploy docker apps in {server_name}")
+    log.info("Deploy docker apps in %", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "deploy"] + docker_args)
 
 
 def server_create_secrets(applist: List[str]):
-    log.info(f"Init docker apps secrets in {server_name}")
+    log.info("Init docker apps secrets in %", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "create-secrets"] + docker_args)
 
 
 def server_install():
-    log.info(f"Installing global scripts in {server_name}")
+    log.info("Installing global scripts in %", server_name)
 
     assert path.exists(path.join(server_dir, "startup.sh")), "Server startup.sh not found"
     if not dryrun:
