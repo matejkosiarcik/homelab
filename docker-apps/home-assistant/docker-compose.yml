@@ -10,7 +10,7 @@ x-definitions:
       - single-request
       # - single-request-reopen
       # - ndots:1
-      # - no-aaaa
+      - no-aaaa
       - use-vc
       # - rotate
     sysctls:
