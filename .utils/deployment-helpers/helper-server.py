@@ -41,7 +41,7 @@ def read_priority_apps_list() -> List[str]:
 
 
 def main(argv: List[str]) -> int:
-    global dryrun # pylint: disable=global-statement
+    global dryrun  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="main.sh")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
