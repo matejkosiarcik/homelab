@@ -38,7 +38,7 @@ jobs:
         architecture:
           - amd64
           - arm64
-    name: Build - linux/${{ matrix.architecture }}
+    name: Build - ${{ matrix.component }} - linux/${{ matrix.architecture }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
