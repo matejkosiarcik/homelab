@@ -9,8 +9,9 @@ jobs:
   paths-filter:
     runs-on: ubuntu-latest
     outputs:
-      pihole: ${{ steps.filter.outputs.pihole }}
-      gatus: ${{ steps.filter.outputs.gatus }}
+      components: ${{ steps.filter.outputs.changes }}
+      # pihole: ${{ steps.filter.outputs.pihole }}
+      # gatus: ${{ steps.filter.outputs.gatus }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
@@ -48,9 +49,12 @@ jobs:
     strategy:
       # fail-fast: false
       matrix:
-        component:
-          - pihole
-          - gatus
+        # Parse JSON array containing names of all filters matching any of changed files
+        # e.g. ['package1', 'package2'] if both package folders contains changes
+        component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
+        # component:
+        #   - pihole
+        #   - gatus
         architecture:
           - amd64
           - arm64
@@ -59,54 +63,54 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.7
 
-      - name: jobdebug
-        if: job.needs.paths-filter.outputs.${{ matrix.component }} == 'true'
-        run: echo "JOB changes"
+      # - name: jobdebug
+      #   if: job.needs.paths-filter.outputs.${{ matrix.component }} == 'true'
+      #   run: echo "Component ${{ matrix.component }} changes"
 
-      - name: Filter paths
-        uses: dorny/paths-filter@v3.0.2
-        id: filter
-        with:
-          filters: |
-            pihole:
-              - '**/pihole*/**'
-            gatus:
-              - '**/gatus*/**'
+      # - name: Filter paths
+      #   uses: dorny/paths-filter@v3.0.2
+      #   id: filter
+      #   with:
+      #     filters: |
+      #       pihole:
+      #         - '**/pihole*/**'
+      #       gatus:
+      #         - '**/gatus*/**'
 
-      - name: workflow tests
-        if: steps.filter.outputs.${{ matrix.component }} == 'true'
-        run: echo "Workflow changes"
+      # - name: workflow tests
+      #   if: steps.filter.outputs.${{ matrix.component }} == 'true'
+      #   run: echo "Workflow changes"
 
-      - name: not workflow tests
-        if: steps.filter.outputs.${{ matrix.component }} != 'true'
-        run: echo "NOT workflow changes"
+      # - name: not workflow tests
+      #   if: steps.filter.outputs.${{ matrix.component }} != 'true'
+      #   run: echo "NOT workflow changes"
 
-      - name: pihole tests
-        if: steps.filter.outputs.pihole == 'true'
-        run: echo "pihole changes"
+      # - name: pihole tests
+      #   if: steps.filter.outputs.pihole == 'true'
+      #   run: echo "pihole changes"
 
-      - name: not pihole tests
-        if: steps.filter.outputs.pihole != 'true'
-        run: echo "NOT pihole changes"
+      # - name: not pihole tests
+      #   if: steps.filter.outputs.pihole != 'true'
+      #   run: echo "NOT pihole changes"
 
-      - name: gatus tests
-        if: steps.filter.outputs.gatus == 'true'
-        run: echo "gatus changes"
+      # - name: gatus tests
+      #   if: steps.filter.outputs.gatus == 'true'
+      #   run: echo "gatus changes"
 
-      - name: not gatus tests
-        if: steps.filter.outputs.gatus != 'true'
-        run: echo "NOT gatus changes"
+      # - name: not gatus tests
+      #   if: steps.filter.outputs.gatus != 'true'
+      #   run: echo "NOT gatus changes"
 
       - name: Setup QEMU
-        if: steps.filter.outputs.${{ matrix.component }} == 'true'
+        # if: steps.filter.outputs.${{ matrix.component }} == 'true'
         uses: docker/setup-qemu-action@v3.2.0
 
       - name: Setup Docker Buildx
-        if: steps.filter.outputs.${{ matrix.component }} == 'true'
+        # if: steps.filter.outputs.${{ matrix.component }} == 'true'
         uses: docker/setup-buildx-action@v3.6.1
 
       - name: Example build
-        if: steps.filter.outputs.${{ matrix.component }} == 'true'
+        # if: steps.filter.outputs.${{ matrix.component }} == 'true'
         run: |
           cd docker-images
           docker build . \
