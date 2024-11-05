@@ -31,8 +31,7 @@ log.addHandler(logging.FileHandler(log_file))
 
 
 def read_priority_apps_list() -> List[str]:
-    file = path.join(server_dir, "docker-apps", "priority.txt")
-    with open(file, "r", encoding="utf-8") as file:
+    with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
         lines = file.readlines()
     lines = [x.strip() for x in lines]
     lines = [re.sub(r"#.*$", "", x) for x in lines]
@@ -40,7 +39,7 @@ def read_priority_apps_list() -> List[str]:
     return lines
 
 
-def main(argv: List[str]) -> int:
+def main(argv: List[str]):
     global dryrun  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="main.sh")
     subparsers = parser.add_subparsers(dest="subcommand")
