@@ -6,28 +6,36 @@ on:
   pull_request:
 
 jobs:
-  # paths-filter:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     pihole: ${{ steps.filter.outputs.pihole }}
-  #     gatus: ${{ steps.filter.outputs.gatus }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4.1.7
+  paths-filter:
+    runs-on: ubuntu-latest
+    outputs:
+      pihole: ${{ steps.filter.outputs.pihole }}
+      gatus: ${{ steps.filter.outputs.gatus }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
 
-  #     - name: Filter paths
-  #       uses: dorny/paths-filter@v3.0.2
-  #       id: filter
-  #       with:
-  #         filters: |
-  #           pihole:
-  #             - '**/pihole*/**'
-  #           gatus:
-  #             - '**/gatus*/**'
+      - name: Filter paths
+        uses: dorny/paths-filter@v3.0.2
+        id: filter
+        with:
+          filters: |
+            pihole:
+              - '**/pihole*/**'
+            gatus:
+              - '**/gatus*/**'
+
+      - name: workflow tests
+        if: steps.filter.outputs.${{ matrix.component }} == 'true'
+        run: echo "Workflow changes"
+
+      - name: not workflow tests
+        if: steps.filter.outputs.${{ matrix.component }} != 'true'
+        run: echo "NOT workflow changes"
 
   build:
     runs-on: ubuntu-latest
-    # needs: paths-filter
+    needs: paths-filter
     # if: needs.paths-filter.outputs.${{ matrix.component }} == 'true'
     strategy:
       # fail-fast: false
