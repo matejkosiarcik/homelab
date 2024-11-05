@@ -98,30 +98,35 @@ def server_build(applist: List[str]):
     log.info("Build docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "build"] + docker_args)
+    log.info("All docker apps built successfully in %s", server_name)
 
 
 def server_start(applist: List[str]):
     log.info("Start docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "start"] + docker_args)
+    log.info("All docker apps started successfully in %s", server_name)
 
 
 def server_stop(applist: List[str]):
     log.info("Stop docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "stop"] + docker_args)
+    log.info("All docker apps stopped successfully in %s", server_name)
 
 
 def server_deploy(applist: List[str]):
     log.info("Deploy docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "deploy"] + docker_args)
+    log.info("All docker apps deployed successfully in %s", server_name)
 
 
 def server_create_secrets(applist: List[str]):
-    log.info("Init docker apps secrets in %s", server_name)
+    log.info("Create docker apps secrets in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "create-secrets"] + docker_args)
+    log.info("All docker apps secrets created successfully in %s", server_name)
 
 
 def server_install():
