@@ -7,8 +7,8 @@ x-definitions:
     networks:
       internal-network: {}
     dns_opt:
-      - single-request
-      # - single-request-reopen
+      # - single-request
+      - single-request-reopen
       # - ndots:1
       - no-aaaa
       - use-vc
