@@ -10,7 +10,7 @@ x-definitions:
       - single-request
       - no-tld-query
       - timeout:1
-      - attempts:2
+      # - attempts:2
       # - single-request-reopen
       # - edns0
       # - ndots:1
