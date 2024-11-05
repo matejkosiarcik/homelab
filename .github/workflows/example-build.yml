@@ -6,8 +6,31 @@ on:
   pull_request:
 
 jobs:
-  build:
+  paths-filter:
     runs-on: ubuntu-latest
+    outputs:
+      pihole: ${{ steps.filter.outputs.pihole }}
+    steps:
+    - uses: actions/checkout@v4.1.7
+    - uses: dorny/paths-filter@v3.0.2
+      id: filter
+      with:
+        filters: |
+          pihole:
+            - '**/pihole*/**'
+
+    - name: workflow tests
+      if: steps.filter.outputs.pihole == 'true'
+      run: echo "Detected some changes"
+
+    - name: not workflow tests
+      if: steps.filter.outputs.pihole != 'true'
+      run: echo "Detected zero changes"
+
+  build-pihole:
+    runs-on: ubuntu-latest
+    needs: paths-filter
+    if: needs.paths-filter.outputs.pihole == 'true'
     strategy:
       # fail-fast: false
       matrix:
