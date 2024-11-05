@@ -4,23 +4,27 @@
 10.1.4.4 raspberry-pi-4b-4g.server.home
 10.1.4.8 odroid-h3.server.home
 
+10.1.4.201 desklamp-left.home
+10.1.4.202 desklamp-right.home
+
 10.1.10.1 pihole.home
 10.1.10.2 pihole-open.home
-10.1.10.8 dockerhub-proxy.home
-10.1.10.9 omada-controller.home
-10.1.10.10 home-assistant.home
-10.1.10.11 jellyfin.home
-10.1.10.12 minio.home
-10.1.10.13 console.minio.home
-10.1.10.14 smtp4dev.home
-10.1.10.15 healthchecks.home
-10.1.10.16 gatus.home
-10.1.10.18 speedtest-tracker.home
-10.1.10.20 homepage.home
-10.1.10.21 changedetection.home
-10.1.10.22 ntfy.home
-10.1.10.23 openspeedtest.home
-10.1.10.24 actualbudget.home
+10.1.10.10 dockerhub-proxy.home
+10.1.10.11 home-assistant.home
+10.1.10.12 omada-controller.home
+# 10.1.10.13 reserved for unifi-controller.home
+10.1.10.14 jellyfin.home
+10.1.10.15 minio.home
+10.1.10.16 console.minio.home
+10.1.10.17 smtp4dev.home
+10.1.10.18 healthchecks.home
+10.1.10.19 gatus.home
+10.1.10.20 speedtest-tracker.home
+10.1.10.21 homepage.home
+10.1.10.22 changedetection.home
+10.1.10.23 ntfy.home
+10.1.10.24 openspeedtest.home
+10.1.10.25 actualbudget.home
 
 10.1.12.1 tvheadend.home
 
@@ -28,6 +32,3 @@
 10.1.16.2 pihole-2-open.home
 10.1.16.10 unifi-controller.home
 10.1.16.11 gatus-2.home
-
-10.1.4.201 desklamp-left.home
-10.1.4.202 desklamp-right.home
