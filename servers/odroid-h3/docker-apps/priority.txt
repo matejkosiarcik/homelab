@@ -20,6 +20,7 @@ minio
 
 # Misc
 homepage
+actualbudget
 openspeedtest
 speedtest-tracker
 
