@@ -25,13 +25,21 @@ jobs:
             gatus:
               - '**/gatus*/**'
 
-      - name: workflow tests
-        if: steps.filter.outputs.${{ matrix.component }} == 'true'
-        run: echo "Workflow changes"
+      - name: pihole tests
+        if: steps.filter.outputs.pihole == 'true'
+        run: echo "pihole changes"
 
-      - name: not workflow tests
-        if: steps.filter.outputs.${{ matrix.component }} != 'true'
-        run: echo "NOT workflow changes"
+      - name: not pihole tests
+        if: steps.filter.outputs.pihole != 'true'
+        run: echo "NOT pihole changes"
+
+      - name: gatus tests
+        if: steps.filter.outputs.gatus == 'true'
+        run: echo "gatus changes"
+
+      - name: not gatus tests
+        if: steps.filter.outputs.gatus != 'true'
+        run: echo "NOT gatus changes"
 
   build:
     runs-on: ubuntu-latest
