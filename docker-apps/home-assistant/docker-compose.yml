@@ -9,7 +9,7 @@ x-definitions:
     dns_opt:
       # - single-request
       - single-request-reopen
-      # - ndots:1
+      - ndots:10
       - no-aaaa
       - use-vc
       # - rotate
