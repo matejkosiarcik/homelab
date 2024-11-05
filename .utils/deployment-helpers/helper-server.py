@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
 import argparse
-import datetime
 import logging
 import os
 import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 from os import path
 from typing import List
 
-start_date = datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
+start_date = datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
 os.environ["START_DATE"] = start_date
 
 server_dir = path.abspath(path.curdir)
@@ -91,7 +91,7 @@ def server_docker_action(action: str):
     log.info("%s docker apps", action_log)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), action] + docker_args)
-    log.info("%s docker apps - SUCCESS on %s", action_log, datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
+    log.info("%s docker apps - SUCCESS on %s", action_log, datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
 
 
 def server_install():
@@ -106,7 +106,7 @@ def server_install():
         with open(path.join(server_dir, "crontab.cron"), encoding="utf-8") as file:
             subprocess.check_call(["crontab", "-"], stdin=file)
 
-    log.info("Installing global scripts - SUCCESS on %s", datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
+    log.info("Installing global scripts - SUCCESS on %s", datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
 
 
 if __name__ == "__main__":
