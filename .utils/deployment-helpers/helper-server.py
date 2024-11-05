@@ -96,37 +96,37 @@ def main(argv: List[str]) -> int:
 
 
 def server_build(applist: List[str]):
-    log.info("Build docker apps in %", server_name)
+    log.info("Build docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "build"] + docker_args)
 
 
 def server_start(applist: List[str]):
-    log.info("Start docker apps in %", server_name)
+    log.info("Start docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "start"] + docker_args)
 
 
 def server_stop(applist: List[str]):
-    log.info("Stop docker apps in %", server_name)
+    log.info("Stop docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "stop"] + docker_args)
 
 
 def server_deploy(applist: List[str]):
-    log.info("Deploy docker apps in %", server_name)
+    log.info("Deploy docker apps in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "deploy"] + docker_args)
 
 
 def server_create_secrets(applist: List[str]):
-    log.info("Init docker apps secrets in %", server_name)
+    log.info("Init docker apps secrets in %s", server_name)
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), "create-secrets"] + docker_args)
 
 
 def server_install():
-    log.info("Installing global scripts in %", server_name)
+    log.info("Installing global scripts in %s", server_name)
 
     assert path.exists(path.join(server_dir, "startup.sh")), "Server startup.sh not found"
     if not dryrun:
