@@ -59,6 +59,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.7
 
+      - name: jobdebug
+        if: job.needs.paths-filter.outputs.${{ matrix.component }} == 'true'
+        run: echo "JOB changes"
+
       - name: Filter paths
         uses: dorny/paths-filter@v3.0.2
         id: filter
