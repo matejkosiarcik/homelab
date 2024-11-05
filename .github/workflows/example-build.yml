@@ -53,6 +53,14 @@ jobs:
             gatus:
               - '**/gatus*/**'
 
+      - name: workflow tests
+        if: steps.filter.outputs.${{ matrix.component }} == 'true'
+        run: echo "Workflow changes"
+
+      - name: not workflow tests
+        if: steps.filter.outputs.${{ matrix.component }} != 'true'
+        run: echo "NOT workflow changes"
+
       - name: Setup QEMU
         if: steps.filter.outputs.${{ matrix.component }} == 'true'
         uses: docker/setup-qemu-action@v3.2.0
