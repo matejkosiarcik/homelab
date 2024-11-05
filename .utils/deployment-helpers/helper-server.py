@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 
 import argparse
-import datetime
 import logging
 import os
 import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 from os import path
 from typing import List
 
-start_date = datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
-os.environ["START_DATE"] = start_date
+start_datetime = datetime.now()
+start_datestr = start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
+os.environ["START_DATE"] = start_datestr
 
 server_dir = path.abspath(path.curdir)
 server_name = path.basename(server_dir)
 
-log_dir = path.join(path.expanduser("~"), ".homelab-logs", start_date)
+log_dir = path.join(path.expanduser("~"), ".homelab-logs", start_datestr)
 log_file = path.join(log_dir, "log.txt")
 os.makedirs(log_dir, exist_ok=True)
 
@@ -89,9 +90,12 @@ def main(argv: List[str]):
 def server_docker_action(action: str):
     action_log = action.capitalize() if action != "create-secrets" else "Create-secrets for"
     log.info("%s docker apps", action_log)
+
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), action] + docker_args)
-    log.info("%s docker apps - SUCCESS on %s", action_log, datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
+
+    end_datetime = datetime.now()
+    log.info("%s docker apps - SUCCESS on %s (%s)", action_log, end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime))))
 
 
 def server_install():
@@ -106,7 +110,8 @@ def server_install():
         with open(path.join(server_dir, "crontab.cron"), encoding="utf-8") as file:
             subprocess.check_call(["crontab", "-"], stdin=file)
 
-    log.info("Installing global scripts - SUCCESS on %s", datetime.datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S"))
+    end_datetime = datetime.now()
+    log.info("Installing global scripts - SUCCESS on %s (%s)", end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime))))
 
 
 if __name__ == "__main__":
