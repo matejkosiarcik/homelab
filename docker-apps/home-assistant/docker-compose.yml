@@ -24,10 +24,12 @@ x-definitions:
 services:
   home-assistant:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./external/home-assistant/Dockerfile
+    # container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    container_name: home-assistant-app
+    image: home-assistant-home-assistant
+    # build:
+    #   context: ../../../../docker-images/
+    #   dockerfile: ./external/home-assistant/Dockerfile
     # volumes:
     #   - ./app-data/home-assistant:/config:rw
     #   - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
