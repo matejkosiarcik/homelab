@@ -4,22 +4,22 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    networks:
-      internal-network: {}
-    dns_opt:
-      - single-request
-      # - no-tld-query
-      # - timeout:1
-      # - attempts:2
-      # - single-request-reopen
-      # - edns0
-      - ndots:1
-      - no-aaaa
-      # - use-vc
-      # - rotate
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
-      net.ipv6.conf.default.disable_ipv6: 1
+    # networks:
+    #   internal-network: {}
+    # dns_opt:
+    #   - single-request
+    #   # - no-tld-query
+    #   # - timeout:1
+    #   # - attempts:2
+    #   # - single-request-reopen
+    #   # - edns0
+    #   - ndots:1
+    #   - no-aaaa
+    #   # - use-vc
+    #   # - rotate
+    # sysctls:
+    #   net.ipv6.conf.all.disable_ipv6: 1
+    #   net.ipv6.conf.default.disable_ipv6: 1
 
 services:
   home-assistant:
@@ -43,64 +43,64 @@ services:
       # - 10.1.16.1
     stop_grace_period: 30s
 
-  certificate-manager:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/certificate-manager/Dockerfile
-    env_file:
-      - ./app-secrets/certificate-manager.env
-    volumes:
-      - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-manager:/homelab/logs:rw
+  # certificate-manager:
+  #   <<: *common-service-options
+  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
+  #   build:
+  #     context: ../../../../docker-images/
+  #     dockerfile: ./custom/certificate-manager/Dockerfile
+  #   env_file:
+  #     - ./app-secrets/certificate-manager.env
+  #   volumes:
+  #     - ./app-data/certs:/homelab/certs:rw
+  #     - ./app-logs/certificate-manager:/homelab/logs:rw
 
-  http-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
-    volumes:
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy:/homelab/logs:rw
-    # dns:
-    #   - 10.1.16.2
-    #   - 10.1.10.2
+  # http-proxy:
+  #   <<: *common-service-options
+  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
+  #   build:
+  #     context: ../../../../docker-images/
+  #     dockerfile: ./custom/http-proxy/Dockerfile
+  #   depends_on:
+  #     certificate-manager:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ./app-data/certs:/homelab/certs:ro
+  #     - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+  #     - ./app-logs/http-proxy:/homelab/logs:rw
+  #   # dns:
+  #   #   - 10.1.16.2
+  #   #   - 10.1.10.2
 
-  socket-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/socket-proxy/Dockerfile
+  # socket-proxy:
+  #   <<: *common-service-options
+  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+  #   build:
+  #     context: ../../../../docker-images/
+  #     dockerfile: ./custom/socket-proxy/Dockerfile
 
-  web-backup:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      home-assistant:
-        condition: service_healthy
-    env_file:
-      - ./app-secrets/web-backup.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: backup
-    volumes:
-      - ./app-data/web-backup:/homelab/backup:rw
-      - ./app-logs/web-backup-errors:/homelab/errors:rw
-      - ./app-logs/web-backup:/homelab/logs:rw
+  # web-backup:
+  #   <<: *common-service-options
+  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
+  #   build:
+  #     context: ../../../../docker-images/
+  #     dockerfile: ./custom/web-automation/Dockerfile
+  #   depends_on:
+  #     home-assistant:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ./app-secrets/web-backup.env
+  #   environment:
+  #     <<: *common-env-variables
+  #     HOMELAB_CONTAINER_VARIANT: backup
+  #   volumes:
+  #     - ./app-data/web-backup:/homelab/backup:rw
+  #     - ./app-logs/web-backup-errors:/homelab/errors:rw
+  #     - ./app-logs/web-backup:/homelab/logs:rw
 
-networks:
-  default: # Just disable default network
-    driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network2
-    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+# networks:
+#   default: # Just disable default network
+#     driver: none
+#   internal-network:
+#     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network2
+#     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps

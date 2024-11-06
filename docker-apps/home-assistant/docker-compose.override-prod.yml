@@ -14,25 +14,25 @@ services:
     # volumes:
     #   - /run/dbus:/run/dbus:ro
 
-  certificate-manager:
-    <<: *common-service-options
+#   certificate-manager:
+#     <<: *common-service-options
 
-  http-proxy:
-    <<: *common-service-options
+#   http-proxy:
+#     <<: *common-service-options
 
-  socket-proxy:
-    <<: *common-service-options
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    networks:
-      external-network:
+#   socket-proxy:
+#     <<: *common-service-options
+#     ports:
+#       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+#       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+#     networks:
+#       external-network:
 
-  web-backup:
-    <<: *common-service-options
+#   web-backup:
+#     <<: *common-service-options
 
-networks:
-  external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-    driver: bridge
-    internal: false
+# networks:
+#   external-network:
+#     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+#     driver: bridge
+#     internal: false
