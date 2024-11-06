@@ -26,7 +26,7 @@ services:
     <<: *common-service-options
     # container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     container_name: home-assistant-app
-    image: home-assistant-home-assistant
+    image: homeassistant/home-assistant:2024.10.4
     entrypoint: bash -c 'sleep 1000'
     # build:
     #   context: ../../../../docker-images/
