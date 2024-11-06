@@ -7,7 +7,7 @@ x-definitions:
     networks:
       internal-network: {}
     dns_opt:
-      - single-request
+      # - single-request
       # - no-tld-query
       # - timeout:1
       # # - attempts:2
@@ -15,7 +15,7 @@ x-definitions:
       # # - edns0
       # - ndots:0
       # - no-aaaa
-      # - use-vc
+      - use-vc
       # - rotate
     # sysctls:
     #   net.ipv6.conf.all.disable_ipv6: 1
@@ -66,6 +66,9 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
+    dns:
+      - 10.1.16.2
+      - 10.1.10.2
 
   socket-proxy:
     <<: *common-service-options
