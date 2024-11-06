@@ -7,11 +7,11 @@ x-definitions:
     networks:
       internal-network: {}
     dns_opt:
-      # - single-request
+      - single-request
       # - no-tld-query
       # - timeout:1
       # - attempts:2
-      - single-request-reopen
+      # - single-request-reopen
       # - edns0
       # - ndots:0
       - no-aaaa
@@ -37,6 +37,7 @@ services:
     #   - NET_ADMIN
     #   - NET_RAW
     # privileged: true
+    dns_search: ""
     dns:
       - 10.1.10.1
       # - 10.1.16.1
