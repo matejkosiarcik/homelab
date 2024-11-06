@@ -27,7 +27,7 @@ services:
     # container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     container_name: home-assistant-app
     image: home-assistant-home-assistant
-    entrypoint: bash
+    entrypoint: bash -c 'sleep 1000'
     # build:
     #   context: ../../../../docker-images/
     #   dockerfile: ./external/home-assistant/Dockerfile
