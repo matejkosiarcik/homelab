@@ -36,9 +36,9 @@ services:
     #   - NET_ADMIN
     #   - NET_RAW
     privileged: true
-    # dns:
-    #   - 10.1.10.2
-    #   - 10.1.16.2
+    dns:
+      - 10.1.10.1
+      # - 10.1.16.1
     stop_grace_period: 30s
 
   certificate-manager:
