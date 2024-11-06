@@ -38,7 +38,7 @@ services:
     privileged: true
     dns:
       - 10.1.10.2
-      - 10.1.16.2
+      # - 10.1.16.2
     stop_grace_period: 30s
 
   certificate-manager:
@@ -66,9 +66,9 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
-    dns:
-      - 10.1.16.2
-      - 10.1.10.2
+    # dns:
+    #   - 10.1.16.2
+    #   - 10.1.10.2
 
   socket-proxy:
     <<: *common-service-options
