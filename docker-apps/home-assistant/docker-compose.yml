@@ -7,13 +7,13 @@ x-definitions:
     networks:
       internal-network: {}
     dns_opt:
-      # - single-request
+      - single-request
       # - no-tld-query
       # - timeout:1
       # - attempts:2
       # - single-request-reopen
       - edns0
-      # - ndots:0
+      - ndots:2
       - no-aaaa
       - use-vc
       - rotate
