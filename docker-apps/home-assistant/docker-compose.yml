@@ -33,9 +33,9 @@ services:
       - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
       # - ../../../../docker-apps/home-assistant/resolv.conf:/etc/resolv.conf:ro
       # - /etc/localtime:/etc/localtime:ro
-    # cap_add:
-    #   - NET_ADMIN
-    #   - NET_RAW
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
     # privileged: true
     dns_search: ""
     dns:
