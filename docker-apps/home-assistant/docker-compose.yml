@@ -12,9 +12,9 @@ x-definitions:
       # - timeout:1
       # # - attempts:2
       # # - single-request-reopen
-      # # - edns0
+      - edns0
       # - ndots:0
-      # - no-aaaa
+      - no-aaaa
       - use-vc
       # - rotate
     # sysctls:
