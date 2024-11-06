@@ -6,17 +6,17 @@ x-definitions:
       <<: *common-env-variables
     networks:
       internal-network: {}
-    # dns_opt:
-    #   - single-request
-    #   # - no-tld-query
-    #   # - timeout:1
-    #   # - attempts:2
-    #   # - single-request-reopen
-    #   # - edns0
-    #   - ndots:0
-    #   - no-aaaa
-    #   - use-vc
-    #   # - rotate
+    dns_opt:
+      - single-request
+      # - no-tld-query
+      # - timeout:1
+      # - attempts:2
+      # - single-request-reopen
+      # - edns0
+      # - ndots:0
+      # - no-aaaa
+      # - use-vc
+      # - rotate
     # sysctls:
     #   net.ipv6.conf.all.disable_ipv6: 1
     #   net.ipv6.conf.default.disable_ipv6: 1
