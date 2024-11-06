@@ -7,7 +7,7 @@ x-definitions:
     networks:
       internal-network: {}
     dns_opt:
-      # - single-request
+      - single-request
       # - no-tld-query
       # - timeout:1
       # - attempts:2
@@ -28,18 +28,18 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/home-assistant/Dockerfile
-    volumes:
-      - ./app-data/home-assistant:/config:rw
-      - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
+    # volumes:
+    #   - ./app-data/home-assistant:/config:rw
+    #   - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
       # - ../../../../docker-apps/home-assistant/resolv.conf:/etc/resolv.conf:ro
       # - /etc/localtime:/etc/localtime:ro
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
+    # cap_add:
+    #   - NET_ADMIN
+    #   - NET_RAW
     # privileged: true
-    dns_search: ""
-    dns:
-      - 10.1.10.1
+    # dns_search: ""
+    # dns:
+    #   - 10.1.10.1
       # - 10.1.16.1
     stop_grace_period: 30s
 
