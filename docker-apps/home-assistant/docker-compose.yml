@@ -10,10 +10,10 @@ x-definitions:
       - single-request
       # - no-tld-query
       # - timeout:1
-      # - attempts:2
-      # - single-request-reopen
-      # - edns0
-      # - ndots:1
+      # # - attempts:2
+      # # - single-request-reopen
+      # # - edns0
+      # - ndots:0
       # - no-aaaa
       # - use-vc
       # - rotate
@@ -94,8 +94,8 @@ services:
       - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
-  default: # Just disable default network
-    driver: none
+  # default: # Just disable default network
+    # driver: none
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
