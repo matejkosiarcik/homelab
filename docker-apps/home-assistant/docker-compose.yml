@@ -36,8 +36,8 @@ services:
       # - single-request-reopen
       # - edns0
       - ndots:1
-      - no-aaaa
-      # - use-vc
+      # - no-aaaa
+      - use-vc
       # - rotate
     # build:
     #   context: ../../../../docker-images/
