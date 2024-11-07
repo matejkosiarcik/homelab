@@ -10,5 +10,5 @@ COPY ./custom/unbound/unbound.conf /etc/unbound/
 ENV HOMELAB_CONTAINER_NAME=unbound \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "nslookup example.com localhost || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "bash", "-c", ":> /dev/tcp/localhost/53" ]
 ENTRYPOINT [ "unbound", "-d", "-v", "-c", "/etc/unbound/unbound.conf" ]
