@@ -87,6 +87,7 @@ jobs:
           name: Debug
           command: |
             docker --version
+            docker compose version
       - run:
           name: Install system dependencies
           command: |
