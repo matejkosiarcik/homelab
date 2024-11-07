@@ -56,9 +56,9 @@ services:
     #   - NET_RAW
     # privileged: true
     # dns_search: ""
-    # dns:
-    #   - 10.1.10.1
-      # - 10.1.16.1
+    dns:
+      - 10.1.10.9
+      - 10.1.16.9
     stop_grace_period: 30s
 
   # certificate-manager:
