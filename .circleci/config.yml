@@ -58,7 +58,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: docker:27.3.1
+      - image: docker:27.3.0
     steps:
       - checkout
       - setup_remote_docker:
