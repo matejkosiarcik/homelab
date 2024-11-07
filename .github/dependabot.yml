@@ -26,6 +26,7 @@ updates:
       - /docker-images/custom/minio-client
       - /docker-images/custom/samba
       - /docker-images/custom/socket-proxy
+      - /docker-images/custom/unbound
       - /docker-images/custom/web-automation
       - /docker-images/database/mongodb
       - /docker-images/external/actualbudget
