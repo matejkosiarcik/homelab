@@ -32,11 +32,12 @@ services:
       net.ipv6.conf.all.disable_ipv6: 1
       # net.ipv6.conf.default.disable_ipv6: 1
     dns_opt:
-      # - single-request
+      - single-request
       - no-aaaa
       - attempts:1
       - ndots:0
       - use-vc
+      - rotate
       # - no-tld-query
       # - timeout:1
       # - single-request-reopen
