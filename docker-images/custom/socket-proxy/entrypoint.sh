@@ -100,6 +100,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
     respawn socat TCP4-LISTEN:9981,fork,reuseaddr TCP4:http-proxy-direct:80 & # TODO: Remove this port after Let's Encrypt certificates
     respawn socat TCP4-LISTEN:9982,fork,reuseaddr TCP4:tvheadend:9982 &
+elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
+    respawn socat TCP4-LISTEN:53,fork,reuseaddr TCP4:unbound:53 &
+    respawn socat -T5 UDP4-LISTEN:53,fork,reuseaddr UDP4:unbound:53 &
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     # HTTP/S ports
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-admin:80 &

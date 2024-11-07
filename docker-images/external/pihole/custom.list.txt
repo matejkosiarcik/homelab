@@ -9,6 +9,7 @@
 
 10.1.10.1 pihole.home
 10.1.10.2 pihole-open.home
+10.1.10.9 unbound.home
 10.1.10.10 dockerhub-proxy.home
 10.1.10.11 home-assistant.home
 10.1.10.12 omada-controller.home
@@ -30,5 +31,6 @@
 
 10.1.16.1 pihole-2.home
 10.1.16.2 pihole-2-open.home
+10.1.16.9 unbound-2.home
 10.1.16.10 unifi-controller.home
 10.1.16.11 gatus-2.home
