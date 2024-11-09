@@ -4,8 +4,8 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    # networks:
-    #   internal-network: {}
+    networks:
+      internal-network: {}
     # dns_opt:
     #   - single-request
     #   # - no-tld-query
@@ -116,9 +116,11 @@ services:
   #     - ./app-logs/web-backup-errors:/homelab/errors:rw
   #     - ./app-logs/web-backup:/homelab/logs:rw
 
-# networks:
-#   default: # Just disable default network
-#     driver: none
-#   internal-network:
-#     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network2
-#     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+networks:
+  default: # Just disable default network
+    driver: none
+    enable_ipv6: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network2
+    enable_ipv6: false
+    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
