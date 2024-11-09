@@ -19,12 +19,6 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/homepage/Dockerfile
 
-  # homeassistant:
-  #   <<: *common-service-options
-  #   container_name: homeassistant-app
-  #   image: homeassistant/home-assistant:2024.11.1
-  #   entrypoint: bash -c 'sleep 1000'
-
   certificate-manager:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
