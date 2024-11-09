@@ -1,5 +1,6 @@
 # Super important stuff
 pihole
+unbound
 dockerhub-proxy
 
 # Network controllers
