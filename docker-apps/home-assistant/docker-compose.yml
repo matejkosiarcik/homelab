@@ -26,7 +26,7 @@ services:
     <<: *common-service-options
     # container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     container_name: home-assistant-app
-    image: homeassistant/home-assistant:2024.10.4
+    image: homeassistant/home-assistant:2024.11.1
     entrypoint: bash -c 'sleep 1000'
     sysctls:
       net.ipv6.conf.all.disable_ipv6: 1

@@ -29,7 +29,7 @@ services:
   homeassistant:
     <<: *common-service-options
     container_name: homeassistant-app
-    image: homeassistant/home-assistant:2024.10.4
+    image: homeassistant/home-assistant:2024.11.1
     entrypoint: bash -c 'sleep 1000'
 
   certificate-manager:
