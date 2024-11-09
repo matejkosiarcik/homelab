@@ -6,123 +6,94 @@ x-definitions:
       <<: *common-env-variables
     networks:
       internal-network: {}
-    # dns_opt:
-    #   - single-request
-    #   # - no-tld-query
-    #   # - timeout:1
-    #   # - attempts:2
-    #   # - single-request-reopen
-    #   # - edns0
-    #   - ndots:1
-    #   - no-aaaa
-    #   # - use-vc
-    #   # - rotate
-    # sysctls:
-    #   net.ipv6.conf.all.disable_ipv6: 1
-    #   net.ipv6.conf.default.disable_ipv6: 1
+    dns_opt:
+      - single-request
+      # - no-tld-query
+      # - timeout:1
+      # - attempts:1
+      # - single-request-reopen
+      # - edns0
+      # - ndots:1
+      # - no-aaaa
+      # - use-vc
+      # - rotate
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+      # net.ipv6.conf.default.disable_ipv6: 1
 
 services:
   home-assistant:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    # container_name: home-assistant-app
-    # image: homeassistant/home-assistant:2024.11.1
-    image: linuxserver/homeassistant:2024.11.1
-    # image: debian:12.7-slim
-    # entrypoint: bash -c 'sleep 1000'
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
-      # net.ipv6.conf.default.disable_ipv6: 1
-    dns_opt:
-      - single-request
-      - no-aaaa
-      - attempts:1
-      - ndots:0
-      - use-vc
-      - rotate
-      # - no-tld-query
-      # - timeout:1
-      # - single-request-reopen
-      # - edns0
-      # - rotate
-    # build:
-    #   context: ../../../../docker-images/
-    #   dockerfile: ./external/home-assistant/Dockerfile
-    # volumes:
-    #   - ./app-data/home-assistant:/config:rw
-    #   - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
-      # - ../../../../docker-apps/home-assistant/resolv.conf:/etc/resolv.conf:ro
-      # - /etc/localtime:/etc/localtime:ro
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/home-assistant/Dockerfile
+    volumes:
+      - ./app-data/home-assistant:/config:rw
+      - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
+      - ../../../../docker-apps/home-assistant/resolv.conf:/etc/resolv.conf:ro
+      - /etc/localtime:/etc/localtime:ro
     # cap_add:
     #   - NET_ADMIN
     #   - NET_RAW
     # privileged: true
-    # dns_search: ""
-    # dns:
-    #   - 10.1.10.9
-      # - 10.1.16.9
     stop_grace_period: 30s
 
-  # certificate-manager:
-  #   <<: *common-service-options
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
-  #   build:
-  #     context: ../../../../docker-images/
-  #     dockerfile: ./custom/certificate-manager/Dockerfile
-  #   env_file:
-  #     - ./app-secrets/certificate-manager.env
-  #   volumes:
-  #     - ./app-data/certs:/homelab/certs:rw
-  #     - ./app-logs/certificate-manager:/homelab/logs:rw
+  certificate-manager:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./app-secrets/certificate-manager.env
+    volumes:
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
 
-  # http-proxy:
-  #   <<: *common-service-options
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
-  #   build:
-  #     context: ../../../../docker-images/
-  #     dockerfile: ./custom/http-proxy/Dockerfile
-  #   depends_on:
-  #     certificate-manager:
-  #       condition: service_healthy
-  #   volumes:
-  #     - ./app-data/certs:/homelab/certs:ro
-  #     - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-  #     - ./app-logs/http-proxy:/homelab/logs:rw
-  #   # dns:
-  #   #   - 10.1.16.2
-  #   #   - 10.1.10.2
+  http-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    depends_on:
+      certificate-manager:
+        condition: service_healthy
+    volumes:
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
 
-  # socket-proxy:
-  #   <<: *common-service-options
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-  #   build:
-  #     context: ../../../../docker-images/
-  #     dockerfile: ./custom/socket-proxy/Dockerfile
+  socket-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/socket-proxy/Dockerfile
 
-  # web-backup:
-  #   <<: *common-service-options
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
-  #   build:
-  #     context: ../../../../docker-images/
-  #     dockerfile: ./custom/web-automation/Dockerfile
-  #   depends_on:
-  #     home-assistant:
-  #       condition: service_healthy
-  #   env_file:
-  #     - ./app-secrets/web-backup.env
-  #   environment:
-  #     <<: *common-env-variables
-  #     HOMELAB_CONTAINER_VARIANT: backup
-  #   volumes:
-  #     - ./app-data/web-backup:/homelab/backup:rw
-  #     - ./app-logs/web-backup-errors:/homelab/errors:rw
-  #     - ./app-logs/web-backup:/homelab/logs:rw
+  web-backup:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/web-automation/Dockerfile
+    depends_on:
+      home-assistant:
+        condition: service_healthy
+    env_file:
+      - ./app-secrets/web-backup.env
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: backup
+    volumes:
+      - ./app-data/web-backup:/homelab/backup:rw
+      - ./app-logs/web-backup-errors:/homelab/errors:rw
+      - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
   default: # Just disable default network
     driver: none
-    enable_ipv6: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network2
-    enable_ipv6: false
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
