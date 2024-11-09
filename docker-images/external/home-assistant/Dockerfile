@@ -11,7 +11,6 @@ RUN apt-get update -qq && \
     useradd -rm homeassistant && \
     mkdir /srv/homeassistant && \
     chown homeassistant:homeassistant /srv/homeassistant
-# USER homeassistant
 COPY ./external/home-assistant/requirements.txt /srv/homeassistant/
 RUN python3 -m pip install --requirement /srv/homeassistant/requirements.txt --target /srv/homeassistant/python-vendor --quiet
 COPY --from=go2rtc /usr/local/bin/go2rtc /usr/local/bin/
