@@ -327,7 +327,7 @@ case "$current_dir" in
     printf '%s,%s\n' "$(cat "$tmpdir/smb-username.txt")" "$(cat "$tmpdir/smb-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
-    printf 'Not all secrets setup\n' >&2
+    printf 'All secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *smtp4dev*)
@@ -378,6 +378,11 @@ case "$current_dir" in
 
     # Log results
     printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
+*unbound*)
+    # Log results
+    printf 'All secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *unifi-controller*)
