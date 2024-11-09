@@ -58,7 +58,7 @@ services:
     # dns_search: ""
     dns:
       - 10.1.10.9
-      - 10.1.16.9
+      # - 10.1.16.9
     stop_grace_period: 30s
 
   # certificate-manager:
