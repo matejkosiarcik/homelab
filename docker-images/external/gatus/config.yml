@@ -202,6 +202,7 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].status) == true"
+      - "[BODY].status == any(on, off)"
 
   - <<: *default-tcp
     name: Desklamp - Left TCP:80
@@ -234,6 +235,7 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].status) == true"
+      - "[BODY].status == any(on, off)"
 
   - <<: *default-tcp
     name: Desklamp - Right TCP:80
