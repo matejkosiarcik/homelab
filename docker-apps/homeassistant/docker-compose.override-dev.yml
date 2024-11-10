@@ -9,7 +9,7 @@ x-definitions:
     restart: "no"
 
 services:
-  home-assistant:
+  homeassistant:
     <<: *common-service-options
 
   certificate-manager:

@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_TYPE: home-assistant
+    HOMELAB_APP_TYPE: homeassistant
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -12,15 +12,15 @@ x-definitions:
       net.ipv6.conf.all.disable_ipv6: 1
 
 services:
-  home-assistant:
+  homeassistant:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/home-assistant/Dockerfile
+      dockerfile: ./external/homeassistant/Dockerfile
     volumes:
-      - ./app-data/home-assistant:/config:rw
-      - ../../../../docker-images/external/home-assistant/configuration.yaml:/config/configuration.yaml:ro
+      - ./app-data/homeassistant:/config:rw
+      - ../../../../docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
       # - /etc/localtime:/etc/localtime:ro
     # cap_add:
     #   - NET_ADMIN
@@ -68,7 +68,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
     depends_on:
-      home-assistant:
+      homeassistant:
         condition: service_healthy
     env_file:
       - ./app-secrets/web-backup.env

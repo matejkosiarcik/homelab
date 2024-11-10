@@ -181,7 +181,7 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-*home-assistant*)
+*homeassistant*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
     prepare_healthcheck_url "$output/web-backup.env"

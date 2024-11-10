@@ -7,7 +7,7 @@ dockerhub-proxy
 omada-controller
 
 # Home automation
-home-assistant
+homeassistant
 
 # Media
 jellyfin

@@ -367,27 +367,27 @@ endpoints:
   - <<: *default-http
     name: Home Assistant HTTP
     group: App - Home Assistant
-    url: http://home-assistant.home
+    url: http://homeassistant.home
 
   - <<: *default-http
     name: Home Assistant HTTPS
     group: App - Home Assistant
-    url: https://home-assistant.home
+    url: https://homeassistant.home
 
   - <<: *default-http
     name: Home Assistant Api Metrics
     group: App - Home Assistant
-    url: https://home-assistant.home/api/prometheus
+    url: https://homeassistant.home/api/prometheus
 
   - <<: *default-tcp
     name: Home Assistant TCP:80
     group: App - Home Assistant
-    url: tcp://home-assistant.home:80
+    url: tcp://homeassistant.home:80
 
   - <<: *default-tcp
     name: Home Assistant TCP:443
     group: App - Home Assistant
-    url: tcp://home-assistant.home:443
+    url: tcp://homeassistant.home:443
 
   ### Group: App - Homepage ###
 

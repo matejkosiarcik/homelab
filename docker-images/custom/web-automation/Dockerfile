@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/root/.cache/ms-playwright \
     true; done
 COPY --from=nodejs-build /homelab/dist ./dist
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-automation/main.sh ./
-COPY ./custom/web-automation/crontab-home-assistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
+COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 
 FROM node:23.1.0-slim

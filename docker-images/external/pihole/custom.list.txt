@@ -11,7 +11,7 @@
 10.1.10.2 pihole-open.home
 10.1.10.9 unbound.home
 10.1.10.10 dockerhub-proxy.home
-10.1.10.11 home-assistant.home
+10.1.10.11 homeassistant.home
 10.1.10.12 omada-controller.home
 # 10.1.10.13 reserved for unifi-controller.home
 10.1.10.14 jellyfin.home
