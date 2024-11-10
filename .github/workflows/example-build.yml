@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: paths-filter
     strategy:
-      # fail-fast: false
+      fail-fast: false
       matrix:
         component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
         architecture:
@@ -87,7 +87,8 @@ jobs:
 
       - name: Example build
         run: |
-          echo 'Building ${{ matrix.component }}'
+          echo 'To build ${{ matrix.component }} for linux/${{ matrix.architecture }}'
+
           # export DOCKER_COMPOSE_APP_NAME=placeholder
           # cd docker-images
           # docker build . \
