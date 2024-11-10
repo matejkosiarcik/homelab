@@ -86,7 +86,6 @@ jobs:
         uses: docker/setup-buildx-action@v3.6.1
 
       - name: Example build
-        if: steps.filter.outputs.${{ matrix.component }} == 'true'
         run: |
           echo 'Building ${{ matrix.component }}'
           # export DOCKER_COMPOSE_APP_NAME=placeholder
