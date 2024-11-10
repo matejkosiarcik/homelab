@@ -13,7 +13,7 @@ jobs:
       components: ${{ steps.filter.outputs.changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
 
       - name: Filter paths
         uses: dorny/paths-filter@v3.0.2
@@ -78,13 +78,13 @@ jobs:
           - arm64
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3.2.0
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3.6.1
+        uses: docker/setup-buildx-action@v3.7.1
 
       - name: Example build
         run: |
