@@ -1,3 +1,5 @@
+10.1.0.1 router.network.home
+
 10.1.4.1 macbook-pro-2012.server.home
 10.1.4.2 raspberry-pi-3b.server.home
 10.1.4.3 raspberry-pi-4b-2g.server.home
