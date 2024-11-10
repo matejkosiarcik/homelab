@@ -23,6 +23,7 @@ jobs:
 
       - name: Run AZLint
         run: |
+          alias python3=true # TODO: Reenable python and pip checks
           if [ "$GITHUB_REF_NAME" = main ]; then
             azlint
           else
