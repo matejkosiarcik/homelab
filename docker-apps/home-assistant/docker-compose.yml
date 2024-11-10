@@ -8,13 +8,6 @@ x-definitions:
       internal-network: {}
     dns_opt:
       - single-request
-      # - timeout:1
-      # - attempts:1
-      # - edns0
-      # - ndots:1
-      # - no-aaaa
-      # - use-vc
-      # - rotate
     sysctls:
       net.ipv6.conf.all.disable_ipv6: 1
 
