@@ -108,9 +108,9 @@
 - Smart Home:
     - Home Assistant:
         description: ...
-        href: https://home-assistant.home
-        ping: home-assistant.home
-        icon: /icons/home-assistant.png
+        href: https://homeassistant.home
+        ping: homeassistant.home
+        icon: /icons/homeassistant.png
 
     - Desklamp - left:
         description: ...

@@ -1,0 +1,98 @@
+name: Docker build
+
+permissions: read-all
+
+on:
+  pull_request:
+
+jobs:
+  paths-filter:
+    name: Filter changed components
+    runs-on: ubuntu-latest
+    outputs:
+      components: ${{ steps.filter.outputs.changes }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Filter paths
+        uses: dorny/paths-filter@v3.0.2
+        id: filter
+        with:
+          filters: |
+            actualbudget:
+              - '**/actualbudget*/**'
+              - '**/actual-budget*/**'
+            changedetection:
+              - '**/changedetection*/**'
+            docker-proxy:
+              - '**/docker-cache*/**'
+              - '**/docker-mirror*/**'
+              - '**/docker-proxy*/**'
+              - '**/docker-registry*/**'
+              - '**/dockerhub-*/**'
+            gatus:
+              - '**/gatus*/**'
+            healthchecks:
+              - '**/healthchecks*/**'
+            homeassistant:
+              - '**/homeassistant*/**'
+              - '**/home-assistant*/**'
+            homepage:
+              - '**/homepage*/**'
+            jellyfin:
+              - '**/jellyfin*/**'
+            minio:
+              - '**/minio*/**'
+            ntfy:
+              - '**/ntfy*/**'
+            omada-controller:
+              - '**/omada-controller*/**'
+            openspeedtest:
+              - '**/openspeedtest*/**'
+            pihole:
+              - '**/pihole*/**'
+            smb:
+              - '**/samba*/**'
+              - '**/smb*/**'
+            smtp4dev:
+              - '**/smtp4dev*/**'
+            speedtest-tracker:
+              - '**/speedtest-tracker*/**'
+            tvheadend:
+              - '**/tvheadend*/**'
+            unifi-controller:
+              - '**/unifi-controller*/**'
+              - '**/unifi-network-application*/**'
+
+  build:
+    name: Build - ${{ matrix.component }} - linux/${{ matrix.architecture }}
+    runs-on: ubuntu-latest
+    needs: paths-filter
+    strategy:
+      fail-fast: false
+      matrix:
+        component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
+        architecture:
+          - amd64
+          - arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3.2.0
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3.6.1
+
+      - name: Example build
+        run: |
+          echo 'To build ${{ matrix.component }} for linux/${{ matrix.architecture }}'
+
+          # export DOCKER_COMPOSE_APP_NAME=placeholder
+          # cd docker-images
+          # docker build . \
+          #   --file ./external/${{ matrix.component }}/Dockerfile \
+          #   --platform 'linux/${{ matrix.architecture }}' \
+          #   --tag 'homelab/${{ matrix.component }}:dev-${{ matrix.architecture }}'

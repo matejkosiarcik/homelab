@@ -34,7 +34,7 @@ updates:
       - /docker-images/external/docker-registry
       - /docker-images/external/gatus
       - /docker-images/external/healthchecks
-      - /docker-images/external/home-assistant
+      - /docker-images/external/homeassistant
       - /docker-images/external/homepage
       - /docker-images/external/jellyfin
       - /docker-images/external/minio-server
@@ -87,7 +87,7 @@ updates:
     directories:
       - /ansible
       - /docker-images/.dependencies/gitman
-      - /docker-images/external/home-assistant
+      - /docker-images/external/homeassistant
       - /icons
     schedule:
       interval: daily
