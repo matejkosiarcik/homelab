@@ -1,7 +1,7 @@
 aiodhcpwatcher==1.0.2
 aiodiscover==2.2.0
 async-upnp-client==0.41.0
-audioop-lts==0.2.1
+# audioop-lts==0.2.1 # TODO: Reenable this dependency once azlint problems are resolved
 ffmpeg==1.4
 go2rtc-client==0.1.0
 gTTS==2.5.3
