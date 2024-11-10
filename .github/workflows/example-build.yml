@@ -34,7 +34,8 @@ jobs:
               - '**/gatus*/**'
             healthchecks:
               - '**/healthchecks*/**'
-            home-assistant:
+            homeassistant:
+              - '**/homeassistant*/**'
               - '**/home-assistant*/**'
             homepage:
               - '**/homepage*/**'
