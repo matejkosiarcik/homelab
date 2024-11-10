@@ -14,7 +14,7 @@ RUN apt-get update -qq && \
 COPY ./external/home-assistant/requirements.txt /srv/homeassistant/
 # TODO: Move hardcoded dependencies into requirements.txt
 RUN python3 -m pip install --requirement /srv/homeassistant/requirements.txt --target /srv/homeassistant/python-vendor --quiet && \
-    python3 -m pip install --target /srv/homeassistant/python-vendor --quiet audioop-lts
+    python3 -m pip install --target /srv/homeassistant/python-vendor --quiet audioop-lts go2rtc-client
 COPY --from=go2rtc /usr/local/bin/go2rtc /usr/local/bin/
 ENV PATH="/srv/homeassistant/python-vendor/bin:$PATH" \
     PYTHONPATH=/srv/homeassistant/python-vendor
