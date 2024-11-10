@@ -278,9 +278,9 @@ case "$current_dir" in
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
-    sed 's~?~#~' <"$tmpdir/admin-password.txt" | sponge "$tmpdir/admin-password.txt"
+    sed 's~?~#~g' <"$tmpdir/admin-password.txt" | sponge "$tmpdir/admin-password.txt"
     create_password "$tmpdir/device-password.txt"
-    sed 's~?~#~' <"$tmpdir/device-password.txt" | sponge "$tmpdir/device-password.txt"
+    sed 's~?~#~g' <"$tmpdir/device-password.txt" | sponge "$tmpdir/device-password.txt"
 
     # Web backup
     printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
