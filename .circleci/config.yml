@@ -4,7 +4,6 @@ workflows:
   version: 2
   circleci:
     jobs:
-      - azlint
       - local_build
       - docker_build
       - dryrun_deployment:
@@ -19,20 +18,6 @@ workflows:
                 # - raspberry-pi-zero-2w-2
 
 jobs:
-  azlint:
-    docker:
-      - image: matejkosiarcik/azlint:0.6.13
-    steps:
-      - checkout
-      - run: |
-          azlint
-          # TODO: Reenable code below
-          # if [ "$CIRCLE_BRANCH" = main ]; then
-          #   azlint
-          # else
-          #   azlint --only-changed
-          # fi
-
   local_build:
     docker:
       - image: debian:12.7

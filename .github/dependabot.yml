@@ -87,6 +87,7 @@ updates:
     directories:
       - /ansible
       - /docker-images/.dependencies/gitman
+      - /docker-images/external/home-assistant
       - /icons
     schedule:
       interval: daily

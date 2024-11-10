@@ -8,12 +8,15 @@ x-definitions:
       internal-network: {}
     dns_opt:
       - single-request
-      - ndots:1
-      - no-aaaa
-      - use-vc
+      # - timeout:1
+      # - attempts:1
+      # - edns0
+      # - ndots:1
+      # - no-aaaa
+      # - use-vc
+      # - rotate
     sysctls:
       net.ipv6.conf.all.disable_ipv6: 1
-      net.ipv6.conf.default.disable_ipv6: 1
 
 services:
   home-assistant:
