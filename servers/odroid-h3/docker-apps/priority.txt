@@ -8,6 +8,8 @@ omada-controller
 
 # Home automation
 homeassistant
+desklamp-left-wrapper
+desklamp-right-wrapper
 
 # Media
 jellyfin
