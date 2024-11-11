@@ -44,6 +44,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ]; then
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
     respawn socat TCP4-LISTEN:8096,fork,reuseaddr TCP4:http-proxy-direct:80 & # TODO: Remove this port after Let's Encrypt certificates
+elif [ "$HOMELAB_APP_TYPE" = 'lamp-wrapper' ]; then
+    respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
         respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-api:80 &
