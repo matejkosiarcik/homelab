@@ -28,5 +28,5 @@ COPY --from=prefinal /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=lamp-wrapper \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/api/status || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/api/.wrapper/health || exit 1" ]
 ENTRYPOINT [ "sh", "-c", "node /homelab/dist/main.js" ]

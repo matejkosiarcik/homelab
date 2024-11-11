@@ -20,7 +20,7 @@ http:
 binary_sensor:
   - unique_id: light_desklamp_left_status
     platform: rest
-    resource: http://desklamp-left.home/api/status
+    resource: http://desklamp-left-wrapper.home/api/status
     method: GET
     name: Desklamp - left
     device_class: light
@@ -28,7 +28,7 @@ binary_sensor:
     scan_interval: 2
   - unique_id: light_desklamp_right_status
     platform: rest
-    resource: http://desklamp-right.home/api/status
+    resource: http://desklamp-right-wrapper.home/api/status
     method: GET
     name: Desklamp - right
     device_class: light
@@ -37,16 +37,16 @@ binary_sensor:
 
 rest_command:
   desklamp_left_on:
-    url: http://desklamp-left.home/api/turn-on
+    url: http://desklamp-left-wrapper.home/api/turn-on
     method: POST
   desklamp_left_off:
-    url: http://desklamp-left.home/api/turn-off
+    url: http://desklamp-left-wrapper.home/api/turn-off
     method: POST
   desklamp_right_on:
-    url: http://desklamp-right.home/api/turn-on
+    url: http://desklamp-right-wrapper.home/api/turn-on
     method: POST
   desklamp_right_off:
-    url: http://desklamp-right.home/api/turn-off
+    url: http://desklamp-right-wrapper.home/api/turn-off
     method: POST
 
 light:

@@ -7,7 +7,7 @@
     "passes": 10,
     "arguments": true,
     "keep_fargs": false,
-    "drop_console": true
+    "drop_console": false
   },
   "keep_classnames": false,
   "keep_fnames": false,

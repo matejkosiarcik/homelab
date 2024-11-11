@@ -15,6 +15,15 @@ apiRouter.use((_, response, next) => {
     return next();
 });
 
+apiRouter.get('/.wrapper/health', async (_, response, next) => {
+    try {
+        response.status(200);
+        response.json({});
+    } catch (error) {
+        return next(error);
+    }
+});
+
 apiRouter.get('/status', async (_, response, next) => {
     try {
         console.time('/api/status');
