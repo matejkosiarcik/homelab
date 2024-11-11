@@ -28,6 +28,8 @@
 10.1.10.23 ntfy.home
 10.1.10.24 openspeedtest.home
 10.1.10.25 actualbudget.home
+10.1.10.26 desklamp-left-wrapper.home
+10.1.10.27 desklamp-right-wrapper.home
 
 10.1.12.1 tvheadend.home
 
