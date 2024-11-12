@@ -1,5 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
+# FROM homeassistant/home-assistant:2024.10.4
+
 FROM alexxit/go2rtc:1.9.7 AS go2rtc
 
 FROM python:3.13.0-slim
