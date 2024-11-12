@@ -20,7 +20,8 @@ http:
 binary_sensor:
   - unique_id: light_desklamp_left_status
     platform: rest
-    resource: https://desklamp-left-wrapper.home/api/status
+    # resource: https://desklamp-left-wrapper.home/api/status
+    url: http://10.1.4.201/api/status
     method: GET
     verify_ssl: false
     name: Desklamp - left
@@ -29,7 +30,8 @@ binary_sensor:
     scan_interval: 2
   - unique_id: light_desklamp_right_status
     platform: rest
-    resource: https://desklamp-right-wrapper.home/api/status
+    # resource: https://desklamp-right-wrapper.home/api/status
+    url: http://10.1.4.202/api/status
     method: GET
     verify_ssl: false
     name: Desklamp - right
@@ -39,19 +41,23 @@ binary_sensor:
 
 rest_command:
   desklamp_left_on:
-    url: https://desklamp-left-wrapper.home/api/turn-on
+    # url: https://desklamp-left-wrapper.home/api/turn-on
+    url: http://10.1.4.201/api/turn-on
     method: POST
     verify_ssl: false
   desklamp_left_off:
-    url: https://desklamp-left-wrapper.home/api/turn-off
+    # url: https://desklamp-left-wrapper.home/api/turn-off
+    url: http://10.1.4.201/api/turn-off
     method: POST
     verify_ssl: false
   desklamp_right_on:
-    url: https://desklamp-right-wrapper.home/api/turn-on
+    # url: https://desklamp-right-wrapper.home/api/turn-on
+    url: http://10.1.4.202/api/turn-on
     method: POST
     verify_ssl: false
   desklamp_right_off:
-    url: https://desklamp-right-wrapper.home/api/turn-off
+    # url: https://desklamp-right-wrapper.home/api/turn-off
+    url: http://10.1.4.202/api/turn-off
     method: POST
     verify_ssl: false
 
