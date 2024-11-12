@@ -21,7 +21,7 @@ binary_sensor:
   - unique_id: light_desklamp_left_status
     platform: rest
     # resource: https://desklamp-left-wrapper.home/api/status
-    url: http://10.1.4.201/api/status
+    resource: http://10.1.4.201/api/status
     method: GET
     verify_ssl: false
     name: Desklamp - left
@@ -31,7 +31,7 @@ binary_sensor:
   - unique_id: light_desklamp_right_status
     platform: rest
     # resource: https://desklamp-right-wrapper.home/api/status
-    url: http://10.1.4.202/api/status
+    resource: http://10.1.4.202/api/status
     method: GET
     verify_ssl: false
     name: Desklamp - right
