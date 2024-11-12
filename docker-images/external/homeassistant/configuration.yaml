@@ -20,16 +20,18 @@ http:
 binary_sensor:
   - unique_id: light_desklamp_left_status
     platform: rest
-    resource: http://desklamp-left-wrapper.home/api/status
+    resource: https://desklamp-left-wrapper.home/api/status
     method: GET
+    verify_ssl: false
     name: Desklamp - left
     device_class: light
     value_template: "{{ value_json.status }}"
     scan_interval: 2
   - unique_id: light_desklamp_right_status
     platform: rest
-    resource: http://desklamp-right-wrapper.home/api/status
+    resource: https://desklamp-right-wrapper.home/api/status
     method: GET
+    verify_ssl: false
     name: Desklamp - right
     device_class: light
     value_template: "{{ value_json.status }}"
@@ -37,17 +39,21 @@ binary_sensor:
 
 rest_command:
   desklamp_left_on:
-    url: http://desklamp-left-wrapper.home/api/turn-on
+    url: https://desklamp-left-wrapper.home/api/turn-on
     method: POST
+    verify_ssl: false
   desklamp_left_off:
-    url: http://desklamp-left-wrapper.home/api/turn-off
+    url: https://desklamp-left-wrapper.home/api/turn-off
     method: POST
+    verify_ssl: false
   desklamp_right_on:
-    url: http://desklamp-right-wrapper.home/api/turn-on
+    url: https://desklamp-right-wrapper.home/api/turn-on
     method: POST
+    verify_ssl: false
   desklamp_right_off:
-    url: http://desklamp-right-wrapper.home/api/turn-off
+    url: https://desklamp-right-wrapper.home/api/turn-off
     method: POST
+    verify_ssl: false
 
 light:
   - platform: template
