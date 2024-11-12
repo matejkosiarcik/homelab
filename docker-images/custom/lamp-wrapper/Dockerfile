@@ -12,7 +12,7 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
-FROM debian:12.7-slim AS prefinal
+FROM debian:12.8-slim AS prefinal
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/dist/ ./dist/
 COPY --from=nodejs-build /homelab/node_modules/ ./node_modules/
