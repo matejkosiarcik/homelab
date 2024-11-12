@@ -23,6 +23,7 @@ updates:
       - /docker-images/custom/certificate-manager
       - /docker-images/custom/docker-setup
       - /docker-images/custom/http-proxy
+      - /docker-images/custom/lamp-wrapper
       - /docker-images/custom/minio-client
       - /docker-images/custom/samba
       - /docker-images/custom/socket-proxy
@@ -63,6 +64,7 @@ updates:
   - package-ecosystem: npm
     directories:
       - /.utils/deployment-helpers/.create-secrets-helpers/playwright
+      - /docker-images/custom/lamp-wrapper
       - /docker-images/custom/web-automation
       - /docker-images/external/homepage
       - /docs/diagrams
