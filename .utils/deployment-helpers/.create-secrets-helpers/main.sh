@@ -217,6 +217,7 @@ case "$current_dir" in
     prepare_empty_env HOMEPAGE_VAR_HEALTHCHECKS_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD "$output/homepage.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -421,6 +422,7 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     create_password "$tmpdir/mongodb-password.txt"
+    create_password "$tmpdir/readonly-password.txt"
 
     # Database
     printf 'MONGO_PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb.env"
@@ -433,6 +435,7 @@ case "$current_dir" in
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
     printf 'mongo,%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/all-credentials.csv"
+    printf 'readonly,%s\n' "$(cat "$tmpdir/readonly-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
