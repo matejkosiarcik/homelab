@@ -161,6 +161,10 @@
         href: https://speedtest-tracker.home
         ping: speedtest-tracker.home
         icon: /icons/speedtest.png
+        widget:
+          type: speedtest
+          url: https://speedtest-tracker.home
+          bitratePrecision: 1
 
     - Changedetection:
         description: ...
