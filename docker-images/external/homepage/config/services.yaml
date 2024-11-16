@@ -143,6 +143,10 @@
         href: https://healthchecks.home
         ping: healthchecks.home
         icon: /icons/healthchecks.png
+        widget:
+          type: healthchecks
+          url: https://healthchecks.home
+          key: "{{HOMEPAGE_VAR_HEALTHCHECKS_APIKEY}}"
 
     - Gatus:
         description: "(Main)"
