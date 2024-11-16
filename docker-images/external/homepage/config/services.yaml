@@ -149,12 +149,18 @@
         href: https://gatus.home
         ping: gatus.home
         icon: /icons/gatus.png
+        widget:
+          type: gatus
+          url: https://gatus.home
 
     - Gatus 2:
         description: "(Backup)"
         href: https://gatus-2.home
         ping: gatus-2.home
         icon: /icons/gatus.png
+        widget:
+          type: gatus
+          url: https://gatus-2.home
 
     - SpeedTest Tracker:
         description: ...
