@@ -215,6 +215,8 @@ case "$current_dir" in
     # Prepare API keys
     prepare_empty_env HOMEPAGE_VAR_CHANGEDETECTION_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_HEALTHCHECKS_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_APIKEY "$output/homepage.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

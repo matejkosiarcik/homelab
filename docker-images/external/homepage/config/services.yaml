@@ -98,12 +98,22 @@
         href: https://pihole.home
         ping: pihole.home
         icon: /icons/pihole.png
+        widget:
+          type: pihole
+          url: https://pihole.home
+          version: 5
+          key: "{{HOMEPAGE_VAR_PIHOLE_1_APIKEY}}"
 
-    - PiHole:
+    - PiHole 2:
         description: Main-2
         href: https://pihole-2.home
         ping: pihole-2.home
         icon: /icons/pihole.png
+        widget:
+          type: pihole
+          url: https://pihole-2.home
+          version: 5
+          key: "{{HOMEPAGE_VAR_PIHOLE_2_APIKEY}}"
 
 - Smart Home:
     - Home Assistant:
