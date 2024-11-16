@@ -50,6 +50,7 @@
           url: https://omada-controller.home
           username: viewer
           password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
+          site: Home
 
 - Servers:
     - Odroid H3:
