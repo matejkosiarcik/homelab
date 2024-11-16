@@ -103,7 +103,13 @@ prepare_empty_env() {
     # $1 - env name
     # $2 - file
     printf '%s=\n' "$1" >>"$2"
-    printf 'You must configure "%s" in %s\n' "$1" "$(basename "$2")" >>"$user_logfile"
+    printf 'You must configure env "%s" in %s\n' "$1" "$(basename "$2")" >>"$user_logfile"
+}
+
+prepare_empty_password() {
+    # $1 - username
+    printf '%s,\n' "$1" >>"$output/all-credentials.csv"
+    printf 'You must configure password for "%s"\n' "$1" >>"$user_logfile"
 }
 
 case "$current_dir" in
@@ -195,6 +201,8 @@ case "$current_dir" in
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    prepare_empty_password matej
+    prepare_empty_password monika
 
     # Log results
     printf 'Not all secrets setup\n' >&2
@@ -217,6 +225,8 @@ case "$current_dir" in
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    prepare_empty_password matej
+    prepare_empty_password monika
 
     # Log results
     printf 'Not all secrets setup\n' >&2
