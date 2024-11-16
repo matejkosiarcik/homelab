@@ -304,6 +304,8 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     sed 's~?~#~g' <"$tmpdir/admin-password.txt" | sponge "$tmpdir/admin-password.txt"
+    create_password "$tmpdir/viewer-password.txt"
+    sed 's~?~#~g' <"$tmpdir/viewer-password.txt" | sponge "$tmpdir/viewer-password.txt"
     create_password "$tmpdir/device-password.txt"
     sed 's~?~#~g' <"$tmpdir/device-password.txt" | sponge "$tmpdir/device-password.txt"
 
@@ -313,6 +315,7 @@ case "$current_dir" in
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'viewer,%s\n' "$(cat "$tmpdir/viewer-password.txt")" >>"$output/all-credentials.csv"
     printf 'device,%s\n' "$(cat "$tmpdir/device-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
