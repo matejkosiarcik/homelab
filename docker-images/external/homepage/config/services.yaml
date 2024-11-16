@@ -180,7 +180,7 @@
         widget:
           type: changedetectionio
           url: https://changedetection.home
-          key: "{{HOMEPAGE_VAR_CHANGEDETECTIONIO_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_CHANGEDETECTION_APIKEY}}"
 
 - Other Apps:
     - Homepage:
