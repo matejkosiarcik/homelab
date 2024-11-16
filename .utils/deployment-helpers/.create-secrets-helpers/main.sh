@@ -212,6 +212,9 @@ case "$current_dir" in
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
+    # Prepare API keys
+    prepare_empty_env HOMEPAGE_VAR_CHANGEDETECTIONIO_APIKEY "$output/homepage.env"
+
     # Log results
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2

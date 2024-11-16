@@ -171,6 +171,10 @@
         href: https://changedetection.home
         ping: changedetection.home
         icon: /icons/changedetection.png
+        widget:
+          type: changedetectionio
+          url: https://changedetection.home
+          key: "{{HOMEPAGE_VAR_CHANGEDETECTIONIO_APIKEY}}"
 
 - Other Apps:
     - Homepage:
