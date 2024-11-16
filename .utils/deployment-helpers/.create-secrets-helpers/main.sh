@@ -215,6 +215,7 @@ case "$current_dir" in
     # Prepare API keys
     prepare_empty_env HOMEPAGE_VAR_CHANGEDETECTION_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_HEALTHCHECKS_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD "$output/homepage.env"
@@ -304,6 +305,8 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     sed 's~?~#~g' <"$tmpdir/admin-password.txt" | sponge "$tmpdir/admin-password.txt"
+    create_password "$tmpdir/viewer-password.txt"
+    sed 's~?~#~g' <"$tmpdir/viewer-password.txt" | sponge "$tmpdir/viewer-password.txt"
     create_password "$tmpdir/device-password.txt"
     sed 's~?~#~g' <"$tmpdir/device-password.txt" | sponge "$tmpdir/device-password.txt"
 
@@ -313,6 +316,7 @@ case "$current_dir" in
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'viewer,%s\n' "$(cat "$tmpdir/viewer-password.txt")" >>"$output/all-credentials.csv"
     printf 'device,%s\n' "$(cat "$tmpdir/device-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
@@ -422,7 +426,7 @@ case "$current_dir" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     create_password "$tmpdir/mongodb-password.txt"
-    create_password "$tmpdir/readonly-password.txt"
+    create_password "$tmpdir/viewer-password.txt"
 
     # Database
     printf 'MONGO_PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb.env"
@@ -435,7 +439,7 @@ case "$current_dir" in
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
     printf 'mongo,%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/all-credentials.csv"
-    printf 'readonly,%s\n' "$(cat "$tmpdir/readonly-password.txt")" >>"$output/all-credentials.csv"
+    printf 'viewer,%s\n' "$(cat "$tmpdir/viewer-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
