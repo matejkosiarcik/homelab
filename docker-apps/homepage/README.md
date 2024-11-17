@@ -9,7 +9,7 @@
 ## Before initial installation
 
 - \[All\] Create base secrets
-  - \[Prod\] Set secrets for widgets
+    - \[Prod\] Set secrets for widgets
 - \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
 
 ## After initial installation
