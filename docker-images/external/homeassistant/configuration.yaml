@@ -7,6 +7,9 @@ system_health:
 # This is already included in default_config, but we set it explicitly anyway
 mobile_app:
 
+# Enable REST Api
+api:
+
 # Settings
 homeassistant:
   external_url: !env_var HOMELAB_APP_EXTERNAL_URL

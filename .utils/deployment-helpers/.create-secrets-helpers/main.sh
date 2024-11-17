@@ -194,6 +194,7 @@ case "$current_dir" in
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
+    create_password "$tmpdir/viewer-password.txt"
 
     # Web backup
     printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
@@ -201,6 +202,7 @@ case "$current_dir" in
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'viewer,%s\n' "$(cat "$tmpdir/viewer-password.txt")" >>"$output/all-credentials.csv"
     prepare_empty_password matej
     prepare_empty_password monika
 
@@ -215,6 +217,7 @@ case "$current_dir" in
     # Prepare API keys
     prepare_empty_env HOMEPAGE_VAR_CHANGEDETECTION_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_HEALTHCHECKS_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_HOMEASSISTANT_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_APIKEY "$output/homepage.env"
