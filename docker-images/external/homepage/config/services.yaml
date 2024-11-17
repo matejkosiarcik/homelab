@@ -105,7 +105,7 @@
 
 - DNS:
     - PiHole:
-        description: Main-1
+        description: Main
         href: https://pihole.home
         ping: pihole.home
         icon: /icons/pihole.png
@@ -116,7 +116,7 @@
           key: "{{HOMEPAGE_VAR_PIHOLE_1_APIKEY}}"
 
     - PiHole 2:
-        description: Main-2
+        description: Backup
         href: https://pihole-2.home
         ping: pihole-2.home
         icon: /icons/pihole.png
