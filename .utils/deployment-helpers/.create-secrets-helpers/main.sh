@@ -194,7 +194,7 @@ case "$current_dir" in
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
-    create_password "$tmpdir/viewer-password.txt"
+    create_password "$tmpdir/homepage-password.txt"
 
     # Web backup
     printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
@@ -202,7 +202,7 @@ case "$current_dir" in
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
-    printf 'viewer,%s\n' "$(cat "$tmpdir/viewer-password.txt")" >>"$output/all-credentials.csv"
+    printf 'homepage,%s\n' "$(cat "$tmpdir/homepage-password.txt")" >>"$output/all-credentials.csv"
     prepare_empty_password matej
     prepare_empty_password monika
 
@@ -307,11 +307,13 @@ case "$current_dir" in
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
-    sed 's~?~#~g' <"$tmpdir/admin-password.txt" | sponge "$tmpdir/admin-password.txt"
+    sed 's~?~^~g' <"$tmpdir/admin-password.txt" | sponge "$tmpdir/admin-password.txt"
     create_password "$tmpdir/viewer-password.txt"
-    sed 's~?~#~g' <"$tmpdir/viewer-password.txt" | sponge "$tmpdir/viewer-password.txt"
+    sed 's~?~^~g' <"$tmpdir/viewer-password.txt" | sponge "$tmpdir/viewer-password.txt"
+    create_password "$tmpdir/homepage-password.txt"
+    sed 's~?~^~g' <"$tmpdir/homepage-password.txt" | sponge "$tmpdir/homepage-password.txt"
     create_password "$tmpdir/device-password.txt"
-    sed 's~?~#~g' <"$tmpdir/device-password.txt" | sponge "$tmpdir/device-password.txt"
+    sed 's~?~^~g' <"$tmpdir/device-password.txt" | sponge "$tmpdir/device-password.txt"
 
     # Web backup
     printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
@@ -320,6 +322,7 @@ case "$current_dir" in
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
     printf 'viewer,%s\n' "$(cat "$tmpdir/viewer-password.txt")" >>"$output/all-credentials.csv"
+    printf 'homepage,%s\n' "$(cat "$tmpdir/homepage-password.txt")" >>"$output/all-credentials.csv"
     printf 'device,%s\n' "$(cat "$tmpdir/device-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
@@ -430,6 +433,7 @@ case "$current_dir" in
     create_password "$tmpdir/admin-password.txt"
     create_password "$tmpdir/mongodb-password.txt"
     create_password "$tmpdir/viewer-password.txt"
+    create_password "$tmpdir/homepage-password.txt"
 
     # Database
     printf 'MONGO_PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb.env"
@@ -443,6 +447,7 @@ case "$current_dir" in
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
     printf 'mongo,%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/all-credentials.csv"
     printf 'viewer,%s\n' "$(cat "$tmpdir/viewer-password.txt")" >>"$output/all-credentials.csv"
+    printf 'homepage,%s\n' "$(cat "$tmpdir/homepage-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
