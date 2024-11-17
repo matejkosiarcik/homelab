@@ -218,6 +218,7 @@ case "$current_dir" in
     prepare_empty_env HOMEPAGE_VAR_CHANGEDETECTION_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_HEALTHCHECKS_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_HOMEASSISTANT_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_JELLYFIN_PASSWORD "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_APIKEY "$output/homepage.env"
