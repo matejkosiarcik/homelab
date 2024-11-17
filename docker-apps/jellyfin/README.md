@@ -24,6 +24,7 @@
 - \[Prod\] Customize settings (eg. ) (location: Settings -> Administration -> General)
     - Disable "Quick Connect"
     - Verify "Server Name"
+    - Create Access token for `homepage`
 - \[Prod\] Connect to Tvheadend
     - Install Tvheadend plugin (location: Settings -> Administration -> Plugins -> Catalog)
     - Restart Jellyfin (location: Settings -> Dashboard)
