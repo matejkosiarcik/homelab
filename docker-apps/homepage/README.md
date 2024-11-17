@@ -13,4 +13,5 @@
 
 ## After initial installation
 
-Empty
+- Finish initial setup and create `admin` user
+- Create non-admin users: `viewer`, `matej`, `monika`
