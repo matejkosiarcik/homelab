@@ -16,6 +16,6 @@
 - \[Prod\] Create extra users: `viewer` and `homepage`
 - \[Prod\] Configure basic settings
     - General config and settings customization
-    - Setup SMTP server for email
+    - Setup SMTP server address for emails
     - Send automatic backups via SFTP
     - Send logs to remote syslog server
