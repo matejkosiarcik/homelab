@@ -7,6 +7,11 @@ system_health:
 # This is already included in default_config, but we set it explicitly anyway
 mobile_app:
 
+# Settings
+homeassistant:
+  external_url: !env_var HOMELAB_APP_EXTERNAL_URL
+  internal_url: !env_var HOMELAB_APP_EXTERNAL_URL
+
 # Enable prometheus integration
 prometheus:
   requires_auth: false
