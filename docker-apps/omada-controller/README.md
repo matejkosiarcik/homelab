@@ -13,6 +13,7 @@
 
 - \[All\] Setup admin _username_, _password_ and _email_
 - \[All\] Setup initial settings + initial login to finish the wizard
+- \[Prod\] Create extra users: `viewer` and `homepage`
 - \[Prod\] Configure basic settings
     - General config and settings customization
     - Setup SMTP server for email

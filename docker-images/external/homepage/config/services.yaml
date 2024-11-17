@@ -136,6 +136,9 @@
           type: homeassistant
           url: https://homeassistant.home
           key: "{{HOMEPAGE_VAR_HOMEASSISTANT_APIKEY}}"
+          custom:
+            - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
+              label: Turned on lights
 
     - Desklamp - left:
         description: ...

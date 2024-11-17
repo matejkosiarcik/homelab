@@ -56,5 +56,6 @@ This is bad (still starting) `/status`:
 
 - \[All\] Complete initial wizard / restore from backup
     - Setup admin _username_, _password_ and _email_
+- \[Prod\] Create extra users: `viewer` and `homepage`
 - \[Prod\] Configure basic settings
 - \[Prod\] Connect and configure Unifi devices
