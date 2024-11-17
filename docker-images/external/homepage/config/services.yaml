@@ -158,6 +158,15 @@
         href: https://jellyfin.home
         ping: jellyfin.home
         icon: /icons/jellyfin.png
+        widget:
+          type: jellyfin
+          url: https://jellyfin.home
+          key: "{{HOMEPAGE_VAR_JELLYFIN_PASSWORD}}"
+          enableBlocks: false
+          enableNowPlaying: true
+          enableUser: false
+          showEpisodeNumber: false
+          expandOneStreamToTwoRows: false
 
     - Tvheadend:
         description: ...
