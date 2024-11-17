@@ -58,5 +58,5 @@ This is bad (still starting) `/status`:
     - Setup admin _username_, _password_ and _email_
 - \[Prod\] Create extra users: `viewer` and `homepage`
 - \[Prod\] Configure basic settings
-    - Setup SMTP
+    - Setup SMTP server address for emails
 - \[Prod\] Connect and configure Unifi devices
