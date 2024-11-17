@@ -132,6 +132,10 @@
         href: https://homeassistant.home
         ping: homeassistant.home
         icon: /icons/homeassistant.png
+        widget:
+          type: homeassistant
+          url: https://homeassistant.home
+          key: "{{HOMEPAGE_VAR_HOMEASSISTANT_APIKEY}}"
 
     - Desklamp - left:
         description: ...
