@@ -1,6 +1,8 @@
-# Super important stuff
+# DNS
 pihole
 unbound
+
+# Caches
 dockerhub-proxy
 
 # Network controllers
