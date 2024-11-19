@@ -39,7 +39,7 @@ FROM debian:12.8-slim
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        openssl >/dev/null && \
+        ca-certificates curl openssl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=certificate-manager \

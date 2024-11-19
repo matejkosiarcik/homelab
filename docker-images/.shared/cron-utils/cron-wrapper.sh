@@ -13,7 +13,7 @@ printf '0\n' >"$statusfile"
 
 # Send start-signal to healthchecks
 if [ -n "${HOMELAB_HEALTHCHECK_URL+x}" ]; then
-    printf 'Send Healthchecks before job:\n'
+    printf 'Send Healthchecks before job: '
     curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error "$HOMELAB_HEALTHCHECK_URL/start" || true
     printf '\n'
 else
@@ -36,7 +36,7 @@ fi
 # Send end-signal to healthchecks
 status="$(cat "$statusfile")"
 if [ -n "${HOMELAB_HEALTHCHECK_URL+x}" ]; then
-    printf 'Send Healthchecks after job:\n'
+    printf 'Send Healthchecks after job: '
     curl --insecure --location --request POST --retry 1 --max-time 10 --fail --silent --show-error --data-binary "@$logfile" "$HOMELAB_HEALTHCHECK_URL/$status" || true
     printf '\n'
 fi
