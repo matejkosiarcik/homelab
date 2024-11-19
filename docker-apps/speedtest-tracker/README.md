@@ -21,3 +21,4 @@
 ## After initial installation
 
 - Change admin credentials (defaults are `admin@example.com`/`password`)
+- Add webhook to healthchecks
