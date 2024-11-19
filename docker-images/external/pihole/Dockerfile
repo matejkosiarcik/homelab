@@ -16,5 +16,3 @@ ENV DHCP_ACTIVE=false \
     WEBTHEME=default-darker
 # Trailing underscore for "PIHOLE_DNS_" is intentional
 HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/admin || exit 1" ]
-
-# Some forced change

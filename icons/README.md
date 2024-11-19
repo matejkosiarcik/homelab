@@ -20,5 +20,6 @@ The Icons are obtained from following locations:
     - Odroid: <https://wiki.odroid.com>
     - Playwright: <https://playwright.dev>
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (Server down)
+    - RenovateBot: <https://docs.renovatebot.com>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - UPC: <https://www.upc.sk>
