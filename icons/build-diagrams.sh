@@ -75,6 +75,7 @@ convert_image "$convert_options" "$input_dir/other/iot.png" "$outdir/iot.png"
 convert_image "$convert_options" "$input_dir/other/litestream - custom.svg.bin" "$outdir/litestream.png"
 convert_image "$convert_options" "$input_dir/other/playwright.svg.bin" "$outdir/playwright.png"
 convert_image "$convert_options" "$input_dir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
+convert_image "$convert_options" "$input_dir/other/renovatebot.png" "$outdir/renovatebot.png"
 convert_image "$convert_options" "$input_dir/other/smtp4dev - custom.png" "$outdir/smtp4dev.png"
 
 ### Combined icons ###
