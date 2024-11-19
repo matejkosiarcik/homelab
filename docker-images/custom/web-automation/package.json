@@ -9,14 +9,14 @@
     "axios": "^1.7.7",
     "chai": "^5.1.2",
     "dotenv": "^16.4.5",
-    "playwright": "^1.48.2"
+    "playwright": "^1.49.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.1",
     "@tsconfig/recommended": "^1.0.8",
     "@types/chai": "^5.0.1",
     "@types/node": "^22.9.0",
-    "rollup": "^4.27.2",
+    "rollup": "^4.27.3",
     "tslib": "^2.8.1",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
