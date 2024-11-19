@@ -26,6 +26,7 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$out
 
 ### Dashboard Icons ###
 
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/gitlab.png" "$outdir/gitlab.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$outdir/homepage.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$outdir/ntfy.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$outdir/openspeedtest.png"
@@ -53,6 +54,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$outdir/docker.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/azuredns.png" "$outdir/dns.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/filebrowser.svg" "$outdir/filebrowser.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/github.svg" "$outdir/github.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/jellyfin.svg" "$outdir/jellyfin.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/letencrypt.png" "$outdir/lets-encrypt.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/minio.png" "$outdir/minio.png"
