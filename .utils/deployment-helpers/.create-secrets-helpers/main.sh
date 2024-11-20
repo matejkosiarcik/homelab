@@ -355,6 +355,15 @@ case "$current_dir" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*renovatebot*)
+    # Prepare API keys
+    prepare_empty_env RENOVATE_TOKEN "$output/renovatebot.env"   # PAT specific for each git host
+    prepare_empty_env GITHUB_COM_TOKEN "$output/renovatebot.env" # GitHub PAT (even if using other git hosts)
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *smb*)
     create_password "$tmpdir/smb-password.txt"
     printf 'smb' >"$tmpdir/smb-username.txt"

@@ -5,6 +5,6 @@
   },
   "dependencies": {
     "@mermaid-js/mermaid-cli": "^11.4.0",
-    "npm-run-all2": "^7.0.0"
+    "npm-run-all2": "^7.0.1"
   }
 }

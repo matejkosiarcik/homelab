@@ -33,3 +33,6 @@ speedtest-tracker
 changedetection
 healthchecks
 gatus
+
+# Non-server apps
+renovatebot

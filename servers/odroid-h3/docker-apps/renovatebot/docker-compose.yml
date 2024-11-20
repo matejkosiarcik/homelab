@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/renovatebot/docker-compose.yml
+    project_directory: .
