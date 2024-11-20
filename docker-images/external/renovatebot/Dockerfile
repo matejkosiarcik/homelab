@@ -1,4 +1,5 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM python:3.13.0-slim AS supercronic-gitman
 WORKDIR /homelab
@@ -36,6 +37,7 @@ COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
 
 FROM renovate/renovate:39.20.0-full
+# hadolint ignore=DL3002
 USER root
 COPY --from=prefinal /homelab/ /homelab/
 COPY ./external/renovatebot/config.js /usr/src/app/config.js
