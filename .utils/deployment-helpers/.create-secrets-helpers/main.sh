@@ -357,7 +357,7 @@ case "$current_dir" in
     ;;
 *renovatebot*)
     # Prepare API keys
-    prepare_empty_env RENOVATE_TOKEN "$output/renovatebot.env" # PAT specific for each git host
+    prepare_empty_env RENOVATE_TOKEN "$output/renovatebot.env"   # PAT specific for each git host
     prepare_empty_env GITHUB_COM_TOKEN "$output/renovatebot.env" # GitHub PAT (even if using other git hosts)
 
     # Log results
