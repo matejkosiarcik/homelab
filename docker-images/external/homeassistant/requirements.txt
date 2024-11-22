@@ -24,8 +24,8 @@ pyspeex-noise==1.0.2
 python-libpcap==0.5.2
 PyTurboJPEG==1.7.7
 radios==0.3.2
-securetar==2024.2.1
+securetar==2024.11.0
 wheel==0.45.0
 xmltodict==0.14.2
-zeroconf==0.136.0
+zeroconf==0.136.2
 zlib-ng==0.5.1
