@@ -47,9 +47,10 @@ fi
 mkdir "$output"
 printf 'user,password\n' >"$output/all-credentials.csv"
 
-current_dir="$(basename "$PWD")"
+app_dir="$PWD"
+full_app_name="$(basename "$app_dir")"
 tmpdir="$(mktemp -d)"
-DOCKER_COMPOSE_APP_NAME="$full_service_name"
+DOCKER_COMPOSE_APP_NAME="$full_app_name"
 
 # Load custom docker-compose overrides if available
 if [ -f "$PWD/config/docker-compose.env" ]; then
@@ -113,7 +114,7 @@ prepare_empty_password() {
     printf 'You must configure password for "%s"\n' "$1" >>"$user_logfile"
 }
 
-case "$current_dir" in
+case "$full_app_name" in
 *actualbudget*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
@@ -465,7 +466,7 @@ case "$current_dir" in
     cat "$user_logfile" >&2
     ;;
 *)
-    printf 'Unknown app directory name: %s\n' "$current_dir" >&2
+    printf 'Unknown app directory name: %s\n' "$app_dir" >&2
     exit 1
     ;;
 esac
