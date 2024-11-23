@@ -114,7 +114,7 @@ fi
 if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     docker_compose_args="$docker_compose_args --env-file $PWD/config/docker-compose-$mode.env"
 fi
-mkdir "$app_dir/tmp"
+mkdir -p "$app_dir/tmp"
 extra_docker_compose_env="$app_dir/tmp/docker-compose.env"
 printf '' >"$extra_docker_compose_env"
 printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$full_app_name" >>"$extra_docker_compose_env"
