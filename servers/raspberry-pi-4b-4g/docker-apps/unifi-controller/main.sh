@@ -14,4 +14,4 @@ export DOCKER_COMPOSE_MONGODB_BUILD_CONTEXT
 export DOCKER_COMPOSE_MONGODB_BUILD_DOCKERFILE
 
 # shellcheck disable=SC2068
-bash "$(git rev-parse --show-toplevel)/.utils/deployment-helpers/helper-docker-app.sh" $@
+bash "$(git rev-parse --show-toplevel)/.utils/deployment-helpers/docker-app-main.sh" $@
