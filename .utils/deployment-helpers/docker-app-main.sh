@@ -83,10 +83,10 @@ export START_DATE
 
 app_dir="$PWD"
 git_dir="$(git rev-parse --show-toplevel)"
-full_service_name="$(basename "$app_dir")"
-log_dir="$HOME/.homelab-logs/$START_DATE-$full_service_name"
+full_app_name="$(basename "$app_dir")"
+log_dir="$HOME/.homelab-logs/$START_DATE-$full_app_name"
 log_file="$log_dir/deploy.txt"
-backup_dir="$HOME/.homelab-backup/$START_DATE-$full_service_name"
+backup_dir="$HOME/.homelab-backup/$START_DATE-$full_app_name"
 
 if [ "$mode" = 'dev' ]; then
     log_file='/dev/null'
@@ -114,9 +114,14 @@ fi
 if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     docker_compose_args="$docker_compose_args --env-file $PWD/config/docker-compose-$mode.env"
 fi
+mkdir -p "$app_dir/tmp"
+extra_docker_compose_env="$app_dir/tmp/docker-compose.env"
+printf '' >"$extra_docker_compose_env"
+printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$full_app_name" >>"$extra_docker_compose_env"
+docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
 
 docker_stop() {
-    printf 'Stop docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
+    printf 'Stop docker containers in %s\n' "$full_app_name" | tee "$log_file" >&2
 
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
@@ -130,7 +135,7 @@ docker_stop() {
 
 docker_build() {
     if [ ! -e 'app-secrets' ]; then
-        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_service_name"
+        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_app_name"
         exit 1
     fi
 
@@ -145,7 +150,7 @@ docker_build() {
         docker_pull_args="$docker_pull_args --policy missing"
     fi
 
-    printf 'Pull docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
+    printf 'Pull docker images in %s\n' "$full_app_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
         time docker compose $docker_pull_args 2>&1 | tee "$log_file" >&2
@@ -164,7 +169,7 @@ docker_build() {
     #     docker_build_args="$docker_build_args --quiet"
     # fi
 
-    printf 'Build docker images in %s\n' "$full_service_name" | tee "$log_file" >&2
+    printf 'Build docker images in %s\n' "$full_app_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
         time docker compose $docker_build_args 2>&1 | tee "$log_file" >&2
@@ -177,7 +182,7 @@ docker_build() {
 
 docker_start() {
     if [ ! -e 'app-secrets' ]; then
-        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_service_name"
+        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_app_name"
         exit 1
     fi
 
@@ -202,7 +207,7 @@ docker_start() {
         docker_up_args="$docker_up_args --detach --wait"
     fi
 
-    printf 'Start docker containers in %s\n' "$full_service_name" | tee "$log_file" >&2
+    printf 'Start docker containers in %s\n' "$full_app_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
         time docker compose $docker_up_args 2>&1 | tee "$log_file" >&2
@@ -234,7 +239,7 @@ deploy)
     docker_stop
     docker network prune -f # Might help with services problems sometimes not being able to bind ports
     docker_start
-    printf 'Deployment of %s successful\n\n' "$full_service_name"
+    printf 'Deployment of %s successful\n\n' "$full_app_name"
     ;;
 start)
     docker_start

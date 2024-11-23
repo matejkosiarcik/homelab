@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  PLACEHOLDER:
+  app:
     <<: *common-service-options
 
   certificate-manager:

@@ -8,4 +8,4 @@ COMPOSE_PARALLEL_LIMIT=1
 export COMPOSE_PARALLEL_LIMIT
 
 # shellcheck disable=SC2068
-python3 "$(git rev-parse --show-toplevel)/.utils/deployment-helpers/helper-server.py" $@
+python3 "$(git rev-parse --show-toplevel)/.utils/deployment-helpers/server-main.py" $@
