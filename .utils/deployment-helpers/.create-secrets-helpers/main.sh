@@ -60,6 +60,8 @@ if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     . "$PWD/config/docker-compose-$mode.env"
 fi
 
+DOCKER_COMPOSE_APP_NAME="$full_service_name"
+
 create_password() {
     output_file="$1"
     extra_flags=''
