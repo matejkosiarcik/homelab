@@ -49,6 +49,7 @@ printf 'user,password\n' >"$output/all-credentials.csv"
 
 current_dir="$(basename "$PWD")"
 tmpdir="$(mktemp -d)"
+DOCKER_COMPOSE_APP_NAME="$full_service_name"
 
 # Load custom docker-compose overrides if available
 if [ -f "$PWD/config/docker-compose.env" ]; then
@@ -59,8 +60,6 @@ if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     # shellcheck source=/dev/null
     . "$PWD/config/docker-compose-$mode.env"
 fi
-
-DOCKER_COMPOSE_APP_NAME="$full_service_name"
 
 create_password() {
     output_file="$1"
