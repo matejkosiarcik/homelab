@@ -10,7 +10,7 @@ ha-ffmpeg==3.2.2
 hassil==2.0.3
 home-assistant-frontend==20241106.2
 home-assistant-intents==2024.11.13
-homeassistant==2024.11.2
+homeassistant==2024.11.3
 jsonpath==0.82.2
 libpcap==1.11.0b14
 mutagen==1.47.0
@@ -25,7 +25,7 @@ python-libpcap==0.5.2
 PyTurboJPEG==1.7.7
 radios==0.3.2
 securetar==2024.11.0
-wheel==0.45.0
+wheel==0.45.1
 xmltodict==0.14.2
 zeroconf==0.136.2
 zlib-ng==0.5.1
