@@ -305,22 +305,22 @@ endpoints:
   - <<: *default-tcp
     name: Dozzle agent - Odroid H3 - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle.home:7007
+    url: tcp://dozzle-agent.odroid-h3.home:7007
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 3B - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle.home:7007
+    url: tcp://dozzle-agent.raspberry-pi-3b.home:7007
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle.home:7007
+    url: tcp://dozzle-agent.raspberry-pi-4b-2g.home:7007
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle.home:7007
+    url: tcp://dozzle-agent.raspberry-pi-4b-4g.home:7007
 
 
   ### Group: App - Gatus ###
