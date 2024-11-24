@@ -13,7 +13,6 @@ homeassistant
 desklamp-left-wrapper
 desklamp-right-wrapper
 
-
 # Media
 jellyfin
 
