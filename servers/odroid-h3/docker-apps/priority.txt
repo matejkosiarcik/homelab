@@ -13,8 +13,6 @@ homeassistant
 desklamp-left-wrapper
 desklamp-right-wrapper
 
-# Docker tools
-dozzle-server
 
 # Media
 jellyfin
@@ -33,6 +31,8 @@ openspeedtest
 speedtest-tracker
 
 # Monitoring
+dozzle-agent
+dozzle-server
 changedetection
 healthchecks
 gatus
