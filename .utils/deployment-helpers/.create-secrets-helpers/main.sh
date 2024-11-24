@@ -92,8 +92,17 @@ create_secret() {
 user_logfile="$tmpdir/user-logs.txt"
 touch "$user_logfile"
 
+hash_password_bcrypt() {
+    # $1 - password file
+    # returns password on stdout
+    chronic htpasswd -c -B -i "$tmpdir/bcrypt-password-placeholder.txt" 'placeholder' <"$1"
+    sed -E 's~^placeholder:~~' <"$tmpdir/bcrypt-password-placeholder.txt"
+    rm -f "$tmpdir/bcrypt-password-placeholder.txt"
+}
+
 create_http_auth_user() {
-    # $1 - user
+    # $1 - username
+    # returns password in file
     create_password "$tmpdir/http-$1-password.txt" --only-alphanumeric
     printf '%s,%s\n' "$1" "$(cat "$tmpdir/http-$1-password.txt")" >>"$output/all-credentials.csv"
     chronic htpasswd -c -B -i "$output/http-user--$1.htpasswd" "$1" <"$tmpdir/http-$1-password.txt"
@@ -165,6 +174,18 @@ case "$full_app_name" in
 *dozzle-server*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    printf 'admin' >"$tmpdir/admin-username.txt"
+    create_password "$tmpdir/admin-password.txt"
+    hash_password_bcrypt "$tmpdir/admin-password.txt" >"$tmpdir/admin-password-bcrypt.txt"
+
+    # App
+    printf 'users:\n %s:\n  email: %s\n  name: %s\n  password: %s\n' "$(cat "$tmpdir/admin-username.txt")" "admin@$DOCKER_COMPOSE_NETWORK_DOMAIN" "$(cat "$tmpdir/admin-username.txt")" "$(cat "$tmpdir/admin-password-bcrypt.txt")" |
+        sed -E 's~^( +)~\1\1\1\1~' >"$output/dozzle-users.yml"
+
+    # Misc
+    printf '%s,%s\n' "$(cat "$tmpdir/admin-username.txt")" "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

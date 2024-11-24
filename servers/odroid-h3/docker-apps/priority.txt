@@ -13,6 +13,9 @@ homeassistant
 desklamp-left-wrapper
 desklamp-right-wrapper
 
+# Docker tools
+dozzle-server
+
 # Media
 jellyfin
 

@@ -10,11 +10,8 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  gatus:
+  app:
     <<: *common-service-options
-    environment:
-      <<: *common-env-variables
-      GATUS_DELAY_START_SECONDS: 90
 
   certificate-manager:
     <<: *common-service-options

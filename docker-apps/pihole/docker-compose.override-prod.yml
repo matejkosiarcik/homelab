@@ -1,9 +1,9 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_APP_NAME}.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
-    HOMELAB_APP_EXTERNAL_URL: https://${DOCKER_COMPOSE_APP_NAME}.home
+    HOMELAB_APP_EXTERNAL_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -12,12 +12,12 @@ x-definitions:
 services:
   pihole:
     <<: *common-service-options
-    hostname: ${DOCKER_COMPOSE_APP_NAME}.home # This fixes random container hostname in dashboard header
+    hostname: ${DOCKER_COMPOSE_NETWORK_DOMAIN} # This fixes random container hostname in dashboard header
     environment:
       <<: *common-env-variables
       FTLCONF_LOCAL_IPV4: ${DOCKER_COMPOSE_NETWORK_IP}
       FTLCONF_PRIVACYLEVEL: "0"
-      VIRTUAL_HOST: ${DOCKER_COMPOSE_APP_NAME}.home
+      VIRTUAL_HOST: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   pihole-setup:
     <<: *common-service-options

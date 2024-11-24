@@ -12,7 +12,7 @@ done
 EOF
 
 # Watch certificates in background
-inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates\n" && apachectl -k restart' - &
+inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
 
 printf '\n' >>/etc/apache2/envvars
 
@@ -47,6 +47,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
     PROXY_UPSTREAM_URL="http://changedetection:5000"
 elif [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
     PROXY_UPSTREAM_URL="http://docker-registry"
+elif [ "$HOMELAB_APP_TYPE" = 'dozzle-server' ]; then
+    PROXY_UPSTREAM_URL="http://app:8080"
 elif [ "$HOMELAB_APP_TYPE" = 'gatus' ]; then
     PROXY_UPSTREAM_URL="http://gatus:8080"
 elif [ "$HOMELAB_APP_TYPE" = 'healthchecks' ]; then
