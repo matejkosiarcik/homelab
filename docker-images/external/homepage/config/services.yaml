@@ -126,13 +126,6 @@
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_2_APIKEY}}"
 
-- Docker:
-    - Dozzle:
-        description: Docker monitoring
-        href: https://dozzle.home
-        ping: dozzle.home
-        icon: /icons/dozzle.png
-
 - Smart Home:
     - Home Assistant:
         description: Smart Home system
@@ -209,6 +202,12 @@
         widget:
           type: gatus
           url: https://gatus-2.home
+
+    - Dozzle:
+        description: Docker monitoring
+        href: https://dozzle.home
+        ping: dozzle.home
+        icon: /icons/dozzle.png
 
     - SpeedTest Tracker:
         description: Internet speed monitoring system
