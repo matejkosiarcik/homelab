@@ -282,23 +282,45 @@ endpoints:
 
   - <<: *default-http
     name: Dozzle HTTP
-    group: App - Dozzle Odroid H3
-    url: http://dozzle-server.odroid-h3.home
+    group: App - Dozzle
+    url: http://dozzle.home
 
   - <<: *default-http
     name: Dozzle HTTPS
-    group: App - Dozzle Odroid H3
-    url: https://dozzle-server.odroid-h3.home
+    group: App - Dozzle
+    url: https://dozzle.home
 
   - <<: *default-tcp
     name: Dozzle TCP:80
-    group: App - Dozzle Odroid H3
-    url: tcp://dozzle-server.odroid-h3.home:80
+    group: App - Dozzle
+    url: tcp://dozzle.home:80
 
   - <<: *default-tcp
     name: Dozzle TCP:443
-    group: App - Dozzle Odroid H3
-    url: tcp://dozzle-server.odroid-h3.home:443
+    group: App - Dozzle
+    url: tcp://dozzle.home:443
+
+  ### Group: App - Dozzle agents ###
+
+  - <<: *default-tcp
+    name: Dozzle agent - Odroid H3 - TCP:7007
+    group: App - Dozzle agents
+    url: tcp://dozzle-agent.odroid-h3.home:7007
+
+  - <<: *default-tcp
+    name: Dozzle agent - Raspberry Pi 3B - TCP:7007
+    group: App - Dozzle agents
+    url: tcp://dozzle-agent.raspberry-pi-3b.home:7007
+
+  - <<: *default-tcp
+    name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
+    group: App - Dozzle agents
+    url: tcp://dozzle-agent.raspberry-pi-4b-2g.home:7007
+
+  - <<: *default-tcp
+    name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
+    group: App - Dozzle agents
+    url: tcp://dozzle-agent.raspberry-pi-4b-4g.home:7007
 
   ### Group: App - Gatus ###
 
