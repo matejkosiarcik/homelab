@@ -172,11 +172,8 @@ case "$full_app_name" in
     cat "$user_logfile" >&2
     ;;
 *dozzle-agent*)
-    create_http_auth_user proxy-status
-    prepare_healthcheck_url "$output/certificate-manager.env"
-
     # Log results
-    printf 'Not all secrets setup\n' >&2
+    printf 'All secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *dozzle-server*)
