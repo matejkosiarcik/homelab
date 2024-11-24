@@ -20,9 +20,6 @@ services:
       dockerfile: ./external/dozzle/Dockerfile
     environment:
       <<: *common-env-variables
-      DOZZLE_AUTH_PROVIDER: simple
-      DOZZLE_ENABLE_ACTIONS: "false"
-      DOZZLE_HOSTNAME: Local
       DOZZLE_REMOTE_AGENT: dozzle-agent.odroid-h3.home:7007,dozzle-agent.raspberry-pi-3b.home:7007,dozzle-agent.raspberry-pi-4b-2g.home:7007,dozzle-agent.raspberry-pi-4b-4g.home:7007
       # DOZZLE_REMOTE_AGENT: 10.1.10.29:7007,10.1.12.2:7007,10.1.14.1:7007,10.1.16.12:7007
     volumes:
