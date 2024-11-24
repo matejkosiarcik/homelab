@@ -12,7 +12,7 @@ done
 EOF
 
 # Watch certificates in background
-inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates\n" && apachectl -k restart' - &
+inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
 
 printf '\n' >>/etc/apache2/envvars
 
