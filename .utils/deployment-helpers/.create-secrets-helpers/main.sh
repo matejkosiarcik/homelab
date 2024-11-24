@@ -172,8 +172,11 @@ case "$full_app_name" in
     cat "$user_logfile" >&2
     ;;
 *dozzle-agent*)
+    printf '' >"$output/dozzle-key.pem"
+    printf '' >"$output/dozzle-cert.pem"
+
     # Log results
-    printf 'All secrets setup\n' >&2
+    printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
 *dozzle-server*)
@@ -184,6 +187,13 @@ case "$full_app_name" in
     printf 'admin' >"$tmpdir/admin-username.txt"
     create_password "$tmpdir/admin-password.txt"
     hash_password_bcrypt "$tmpdir/admin-password.txt" >"$tmpdir/admin-password-bcrypt.txt"
+
+    # Custom certificates for agents
+    openssl genpkey -algorithm RSA -out "$tmpdir/key.pem" -pkeyopt rsa_keygen_bits:2048
+    openssl req -new -key "$tmpdir/key.pem" -out "$tmpdir/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"
+    openssl x509 -req -in "$tmpdir/request.csr" -signkey "$tmpdir/key.pem" -out "$tmpdir/cert.pem" -days 3650
+    cp "$tmpdir/key.pem" "$output/dozzle-key.pem"
+    cp "$tmpdir/cert.pem" "$output/dozzle-cert.pem"
 
     # App
     printf 'users:\n %s:\n  email: %s\n  name: %s\n  password: %s\n' "$(cat "$tmpdir/admin-username.txt")" "admin@$DOCKER_COMPOSE_NETWORK_DOMAIN" "$(cat "$tmpdir/admin-username.txt")" "$(cat "$tmpdir/admin-password-bcrypt.txt")" |
