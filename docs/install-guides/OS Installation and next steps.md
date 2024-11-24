@@ -60,6 +60,6 @@ Only for ARM devices (Raspberry Pi)!
 
 Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory docker container use:
 
-```
+```txt
 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ```
