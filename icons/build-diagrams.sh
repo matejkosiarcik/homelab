@@ -26,6 +26,7 @@ convert_image "$convert_options" "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$out
 
 ### Dashboard Icons ###
 
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/svg/dozzle.svg" "$outdir/dozzle.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/gitlab.png" "$outdir/gitlab.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$outdir/homepage.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$outdir/ntfy.png"
