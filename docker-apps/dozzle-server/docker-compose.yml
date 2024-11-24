@@ -20,7 +20,7 @@ services:
       dockerfile: ./external/dozzle/Dockerfile
     environment:
       <<: *common-env-variables
-      DOZZLE_REMOTE_AGENT: 10.1.10.29:7007,10.1.12.3:7007,10.1.14.2:7007,10.1.16.13:7007
+      DOZZLE_REMOTE_AGENT: 10.1.10.29:7007,10.1.12.2:7007,10.1.14.1:7007,10.1.16.12:7007
     volumes:
       - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
       # Docker socket intentionally left out, as I want to force dozzle to use agents always, even for current server
