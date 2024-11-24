@@ -13,7 +13,7 @@ services:
   unbound:
     <<: *common-service-options
 
-  socket-proxy:
+  transport-proxy:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp

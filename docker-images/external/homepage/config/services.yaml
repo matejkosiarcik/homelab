@@ -133,6 +133,24 @@
         ping: dozzle-server.odroid-h3.home
         icon: /icons/dozzle.png
 
+    - Dozzle - Raspberry Pi 3B:
+        description: Dozzle - docker monitoring
+        href: https://dozzle-server.raspberry-pi-3b.home
+        ping: dozzle-server.raspberry-pi-3b.home
+        icon: /icons/dozzle.png
+
+    - Dozzle - Raspberry Pi 3B 2GB:
+        description: Dozzle - docker monitoring
+        href: https://dozzle-server.raspberry-pi-4b-2g.home
+        ping: dozzle-server.raspberry-pi-4b-2g.home
+        icon: /icons/dozzle.png
+
+    - Dozzle - Raspberry Pi 3B 4GB:
+        description: Dozzle - docker monitoring
+        href: https://dozzle-server.raspberry-pi-4b-4g.home
+        ping: dozzle-server.raspberry-pi-4b-4g.home
+        icon: /icons/dozzle.png
+
 - Smart Home:
     - Home Assistant:
         description: Smart Home system

@@ -28,13 +28,13 @@ services:
   http-proxy-console:
     <<: *common-service-options
 
-  socket-proxy-api:
+  transport-proxy-api:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
 
-  socket-proxy-console:
+  transport-proxy-console:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8081:80

@@ -6,8 +6,8 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         socat >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./custom/socket-proxy/entrypoint.sh ./
-ENV HOMELAB_CONTAINER_NAME=socket-proxy \
+COPY ./custom/transport-proxy/entrypoint.sh ./
+ENV HOMELAB_CONTAINER_NAME=transport-proxy \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=5s --start-period=30s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]

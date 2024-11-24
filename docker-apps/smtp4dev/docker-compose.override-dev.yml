@@ -23,7 +23,7 @@ services:
   http-proxy:
     <<: *common-service-options
 
-  socket-proxy:
+  transport-proxy:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8025:25

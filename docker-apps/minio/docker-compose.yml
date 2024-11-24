@@ -82,22 +82,22 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
 
-  socket-proxy-api:
+  transport-proxy-api:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy-api
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy-api
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/socket-proxy/Dockerfile
+      dockerfile: ./custom/transport-proxy/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: api
 
-  socket-proxy-console:
+  transport-proxy-console:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy-console
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy-console
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/socket-proxy/Dockerfile
+      dockerfile: ./custom/transport-proxy/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: console

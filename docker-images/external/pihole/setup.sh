@@ -79,11 +79,11 @@ open_group_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM [group] WHERE na
 
 # Custom clients
 # - Default client
-default_socket_proxy_ip="$(dig +short default-socket-proxy)"
+default_socket_proxy_ip="$(dig +short default-transport-proxy)"
 sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$default_socket_proxy_ip', 0, 0, 'custom');"
 default_socket_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$default_socket_proxy_ip';")"
 # - Open client
-open_socket_proxy_ip="$(dig +short open-socket-proxy)"
+open_socket_proxy_ip="$(dig +short open-transport-proxy)"
 sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$open_socket_proxy_ip', 0, 0, 'custom');"
 open_socket_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$open_socket_proxy_ip';")"
 

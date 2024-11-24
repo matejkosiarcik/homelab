@@ -23,12 +23,12 @@ services:
     volumes:
       - ./app-logs/samba:/var/log/samba:rw
 
-  socket-proxy:
+  transport-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/socket-proxy/Dockerfile
+      dockerfile: ./custom/transport-proxy/Dockerfile
 
 networks:
   default: # Just disable default network

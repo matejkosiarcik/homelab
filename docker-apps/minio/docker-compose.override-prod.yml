@@ -32,7 +32,7 @@ services:
   http-proxy-console:
     <<: *common-service-options
 
-  socket-proxy-api:
+  transport-proxy-api:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP_1}:80:80
@@ -40,7 +40,7 @@ services:
     networks:
       external-network:
 
-  socket-proxy-console:
+  transport-proxy-console:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP_2}:80:80
