@@ -56,6 +56,8 @@ ansible-playbook --limit <machine-name> playbooks/deploy-homelab-initial.yml
 
 ## Postinstall - Docker memory
 
+Only for ARM devices (Raspberry Pi)!
+
 Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory docker container use:
 
 ```
