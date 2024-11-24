@@ -1,9 +1,9 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_APP_NAME}.home
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP_1}
-    HOMELAB_APP_EXTERNAL_URL: https://${DOCKER_COMPOSE_APP_NAME}.home
+    HOMELAB_APP_EXTERNAL_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      MINIO_BROWSER_REDIRECT_URL: https://console.${DOCKER_COMPOSE_APP_NAME}.home
+      MINIO_BROWSER_REDIRECT_URL: https://console.${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   minio-setup:
     <<: *common-service-options
@@ -23,7 +23,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_APP_NAME}.home,console.${DOCKER_COMPOSE_APP_NAME}.home
+      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN},console.${DOCKER_COMPOSE_NETWORK_DOMAIN}
       HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP_1},${DOCKER_COMPOSE_NETWORK_IP_2}
 
   http-proxy-api:
