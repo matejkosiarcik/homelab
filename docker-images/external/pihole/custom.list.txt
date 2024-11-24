@@ -30,7 +30,7 @@
 10.1.10.25 actualbudget.home
 10.1.10.26 desklamp-left-wrapper.home
 10.1.10.27 desklamp-right-wrapper.home
-10.1.10.28 dozzle-server.odroid-h3.home
+10.1.10.28 dozzle.home
 10.1.10.29 dozzle-agent.odroid-h3.home
 
 10.1.12.1 tvheadend.home
