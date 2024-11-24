@@ -108,17 +108,29 @@ docker_compose_args="$docker_file_args"
 if [ "$mode" = 'dev' ]; then
     docker_compose_args="$docker_compose_args --ansi always"
 fi
-if [ -f "$PWD/config/docker-compose.env" ]; then
-    docker_compose_args="$docker_compose_args --env-file $PWD/config/docker-compose.env"
+if [ -f "$app_dir/config/docker-compose.env" ]; then
+    docker_compose_args="$docker_compose_args --env-file $app_dir/config/docker-compose.env"
+    # shellcheck source=/dev/null
+    . "$app_dir/config/docker-compose.env"
 fi
-if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
-    docker_compose_args="$docker_compose_args --env-file $PWD/config/docker-compose-$mode.env"
+if [ -f "$app_dir/config/docker-compose-$mode.env" ]; then
+    docker_compose_args="$docker_compose_args --env-file $app_dir/config/docker-compose-$mode.env"
+    # shellcheck source=/dev/null
+    . "$app_dir/config/docker-compose-$mode.env"
 fi
+
 mkdir -p "$app_dir/tmp"
 extra_docker_compose_env="$app_dir/tmp/docker-compose.env"
-printf '' >"$extra_docker_compose_env"
-printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$full_app_name" >>"$extra_docker_compose_env"
+rm -f "$extra_docker_compose_env"
+if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
+    printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$full_app_name" >>"$extra_docker_compose_env"
+fi
+if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
+    printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$full_app_name.home" >>"$extra_docker_compose_env"
+fi
 docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
+# shellcheck source=/dev/null
+. "$extra_docker_compose_env"
 
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_app_name" | tee "$log_file" >&2

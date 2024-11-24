@@ -50,7 +50,6 @@ printf 'user,password\n' >"$output/all-credentials.csv"
 app_dir="$PWD"
 full_app_name="$(basename "$app_dir")"
 tmpdir="$(mktemp -d)"
-DOCKER_COMPOSE_APP_NAME="$full_app_name"
 
 # Load custom docker-compose overrides if available
 if [ -f "$PWD/config/docker-compose.env" ]; then
@@ -60,6 +59,10 @@ fi
 if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     # shellcheck source=/dev/null
     . "$PWD/config/docker-compose-$mode.env"
+fi
+if [ -f "$PWD/tmp/docker-compose.env" ]; then
+    # shellcheck source=/dev/null
+    . "$PWD/tmp/docker-compose.env"
 fi
 
 create_password() {
@@ -154,6 +157,14 @@ case "$full_app_name" in
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$(cat "$tmpdir/docker-registry-http-secret.txt")" >>"$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_USERNAME "$output/docker-registry.env"
     prepare_empty_env REGISTRY_PROXY_PASSWORD "$output/docker-registry.env"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
+*dozzle-server*)
+    create_http_auth_user proxy-status
+    prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
