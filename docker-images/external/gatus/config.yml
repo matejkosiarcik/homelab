@@ -300,6 +300,72 @@ endpoints:
     group: App - Dozzle Odroid H3
     url: tcp://dozzle-server.odroid-h3.home:443
 
+  ### Group: App - Dozzle - Raspberry Pi 3B ###
+
+  - <<: *default-http
+    name: Dozzle HTTP
+    group: App - Dozzle - Raspberry Pi 3B
+    url: http://dozzle-server.raspberry-pi-3b.home
+
+  - <<: *default-http
+    name: Dozzle HTTPS
+    group: App - Dozzle - Raspberry Pi 3B
+    url: https://dozzle-server.raspberry-pi-3b.home
+
+  - <<: *default-tcp
+    name: Dozzle TCP:80
+    group: App - Dozzle - Raspberry Pi 3B
+    url: tcp://dozzle-server.raspberry-pi-3b.home:80
+
+  - <<: *default-tcp
+    name: Dozzle TCP:443
+    group: App - Dozzle - Raspberry Pi 3B
+    url: tcp://dozzle-server.raspberry-pi-3b.home:443
+
+  ### Group: App - Dozzle - Raspberry Pi 4B 2GB ###
+
+  - <<: *default-http
+    name: Dozzle HTTP
+    group: App - Dozzle - Raspberry Pi 4B 2GB
+    url: http://dozzle-server.raspberry-pi-4b-2g.home
+
+  - <<: *default-http
+    name: Dozzle HTTPS
+    group: App - Dozzle - Raspberry Pi 4B 2GB
+    url: https://dozzle-server.raspberry-pi-4b-2g.home
+
+  - <<: *default-tcp
+    name: Dozzle TCP:80
+    group: App - Dozzle - Raspberry Pi 4B 2GB
+    url: tcp://dozzle-server.raspberry-pi-4b-2g.home:80
+
+  - <<: *default-tcp
+    name: Dozzle TCP:443
+    group: App - Dozzle - Raspberry Pi 4B 2GB
+    url: tcp://dozzle-server.raspberry-pi-4b-2g.home:443
+
+  ### Group: App - Dozzle - Raspberry Pi 4B 4GB ###
+
+  - <<: *default-http
+    name: Dozzle HTTP
+    group: App - Dozzle - Raspberry Pi 4B 4GB
+    url: http://dozzle-server.raspberry-pi-4b-4g.home
+
+  - <<: *default-http
+    name: Dozzle HTTPS
+    group: App - Dozzle - Raspberry Pi 4B 4GB
+    url: https://dozzle-server.raspberry-pi-4b-4g.home
+
+  - <<: *default-tcp
+    name: Dozzle TCP:80
+    group: App - Dozzle - Raspberry Pi 4B 4GB
+    url: tcp://dozzle-server.raspberry-pi-4b-4g.home:80
+
+  - <<: *default-tcp
+    name: Dozzle TCP:443
+    group: App - Dozzle - Raspberry Pi 4B 4GB
+    url: tcp://dozzle-server.raspberry-pi-4b-4g.home:443
+
   ### Group: App - Gatus ###
 
   - <<: *default-http
