@@ -3,6 +3,7 @@
 FROM amir20/dozzle:v8.8.1
 ENV DOZZLE_AUTH_PROVIDER=simple \
     DOZZLE_ENABLE_ACTIONS=false \
+    DOZZLE_HOSTNAME=Local \
     HOMELAB_CONTAINER_NAME=dozzle \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
