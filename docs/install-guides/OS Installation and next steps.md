@@ -10,7 +10,7 @@ Install OS via RaspberryPi Imager
 - Blogpost: <https://www.raspberrypi.com/news/raspberry-pi-imager-imaging-utility>
 - TL;DR: `brew install --cask raspberry-pi-imager`
 
-Notes:
+Notes for installation:
 
 - Set _homelab_ public SSH key
 - Set custom hostname
@@ -52,4 +52,14 @@ TL;DR:
 cd "$(git rev-parse --show-toplevel)/ansible"
 . ./venv/bin/activate
 ansible-playbook --limit <machine-name> playbooks/deploy-homelab-initial.yml
+```
+
+## Postinstall - Docker memory
+
+Only for ARM devices (Raspberry Pi)!
+
+Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory docker container use:
+
+```txt
+cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ```
