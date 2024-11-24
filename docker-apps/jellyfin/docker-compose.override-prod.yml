@@ -29,7 +29,7 @@ services:
   http-proxy-direct:
     <<: *common-service-options
 
-  socket-proxy:
+  transport-proxy:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80

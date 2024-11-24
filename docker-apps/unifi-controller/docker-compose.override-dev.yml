@@ -32,7 +32,7 @@ services:
   http-proxy-admin-raw:
     <<: *common-service-options
 
-  socket-proxy:
+  transport-proxy:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
