@@ -1,1 +1,2 @@
 tvheadend
+dozzle-server
