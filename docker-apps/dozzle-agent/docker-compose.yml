@@ -26,13 +26,6 @@ services:
       - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
     command: agent
 
-  transport-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
-
 networks:
   default: # Just disable default network
     driver: none

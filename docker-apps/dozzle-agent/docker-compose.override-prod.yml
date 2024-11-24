@@ -17,13 +17,6 @@ services:
     networks:
       external-network:
 
-  transport-proxy:
-    <<: *common-service-options
-    # ports:
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:7007:7007
-    # networks:
-    #   external-network:
-
 networks:
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
