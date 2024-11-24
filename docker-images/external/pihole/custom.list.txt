@@ -1,10 +1,10 @@
 10.1.0.1 router.network.home
 
-10.1.4.1 macbook-pro-2012.server.home
-10.1.4.2 raspberry-pi-3b.server.home
-10.1.4.3 raspberry-pi-4b-2g.server.home
-10.1.4.4 raspberry-pi-4b-4g.server.home
-10.1.4.8 odroid-h3.server.home
+10.1.4.1 server.macbook-pro-2012.home
+10.1.4.2 server.raspberry-pi-3b.home
+10.1.4.3 server.raspberry-pi-4b-2g.home
+10.1.4.4 server.raspberry-pi-4b-4g.home
+10.1.4.8 server.odroid-h3.home
 
 10.1.4.201 desklamp-left.home
 10.1.4.202 desklamp-right.home
@@ -30,11 +30,16 @@
 10.1.10.25 actualbudget.home
 10.1.10.26 desklamp-left-wrapper.home
 10.1.10.27 desklamp-right-wrapper.home
+10.1.10.28 dozzle-server.odroid-h3.home
 
 10.1.12.1 tvheadend.home
+10.1.12.2 dozzle-server.raspberry-pi-3b.home
+
+10.1.14.1 dozzle-server.raspberry-pi-4b-2g.home
 
 10.1.16.1 pihole-2.home
 10.1.16.2 pihole-2-open.home
 10.1.16.9 unbound-2.home
 10.1.16.10 unifi-controller.home
 10.1.16.11 gatus-2.home
+10.1.16.12 dozzle-server.raspberry-pi-4b-4g.home
