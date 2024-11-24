@@ -2,4 +2,3 @@ pihole-2
 unbound-2
 unifi-controller
 gatus-2
-dozzle-server
