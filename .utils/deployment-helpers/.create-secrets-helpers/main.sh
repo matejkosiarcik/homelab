@@ -96,7 +96,7 @@ hash_password_bcrypt() {
     # $1 - password file
     # returns password on stdout
     chronic htpasswd -c -B -i "$tmpdir/bcrypt-password-placeholder.txt" 'placeholder' <"$1"
-    cat "$tmpdir/bcrypt-password-placeholder.txt" | sed -E 's~^placeholder:~~'
+    sed -E 's~^placeholder:~~' <"$tmpdir/bcrypt-password-placeholder.txt"
     rm -f "$tmpdir/bcrypt-password-placeholder.txt"
 }
 
