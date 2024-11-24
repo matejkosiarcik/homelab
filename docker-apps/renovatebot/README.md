@@ -13,8 +13,8 @@
 
 - \[All\] Create base secrets
 - \[Prod\] Configure access tokens
-    - `RENOVATEBOT_TOKEN` is token for your specific git host - GitHub/GitLab/...
-    - `GITHUB_COM_TOKEN` is for `github.com` - It is _required_ even if targeting other git hosts, such as `gitlab`.
+    - `RENOVATEBOT_TOKEN` is token for your specific Git host - GitHub/GitLab/...
+    - `GITHUB_COM_TOKEN` is for `github.com` - It is _required_ even if targeting other Git hosts, such as `gitlab`.
       For more see subsection <https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/running.md#githubcom-token-for-changelogs>.
       This should be a readonly token with access to public repositories and packages.
 - \[Prod\] Add healthchecks monitor for `app` and configure `HOMELAB_HEALTHCHECK_URL`
