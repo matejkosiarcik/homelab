@@ -79,17 +79,17 @@ open_group_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM [group] WHERE na
 
 # Custom clients
 # - Default client
-default_socket_proxy_ip="$(dig +short default-transport-proxy)"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$default_socket_proxy_ip', 0, 0, 'custom');"
-default_socket_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$default_socket_proxy_ip';")"
+default_transport_proxy_ip="$(dig +short default-transport-proxy)"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$default_transport_proxy_ip', 0, 0, 'custom');"
+default_transport_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$default_transport_proxy_ip';")"
 # - Open client
-open_socket_proxy_ip="$(dig +short open-transport-proxy)"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$open_socket_proxy_ip', 0, 0, 'custom');"
-open_socket_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$open_socket_proxy_ip';")"
+open_transport_proxy_ip="$(dig +short open-transport-proxy)"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$open_transport_proxy_ip', 0, 0, 'custom');"
+open_transport_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$open_transport_proxy_ip';")"
 
 # Assign clients to groups
-sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$default_socket_proxy_client_id;"
-sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$open_socket_proxy_client_id;"
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$default_transport_proxy_client_id;"
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$open_transport_proxy_client_id;"
 
 # Custom adlists
 sed -E 's~#.*$~~' <'/homelab/adlists-default.txt' | (grep -E '.+' || true) | while read -r entry; do

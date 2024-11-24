@@ -1,5 +1,5 @@
 ---
-title: SMB
+title: PiHole
 ---
 
 flowchart LR
@@ -12,9 +12,9 @@ flowchart LR
 
     subgraph app_wrapper[" "]
         transport_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
-        samba("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/filebrowser.png' style='min-width:80px;max-width:80px' /></div>Samba")
+        dozzle_agent("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>agent")
 
-        transport_proxy <--->|:139,445| samba
+        transport_proxy <--->|:7007| dozzle_agent
     end
 
-    home_network <--->|:139,445| transport_proxy
+    home_network <--->|:7007| transport_proxy
