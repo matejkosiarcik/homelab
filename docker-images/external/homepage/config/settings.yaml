@@ -14,6 +14,9 @@ layout:
   DNS:
     style: row
     columns: 4
+  Docker:
+    style: row
+    columns: 4
   Smart Home:
     style: row
     columns: 4

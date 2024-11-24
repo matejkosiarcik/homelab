@@ -126,6 +126,13 @@
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_2_APIKEY}}"
 
+- Docker:
+    - Dozzle - Odroid H3:
+        description: Dozzle - docker monitoring
+        href: https://dozzle-server.odroid-h3.home
+        ping: dozzle-server.odroid-h3.home
+        icon: /icons/dozzle.png
+
 - Smart Home:
     - Home Assistant:
         description: Smart Home system
