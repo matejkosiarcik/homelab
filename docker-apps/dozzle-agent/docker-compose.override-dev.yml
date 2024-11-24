@@ -12,8 +12,10 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
+    ports:
+      - 127.0.0.1:7007:7007
 
   transport-proxy:
     <<: *common-service-options
-    ports:
-      - 127.0.0.1:7007:7007
+    # ports:
+    #   - 127.0.0.1:7007:7007
