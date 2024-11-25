@@ -31,7 +31,7 @@ if [ "$CRON" = '1' ]; then
 fi
 
 # Run actual job
-(timeout 5m sh /homelab/main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile") | tee "$logfile"
+(timeout 30m sh /homelab/main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile") | tee "$logfile"
 
 # Send end-signal to healthchecks
 status="$(cat "$statusfile")"
