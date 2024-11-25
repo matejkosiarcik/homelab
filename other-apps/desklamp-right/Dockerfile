@@ -1,3 +1,6 @@
+# checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_2: No need for healthcheck
+
 FROM arduinoci/ci-arduino-cli:v1.0.4
 WORKDIR /homelab
 RUN arduino-cli core update-index && \
