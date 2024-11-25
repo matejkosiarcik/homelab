@@ -27,8 +27,6 @@ elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
-elif [ "$HOMELAB_APP_TYPE" = 'dozzle-agent' ]; then
-    respawn socat TCP4-LISTEN:7007,fork,reuseaddr TCP4:app:7007 &
 elif [ "$HOMELAB_APP_TYPE" = 'dozzle-server' ]; then
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &

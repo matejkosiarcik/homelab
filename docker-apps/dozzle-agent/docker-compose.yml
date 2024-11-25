@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_TYPE: dozzle-server
+    HOMELAB_APP_TYPE: dozzle-agent
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -23,7 +23,11 @@ services:
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
+    secrets:
+      - source: cert
+        target: /dozzle_cert.pem
+      - source: key
+        target: /dozzle_key.pem
     command: agent
 
 networks:
@@ -32,3 +36,9 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+
+secrets:
+  cert:
+    file: ./app-secrets/dozzle-cert.pem
+  key:
+    file: ./app-secrets/dozzle-key.pem

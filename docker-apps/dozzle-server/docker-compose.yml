@@ -21,10 +21,14 @@ services:
     environment:
       <<: *common-env-variables
       DOZZLE_REMOTE_AGENT: dozzle-agent.odroid-h3.home:7007,dozzle-agent.raspberry-pi-3b.home:7007,dozzle-agent.raspberry-pi-4b-2g.home:7007,dozzle-agent.raspberry-pi-4b-4g.home:7007
-      # DOZZLE_REMOTE_AGENT: 10.1.10.29:7007,10.1.12.2:7007,10.1.14.1:7007,10.1.16.12:7007
     volumes:
       - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
       # Docker socket intentionally left out, as I want to force dozzle to use agents always, even for current server
+    secrets:
+      - source: cert
+        target: /dozzle_cert.pem
+      - source: key
+        target: /dozzle_key.pem
 
   certificate-manager:
     <<: *common-service-options
@@ -65,3 +69,9 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+
+secrets:
+  cert:
+    file: ./app-secrets/dozzle-cert.pem
+  key:
+    file: ./app-secrets/dozzle-key.pem
