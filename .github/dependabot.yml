@@ -48,6 +48,8 @@ updates:
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/tvheadend
       - /docker-images/external/unifi-network-application
+      - /other-apps/desklamp-left
+      - /other-apps/desklamp-right
     schedule:
       interval: daily
       time: "01:30"
