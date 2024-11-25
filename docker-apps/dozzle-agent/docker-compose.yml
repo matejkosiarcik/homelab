@@ -23,12 +23,12 @@ services:
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    command: agent
     secrets:
       - source: cert
         target: /dozzle_cert.pem
       - source: key
         target: /dozzle_key.pem
+    command: agent
 
 networks:
   default: # Just disable default network
