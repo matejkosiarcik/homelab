@@ -23,7 +23,6 @@ services:
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
     command: agent
     secrets:
       - source: cert
