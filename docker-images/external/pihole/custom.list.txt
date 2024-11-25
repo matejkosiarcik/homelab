@@ -11,6 +11,8 @@
 
 10.1.10.1 pihole.home
 10.1.10.2 pihole-open.home
+10.1.10.3 pihole-backup.home
+10.1.10.4 pihole-backup-open.home
 10.1.10.9 unbound.home
 10.1.10.10 dockerhub-proxy.home
 10.1.10.11 homeassistant.home

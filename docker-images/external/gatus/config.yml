@@ -746,6 +746,60 @@ endpoints:
     group: App - Pihole [open]
     url: udp://pihole.home:53
 
+  ### Group: App - Pihole Backup [default] ###
+
+  - <<: *default-http
+    name: Pihole Backup [default] HTTP
+    group: App - Pihole Backup [default]
+    url: http://pihole-backup.home
+
+  - <<: *default-http
+    name: Pihole Backup [default] HTTPS
+    group: App - Pihole Backup [default]
+    url: https://pihole-backup.home
+
+  - <<: *default-dns
+    name: Pihole Backup [default] DNS
+    group: App - Pihole Backup [default]
+    url: pihole-backup.home
+
+  - <<: *default-tcp
+    name: Pihole Backup [default] TCP:53
+    group: App - Pihole Backup [default]
+    url: tcp://pihole-backup.home:53
+
+  - <<: *default-udp
+    name: Pihole Backup [default] UDP:53
+    group: App - Pihole Backup [default]
+    url: udp://pihole-backup.home:53
+
+  - <<: *default-tcp
+    name: Pihole Backup [default] TCP:80
+    group: App - Pihole Backup [default]
+    url: tcp://pihole-backup.home:80
+
+  - <<: *default-tcp
+    name: Pihole Backup [default] TCP:443
+    group: App - Pihole Backup [default]
+    url: tcp://pihole-backup.home:443
+
+  ### Group: App - Pihole Backup [open] ###
+
+  - <<: *default-dns
+    name: Pihole Backup [open] DNS
+    group: App - Pihole Backup [open]
+    url: pihole-backup.home
+
+  - <<: *default-tcp
+    name: Pihole Backup [open] TCP:53
+    group: App - Pihole Backup [open]
+    url: tcp://pihole-backup.home:53
+
+  - <<: *default-udp
+    name: Pihole Backup [open] UDP:53
+    group: App - Pihole Backup [open]
+    url: udp://pihole-backup.home:53
+
   ### Group: App - Pihole (2) [default] ###
 
   - <<: *default-http
