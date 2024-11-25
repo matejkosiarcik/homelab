@@ -24,6 +24,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
+      - ./app-secrets/dozzle_cert.pem:/dozzle_cert.pem:ro
+      - ./app-secrets/dozzle_key.pem:/dozzle_key.pem:ro
     command: agent
 
 networks:
