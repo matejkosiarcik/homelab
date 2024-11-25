@@ -1,5 +1,6 @@
 # DNS
 pihole
+pihole-backup
 unbound
 
 # Caches
