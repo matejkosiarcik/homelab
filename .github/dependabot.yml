@@ -33,6 +33,7 @@ updates:
       - /docker-images/external/actualbudget
       - /docker-images/external/changedetection
       - /docker-images/external/docker-registry
+      - /docker-images/external/dozzle
       - /docker-images/external/gatus
       - /docker-images/external/healthchecks
       - /docker-images/external/homeassistant
