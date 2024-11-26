@@ -31,6 +31,12 @@ jobs:
               - '**/docker-proxy*/**'
               - '**/docker-registry*/**'
               - '**/dockerhub-*/**'
+            dozzle-agent:
+              - '**/dozzle-agent*/**'
+              - '**/dozzle*/**'
+            dozzle-server:
+              - '**/dozzle-server*/**'
+              - '**/dozzle*/**'
             gatus:
               - '**/gatus*/**'
             healthchecks:
@@ -64,18 +70,17 @@ jobs:
             unifi-controller:
               - '**/unifi-controller*/**'
               - '**/unifi-network-application*/**'
+            unbound:
+              - '**/unbound*/**'
 
   build:
-    name: Build - ${{ matrix.component }} - linux/${{ matrix.architecture }}
+    name: Build - ${{ matrix.component }}
     runs-on: ubuntu-latest
     needs: paths-filter
     strategy:
       fail-fast: false
       matrix:
         component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
-        architecture:
-          - amd64
-          - arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -88,7 +93,30 @@ jobs:
 
       - name: Example build
         run: |
-          echo 'To build ${{ matrix.component }} for linux/${{ matrix.architecture }}'
+          printf '{
+            "actualbudget": ["/servers/odroid-h3/docker-apps/actualbudget"],
+            "changedetection": ["/servers/odroid-h3/docker-apps/changedetection"],
+            "docker-proxy": ["/servers/odroid-h3/docker-apps/dockerhub-proxy"],
+            "dozzle-agent": ["/servers/odroid-h3/docker-apps/dozzle-agent", "/servers/raspberry-pi-3b/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],
+            "dozzle-server": ["/servers/odroid-h3/docker-apps/dozzle-server"],
+            "gatus": ["/servers/odroid-h3/docker-apps/gatus", "/servers/raspberry-pi-4b-4g/docker-apps/gatus-2"],
+            "healthchecks": ["/servers/odroid-h3/docker-apps/healthchecks"],
+            "homeassistant": ["/servers/odroid-h3/docker-apps/homeassistant"],
+            "homepage": ["/servers/odroid-h3/docker-apps/homepage"],
+            "jellyfin": ["/servers/odroid-h3/docker-apps/jellyfin"],
+            "minio": ["/servers/odroid-h3/docker-apps/minio"],
+            "ntfy": ["/servers/odroid-h3/docker-apps/ntfy"],
+            "omada-controller": ["/servers/odroid-h3/docker-apps/omada-controller"],
+            "openspeedtest": ["/servers/odroid-h3/docker-apps/openspeedtest"],
+            "pihole": ["/servers/odroid-h3/docker-apps/pihole", "/servers/odroid-h3/docker-apps/pihole-backup", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2"],
+            "smb": [],
+            "smtp4dev": ["/servers/odroid-h3/docker-apps/smtp4dev"],
+            "speedtest-tracker": ["/servers/odroid-h3/docker-apps/speedtest-tracker"],
+            "tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],
+            "unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"],
+            "unbound": ["/servers/odroid-h3/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],
+          }' | jq ".${{ matrix.component }}"" | sponge 'components.txt'
+          cat 'components.txt'
 
           # export DOCKER_COMPOSE_APP_NAME=placeholder
           # cd docker-images
