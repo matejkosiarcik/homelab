@@ -99,7 +99,7 @@ jobs:
             printf '%s ' '"changedetection": ["/servers/odroid-h3/docker-apps/changedetection"],'
             printf '%s ' '"docker-proxy": ["/servers/odroid-h3/docker-apps/dockerhub-proxy"],'
             printf '%s %s %s ' \
-              '"dozzle-agent":'
+              '"dozzle-agent":' \
               '["/servers/odroid-h3/docker-apps/dozzle-agent", "/servers/raspberry-pi-3b/docker-apps/dozzle-agent",' \
               '"/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],'
             printf '%s ' '"dozzle-server": ["/servers/odroid-h3/docker-apps/dozzle-server"],'
