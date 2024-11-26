@@ -124,5 +124,4 @@ jobs:
           # cd docker-images
           # docker build . \
           #   --file ./external/${{ matrix.component }}/Dockerfile \
-          #   --platform 'linux/${{ matrix.architecture }}' \
-          #   --tag 'homelab/${{ matrix.component }}:dev-${{ matrix.architecture }}'
+          #   --tag 'homelab/${{ matrix.component }}:dev'
