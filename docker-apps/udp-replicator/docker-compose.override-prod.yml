@@ -1,0 +1,23 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: prod
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    restart: unless-stopped
+
+services:
+  app:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp
+    networks:
+      external-network:
+
+networks:
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

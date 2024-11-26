@@ -1,0 +1,28 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/thomseddon/udp-replicator.git
+    name: udp-replicator
+    rev: master
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+sources_locked:
+  - repo: https://github.com/thomseddon/udp-replicator.git
+    name: udp-replicator
+    rev: fdd7412b42099f24cdf6957bf13298da67a5e792
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+default_group: ""
+groups:
+  -
