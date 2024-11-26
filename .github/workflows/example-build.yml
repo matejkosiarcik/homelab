@@ -117,7 +117,7 @@ jobs:
             printf '%s ' '"unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"],'
             printf '%s ' '"unbound": ["/servers/odroid-h3/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"]'
             printf '%s ' '}'
-          } | jq ".${{ matrix.component }}"" | sponge 'components.txt'
+          } | jq ".${{ matrix.component }}" | sponge 'components.txt'
           cat 'components.txt'
 
           # export DOCKER_COMPOSE_APP_NAME=placeholder
