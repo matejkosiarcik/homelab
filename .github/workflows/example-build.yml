@@ -31,6 +31,12 @@ jobs:
               - '**/docker-proxy*/**'
               - '**/docker-registry*/**'
               - '**/dockerhub-*/**'
+            dozzle-agent:
+              - '**/dozzle-agent*/**'
+              - '**/dozzle*/**'
+            dozzle-server:
+              - '**/dozzle-server*/**'
+              - '**/dozzle*/**'
             gatus:
               - '**/gatus*/**'
             healthchecks:
@@ -61,21 +67,20 @@ jobs:
               - '**/speedtest-tracker*/**'
             tvheadend:
               - '**/tvheadend*/**'
+            unbound:
+              - '**/unbound*/**'
             unifi-controller:
               - '**/unifi-controller*/**'
               - '**/unifi-network-application*/**'
 
   build:
-    name: Build - ${{ matrix.component }} - linux/${{ matrix.architecture }}
+    name: Build - ${{ matrix.component }}
     runs-on: ubuntu-latest
     needs: paths-filter
     strategy:
       fail-fast: false
       matrix:
         component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
-        architecture:
-          - amd64
-          - arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -88,11 +93,38 @@ jobs:
 
       - name: Example build
         run: |
-          echo 'To build ${{ matrix.component }} for linux/${{ matrix.architecture }}'
+          {
+            printf '%s ' '{'
+            printf '%s ' '"actualbudget": ["/servers/odroid-h3/docker-apps/actualbudget"],'
+            printf '%s ' '"changedetection": ["/servers/odroid-h3/docker-apps/changedetection"],'
+            printf '%s ' '"docker-proxy": ["/servers/odroid-h3/docker-apps/dockerhub-proxy"],'
+            printf '%s %s %s ' \
+              '"dozzle-agent":' \
+              '["/servers/odroid-h3/docker-apps/dozzle-agent", "/servers/raspberry-pi-3b/docker-apps/dozzle-agent",' \
+              '"/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],'
+            printf '%s ' '"dozzle-server": ["/servers/odroid-h3/docker-apps/dozzle-server"],'
+            printf '%s ' '"gatus": ["/servers/odroid-h3/docker-apps/gatus", "/servers/raspberry-pi-4b-4g/docker-apps/gatus-2"],'
+            printf '%s ' '"healthchecks": ["/servers/odroid-h3/docker-apps/healthchecks"],'
+            printf '%s ' '"homeassistant": ["/servers/odroid-h3/docker-apps/homeassistant"],'
+            printf '%s ' '"homepage": ["/servers/odroid-h3/docker-apps/homepage"],'
+            printf '%s ' '"jellyfin": ["/servers/odroid-h3/docker-apps/jellyfin"],'
+            printf '%s ' '"minio": ["/servers/odroid-h3/docker-apps/minio"],'
+            printf '%s ' '"ntfy": ["/servers/odroid-h3/docker-apps/ntfy"],'
+            printf '%s ' '"omada-controller": ["/servers/odroid-h3/docker-apps/omada-controller"],'
+            printf '%s ' '"openspeedtest": ["/servers/odroid-h3/docker-apps/openspeedtest"],'
+            printf '%s ' '"pihole": ["/servers/odroid-h3/docker-apps/pihole", "/servers/odroid-h3/docker-apps/pihole-backup", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2"],'
+            printf '%s ' '"smb": [],'
+            printf '%s ' '"smtp4dev": ["/servers/odroid-h3/docker-apps/smtp4dev"],'
+            printf '%s ' '"speedtest-tracker": ["/servers/odroid-h3/docker-apps/speedtest-tracker"],'
+            printf '%s ' '"tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],'
+            printf '%s ' '"unbound": ["/servers/odroid-h3/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],'
+            printf '%s ' '"unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"]'
+            printf '%s ' '}'
+          } | jq ".${{ matrix.component }}" | sponge 'components.txt'
+          cat 'components.txt'
 
           # export DOCKER_COMPOSE_APP_NAME=placeholder
           # cd docker-images
           # docker build . \
           #   --file ./external/${{ matrix.component }}/Dockerfile \
-          #   --platform 'linux/${{ matrix.architecture }}' \
-          #   --tag 'homelab/${{ matrix.component }}:dev-${{ matrix.architecture }}'
+          #   --tag 'homelab/${{ matrix.component }}:dev'
