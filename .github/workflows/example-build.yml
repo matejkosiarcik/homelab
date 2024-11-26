@@ -67,11 +67,11 @@ jobs:
               - '**/speedtest-tracker*/**'
             tvheadend:
               - '**/tvheadend*/**'
+            unbound:
+              - '**/unbound*/**'
             unifi-controller:
               - '**/unifi-controller*/**'
               - '**/unifi-network-application*/**'
-            unbound:
-              - '**/unbound*/**'
 
   build:
     name: Build - ${{ matrix.component }}
@@ -114,8 +114,8 @@ jobs:
             "smtp4dev": ["/servers/odroid-h3/docker-apps/smtp4dev"],
             "speedtest-tracker": ["/servers/odroid-h3/docker-apps/speedtest-tracker"],
             "tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],
-            "unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"],
-            "unbound": ["/servers/odroid-h3/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"]
+            "unbound": ["/servers/odroid-h3/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],
+            "unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"]
           }
           EOF | jq ".${{ matrix.component }}" | sponge 'components.txt'
           cat 'components.txt'
