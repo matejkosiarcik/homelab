@@ -88,6 +88,23 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/transport-proxy/Dockerfile
 
+  keepalived:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-keepalived
+    network_mode: host
+    networks: {}
+    sysctls: {}
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/keepalived/Dockerfile
+    env_file:
+      - ./config/keepalived.env
+      - ./app-secrets/keepalived.env
+    cap_add:
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+
 networks:
   default: # Just disable default network
     driver: none
