@@ -12,5 +12,5 @@ seq 1 255 | while read -r i; do
 done
 
 find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
-    sh "$git_dir/.utils/startup-helpers/unbound.sh" "$file"
+    sh "$git_dir/.utils/startup-helpers/unbound.sh" "$(basename "$file")"
 done
