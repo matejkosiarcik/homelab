@@ -20,15 +20,13 @@ fi
 
 sudo killall unbound
 
-_logged=0
-sudo find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
-    if [ "$_logged" -eq '0' ]; then
-        printf 'Remove old unbound configs\n' >&2
-        _logged=1
-    fi
-    sudo rm -f "$file"
-done
-if "$(find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
+if [ "$(sudo find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
+    printf 'Remove old unbound configs\n' >&2
+    sudo find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
+        sudo rm -f "$file"
+    done
+fi
+if [ "$(find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
     printf 'Copy new unbound configs\n' >&2
     find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         sudo cp "$file" "/root/$(basename "$file")"
