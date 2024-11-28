@@ -8,10 +8,11 @@ if [ "$#" -lt 1 ]; then
 fi
 
 config_file="$1"
-log_file="$2"
+log_file="/root/.log/$(basename $config_file .conf).log"
 
 sudo rm -f "$log_file"
 sudo touch "$log_file"
 sudo chown root:root "$log_file"
+sudo chmod a+rw "$log_file"
 
 nohup sudo unbound -v -c "$config_file" &
