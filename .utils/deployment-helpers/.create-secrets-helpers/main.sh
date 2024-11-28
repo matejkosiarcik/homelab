@@ -394,17 +394,12 @@ case "$full_app_name" in
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
-    create_password "$tmpdir/keepalived-password.txt" --only-alphanumeric
-    sed -E 's~^(.{8}).+$~\1~' <"$tmpdir/keepalived-password.txt" | sponge "$tmpdir/keepalived-password.txt"
 
     # App
     printf '%s' "$(cat "$tmpdir/admin-password.txt")" >>"$output/pihole-password.txt"
 
-    printf 'KEEPALIVED_PASSWORD=%s\n' "$(cat "$tmpdir/keepalived-password.txt")" >>"$output/keepalived.env"
-
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
-    printf 'keepalived,%s\n' "$(cat "$tmpdir/keepalived-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
