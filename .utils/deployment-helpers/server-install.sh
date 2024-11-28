@@ -33,7 +33,7 @@ if [ "$(find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound
     printf 'Copy new unbound configs\n' >&2
     find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         cp "$file" "$HOME/config/$(basename "$file")"
-        sudo chown root:root "$HOME/config/config/$(basename "$file")"
+        sudo chown root:root "$HOME/config/$(basename "$file")"
     done
 fi
 
