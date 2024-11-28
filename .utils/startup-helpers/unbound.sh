@@ -2,7 +2,7 @@
 set -euf
 # This script starts native unbound
 
-if [ "$#" -lt 2 ]; then
+if [ "$#" -lt 1 ]; then
     printf 'Not enough arguments\n' >&2
     exit 1
 fi
