@@ -10,6 +10,7 @@ fi
 config_file="$1"
 log_file="/root/.log/$(basename $config_file .conf).log"
 
+mkdir -p "$(dirname "$log_file")"
 sudo rm -f "$log_file"
 sudo touch "$log_file"
 sudo chown root:root "$log_file"
