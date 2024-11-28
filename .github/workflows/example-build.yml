@@ -85,6 +85,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
+      - uses: tecolicom/actions-use-apt-tools@v1.1.1
+        with:
+          tools: moreutils
+
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3.2.0
 
