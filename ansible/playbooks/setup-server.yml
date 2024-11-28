@@ -30,6 +30,7 @@
           - lshw
           - moreutils
           - openssl
+          - psmisc
           - python-is-python3
           - python3
           - rfkill

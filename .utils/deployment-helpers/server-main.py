@@ -4,7 +4,6 @@ import argparse
 import logging
 import os
 import re
-import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -17,6 +16,7 @@ os.environ["START_DATE"] = start_datestr
 
 server_dir = path.abspath(path.curdir)
 server_name = path.basename(server_dir)
+git_dir = path.abspath(path.join(server_dir, "..", ".."))
 
 log_dir = path.join(path.expanduser("~"), ".homelab-logs", start_datestr)
 log_file = path.join(log_dir, "log.txt")
@@ -99,16 +99,9 @@ def server_docker_action(action: str):
 
 
 def server_install():
-    log.info("Installing global scripts")
+    log.info("Installing global server config")
 
-    assert path.exists(path.join(server_dir, "startup.sh")), "Server startup.sh not found"
-    if not dryrun:
-        shutil.copy(path.join(server_dir, "startup.sh"), path.join(path.expanduser("~"), "startup.sh"))
-
-    assert path.exists(path.join(server_dir, "crontab.cron")), "Server crontab.cron not found"
-    if not dryrun:
-        with open(path.join(server_dir, "crontab.cron"), encoding="utf-8") as file:
-            subprocess.check_call(["crontab", "-"], stdin=file)
+    subprocess.check_call(["sh", path.join(git_dir, ".utils", "deployment-helpers", "server-install.sh")])
 
     end_datetime = datetime.now()
     log.info("Installing global scripts - SUCCESS on %s (%s)", end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime))))
