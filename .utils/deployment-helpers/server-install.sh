@@ -20,13 +20,13 @@ fi
 
 sudo killall unbound
 
-if "$(find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge 1 ]; then
+if "$(sudo find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge 1 ]; then
     printf 'Remove old unbound config\n' >&2
-    find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
+    sudo find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         sudo rm -f "$file"
     done
 fi
-if "$(find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge 1 ]; then
+if "$(sudo find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge 1 ]; then
     printf 'Copy new unbound configs\n' >&2
     find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         sudo cp "$file" "/root/$(basename "$file")"
@@ -35,4 +35,4 @@ if "$(find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*
 fi
 
 tmpfile="$(mktemp)"
-find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge /etc/apparmor.d/local/usr.sbin.unbound
+sudo find '/root' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge /etc/apparmor.d/local/usr.sbin.unbound
