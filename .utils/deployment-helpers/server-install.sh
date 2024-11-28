@@ -7,6 +7,7 @@ server_dir="$git_dir/servers/.current"
 ### General config ###
 
 mkdir -p "$HOME/config" "$HOME/.log"
+sudo mkdir -p /root/config /root/.log
 
 if [ -f "$server_dir/config/startup.sh" ]; then
     printf 'Copy startup script\n' >&2
@@ -22,9 +23,9 @@ fi
 
 sudo killall unbound
 
-if [ "$(find "$HOME/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
+if [ "$(find "/root/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
     printf 'Remove old unbound configs\n' >&2
-    sudo find "$HOME/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
+    sudo find "/root/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         sudo rm -f "$file"
     done
 fi
@@ -36,5 +37,5 @@ if [ "$(find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound
     done
 fi
 
-sudo find "$HOME/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge /etc/apparmor.d/local/usr.sbin.unbound
+sudo find "/root/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge /etc/apparmor.d/local/usr.sbin.unbound
 sudo systemctl restart apparmor
