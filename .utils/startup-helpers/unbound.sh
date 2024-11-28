@@ -14,5 +14,4 @@ sudo rm -f "$log_file"
 sudo touch "$log_file"
 sudo chown root:root "$log_file"
 
-# nohup sudo unbound -c "$config_file" &
-sudo unbound -d -v -c "$config_file"
+nohup sudo unbound -v -c "$config_file" &
