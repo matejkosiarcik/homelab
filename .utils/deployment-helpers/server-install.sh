@@ -6,9 +6,11 @@ server_dir="$git_dir/servers/.current"
 
 ### General config ###
 
+mkdir -p "$HOME/config" "$HOME/.log"
+
 if [ -f "$server_dir/config/startup.sh" ]; then
     printf 'Copy startup script\n' >&2
-    cp "$server_dir/config/startup.sh" "$HOME/startup.sh"
+    cp "$server_dir/config/startup.sh" "$HOME/config/startup.sh"
 fi
 
 if [ -f "$server_dir/config/crontab.cron" ]; then
