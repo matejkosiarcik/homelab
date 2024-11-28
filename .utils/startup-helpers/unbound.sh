@@ -16,4 +16,4 @@ sudo touch "$log_file"
 sudo chown root:root "$log_file"
 sudo chmod a+rw "$log_file"
 
-sudo unbound -v -c "$HOME/config/config/$config_file" &
+sudo unbound -v -c "$HOME/config/$config_file" &
