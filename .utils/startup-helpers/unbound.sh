@@ -9,4 +9,4 @@ fi
 
 config_file="$1"
 # nohup sudo unbound -c "$config_file" &
-sudo unbound -c "$config_file"
+sudo unbound -d -v -c "$config_file"
