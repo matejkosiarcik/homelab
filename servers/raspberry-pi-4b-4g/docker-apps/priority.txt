@@ -1,5 +1,4 @@
 pihole-2
-unbound-2
 dozzle-agent
 unifi-controller
 gatus-2

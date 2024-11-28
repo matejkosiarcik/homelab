@@ -1,7 +1,6 @@
 # DNS
 pihole
 pihole-backup
-unbound
 
 # Caches
 dockerhub-proxy
