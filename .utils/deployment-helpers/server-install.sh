@@ -6,14 +6,14 @@ server_dir="$git_dir/servers/.current"
 
 ### General config ###
 
-if [ -f "$server_dir/startup.sh" ]; then
+if [ -f "$server_dir/config/startup.sh" ]; then
     printf 'Copy startup script\n' >&2
-    cp "$server_dir/startup.sh" "$HOME/startup.sh"
+    cp "$server_dir/config/startup.sh" "$HOME/startup.sh"
 fi
 
-if [ -f "$server_dir/crontab.cron" ]; then
+if [ -f "$server_dir/config/crontab.cron" ]; then
     printf 'Installing crontab\n' >&2
-    crontab - <"$server_dir/crontab.cron"
+    crontab - <"$server_dir/config/crontab.cron"
 fi
 
 ### Unbound config ###
