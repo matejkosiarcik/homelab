@@ -8,7 +8,7 @@ if [ "$#" -lt 1 ]; then
 fi
 
 config_file="$1"
-log_file=""$HOME/.log/$(basename "$config_file" .conf).log"
+log_file="$HOME/.log/$(basename "$config_file" .conf).log"
 
 sudo mkdir -p "$(dirname "$log_file")"
 sudo rm -f "$log_file"
