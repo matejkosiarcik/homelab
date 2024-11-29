@@ -80,7 +80,7 @@ def main(argv: List[str]):
     if force:
         docker_args.append("--force")
 
-    if command in ["deploy", "install"]:
+    if command == "install":
         server_install()
 
     if command in ["build", "create-secrets", "deploy", "start", "stop"]:
