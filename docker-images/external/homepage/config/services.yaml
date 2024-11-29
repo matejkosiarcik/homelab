@@ -106,23 +106,23 @@
 - DNS:
     - PiHole Primary:
         description: DNS server with built-in adblocking
-        href: https://pihole.home
-        ping: pihole.home
+        href: https://pihole-1-primary.home
+        ping: pihole-1-primary.home
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole.home
+          url: https://pihole-1-primary.home
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_PRIMARY_APIKEY}}"
 
     - PiHole Primary Backup:
         description: DNS server with built-in adblocking
-        href: https://pihole-backup.home
-        ping: pihole-backup.home
+        href: https://pihole-1-backup.home
+        ping: pihole-1-backup.home
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-backup.home
+          url: https://pihole-1-backup.home
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_PRIMARY_BACKUP_APIKEY}}"
 

@@ -27,7 +27,6 @@ updates:
       - /docker-images/custom/minio-client
       - /docker-images/custom/samba
       - /docker-images/custom/transport-proxy
-      - /docker-images/custom/unbound
       - /docker-images/custom/web-automation
       - /docker-images/database/mongodb
       - /docker-images/external/actualbudget
@@ -52,7 +51,7 @@ updates:
       - /other-apps/desklamp-right
     schedule:
       interval: daily
-      time: "01:30"
+      time: "02:15"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -76,7 +75,7 @@ updates:
     versioning-strategy: increase
     schedule:
       interval: daily
-      time: "02:00"
+      time: "02:30"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
@@ -97,7 +96,7 @@ updates:
       - /icons
     schedule:
       interval: daily
-      time: "02:30"
+      time: "02:45"
       timezone: Europe/Bratislava
     reviewers:
       - matejkosiarcik
