@@ -1,6 +1,5 @@
 # DNS
 pihole
-pihole-backup
 
 # Caches
 dockerhub-proxy
@@ -29,11 +28,16 @@ actualbudget
 openspeedtest
 speedtest-tracker
 
-# Monitoring
+# Misc Monitoring
 dozzle-agent
 dozzle-server
 changedetection
 healthchecks
+
+# DNS backup
+pihole-backup
+
+# App Monitoring
 gatus
 
 # Non-server apps
