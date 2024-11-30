@@ -14,12 +14,12 @@
         cd "$HOME/git/homelab/servers/.current"
 
         crontab_shasum_before="$(crontab -l | shasum)"
-        startup_script_shasum_before="$(shasum "$HOME/startup.sh" || true)"
+        startup_script_shasum_before="$((shasum <"$HOME/config/startup-initial.sh" && shasum <"$HOME/config/startup-always.sh") || true)"
 
         sh main.sh install --prod
 
         crontab_shasum_after="$(crontab -l | shasum)"
-        startup_script_shasum_after="$(shasum "$HOME/startup.sh")"
+        startup_script_shasum_after="$((shasum <"$HOME/config/startup-initial.sh" && shasum <"$HOME/config/startup-always.sh") || true)"
 
         if [ "$crontab_shasum_before" != "$crontab_shasum_after" ] || [ "$startup_script_shasum_before" != "$startup_script_shasum_after" ]; then
           printf 'CHANGED\n'

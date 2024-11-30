@@ -235,6 +235,6 @@
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
-        if [ ! -e "$HOME/git/homelab/servers/.current/startup.sh" ]; then
+        if [ ! -e "$HOME/git/homelab/servers/.current/main.sh" ]; then
           exit 1
         fi
