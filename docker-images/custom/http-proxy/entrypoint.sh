@@ -11,9 +11,6 @@ while [ ! "$(find '/homelab/certs' -type f | grep . -c)" -gt 0 ]; do
 done
 EOF
 
-# Watch certificates in background
-inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
-
 printf '\n' >>/etc/apache2/envvars
 
 # Set HOMELAB_ENV
@@ -178,6 +175,9 @@ else
 fi
 export PROXY_FORCE_HTTPS
 printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
+
+# Watch certificates in background
+inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
 
 # Start apache
 apachectl -D FOREGROUND
