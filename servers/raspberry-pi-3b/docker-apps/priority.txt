@@ -1,2 +1,2 @@
-dozzle-agent
 tvheadend
+dozzle-agent
