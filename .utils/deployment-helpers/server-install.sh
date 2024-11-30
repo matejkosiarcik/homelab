@@ -2,6 +2,7 @@
 set -euf
 
 git_dir="$(git rev-parse --show-toplevel)"
+echo "git dir: $git_dir"
 server_dir="$git_dir/servers/.current"
 
 ### General config ###
