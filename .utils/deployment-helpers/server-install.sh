@@ -48,6 +48,6 @@ fi
 
 ### Startup services again ###
 
-# if [ -f "$HOME/config/startup-always.sh" ]; then
-#     sh "$HOME/config/startup-always.sh"
-# fi
+if [ -f "$HOME/config/startup-always.sh" ]; then
+    sh "$HOME/config/startup-always.sh"
+fi
