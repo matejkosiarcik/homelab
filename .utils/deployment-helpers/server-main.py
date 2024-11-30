@@ -17,6 +17,8 @@ os.environ["START_DATE"] = start_datestr
 server_dir = path.abspath(path.curdir)
 server_name = path.basename(server_dir)
 git_dir = path.abspath(path.join(server_dir, "..", ".."))
+docker_apps_dir = path.join(server_dir, "docker-apps")
+docker_apps_list_all = [x for x in next(os.walk(docker_apps_dir))[1] if not x.startswith(".") and path.isdir(path.join(docker_apps_dir, x))]
 
 log_dir = path.join(path.expanduser("~"), ".homelab-logs", start_datestr)
 log_file = path.join(log_dir, "log.txt")
@@ -66,8 +68,18 @@ def main(argv: List[str]):
     args = parser.parse_args(argv)
 
     applist = str(args.only).split(",") if args.only is not None else read_priority_apps_list()
+    applist = [x.strip() for x in applist]
+    applist = [path.basename(x) for x in applist]
+    _applist = []
     for app in applist:
-        assert path.exists(path.join(server_dir, "docker-apps", app)), f'App "{app}" not found'
+        if "*" in app:
+            matched_apps = [x for x in docker_apps_list_all if re.match(app.replace("*", ".*").replace("-", "\\-"), x)]
+            _applist.extend(matched_apps)
+        else:
+            _applist.append(app)
+    applist = _applist
+    for app in applist:
+        assert path.exists(path.join(docker_apps_dir, app)), f'App "{app}" not found'
 
     command = args.subcommand
     force = args.force
