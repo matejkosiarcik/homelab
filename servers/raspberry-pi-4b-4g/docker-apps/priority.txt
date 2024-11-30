@@ -7,4 +7,4 @@ dozzle-agent
 gatus-2
 
 # Must be last
-pihole-2-backup
+pihole-2-secondary

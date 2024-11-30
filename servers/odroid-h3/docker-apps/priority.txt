@@ -1,5 +1,5 @@
 # DNS
-pihole
+pihole-1-primary
 
 # Caches
 dockerhub-proxy
@@ -35,7 +35,7 @@ changedetection
 healthchecks
 
 # DNS backup
-pihole-backup
+pihole-1-secondary
 
 # App Monitoring
 gatus
