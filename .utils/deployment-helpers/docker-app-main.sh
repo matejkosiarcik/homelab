@@ -155,7 +155,7 @@ docker_build() {
     # Pull docker images
     #
 
-    docker_pull_args="$docker_compose_args pull --ignore-buildable --include-deps"
+    docker_pull_args="$docker_compose_args pull --ignore-buildable --include-deps $docker_dryrun_args"
     if [ "$mode" = 'prod' ]; then
         docker_pull_args="$docker_pull_args --policy always --quiet"
     elif [ "$mode" = 'dev' ]; then
@@ -176,7 +176,7 @@ docker_build() {
     # Build docker images
     #
 
-    docker_build_args="$docker_compose_args build --with-dependencies"
+    docker_build_args="$docker_compose_args build --with-dependencies $docker_dryrun_args"
     # if [ "$mode" = 'prod' ]; then
     #     docker_build_args="$docker_build_args --quiet"
     # fi
