@@ -27,14 +27,14 @@
           exit 1
         fi
 
-        if [ "$(git status --short)" != '' ]; then
-          git checkout .
-          git clean -df
+        if [ "$(git branch --show-current)" != main ]; then
+          git checkout main
           printf 'CHANGED\n'
         fi
 
-        if [ "$(git branch --show-current)" != main ]; then
-          git checkout main
+        if [ "$(git status --short)" != '' ]; then
+          git checkout .
+          git clean -df
           printf 'CHANGED\n'
         fi
 
