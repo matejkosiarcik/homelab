@@ -1,4 +1,10 @@
-pihole-2
-dozzle-agent
+# DNS first
+pihole-2-primary
+
+# Other
 unifi-controller
+dozzle-agent
 gatus-2
+
+# Must be last
+pihole-2-secondary

@@ -269,9 +269,10 @@ case "$full_app_name" in
     prepare_empty_env HOMEPAGE_VAR_HOMEASSISTANT_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_JELLYFIN_PASSWORD "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD "$output/homepage.env"
-    prepare_empty_env HOMEPAGE_VAR_PIHOLE_PRIMARY_APIKEY "$output/homepage.env"
-    prepare_empty_env HOMEPAGE_VAR_PIHOLE_PRIMARY_BACKUP_APIKEY "$output/homepage.env"
-    prepare_empty_env HOMEPAGE_VAR_PIHOLE_SECONDARY_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_PRIMARY_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_SECONDARY_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_PRIMARY_APIKEY "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_SECONDARY_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD "$output/homepage.env"
 
     # Log results

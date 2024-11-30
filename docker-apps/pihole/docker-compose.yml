@@ -74,16 +74,23 @@ services:
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
 
-  default-transport-proxy:
+  transport-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-default-transport-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/transport-proxy/Dockerfile
 
-  open-transport-proxy:
+  dns-default-transport-proxy:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-open-transport-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-dns-default-transport-proxy
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/transport-proxy/Dockerfile
+
+  dns-open-transport-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-dns-open-transport-proxy
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/transport-proxy/Dockerfile
