@@ -135,12 +135,14 @@ docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_app_name" | tee "$log_file" >&2
 
+    docker_stop_args="$docker_compose_args down $docker_dryrun_args"
+
     if [ "$mode" = 'prod' ]; then
         # shellcheck disable=SC2086
-        time docker compose $docker_compose_args down 2>&1 | tee "$log_file" >&2
+        time docker compose $docker_stop_args 2>&1 | tee "$log_file" >&2
     elif [ "$mode" = 'dev' ]; then
         # shellcheck disable=SC2086
-        docker compose $docker_compose_args down
+        docker compose $docker_stop_args
     fi
     printf '\n' | tee "$log_file" >&2
 }
@@ -155,7 +157,7 @@ docker_build() {
     # Pull docker images
     #
 
-    docker_pull_args="$docker_compose_args pull --ignore-buildable --include-deps"
+    docker_pull_args="$docker_compose_args pull --ignore-buildable --include-deps $docker_dryrun_args"
     if [ "$mode" = 'prod' ]; then
         docker_pull_args="$docker_pull_args --policy always --quiet"
     elif [ "$mode" = 'dev' ]; then
@@ -176,7 +178,7 @@ docker_build() {
     # Build docker images
     #
 
-    docker_build_args="$docker_compose_args build --with-dependencies"
+    docker_build_args="$docker_compose_args build --with-dependencies $docker_dryrun_args"
     # if [ "$mode" = 'prod' ]; then
     #     docker_build_args="$docker_build_args --quiet"
     # fi
