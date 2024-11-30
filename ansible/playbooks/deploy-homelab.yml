@@ -50,11 +50,11 @@
           exit 1
         fi
 
-        if [ ! -e 'servers/.current' ]; then
+        if [ -e 'servers/.current' ]; then
+          cd 'servers/.current'
+        else
           printf 'Server symlink is not setup\n'
           exit 1
         fi
-
-        cd servers/.current
 
         sh main.sh deploy --prod
