@@ -1,9 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "dependencyDashboard": false,
   "extends": [
     "config:recommended"
   ],
-  "dependencyDashboard": false,
   "packageRules": [
     {
       "description": "Automerge non-major updates",
@@ -14,5 +14,7 @@
       "automerge": true,
       "automergeStrategy": "squash"
     }
-  ]
+  ],
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 10
 }
