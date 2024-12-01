@@ -2,10 +2,11 @@ module.exports = {
     platform: 'github',
     onboardingConfig: {
         extends: [
-            'config:recommended'
+            'config:recommended',
         ],
     },
     repositories: [
-        'matejkosiarcik/homelab'
+        'matejkosiarcik/homelab',
+        'matejkosiarcik/dotfiles',
     ],
 };
