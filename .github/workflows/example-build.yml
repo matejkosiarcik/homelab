@@ -117,7 +117,7 @@ jobs:
             printf '%s ' '"openspeedtest": ["/servers/odroid-h3/docker-apps/openspeedtest"],'
             printf '%s %s %s' \
               '"pihole":' \
-              \["/servers/odroid-h3/docker-apps/pihole-1-primary", "/servers/odroid-h3/docker-apps/pihole-1-secondary",'\
+              '["/servers/odroid-h3/docker-apps/pihole-1-primary", "/servers/odroid-h3/docker-apps/pihole-1-secondary",' \
               '"/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-primary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-secondary"],'
             printf '%s ' '"smb": [],'
             printf '%s ' '"smtp4dev": ["/servers/odroid-h3/docker-apps/smtp4dev"],'
