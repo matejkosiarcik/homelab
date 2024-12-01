@@ -26,6 +26,8 @@ if [ "$#" -lt 1 ]; then
     exit 1
 fi
 
+tmpdir="$(mktemp -d)"
+
 command="$1"
 shift
 
@@ -119,18 +121,18 @@ if [ -f "$app_dir/config/docker-compose-$mode.env" ]; then
     . "$app_dir/config/docker-compose-$mode.env"
 fi
 
-mkdir -p "$app_dir/tmp"
-extra_docker_compose_env="$app_dir/tmp/docker-compose.env"
-rm -f "$extra_docker_compose_env"
+# Get default value for docker-compose
+extra_docker_compose_env="$tmpdir/docker-compose.env"
+touch "$extra_docker_compose_env"
 if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
-    printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$full_app_name" >>"$extra_docker_compose_env"
+    DOCKER_COMPOSE_APP_NAME="$full_app_name"
+    printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
 fi
 if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
-    printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$full_app_name.home" >>"$extra_docker_compose_env"
+    DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home"
+    printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >>"$extra_docker_compose_env"
 fi
 docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
-# shellcheck source=/dev/null
-. "$extra_docker_compose_env"
 
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_app_name" | tee "$log_file" >&2
@@ -267,3 +269,5 @@ stop)
     exit 1
     ;;
 esac
+
+rm -rf "$tmpdir"
