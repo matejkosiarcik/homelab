@@ -90,9 +90,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: admin-raw
