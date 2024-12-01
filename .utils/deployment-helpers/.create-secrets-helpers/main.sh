@@ -60,10 +60,6 @@ if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     # shellcheck source=/dev/null
     . "$PWD/config/docker-compose-$mode.env"
 fi
-if [ -f "$PWD/tmp/docker-compose.env" ]; then
-    # shellcheck source=/dev/null
-    . "$PWD/tmp/docker-compose.env"
-fi
 
 create_password() {
     output_file="$1"
