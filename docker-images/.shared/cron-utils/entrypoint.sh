@@ -9,7 +9,9 @@ CRON='0'
 export CRON
 
 # Run script initially
-timeout 5m sh /homelab/main.sh
+if [ "${HOMELAB_CRON_SKIP_INITIAL-}" != '1' ]; then
+    timeout 5m sh /homelab/main.sh
+fi
 
 # Run cron indefinitely
 CRON=1
