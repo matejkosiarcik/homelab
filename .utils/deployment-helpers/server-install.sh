@@ -26,7 +26,7 @@ fi
 
 ### Unbound config ###
 
-sudo killall unbound
+sudo killall unbound || true
 
 if [ "$(sudo find "/root/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
     printf 'Remove old unbound configs\n' >&2
