@@ -115,14 +115,14 @@
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_APIKEY}}"
 
-    - PiHole 1 Backup:
+    - PiHole 1 Secondary:
         description: DNS server with built-in adblocking
-        href: https://pihole-1-backup.home
-        ping: pihole-1-backup.home
+        href: https://pihole-1-secondary.home
+        ping: pihole-1-secondary.home
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-backup.home
+          url: https://pihole-1-secondary.home
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_APIKEY}}"
 
@@ -137,14 +137,14 @@
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_APIKEY}}"
 
-    - PiHole 2 Backup:
+    - PiHole 2 Secondary:
         description: DNS server with built-in adblocking
-        href: https://pihole-2-backup.home
-        ping: pihole-2-backup.home
+        href: https://pihole-2-secondary.home
+        ping: pihole-2-secondary.home
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-backup.home
+          url: https://pihole-2-secondary.home
           version: 5
           key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_APIKEY}}"
 
