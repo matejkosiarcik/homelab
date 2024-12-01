@@ -42,9 +42,6 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
-    depends_on:
-      pihole:
-        condition: service_healthy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 

@@ -12,12 +12,18 @@ if [ -n "${MINIO_URL+x}" ]; then
     minio_url="$MINIO_URL"
 fi
 
+# Wait for minio to start
 timeout 30s sh <<EOF
+if curl --fail --insecure "$minio_url/minio/health/live" >/dev/null 2>/dev/null; then
+    return 0
+fi
+printf 'Waiting for minio deployment\n' >&2
 while ! curl --fail --insecure "$minio_url/minio/health/live"; do
     sleep 1
 done
-EOF
+printf 'Minio deployment available\n' >&2
 sleep 1
+EOF
 
 MC_QUIET='1'
 export MC_QUIET
