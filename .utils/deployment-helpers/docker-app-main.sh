@@ -93,7 +93,7 @@ backup_dir="$HOME/.homelab-backup/$START_DATE-$full_app_name"
 if [ "$mode" = 'dev' ]; then
     log_file='/dev/null'
 elif [ "$mode" = 'prod' ]; then
-    mkdir -p "$log_dir"
+    mkdir -p "$log_dir" "$backup_dir"
 fi
 
 docker_file_args=''
