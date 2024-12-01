@@ -10,11 +10,10 @@ if [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "s
     return 0
 fi
 printf 'Waiting for container %s\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
-while [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER")" -ne '1' ]; do
+while [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER")" -eq '0' ]; do
     sleep 1
 done
 printf 'Container found\n' >&2
-sleep 1
 EOF
 
 sleep 10
