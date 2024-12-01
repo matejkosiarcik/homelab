@@ -1,16 +1,6 @@
 #!/bin/sh
 set -euf
 
-# Wait for certificates to exist before starting
-timeout 30s sh <<EOF
-while [ ! -e '/homelab/certs' ]; do
-    sleep 1
-done
-while [ ! "$(find '/homelab/certs' -type f | grep . -c)" -gt 0 ]; do
-    sleep 1
-done
-EOF
-
 printf '\n' >>/etc/apache2/envvars
 
 # Set HOMELAB_ENV
@@ -175,6 +165,18 @@ else
 fi
 export PROXY_FORCE_HTTPS
 printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
+
+# Wait for certificates to exist before starting
+timeout 30s sh <<EOF
+if [ -e '/homelab/certs/certificate.crt' ]; then
+    return 0
+fi
+printf 'Waiting for certificates before starting\n' >&2
+while [ ! -e '/homelab/certs/certificate.crt' ]; do
+    sleep 1
+done
+sleep 1
+EOF
 
 # Watch certificates in background
 inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &

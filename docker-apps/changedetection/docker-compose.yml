@@ -39,9 +39,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro

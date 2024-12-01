@@ -40,9 +40,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
     volumes:
       - ./app-logs/http-proxy:/homelab/logs:rw
       - ./app-data/certs:/homelab/certs:ro
@@ -54,9 +51,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: direct
