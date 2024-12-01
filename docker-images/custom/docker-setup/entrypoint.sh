@@ -11,8 +11,11 @@ if [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" | w
     return 0
 fi
 printf 'Waiting for container %s\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
-echo "foo: $(echo "$HOMELAB_SETUP_TARGET_CONTAINER")"
-while [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" | wc -l)" -eq 0 ]; do
+while true; do
+    if [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" | wc -l)" -eq 1 ]; then
+        printf 'Found container %s in cycle\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
+        return 0
+    fi
     printf 'Container %s in cycle not found\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
     printf 'Raw output:\n'
     docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$"
@@ -20,7 +23,6 @@ while [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" 
     printf '.\n'
     sleep 1
 done
-printf 'Found container %s after waiting\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
 EOF
 
 sleep 10
