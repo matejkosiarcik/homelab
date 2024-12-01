@@ -115,25 +115,25 @@ services:
       - ${DOCKER_COMPOSE_NETWORK_IP-127.0.0.1}:6789:6789
       - ${DOCKER_COMPOSE_NETWORK_IP-127.0.0.1}:10001:10001/udp
 
-  web-backup:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/web-automation/Dockerfile
-    depends_on:
-      unifi-network-application:
-        condition: service_healthy
-    env_file:
-      - ./app-secrets/web-backup.env
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: backup
-    volumes:
-      - ./app-data/web-backup:/homelab/backup:rw
-      - ./app-logs/web-backup-errors:/homelab/errors:rw
-      - ./app-logs/web-backup:/homelab/logs:rw
+  # web-backup:
+  #   <<: *common-service-options
+  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
+  #   init: true
+  #   build:
+  #     context: ../../../../docker-images/
+  #     dockerfile: ./custom/web-automation/Dockerfile
+  #   depends_on:
+  #     unifi-network-application:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ./app-secrets/web-backup.env
+  #   environment:
+  #     <<: *common-env-variables
+  #     HOMELAB_CONTAINER_VARIANT: backup
+  #   volumes:
+  #     - ./app-data/web-backup:/homelab/backup:rw
+  #     - ./app-logs/web-backup-errors:/homelab/errors:rw
+  #     - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
   default: # Just disable default network
