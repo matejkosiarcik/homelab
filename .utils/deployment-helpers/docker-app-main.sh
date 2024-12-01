@@ -110,6 +110,7 @@ fi
 unset DOCKER_COMPOSE_APP_NAME
 unset DOCKER_COMPOSE_NETWORK_DOMAIN
 
+# Get env files
 docker_compose_args="$docker_file_args"
 if [ "$mode" = 'dev' ]; then
     docker_compose_args="$docker_compose_args --ansi always"
