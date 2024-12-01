@@ -6,20 +6,16 @@ printf 'starting\n' >/homelab/.internal/status.txt
 
 # Wait for target container to start
 timeout 50s sh <<EOF
-if [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$")" != '' ]; then
+if [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER$")" != '' ]; then
     printf 'Found container %s immediatelly\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
     exit 0
 fi
 printf 'Waiting for container %s\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
-while [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$")" = '' ]; do
+while [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER$")" = '' ]; do
     printf 'Container %s in cycle not found\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
-    # printf 'Raw output:\n'
-    # docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$"
-    # docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" | wc -l
-    # printf '.\n'
     sleep 1
 done
-    printf 'Container %s found after cycle\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
+printf 'Container %s found after cycle\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
 EOF
 
 sleep 10
