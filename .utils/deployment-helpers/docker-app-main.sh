@@ -106,6 +106,10 @@ if [ "$dry_run" = '1' ]; then
     docker_dryrun_args='--dry-run'
 fi
 
+# Remove values that may stick around from previous runs
+unset DOCKER_COMPOSE_APP_NAME
+unset DOCKER_COMPOSE_NETWORK_DOMAIN
+
 docker_compose_args="$docker_file_args"
 if [ "$mode" = 'dev' ]; then
     docker_compose_args="$docker_compose_args --ansi always"
