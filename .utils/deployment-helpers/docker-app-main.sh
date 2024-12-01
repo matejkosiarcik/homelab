@@ -126,10 +126,12 @@ extra_docker_compose_env="$tmpdir/docker-compose.env"
 touch "$extra_docker_compose_env"
 if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
     DOCKER_COMPOSE_APP_NAME="$full_app_name"
+    export DOCKER_COMPOSE_APP_NAME
     printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
 fi
 if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
     DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home"
+    export DOCKER_COMPOSE_NETWORK_DOMAIN
     printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >>"$extra_docker_compose_env"
 fi
 docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
