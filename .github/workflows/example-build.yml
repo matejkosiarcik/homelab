@@ -115,7 +115,7 @@ jobs:
             printf '%s ' '"ntfy": ["/servers/odroid-h3/docker-apps/ntfy"],'
             printf '%s ' '"omada-controller": ["/servers/odroid-h3/docker-apps/omada-controller"],'
             printf '%s ' '"openspeedtest": ["/servers/odroid-h3/docker-apps/openspeedtest"],'
-            printf '%s ' '"pihole": ["/servers/odroid-h3/docker-apps/pihole", "/servers/odroid-h3/docker-apps/pihole-backup", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2"],'
+            printf '%s ' '"pihole": ["/servers/odroid-h3/docker-apps/pihole-1-primary", "/servers/odroid-h3/docker-apps/pihole-1-secondary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-primary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-secondary"],'
             printf '%s ' '"smb": [],'
             printf '%s ' '"smtp4dev": ["/servers/odroid-h3/docker-apps/smtp4dev"],'
             printf '%s ' '"speedtest-tracker": ["/servers/odroid-h3/docker-apps/speedtest-tracker"],'
