@@ -30,6 +30,7 @@ services:
   certificate-manager:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -42,12 +43,10 @@ services:
   http-proxy-admin:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-admin
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
-    depends_on:
-      certificate-manager:
-        condition: service_healthy
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: admin
@@ -59,6 +58,7 @@ services:
   transport-proxy:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/transport-proxy/Dockerfile
@@ -70,6 +70,7 @@ services:
   web-backup:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/web-automation/Dockerfile
