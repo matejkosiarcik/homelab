@@ -5,16 +5,15 @@ mkdir -p /homelab/.internal
 printf 'starting\n' >/homelab/.internal/status.txt
 
 # Wait for target container to start
-timeout 45s sh <<EOF
-if [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER" || true)" -eq '1' ]; then
+timeout 50s sh <<EOF
+if [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER")" -eq '1' ]; then
     return 0
 fi
 printf 'Waiting for container %s\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
-while [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER" || true)" -ne '1' ]; do
+while [ "$(docker ps --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | grep -c -- "$HOMELAB_SETUP_TARGET_CONTAINER")" -eq '0' ]; do
     sleep 1
 done
 printf 'Container found\n' >&2
-sleep 1
 EOF
 
 sleep 10
