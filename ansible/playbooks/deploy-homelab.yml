@@ -10,18 +10,22 @@
       ansible.builtin.shell: |
         set -eufo pipefail
         cd "$HOME/git/homelab/servers/.current"
+        tmpdir="$(mktemp -d)"
 
-        crontab_shasum_before="$(crontab -l | shasum)"
-        startup_script_shasum_before="$((shasum <"$HOME/config/startup-initial.sh" && shasum <"$HOME/config/startup-always.sh") || true)"
+        crontab -l | shasum >>"$tmpdir/shasum-before.txt"
+        sudo find /root/config -type f -exec shasum {} \; >>"$tmpdir/shasum-before.txt"
+        find "$HOME/config" -type f -exec shasum {} \; >>"$tmpdir/shasum-before.txt"
 
         sh main.sh install --prod
 
-        crontab_shasum_after="$(crontab -l | shasum)"
-        startup_script_shasum_after="$((shasum <"$HOME/config/startup-initial.sh" && shasum <"$HOME/config/startup-always.sh") || true)"
+        crontab -l | shasum >>"$tmpdir/shasum-after.txt"
+        sudo find /root/config -type f -exec shasum {} \; >>"$tmpdir/shasum-after.txt"
+        find "$HOME/config" -type f -exec shasum {} \; >>"$tmpdir/shasum-after.txt"
 
-        if [ "$crontab_shasum_before" != "$crontab_shasum_after" ] || [ "$startup_script_shasum_before" != "$startup_script_shasum_after" ]; then
+        if [ "$tmpdir/shasum-before.txt" != "$tmpdir/shasum-after.txt" ]; then
           printf 'CHANGED\n'
         fi
+        rm -rf "$tmpdir"
 
     - name: Reboot
       when: install.changed
@@ -30,7 +34,8 @@
         reboot_command: sudo reboot
 
     - name: Deploy homelab
-      changed_when: "True"
+      register: deploy
+      changed_when: "'CHANGED' in deploy.stdout"
       throttle: 1
       ansible.builtin.shell: |
         set -eufo pipefail
@@ -56,3 +61,4 @@
         fi
 
         sh main.sh deploy --prod
+        printf 'CHANGED\n'
