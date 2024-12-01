@@ -10,10 +10,10 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  ntfy:
+  app:
     <<: *common-service-options
 
-  ntfy-setup:
+  app-setup:
     <<: *common-service-options
 
   certificate-manager:

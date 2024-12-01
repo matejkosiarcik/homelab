@@ -12,7 +12,7 @@ x-definitions:
       net.ipv6.conf.all.disable_ipv6: 1
 
 services:
-  ntfy:
+  app:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
@@ -25,7 +25,7 @@ services:
       - ./app-data/ntfy-lib:/var/lib/ntfy:rw
       # - ./app-data/ntfy-etc:/etc/ntfy:rw
 
-  ntfy-setup:
+  app-setup:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     init: true

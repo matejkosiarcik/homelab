@@ -4,7 +4,7 @@ set -euf
 script_dir="$(dirname "$0")"
 
 if [ -e '/.dockerenv' ]; then
-    minio_url='http://minio:9000'
+    minio_url='http://app:9000'
 else
     minio_url='https://localhost:8443'
 fi

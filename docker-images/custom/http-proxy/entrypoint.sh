@@ -29,51 +29,51 @@ printf "export HOMELAB_APP_EXTERNAL_DOMAIN='%s'\n" "$HOMELAB_APP_EXTERNAL_DOMAIN
 
 # Set PROXY_UPSTREAM_URL
 if [ "$HOMELAB_APP_TYPE" = 'actualbudget' ]; then
-    PROXY_UPSTREAM_URL="http://actualbudget:5006"
+    PROXY_UPSTREAM_URL="http://app:5006"
 elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
-    PROXY_UPSTREAM_URL="http://changedetection:5000"
+    PROXY_UPSTREAM_URL="http://app:5000"
 elif [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
-    PROXY_UPSTREAM_URL="http://docker-registry"
+    PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'dozzle-server' ]; then
     PROXY_UPSTREAM_URL="http://app:8080"
 elif [ "$HOMELAB_APP_TYPE" = 'gatus' ]; then
-    PROXY_UPSTREAM_URL="http://gatus:8080"
+    PROXY_UPSTREAM_URL="http://app:8080"
 elif [ "$HOMELAB_APP_TYPE" = 'healthchecks' ]; then
-    PROXY_UPSTREAM_URL="http://healthchecks:8000"
+    PROXY_UPSTREAM_URL="http://app:8000"
 elif [ "$HOMELAB_APP_TYPE" = 'homeassistant' ]; then
-    PROXY_UPSTREAM_URL="http://homeassistant:8123"
+    PROXY_UPSTREAM_URL="http://app:8123"
 elif [ "$HOMELAB_APP_TYPE" = 'homepage' ]; then
-    PROXY_UPSTREAM_URL="http://homepage:3000"
+    PROXY_UPSTREAM_URL="http://app:3000"
 elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ]; then
-    PROXY_UPSTREAM_URL="http://jellyfin:8096"
+    PROXY_UPSTREAM_URL="http://app:8096"
 elif [ "$HOMELAB_APP_TYPE" = 'lamp-wrapper' ]; then
-    PROXY_UPSTREAM_URL="http://lamp-wrapper"
+    PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
-        PROXY_UPSTREAM_URL="http://minio:9000"
+        PROXY_UPSTREAM_URL="http://app:9000"
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
-        PROXY_UPSTREAM_URL="http://minio:9001"
+        PROXY_UPSTREAM_URL="http://app:9001"
     else
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
-    PROXY_UPSTREAM_URL="http://ntfy"
+    PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://omada-controller:8443"
+            PROXY_UPSTREAM_URL="https://app:8443"
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://omada-controller:8444"
+            PROXY_UPSTREAM_URL="https://app:8444"
         else
             printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
             exit 1
         fi
     elif [ "$HOMELAB_ENV" = 'prod' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://omada-controller"
+            PROXY_UPSTREAM_URL="https://app"
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://omada-controller:444"
+            PROXY_UPSTREAM_URL="https://app:444"
         else
             printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
             exit 1
@@ -83,22 +83,22 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
-    PROXY_UPSTREAM_URL="http://openspeedtest:3000" # HTTPS endpoint is also available, but plain HTTP results in better performance
+    PROXY_UPSTREAM_URL="http://app:3000" # HTTPS endpoint is also available, but plain HTTP results in better performance
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
-    PROXY_UPSTREAM_URL="http://pihole"
+    PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'smtp4dev' ]; then
-    PROXY_UPSTREAM_URL="http://smtp4dev"
+    PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'speedtest-tracker' ]; then
-    PROXY_UPSTREAM_URL="https://speedtest-tracker"
+    PROXY_UPSTREAM_URL="https://app"
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
-    PROXY_UPSTREAM_URL="http://tvheadend:9981"
+    PROXY_UPSTREAM_URL="http://app:9981"
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
-        PROXY_UPSTREAM_URL="https://unifi-network-application:8443"
+        PROXY_UPSTREAM_URL="https://app:8443"
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw-insecure' ]; then
-        PROXY_UPSTREAM_URL="http://unifi-network-application:8080"
+        PROXY_UPSTREAM_URL="http://app:8080"
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-        PROXY_UPSTREAM_URL="https://unifi-network-application:8444"
+        PROXY_UPSTREAM_URL="https://app:8444"
     else
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
         exit 1

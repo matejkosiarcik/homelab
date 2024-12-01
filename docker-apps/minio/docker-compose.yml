@@ -12,7 +12,7 @@ x-definitions:
       net.ipv6.conf.all.disable_ipv6: 1
 
 services:
-  minio:
+  app:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
@@ -24,7 +24,7 @@ services:
       - ./app-data/minio:/data
     command: server /data --address ":9000" --console-address ":9001"
 
-  minio-setup:
+  app-setup:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     init: true

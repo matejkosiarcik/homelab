@@ -10,13 +10,13 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  minio:
+  app:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
       MINIO_BROWSER_REDIRECT_URL: https://console.${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
-  minio-setup:
+  app-setup:
     <<: *common-service-options
 
   certificate-manager:

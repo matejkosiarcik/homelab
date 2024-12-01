@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  pihole:
+  app:
     <<: *common-service-options
     hostname: ${DOCKER_COMPOSE_NETWORK_DOMAIN} # This fixes random container hostname in dashboard header
     environment:

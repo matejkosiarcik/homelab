@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  lamp-wrapper:
+  app:
     <<: *common-service-options
 
   certificate-manager:

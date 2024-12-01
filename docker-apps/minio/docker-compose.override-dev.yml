@@ -10,13 +10,13 @@ x-definitions:
     restart: "no"
 
 services:
-  minio:
+  app:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
       MINIO_BROWSER_REDIRECT_URL: https://localhost:8444
 
-  minio-setup:
+  app-setup:
     <<: *common-service-options
 
   certificate-manager:

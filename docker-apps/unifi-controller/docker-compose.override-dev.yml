@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  unifi-network-application:
+  app:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/

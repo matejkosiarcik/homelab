@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  tvheadend:
+  app:
     <<: *common-service-options
 
   certificate-manager:

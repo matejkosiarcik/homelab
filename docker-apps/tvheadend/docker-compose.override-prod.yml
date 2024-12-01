@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  tvheadend:
+  app:
     <<: *common-service-options
     devices:
       - /dev/dvb:/dev/dvb

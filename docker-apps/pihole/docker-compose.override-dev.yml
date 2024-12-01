@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  pihole:
+  app:
     <<: *common-service-options
     hostname: pihole.localhost # This fixes random container hostname in dashboard header
     environment:

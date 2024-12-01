@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  homeassistant:
+  app:
     <<: *common-service-options
     volumes:
       - /run/dbus:/run/dbus:ro

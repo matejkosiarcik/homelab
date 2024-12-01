@@ -7,5 +7,5 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  renovatebot:
+  app:
     <<: *common-service-options
