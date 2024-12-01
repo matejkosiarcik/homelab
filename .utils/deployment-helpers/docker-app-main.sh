@@ -93,7 +93,7 @@ backup_dir="$HOME/.homelab-backup/$START_DATE-$full_app_name"
 if [ "$mode" = 'dev' ]; then
     log_file='/dev/null'
 elif [ "$mode" = 'prod' ]; then
-    mkdir -p "$log_dir" "$backup_dir"
+    mkdir -p "$log_dir"
 fi
 
 docker_file_args=''
@@ -215,10 +215,10 @@ docker_start() {
             sudo cp -R "$app_dir/app-logs/." "$backup_dir/app-logs"
             sudo rm -rf "$app_dir/app-logs"
         fi
-        if [ -d "$app_dir/app-data" ]; then
-            # TODO: Run without sudo?
-            sudo cp -R "$app_dir/app-data/." "$backup_dir/app-data"
-        fi
+        # if [ -d "$app_dir/app-data" ]; then
+        #     # TODO: Run without sudo?
+        #     sudo cp -R "$app_dir/app-data/." "$backup_dir/app-data"
+        # fi
     fi
 
     #
