@@ -15,6 +15,7 @@ while [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" 
     printf 'Container %s in cycle not found\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
     printf 'Raw output:\n'
     docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running"
+    docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | wc -l
     printf '.\n'
     sleep 1
 done
