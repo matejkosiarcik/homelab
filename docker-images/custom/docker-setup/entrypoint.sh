@@ -7,6 +7,7 @@ printf 'starting\n' >/homelab/.internal/status.txt
 # Wait for target container to start
 timeout 50s sh <<EOF
 if [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | wc -l)" -eq '1' ]; then
+    printf 'Found container %s\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
     return 0
 fi
 printf 'Waiting for container %s\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
