@@ -4,27 +4,17 @@ set -euf
 mkdir -p /homelab/.internal
 printf 'starting\n' >/homelab/.internal/status.txt
 
-# if [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER$")" != '' ]; then
-#     printf 'Found container %s immediatelly\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
-#     exit 0
-# fi
 
 # Wait for target container to start
-timeout 50s sh <<EOF
+timeout 30s sh <<EOF
 printf 'Waiting for container %s\n' "\$HOMELAB_SETUP_TARGET_CONTAINER" >&2
-while true; do
-    output="\$(docker ps --quiet --filter "name=^\$HOMELAB_SETUP_TARGET_CONTAINER$")"
-    printf 'Docker ps output: %s\n' "\$output" >&2
-    if [ "\$output" != '' ]; then
-        exit 0
-    fi
-    printf 'Container %s in cycle not found\n' "\$HOMELAB_SETUP_TARGET_CONTAINER" >&2
+while [ "\$(docker ps --quiet --filter "name=^\$HOMELAB_SETUP_TARGET_CONTAINER\$")" != '' ]; do
     sleep 1
 done
-printf 'Container %s found after cycle\n' "\$HOMELAB_SETUP_TARGET_CONTAINER" >&2
+printf 'Container found\n' >&2
 EOF
 
-sleep 10
+sleep 5
 
 printf '%s - Starting setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 docker exec "$HOMELAB_SETUP_TARGET_CONTAINER" sh /homelab/setup.sh
