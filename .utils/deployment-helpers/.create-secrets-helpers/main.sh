@@ -235,15 +235,10 @@ case "$full_app_name" in
 *homeassistant*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     create_password "$tmpdir/homepage-password.txt"
-
-    # Web backup
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
@@ -351,7 +346,6 @@ case "$full_app_name" in
 *omada-controller*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -362,10 +356,6 @@ case "$full_app_name" in
     sed 's~?~^~g' <"$tmpdir/homepage-password.txt" | sponge "$tmpdir/homepage-password.txt"
     create_password "$tmpdir/device-password.txt"
     sed 's~?~^~g' <"$tmpdir/device-password.txt" | sponge "$tmpdir/device-password.txt"
-
-    # Web backup
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
@@ -484,7 +474,6 @@ case "$full_app_name" in
 *unifi-controller*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
-    prepare_healthcheck_url "$output/web-backup.env"
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
@@ -495,10 +484,6 @@ case "$full_app_name" in
     # Database
     printf 'MONGO_PASSWORD=%s\n' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb.env"
     printf '%s' "$(cat "$tmpdir/mongodb-password.txt")" >>"$output/mongodb-password.txt"
-
-    # Web backup
-    printf 'HOMELAB_APP_USERNAME=admin\n' >>"$output/web-backup.env"
-    printf 'HOMELAB_APP_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/web-backup.env"
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"

@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  gatus:
+  app:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

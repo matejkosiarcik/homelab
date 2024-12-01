@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  openspeedtest:
+  app:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

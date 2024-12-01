@@ -12,7 +12,7 @@ x-definitions:
       net.ipv6.conf.all.disable_ipv6: 1
 
 services:
-  jellyfin:
+  app:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)

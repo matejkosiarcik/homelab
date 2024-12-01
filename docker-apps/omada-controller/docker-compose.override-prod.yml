@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  omada-controller:
+  app:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
@@ -34,9 +34,6 @@ services:
       - ${DOCKER_COMPOSE_NETWORK_IP}:444:444
     networks:
       external-network:
-
-  web-backup:
-    <<: *common-service-options
 
 networks:
   external-network:

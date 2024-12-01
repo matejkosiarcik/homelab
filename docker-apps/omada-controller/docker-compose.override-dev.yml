@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  omada-controller:
+  app:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
@@ -32,6 +32,3 @@ services:
       - 127.0.0.1:8081:81
       - 127.0.0.1:8443:443
       - 127.0.0.1:8444:444
-
-  web-backup:
-    <<: *common-service-options

@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  homeassistant:
+  app:
     <<: *common-service-options
     volumes:
       - /run/dbus:/run/dbus:ro
@@ -28,9 +28,6 @@ services:
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
     networks:
       external-network:
-
-  web-backup:
-    <<: *common-service-options
 
 networks:
   external-network:

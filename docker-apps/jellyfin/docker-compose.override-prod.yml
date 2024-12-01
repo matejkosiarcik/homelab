@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  jellyfin:
+  app:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

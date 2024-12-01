@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  unifi-network-application:
+  app:
     <<: *common-service-options
     build:
       context: ../../../../docker-images/
@@ -37,6 +37,3 @@ services:
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
-
-  web-backup:
-    <<: *common-service-options
