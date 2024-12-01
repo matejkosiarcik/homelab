@@ -26,6 +26,7 @@ services:
   transport-proxy:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/transport-proxy/Dockerfile

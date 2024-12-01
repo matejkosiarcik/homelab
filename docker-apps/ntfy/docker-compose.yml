@@ -28,6 +28,7 @@ services:
   ntfy-setup:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/docker-setup/Dockerfile
@@ -40,6 +41,7 @@ services:
   certificate-manager:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
@@ -52,6 +54,7 @@ services:
   http-proxy:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
@@ -63,6 +66,7 @@ services:
   transport-proxy:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/transport-proxy/Dockerfile
