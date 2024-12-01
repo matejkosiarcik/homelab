@@ -4,6 +4,8 @@ set -euf
 mkdir -p /homelab/.internal
 printf 'starting\n' >/homelab/.internal/status.txt
 
+sleep 5
+
 # Wait for target container to start
 timeout 50s sh <<EOF
 if [ "$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\$" --filter "status=running" | wc -l)" -eq '1' ]; then
