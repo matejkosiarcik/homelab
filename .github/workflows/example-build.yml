@@ -50,6 +50,9 @@ jobs:
               - '**/jellyfin*/**'
             minio:
               - '**/minio*/**'
+            motioneye:
+              - '**/motion*/**'
+              - '**/motioneye*/**'
             ntfy:
               - '**/ntfy*/**'
             omada-controller:
@@ -112,6 +115,7 @@ jobs:
             printf '%s ' '"homepage": ["/servers/odroid-h3/docker-apps/homepage"],'
             printf '%s ' '"jellyfin": ["/servers/odroid-h3/docker-apps/jellyfin"],'
             printf '%s ' '"minio": ["/servers/odroid-h3/docker-apps/minio"],'
+            printf '%s ' '"motioneye": ["/servers/raspberry-pi-4b-4g/docker-apps/motioneye"],'
             printf '%s ' '"ntfy": ["/servers/odroid-h3/docker-apps/ntfy"],'
             printf '%s ' '"omada-controller": ["/servers/odroid-h3/docker-apps/omada-controller"],'
             printf '%s ' '"openspeedtest": ["/servers/odroid-h3/docker-apps/openspeedtest"],'

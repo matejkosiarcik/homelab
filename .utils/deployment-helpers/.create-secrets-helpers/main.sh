@@ -320,6 +320,22 @@ case "$full_app_name" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*motioneye*)
+    create_http_auth_user proxy-status
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/admin-password.txt"
+    create_password "$tmpdir/user-password.txt"
+
+    # Misc
+    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'user,%s\n' "$(cat "$tmpdir/user-password.txt")" >>"$output/all-credentials.csv"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *ntfy*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
