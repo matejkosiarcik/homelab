@@ -30,6 +30,8 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$outdir/homepage.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$outdir/ntfy.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$outdir/openspeedtest.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$outdir/pialert.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/dashboard-icons/png/watchyourlan.png" "$outdir/watchyourlan.png"
 
 ### Organizr Icons ###
 
