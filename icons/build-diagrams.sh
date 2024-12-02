@@ -62,6 +62,7 @@ convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/letencrypt.png" "$outdir/lets-encrypt.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/minio.png" "$outdir/minio.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/mongodb.svg" "$outdir/mongodb.png"
+convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/motioneye.png" "$outdir/motioneye.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$outdir/prometheus.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/omada.png" "$outdir/tp-link-omada.png"
 convert_image "$convert_options" "$input_dir/gitman-repositories/homer-icons/png/tplink.png" "$outdir/tp-link.png"
