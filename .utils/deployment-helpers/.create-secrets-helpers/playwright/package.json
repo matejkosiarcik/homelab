@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "chai": "^5.1.2",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.6",
     "playwright": "^1.49.0",
     "yargs": "^17.7.2"
   },

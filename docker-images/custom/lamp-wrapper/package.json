@@ -17,7 +17,7 @@
     "ajv-formats": "^3.0.1",
     "cors": "^2.8.5",
     "cross-fetch": "^4.0.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.6",
     "express": "^5.0.1",
     "express-json-validator-middleware": "^3.0.1",
     "express-prom-bundle": "^8.0.0",
