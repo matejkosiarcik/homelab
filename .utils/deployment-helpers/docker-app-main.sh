@@ -106,6 +106,16 @@ if [ "$dry_run" = '1' ]; then
     docker_dryrun_args='--dry-run'
 fi
 
+pull_images='0'
+if [ "$command" = 'build' ] || [ "$command" = 'pull' ]; then
+    pull_images='1'
+fi
+
+if [ "$command" != 'create-secrets' ] && [ ! -e 'app-secrets' ]; then
+    printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_app_name"
+    exit 1
+fi
+
 # Remove values that may stick around from previous runs
 unset DOCKER_COMPOSE_APP_NAME
 unset DOCKER_COMPOSE_NETWORK_DOMAIN
@@ -156,16 +166,7 @@ docker_stop() {
     printf '\n' | tee "$log_file" >&2
 }
 
-docker_build() {
-    if [ ! -e 'app-secrets' ]; then
-        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_app_name"
-        exit 1
-    fi
-
-    #
-    # Pull docker images
-    #
-
+docker_pull() {
     docker_pull_args="$docker_compose_args pull --ignore-buildable --include-deps $docker_dryrun_args"
     if [ "$mode" = 'prod' ]; then
         docker_pull_args="$docker_pull_args --policy always --quiet"
@@ -182,15 +183,16 @@ docker_build() {
         docker compose $docker_pull_args
     fi
     printf '\n' | tee "$log_file" >&2
+}
 
-    #
-    # Build docker images
-    #
-
+docker_build() {
     docker_build_args="$docker_compose_args build --with-dependencies $docker_dryrun_args"
     # if [ "$mode" = 'prod' ]; then
     #     docker_build_args="$docker_build_args --quiet"
     # fi
+    if [ "$pull_images" = '1' ]; then
+        docker_build_args="$docker_build_args --pull"
+    fi
 
     printf 'Build docker images in %s\n' "$full_app_name" | tee "$log_file" >&2
     if [ "$mode" = 'prod' ]; then
@@ -204,11 +206,6 @@ docker_build() {
 }
 
 docker_start() {
-    if [ ! -e 'app-secrets' ]; then
-        printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_app_name"
-        exit 1
-    fi
-
     if [ "$mode" = prod ]; then
         if [ -d "$app_dir/app-logs" ]; then
             # TODO: Run without sudo?
@@ -252,6 +249,7 @@ create_secrets() {
 
 case "$command" in
 build)
+    docker_pull
     docker_build
     ;;
 create-secrets)
@@ -263,6 +261,9 @@ deploy)
     docker network prune -f # Might help with services problems sometimes not being able to bind ports
     docker_start
     printf 'Deployment of %s successful\n\n' "$full_app_name"
+    ;;
+pull)
+    docker_pull
     ;;
 start)
     docker_start
