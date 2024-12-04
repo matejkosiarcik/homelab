@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM golang:1.23.3-alpine3.20 AS healthcheck-builder
+FROM golang:1.23.4-alpine3.20 AS healthcheck-builder
 WORKDIR /homelab
 COPY ./external/gatus/main.go ./external/gatus/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
