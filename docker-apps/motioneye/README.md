@@ -6,7 +6,7 @@ MotionEye
 
 - GitHub: <https://github.com/motioneye-project/motioneye>
     - WiKi: <https://github.com/motioneye-project/motioneye/wiki>
-- DockerHub: N/A (only <ghcr.io>)
+- DockerHub: N/A (only on _ghcr.io_)
 - HomeAssistant plugin: <https://www.home-assistant.io/integrations/motioneye>
 
 Motion
