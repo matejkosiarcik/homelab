@@ -167,9 +167,6 @@
         href: https://motioneye-stove.home
         ping: motioneye-stove.home
         icon: /icons/motioneye.png
-        # widget:
-        #   type: mjpeg
-        #   stream: http://user:password@motioneye-stove.home:9081/
 
     - Desklamp - left:
         description: Custom smart lamp
