@@ -410,6 +410,7 @@ case "$full_app_name" in
     ;;
 *renovatebot*)
     # Prepare API keys
+    prepare_empty_env HOMELAB_HEALTHCHECK_URL "$output/renovatebot.env"
     prepare_empty_env RENOVATE_TOKEN "$output/renovatebot.env"   # PAT specific for each git host
     prepare_empty_env GITHUB_COM_TOKEN "$output/renovatebot.env" # GitHub PAT (even if using other git hosts)
 
