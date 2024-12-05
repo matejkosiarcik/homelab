@@ -49,7 +49,14 @@ elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'lamp-wrapper' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'motioneye' ]; then
-    PROXY_UPSTREAM_URL="http://app:8765"
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'default' ]; then
+        PROXY_UPSTREAM_URL="http://app:8765"
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'stream' ]; then
+        PROXY_UPSTREAM_URL="http://app:9081"
+    else
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+        exit 1
+    fi
 elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
         PROXY_UPSTREAM_URL="http://app:9000"
@@ -152,7 +159,9 @@ export PROXY_HTTPS_PORT
 printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envvars
 
 # Set PROXY_FORCE_HTTPS
-if [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'motioneye' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'stream' ]; then
+    PROXY_FORCE_HTTPS='false'
+elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_FORCE_HTTPS='false'
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates

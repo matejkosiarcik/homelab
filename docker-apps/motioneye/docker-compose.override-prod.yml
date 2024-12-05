@@ -19,7 +19,10 @@ services:
   certificate-manager:
     <<: *common-service-options
 
-  http-proxy:
+  http-proxy-default:
+    <<: *common-service-options
+
+  http-proxy-stream:
     <<: *common-service-options
 
   transport-proxy:

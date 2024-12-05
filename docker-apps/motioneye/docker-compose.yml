@@ -40,13 +40,28 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificate-manager:/homelab/logs:rw
 
-  http-proxy:
+  http-proxy-default:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-default
     init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
+    volumes:
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
+
+  http-proxy-stream:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-stream
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    environment:
+      <<: *common-env-variables
+      HOMELAB_CONTAINER_VARIANT: stream
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro

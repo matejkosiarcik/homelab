@@ -62,8 +62,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'motioneye' ]; then
-    respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
-    respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+    respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy-default:80 &
+    respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy-default:443 &
+    respawn socat TCP4-LISTEN:9081,fork,reuseaddr TCP4:http-proxy-stream:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     respawn socat TCP4-LISTEN:25,fork,reuseaddr TCP4:app:25 &
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
