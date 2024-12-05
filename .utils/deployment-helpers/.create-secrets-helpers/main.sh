@@ -326,7 +326,7 @@ case "$full_app_name" in
 
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
-    create_password "$tmpdir/user-password.txt"
+    create_password "$tmpdir/user-password.txt" --only-alphanumeric
 
     # Misc
     printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"

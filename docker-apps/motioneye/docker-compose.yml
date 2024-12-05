@@ -18,10 +18,6 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/motioneye/Dockerfile
-    environment:
-      <<: *common-env-variables
-      MEYE_USERNAME: foo
-      MEYE_PASSWORD: bar
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./app-data/motioneye-etc:/etc/motioneye:rw
