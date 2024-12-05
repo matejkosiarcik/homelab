@@ -2,7 +2,21 @@
 
 ![diagram](../../docs/diagrams/out/apps/motioneye.png)
 
-- _Fill in docs and useful links here_
+MotionEye
+
+- GitHub: <https://github.com/motioneye-project/motioneye>
+  - WiKi: <https://github.com/motioneye-project/motioneye/wiki>
+- DockerHub: N/A (only <ghcr.io>)
+- HomeAssistant plugin: <https://www.home-assistant.io/integrations/motioneye>
+
+Motion
+
+- Homepage: <https://motion-project.github.io>
+- GitHub: <https://github.com/Motion-Project/motion>
+
+Notes:
+
+- Streaming only works in `user`, not in `admin`.
 
 ## Before initial installation
 
