@@ -2,14 +2,15 @@
 
 ![diagram](../../docs/diagrams/out/apps/motioneye.png)
 
-MotionEye
+MotionEye:
 
 - GitHub: <https://github.com/motioneye-project/motioneye>
     - WiKi: <https://github.com/motioneye-project/motioneye/wiki>
+    - Install guide: <https://github.com/motioneye-project/motioneye/wiki/Install-In-Docker#build-instructions>
 - DockerHub: N/A (only on _ghcr.io_)
 - HomeAssistant plugin: <https://www.home-assistant.io/integrations/motioneye>
 
-Motion
+Motion:
 
 - Homepage: <https://motion-project.github.io>
 - GitHub: <https://github.com/Motion-Project/motion>
