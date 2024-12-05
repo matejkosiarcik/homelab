@@ -81,6 +81,7 @@ convert_image "$convert_options" "$input_dir/other/playwright.svg.bin" "$outdir/
 convert_image "$convert_options" "$input_dir/other/raspberry-pi.svg.bin" "$outdir/raspberry-pi.png"
 convert_image "$convert_options" "$input_dir/other/renovatebot.png" "$outdir/renovatebot.png"
 convert_image "$convert_options" "$input_dir/other/smtp4dev - custom.png" "$outdir/smtp4dev.png"
+convert_image "$convert_options" "$input_dir/other/webcamera.png" "$outdir/webcamera.png"
 
 ### Combined icons ###
 
