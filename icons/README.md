@@ -23,3 +23,4 @@ The Icons are obtained from following locations:
     - RenovateBot: <https://docs.renovatebot.com>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - UPC: <https://www.upc.sk>
+    - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>
