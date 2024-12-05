@@ -19,7 +19,7 @@ flowchart LR
         webcamera("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/webcamera.png' style='min-width:80px;max-width:80px' /></div>USB<br/>webcam")
 
         transport_proxy <--->|:80,443| http_proxy_default <--->|:8765| motioneye
-        transport_proxy <--->|:9081| http_proxy_stream <--->|:9081| motioneye
+        transport_proxy <--->|:443| http_proxy_stream <--->|:9081| motioneye
         http_proxy_default & http_proxy_stream -..-|fs| certificate_manager
         motioneye -..-|device| webcamera
     end
