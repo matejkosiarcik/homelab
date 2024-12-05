@@ -4,7 +4,7 @@
     "build": "sh build.sh"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-cli": "^11.4.1",
+    "@mermaid-js/mermaid-cli": "^11.4.2",
     "npm-run-all2": "^7.0.1"
   }
 }
