@@ -4,7 +4,10 @@ pihole-2-primary
 # Other
 unifi-controller
 dozzle-agent
-gatus-2
+motioneye-stove
 
-# Must be last
+# DNS last
 pihole-2-secondary
+
+# App Monitoring
+gatus-2
