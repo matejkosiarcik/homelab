@@ -162,6 +162,12 @@
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
               label: Turned on lights
 
+    - MotionEye Stove:
+        description: Camera system
+        href: https://motioneye-stove.home
+        ping: motioneye-stove.home
+        icon: /icons/motioneye.png
+
     - Desklamp - left:
         description: Custom smart lamp
         href: http://desklamp-left.home
