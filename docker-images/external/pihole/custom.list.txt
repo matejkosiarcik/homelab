@@ -60,4 +60,4 @@
 10.1.16.31 unifi-controller.home
 10.1.16.32 gatus-2.home
 10.1.16.33 dozzle-agent.raspberry-pi-4b-4g.home
-10.1.16.34 motioneye-kitchen-stove.home
+10.1.16.34 motioneye-stove.home
