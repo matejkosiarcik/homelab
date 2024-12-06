@@ -1,0 +1,19 @@
+/* Default background */
+html * {
+  background: #222230 !important;
+}
+
+/* Make some parts of UI see through (such as images or texts) */
+html .label * {
+  background: transparent !important;
+}
+
+/* This is for connections titles, otherwise the line is visible through text */
+html .edgeLabel * {
+  background: #22223060 !important;
+}
+
+/* The cluster title screws up the rendering of cluster broder at the top portion where they overlap, so this fixes it a little */
+html .cluster .nodeLabel > * {
+  border-top: 1px solid #aabbcc !important;
+}
