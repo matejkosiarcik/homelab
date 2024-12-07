@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
-FROM mbentley/omada-controller:5.14
+FROM mbentley/omada-controller:5.15
 ENV HOMELAB_CONTAINER_NAME=omada-controller \
     HOMELAB_CONTAINER_VARIANT=default \
     PUID=508 \
