@@ -22,11 +22,9 @@ convert_image_draft() {
     # $2 - input file
     # $3 - output file
 
-    # rm -f "$3"
     mkdir -p "$(dirname "$3")"
-
-    command="$(printf '%s' "$1" | sed -E "s~INPUT_FILE~$2~g;s~OUTPUT_FILE~$3~g;s~RESOLUTION~$default_image_size~g")"
-    $command
+    command="$(printf '%s' "$1" | sed -E "s~INPUT_FILE~'$(printf '%s' "$2" | tr '&' ':')'~g;s~OUTPUT_FILE~'$3'~g;s~RESOLUTION~'$default_image_size'~g" | tr ':' '&')"
+    eval "$command"
 }
 
 convert_image_full() {
@@ -35,13 +33,6 @@ convert_image_full() {
 
     convert_image_draft "$default_convert_options" "$1" "$2"
     convert_image_draft 'magick INPUT_FILE -background none -bordercolor transparent -gravity center -extent RESOLUTION OUTPUT_FILE' "$2" "$2"
-
-    # convert_command="$(printf '%s' "$convert_options" | sed -E "s~INPUT_FILE~$1~g;s~OUTPUT_FILE~$2~g;s~RESOLUTION~$output_image_size~g")"
-    # $convert_command
-
-    # extent_command="$(printf 'magick INPUT_FILE -background none -bordercolor transparent -gravity center -extent RESOLUTION OUTPUT_FILE' | sed -E "s~INPUT_FILE~$2~g;s~OUTPUT_FILE~$2~g;s~RESOLUTION~$output_image_size~g")"
-    # $extent_command
-
     optimize_image "$2"
 }
 

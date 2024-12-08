@@ -22,5 +22,6 @@ The Icons are obtained from following locations:
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (Server down)
     - RenovateBot: <https://docs.renovatebot.com>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
+    - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - UPC: <https://www.upc.sk>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>
