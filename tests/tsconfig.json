@@ -13,11 +13,7 @@
     },
     "noEmit": true,
     "allowImportingTsExtensions": true,
-
-    // Too many false positives, see more at https://github.com/microsoft/TypeScript/pull/52203#issuecomment-1476312430
     "verbatimModuleSyntax": false,
-
-    // Too many false positives, see more at https://stackoverflow.com/questions/69368851/type-safe-way-of-narrowing-type-of-arrays-by-length-when-nouncheckedindexedacces
     "noUncheckedIndexedAccess": false,
   },
   "exclude": [
