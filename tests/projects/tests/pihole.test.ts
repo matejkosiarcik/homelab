@@ -4,17 +4,17 @@ import { getEnv } from '../../utils/utils';
 
 test.describe('PiHole', () => {
     const piholeInstances = [
-        { url: 'https://pihole-1-primary.home', key: '', title: 'Primary 1' },
-        { url: 'https://pihole-1-secondary.home', key: '', title: 'Secondary 1' },
-        { url: 'https://pihole-2-primary.home', key: '', title: 'Primary 2' },
-        { url: 'https://pihole-2-secondary.home', key: '', title: 'Secondary 2' },
+        { url: 'https://pihole-1-primary.home', name: 'PIHOLE_1_PRIMARY', title: 'Primary 1' },
+        { url: 'https://pihole-1-secondary.home', name: 'PIHOLE_1_SECONDARY', title: 'Secondary 1' },
+        { url: 'https://pihole-2-primary.home', name: 'PIHOLE_2_PRIMARY', title: 'Primary 2' },
+        { url: 'https://pihole-2-secondary.home', name: 'PIHOLE_2_SECONDARY', title: 'Secondary 2' },
     ];
     for (const pihole of piholeInstances) {
         test.describe(pihole.title, () => {
             test('Successful login', async ({ page }) => {
                 await page.goto(pihole.url);
                 await page.waitForURL(`${pihole.url}/admin/login.php`);
-                await page.locator('form#loginform input#loginpw').fill(getEnv(`${pihole.key}_PASSWORD`));
+                await page.locator('form#loginform input#loginpw').fill(getEnv(`${pihole.name}_PASSWORD`));
                 await page.locator('form#loginform button[type=submit]').click();
                 await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
             });
