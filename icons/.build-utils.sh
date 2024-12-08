@@ -6,39 +6,43 @@ tmpdir="$(mktemp -d)"
 mkdir "$tmpdir/file"
 unzip -q 13_05_osa_icons_svg.zip -d "$tmpdir/13_05_osa_icons_svg"
 
-convert_image_draft() {
-    _infile="$2"
-    if [ "$2" != '' ]; then
-        _infile="$tmpdir/file/$(basename "$2" .bin | tr ' ' '-')"
-        cp "$2" "$_infile"
-    fi
-    _outfile="$3"
-    rm -f "$_outfile"
-    mkdir -p "$(dirname "$_outfile")"
+default_image_size='1x1'
+default_convert_options='magick INPUT_FILE OUTPUT_FILE'
 
-    command="$(printf '%s' "$1" | sed -E "s~INPUT_FILE~$_infile~g;s~OUTPUT_FILE~$_outfile~g")"
-    $command
-    rm -f "$_infile"
+optimize_image() {
+    # $1 - filepath
+
+    if printf '%s' "$(basename "$1")" | grep -E '\.png$' >/dev/null 2>&1; then
+        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$1" "$1"
+    fi
 }
 
-convert_image() {
-    # $1 - convert command
+convert_image_draft() {
+    # $1 - imagemagick command
     # $2 - input file
     # $3 - output file
-    convert_image_draft "$1" "$2" "$3"
 
-    if printf '%s' "$3" | grep -E '\.png$' >/dev/null 2>&1; then
-        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$3" "$3"
-    fi
+    mkdir -p "$(dirname "$3")"
+    command="$(printf '%s' "$1" | sed -E "s~INPUT_FILE~'$(printf '%s' "$2" | tr '&' ':')'~g;s~OUTPUT_FILE~'$3'~g;s~RESOLUTION~'$default_image_size'~g" | tr ':' '&')"
+    eval "$command"
+}
+
+convert_image_full() {
+    # $1 - input file
+    # $2 - output file
+
+    convert_image_draft "$default_convert_options" "$1" "$2"
+    convert_image_draft 'magick INPUT_FILE -background none -bordercolor transparent -gravity center -extent RESOLUTION OUTPUT_FILE' "$2" "$2"
+    optimize_image "$2"
 }
 
 convert_ico() {
-    _infiles="$1"
-    _outfile="$2"
+    # $1 - input files
+    # $2 - output file
 
-    rm -f "$_outfile"
+    rm -f "$2"
     # shellcheck disable=SC2086
-    png2ico "$_outfile" --colors 16 $_infiles
+    png2ico "$2" --colors 16 $1
     # shellcheck disable=SC2086
-    rm -f $_infiles
+    rm -f $1
 }
