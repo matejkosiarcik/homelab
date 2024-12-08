@@ -14,7 +14,7 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
-    "noUncheckedIndexedAccess": false,
+    "noUncheckedIndexedAccess": false
   },
   "exclude": [
     "node_modules",
