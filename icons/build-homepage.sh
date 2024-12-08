@@ -11,7 +11,9 @@ tmpdir=''
 # shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
 
+# shellcheck disable=SC2034
 default_image_size='128x128'
+# shellcheck disable=SC2034
 default_convert_options='magick -background none -bordercolor transparent INPUT_FILE -resize 126x126 -density 1200 -border 1 OUTPUT_FILE'
 
 ### OSA Icons ###

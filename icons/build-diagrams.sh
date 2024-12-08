@@ -11,7 +11,9 @@ tmpdir=''
 # shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
 
+# shellcheck disable=SC2034
 default_image_size='256x256'
+# shellcheck disable=SC2034
 default_convert_options='magick -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 1200 OUTPUT_FILE'
 
 ### Bash icon ###

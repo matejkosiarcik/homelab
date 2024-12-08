@@ -12,7 +12,9 @@ tmpdir=''
 
 ### Unifi Controller ###
 
+# shellcheck disable=SC2034
 default_image_size='32x32'
+# shellcheck disable=SC2034
 default_convert_options='magick -background none INPUT_FILE -resize RESOLUTION -density 1200 OUTPUT_FILE'
 
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/favicon.png"
