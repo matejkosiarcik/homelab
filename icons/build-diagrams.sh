@@ -110,6 +110,15 @@ magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/os
 magick "$tmpdir/laptop.png" "$tmpdir/phone.png" -gravity Center -geometry 256x256+70+30 -composite -resize 256x256 "$tmpdir/personal-devices.png"
 convert_image_full "$tmpdir/personal-devices.png" "$output_dir/personal-devices.png"
 
+# DWService with custom background
+magick -size "$default_image_size" xc:#ffffffef "$tmpdir/dwservice-background.png"
+magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,256,256 16,16" "$tmpdir/dwservice-background-mask.png"
+magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/dwservice-background.png"
+magick "$tmpdir/dwservice-background.png" -define png:color-type=6 "$tmpdir/dwservice-background.png"
+magick -background none -bordercolor transparent "$input_dir/other/dwservice.png" -resize '224x224' -density 1200 "$tmpdir/dwservice-tmp.png"
+magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-tmp.png" -gravity Center -composite "$tmpdir/dwservice-tmp.png"
+convert_image_full "$tmpdir/dwservice-tmp.png" "$output_dir/dwservice.png"
+
 ### Cleanup ###
 
 rm -rf "$tmpdir"
