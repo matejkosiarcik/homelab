@@ -22,8 +22,11 @@ flowchart LR
         http_proxy -..-|fs| certificate_manager
     end
 
-    ntfy["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>TBD: Ntfy / Pushover / Mail / ...?"]
+    ntfy["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy"]
     class ntfy dashed_border
 
+    smtp["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>SMTP Email"]
+    class smtp dashed_border
+
     home_network <--->|:80,443| transport_proxy
-    changedetection -..->|notifications| ntfy
+    changedetection -..->|notifications| ntfy & smtp
