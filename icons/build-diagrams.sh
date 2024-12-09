@@ -83,21 +83,31 @@ convert_image_full "$input_dir/other/litestream-custom.svg.bin" "$output_dir/lit
 convert_image_full "$input_dir/other/playwright.svg.bin" "$output_dir/playwright.png"
 convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberry-pi.png"
 convert_image_full "$input_dir/other/renovatebot.png" "$output_dir/renovatebot.png"
-convert_image_full "$input_dir/other/smtp4dev-custom.png" "$output_dir/smtp4dev.png"
 convert_image_full "$input_dir/other/ssl-certificate.png" "$output_dir/ssl-certificate.png"
 convert_image_full "$input_dir/other/webcamera.png" "$output_dir/webcamera.png"
 
 ### Combined icons ###
 
-convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -border 32 -density 1200 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_server.svg" "$tmpdir/server-1.png"
-convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 96x96 -border 32 -density 1200 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_server.svg" "$tmpdir/server-2.png"
-convert_image_draft 'magick INPUT_FILE -gravity Center -geometry 256x256+50+80 -composite -resize 256x256 OUTPUT_FILE' "$tmpdir/server-1.png $tmpdir/server-2.png" "$tmpdir/servers-1.png"
-convert_image_draft 'magick INPUT_FILE -gravity Center -geometry 256x256-50+40 -composite -resize 256x256 OUTPUT_FILE' "$tmpdir/servers-1.png $tmpdir/server-2.png" "$tmpdir/servers-2.png"
+# Smtp4dev with custom background
+magick -size "$default_image_size" xc:#ffffffef "$tmpdir/smtp4dev-background.png"
+magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,256,256 16,16" "$tmpdir/smtp4dev-background-mask.png"
+magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/smtp4dev-background.png"
+magick "$tmpdir/smtp4dev-background.png" -define png:color-type=6 "$tmpdir/smtp4dev-background.png"
+magick -background none -bordercolor transparent "$input_dir/other/smtp4dev-custom.png" -resize '224x224' -density 1200 "$tmpdir/smtp4dev-tmp.png"
+magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-tmp.png" -gravity Center -composite "$tmpdir/smtp4dev-tmp.png"
+convert_image_full "$tmpdir/smtp4dev-tmp.png" "$output_dir/smtp4dev.png"
+
+# Multiple servers icon
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize 256x256 -border 32 -density 1200 "$tmpdir/server-1.png"
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize 96x96 -border 32 -density 1200 "$tmpdir/server-2.png"
+magick "$tmpdir/server-1.png" "$tmpdir/server-2.png" -gravity Center -geometry 256x256+50+80 -composite -resize 256x256 "$tmpdir/servers-1.png"
+magick "$tmpdir/servers-1.png" "$tmpdir/server-2.png" -gravity Center -geometry 256x256-50+40 -composite -resize 256x256 "$tmpdir/servers-2.png"
 convert_image_full "$tmpdir/servers-2.png" "$output_dir/servers.png"
 
-convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 256x256 -border 32 -density 1200 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_laptop.svg" "$tmpdir/laptop.png"
-convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize 192x192 -border 32 -density 1200 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_iPhone.svg" "$tmpdir/phone.png"
-convert_image_draft 'magick INPUT_FILE -gravity Center -geometry 256x256+70+30 -composite -resize 256x256 OUTPUT_FILE' "$tmpdir/laptop.png $tmpdir/phone.png" "$tmpdir/personal-devices.png"
+# Combined personal devices icon
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_laptop.svg" -resize 256x256 -border 32 -density 1200 "$tmpdir/laptop.png"
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_iPhone.svg" -resize 192x192 -border 32 -density 1200 "$tmpdir/phone.png"
+magick "$tmpdir/laptop.png" "$tmpdir/phone.png" -gravity Center -geometry 256x256+70+30 -composite -resize 256x256 "$tmpdir/personal-devices.png"
 convert_image_full "$tmpdir/personal-devices.png" "$output_dir/personal-devices.png"
 
 ### Cleanup ###
