@@ -11,31 +11,39 @@ flowchart LR
 
     subgraph raspberry_pi_3b["Raspberry Pi 3B"]
         tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+        dozzle_agent_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
 
         %% hidden_raspberry_pi_3b(" ")
         %% class hidden_raspberry_pi_3b no_border
     end
 
     subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2G"]
-        %% TODO: Mark TeamViewer / AnyDesk here
+        dwservice("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dwservice.png' style='min-width:80px;max-width:80px' /></div>DWService")
+        dozzle_agent_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
 
-        hidden_raspberry_pi_4b_2g(" ")
-        class hidden_raspberry_pi_4b_2g no_border
+        %% hidden_raspberry_pi_4b_2g(" ")
+        %% class hidden_raspberry_pi_4b_2g no_border
     end
 
     subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4G"]
         gatus_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus-2")
-        pihole_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole-2")
+        pihole_2_primary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Primary")
+        pihole_2_secondary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Secondary")
         unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br/>Controller")
+        motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
+        dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
 
         %% hidden_raspberry_pi_4b_4g(" ")
         %% class hidden_raspberry_pi_4b_4g no_border
     end
 
     subgraph odroid_h3["Odroid H3"]
+        actualbudget("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget")
         changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
         dockerhub_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>DockerHub<br/>cache<br/>proxy")
-        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
+        dozzle("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle")
+        gatus_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus 1")
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         home_assistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
         homepage("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
@@ -43,18 +51,22 @@ flowchart LR
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
         omada_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br/>Controller")
-        pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
+        pihole_1_primary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Primary")
+        pihole_1_secondary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Secondary")
+        renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>Renovatebot")
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
 
-        hidden_odroid_h3(" ")
-        class hidden_odroid_h3 no_border
+        %% hidden_odroid_h3(" ")
+        %% class hidden_odroid_h3 no_border
 
-        changedetection ~~~ dockerhub_proxy ~~~ gatus
+        actualbudget ~~~ changedetection ~~~ dockerhub_proxy
+        dozzle ~~~ dozzle_agent_4 ~~~ gatus_1
         healthchecks ~~~ home_assistant ~~~ homepage
         jellyfin ~~~ minio ~~~ ntfy
-        omada_controller ~~~ pihole ~~~ smtp4dev
-        speedtest_tracker ~~~ hidden_odroid_h3
+        omada_controller ~~~ renovatebot ~~~ speedtest_tracker
+        pihole_1_primary ~~~ pihole_1_secondary ~~~ smtp4dev
+        %% hidden_odroid_h3
     end
 
     odroid_h3
