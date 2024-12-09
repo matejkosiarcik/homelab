@@ -36,6 +36,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encr
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$output_dir/openspeedtest.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/watchyourlan.png" "$output_dir/watchyourlan.png"
 
 ### Organizr Icons ###
@@ -90,34 +91,34 @@ convert_image_full "$input_dir/other/webcamera.png" "$output_dir/webcamera.png"
 
 # Smtp4dev with custom background
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/smtp4dev-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,256,256 16,16" "$tmpdir/smtp4dev-background-mask.png"
+magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/smtp4dev-background-mask.png"
 magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/smtp4dev-background.png"
 magick "$tmpdir/smtp4dev-background.png" -define png:color-type=6 "$tmpdir/smtp4dev-background.png"
 magick -background none -bordercolor transparent "$input_dir/other/smtp4dev-custom.png" -resize '224x224' -density 1200 "$tmpdir/smtp4dev-tmp.png"
-magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-tmp.png" -gravity Center -composite "$tmpdir/smtp4dev-tmp.png"
-convert_image_full "$tmpdir/smtp4dev-tmp.png" "$output_dir/smtp4dev.png"
+magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-tmp.png" -gravity Center -composite "$tmpdir/smtp4dev-final.png"
+convert_image_full "$tmpdir/smtp4dev-final.png" "$output_dir/smtp4dev.png"
 
 # Multiple servers icon
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize 256x256 -border 32 -density 1200 "$tmpdir/server-1.png"
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize 96x96 -border 32 -density 1200 "$tmpdir/server-2.png"
-magick "$tmpdir/server-1.png" "$tmpdir/server-2.png" -gravity Center -geometry 256x256+50+80 -composite -resize 256x256 "$tmpdir/servers-1.png"
-magick "$tmpdir/servers-1.png" "$tmpdir/server-2.png" -gravity Center -geometry 256x256-50+40 -composite -resize 256x256 "$tmpdir/servers-2.png"
-convert_image_full "$tmpdir/servers-2.png" "$output_dir/servers.png"
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/server-tmp-1.png"
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize 96x96 -border 32 -density 1200 "$tmpdir/server-tmp-2.png"
+magick "$tmpdir/server-tmp-1.png" "$tmpdir/server-tmp-2.png" -gravity Center -geometry "$default_image_size+50+80" -composite -resize "$default_image_size" "$tmpdir/servers-tmp.png"
+magick "$tmpdir/servers-tmp.png" "$tmpdir/server-tmp-2.png" -gravity Center -geometry "$default_image_size-50+40" -composite -resize "$default_image_size" "$tmpdir/servers-final.png"
+convert_image_full "$tmpdir/servers-final.png" "$output_dir/servers.png"
 
 # Combined personal devices icon
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_laptop.svg" -resize 256x256 -border 32 -density 1200 "$tmpdir/laptop.png"
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_iPhone.svg" -resize 192x192 -border 32 -density 1200 "$tmpdir/phone.png"
-magick "$tmpdir/laptop.png" "$tmpdir/phone.png" -gravity Center -geometry 256x256+70+30 -composite -resize 256x256 "$tmpdir/personal-devices.png"
-convert_image_full "$tmpdir/personal-devices.png" "$output_dir/personal-devices.png"
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_laptop.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/laptop-tmp.png"
+magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_iPhone.svg" -resize 192x192 -border 32 -density 1200 "$tmpdir/phone-tmp.png"
+magick "$tmpdir/laptop-tmp.png" "$tmpdir/phone-tmp.png" -gravity Center -geometry "$default_image_size+70+30" -composite -resize "$default_image_size" "$tmpdir/personal-devices-final.png"
+convert_image_full "$tmpdir/personal-devices-final.png" "$output_dir/personal-devices.png"
 
 # DWService with custom background
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/dwservice-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,256,256 16,16" "$tmpdir/dwservice-background-mask.png"
+magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/dwservice-background-mask.png"
 magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/dwservice-background.png"
 magick "$tmpdir/dwservice-background.png" -define png:color-type=6 "$tmpdir/dwservice-background.png"
 magick -background none -bordercolor transparent "$input_dir/other/dwservice.png" -resize '224x224' -density 1200 "$tmpdir/dwservice-tmp.png"
-magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-tmp.png" -gravity Center -composite "$tmpdir/dwservice-tmp.png"
-convert_image_full "$tmpdir/dwservice-tmp.png" "$output_dir/dwservice.png"
+magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-tmp.png" -gravity Center -composite "$tmpdir/dwservice-final.png"
+convert_image_full "$tmpdir/dwservice-final.png" "$output_dir/dwservice.png"
 
 ### Cleanup ###
 
