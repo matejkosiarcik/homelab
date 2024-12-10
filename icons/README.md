@@ -12,6 +12,7 @@ The Icons are obtained from following locations:
     - OSA Icons: <https://www.opensecurityarchitecture.org/cms/library/icon-library>
 - Individual icons:
     - ActualBudget: <https://github.com/actualbudget>
+    - Antenna: <https://www.flaticon.com/free-icon/antenna_1011360>
     - API: <https://www.flaticon.com/free-icon/api_1493169>
     - Apache: <https://techicons.dev/icons/apache>
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
