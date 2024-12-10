@@ -30,7 +30,11 @@ flowchart LR
     public_dns["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dns.png' style='min-width:40px;max-width:40px;position:absolute;bottom:10px;right:0' /></div>Public<br/>DNS"]
     class public_dns dashed_border
 
+    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    pihole_setup ~~~ healthchecks
+
     home_network <--->|:80,443| http_transport_proxy
     home_network <--->|:53| dns_default_transport_proxy & dns_open_transport_proxy
     pihole_setup ~~~ public_dns
     pihole -..->|DNS queries| public_dns
+    certificate_manager -..->|report status| healthchecks

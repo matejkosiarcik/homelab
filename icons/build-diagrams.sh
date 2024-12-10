@@ -74,8 +74,9 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg"
 
 ### Other Icons ###
 
-convert_image_full "$input_dir/other/api.png" "$output_dir/api.png"
 convert_image_full "$input_dir/other/actualbudget.png" "$output_dir/actualbudget.png"
+convert_image_full "$input_dir/other/antenna.png" "$output_dir/antenna.png"
+convert_image_full "$input_dir/other/api.png" "$output_dir/api.png"
 convert_image_full "$input_dir/other/apache.svg.bin" "$output_dir/apache.png"
 convert_image_full "$input_dir/other/button.png" "$output_dir/button.png"
 convert_image_full "$input_dir/other/gatus.png" "$output_dir/gatus.png"
@@ -85,6 +86,7 @@ convert_image_full "$input_dir/other/playwright.svg.bin" "$output_dir/playwright
 convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberry-pi.png"
 convert_image_full "$input_dir/other/renovatebot.png" "$output_dir/renovatebot.png"
 convert_image_full "$input_dir/other/webcamera.png" "$output_dir/webcamera.png"
+convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 
 ### Combined icons ###
 

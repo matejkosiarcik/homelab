@@ -33,3 +33,4 @@ flowchart LR
     other_apps -..->|send cron job status| app_wrapper
     other_apps ~~~~ transport_proxy
     db_sync -.->|send| s3_database
+    certificate_manager -..->|report status| healthchecks

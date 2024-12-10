@@ -29,6 +29,10 @@ flowchart LR
         minio ~~~ minio_setup -..->|use| minio
     end
 
+    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    minio_setup ~~~ healthchecks
+
     home_network <--->|:80,443| transport_proxy_1 & transport_proxy_2
     other_apps -..->|use| app_wrapper
     other_apps ~~~~ transport_proxy_2
+    certificate_manager -..->|report status| healthchecks

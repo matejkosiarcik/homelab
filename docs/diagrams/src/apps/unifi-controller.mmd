@@ -32,9 +32,11 @@ flowchart LR
     end
 
     s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
-    class s3_database dashed_border
+    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    script_backup ~~~ healthchecks
 
     home_network <--->|:80,443,8080,8443,1900,3478,5514,6789,10001| transport_proxy
     unifi_equipment <-..->|use/control| app_wrapper
     unifi_equipment ~~~~ transport_proxy
     script_backup -.->|send backup| s3_database
+    certificate_manager -..->|report status| healthchecks
