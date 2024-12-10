@@ -270,6 +270,12 @@
         ping: actualbudget.home
         icon: /icons/actualbudget.png
 
+    - ActualBudget (Public):
+        description: Finance manager
+        href: https://actualbudget-public.home
+        ping: actualbudget-public.home
+        icon: /icons/actualbudget.png
+
     - Dockerhub proxy:
         description: Dockerhub transparent caching proxy
         href: https://dockerhub-proxy.home

@@ -160,6 +160,50 @@ endpoints:
     url: icmp://10.1.4.7
     enabled: false # TODO: Reenable
 
+  ### Group: App - ActualBudget ###
+
+  - <<: *default-http
+    name: ActualBudget HTTP
+    group: App - ActualBudget
+    url: http://actualbudget.home
+
+  - <<: *default-http
+    name: ActualBudget HTTPS
+    group: App - ActualBudget
+    url: https://actualbudget.home
+
+  - <<: *default-tcp
+    name: ActualBudget TCP:80
+    group: App - ActualBudget
+    url: tcp://actualbudget.home:80
+
+  - <<: *default-tcp
+    name: ActualBudget TCP:443
+    group: App - ActualBudget
+    url: tcp://actualbudget.home:443
+
+  ### Group: App - ActualBudget (Public) ###
+
+  - <<: *default-http
+    name: ActualBudget (Public) HTTP
+    group: App - ActualBudget (Public)
+    url: http://actualbudget-public.home
+
+  - <<: *default-http
+    name: ActualBudget (Public) HTTPS
+    group: App - ActualBudget (Public)
+    url: https://actualbudget-public.home
+
+  - <<: *default-tcp
+    name: ActualBudget (Public) TCP:80
+    group: App - ActualBudget (Public)
+    url: tcp://actualbudget-public.home:80
+
+  - <<: *default-tcp
+    name: ActualBudget (Public) TCP:443
+    group: App - ActualBudget (Public)
+    url: tcp://actualbudget-public.home:443
+
   ### Group: App - Changedetection ###
 
   - <<: *default-http
@@ -322,57 +366,57 @@ endpoints:
     group: App - Dozzle agents
     url: tcp://dozzle-agent.raspberry-pi-4b-4g.home:7007
 
-  ### Group: App - Gatus ###
+  ### Group: App - Gatus (1) ###
 
   - <<: *default-http
-    name: Gatus HTTP
-    group: App - Gatus
+    name: Gatus (1) HTTP
+    group: App - Gatus (1)
     url: http://gatus.home
 
   - <<: *default-http
-    name: Gatus HTTPS
-    group: App - Gatus
+    name: Gatus (1) HTTPS
+    group: App - Gatus (1)
     url: https://gatus.home
 
   - <<: *default-http
-    name: Gatus Api Metrics
-    group: App - Gatus
+    name: Gatus (1) Api Metrics
+    group: App - Gatus (1)
     url: https://gatus.home/metrics
 
   - <<: *default-tcp
-    name: Gatus TCP:80
-    group: App - Gatus
+    name: Gatus (1) TCP:80
+    group: App - Gatus (1)
     url: tcp://gatus.home:80
 
   - <<: *default-tcp
-    name: Gatus TCP:443
-    group: App - Gatus
+    name: Gatus (1) TCP:443
+    group: App - Gatus (1)
     url: tcp://gatus.home:443
 
   ### Group: App - Gatus (2) ###
 
   - <<: *default-http
-    name: Gatus HTTP
+    name: Gatus (2) HTTP
     group: App - Gatus (2)
     url: http://gatus-2.home
 
   - <<: *default-http
-    name: Gatus HTTPS
+    name: Gatus (2) HTTPS
     group: App - Gatus (2)
     url: https://gatus-2.home
 
   - <<: *default-http
-    name: Gatus Api Metrics
+    name: Gatus (2) Api Metrics
     group: App - Gatus (2)
     url: https://gatus-2.home/metrics
 
   - <<: *default-tcp
-    name: Gatus TCP:80
+    name: Gatus (2) TCP:80
     group: App - Gatus (2)
     url: tcp://gatus-2.home:80
 
   - <<: *default-tcp
-    name: Gatus TCP:443
+    name: Gatus (2) TCP:443
     group: App - Gatus (2)
     url: tcp://gatus-2.home:443
 
@@ -555,6 +599,40 @@ endpoints:
     name: Minio Console TCP:443
     group: App - Minio
     url: tcp://console.minio.home:443
+
+  ### Group: App - MotionEye ###
+
+  - <<: *default-http
+    name: MotionEye (Stove) HTTP
+    group: App - MotionEye (Stove)
+    url: http://motioneye-stove.home
+
+  - <<: *default-http
+    name: MotionEye (Stove) HTTPS
+    group: App - MotionEye (Stove)
+    url: https://motioneye-stove.home
+
+  - <<: *default-http
+    name: MotionEye (Stove) HTTPS:9081
+    group: App - MotionEye (Stove)
+    url: https://motioneye-stove.home:9081
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-tcp
+    name: MotionEye (Stove) TCP:80
+    group: App - MotionEye (Stove)
+    url: tcp://motioneye-stove.home:80
+
+  - <<: *default-tcp
+    name: MotionEye (Stove) TCP:443
+    group: App - MotionEye (Stove)
+    url: tcp://motioneye-stove.home:443
+
+  - <<: *default-tcp
+    name: MotionEye (Stove) TCP:9081
+    group: App - MotionEye (Stove)
+    url: tcp://motioneye-stove.home:9081
 
   ### Group: App - Ntfy ###
 
