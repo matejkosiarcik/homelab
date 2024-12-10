@@ -18,7 +18,7 @@ default_convert_options='magick -background none -bordercolor transparent INPUT_
 
 ### Bash icon ###
 
-convert_image_full "$input_dir/gitman-repositories/bash-logo/assets/Logos/Icons/SVG/512x512.svg" "$output_dir/bash.png"
+convert_image_full "$input_dir/gitman-repositories/bash-logo/assets/Logos/Icons/SVG/512x512_white.svg" "$output_dir/bash.png"
 
 ### OSA Icons ###
 
