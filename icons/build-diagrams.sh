@@ -61,7 +61,6 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/png/chromium.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$output_dir/docker.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/azuredns.png" "$output_dir/dns.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/filebrowser.svg" "$output_dir/filebrowser.png"
-convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/github.svg" "$output_dir/github.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/jellyfin.svg" "$output_dir/jellyfin.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/minio.png" "$output_dir/minio.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/mongodb.svg" "$output_dir/mongodb.png"
@@ -72,7 +71,10 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/png/tplink.png" "
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/tvheadend.png" "$output_dir/tvheadend.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/unifi.png"
 
-### Other Icons ###
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/github.svg" -resize "$default_image_size" -density 1200 -fill black -colorize 100% "$tmpdir/github-tmp.png"
+convert_image_full "$tmpdir/github-tmp.png" "$output_dir/github.png"
+
+## Other Icons ###
 
 convert_image_full "$input_dir/other/actualbudget.png" "$output_dir/actualbudget.png"
 convert_image_full "$input_dir/other/antenna.png" "$output_dir/antenna.png"
