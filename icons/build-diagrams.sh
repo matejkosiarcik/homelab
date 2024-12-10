@@ -32,7 +32,6 @@ convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$output_dir/networ
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dozzle.svg" "$output_dir/dozzle.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/gitlab.png" "$output_dir/gitlab.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$output_dir/homepage.png"
-convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" "$output_dir/lets-encrypt.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$output_dir/openspeedtest.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"
@@ -98,6 +97,15 @@ magick "$tmpdir/smtp4dev-background.png" -define png:color-type=6 "$tmpdir/smtp4
 magick -background none -bordercolor transparent "$input_dir/other/smtp4dev-custom.png" -resize '224x224' -density 1200 "$tmpdir/smtp4dev-tmp.png"
 magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-tmp.png" -gravity Center -composite "$tmpdir/smtp4dev-final.png"
 convert_image_full "$tmpdir/smtp4dev-final.png" "$output_dir/smtp4dev.png"
+
+# Let's Encrypt with custom background
+magick -size "$default_image_size" xc:#ffffffef "$tmpdir/lets-encrypt-background.png"
+magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/lets-encrypt-background-mask.png"
+magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/lets-encrypt-background.png"
+magick "$tmpdir/lets-encrypt-background.png" -define png:color-type=6 "$tmpdir/lets-encrypt-background.png"
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" -resize '224x224' -density 1200 "$tmpdir/lets-encrypt-tmp.png"
+magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-tmp.png" -gravity Center -composite "$tmpdir/lets-encrypt-final.png"
+convert_image_full "$tmpdir/lets-encrypt-final.png" "$output_dir/lets-encrypt.png"
 
 # Multiple servers icon
 magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/server-tmp-1.png"
