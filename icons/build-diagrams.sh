@@ -85,6 +85,7 @@ convert_image_full "$input_dir/other/playwright.svg.bin" "$output_dir/playwright
 convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberry-pi.png"
 convert_image_full "$input_dir/other/renovatebot.png" "$output_dir/renovatebot.png"
 convert_image_full "$input_dir/other/webcamera.png" "$output_dir/webcamera.png"
+convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 
 ### Combined icons ###
 

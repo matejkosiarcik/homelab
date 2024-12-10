@@ -10,7 +10,7 @@ flowchart LR
     classDef dashed_border stroke-dasharray:10 6;
 
     subgraph app_wrapper[" "]
-        renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>RenovateBot")
+        renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>RenovateBot")
     end
 
     github["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/github.png' style='min-width:80px;max-width:80px' /></div>GitHub<br/>repositories"]
@@ -19,4 +19,7 @@ flowchart LR
     gitlab["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gitlab.png' style='min-width:80px;max-width:80px' /></div>GitLab<br/>repositories"]
     class gitlab dashed_border
 
+    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+
+    renovatebot -..->|report status| healthchecks
     renovatebot -..->|update| github & gitlab

@@ -27,3 +27,4 @@ The Icons are obtained from following locations:
     - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - UPC: <https://www.upc.sk>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>
+    - WWW: <https://www.flaticon.com/free-icon/www_4357944>
