@@ -6,7 +6,7 @@ WORKDIR /homelab
 RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
 
-FROM healthchecks/healthchecks:v3.7
+FROM healthchecks/healthchecks:v3.8
 COPY --from=prefinal /homelab /homelab
 COPY ./external/healthchecks/icons/healthchecks.png /opt/healthchecks/static-collected/img/custom-healthchecks.png
 ENV DB=sqlite \
