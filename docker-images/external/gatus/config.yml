@@ -160,6 +160,50 @@ endpoints:
     url: icmp://10.1.4.7
     enabled: false # TODO: Reenable
 
+  ### Group: App - ActualBudget ###
+
+  - <<: *default-http
+    name: ActualBudget HTTP
+    group: App - ActualBudget
+    url: http://actualbudget.home
+
+  - <<: *default-http
+    name: ActualBudget HTTPS
+    group: App - ActualBudget
+    url: https://actualbudget.home
+
+  - <<: *default-tcp
+    name: ActualBudget TCP:80
+    group: App - ActualBudget
+    url: tcp://actualbudget.home:80
+
+  - <<: *default-tcp
+    name: ActualBudget TCP:443
+    group: App - ActualBudget
+    url: tcp://actualbudget.home:443
+
+  ### Group: App - ActualBudget (Public) ###
+
+  - <<: *default-http
+    name: ActualBudget (Public) HTTP
+    group: App - ActualBudget (Public)
+    url: http://actualbudget-public.home
+
+  - <<: *default-http
+    name: ActualBudget (Public) HTTPS
+    group: App - ActualBudget (Public)
+    url: https://actualbudget-public.home
+
+  - <<: *default-tcp
+    name: ActualBudget (Public) TCP:80
+    group: App - ActualBudget (Public)
+    url: tcp://actualbudget-public.home:80
+
+  - <<: *default-tcp
+    name: ActualBudget (Public) TCP:443
+    group: App - ActualBudget (Public)
+    url: tcp://actualbudget-public.home:443
+
   ### Group: App - Changedetection ###
 
   - <<: *default-http
