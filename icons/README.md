@@ -18,6 +18,7 @@ The Icons are obtained from following locations:
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
     - DW Service: <https://www.dwservice.net/en/home.html>
     - Gatus: <https://github.com/TwiN/gatus>
+    - Graphics card: <https://www.flaticon.com/free-icon/graphic-card_4617578>
     - IoT: <https://www.flaticon.com/free-icon/iot_10355707>
     - Litestream: <https://litestream.io>
     - Odroid: <https://wiki.odroid.com>
