@@ -84,7 +84,6 @@ convert_image_full "$input_dir/other/litestream-custom.svg.bin" "$output_dir/lit
 convert_image_full "$input_dir/other/playwright.svg.bin" "$output_dir/playwright.png"
 convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberry-pi.png"
 convert_image_full "$input_dir/other/renovatebot.png" "$output_dir/renovatebot.png"
-convert_image_full "$input_dir/other/ssl-certificate.png" "$output_dir/ssl-certificate.png"
 convert_image_full "$input_dir/other/webcamera.png" "$output_dir/webcamera.png"
 
 ### Combined icons ###
