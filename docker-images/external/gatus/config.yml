@@ -228,69 +228,69 @@ endpoints:
 
   ### Group: App - Desklamp - Left ###
 
-  - <<: *default-http
-    name: Desklamp - Left HTTP
-    group: App - Desklamp - Left
-    url: http://desklamp-left.home
+  # - <<: *default-http
+  #   name: Desklamp - Left HTTP
+  #   group: App - Desklamp - Left
+  #   url: http://desklamp-left.home
+
+  # # - <<: *default-http
+  # #   name: Desklamp - Left HTTPS
+  # #   group: App - Desklamp - Left
+  # #   url: https://desklamp-left.home
+  # #   enabled: false
 
   # - <<: *default-http
-  #   name: Desklamp - Left HTTPS
+  #   name: Desklamp - Left Api Health
   #   group: App - Desklamp - Left
-  #   url: https://desklamp-left.home
+  #   url: http://desklamp-left.home/api/status
+  #   conditions:
+  #     - "[STATUS] == 200"
+  #     - "has([BODY].status) == true"
+  #     - "[BODY].status == any(on, off)"
+
+  # - <<: *default-tcp
+  #   name: Desklamp - Left TCP:80
+  #   group: App - Desklamp - Left
+  #   url: tcp://desklamp-left.home:80
+
+  # - <<: *default-tcp
+  #   name: Desklamp - Left TCP:443
+  #   group: App - Desklamp - Left
+  #   url: tcp://desklamp-left.home:443
   #   enabled: false
-
-  - <<: *default-http
-    name: Desklamp - Left Api Health
-    group: App - Desklamp - Left
-    url: http://desklamp-left.home/api/status
-    conditions:
-      - "[STATUS] == 200"
-      - "has([BODY].status) == true"
-      - "[BODY].status == any(on, off)"
-
-  - <<: *default-tcp
-    name: Desklamp - Left TCP:80
-    group: App - Desklamp - Left
-    url: tcp://desklamp-left.home:80
-
-  - <<: *default-tcp
-    name: Desklamp - Left TCP:443
-    group: App - Desklamp - Left
-    url: tcp://desklamp-left.home:443
-    enabled: false
 
   ### Group: App - Desklamp - Right ###
 
-  - <<: *default-http
-    name: Desklamp - Right HTTP
-    group: App - Desklamp - Right
-    url: http://desklamp-right.home
+  # - <<: *default-http
+  #   name: Desklamp - Right HTTP
+  #   group: App - Desklamp - Right
+  #   url: http://desklamp-right.home
+
+  # # - <<: *default-http
+  # #   name: Desklamp - Right HTTPS
+  # #   group: App - Desklamp - Right
+  # #   url: https://desklamp-right.home
+  # #   enabled: false
 
   # - <<: *default-http
-  #   name: Desklamp - Right HTTPS
+  #   name: Desklamp - Right Api Health
   #   group: App - Desklamp - Right
-  #   url: https://desklamp-right.home
+  #   url: http://desklamp-right.home/api/status
+  #   conditions:
+  #     - "[STATUS] == 200"
+  #     - "has([BODY].status) == true"
+  #     - "[BODY].status == any(on, off)"
+
+  # - <<: *default-tcp
+  #   name: Desklamp - Right TCP:80
+  #   group: App - Desklamp - Right
+  #   url: tcp://desklamp-right.home:80
+
+  # - <<: *default-tcp
+  #   name: Desklamp - Right TCP:443
+  #   group: App - Desklamp - Right
+  #   url: tcp://desklamp-right.home:443
   #   enabled: false
-
-  - <<: *default-http
-    name: Desklamp - Right Api Health
-    group: App - Desklamp - Right
-    url: http://desklamp-right.home/api/status
-    conditions:
-      - "[STATUS] == 200"
-      - "has([BODY].status) == true"
-      - "[BODY].status == any(on, off)"
-
-  - <<: *default-tcp
-    name: Desklamp - Right TCP:80
-    group: App - Desklamp - Right
-    url: tcp://desklamp-right.home:80
-
-  - <<: *default-tcp
-    name: Desklamp - Right TCP:443
-    group: App - Desklamp - Right
-    url: tcp://desklamp-right.home:443
-    enabled: false
 
   ### Group: App - Dockerhub proxy ###
 
