@@ -13,7 +13,7 @@
     "npm-run-all2": "^7.0.1"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^12.1.1",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@tsconfig/recommended": "^1.0.8",
     "@types/chai": "^5.0.1",
     "@types/node": "^22.10.2",
