@@ -7,8 +7,8 @@ if [ "$#" -lt 2 ]; then
     exit 1
 fi
 
-router_name="$1"
-external_ip="$2"
+vlan="$2"
+external_ip="$1"
 
 # Get appropriate network interface
 has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
@@ -26,6 +26,7 @@ fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
-sudo ip link add "$router_name" link "$found_interface" type bridge
+router_name="$found_interface.$vlan"
+sudo ip link add link "$found_interface" name "$router_name" type vlan id "$vlan"
 sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
