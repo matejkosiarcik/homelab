@@ -26,7 +26,7 @@ fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
-router_name="$found_interface-$id"
+router_name="ethbr-$id"
 sudo ip link add link "$found_interface" name "$router_name" type bridge
 sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
