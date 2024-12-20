@@ -26,7 +26,7 @@ fi
 
 printf 'Found network interface %s\n' "$found_interface"
 
-router_name="$found_interface.$vlan"
+router_name="ethvlan-$vlan"
 sudo ip link add link "$found_interface" name "$router_name" type vlan id "$vlan"
 sudo ip address add "$external_ip/32" dev "$router_name"
 sudo ip link set "$router_name" up
