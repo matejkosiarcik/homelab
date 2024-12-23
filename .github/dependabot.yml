@@ -48,6 +48,7 @@ updates:
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/tvheadend
       - /docker-images/external/unifi-network-application
+      - /docker-images/external/vikunja
       - /other-apps/desklamp-left
       - /other-apps/desklamp-right
     schedule:
