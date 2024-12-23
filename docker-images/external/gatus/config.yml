@@ -634,6 +634,43 @@ endpoints:
     group: App - MotionEye (Stove)
     url: tcp://motioneye-stove.home:9081
 
+  ### Group: App - NetAlertX ###
+
+  # - <<: *default-http
+  #   name: NetAlertX HTTP
+  #   group: App - NetAlertX
+  #   url: http://netalertx.home
+
+  # - <<: *default-http
+  #   name: NetAlertX HTTPS
+  #   group: App - NetAlertX
+  #   url: https://netalertx.home
+
+  # - <<: *default-http
+  #   name: NetAlertX HTTP (Direct)
+  #   group: App - NetAlertX
+  #   url: http://netalertx.home:20211
+
+  # - <<: *default-http
+  #   name: NetAlertX Api Metrics
+  #   group: App - NetAlertX
+  #   url: https://netalertx.home/api/prometheus
+
+  # - <<: *default-tcp
+  #   name: NetAlertX TCP:80
+  #   group: App - NetAlertX
+  #   url: tcp://netalertx.home:80
+
+  # - <<: *default-tcp
+  #   name: NetAlertX TCP:443
+  #   group: App - NetAlertX
+  #   url: tcp://netalertx.home:443
+
+  # - <<: *default-tcp
+  #   name: NetAlertX TCP:20211
+  #   group: App - NetAlertX
+  #   url: tcp://netalertx.home:20211
+
   ### Group: App - Ntfy ###
 
   - <<: *default-http
