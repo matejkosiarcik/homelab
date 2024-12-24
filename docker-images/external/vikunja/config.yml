@@ -4,9 +4,21 @@ service:
 
 metrics:
   enabled: true
-
-log:
-  path: /vikunja-logs/
+  username: prometheus
+  # Password set by env
 
 defaultsettings:
   week_start: 1 # Monday
+
+log:
+  path: /homelab/logs/
+  level: WARNING
+  standard: file
+  database: true
+  databaselevel: ERROR
+  http: file
+  echo: stdout
+  events: file
+  eventslevel: ERROR
+  mail: file
+  maillevel: ERROR

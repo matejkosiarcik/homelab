@@ -18,10 +18,12 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/vikunja/Dockerfile
+    env_file:
+      - ./app-secrets/vikunja.env
     volumes:
       - ./app-data/vikunja-files:/app/vikunja/files
       - ./app-data/vikunja-db:/db
-      - ./app-logs/vikunja:/vikunja-logs
+      - ./app-logs/vikunja:/homelab/logs
 
   certificate-manager:
     <<: *common-service-options
