@@ -28,15 +28,17 @@ actualbudget
 actualbudget-public
 openspeedtest
 speedtest-tracker
+vikunja
+
+# DNS backup
+pihole-1-secondary
 
 # Misc Monitoring
 dozzle-agent
 dozzle-server
 changedetection
 healthchecks
-
-# DNS backup
-pihole-1-secondary
+netalertx
 
 # App Monitoring
 gatus
