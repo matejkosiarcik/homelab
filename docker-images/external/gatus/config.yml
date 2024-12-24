@@ -1272,6 +1272,11 @@ endpoints:
     group: App - Vikunja
     url: https://vikunja.home
 
+  - <<: *default-http
+    name: Vikunja API Metrics
+    group: App - Vikunja
+    url: https://vikunja.home/api/v1/metrics
+
   - <<: *default-tcp
     name: Vikunja TCP:80
     group: App - Vikunja
