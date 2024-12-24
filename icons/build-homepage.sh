@@ -30,6 +30,7 @@ convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networ
 
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dozzle.svg" "$output_dir/dozzle.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$output_dir/homepage.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$output_dir/openspeedtest.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"

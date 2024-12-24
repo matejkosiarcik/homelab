@@ -40,6 +40,7 @@ updates:
       - /docker-images/external/jellyfin
       - /docker-images/external/minio-server
       - /docker-images/external/motioneye
+      - /docker-images/external/netalertx
       - /docker-images/external/ntfy
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole
