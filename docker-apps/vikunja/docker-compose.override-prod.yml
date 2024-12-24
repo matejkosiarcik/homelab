@@ -12,6 +12,9 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      VIKUNJA_MAILER_FROMEMAIL: vikunja@${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   certificate-manager:
     <<: *common-service-options

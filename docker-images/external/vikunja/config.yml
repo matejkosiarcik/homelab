@@ -22,3 +22,8 @@ log:
   eventslevel: ERROR
   mail: file
   maillevel: ERROR
+
+mailer:
+  enabled: true
+  host: smtp4dev.home
+  port: 25
