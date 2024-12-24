@@ -37,7 +37,6 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeed
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vikunja.svg" "$output_dir/vikunja.png"
-convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/watchyourlan.png" "$output_dir/watchyourlan.png"
 
 ### Organizr Icons ###
 
