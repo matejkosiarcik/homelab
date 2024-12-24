@@ -13,7 +13,10 @@ flowchart LR
     class home_network dashed_border
 
     subgraph app_wrapper[" "]
+        network_interface(" ")
         dozzle_agent("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>agent")
+
+        network_interface --->|:7007|dozzle_agent
     end
 
-    home_network <--->|:7007| dozzle_agent
+    home_network <---> app_wrapper

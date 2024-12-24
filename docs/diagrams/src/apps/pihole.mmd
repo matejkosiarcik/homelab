@@ -13,6 +13,7 @@ flowchart LR
     class home_network dashed_border
 
     subgraph app_wrapper[" "]
+        network_interface(" ")
         http_transport_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat<br/>(HTTP)")
         dns_default_transport_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat<br/>(DNS default)")
         dns_open_transport_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat<br/>(DNS open)")
@@ -21,8 +22,8 @@ flowchart LR
         pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
         pihole_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
 
-        http_transport_proxy <--->|:80,443| http_proxy <--->|:80| pihole
-        dns_default_transport_proxy & dns_open_transport_proxy <--->|:53| pihole
+        network_interface --->|:80,443| http_transport_proxy --->|:80,443| http_proxy --->|:80| pihole
+        network_interface --->|:53| dns_default_transport_proxy & dns_open_transport_proxy --->|:53| pihole
         pihole ~~~ pihole_setup -..->|docker-cli| pihole
         http_proxy -..-|fs| certificate_manager
     end
@@ -33,8 +34,7 @@ flowchart LR
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     pihole_setup ~~~ healthchecks
 
-    home_network <--->|:80,443| http_transport_proxy
-    home_network <--->|:53| dns_default_transport_proxy & dns_open_transport_proxy
+    home_network <---> app_wrapper
     pihole_setup ~~~ public_dns
     pihole -..->|DNS queries| public_dns
     certificate_manager -..->|report status| healthchecks

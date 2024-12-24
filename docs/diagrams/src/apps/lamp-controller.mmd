@@ -15,6 +15,7 @@ flowchart LR
     class home_assistant dashed_border
 
     subgraph app_wrapper[" "]
+        network_interface(" ")
         lamp_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp controller")
 
         gpio_button("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /></div>Button")
@@ -26,5 +27,5 @@ flowchart LR
         lamp_controller --->|GPIO 14| gpio_lamp
     end
 
-    home_network <--->|:80| lamp_controller
+    home_network <---> app_wrapper
     home_assistant -..->|control| lamp_controller
