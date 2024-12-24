@@ -14,5 +14,4 @@
 
 ## After initial installation
 
-- \[All\] Create new user using cli
-  `docker exec -it vikunja-app ./vikunja user create --email <user>@<domain> --username <user> --password <password>`
+- \[All\] Create new user using cli: `docker exec -it vikunja-app ./vikunja user create --email <user>@<domain> --username <user> --password <password>`
