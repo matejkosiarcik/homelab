@@ -1,0 +1,12 @@
+service:
+  timezone: Europe/Bratislava
+  enableregistration: false
+
+metrics:
+  enabled: true
+
+log:
+  path: /vikunja-logs/
+
+defaultsettings:
+  week_start: 1 # Monday

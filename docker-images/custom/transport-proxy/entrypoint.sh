@@ -129,6 +129,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     respawn socat -T5 UDP4-LISTEN:5514,fork,reuseaddr UDP4:app:5514 &
     respawn socat TCP4-LISTEN:6789,fork,reuseaddr TCP4:app:6789 &
     respawn socat -T5 UDP4-LISTEN:10001,fork,reuseaddr UDP4:app:10001 &
+elif [ "$HOMELAB_APP_TYPE" = 'vikunja' ]; then
+    respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 else
     printf 'Unknown HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}" >&2
     exit 1

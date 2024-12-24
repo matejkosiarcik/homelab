@@ -634,6 +634,43 @@ endpoints:
     group: App - MotionEye (Stove)
     url: tcp://motioneye-stove.home:9081
 
+  ### Group: App - NetAlertX ###
+
+  # - <<: *default-http
+  #   name: NetAlertX HTTP
+  #   group: App - NetAlertX
+  #   url: http://netalertx.home
+
+  # - <<: *default-http
+  #   name: NetAlertX HTTPS
+  #   group: App - NetAlertX
+  #   url: https://netalertx.home
+
+  # - <<: *default-http
+  #   name: NetAlertX HTTP (Direct)
+  #   group: App - NetAlertX
+  #   url: http://netalertx.home:20211
+
+  # - <<: *default-http
+  #   name: NetAlertX Api Metrics
+  #   group: App - NetAlertX
+  #   url: https://netalertx.home/api/prometheus
+
+  # - <<: *default-tcp
+  #   name: NetAlertX TCP:80
+  #   group: App - NetAlertX
+  #   url: tcp://netalertx.home:80
+
+  # - <<: *default-tcp
+  #   name: NetAlertX TCP:443
+  #   group: App - NetAlertX
+  #   url: tcp://netalertx.home:443
+
+  # - <<: *default-tcp
+  #   name: NetAlertX TCP:20211
+  #   group: App - NetAlertX
+  #   url: tcp://netalertx.home:20211
+
   ### Group: App - Ntfy ###
 
   - <<: *default-http
@@ -1222,3 +1259,30 @@ endpoints:
     name: Unifi Controller TCP:6789
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:6789
+
+  ### Group: App - Vikunja ###
+
+  - <<: *default-http
+    name: Vikunja HTTP
+    group: App - Vikunja
+    url: http://vikunja.home
+
+  - <<: *default-http
+    name: Vikunja HTTPS
+    group: App - Vikunja
+    url: https://vikunja.home
+
+  - <<: *default-http
+    name: Vikunja API Metrics
+    group: App - Vikunja
+    url: https://vikunja.home/api/v1/metrics
+
+  - <<: *default-tcp
+    name: Vikunja TCP:80
+    group: App - Vikunja
+    url: tcp://vikunja.home:80
+
+  - <<: *default-tcp
+    name: Vikunja TCP:443
+    group: App - Vikunja
+    url: tcp://vikunja.home:443
