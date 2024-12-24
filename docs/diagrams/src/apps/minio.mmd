@@ -15,6 +15,8 @@ flowchart LR
     class other_apps dashed_border
 
     subgraph app_wrapper[" "]
+        network_interface_1(" ")
+        network_interface_2(" ")
         transport_proxy_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
         transport_proxy_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
         http_proxy_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
@@ -23,8 +25,10 @@ flowchart LR
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         minio_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/api.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
 
-        transport_proxy_1 <--->|:80,443| http_proxy_1 <--->|:9000| minio
-        transport_proxy_2 <--->|:80,443| http_proxy_2 <--->|:9001| minio
+        network_interface_1 --->|:80,443| transport_proxy_1
+        network_interface_2 --->|:80,443| transport_proxy_2
+        transport_proxy_1 --->|:80,443| http_proxy_1 --->|:9000| minio
+        transport_proxy_2 --->|:80,443| http_proxy_2 --->|:9001| minio
         http_proxy_1 & http_proxy_2 -..-|fs| certificate_manager
         minio ~~~ minio_setup -..->|use| minio
     end
@@ -32,7 +36,8 @@ flowchart LR
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     minio_setup ~~~ healthchecks
 
-    home_network <--->|:80,443| transport_proxy_1 & transport_proxy_2
+    home_network <---> app_wrapper
+    %% home_network <--->|:80,443| transport_proxy_1 & transport_proxy_2
     other_apps -..->|use| app_wrapper
     other_apps ~~~~ transport_proxy_2
     certificate_manager -..->|report status| healthchecks

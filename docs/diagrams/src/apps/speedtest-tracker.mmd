@@ -13,13 +13,14 @@ flowchart LR
     class home_network dashed_border
 
     subgraph app_wrapper[" "]
+        network_interface(" ")
         transport_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
         certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>manager")
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
 
-        transport_proxy <--->|:80,443| http_proxy <--->|:443| speedtest_tracker
+        network_interface --->|:80,443| transport_proxy --->|:80,443| http_proxy --->|:443| speedtest_tracker
         http_proxy -..-|fs| certificate_manager
         speedtest_tracker ~~~ db_sync -..->|fs| speedtest_tracker
     end
@@ -34,7 +35,7 @@ flowchart LR
     db_sync ~~~ s3_database & cloud_server & healthchecks
     certificate_manager -..->|report status| healthchecks
 
-    home_network <--->|:80,443| transport_proxy
+    home_network <---> app_wrapper
     db_sync -..->|send| s3_database
     speedtest_tracker -..->|measure speed| cloud_server
     speedtest_tracker -..->|report status| healthchecks
