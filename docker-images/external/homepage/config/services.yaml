@@ -257,6 +257,12 @@
           url: https://changedetection.home
           key: "{{HOMEPAGE_VAR_CHANGEDETECTION_APIKEY}}"
 
+    - NetAlertX:
+        description: Network monitoring
+        href: https://netalertx.home
+        ping: netalertx.home
+        icon: /icons/netalertx.png
+
 - Other Apps:
     - Homepage:
         description: Dashboard
@@ -311,3 +317,9 @@
         href: http://openspeedtest.home
         ping: openspeedtest.home
         icon: /icons/openspeedtest.png
+
+    - Vikunja:
+        description: ToDo app
+        href: https://vikunja.home
+        ping: vikunja.home
+        icon: /icons/vikunja.png
