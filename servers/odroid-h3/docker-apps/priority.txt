@@ -38,7 +38,7 @@ dozzle-agent
 dozzle-server
 changedetection
 healthchecks
-netalertx
+# netalertx
 
 # App Monitoring
 gatus
