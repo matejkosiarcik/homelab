@@ -36,7 +36,7 @@ RUN mkdir -p ./certs ./logs
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
 
-FROM renovate/renovate:39.82.5-full
+FROM renovate/renovate:39.82.6-full
 # hadolint ignore=DL3002
 USER root
 COPY --from=prefinal /homelab/ /homelab/
