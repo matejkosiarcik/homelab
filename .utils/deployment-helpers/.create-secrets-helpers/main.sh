@@ -525,10 +525,10 @@ case "$full_app_name" in
     prepare_healthcheck_url "$output/certificate-manager.env"
 
     # Precreate passwords
-    create_password "$tmpdir/admin-password.txt"
+    create_password "$tmpdir/matej-password.txt"
 
     # Misc
-    printf 'admin,%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf 'matej,%s\n' "$(cat "$tmpdir/matej-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
