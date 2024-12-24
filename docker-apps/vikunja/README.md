@@ -3,8 +3,8 @@
 ![diagram](../../docs/diagrams/out/apps/vikunja.png)
 
 - Docs: <https://vikunja.io/docs>
-  - Install guide: <https://vikunja.io/docs/installing>
-  - Configuration: <https://vikunja.io/docs/config-options>
+    - Install guide: <https://vikunja.io/docs/installing>
+    - Configuration: <https://vikunja.io/docs/config-options>
 - DockerHub: <https://hub.docker.com/r/vikunja/vikunja>
 
 ## Before initial installation
