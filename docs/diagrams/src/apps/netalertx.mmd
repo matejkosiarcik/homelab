@@ -13,16 +13,22 @@ flowchart LR
     class home_network dashed_border
 
     subgraph app_wrapper[" "]
+        network_interface(" ")
         transport_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
         certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>manager")
         netalertx("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/netalertx.png' style='min-width:80px;max-width:80px' /></div>NetAlertX")
 
-        transport_proxy <--->|:80,443| http_proxy <--->|:20211| netalertx
+        network_interface --->|:80,443| transport_proxy --->|:80,443| http_proxy --->|:20211| network_interface
         http_proxy -..-|fs| certificate_manager
+        network_interface --->|:20211| netalertx
     end
 
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Network")
+    class network dashed_border
 
-    home_network <--->|:80,443| transport_proxy
-    certificate_manager -..->|report status| healthchecks
+    home_network <---> app_wrapper
+    certificate_manager --->|report status| healthchecks
+    certificate_manager ~~~ network
+    netalertx <--->|scan| network
