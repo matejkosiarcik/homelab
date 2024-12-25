@@ -29,8 +29,10 @@ convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networ
 ### Dashboard Icons ###
 
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dozzle.svg" "$output_dir/dozzle.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/glances.svg" "$output_dir/glances.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$output_dir/homepage.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.svg" "$output_dir/netdata.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$output_dir/openspeedtest.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"
@@ -40,12 +42,12 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vikunja.s
 
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$output_dir/healthchecks.png"
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$output_dir/homeassistant.png"
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/netdata.png" "$output_dir/netdata.png"
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$output_dir/pihole.png"
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$output_dir/speedtest.png"
 
 ### Homer icons ###
 
+convert_image_full "$input_dir/gitman-repositories/homer-icons/png/cadvisor.png" "$output_dir/cadvisor.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/changedetection.png" "$output_dir/changedetection.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/apple-alt.png" "$output_dir/apple.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$output_dir/docker.png"
