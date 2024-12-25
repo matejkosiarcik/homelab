@@ -262,6 +262,10 @@
         href: https://netalertx.home
         ping: netalertx.home
         icon: /icons/netalertx.png
+        widget:
+          type: netalertx
+          url: https://netalertx.home
+          key: "{{HOMEPAGE_VAR_NETALERTX_APIKEY}}"
 
 - Other Apps:
     - Homepage:
@@ -323,3 +327,8 @@
         href: https://vikunja.home
         ping: vikunja.home
         icon: /icons/vikunja.png
+        widget:
+          type: vikunja
+          url: https://vikunja.home
+          key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
+          enableTaskList: true
