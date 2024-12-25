@@ -259,12 +259,14 @@ case "$full_app_name" in
     prepare_empty_env HOMEPAGE_VAR_HEALTHCHECKS_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_HOMEASSISTANT_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_JELLYFIN_PASSWORD "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_NETALERTX_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_PRIMARY_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_1_SECONDARY_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_PRIMARY_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_PIHOLE_2_SECONDARY_APIKEY "$output/homepage.env"
     prepare_empty_env HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD "$output/homepage.env"
+    prepare_empty_env HOMEPAGE_VAR_VIKUNJA_APIKEY "$output/homepage.env"
 
     # Log results
     printf 'Not all secrets setup\n' >&2
