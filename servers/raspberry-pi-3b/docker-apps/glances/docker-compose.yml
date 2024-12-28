@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/glances/docker-compose.yml
+    project_directory: .

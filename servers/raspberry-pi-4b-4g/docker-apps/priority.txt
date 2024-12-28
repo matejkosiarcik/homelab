@@ -5,6 +5,7 @@ pihole-2-primary
 unifi-controller
 dozzle-agent
 motioneye-stove
+glances
 
 # DNS last
 pihole-2-secondary
