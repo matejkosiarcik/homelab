@@ -213,6 +213,28 @@ case "$full_app_name" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*glances*)
+    create_http_auth_user proxy-status
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/glances-password.txt"
+
+    cp "$helper_script_dir/glances-password.sh" "$tmpdir/glances-password.sh"
+    chmod a+x "$tmpdir/glances-password.sh"
+    mkdir -p "$tmpdir/glances-password"
+
+    # App
+    docker run -it -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" -v "$tmpdir/glances-password.sh:/glances-password.sh" --rm --entrypoint /glances-password.sh nicolargo/glances:latest-full
+    cp "$tmpdir/glances-password/glances.pwd" "$output/glances-password.txt"
+
+    # Misc
+    printf 'glances,%s\n' "$(cat "$tmpdir/glances-password.txt")" >>"$output/all-credentials.csv"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *healthchecks*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"

@@ -33,6 +33,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'dozzle-server' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'gatus' ]; then
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
     respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
+elif [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
+    respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
+    respawn socat TCP4-LISTEN:443,fork,reuseaddr TCP4:http-proxy:443 &
 elif [ "$HOMELAB_APP_TYPE" = 'healthchecks' ]; then
     # TODO: Also forward email SMTP port?
     respawn socat TCP4-LISTEN:80,fork,reuseaddr TCP4:http-proxy:80 &
