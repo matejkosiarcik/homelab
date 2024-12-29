@@ -13,5 +13,5 @@ send -- "$PASSWORD\n"
 expect -- "Do you want to save the password?"
 send -- "yes\n"
 interact
-sleep 1
+sleep 10
 EOF
