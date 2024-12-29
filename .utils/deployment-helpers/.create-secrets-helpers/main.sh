@@ -224,7 +224,7 @@ case "$full_app_name" in
     mkdir -p "$tmpdir/glances-password"
 
     # App
-    docker run -it -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" -v "$tmpdir/glances-password.sh:/glances-password.sh" --rm --entrypoint sh nicolargo/glances:latest-full /glances-password.sh
+    docker run -i -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" -v "$tmpdir/glances-password.sh:/glances-password.sh" --rm --entrypoint sh nicolargo/glances:latest-full /glances-password.sh
     cp "$tmpdir/glances-password/glances.pwd" "$output/glances-password.txt"
 
     # Misc
