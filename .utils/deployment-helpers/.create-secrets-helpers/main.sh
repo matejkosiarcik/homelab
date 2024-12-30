@@ -224,8 +224,8 @@ case "$full_app_name" in
 
     # App
     mkdir -p "$tmpdir/glances-password"
-    chmod a+rwx "$tmpdir/glances-password"
-    docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" -v "$helper_script_dir/glances-password.sh:/glances-password.sh" --rm --entrypoint sh nicolargo/glances:latest-full /glances-password.sh
+    glances_script_file="$(cat "$helper_script_dir/glances-password.sh" | tail -n +2)"
+    docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" --rm --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file"
     cp "$tmpdir/glances-password/glances.pwd" "$output/glances-password.txt"
 
     # Misc
