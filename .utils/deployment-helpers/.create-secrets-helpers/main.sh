@@ -223,20 +223,20 @@ case "$full_app_name" in
     printf 'helper dir: %s\n' "$helper_script_dir"
 
     # App
-    rm -rf "$helper_script_dir/glances-password"
-    mkdir -p "$helper_script_dir/glances-password"
+    rm -rf "$helper_script_dir/foo"
+    mkdir -p "$helper_script_dir/foo"
     glances_script_file="$(cat "$helper_script_dir/glances-password.sh" | tail -n +2)"
-    docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$helper_script_dir/glances-password:/root/.config/glances:rw" --rm --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file"
+    docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$helper_script_dir/foo:/foo:rw" --rm --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file"
 
     printf 'Glances password directory:\n'
-    ls -lah "$helper_script_dir/glances-password"
+    ls -lah "$helper_script_dir/foo"
     printf 'End.\n'
 
     printf 'Glances password:\n'
-    cat "$helper_script_dir/glances-password/glances.pwd"
+    cat "$helper_script_dir/foo/glances.pwd"
     printf 'End.\n'
 
-    cp "$helper_script_dir/glances-password/glances.pwd" "$output/glances-password.txt"
+    cp "$helper_script_dir/foo/glances.pwd" "$output/glances-password.txt"
 
     # Misc
     printf 'glances,%s\n' "$(cat "$tmpdir/glances-password.txt")" >>"$output/all-credentials.csv"

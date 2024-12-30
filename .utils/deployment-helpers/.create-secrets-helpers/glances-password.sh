@@ -26,3 +26,5 @@ printf 'End.\n'
 printf 'Glances password:\n'
 cat "/root/.config/glances/glances.pwd"
 printf 'End.\n'
+
+cp /root/.config/glances/glances.pwd /foo/glances.pwd
