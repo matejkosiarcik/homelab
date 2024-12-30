@@ -226,7 +226,12 @@ case "$full_app_name" in
     mkdir -p "$tmpdir/glances-password"
     chmod a+rwx "$tmpdir/glances-password"
     glances_script_file="$(cat "$helper_script_dir/glances-password.sh" | tail -n +2)"
-    docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" --rm --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file"
+    docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances:rw" --rm --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file"
+
+    printf 'Glances password directory:\n'
+    ls -lah "$tmpdir/glances-password"
+    printf 'Glances end?\n'
+
     cp "$tmpdir/glances-password/glances.pwd" "$output/glances-password.txt"
 
     # Misc
