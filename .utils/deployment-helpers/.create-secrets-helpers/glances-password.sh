@@ -1,10 +1,8 @@
 #!/bin/sh
 set -euf
 
-printf 'Starting glances password\n'
-
-apk update --no-cache
-apk add --no-cache bash expect
+apk update --no-cache >/dev/null 2>&1
+apk add --no-cache bash expect >/dev/null 2>&1
 
 expect -c "
 set timeout -1
@@ -19,12 +17,4 @@ interact
 sleep 10
 "
 
-printf 'Glances config directory:\n'
-ls -lah /root/.config/glances
-printf 'End.\n'
-
-printf 'Glances password:\n'
 cat "/root/.config/glances/glances.pwd"
-printf 'End.\n'
-
-cp /root/.config/glances/glances.pwd /foo/glances.pwd
