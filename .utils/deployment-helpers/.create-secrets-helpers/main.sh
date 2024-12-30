@@ -221,7 +221,7 @@ case "$full_app_name" in
     create_password "$tmpdir/glances-password.txt"
 
     # App
-    glances_script_file="$(cat "$helper_script_dir/glances-password.sh" | tail -n +2)"
+    glances_script_file="$(tail -n +2 <"$helper_script_dir/glances-password.sh")"
     docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" --rm --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file" | tail -n 1 >"$output/glances-password.txt"
 
     # Misc
