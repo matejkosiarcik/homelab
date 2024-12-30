@@ -230,7 +230,11 @@ case "$full_app_name" in
 
     printf 'Glances password directory:\n'
     ls -lah "$helper_script_dir/glances-password"
-    printf 'Glances end?\n'
+    printf 'End.\n'
+
+    printf 'Glances password:\n'
+    cat "$helper_script_dir/glances-password/glances.pwd"
+    printf 'End.\n'
 
     cp "$helper_script_dir/glances-password/glances.pwd" "$output/glances-password.txt"
 

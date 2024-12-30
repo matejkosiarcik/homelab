@@ -21,4 +21,8 @@ sleep 10
 
 printf 'Glances config directory:\n'
 ls -lah /root/.config/glances
-printf 'Glances end.\n'
+printf 'End.\n'
+
+printf 'Glances password:\n'
+cat "/root/.config/glances/glances.pwd"
+printf 'End.\n'
