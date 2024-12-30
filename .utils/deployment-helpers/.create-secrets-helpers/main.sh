@@ -220,11 +220,9 @@ case "$full_app_name" in
     # Precreate passwords
     create_password "$tmpdir/glances-password.txt"
 
-    cp "$helper_script_dir/glances-password.sh" "$tmpdir/glances-password.sh"
-    mkdir -p "$tmpdir/glances-password"
-
     # App
-    docker run -i -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" -v "$tmpdir/glances-password.sh:/glances-password.sh" --rm --entrypoint sh nicolargo/glances:latest-full /glances-password.sh
+    mkdir -p "$tmpdir/glances-password"
+    docker run -e "PASSWORD=$(cat "$tmpdir/glances-password.txt")" -v "$tmpdir/glances-password:/root/.config/glances" -v "$helper_script_dir/glances-password.sh:/glances-password.sh" --rm --entrypoint sh nicolargo/glances:latest-full /glances-password.sh
     cp "$tmpdir/glances-password/glances.pwd" "$output/glances-password.txt"
 
     # Misc
