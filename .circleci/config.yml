@@ -80,6 +80,7 @@ jobs:
             echo "docker is at:"
             which docker
             docker run debian:12.8 which which
+            docker run --rm --entrypoint sh nicolargo/glances:latest-full -c 'echo foo'
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:
