@@ -62,11 +62,12 @@ docker-build:
 		printf '\n\n' && \
 	true; done
 
-	printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
-		printf 'Building %s\n' "$$app" && \
-		docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies && \
-		printf '\n\n' && \
-	true; done
+	# Disabled (it's complicated)
+	# printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
+	# 	printf 'Building %s\n' "$$app" && \
+	# 	docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies && \
+	# 	printf '\n\n' && \
+	# true; done
 
 .PHONY: docker-build-multiarch
 docker-build-multiarch:
