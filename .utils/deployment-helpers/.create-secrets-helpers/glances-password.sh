@@ -15,3 +15,7 @@ send -- "yes\n"
 interact
 sleep 10
 EOF
+
+printf 'Glances config directory:\n'
+ls -lah /root/.config/glances
+printf 'Glances end.\n'
