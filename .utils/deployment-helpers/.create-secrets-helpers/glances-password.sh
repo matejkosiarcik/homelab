@@ -1,5 +1,7 @@
 #!/bin/sh
 
+printf 'Starting glances password\n'
+
 apk update --no-cache
 apk add --no-cache bash expect
 
