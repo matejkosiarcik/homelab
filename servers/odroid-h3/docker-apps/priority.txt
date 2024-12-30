@@ -39,6 +39,7 @@ dozzle-server
 changedetection
 healthchecks
 # netalertx
+glances
 
 # App Monitoring
 gatus

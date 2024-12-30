@@ -43,11 +43,14 @@
 10.1.10.51 dozzle-agent.odroid-h3.home
 10.1.10.52 netalertx.home
 10.1.10.53 vikunja.home
+10.1.10.54 glances.odroid-h3.home
 
 10.1.12.1 tvheadend.home
 10.1.12.2 dozzle-agent.raspberry-pi-3b.home
+10.1.12.3 glances.raspberry-pi-3b.home
 
 10.1.14.1 dozzle-agent.raspberry-pi-4b-2g.home
+10.1.14.2 glances.raspberry-pi-4b-2g.home
 
 10.1.16.1 unbound-2-default.home
 10.1.16.2 unbound-2-open.home
@@ -64,3 +67,4 @@
 10.1.16.32 gatus-2.home
 10.1.16.33 dozzle-agent.raspberry-pi-4b-4g.home
 10.1.16.34 motioneye-stove.home
+10.1.16.35 glances.raspberry-pi-4b-4g.home
