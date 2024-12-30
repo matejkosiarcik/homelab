@@ -220,6 +220,8 @@ case "$full_app_name" in
     # Precreate passwords
     create_password "$tmpdir/glances-password.txt"
 
+    printf 'helper dir: %s\n' "$helper_script_dir"
+
     # App
     mkdir -p "$tmpdir/glances-password"
     chmod a+rwx "$tmpdir/glances-password"
