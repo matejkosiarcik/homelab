@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM nicolargo/glances:4.2.1-full
+FROM nicolargo/glances:4.3.0-full
 ENV GLANCES_OPT="-w --password" \
     HOMELAB_CONTAINER_NAME=glances \
     HOMELAB_CONTAINER_VARIANT=default \
