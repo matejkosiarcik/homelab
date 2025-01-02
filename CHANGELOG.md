@@ -2,6 +2,14 @@
 
 This is just a public diary, where I keep a list of things I did on my homelab.
 
+## 2024-01-01
+
+Apply azminifier
+
+## 2024-12-30
+
+Add glances
+
 ## 2024-12-01
 
 Deployed new version of unbound (running on host OS directly).
