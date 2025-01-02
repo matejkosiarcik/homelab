@@ -21,7 +21,7 @@
     "@tsconfig/strictest": "^2.0.5",
     "@types/async": "^3.2.24",
     "@types/lodash": "^4.17.13",
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.10.3",
     "cross-env": "^7.0.3",
     "exitzero": "^1.0.1",
     "mkdirp": "^3.0.1",
