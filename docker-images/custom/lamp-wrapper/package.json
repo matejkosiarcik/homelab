@@ -30,7 +30,7 @@
     "@rollup/plugin-typescript": "^12.1.2",
     "@tsconfig/strictest": "^2.0.5",
     "@types/cors": "^2.8.17",
-    "@types/node": "^22.10.3",
+    "@types/node": "^22.10.4",
     "@types/yargs": "^17.0.33",
     "glob-exec": "^0.1.1",
     "mkdirp": "^3.0.1",
