@@ -26,3 +26,6 @@ layout:
   Other Apps:
     style: row
     columns: 4
+  Resources:
+    style: row
+    columns: 4
