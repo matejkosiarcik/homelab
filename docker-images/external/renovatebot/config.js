@@ -6,7 +6,9 @@ module.exports = {
         ],
     },
     repositories: [
-        'matejkosiarcik/homelab',
+        'matejkosiarcik/azlint',
+        'matejkosiarcik/azminifier',
         'matejkosiarcik/dotfiles',
+        'matejkosiarcik/homelab',
     ],
 };
