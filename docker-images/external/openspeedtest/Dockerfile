@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM openspeedtest/latest:v2.0.5
+FROM openspeedtest/latest:v2.0.6
 ENV HOMELAB_CONTAINER_NAME=openspeedtest \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
