@@ -13,7 +13,8 @@ RUN python3 -m pip install --requirement requirements.txt --target python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./.dependencies/supercronic/gitman.yml ./
-RUN gitman install --quiet
+RUN gitman install --quiet && \
+    find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.23.4-bookworm AS supercronic-build
 WORKDIR /homelab
