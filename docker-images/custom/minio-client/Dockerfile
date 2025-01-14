@@ -30,12 +30,12 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./minio-mc/mc
 
-FROM debian:12.8-slim AS prefinal
+FROM debian:12.9-slim AS prefinal
 WORKDIR /homelab
 COPY --from=minio-mc-build /homelab/minio-mc/mc ./bin/
 COPY ./custom/minio-client/entrypoint.sh ./custom/minio-client/main.sh ./custom/minio-client/plain-buckets.txt ./custom/minio-client/versioned-buckets.txt ./
 
-FROM debian:12.8-slim
+FROM debian:12.9-slim
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
