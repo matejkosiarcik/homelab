@@ -477,19 +477,19 @@ case "$full_app_name" in
     # Precreate passwords
     create_password "$tmpdir/admin-password.txt"
     if [ "$mode" = 'dev' ]; then
-        printf 'admin@localhost' >"$tmpdir/admin-username.txt"
+        printf 'admin@localhost' >"$tmpdir/admin-email.txt"
     else
-        printf 'admin@%s.home' "$DOCKER_COMPOSE_APP_NAME" >"$tmpdir/admin-username.txt"
+        printf 'admin@%s' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >"$tmpdir/admin-email.txt"
     fi
 
     # App
     printf 'APP_KEY=%s\n' "$(cat "$tmpdir/speedtest-tracker-app-key.txt")" >>"$output/speedtest-tracker.env"
-    # TODO: Save username/password to `speedtest-tracker.env` after https://github.com/alexjustesen/speedtest-tracker/issues/1597
-    printf '# ADMIN_EMAIL=%s\n' "$(cat "$tmpdir/admin-username.txt")" >>"$output/speedtest-tracker.env"
-    printf '# ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/speedtest-tracker.env"
+    printf 'ADMIN_NAME=Admin\n' >>"$output/speedtest-tracker.env"
+    printf 'ADMIN_EMAIL=%s\n' "$(cat "$tmpdir/admin-email.txt")" >>"$output/speedtest-tracker.env"
+    printf 'ADMIN_PASSWORD=%s\n' "$(cat "$tmpdir/admin-password.txt")" >>"$output/speedtest-tracker.env"
 
     # Misc
-    printf '%s,%s\n' "$(cat "$tmpdir/admin-username.txt")" "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+    printf '%s,%s\n' "$(cat "$tmpdir/admin-email.txt")" "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
 
     # Log results
     printf 'Not all secrets setup\n' >&2

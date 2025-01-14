@@ -21,6 +21,8 @@ services:
     environment:
       <<: *common-env-variables
       ENABLE_LETSENCRYPT: "False"
+      PUID: "1000"
+      PGID: "1000"
 
   certificate-manager:
     <<: *common-service-options
