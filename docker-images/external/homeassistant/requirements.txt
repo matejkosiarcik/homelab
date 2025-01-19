@@ -14,7 +14,7 @@ homeassistant==2025.1.2
 jsonpath==0.82.2
 libpcap==1.11.0b15
 mutagen==1.47.0
-numpy==2.2.1
+numpy==2.2.2
 prometheus-client==0.21.1
 PyMetno==0.13.0
 pymicro-vad==1.0.2
