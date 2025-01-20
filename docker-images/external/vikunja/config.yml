@@ -11,7 +11,7 @@ defaultsettings:
   week_start: 1 # Monday
 
 log:
-  path: /homelab/logs/
+  path: /homelab/logs
   level: WARNING
   standard: file
   database: true
