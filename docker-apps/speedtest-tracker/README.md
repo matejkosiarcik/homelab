@@ -20,5 +20,6 @@
 
 ## After initial installation
 
-- Change admin credentials (defaults are `admin@example.com`/`password`)
-- Add webhook to healthchecks
+- Setup speed tresholds
+- Add webhook to healthchecks (always)
+- Add webhook to mail/ntfy (on treshold)
