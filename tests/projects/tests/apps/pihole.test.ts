@@ -2,8 +2,8 @@ import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
-import { getEnv } from '../../utils/utils';
-import { apps } from '../../utils/apps';
+import { getEnv } from '../../../utils/utils';
+import { apps } from '../../../utils/apps';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
