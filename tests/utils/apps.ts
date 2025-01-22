@@ -94,6 +94,7 @@ export const apps = {
     // },
     ntfy: {
         title: 'Ntfy',
+        forceHttps: false, // TODO: Remove after real Let's Encrypt certificates
         instances: [
             { url: 'https://ntfy.home', title: 'Ntfy' },
         ],
@@ -106,6 +107,7 @@ export const apps = {
     },
     openspeedtest: {
         title: 'Openspeedtest',
+        forceHttps: false,
         instances: [
             { url: 'https://openspeedtest.home', title: 'Openspeedtest' },
         ],
