@@ -37,7 +37,6 @@ alerting:
 
 default-alerts: &default-alerts
   alerts:
-    - type: ntfy
     - type: email
 
 default-icmp: &default-icmp
@@ -82,6 +81,9 @@ endpoints:
     name: External DNS - Google 1
     group: External DNS
     url: icmp://8.8.8.8
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: External DNS - Google 2
@@ -105,6 +107,9 @@ endpoints:
     name: Router - TP-Link ER605
     group: Network equipment
     url: icmp://10.1.0.1
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: Router - UPC Router
@@ -115,16 +120,25 @@ endpoints:
     name: WiFi AP - Unifi U6
     group: Network equipment
     url: icmp://10.1.0.2
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: Smart switch - TP-Link SG108E
     group: Network equipment
     url: icmp://10.1.0.3
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: Smart switch - TP-Link SG105E
     group: Network equipment
     url: icmp://10.1.0.4
+    alerts:
+      - type: ntfy
+      - type: email
 
   ### Group: Servers ###
 
@@ -132,32 +146,50 @@ endpoints:
     name: Odroid H3
     group: Servers
     url: icmp://10.1.4.8
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: Raspberry Pi 3B
     group: Servers
     url: icmp://10.1.4.2
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: Raspberry Pi 4B 2G
     group: Servers
     url: icmp://10.1.4.3
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: Raspberry Pi 4B 4G
     group: Servers
     url: icmp://10.1.4.4
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-icmp
     name: Raspberry Pi Zero 2W 1
     group: Servers
     url: icmp://10.1.4.6
+    alerts:
+      - type: ntfy
+      - type: email
     enabled: false # TODO: Reenable
 
   - <<: *default-icmp
     name: Raspberry Pi Zero 2W 2
     group: Servers
     url: icmp://10.1.4.7
+    alerts:
+      - type: ntfy
+      - type: email
     enabled: false # TODO: Reenable
 
   ### Group: App - ActualBudget ###
@@ -171,6 +203,9 @@ endpoints:
     name: ActualBudget HTTPS
     group: App - ActualBudget
     url: https://actualbudget.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: ActualBudget TCP:80
@@ -193,6 +228,9 @@ endpoints:
     name: ActualBudget (Public) HTTPS
     group: App - ActualBudget (Public)
     url: https://actualbudget-public.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: ActualBudget (Public) TCP:80
@@ -215,6 +253,9 @@ endpoints:
     name: Changedetection HTTPS
     group: App - Changedetection
     url: https://changedetection.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Changedetection TCP:80
@@ -311,6 +352,9 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].repositories) == true"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: DockerHub proxy TCP:80
@@ -333,6 +377,9 @@ endpoints:
     name: Dozzle HTTPS
     group: App - Dozzle
     url: https://dozzle.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Dozzle TCP:80
@@ -350,21 +397,33 @@ endpoints:
     name: Dozzle agent - Odroid H3 - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent.odroid-h3.home:7007
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 3B - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent.raspberry-pi-3b.home:7007
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent.raspberry-pi-4b-2g.home:7007
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent.raspberry-pi-4b-4g.home:7007
+    alerts:
+      - type: ntfy
+      - type: email
 
   ### Group: App - Gatus (1) ###
 
@@ -377,6 +436,9 @@ endpoints:
     name: Gatus (1) HTTPS
     group: App - Gatus (1)
     url: https://gatus.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Gatus (1) Api Metrics
@@ -404,6 +466,9 @@ endpoints:
     name: Gatus (2) HTTPS
     group: App - Gatus (2)
     url: https://gatus-2.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Gatus (2) Api Metrics
@@ -439,6 +504,9 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == OK"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Healthchecks TCP:80
@@ -466,6 +534,9 @@ endpoints:
     name: Home Assistant Api Metrics
     group: App - Home Assistant
     url: https://homeassistant.home/api/prometheus
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Home Assistant TCP:80
@@ -488,6 +559,9 @@ endpoints:
     name: Homepage HTTPS
     group: App - Homepage
     url: https://homepage.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Homepage TCP:80
@@ -518,6 +592,9 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == Healthy"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Jellyfin HTTP:8096
@@ -559,6 +636,9 @@ endpoints:
     name: Minio Api Health
     group: App - Minio
     url: https://minio.home/minio/health/live
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Minio Api Health cluster write
@@ -579,6 +659,9 @@ endpoints:
     name: Minio Console HTTPS
     group: App - Minio
     url: https://console.minio.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Minio Api TCP:80
@@ -611,6 +694,9 @@ endpoints:
     name: MotionEye (Stove) HTTPS
     group: App - MotionEye (Stove)
     url: https://motioneye-stove.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: MotionEye (Stove) HTTPS:9081
@@ -645,6 +731,9 @@ endpoints:
   #   name: NetAlertX HTTPS
   #   group: App - NetAlertX
   #   url: https://netalertx.home
+  #   alerts:
+  #     - type: ntfy
+  #     - type: email
 
   # - <<: *default-http
   #   name: NetAlertX HTTP (Direct)
@@ -690,6 +779,9 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[BODY].healthy == true"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Ntfy TCP:25
@@ -730,6 +822,9 @@ endpoints:
       - "has([BODY].result.apiVer) == true"
       - "has([BODY].result.controllerVer) == true"
       - "[BODY].result.configured == true"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Omada Controller TCP:80
@@ -793,6 +888,9 @@ endpoints:
     name: OpenSpeedTest HTTPS
     group: App - OpenSpeedTest
     url: https://openspeedtest.home
+    alerts:
+      - type: ntfy
+      - type: email
     enabled: false
 
   - <<: *default-tcp
@@ -818,6 +916,9 @@ endpoints:
     name: PiHole 1 Primary [Admin] HTTPS
     group: App - PiHole 1 Primary
     url: https://pihole-1-primary.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: PiHole 1 Primary [Admin] TCP:80
@@ -870,6 +971,9 @@ endpoints:
     name: PiHole 1 Secondary [Admin] HTTPS
     group: App - PiHole 1 Secondary
     url: https://pihole-1-secondary.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: PiHole 1 Secondary [Admin] TCP:80
@@ -922,6 +1026,9 @@ endpoints:
     name: PiHole 2 Primary [Admin] HTTPS
     group: App - PiHole 2 Primary
     url: https://pihole-2-primary.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: PiHole 2 Primary [Admin] TCP:80
@@ -974,6 +1081,9 @@ endpoints:
     name: PiHole 2 Secondary [Admin] HTTPS
     group: App - PiHole 2 Secondary
     url: https://pihole-2-secondary.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: PiHole 2 Secondary [Admin] TCP:80
@@ -1026,6 +1136,9 @@ endpoints:
     name: Smtp4dev HTTPS
     group: App - Smtp4dev
     url: https://smtp4dev.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Smtp4dev TCP:25
@@ -1061,6 +1174,9 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].message) == true"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Speedtest Tracker TCP:80
@@ -1094,6 +1210,9 @@ endpoints:
       - "has([BODY].sw_version) == true"
       - "has([BODY].api_version) == true"
       - "has([BODY].name) == true"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Tvheadend HTTP:9981
@@ -1126,6 +1245,9 @@ endpoints:
     name: Unbound 1 [DNS Default]
     group: App - Unbound 1
     url: unbound-1-default.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Unbound 1 [DNS Default] TCP:53
@@ -1158,6 +1280,9 @@ endpoints:
     name: Unbound 2 [DNS Default]
     group: App - Unbound 2
     url: unbound-2-default.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-tcp
     name: Unbound 2 [DNS Default] TCP:53
@@ -1204,6 +1329,9 @@ endpoints:
       - "[STATUS] == 200"
       - "[BODY].meta.rc == ok"
       - "[BODY].meta.up == true"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Unifi Controller Admin HTTP (raw)
@@ -1271,6 +1399,9 @@ endpoints:
     name: Vikunja HTTPS
     group: App - Vikunja
     url: https://vikunja.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Vikunja API Metrics
