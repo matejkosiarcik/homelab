@@ -59,13 +59,25 @@ RewriteRule ^ - [E=_REDIRECT:false,NE]
 RewriteCond %{ENV:_REDIRECT_FOR_HTTPS} true [NC]
 RewriteRule ^ - [E=_REDIRECT:true,NE]
 
-# Perform redirects if applicable
+# Perform redirects if applicable (no query path)
+RewriteCond %{REQUEST_URI} ^$ [NC]
 RewriteCond %{ENV:_REDIRECT} true [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
 RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{REQUEST_URI}" [L,R=302]
+RewriteCond %{REQUEST_URI} ^$ [NC]
 RewriteCond %{ENV:_REDIRECT} true [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{REQUEST_URI}" [L,R=307]
+
+# Perform redirects if applicable (with query path)
+RewriteCond %{REQUEST_URI} !^$ [NC]
+RewriteCond %{ENV:_REDIRECT} true [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
+RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}" [L,R=302]
+RewriteCond %{REQUEST_URI} !^$ [NC]
+RewriteCond %{ENV:_REDIRECT} true [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
+RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}" [L,R=307]
 
 # Remove "Content-Type" header when redirecting from HTTP to HTTPS
 # More info: https://github.com/whatwg/fetch/issues/609
