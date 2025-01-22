@@ -1,15 +1,12 @@
+import https from 'node:https';
+import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { getEnv } from '../../utils/utils';
+import { apps } from '../../utils/instances';
 
 test.describe('PiHole', () => {
-    const piholeInstances = [
-        { url: 'https://pihole-1-primary.home', title: 'Primary 1' },
-        { url: 'https://pihole-1-secondary.home', title: 'Secondary 1' },
-        { url: 'https://pihole-2-primary.home', title: 'Primary 2' },
-        { url: 'https://pihole-2-secondary.home', title: 'Secondary 2' },
-    ];
-    for (const pihole of piholeInstances) {
+    for (const pihole of apps.pihole) {
         const piholeKey = URL.parse(pihole.url)!.hostname.replace(/\..*$/, '').replaceAll('-', '_').toUpperCase();
 
         test.describe(pihole.title, () => {
@@ -28,6 +25,24 @@ test.describe('PiHole', () => {
                 await page.locator('form#loginform button[type=submit]').click();
                 await page.waitForSelector('.login-box-msg.has-error >> text="Wrong password!"', { timeout: 10_000 });
                 expect(page.url()).toStrictEqual(`${pihole.url}/admin/login.php`);
+            });
+
+            test('Query Unsecure HTTP', async () => {
+                const response = await axios.get(pihole.url.replace(/^https/, 'http'), { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                expect(response.headers['location'], 'Header Location').toStrictEqual(pihole.url);
+            });
+
+            test('Query Unsecure HTTP with random subpage', async () => {
+                const subpage = `/${faker.string.alpha(10)}`;
+                const response = await axios.get(`${pihole.url.replace(/^https/, 'http')}${subpage}`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                expect(response.headers['location'], 'Header Location').toStrictEqual(`${pihole.url}${subpage}`);
+            });
+
+            test('Query HTTPS', async () => {
+                const response = await axios.get(pihole.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
             });
         });
     }
