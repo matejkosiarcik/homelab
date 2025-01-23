@@ -31,6 +31,42 @@ test.describe(apps.pihole.title, () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
+
+            const proxyStatusVariants = [
+                {
+                    title: 'missing credentials',
+                    auth: undefined as unknown as { username: string, password: string },
+                    status: 401,
+                },
+                {
+                    title: 'wrong credentials',
+                    auth: {
+                        username: 'proxy-status',
+                        password: faker.string.alphanumeric(10),
+                    },
+                    status: 401,
+                },
+                {
+                    title: 'successful',
+                    auth: {
+                        username: 'proxy-status',
+                        password: getEnv(`${piholeEnv}_PROXY_STATUS_PASSWORD`),
+                    },
+                    status: 200,
+                },
+            ];
+            for (const variant of proxyStatusVariants) {
+                test(`API: Proxy status (${variant.title})`, async () => {
+                    const response = await axios.get(`${instance.url}/.apache/status`, {
+                        auth: variant.auth,
+                        maxRedirects: 999,
+                        validateStatus: () => true,
+                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                });
+            }
+
         });
     }
 });
