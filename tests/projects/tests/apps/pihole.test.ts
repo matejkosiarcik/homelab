@@ -7,13 +7,13 @@ import { apps } from '../../../utils/apps';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
-        const piholeKey = URL.parse(instance.url)!.hostname.replace(/\..*$/, '').replaceAll('-', '_').toUpperCase();
+        const piholeEnv = URL.parse(instance.url)!.hostname.replace(/\..*$/, '').replaceAll('-', '_').toUpperCase();
 
         test.describe(instance.title, () => {
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/admin/login.php`);
-                await page.locator('form#loginform input#loginpw').fill(getEnv(`${piholeKey}_PASSWORD`));
+                await page.locator('form#loginform input#loginpw').fill(getEnv(`${piholeEnv}_PASSWORD`));
                 await page.locator('form#loginform button[type=submit]').click();
                 await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
             });
