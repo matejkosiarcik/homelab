@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
-        const gatusEnv = URL.parse(instance.url)!.hostname.replace(/\..*$/, '').replaceAll('-', '_').toUpperCase();
+        // const gatusEnv = URL.parse(instance.url)!.hostname.replace(/\..*$/, '').replaceAll('-', '_').toUpperCase();
 
         test.describe(instance.title, () => {
             test('UI: Open', async ({ page }) => {
@@ -41,7 +41,7 @@ test.describe(apps.gatus.title, () => {
                     title: 'successful',
                     auth: {
                         username: 'proxy-status',
-                        password: getEnv(`${gatusEnv}_PROXY_STATUS_PASSWORD`),
+                        password: getEnv(instance.url, 'PROXY_STATUS_PASSWORD'),
                     },
                     status: 200,
                 },
@@ -76,7 +76,7 @@ test.describe(apps.gatus.title, () => {
                     title: 'successful',
                     auth: {
                         username: 'prometheus',
-                        password: getEnv(`${gatusEnv}_PROMETHEUS_PASSWORD`),
+                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                     },
                     status: 200,
                 },

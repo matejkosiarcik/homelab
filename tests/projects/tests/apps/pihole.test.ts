@@ -9,13 +9,11 @@ import nodeDns from 'node:dns/promises';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
-        const piholeEnv = URL.parse(instance.url)!.hostname.replace(/\..*$/, '').replaceAll('-', '_').toUpperCase();
-
         test.describe(instance.title, () => {
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/admin/login.php`);
-                await page.locator('form#loginform input#loginpw').fill(getEnv(`${piholeEnv}_PASSWORD`));
+                await page.locator('form#loginform input#loginpw').fill(getEnv(instance.url, 'PASSWORD'));
                 await page.locator('form#loginform button[type=submit]').click();
                 await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
             });
@@ -52,7 +50,7 @@ test.describe(apps.pihole.title, () => {
                     title: 'successful',
                     auth: {
                         username: 'proxy-status',
-                        password: getEnv(`${piholeEnv}_PROXY_STATUS_PASSWORD`),
+                        password: getEnv(instance.url, 'PROXY_STATUS_PASSWORD'),
                     },
                     status: 200,
                 },
