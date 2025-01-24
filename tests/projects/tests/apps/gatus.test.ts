@@ -7,8 +7,6 @@ import { faker } from '@faker-js/faker';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
-        // const gatusEnv = URL.parse(instance.url)!.hostname.replace(/\..*$/, '').replaceAll('-', '_').toUpperCase();
-
         test.describe(instance.title, () => {
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
