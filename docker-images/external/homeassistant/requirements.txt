@@ -8,7 +8,7 @@ gTTS==2.5.4
 ha-av==10.1.1
 ha-ffmpeg==3.2.2
 hassil==2.1.0
-home-assistant-frontend==20250109.0
+home-assistant-frontend==20250109.2
 home-assistant-intents==2025.1.1
 homeassistant==2025.1.3
 jsonpath==0.82.2
