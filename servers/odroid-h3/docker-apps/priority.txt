@@ -28,7 +28,7 @@ actualbudget
 actualbudget-public
 openspeedtest
 speedtest-tracker
-vikunja
+# TODO: vikunja
 
 # DNS backup
 pihole-1-secondary
