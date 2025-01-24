@@ -139,6 +139,13 @@ export const apps = {
             { url: 'https://tvheadend.home', title: 'Tvheadend' },
         ],
     },
+    unbound: {
+        title: 'Unbound (native)',
+        instances: [
+            { url: 'unbound-1.home', title: 'Unbound 1' },
+            { url: 'unbound-2.home', title: 'Unbound 2' },
+        ]
+    },
     'unifi-controller': {
         title: 'Unifi Controller',
         instances: [

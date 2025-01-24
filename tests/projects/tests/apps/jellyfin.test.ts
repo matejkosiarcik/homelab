@@ -2,29 +2,30 @@ import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
-import { dnsLookup, getEnv } from '../../../utils/utils';
+import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import _ from 'lodash';
-import nodeDns from 'node:dns/promises';
 
-test.describe(apps.pihole.title, () => {
-    for (const instance of apps.pihole.instances) {
+test.describe.only(apps.jellyfin.title, () => {
+    for (const instance of apps.jellyfin.instances) {
         test.describe(instance.title, () => {
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login.php`);
-                await page.locator('form#loginform input#loginpw').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('form#loginform button[type=submit]').click();
-                await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
+                await page.waitForURL(/\/login\.html(\?.*)$/);
+                await page.locator('input#txtManualName').fill('admin');
+                await page.locator('input#txtManualPassword').fill(getEnv(instance.url, 'PASSWORD'));
+                await page.locator('button[type=submit]').click();
+                await page.waitForURL(`${instance.url}/web/#/home.html`);
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
                 await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login.php`);
-                await page.locator('form#loginform input#loginpw').fill(faker.string.alpha(10));
-                await page.locator('form#loginform button[type=submit]').click();
-                await page.waitForSelector('.login-box-msg.has-error >> text="Wrong password!"', { timeout: 10_000 });
-                expect(page.url()).toStrictEqual(`${instance.url}/admin/login.php`);
+                await page.waitForURL(/\/login\.html(\?.*)$/);
+                const originalUrl = page.url();
+                await page.locator('input#txtManualName').fill('admin');
+                await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
+                await page.locator('button[type=submit]').click();
+                await expect(page.locator('.toast:has-text("Invalid username or password")')).toBeVisible();
+                expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
             });
 
             test('API: HTTPS root', async () => {
@@ -65,23 +66,6 @@ test.describe(apps.pihole.title, () => {
                     });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
-            }
-
-            for (const transportVariant of ['tcp', 'udp'] as const) {
-                for (const dnsVariant of ['default', 'open'] as const) {
-                    test(`DNS: ${transportVariant.toUpperCase()} ${_.capitalize(dnsVariant)}`, async () => {
-                        // Get domain for DNS server for a given variant
-                        const piholeDnsDomain = instance.url.replace(/^https?:\/\//, '').replace(/\.(.+)$/, `-dns-${dnsVariant}.$1`);
-
-                        // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDnsDomain);
-                        expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
-
-                        // Resolved external domain
-                        const ips = await dnsLookup('example.com', transportVariant, 'A', piholeDnsIps[0]);
-                        expect(ips, 'Domain should be resolved').not.toHaveLength(0);
-                    });
-                }
             }
         });
     }

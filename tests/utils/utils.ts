@@ -1,11 +1,13 @@
 import process from 'node:process';
 import dns from 'native-dns';
 
-export function getEnv(name: string): string {
-    if (!(name in process.env) || !process.env[name]) {
-        throw new Error(`Environment variable "${name}" not set`);
+export function getEnv(instanceUrl: string, name: string): string {
+    const instanceName = URL.parse(instanceUrl)!.hostname.replace(/\.home$/, '').replaceAll('-', '_').toUpperCase();
+    const envName = `${instanceName}_${name}`;
+    if (!(envName in process.env) || !process.env[envName]) {
+        throw new Error(`Environment variable "${envName}" not set`);
     }
-    return process.env[name];
+    return process.env[envName];
 }
 
 export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
