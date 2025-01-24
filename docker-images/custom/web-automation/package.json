@@ -9,7 +9,7 @@
     "axios": "^1.7.9",
     "chai": "^5.1.2",
     "dotenv": "^16.4.7",
-    "playwright": "^1.49.1"
+    "playwright": "^1.50.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
