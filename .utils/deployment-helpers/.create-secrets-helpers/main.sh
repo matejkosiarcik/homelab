@@ -203,6 +203,7 @@ case "$full_app_name" in
     cat "$user_logfile" >&2
     ;;
 *gatus*)
+    create_http_auth_user prometheus
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
 
