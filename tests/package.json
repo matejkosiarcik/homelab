@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.4.0",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.50.0",
     "async": "^3.2.6",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
@@ -21,7 +21,7 @@
     "@tsconfig/strictest": "^2.0.5",
     "@types/async": "^3.2.24",
     "@types/lodash": "^4.17.14",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.10.10",
     "cross-env": "^7.0.3",
     "exitzero": "^1.0.1",
     "mkdirp": "^3.0.1",
