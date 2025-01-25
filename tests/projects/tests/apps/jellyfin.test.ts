@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
 
-test.describe.only(apps.jellyfin.title, () => {
+test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
         test.describe(instance.title, () => {
             test('UI: Successful login', async ({ page }) => {

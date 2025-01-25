@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
 
-test.describe.only(apps.minio.title, () => {
+test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
         const consoleUrl = instance.url.replace(/^(https?:\/\/)/, '$1console.');
 
