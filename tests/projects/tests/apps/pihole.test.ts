@@ -27,7 +27,7 @@ test.describe(apps.pihole.title, () => {
                 expect(page.url()).toStrictEqual(`${instance.url}/admin/login.php`);
             });
 
-            test('API: HTTPS root', async () => {
+            test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
