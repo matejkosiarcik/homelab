@@ -13,20 +13,20 @@ for (const app of Object.values(apps)) {
                         test('API: Redirect HTTP to HTTPS (root)', async () => {
                             const response = await axios.get(instance.url.replace(/^https/, 'http'), { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
                             expect(response.status, 'Response Status').toStrictEqual(302);
-                            expect(response.headers['location'], 'Header Location').toStrictEqual(instance.url);
+                            expect(response.headers['location'], 'Response header location').toStrictEqual(instance.url);
                         });
 
                         test('API: Redirect HTTP to HTTPS (root slash)', async () => {
                             const response = await axios.get(`${instance.url.replace(/^https/, 'http')}/`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
                             expect(response.status, 'Response Status').toStrictEqual(302);
-                            expect(response.headers['location'], 'Header Location').toStrictEqual(instance.url);
+                            expect(response.headers['location'], 'Response header location').toStrictEqual(instance.url);
                         });
 
                         test('API: Redirect HTTP to HTTPS (random subpage)', async () => {
                             const subpage = `/${faker.string.alpha(10)}`;
                             const response = await axios.get(`${instance.url.replace(/^https/, 'http')}${subpage}`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
                             expect(response.status, 'Response Status').toStrictEqual(302);
-                            expect(response.headers['location'], 'Header Location').toStrictEqual(`${instance.url}${subpage}`);
+                            expect(response.headers['location'], 'Response header location').toStrictEqual(`${instance.url}${subpage}`);
                         });
                     }
                 }
