@@ -1,5 +1,6 @@
 import https from 'node:https';
 import axios from 'axios';
+import UserAgent from 'user-agents';
 import { expect, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { getEnv } from '../../../utils/utils';
@@ -31,14 +32,16 @@ test.describe(apps.minio.title, () => {
             });
 
             test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, headers: { 'User-Agent': userAgent }, validateStatus: () => true});
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Redirect to console', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0 });
-                expect(response.status, 'Response Status').toStrictEqual(301);
-                expect(response.headers['location'], 'Response header location').toStrictEqual(instance.url);
+                const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, headers: { 'User-Agent': userAgent }, validateStatus: () => true });
+                expect(response.status, 'Response Status').toStrictEqual(307);
+                expect(response.headers['location'], 'Response header location').toStrictEqual(consoleUrl);
             });
 
             test('API: Console root', async () => {
