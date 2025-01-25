@@ -33,6 +33,12 @@ test.describe.only(apps.jellyfin.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
+            test('API: Health endpoint', async () => {
+                const response = await axios.get(`${instance.url}/health`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                expect(response.data, 'Response body').toStrictEqual('Healthy');
+            });
+
             const proxyStatusVariants = [
                 {
                     title: 'missing credentials',

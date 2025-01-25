@@ -596,6 +596,7 @@ endpoints:
       - type: ntfy
       - type: email
 
+  # TODO: Remove this port after Let's encrypt certificates
   - <<: *default-http
     name: Jellyfin HTTP:8096
     group: App - Jellyfin
@@ -611,6 +612,7 @@ endpoints:
     group: App - Jellyfin
     url: tcp://jellyfin.home:443
 
+  # TODO: Remove this port after Let's encrypt certificates
   - <<: *default-tcp
     name: Jellyfin TCP:8096
     group: App - Jellyfin
