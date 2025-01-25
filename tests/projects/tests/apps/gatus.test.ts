@@ -12,7 +12,7 @@ test.describe(apps.gatus.title, () => {
                 await page.goto(instance.url);
             });
 
-            test('API: HTTPS root', async () => {
+            test('API: Root', async () => {
                 const response = await axios.get(instance.url, {
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                     maxRedirects: 999,
