@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
 
-test.describe.only(apps['omada-controller'].title, () => {
+test.describe(apps['omada-controller'].title, () => {
     for (const instance of apps['omada-controller'].instances) {
         test.describe(instance.title, () => {
             test('UI: Successful login', async ({ page }) => {
