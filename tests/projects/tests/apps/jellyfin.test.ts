@@ -64,7 +64,7 @@ test.describe(apps.jellyfin.title, () => {
             ];
             for (const variant of proxyStatusVariants) {
                 test(`API: Proxy status (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/.apache/status`, {
+                    const response = await axios.get(`${instance.url}/.proxy/status`, {
                         auth: variant.auth,
                         maxRedirects: 999,
                         validateStatus: () => true,

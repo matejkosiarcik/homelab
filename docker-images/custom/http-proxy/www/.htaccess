@@ -18,7 +18,7 @@ RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
 RewriteCond %{ENV:PROXY_FORCE_HTTPS} true [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
 RewriteCond %{REQUEST_URI} ^/.well-known/acme-challenge/ [NC,OR]
-RewriteCond %{REQUEST_URI} ^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/.proxy(/.*)?$ [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
 
 # Use 301/302 for GET & HEAD requests and 308/307 for all others (POST, PUT, ...)
@@ -49,7 +49,7 @@ RewriteCond %{ENV:_PORT} :443 [NC]
 RewriteRule ^ - [E=_PORT:,NE]
 
 # Redirect [internally] all directories without trailing slash
-RewriteCond %{REQUEST_URI} ^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/.proxy(/.*)?$ [NC]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} !/$
 RewriteRule ^ "%{REQUEST_URI}/" [L]
@@ -99,7 +99,7 @@ RewriteRule ^ /admin [L,R=307]
 # Serve custom favicon.png for unifi-controller
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
 RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
-RewriteRule ^ /.apache/icons/unifi-controller/favicon.png [L]
+RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 
 # Protect gatus prometheus endpoint
 <If "%{ENV:HOMELAB_APP_TYPE} == 'gatus' && %{REQUEST_URI} =~ m#^/metrics/*$#">
@@ -111,13 +111,13 @@ RewriteRule ^ /.apache/icons/unifi-controller/favicon.png [L]
 </If>
 
 # Proxy websockets upstream
-RewriteCond %{REQUEST_URI} !^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{HTTP:Connection} upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_WS}%{REQUEST_URI}" [P,L]
 
 # Proxy regular requests upstream
-RewriteCond %{REQUEST_URI} !^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}%{REQUEST_URI}" [P,L]
