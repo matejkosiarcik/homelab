@@ -41,25 +41,24 @@ test.describe(apps['home-assistant'].title, () => {
                 },
                 {
                     title: 'wrong credentials',
-                    auth: {
-                        username: 'prometheus',
-                        password: faker.string.alphanumeric(10),
-                    },
+                    auth: faker.internet.jwt(),
                     status: 401,
                 },
                 {
                     title: 'successful',
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PASSWORD'),
-                    },
+                    auth: getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN'),
                     status: 200,
                 },
             ];
             for (const variant of prometheusVariants) {
                 test(`API: Prometheus metrics (${variant.title})`, async () => {
+                    const headers: Record<string, string> = {};
+                    if (variant.auth) {
+                        headers['Authorization'] = `Bearer ${variant.auth}`;
+                    }
+
                     const response = await axios.get(`${instance.url}/api/prometheus`, {
-                        // auth: variant.auth,
+                        headers: headers,
                         maxRedirects: 999,
                         validateStatus: () => true,
                         httpsAgent: new https.Agent({ rejectUnauthorized: false }),
