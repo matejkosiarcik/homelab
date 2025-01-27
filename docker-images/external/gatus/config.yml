@@ -496,17 +496,17 @@ endpoints:
     name: Healthchecks HTTPS
     group: App - Healthchecks
     url: https://healthchecks.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Healthchecks Api Health
     group: App - Healthchecks
-    url: https://healthchecks.home/api/v3/status/
+    url: https://healthchecks.home/api/v3/status
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == OK"
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-tcp
     name: Healthchecks TCP:80
@@ -529,14 +529,14 @@ endpoints:
     name: Home Assistant HTTPS
     group: App - Home Assistant
     url: https://homeassistant.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Home Assistant Api Metrics
     group: App - Home Assistant
     url: https://homeassistant.home/api/prometheus
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-tcp
     name: Home Assistant TCP:80
@@ -584,6 +584,9 @@ endpoints:
     name: Jellyfin HTTPS
     group: App - Jellyfin
     url: https://jellyfin.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Jellyfin Api Health
@@ -592,9 +595,6 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == Healthy"
-    alerts:
-      - type: ntfy
-      - type: email
 
   # TODO: Remove this port after Let's encrypt certificates
   - <<: *default-http
@@ -773,6 +773,9 @@ endpoints:
     name: Ntfy HTTPS
     group: App - Ntfy
     url: https://ntfy.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Ntfy Api Health
@@ -781,9 +784,6 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[BODY].healthy == true"
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-tcp
     name: Ntfy TCP:25
@@ -811,6 +811,9 @@ endpoints:
     name: Omada Controller Admin HTTPS
     group: App - Omada Controller
     url: https://omada-controller.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Omada Controller Api Health
@@ -824,9 +827,6 @@ endpoints:
       - "has([BODY].result.apiVer) == true"
       - "has([BODY].result.controllerVer) == true"
       - "[BODY].result.configured == true"
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-tcp
     name: Omada Controller TCP:80
@@ -1168,6 +1168,9 @@ endpoints:
     name: Speedtest Tracker HTTPS
     group: App - Speedtest Tracker
     url: https://speedtest-tracker.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Speedtest Tracker Api Health
@@ -1176,9 +1179,6 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].message) == true"
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-tcp
     name: Speedtest Tracker TCP:80
@@ -1201,6 +1201,9 @@ endpoints:
     name: Tvheadend HTTPS
     group: App - Tvheadend
     url: https://tvheadend.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Tvheadend Api Health
@@ -1212,9 +1215,6 @@ endpoints:
       - "has([BODY].sw_version) == true"
       - "has([BODY].api_version) == true"
       - "has([BODY].name) == true"
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-http
     name: Tvheadend HTTP:9981
@@ -1322,6 +1322,9 @@ endpoints:
     name: Unifi Controller Admin HTTPS
     group: App - Unifi Controller
     url: https://unifi-controller.home
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Unifi Controller Admin Api Health
@@ -1331,9 +1334,6 @@ endpoints:
       - "[STATUS] == 200"
       - "[BODY].meta.rc == ok"
       - "[BODY].meta.up == true"
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-http
     name: Unifi Controller Admin HTTP (raw)

@@ -64,6 +64,40 @@ test.describe(apps.minio.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
+            const prometheusVariants = [
+                {
+                    title: 'missing credentials',
+                    auth: undefined as unknown as { username: string, password: string },
+                    status: 403,
+                },
+                {
+                    title: 'wrong credentials',
+                    auth: faker.internet.jwt(),
+                    status: 403,
+                },
+                {
+                    title: 'successful',
+                    auth: getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN'),
+                    status: 200,
+                },
+            ];
+            for (const variant of prometheusVariants) {
+                test(`API: Prometheus metrics (${variant.title})`, async () => {
+                    const headers: Record<string, string> = {};
+                    if (variant.auth) {
+                        headers['Authorization'] = `Bearer ${variant.auth}`;
+                    }
+
+                    const response = await axios.get(`${instance.url}/minio/v2/metrics/cluster`, {
+                        headers: headers,
+                        maxRedirects: 999,
+                        validateStatus: () => true,
+                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                });
+            }
+
             const proxyStatusVariants = [
                 {
                     title: 'missing credentials',

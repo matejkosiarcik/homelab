@@ -17,7 +17,7 @@ homeassistant:
 
 # Enable prometheus integration
 prometheus:
-  requires_auth: false
+  requires_auth: true
 
 # Allow reverse proxy to work
 http:
