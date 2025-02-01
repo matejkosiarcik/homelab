@@ -541,6 +541,31 @@ case "$full_app_name" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
+*vaultwarden*)
+    create_http_auth_user proxy-status
+    prepare_healthcheck_url "$output/certificate-manager.env"
+
+    # Precreate passwords
+    create_password "$tmpdir/superadmin-password.txt"
+    create_password "$tmpdir/admin-password.txt"
+    if [ "$mode" = 'dev' ]; then
+        printf 'admin@vaultwarden.localhost' >"$tmpdir/admin-email.txt"
+    else
+        printf 'admin@%s' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >"$tmpdir/admin-email.txt"
+    fi
+    argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4 <"$tmpdir/superadmin-password.txt" | sed 's~\$~$$~g' >"$tmpdir/superadmin-hashed-password.txt"
+
+    # Vaultwarden
+    printf 'ADMIN_TOKEN=%s\n' "$(cat "$tmpdir/superadmin-hashed-password.txt")" >>"$output/vaultwarden.env"
+
+    # Misc
+    printf 'superadmin,%s\n' "$(cat "$tmpdir/superadmin-password.txt")" >>"$output/all-credentials.csv"
+    printf '%s,%s\n' "$(cat "$tmpdir/admin-email.txt")" "$(cat "$tmpdir/admin-password.txt")" >>"$output/all-credentials.csv"
+
+    # Log results
+    printf 'Not all secrets setup\n' >&2
+    cat "$user_logfile" >&2
+    ;;
 *vikunja*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
