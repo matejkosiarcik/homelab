@@ -1,11 +1,30 @@
-# Checklist for new docker-apps
+# Checklist for new Docker Apps
 
-1. Add directory with `Dockerfile` file in `docker-images/`
-    - Check if the parent image has a built-in healthcheck -> If not add it.
+1. Add directory with `Dockerfile` in `docker-images/`
+    - Add any custom config files
+    - Check if the parent image has a built-in `HEALTHCHECK` -> If not, set it up.
 2. Add directory with `docker-compose.yml` files in `docker-apps/`
-    - Add all usual scaffolding (certificate-manager, http-proxy, transport-proxy)
-    - Specific scaffolding (litestream?, custom-setup?, custom-backup?)
-3. Add directory in a specific `servers/<server>/docker-apps/` that will use the app
-4. Check if the main image has a favicon and it displays in web browser
-    - If not -> Add a custom one in the service image (preferred) or in apache proxy (fallback)
-5. Add this app to _homepage_ dashboard
+    - Add all usual scaffolding (_certificate-manager_, _http-proxy_, _transport-proxy_)
+    - Specific scaffolding (db-backup (litestream)?, bespoke prometheus-exporter?, other?)
+3. Configure scripts
+    - _http-proxy_ and _transport-proxy_ redirects
+    - _secrets_ integration
+4. Check if the app has a favicon and it displays in web browser
+    - If not -> Add a custom one in `Dockerfile` (preferred) or in _http-proxy_ (fallback)
+5. Generate secrets
+    - Main _admin_ password
+    - Regular user passwords (_matej_, _monika_)
+    - _http-proxy_ status password
+    - Service specific passwords or API keys for: _gatus_, _homepage_, _prometheus_
+6. Integration with other apps
+    - Add DNS entry in _pihole_
+    - Add link to _homepage_ dashboard
+    - Add _gatus_ monitoring
+    - Add _prometheus_ monitoring
+7. Add tests
+    - API:
+        - Root
+        - _prometheus_ endpoint
+        - _health_ endpoint
+    - UI:
+        - Login
