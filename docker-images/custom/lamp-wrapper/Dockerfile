@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM node:23.6.1-slim AS nodejs-build
+FROM node:23.7.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/lamp-wrapper/package.json ./custom/lamp-wrapper/package-lock.json ./
 COPY ./custom/lamp-wrapper/patches/ ./patches/
@@ -18,7 +18,7 @@ COPY --from=nodejs-build /homelab/dist/ ./dist/
 COPY --from=nodejs-build /homelab/node_modules/ ./node_modules/
 COPY --from=nodejs-build /homelab/package.json ./
 
-FROM node:23.6.1-slim
+FROM node:23.7.0-slim
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
