@@ -61,6 +61,9 @@ if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     . "$PWD/config/docker-compose-$mode.env"
 fi
 
+# Download latest passwords from Vaultwarden
+bw sync
+
 create_password() {
     output_file="$1"
     extra_flags=''
