@@ -68,7 +68,8 @@ updates:
   # NPM
   - package-ecosystem: npm
     directories:
-      - /.utils/deployment-helpers/.create-secrets-helpers/playwright
+      - /.utils/deployment-helpers/secrets-helpers/speedtest-tracker
+      - /docker-images/custom/lamp-wrapper
       - /docker-images/custom/web-automation
       - /docker-images/external/homepage
       - /docs/diagrams

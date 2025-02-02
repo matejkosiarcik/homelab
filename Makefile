@@ -44,7 +44,7 @@ bootstrap:
 
 .PHONY: bootstrap-secrets
 bootstrap-secrets:
-	npm ci --prefix "$(PROJECT_DIR)/.utils/deployment-helpers/.create-secrets-helpers/playwright" --no-progress --no-audit --no-fund --loglevel=error
+	npm ci --prefix "$(PROJECT_DIR)/.utils/deployment-helpers/secrets-helpers/speedtest-tracker" --no-progress --no-audit --no-fund --loglevel=error
 
 .PHONY: build
 build:
