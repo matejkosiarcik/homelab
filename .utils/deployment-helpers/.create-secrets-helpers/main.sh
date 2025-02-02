@@ -122,6 +122,18 @@ prepare_empty_password() {
     printf 'You must configure password for "%s"\n' "$1" >>"$user_logfile"
 }
 
+get_vaultwarden_username() {
+    # $1 - app name
+    # $2 - account name
+    bw get item "homelab--$1--$2" | jq -er '.login.username'
+}
+
+get_vaultwarden_password() {
+    # $1 - app name
+    # $2 - account name
+    bw get item "homelab--$1--$2" | jq -er '.login.password'
+}
+
 case "$full_app_name" in
 *actualbudget*)
     create_http_auth_user proxy-status
