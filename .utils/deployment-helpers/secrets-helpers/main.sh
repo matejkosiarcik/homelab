@@ -322,14 +322,6 @@ case "$full_app_name" in
     printf 'Not all secrets setup\n' >&2
     cat "$user_logfile" >&2
     ;;
-*lamp-*wrapper*)
-    create_http_auth_user proxy-status
-    prepare_healthcheck_url "$output/certificate-manager.env"
-
-    # Log results
-    printf 'Not all secrets setup\n' >&2
-    cat "$user_logfile" >&2
-    ;;
 *minio*)
     create_http_auth_user proxy-status
     prepare_healthcheck_url "$output/certificate-manager.env"
