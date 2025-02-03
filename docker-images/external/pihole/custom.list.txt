@@ -37,8 +37,8 @@
 10.1.10.45 openspeedtest.home
 10.1.10.46 actualbudget.home
 10.1.10.47 actualbudget-public.home
-10.1.10.48 desklamp-left-wrapper.home
-10.1.10.49 desklamp-right-wrapper.home
+# 10.1.10.48 desklamp-left-wrapper.home
+# 10.1.10.49 desklamp-right-wrapper.home
 10.1.10.50 dozzle.home
 10.1.10.51 dozzle-agent.odroid-h3.home
 10.1.10.52 netalertx.home
