@@ -14,9 +14,10 @@
 
 ## Before initial installation
 
-- \[All\] Create base secrets
-- \[Prod\] Add healthchecks monitor and configure `HOMELAB_HEALTHCHECK_URL` for:
-    - `certificate-manager.env`
+- \[Prod\] Create secrets in Vaultwarden
+    - Note: Get `APP_KEY` from <https://speedtest-tracker.dev>
+    - Add healthchecks monitor and save URL
+- \[All\] Update local secrets
 
 ## After initial installation
 
