@@ -49,7 +49,7 @@ def main(argv: List[str]):
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
         subparsers.add_parser("build", help="Build docker images for all docker apps"),
-        subparsers.add_parser("create-secrets", help="Create secrets for all docker apps"),
+        subparsers.add_parser("secrets", help="Create secrets for all docker apps"),
         subparsers.add_parser("deploy", help="Deploy all docker apps"),
         subparsers.add_parser("install", help="Install main server scripts (does not start docker-apps)"),
         subparsers.add_parser("start", help="Start all docker apps"),
@@ -95,12 +95,12 @@ def main(argv: List[str]):
     if command == "install":
         server_install()
 
-    if command in ["build", "create-secrets", "deploy", "start", "stop"]:
+    if command in ["build", "deploy", "start", "stop", "secrets"]:
         server_docker_action(command)
 
 
 def server_docker_action(action: str):
-    action_log = action.capitalize() if action != "create-secrets" else "Create-secrets for"
+    action_log = action.capitalize() if action != "secrets" else "Secrets for"
     log.info("%s docker apps", action_log)
 
     for app in applist:

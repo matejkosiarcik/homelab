@@ -92,7 +92,7 @@ jobs:
               npm --prefix './.utils/deployment-helpers/secrets-helpers/speedtest-tracker' ci
               npm --prefix './docker-images/custom/web-automation' ci
             fi
-            sh './servers/<< parameters.server >>/main.sh' create-secrets --dev
+            sh './servers/<< parameters.server >>/main.sh' secrets --dev
       # - run:
       #     name: Build apps on << parameters.server >>
       #     command: |

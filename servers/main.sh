@@ -6,7 +6,7 @@ print_help() {
     printf 'sh <script.sh> <command> [-h|--help] [-d|--dev|-p|--prod] [-f|--force] [-n|--dry-run]\n'
     printf '\n'
     printf 'Commands:\n'
-    printf ' create-secrets - Create secrets for all docker apps\n'
+    printf ' secrets - Create secrets for all docker apps\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -d, --dev     - Dev mode\n'
@@ -70,12 +70,12 @@ create_all_secrets() {
 
     find . -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r server; do
         # shellcheck disable=SC2086
-        sh "$server/main.sh" create-secrets $create_secrets_args
+        sh "$server/main.sh" secrets $create_secrets_args
     done
 }
 
 case "$command" in
-create-secrets)
+secrets)
     create_all_secrets
     ;;
 *)
