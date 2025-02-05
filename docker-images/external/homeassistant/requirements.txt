@@ -1,5 +1,5 @@
 aiodhcpwatcher==1.0.3
-aiodiscover==2.2.0
+aiodiscover==2.2.2
 async-upnp-client==0.43.0
 audioop-lts==0.2.1
 ffmpeg==1.4
