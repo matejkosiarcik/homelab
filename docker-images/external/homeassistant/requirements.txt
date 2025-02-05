@@ -1,4 +1,4 @@
-aiodhcpwatcher==1.0.3
+aiodhcpwatcher==1.1.0
 aiodiscover==2.2.2
 async-upnp-client==0.43.0
 audioop-lts==0.2.1
@@ -8,7 +8,7 @@ gTTS==2.5.4
 ha-av==10.1.1
 ha-ffmpeg==3.2.2
 hassil==2.2.3
-home-assistant-frontend==20250203.0
+home-assistant-frontend==20250204.0
 home-assistant-intents==2025.1.28
 homeassistant==2025.1.4
 jsonpath==0.82.2
