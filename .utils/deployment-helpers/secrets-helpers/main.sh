@@ -63,7 +63,9 @@ if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
 fi
 
 # Download latest passwords from Vaultwarden
-bw sync
+if [ "$mode" = 'prod' ]; then
+    bw sync
+fi
 
 load_username() {
     # $1 - app name
