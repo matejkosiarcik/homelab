@@ -10,7 +10,7 @@ ha-ffmpeg==3.2.2
 hassil==2.2.3
 home-assistant-frontend==20250204.0
 home-assistant-intents==2025.1.28
-homeassistant==2025.1.4
+homeassistant==2025.2.0
 jsonpath==0.82.2
 libpcap==1.11.0b15
 mutagen==1.47.0
