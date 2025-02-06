@@ -7,10 +7,10 @@ print_help() {
     printf '\n'
     printf 'Commands:\n'
     printf ' build - Build docker images for current app\n'
-    printf ' create-secrets - Create app secrets\n'
     printf ' deploy - Deploy current docker app [DEFAULT]\n'
     printf ' start - Start current docker app\n'
     printf ' stop - Stop current docker app\n'
+    printf ' secrets - Create app secrets\n'
     printf '\n'
     printf 'Arguments:\n'
     printf ' -d, --dev     - Dev mode\n'
@@ -111,7 +111,7 @@ if [ "$command" = 'build' ] || [ "$command" = 'pull' ]; then
     pull_images='1'
 fi
 
-if [ "$command" != 'create-secrets' ] && [ ! -e 'app-secrets' ]; then
+if [ "$command" != 'secrets' ] && [ ! -e 'app-secrets' ]; then
     printf 'Secrets directory not found in %s. App cannot be run.\n' "$full_app_name"
     exit 1
 fi
@@ -244,16 +244,13 @@ create_secrets() {
         create_secrets_args="$create_secrets_args --force"
     fi
     # shellcheck disable=SC2086
-    sh "$git_dir/.utils/deployment-helpers/.create-secrets-helpers/main.sh" $create_secrets_args
+    sh "$git_dir/.utils/deployment-helpers/secrets-helpers/main.sh" $create_secrets_args
 }
 
 case "$command" in
 build)
     docker_pull
     docker_build
-    ;;
-create-secrets)
-    create_secrets
     ;;
 deploy)
     docker_build
@@ -270,6 +267,9 @@ start)
     ;;
 stop)
     docker_stop
+    ;;
+secrets)
+    create_secrets
     ;;
 *)
     printf 'Unrecognized command "%s"\n' "$command" >&2

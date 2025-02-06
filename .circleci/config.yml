@@ -89,10 +89,10 @@ jobs:
           command: |
             set -euf
             if find './servers/<< parameters.server >>/docker-apps/' -maxdepth 1 | grep 'speedtest-tracker' >/dev/null 2>&1; then
-              npm --prefix './.utils/deployment-helpers/.create-secrets-helpers/playwright' ci
+              npm --prefix './.utils/deployment-helpers/secrets-helpers/speedtest-tracker' ci
               npm --prefix './docker-images/custom/web-automation' ci
             fi
-            sh './servers/<< parameters.server >>/main.sh' create-secrets --dev
+            sh './servers/<< parameters.server >>/main.sh' secrets --dev
       # - run:
       #     name: Build apps on << parameters.server >>
       #     command: |
