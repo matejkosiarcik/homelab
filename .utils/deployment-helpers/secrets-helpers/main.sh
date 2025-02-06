@@ -461,7 +461,7 @@ case "$full_app_name" in
     healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
     write_healthcheck_url renovatebot "$healthcheck_id"
     renovate_token="$(load_token "$full_app_name" app renovate-token)" # PAT specific for each git host
-    github_token="$(load_token "$full_app_name" app github-token)" # GitHub PAT (even if using other git hosts)
+    github_token="$(load_token "$full_app_name" app github-token)"     # GitHub PAT (even if using other git hosts)
     printf 'RENOVATE_TOKEN=%s\n' "$renovate_token" >>"$output/renovatebot.env"
     printf 'GITHUB_COM_TOKEN=%s\n' "$github_token" >>"$output/renovatebot.env"
     ;;

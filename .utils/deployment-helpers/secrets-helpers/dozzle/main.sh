@@ -1,8 +1,6 @@
 #!/bin/sh
 set -euf
 
-currdir="$(dirname "$0")"
-
 if [ "$#" -lt 1 ]; then
     printf 'Not enough arguments\n' >&2
     printf 'Required: <output-dir>\n' >&2
