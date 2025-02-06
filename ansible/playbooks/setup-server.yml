@@ -70,6 +70,12 @@
         node --version
         npm --version
 
+    - name: Install Bitwarden CLI
+      become: true
+      community.general.npm:
+        name: "@bitwarden/cli"
+        global: true
+
     - name: Stop unbound service
       register: stop_unbound
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
