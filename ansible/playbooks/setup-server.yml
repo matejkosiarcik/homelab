@@ -51,6 +51,25 @@
         fi
         sudo journalctl --vacuum-time=2d --vacuum-size=5M --rotate 2>&1
 
+    - name: Install NodeJS
+      register: install_nodejs
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
+      changed_when: "'CHANGED' in install_nodejs.stdout"
+      ansible.builtin.shell: |
+        if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
+          exit 0
+        fi
+        if [ -e nodesource_setup.sh ]; then
+          rm -f nodesource_setup.sh
+        fi
+        curl -fsSL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
+        sudo -E bash nodesource_setup.sh
+        rm -f nodesource_setup.sh
+        sudo apt-get install -y nodejs
+        printf 'CHANGED\n'
+        node --version
+        npm --version
+
     - name: Stop unbound service
       register: stop_unbound
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
