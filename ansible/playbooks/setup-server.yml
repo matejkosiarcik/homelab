@@ -101,6 +101,43 @@
         set -eufo pipefail
         (yes || true) | sudo sensors-detect
 
+    - name: Install NodeJS
+      register: install_nodejs
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
+      changed_when: "'CHANGED' in install_nodejs.stdout"
+      ansible.builtin.shell: |
+        if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
+          exit 0
+        fi
+        if [ -e nodesource_setup.sh ]; then
+          rm -f nodesource_setup.sh
+        fi
+        curl -fsSL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
+        sudo -E bash nodesource_setup.sh
+        rm -f nodesource_setup.sh
+        sudo apt-get install -y nodejs
+        printf 'CHANGED\n'
+        node --version
+        npm --version
+
+    - name: Install Bitwarden CLI
+      become: true
+      community.general.npm:
+        name: "@bitwarden/cli"
+        global: true
+
+    - name: Configure Bitwarden CLI
+      register: config_bitwarden_cli
+      changed_when: "'CHANGED' in config_bitwarden_cli.stdout"
+      ansible.builtin.shell: |
+        # TODO: Switch to HTTPS after real Let\'s encrypt certificates
+        target='http://vaultwarden.home'
+        if [ "$(bw config server)" = "$target" ]; then
+          exit 0
+        fi
+        bw config server "$target"
+        printf 'CHANGED\n'
+
     - name: Install docker
       register: docker_install
       when: ansible_facts['system'] == 'Linux'

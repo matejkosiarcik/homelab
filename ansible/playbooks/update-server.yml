@@ -14,6 +14,12 @@
         autoclean: true
         autoremove: true
 
+    - name: Update NPM packages
+      become: true
+      community.general.npm:
+        global: true
+        state: latest
+
     - name: Update homelab repository
       register: update_git_homelab
       changed_when: "'CHANGED' in update_git_homelab.stdout"
