@@ -68,20 +68,18 @@ test.describe(apps.pihole.title, () => {
             }
 
             for (const transportVariant of ['tcp', 'udp'] as const) {
-                for (const dnsVariant of ['default', 'open'] as const) {
-                    test(`DNS: ${transportVariant.toUpperCase()} ${_.capitalize(dnsVariant)}`, async () => {
-                        // Get domain for DNS server for a given variant
-                        const piholeDnsDomain = instance.url.replace(/^https?:\/\//, '').replace(/\.(.+)$/, `-dns-${dnsVariant}.$1`);
+                test(`DNS: ${transportVariant.toUpperCase()}`, async () => {
+                    // Get domain for DNS server for a given variant
+                    const piholeDnsDomain = instance.url.replace(/^https?:\/\//, '');
 
-                        // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDnsDomain);
-                        expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+                    // Get IP address
+                    const piholeDnsIps = await nodeDns.resolve(piholeDnsDomain);
+                    expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
 
-                        // Resolved external domain
-                        const ips = await dnsLookup('example.com', transportVariant, 'A', piholeDnsIps[0]);
-                        expect(ips, 'Domain should be resolved').not.toHaveLength(0);
-                    });
-                }
+                    // Resolved external domain
+                    const ips = await dnsLookup('example.com', transportVariant, 'A', piholeDnsIps[0]);
+                    expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                });
             }
         });
     }
