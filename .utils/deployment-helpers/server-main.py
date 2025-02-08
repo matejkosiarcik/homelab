@@ -64,7 +64,7 @@ def main(argv: List[str]):
         subcommand.add_argument("--only", type=str, help=f"A list of apps to {subcommand_name}")
         # if subcommand_name in ["build", "deploy", "start", "stop"]:
         #     subcommand.add_argument("--parallel", type=int, help=f"A number of simultaneous threads to use")
-        if subcommand_name in ["secrets"]:
+        if subcommand_name == "secrets":
             online_group = subcommand.add_mutually_exclusive_group()
             online_group.add_argument("--online", action="store_true", help="Access vaultwarden for tokens always")
             online_group.add_argument("--offline", action="store_true", help="Do not access vaultwarden for anything")
@@ -90,7 +90,7 @@ def main(argv: List[str]):
     command = args.subcommand
     force = args.force
     dryrun = args.dry_run
-    is_online = (args.online is not None and args.online is True) or (args.offline is None or args.offline is False)
+    is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "online") or args.offline is False)
     mode = "dev" if args.dev else "prod"
 
     if command == "install":
