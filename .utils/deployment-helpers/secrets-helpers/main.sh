@@ -101,7 +101,7 @@ load_token() {
     # $2 - container name
     # $3 - account name
 
-    if [ "$mode" = 'prod' ] || ([ "$mode" = 'dev' ] && [ "$online" = 'yes' ]); then
+    if [ "$mode" = 'prod' ] || { [ "$mode" = 'dev' ] && [ "$online" = 'yes' ] }; then
         bw get item "homelab--$1--$2--$3" | jq -er '.login.password'
     else
         printf '\n'
@@ -113,7 +113,7 @@ load_notes() {
     # $2 - container name
     # $3 - account name
 
-    if [ "$mode" = 'prod' ] || ([ "$mode" = 'dev' ] && [ "$online" = 'yes' ]); then
+    if [ "$mode" = 'prod' ] || { [ "$mode" = 'dev' ] && [ "$online" = 'yes' ] }; then
         bw get item "homelab--$1--$2--$3" | jq -er '.notes'
     else
         printf '\n'
