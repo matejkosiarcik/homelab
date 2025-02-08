@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/renovatebot.png)
 
+## Docs
+
 - GitHub: <https://github.com/renovatebot/renovate>
 - DockerHub: <https://hub.docker.com/r/renovate/renovate>
 - Docs: <https://docs.renovatebot.com>

@@ -2,10 +2,14 @@
 
 ![diagram](../../docs/diagrams/out/apps/tvheadend.png)
 
+## Docs
+
+TVHeadend (official):
+
 - Official docs: <https://docs.tvheadend.org/documentation>
 - Official repository: <https://github.com/tvheadend/tvheadend>
 
----
+LinuxServer (unofficial):
 
 - LinuxServer docs: <https://docs.linuxserver.io/images/docker-tvheadend>
 - LinuxServer GitHub: <https://github.com/linuxserver/docker-tvheadend>

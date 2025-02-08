@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/dozzle-agent.png)
 
+## Docs
+
 Look for [dozzle-server](../dozzle-server/README.md)
 
 ## Before initial installation

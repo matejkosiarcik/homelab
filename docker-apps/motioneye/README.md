@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/motioneye.png)
 
+## Docs
+
 MotionEye:
 
 - GitHub: <https://github.com/motioneye-project/motioneye>

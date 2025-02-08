@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/dozzle-server.png)
 
+## Docs
+
 - Main page: <https://dozzle.dev>
 - Docs: <https://dozzle.dev/guide/what-is-dozzle>
     - Getting started: <https://dozzle.dev/guide/getting-started>
