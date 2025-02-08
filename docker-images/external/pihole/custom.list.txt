@@ -13,12 +13,8 @@
 10.1.10.2 unbound-1-open.home
 # ...9 Reserved
 10.1.10.10 pihole-1-primary.home
-10.1.10.11 pihole-1-primary-dns-default.home
-10.1.10.12 pihole-1-primary-dns-open.home
 # ...19 Reserved
 10.1.10.20 pihole-1-secondary.home
-10.1.10.21 pihole-1-secondary-dns-default.home
-10.1.10.22 pihole-1-secondary-dns-open.home
 # ...29 Reserved
 # 10.1.10.31 Reserved for unifi-controller.home
 10.1.10.32 omada-controller.home
@@ -57,12 +53,8 @@
 10.1.16.2 unbound-2-open.home
 # ...9 Reserved
 10.1.16.10 pihole-2-primary.home
-10.1.16.11 pihole-2-primary-dns-default.home
-10.1.16.12 pihole-2-primary-dns-open.home
 # ...19 Reserved
 10.1.16.20 pihole-2-secondary.home
-10.1.16.21 pihole-2-secondary-dns-default.home
-10.1.16.22 pihole-2-secondary-dns-open.home
 # ...29 Reserved
 10.1.16.31 unifi-controller.home
 10.1.16.32 gatus-2.home
