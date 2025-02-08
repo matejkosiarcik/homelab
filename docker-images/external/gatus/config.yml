@@ -1184,7 +1184,7 @@ endpoints:
   ### Group: App - Unbound 1 ###
 
   - <<: *default-dns
-    name: Unbound 1 [DNS Default]
+    name: Unbound 1 [default] DNS
     group: App - Unbound 1
     url: unbound-1-default.home
     alerts:
@@ -1192,34 +1192,34 @@ endpoints:
       - type: email
 
   - <<: *default-tcp
-    name: Unbound 1 [DNS Default] TCP:53
+    name: Unbound 1 [default] TCP:53
     group: App - Unbound 1
     url: tcp://unbound-1-default.home:53
 
   - <<: *default-udp
-    name: Unbound 1 [DNS Default] UDP:53
+    name: Unbound 1 [default] UDP:53
     group: App - Unbound 1
     url: udp://unbound-1-default.home:53
 
   - <<: *default-dns
-    name: Unbound 1 [DNS Open] DNS
+    name: Unbound 1 [open] DNS
     group: App - Unbound 1
     url: unbound-1-open.home
 
   - <<: *default-tcp
-    name: Unbound 1 [DNS Open] TCP:53
+    name: Unbound 1 [open] TCP:53
     group: App - Unbound 1
     url: tcp://unbound-1-open.home:53
 
   - <<: *default-udp
-    name: Unbound 1 [DNS Open] UDP:53
+    name: Unbound 1 [open] UDP:53
     group: App - Unbound 1
     url: udp://unbound-1-open.home:53
 
   ### Group: App - Unbound 2 ###
 
   - <<: *default-dns
-    name: Unbound 2 [DNS Default]
+    name: Unbound 2 [default] DNS
     group: App - Unbound 2
     url: unbound-2-default.home
     alerts:
@@ -1227,27 +1227,27 @@ endpoints:
       - type: email
 
   - <<: *default-tcp
-    name: Unbound 2 [DNS Default] TCP:53
+    name: Unbound 2 [default] TCP:53
     group: App - Unbound 2
     url: tcp://unbound-2-default.home:53
 
   - <<: *default-udp
-    name: Unbound 2 [DNS Default] UDP:53
+    name: Unbound 2 [default] UDP:53
     group: App - Unbound 2
     url: udp://unbound-2-default.home:53
 
   - <<: *default-dns
-    name: Unbound 2 [DNS Open] DNS
+    name: Unbound 2 [open] DNS
     group: App - Unbound 2
     url: unbound-2-open.home
 
   - <<: *default-tcp
-    name: Unbound 2 [DNS Open] TCP:53
+    name: Unbound 2 [open] TCP:53
     group: App - Unbound 2
     url: tcp://unbound-2-open.home:53
 
   - <<: *default-udp
-    name: Unbound 2 [DNS Open] UDP:53
+    name: Unbound 2 [open] UDP:53
     group: App - Unbound 2
     url: udp://unbound-2-open.home:53
 
