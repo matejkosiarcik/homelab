@@ -56,6 +56,7 @@
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       changed_when: "'CHANGED' in stop_unbound.stdout"
       ansible.builtin.shell: |
+        set -eufo pipefail
         status_before="$(sudo systemctl status unbound)"
         sudo systemctl stop unbound
         sudo systemctl disable unbound
@@ -106,6 +107,7 @@
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       changed_when: "'CHANGED' in install_nodejs.stdout"
       ansible.builtin.shell: |
+        set -eufo pipefail
         if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
           exit 0
         fi
@@ -131,6 +133,7 @@
       changed_when: "'CHANGED' in config_bitwarden_cli.stdout"
       ansible.builtin.shell: |
         # TODO: Switch to HTTPS after real Let\'s encrypt certificates
+        set -eufo pipefail
         target='http://vaultwarden.home'
         if [ "$(bw config server)" = "$target" ]; then
           exit 0
