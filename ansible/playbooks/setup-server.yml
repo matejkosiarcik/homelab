@@ -57,10 +57,10 @@
       changed_when: "'CHANGED' in stop_unbound.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        status_before="$(sudo systemctl status unbound)"
+        status_before="$(sudo systemctl status unbound || true)"
         sudo systemctl stop unbound
         sudo systemctl disable unbound
-        status_after="$(sudo systemctl status unbound)"
+        status_after="$(sudo systemctl status unbound || true)"
         if [ "$status_before" != "$status_after" ]; then
           printf 'CHANGED\n'
         fi
