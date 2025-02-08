@@ -602,6 +602,8 @@ endpoints:
     name: Home Assistant Api Prometheus
     group: App - Home Assistant
     url: https://homeassistant.home/api/prometheus
+    headers:
+      Authorization: Bearer ${HOMEASSISTANT_PROMETHEUS_TOKEN}
 
   - <<: *default-tcp
     name: Home Assistant TCP:80
