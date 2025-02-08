@@ -24,9 +24,11 @@ log_dir = path.join(path.expanduser("~"), ".homelab-logs", start_datestr)
 log_file = path.join(log_dir, "log.txt")
 os.makedirs(log_dir, exist_ok=True)
 
-docker_args = []
-dryrun = False
 applist = []
+dryrun = False
+force = False
+is_online = True
+mode = ""
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -44,7 +46,7 @@ def read_priority_apps_list() -> List[str]:
 
 
 def main(argv: List[str]):
-    global applist, dryrun  # pylint: disable=global-statement
+    global applist, dryrun, force, is_online, mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="main.sh")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -62,6 +64,10 @@ def main(argv: List[str]):
         subcommand.add_argument("--only", type=str, help=f"A list of apps to {subcommand_name}")
         # if subcommand_name in ["build", "deploy", "start", "stop"]:
         #     subcommand.add_argument("--parallel", type=int, help=f"A number of simultaneous threads to use")
+        if subcommand_name == "secrets":
+            online_group = subcommand.add_mutually_exclusive_group()
+            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for tokens always")
+            online_group.add_argument("--offline", action="store_true", help="Do not access vaultwarden for anything")
         group = subcommand.add_mutually_exclusive_group(required=True)
         group.add_argument("-d", "--dev", action="store_true", help="Dev mode")
         group.add_argument("-p", "--prod", action="store_true", help="Production mode")
@@ -84,13 +90,8 @@ def main(argv: List[str]):
     command = args.subcommand
     force = args.force
     dryrun = args.dry_run
+    is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "online") or args.offline is False)
     mode = "dev" if args.dev else "prod"
-
-    docker_args.append(f"--{mode}")
-    if dryrun:
-        docker_args.append("--dry-run")
-    if force:
-        docker_args.append("--force")
 
     if command == "install":
         server_install()
@@ -102,6 +103,14 @@ def main(argv: List[str]):
 def server_docker_action(action: str):
     action_log = action.capitalize() if action != "secrets" else "Secrets for"
     log.info("%s docker apps", action_log)
+
+    docker_args = [f"--{mode}"]
+    if dryrun:
+        docker_args.append("--dry-run")
+    if force:
+        docker_args.append("--force")
+    if action == "secrets":
+        docker_args.append("--online" if is_online else "--offline")
 
     for app in applist:
         subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), action] + docker_args)

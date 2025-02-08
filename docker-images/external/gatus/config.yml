@@ -491,9 +491,9 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Gatus (1) Api Metrics
+    name: Gatus (1) Api Prometheus
     group: App - Gatus (1)
-    url: https://gatus.home/metrics
+    url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus.home/metrics
 
   - <<: *default-tcp
     name: Gatus (1) TCP:80
@@ -526,9 +526,9 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Gatus (2) Api Metrics
+    name: Gatus (2) Api Prometheus
     group: App - Gatus (2)
-    url: https://gatus-2.home/metrics
+    url: https://prometheus:${GATUS_2_PROMETHEUS_TOKEN}@gatus-2.home/metrics
 
   - <<: *default-tcp
     name: Gatus (2) TCP:80
@@ -599,9 +599,11 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Home Assistant Api Metrics
+    name: Home Assistant Api Prometheus
     group: App - Home Assistant
     url: https://homeassistant.home/api/prometheus
+    headers:
+      Authorization: Bearer ${HOMEASSISTANT_PROMETHEUS_TOKEN}
 
   - <<: *default-tcp
     name: Home Assistant TCP:80
@@ -738,6 +740,13 @@ endpoints:
     url: https://minio.home/minio/health/cluster/read
 
   - <<: *default-http
+    name: Minio Api Prometheus
+    group: App - Minio
+    url: https://minio.home/minio/v2/metrics/cluster
+    headers:
+      Authorization: Bearer ${MINIO_PROMETHEUS_TOKEN}
+
+  - <<: *default-http
     name: Minio Console HTTP
     group: App - Minio
     url: http://minio-console.home
@@ -838,7 +847,7 @@ endpoints:
   #   url: http://netalertx.home:20211
 
   # - <<: *default-http
-  #   name: NetAlertX Api Metrics
+  #   name: NetAlertX Api Metrics # TODO: Is this prometheus?
   #   group: App - NetAlertX
   #   url: https://netalertx.home/api/prometheus
 
@@ -989,13 +998,11 @@ endpoints:
     name: OpenSpeedTest ICMP
     group: App - OpenSpeedTest
     url: icmp://openspeedtest.home
-    enabled: false
 
   - <<: *default-http
     name: OpenSpeedTest HTTP
     group: App - OpenSpeedTest
     url: http://openspeedtest.home
-    enabled: false
 
   - <<: *default-http
     name: OpenSpeedTest HTTPS
@@ -1004,19 +1011,16 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
-    enabled: false
 
   - <<: *default-tcp
     name: OpenSpeedTest TCP:80
     group: App - OpenSpeedTest
     url: tcp://openspeedtest.home:80
-    enabled: false
 
   - <<: *default-tcp
     name: OpenSpeedTest TCP:443
     group: App - OpenSpeedTest
     url: tcp://openspeedtest.home:443
-    enabled: false
 
   ### Group: App - PiHole 1 Primary ###
 
@@ -1512,7 +1516,7 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Vikunja API Metrics
+    name: Vikunja API Metrics # TODO: Is this prometheus?
     group: App - Vikunja
     url: https://vikunja.home/api/v1/metrics
     conditions:

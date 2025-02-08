@@ -1,7 +1,7 @@
 import https from 'node:https';
 import axios from 'axios';
-import { expect, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
+import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 
 for (const app of Object.values(apps)) {

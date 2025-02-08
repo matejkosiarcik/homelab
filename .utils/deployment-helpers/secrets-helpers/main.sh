@@ -12,6 +12,7 @@ export LC_ALL
 LC_CTYPE=en_US.UTF-8
 export LC_CTYPE
 
+online_mode='online'
 mode=''
 force_mode='0'
 while [ "$#" -gt 0 ]; do
@@ -26,6 +27,14 @@ while [ "$#" -gt 0 ]; do
         ;;
     -p | --prod)
         mode='prod'
+        shift
+        ;;
+    --online)
+        online_mode='online'
+        shift
+        ;;
+    --offline)
+        online_mode='offline'
         shift
         ;;
     *)
@@ -96,7 +105,7 @@ load_token() {
     # $2 - container name
     # $3 - account name
 
-    if [ "$mode" = 'prod' ]; then
+    if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         bw get item "homelab--$1--$2--$3" | jq -er '.login.password'
     else
         printf '\n'
@@ -108,7 +117,7 @@ load_notes() {
     # $2 - container name
     # $3 - account name
 
-    if [ "$mode" = 'prod' ]; then
+    if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         bw get item "homelab--$1--$2--$3" | jq -er '.notes'
     else
         printf '\n'
@@ -235,7 +244,15 @@ case "$full_app_name" in
     ;;
 *gatus*)
     # App
+    gatus_1_prometheus_token="$(load_token gatus app prometheus)"
+    gatus_2_prometheus_token="$(load_token gatus-2 app prometheus)"
+    homeassistant_prometheus_token="$(load_token homeassistant app prometheus)"
+    minio_prometheus_token="$(load_token minio app prometheus)"
     ntfy_token="$(load_token ntfy app gatus-token)"
+    printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$gatus_1_prometheus_token" >>"$output/gatus.env"
+    printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$gatus_2_prometheus_token" >>"$output/gatus.env"
+    printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$homeassistant_prometheus_token" >>"$output/gatus.env"
+    printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$minio_prometheus_token" >>"$output/gatus.env"
     printf 'NTFY_TOKEN=%s\n' "$ntfy_token" >>"$output/gatus.env"
 
     # HTTP Proxy
@@ -269,7 +286,7 @@ case "$full_app_name" in
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
     if [ "$mode" = 'dev' ]; then
-        admin_email='admin@localhost'
+        admin_email='admin@healthchecks.localhost'
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
@@ -488,7 +505,7 @@ case "$full_app_name" in
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
     if [ "$mode" = 'dev' ]; then
-        admin_email='admin@localhost'
+        admin_email='admin@speedtest-tracker.localhost'
         sh "$helper_script_dir/speedtest-tracker/main.sh" "$tmpdir/speedtest-tracker-app-key.txt"
         app_key="$(cat "$tmpdir/speedtest-tracker-app-key.txt")"
     else
