@@ -24,7 +24,7 @@ services:
     networks:
       external-network:
 
-  pihole-setup:
+  app-setup:
     <<: *common-service-options
 
   certificate-manager:
@@ -35,30 +35,6 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-
-  transport-proxy:
-    <<: *common-service-options
-    # ports:
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    # networks:
-    #   external-network:
-
-  dns-default-transport-proxy:
-    <<: *common-service-options
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP_DNS_DEFAULT}:53:53/tcp
-      - ${DOCKER_COMPOSE_NETWORK_IP_DNS_DEFAULT}:53:53/udp
-    networks:
-      external-network:
-
-  dns-open-transport-proxy:
-    <<: *common-service-options
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP_DNS_OPEN}:53:53/tcp
-      - ${DOCKER_COMPOSE_NETWORK_IP_DNS_OPEN}:53:53/udp
-    networks:
-      external-network:
 
 networks:
   external-network:
