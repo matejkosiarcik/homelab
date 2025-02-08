@@ -4,12 +4,17 @@
     - name: Ping
       ansible.builtin.ping:
 
+    - name: Update APT index
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+
     # Just a note, this can take a long time, especially on first run
     - name: Update APT packages
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == "Debian"
       become: true
       ansible.builtin.apt:
-        update_cache: true
         upgrade: true
         autoclean: true
         autoremove: true
