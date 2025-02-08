@@ -264,6 +264,28 @@
           printf 'CHANGED\n'
         fi
 
+    - name: Ignore NodeJS warnings
+      register: ignore_nodejs_warnings
+      changed_when: "'CHANGED' in ignore_nodejs_warnings.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        if [ ! -e "$HOME/.profile" ]; then
+          touch "$HOME/.profile"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
+          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
+          printf 'CHANGED\n'
+        fi
+        if [ ! -e "$HOME/.bashrc" ]; then
+          touch "$HOME/.bashrc"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
+          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
+          printf 'CHANGED\n'
+        fi
+
     - name: Git clone homelab
       register: git_clone_homelab
       changed_when: "'CHANGED' in git_clone_homelab.stdout"
