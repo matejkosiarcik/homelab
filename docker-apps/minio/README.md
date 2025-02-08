@@ -24,4 +24,4 @@ Client
 ## After initial installation
 
 - \[Prod\] Create prometheus token with local CLI:
-  - `mc admin prometheus generate homelab`
+    - `mc admin prometheus generate homelab`
