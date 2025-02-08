@@ -1,9 +1,9 @@
 import https from 'node:https';
 import axios from 'axios';
+import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../../utils/apps';
-import { getEnv } from '@/utils/utils';
-import { faker } from '@faker-js/faker';
+import { getEnv } from '../../../utils/utils';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {

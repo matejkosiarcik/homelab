@@ -1,11 +1,11 @@
+import nodeDns from 'node:dns/promises';
 import https from 'node:https';
 import axios from 'axios';
-import { expect, test } from '@playwright/test';
+import _ from 'lodash';
 import { faker } from '@faker-js/faker';
+import { expect, test } from '@playwright/test';
 import { dnsLookup, getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import _ from 'lodash';
-import nodeDns from 'node:dns/promises';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {

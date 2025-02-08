@@ -1,8 +1,8 @@
+import nodeDns from 'node:dns/promises';
+import _ from 'lodash';
 import { expect, test } from '@playwright/test';
 import { dnsLookup } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import _ from 'lodash';
-import nodeDns from 'node:dns/promises';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
