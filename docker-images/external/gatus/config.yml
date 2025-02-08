@@ -111,10 +111,11 @@ endpoints:
       - type: ntfy
       - type: email
 
-  - <<: *default-icmp
-    name: Router - UPC Router
-    group: Network equipment
-    url: icmp://192.168.0.1
+  # Disconnected
+  # - <<: *default-icmp
+  #   name: Router - UPC Router
+  #   group: Network equipment
+  #   url: icmp://192.168.0.1
 
   - <<: *default-icmp
     name: WiFi AP - Unifi U6
@@ -128,17 +129,11 @@ endpoints:
     name: Smart switch - TP-Link SG108E
     group: Network equipment
     url: icmp://10.1.0.3
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-icmp
     name: Smart switch - TP-Link SG105E
     group: Network equipment
     url: icmp://10.1.0.4
-    alerts:
-      - type: ntfy
-      - type: email
 
   ### Group: Servers ###
 
