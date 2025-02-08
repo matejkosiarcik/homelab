@@ -2,9 +2,13 @@
 
 ![diagram](../../docs/diagrams/out/apps/unifi-controller.png)
 
+## Docs
+
+Unifi (official):
+
 - Open Ports overview: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
 
----
+LinuxServer (unofficial):
 
 - LinuxServer docs: <https://docs.linuxserver.io/images/docker-unifi-network-application/>
 - LinuxServer GitHub: <https://github.com/linuxserver/docker-unifi-network-application>

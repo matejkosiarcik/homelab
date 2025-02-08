@@ -2,10 +2,14 @@
 
 ![diagram](../../docs/diagrams/out/apps/jellyfin.png)
 
+## Docs
+
+Jellyfin (official):
+
 - Jellyfin docs: <https://jellyfin.org/docs/general/quick-start>
 - Jellyfin Hardware Acceleration docs: <https://jellyfin.org/docs/general/administration/hardware-acceleration> and <https://jellyfin.org/docs/general/administration/hardware-acceleration/intel>
 
----
+LinuxServer (unofficial):
 
 - LinuxServer docs: <https://docs.linuxserver.io/images/docker-jellyfin>
 - LinuxServer GitHub: <https://github.com/linuxserver/docker-jellyfin>

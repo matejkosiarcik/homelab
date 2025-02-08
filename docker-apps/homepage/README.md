@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/homepage.png)
 
+## Docs
+
 - GitHub: <https://github.com/gethomepage/homepage>
 - DockerHub: <https://hub.docker.com/r/litetex/ghcr.gethomepage.homepage>
 - Docs: <https://gethomepage.dev>

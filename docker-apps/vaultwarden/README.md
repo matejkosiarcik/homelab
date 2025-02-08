@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/vaultwarden.png)
 
+## Docs
+
 - GitHub: <https://github.com/dani-garcia/vaultwarden>
 - DockerHub: <https://hub.docker.com/r/vaultwarden/server>
 - Install tutorial: <https://community.hetzner.com/tutorials/how-to-set-up-vaultwarden>

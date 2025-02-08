@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/vikunja.png)
 
+## Docs
+
 - Docs: <https://vikunja.io/docs>
     - Install guide: <https://vikunja.io/docs/installing>
     - Configuration: <https://vikunja.io/docs/config-options>

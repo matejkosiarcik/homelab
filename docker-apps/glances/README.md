@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/glances.png)
 
+## Docs
+
 - GitHub: <https://github.com/nicolargo/glances>
 - Homepage: <https://nicolargo.github.io/glances/>
 - Dockerhub: <https://hub.docker.com/r/nicolargo/glances>

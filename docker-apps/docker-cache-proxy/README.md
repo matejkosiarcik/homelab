@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/docker-cache-proxy.png)
 
+## Docs
+
 - Documentation: <https://docs.docker.com/docker-hub/mirror>
 - DockerHub: <https://hub.docker.com/_/registry>
 - Docker registry install guide: <https://distribution.github.io/distribution/about/deploying>

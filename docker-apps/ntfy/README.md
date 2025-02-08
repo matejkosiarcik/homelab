@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/ntfy.png)
 
+## Docs
+
 - GitHub: <https://github.com/binwiederhier/ntfy>
 - DockerHub: <https://hub.docker.com/r/binwiederhier/ntfy>
 - Docs: <https://docs.ntfy.sh>

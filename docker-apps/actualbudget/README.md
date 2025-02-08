@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/actualbudget.png)
 
+## Docs
+
 - Homepage: <https://actualbudget.org>
 - GitHub: <https://github.com/actualbudget/actual>
 - DockerHub: <https://hub.docker.com/r/actualbudget/actual-server>

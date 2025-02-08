@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/openspeedtest.png)
 
+## Docs
+
 - Docs: `https://openspeedtest.com` <!-- website down -->
 - Installation guide: `https://openspeedtest.com/selfhosted-speedtest` <!-- website down -->
 - GitHub: <https://github.com/openspeedtest/Speed-Test>
