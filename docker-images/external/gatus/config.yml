@@ -910,222 +910,162 @@ endpoints:
   ### Group: App - PiHole 1 Primary ###
 
   - <<: *default-http
-    name: PiHole 1 Primary [Admin] HTTP
+    name: PiHole 1 Primary HTTP
     group: App - PiHole 1 Primary
     url: http://pihole-1-primary.home
 
   - <<: *default-http
-    name: PiHole 1 Primary [Admin] HTTPS
+    name: PiHole 1 Primary HTTPS
     group: App - PiHole 1 Primary
     url: https://pihole-1-primary.home
     alerts:
       - type: ntfy
       - type: email
 
+  - <<: *default-dns
+    name: PiHole 1 Primary DNS
+    group: App - PiHole 1 Primary
+    url: pihole-1-primary.home
+
   - <<: *default-tcp
-    name: PiHole 1 Primary [Admin] TCP:80
+    name: PiHole 1 Primary TCP:53
+    group: App - PiHole 1 Primary
+    url: tcp://pihole-1-primary.home:53
+
+  - <<: *default-udp
+    name: PiHole 1 Primary UDP:53
+    group: App - PiHole 1 Primary
+    url: udp://pihole-1-primary.home:53
+
+  - <<: *default-tcp
+    name: PiHole 1 Primary TCP:80
     group: App - PiHole 1 Primary
     url: tcp://pihole-1-primary.home:80
 
   - <<: *default-tcp
-    name: PiHole 1 Primary [Admin] TCP:443
+    name: PiHole 1 Primary TCP:443
     group: App - PiHole 1 Primary
     url: tcp://pihole-1-primary.home:443
-
-  - <<: *default-dns
-    name: PiHole 1 Primary [DNS Default]
-    group: App - PiHole 1 Primary
-    url: pihole-1-primary-dns-default.home
-
-  - <<: *default-tcp
-    name: PiHole 1 Primary [DNS Default] TCP:53
-    group: App - PiHole 1 Primary
-    url: tcp://pihole-1-primary-dns-default.home:53
-
-  - <<: *default-udp
-    name: PiHole 1 Primary [DNS Default] UDP:53
-    group: App - PiHole 1 Primary
-    url: udp://pihole-1-primary-dns-default.home:53
-
-  - <<: *default-dns
-    name: PiHole 1 Primary [DNS Open] DNS
-    group: App - PiHole 1 Primary
-    url: pihole-1-primary-dns-open.home
-
-  - <<: *default-tcp
-    name: PiHole 1 Primary [DNS Open] TCP:53
-    group: App - PiHole 1 Primary
-    url: tcp://pihole-1-primary-dns-open.home:53
-
-  - <<: *default-udp
-    name: PiHole 1 Primary [DNS Open] UDP:53
-    group: App - PiHole 1 Primary
-    url: udp://pihole-1-primary-dns-open.home:53
 
   ### Group: App - PiHole 1 Secondary ###
 
   - <<: *default-http
-    name: PiHole 1 Secondary [Admin] HTTP
+    name: PiHole 1 Secondary HTTP
     group: App - PiHole 1 Secondary
     url: http://pihole-1-secondary.home
 
   - <<: *default-http
-    name: PiHole 1 Secondary [Admin] HTTPS
+    name: PiHole 1 Secondary HTTPS
     group: App - PiHole 1 Secondary
     url: https://pihole-1-secondary.home
     alerts:
       - type: ntfy
       - type: email
 
+  - <<: *default-dns
+    name: PiHole 1 Secondary DNS
+    group: App - PiHole 1 Secondary
+    url: pihole-1-secondary.home
+
   - <<: *default-tcp
-    name: PiHole 1 Secondary [Admin] TCP:80
+    name: PiHole 1 Secondary TCP:53
+    group: App - PiHole 1 Secondary
+    url: tcp://pihole-1-secondary.home:53
+
+  - <<: *default-udp
+    name: PiHole 1 Secondary UDP:53
+    group: App - PiHole 1 Secondary
+    url: udp://pihole-1-secondary.home:53
+
+  - <<: *default-tcp
+    name: PiHole 1 Secondary TCP:80
     group: App - PiHole 1 Secondary
     url: tcp://pihole-1-secondary.home:80
 
   - <<: *default-tcp
-    name: PiHole 1 Secondary [Admin] TCP:443
+    name: PiHole 1 Secondary TCP:443
     group: App - PiHole 1 Secondary
     url: tcp://pihole-1-secondary.home:443
-
-  - <<: *default-dns
-    name: PiHole 1 Secondary [DNS Default]
-    group: App - PiHole 1 Secondary
-    url: pihole-1-secondary-dns-default.home
-
-  - <<: *default-tcp
-    name: PiHole 1 Secondary [DNS Default] TCP:53
-    group: App - PiHole 1 Secondary
-    url: tcp://pihole-1-secondary-dns-default.home:53
-
-  - <<: *default-udp
-    name: PiHole 1 Secondary [DNS Default] UDP:53
-    group: App - PiHole 1 Secondary
-    url: udp://pihole-1-secondary-dns-default.home:53
-
-  - <<: *default-dns
-    name: PiHole 1 Secondary [DNS Open] DNS
-    group: App - PiHole 1 Secondary
-    url: pihole-1-secondary-dns-open.home
-
-  - <<: *default-tcp
-    name: PiHole 1 Secondary [DNS Open] TCP:53
-    group: App - PiHole 1 Secondary
-    url: tcp://pihole-1-secondary-dns-open.home:53
-
-  - <<: *default-udp
-    name: PiHole 1 Secondary [DNS Open] UDP:53
-    group: App - PiHole 1 Secondary
-    url: udp://pihole-1-secondary-dns-open.home:53
 
   ### Group: App - PiHole 2 Primary ###
 
   - <<: *default-http
-    name: PiHole 2 Primary [Admin] HTTP
+    name: PiHole 2 Primary HTTP
     group: App - PiHole 2 Primary
     url: http://pihole-2-primary.home
 
   - <<: *default-http
-    name: PiHole 2 Primary [Admin] HTTPS
+    name: PiHole 2 Primary HTTPS
     group: App - PiHole 2 Primary
     url: https://pihole-2-primary.home
     alerts:
       - type: ntfy
       - type: email
 
+  - <<: *default-dns
+    name: PiHole 2 Primary DNS
+    group: App - PiHole 2 Primary
+    url: pihole-2-primary.home
+
   - <<: *default-tcp
-    name: PiHole 2 Primary [Admin] TCP:80
+    name: PiHole 2 Primary TCP:53
+    group: App - PiHole 2 Primary
+    url: tcp://pihole-2-primary.home:53
+
+  - <<: *default-udp
+    name: PiHole 2 Primary UDP:53
+    group: App - PiHole 2 Primary
+    url: udp://pihole-2-primary.home:53
+
+  - <<: *default-tcp
+    name: PiHole 2 Primary TCP:80
     group: App - PiHole 2 Primary
     url: tcp://pihole-2-primary.home:80
 
   - <<: *default-tcp
-    name: PiHole 2 Primary [Admin] TCP:443
+    name: PiHole 2 Primary TCP:443
     group: App - PiHole 2 Primary
     url: tcp://pihole-2-primary.home:443
-
-  - <<: *default-dns
-    name: PiHole 2 Primary [DNS Default]
-    group: App - PiHole 2 Primary
-    url: pihole-2-primary-dns-default.home
-
-  - <<: *default-tcp
-    name: PiHole 2 Primary [DNS Default] TCP:53
-    group: App - PiHole 2 Primary
-    url: tcp://pihole-2-primary-dns-default.home:53
-
-  - <<: *default-udp
-    name: PiHole 2 Primary [DNS Default] UDP:53
-    group: App - PiHole 2 Primary
-    url: udp://pihole-2-primary-dns-default.home:53
-
-  - <<: *default-dns
-    name: PiHole 2 Primary [DNS Open] DNS
-    group: App - PiHole 2 Primary
-    url: pihole-2-primary-dns-open.home
-
-  - <<: *default-tcp
-    name: PiHole 2 Primary [DNS Open] TCP:53
-    group: App - PiHole 2 Primary
-    url: tcp://pihole-2-primary-dns-open.home:53
-
-  - <<: *default-udp
-    name: PiHole 2 Primary [DNS Open] UDP:53
-    group: App - PiHole 2 Primary
-    url: udp://pihole-2-primary-dns-open.home:53
 
   ### Group: App - PiHole 2 Secondary ###
 
   - <<: *default-http
-    name: PiHole 2 Secondary [Admin] HTTP
+    name: PiHole 2 Secondary HTTP
     group: App - PiHole 2 Secondary
     url: http://pihole-2-secondary.home
 
   - <<: *default-http
-    name: PiHole 2 Secondary [Admin] HTTPS
+    name: PiHole 2 Secondary HTTPS
     group: App - PiHole 2 Secondary
     url: https://pihole-2-secondary.home
     alerts:
       - type: ntfy
       - type: email
 
+  - <<: *default-dns
+    name: PiHole 2 Secondary DNS
+    group: App - PiHole 2 Secondary
+    url: pihole-2-secondary.home
+
   - <<: *default-tcp
-    name: PiHole 2 Secondary [Admin] TCP:80
+    name: PiHole 2 Secondary TCP:53
+    group: App - PiHole 2 Secondary
+    url: tcp://pihole-2-secondary.home:53
+
+  - <<: *default-udp
+    name: PiHole 2 Secondary UDP:53
+    group: App - PiHole 2 Secondary
+    url: udp://pihole-2-secondary.home:53
+
+  - <<: *default-tcp
+    name: PiHole 2 Secondary TCP:80
     group: App - PiHole 2 Secondary
     url: tcp://pihole-2-secondary.home:80
 
   - <<: *default-tcp
-    name: PiHole 2 Secondary [Admin] TCP:443
+    name: PiHole 2 Secondary TCP:443
     group: App - PiHole 2 Secondary
     url: tcp://pihole-2-secondary.home:443
-
-  - <<: *default-dns
-    name: PiHole 2 Secondary [DNS Default]
-    group: App - PiHole 2 Secondary
-    url: pihole-2-secondary-dns-default.home
-
-  - <<: *default-tcp
-    name: PiHole 2 Secondary [DNS Default] TCP:53
-    group: App - PiHole 2 Secondary
-    url: tcp://pihole-2-secondary-dns-default.home:53
-
-  - <<: *default-udp
-    name: PiHole 2 Secondary [DNS Default] UDP:53
-    group: App - PiHole 2 Secondary
-    url: udp://pihole-2-secondary-dns-default.home:53
-
-  - <<: *default-dns
-    name: PiHole 2 Secondary [DNS Open] DNS
-    group: App - PiHole 2 Secondary
-    url: pihole-2-secondary-dns-open.home
-
-  - <<: *default-tcp
-    name: PiHole 2 Secondary [DNS Open] TCP:53
-    group: App - PiHole 2 Secondary
-    url: tcp://pihole-2-secondary-dns-open.home:53
-
-  - <<: *default-udp
-    name: PiHole 2 Secondary [DNS Open] UDP:53
-    group: App - PiHole 2 Secondary
-    url: udp://pihole-2-secondary-dns-open.home:53
 
   ### Group: App - Smtp4dev ###
 
