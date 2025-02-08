@@ -17,6 +17,7 @@ print_help() {
     printf ' -f, --force   - Force\n'
     printf ' -h, --help    - Print help message\n'
     printf ' -n, --dry-run - Dry run\n'
+    printf ' --offline     - [for secrets] Only generate local secrets - Do not access vaultwarden\n'
     printf ' -p, --prod    - Production mode\n'
 }
 
@@ -36,6 +37,7 @@ if [ "$command" = '-h' ] || [ "$command" = '--help' ]; then
     exit 0
 fi
 
+online_mode='online'
 dry_run='0'
 force='0'
 mode=''
@@ -55,6 +57,14 @@ while [ "$#" -gt 0 ]; do
         ;;
     -p | --prod)
         mode='prod'
+        shift
+        ;;
+    --online)
+        online_mode='online'
+        shift
+        ;;
+    --offline)
+        online_mode='offline'
         shift
         ;;
     *)
@@ -239,7 +249,7 @@ docker_start() {
 }
 
 create_secrets() {
-    create_secrets_args="--$mode"
+    create_secrets_args="--$mode --$online_mode"
     if [ "$force" -eq '1' ]; then
         create_secrets_args="$create_secrets_args --force"
     fi
