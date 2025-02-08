@@ -18,6 +18,11 @@ services:
       FTLCONF_LOCAL_IPV4: ${DOCKER_COMPOSE_NETWORK_IP}
       FTLCONF_PRIVACYLEVEL: "0"
       VIRTUAL_HOST: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp
+    networks:
+      external-network:
 
   pihole-setup:
     <<: *common-service-options
@@ -27,14 +32,17 @@ services:
 
   http-proxy:
     <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    networks:
-      external-network:
+
+  transport-proxy:
+    <<: *common-service-options
+    # ports:
+    #   - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+    #   - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+    # networks:
+    #   external-network:
 
   dns-default-transport-proxy:
     <<: *common-service-options
