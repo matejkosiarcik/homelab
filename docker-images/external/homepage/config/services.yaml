@@ -300,8 +300,8 @@
 
     - Minio:
         description: S3 compatible storage
-        href: https://console.minio.home
-        ping: console.minio.home
+        href: https://minio-console.home
+        ping: minio-console.home
         icon: /icons/minio.png
 
     - Ntfy:

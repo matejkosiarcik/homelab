@@ -76,7 +76,7 @@ export const apps = {
     minio: {
         title: 'Minio',
         instances: [
-            { url: 'https://minio.home', title: 'Minio', consoleUrl: 'https://console.minio.home' },
+            { url: 'https://minio.home', title: 'Minio', consoleUrl: 'https://minio-console.home' },
         ],
     },
     motioneye: {

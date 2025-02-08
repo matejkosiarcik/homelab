@@ -655,12 +655,12 @@ endpoints:
   - <<: *default-http
     name: Minio Console HTTP
     group: App - Minio
-    url: http://console.minio.home
+    url: http://minio-console.home
 
   - <<: *default-http
     name: Minio Console HTTPS
     group: App - Minio
-    url: https://console.minio.home
+    url: https://minio-console.home
     alerts:
       - type: ntfy
       - type: email
@@ -678,12 +678,12 @@ endpoints:
   - <<: *default-tcp
     name: Minio Console TCP:80
     group: App - Minio
-    url: tcp://console.minio.home:80
+    url: tcp://minio-console.home:80
 
   - <<: *default-tcp
     name: Minio Console TCP:443
     group: App - Minio
-    url: tcp://console.minio.home:443
+    url: tcp://minio-console.home:443
 
   ### Group: App - MotionEye ###
 

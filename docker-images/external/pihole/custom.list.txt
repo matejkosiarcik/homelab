@@ -22,7 +22,7 @@
 10.1.10.34 homeassistant.home
 10.1.10.35 jellyfin.home
 10.1.10.36 minio.home
-10.1.10.37 console.minio.home
+10.1.10.37 minio-console.home
 10.1.10.38 smtp4dev.home
 10.1.10.39 healthchecks.home
 10.1.10.40 gatus.home
