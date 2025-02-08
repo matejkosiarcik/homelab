@@ -282,7 +282,7 @@ case "$full_app_name" in
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
     if [ "$mode" = 'dev' ]; then
-        admin_email='admin@localhost'
+        admin_email='admin@healthchecks.localhost'
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
@@ -501,7 +501,7 @@ case "$full_app_name" in
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
     if [ "$mode" = 'dev' ]; then
-        admin_email='admin@localhost'
+        admin_email='admin@speedtest-tracker.localhost'
         sh "$helper_script_dir/speedtest-tracker/main.sh" "$tmpdir/speedtest-tracker-app-key.txt"
         app_key="$(cat "$tmpdir/speedtest-tracker-app-key.txt")"
     else
