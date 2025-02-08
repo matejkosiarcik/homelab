@@ -8,21 +8,19 @@ import { apps } from '../../../utils/apps';
 
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
-        const consoleUrl = instance.url.replace(/^(https?:\/\/)/, '$1console.');
-
         test.describe(instance.title, () => {
             test('UI: Successful login', async ({ page }) => {
-                await page.goto(consoleUrl);
-                await page.waitForURL(`${consoleUrl}/login`);
+                await page.goto(instance.consoleUrl);
+                await page.waitForURL(`${instance.consoleUrl}/login`);
                 await page.locator('input#accessKey').fill('admin');
                 await page.locator('input#secretKey').fill(getEnv(instance.url, 'PASSWORD'));
                 await page.locator('button#do-login[type=submit]').click();
-                await page.waitForURL(`${consoleUrl}/browser`);
+                await page.waitForURL(`${instance.consoleUrl}/browser`);
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(consoleUrl);
-                await page.waitForURL(`${consoleUrl}/login`);
+                await page.goto(instance.consoleUrl);
+                await page.waitForURL(`${instance.consoleUrl}/login`);
                 const originalUrl = page.url();
                 await page.locator('input#accessKey').fill('admin');
                 await page.locator('input#secretKey').fill(faker.string.alpha(10));
@@ -41,11 +39,11 @@ test.describe(apps.minio.title, () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, headers: { 'User-Agent': userAgent }, validateStatus: () => true });
                 expect(response.status, 'Response Status').toStrictEqual(307);
-                expect(response.headers['location'], 'Response header location').toStrictEqual(consoleUrl);
+                expect(response.headers['location'], 'Response header location').toStrictEqual(instance.consoleUrl);
             });
 
             test('API: Console root', async () => {
-                const response = await axios.get(consoleUrl, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(instance.consoleUrl, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
