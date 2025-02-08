@@ -8,6 +8,7 @@ General (Server)
 - Install guide: <https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-single-drive.html>
 - Container guide: <https://min.io/docs/minio/container/index.html>
 - Reverse proxy guide: <https://min.io/docs/minio/linux/integrations/setup-nginx-proxy-with-minio.html>
+- Monitoring with prometheus: <https://min.io/docs/minio/linux/operations/monitoring/collect-minio-metrics-using-prometheus.html>
 
 Client
 
@@ -22,4 +23,5 @@ Client
 
 ## After initial installation
 
-Empty
+- \[Prod\] Create prometheus token with local CLI:
+  - `mc admin prometheus generate homelab`
