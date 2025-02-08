@@ -491,7 +491,7 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Gatus (1) Api Metrics
+    name: Gatus (1) Api Prometheus
     group: App - Gatus (1)
     url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus.home/metrics
 
@@ -526,7 +526,7 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Gatus (2) Api Metrics
+    name: Gatus (2) Api Prometheus
     group: App - Gatus (2)
     url: https://prometheus:${GATUS_2_PROMETHEUS_TOKEN}@gatus-2.home/metrics
 
@@ -599,7 +599,7 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Home Assistant Api Metrics
+    name: Home Assistant Api Prometheus
     group: App - Home Assistant
     url: https://homeassistant.home/api/prometheus
 
@@ -838,7 +838,7 @@ endpoints:
   #   url: http://netalertx.home:20211
 
   # - <<: *default-http
-  #   name: NetAlertX Api Metrics
+  #   name: NetAlertX Api Metrics # TODO: Is this prometheus?
   #   group: App - NetAlertX
   #   url: https://netalertx.home/api/prometheus
 
@@ -1512,7 +1512,7 @@ endpoints:
       - type: email
 
   - <<: *default-http
-    name: Vikunja API Metrics
+    name: Vikunja API Metrics # TODO: Is this prometheus?
     group: App - Vikunja
     url: https://vikunja.home/api/v1/metrics
     conditions:
