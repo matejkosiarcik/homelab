@@ -95,12 +95,6 @@ endpoints:
     group: External DNS
     url: icmp://1.1.1.1
 
-  # Disabled because of flakiness
-  # - <<: *default-icmp
-  #   name: External DNS - Level3
-  #   group: External DNS
-  #   url: icmp://4.2.2.1
-
   ### Group: Network equipment ###
 
   - <<: *default-icmp
@@ -112,10 +106,11 @@ endpoints:
       - type: email
 
   # Disconnected
-  # - <<: *default-icmp
-  #   name: Router - UPC Router
-  #   group: Network equipment
-  #   url: icmp://192.168.0.1
+  - <<: *default-icmp
+    name: Router - UPC Router
+    group: Network equipment
+    url: icmp://192.168.0.1
+    enabled: false
 
   - <<: *default-icmp
     name: WiFi AP - Unifi U6
@@ -189,6 +184,11 @@ endpoints:
 
   ### Group: App - ActualBudget ###
 
+  - <<: *default-icmp
+    name: ActualBudget ICMP
+    group: App - ActualBudget
+    url: icmp://actualbudget.home
+
   - <<: *default-http
     name: ActualBudget HTTP
     group: App - ActualBudget
@@ -213,6 +213,11 @@ endpoints:
     url: tcp://actualbudget.home:443
 
   ### Group: App - ActualBudget (Public) ###
+
+  - <<: *default-icmp
+    name: ActualBudget (Public) ICMP
+    group: App - ActualBudget (Public)
+    url: icmp://actualbudget-public.home
 
   - <<: *default-http
     name: ActualBudget (Public) HTTP
@@ -239,6 +244,11 @@ endpoints:
 
   ### Group: App - Changedetection ###
 
+  - <<: *default-icmp
+    name: Changedetection ICMP
+    group: App - Changedetection
+    url: icmp://changedetection.home
+
   - <<: *default-http
     name: Changedetection HTTP
     group: App - Changedetection
@@ -263,6 +273,11 @@ endpoints:
     url: tcp://changedetection.home:443
 
   ### Group: App - Desklamp - Left ###
+
+  # - <<: *default-icmp
+  #   name: Desklamp - Left ICMP
+  #   group: App - Desklamp - Left
+  #   url: icmp://desklamp-left.home
 
   # - <<: *default-http
   #   name: Desklamp - Left HTTP
@@ -297,6 +312,11 @@ endpoints:
 
   ### Group: App - Desklamp - Right ###
 
+  # - <<: *default-icmp
+  #   name: Desklamp - Right ICMP
+  #   group: App - Desklamp - Right
+  #   url: icmp://desklamp-right.home
+
   # - <<: *default-http
   #   name: Desklamp - Right HTTP
   #   group: App - Desklamp - Right
@@ -329,6 +349,11 @@ endpoints:
   #   enabled: false
 
   ### Group: App - Dockerhub proxy ###
+
+  - <<: *default-icmp
+    name: DockerHub proxy ICMP
+    group: App - DockerHub proxy
+    url: icmp://dockerhub-proxy.home
 
   - <<: *default-http
     name: DockerHub proxy HTTP
@@ -363,6 +388,11 @@ endpoints:
 
   ### Group: App - Dozzle ###
 
+  - <<: *default-icmp
+    name: Dozzle ICMP
+    group: App - Dozzle
+    url: icmp://dozzle.home
+
   - <<: *default-http
     name: Dozzle HTTP
     group: App - Dozzle
@@ -387,6 +417,26 @@ endpoints:
     url: tcp://dozzle.home:443
 
   ### Group: App - Dozzle agents ###
+
+  - <<: *default-icmp
+    name: Dozzle agent - Odroid H3 - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-odroid-h3.home
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 3B - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-3b.home
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home
 
   - <<: *default-tcp
     name: Dozzle agent - Odroid H3 - TCP:7007
@@ -422,6 +472,11 @@ endpoints:
 
   ### Group: App - Gatus (1) ###
 
+  - <<: *default-icmp
+    name: Gatus (1) ICMP
+    group: App - Gatus (1)
+    url: icmp://gatus.home
+
   - <<: *default-http
     name: Gatus (1) HTTP
     group: App - Gatus (1)
@@ -452,6 +507,11 @@ endpoints:
 
   ### Group: App - Gatus (2) ###
 
+  - <<: *default-icmp
+    name: Gatus (2) ICMP
+    group: App - Gatus (2)
+    url: icmp://gatus-2.home
+
   - <<: *default-http
     name: Gatus (2) HTTP
     group: App - Gatus (2)
@@ -481,6 +541,11 @@ endpoints:
     url: tcp://gatus-2.home:443
 
   ### Group: App - Healthchecks ###
+
+  - <<: *default-icmp
+    name: Healthchecks ICMP
+    group: App - Healthchecks
+    url: icmp://healthchecks.home
 
   - <<: *default-http
     name: Healthchecks HTTP
@@ -515,6 +580,11 @@ endpoints:
 
   ### Group: App - Home Assistant ###
 
+  - <<: *default-icmp
+    name: Home Assistant ICMP
+    group: App - Home Assistant
+    url: icmp://homeassistant.home
+
   - <<: *default-http
     name: Home Assistant HTTP
     group: App - Home Assistant
@@ -545,6 +615,11 @@ endpoints:
 
   ### Group: App - Homepage ###
 
+  - <<: *default-icmp
+    name: Homepage ICMP
+    group: App - Homepage
+    url: icmp://homepage.home
+
   - <<: *default-http
     name: Homepage HTTP
     group: App - Homepage
@@ -569,6 +644,11 @@ endpoints:
     url: tcp://homepage.home:443
 
   ### Group: App - Jellyfin ###
+
+  - <<: *default-icmp
+    name: Jellyfin ICMP
+    group: App - Jellyfin
+    url: icmp://jellyfin.home
 
   - <<: *default-http
     name: Jellyfin HTTP
@@ -614,6 +694,16 @@ endpoints:
     url: tcp://jellyfin.home:8096
 
   ### Group: App - Minio ###
+
+  - <<: *default-icmp
+    name: Minio Api ICMP
+    group: App - Minio
+    url: icmp://minio.home
+
+  - <<: *default-icmp
+    name: Minio Console ICMP
+    group: App - Minio
+    url: icmp://minio-console.home
 
   - <<: *default-http
     name: Minio Api HTTP
@@ -682,6 +772,11 @@ endpoints:
 
   ### Group: App - MotionEye ###
 
+  - <<: *default-icmp
+    name: MotionEye (Stove) ICMP
+    group: App - MotionEye (Stove)
+    url: icmp://motioneye-stove.home
+
   - <<: *default-http
     name: MotionEye (Stove) HTTP
     group: App - MotionEye (Stove)
@@ -718,6 +813,11 @@ endpoints:
     url: tcp://motioneye-stove.home:9081
 
   ### Group: App - NetAlertX ###
+
+  # - <<: *default-icmp
+  #   name: NetAlertX ICMP
+  #   group: App - NetAlertX
+  #   url: icmp://netalertx.home
 
   # - <<: *default-http
   #   name: NetAlertX HTTP
@@ -759,6 +859,11 @@ endpoints:
 
   ### Group: App - Ntfy ###
 
+  - <<: *default-icmp
+    name: Ntfy ICMP
+    group: App - Ntfy
+    url: icmp://ntfy.home
+
   - <<: *default-http
     name: Ntfy HTTP
     group: App - Ntfy
@@ -796,6 +901,11 @@ endpoints:
     url: tcp://ntfy.home:443
 
   ### Group: App - Omada Controller ###
+
+  - <<: *default-icmp
+    name: Omada Controller Admin ICMP
+    group: App - Omada Controller
+    url: icmp://omada-controller.home
 
   - <<: *default-http
     name: Omada Controller Admin HTTP
@@ -875,6 +985,12 @@ endpoints:
 
   ### Group: App - OpenSpeedTest ###
 
+  - <<: *default-icmp
+    name: OpenSpeedTest ICMP
+    group: App - OpenSpeedTest
+    url: icmp://openspeedtest.home
+    enabled: false
+
   - <<: *default-http
     name: OpenSpeedTest HTTP
     group: App - OpenSpeedTest
@@ -903,6 +1019,11 @@ endpoints:
     enabled: false
 
   ### Group: App - PiHole 1 Primary ###
+
+  - <<: *default-icmp
+    name: PiHole 1 Primary ICMP
+    group: App - PiHole 1 Primary
+    url: icmp://pihole-1-primary.home
 
   - <<: *default-http
     name: PiHole 1 Primary HTTP
@@ -944,6 +1065,11 @@ endpoints:
 
   ### Group: App - PiHole 1 Secondary ###
 
+  - <<: *default-icmp
+    name: PiHole 1 Secondary ICMP
+    group: App - PiHole 1 Secondary
+    url: icmp://pihole-1-secondary.home
+
   - <<: *default-http
     name: PiHole 1 Secondary HTTP
     group: App - PiHole 1 Secondary
@@ -983,6 +1109,11 @@ endpoints:
     url: tcp://pihole-1-secondary.home:443
 
   ### Group: App - PiHole 2 Primary ###
+
+  - <<: *default-icmp
+    name: PiHole 2 Primary ICMP
+    group: App - PiHole 2 Primary
+    url: icmp://pihole-2-primary.home
 
   - <<: *default-http
     name: PiHole 2 Primary HTTP
@@ -1024,6 +1155,11 @@ endpoints:
 
   ### Group: App - PiHole 2 Secondary ###
 
+  - <<: *default-icmp
+    name: PiHole 2 Secondary ICMP
+    group: App - PiHole 2 Secondary
+    url: icmp://pihole-2-secondary.home
+
   - <<: *default-http
     name: PiHole 2 Secondary HTTP
     group: App - PiHole 2 Secondary
@@ -1064,6 +1200,11 @@ endpoints:
 
   ### Group: App - Smtp4dev ###
 
+  - <<: *default-icmp
+    name: Smtp4dev ICMP
+    group: App - Smtp4dev
+    url: icmp://smtp4dev.home
+
   - <<: *default-http
     name: Smtp4dev HTTP
     group: App - Smtp4dev
@@ -1093,6 +1234,11 @@ endpoints:
     url: tcp://smtp4dev.home:443
 
   ### Group: App - Speedtest Tracker ###
+
+  - <<: *default-icmp
+    name: Speedtest Tracker ICMP
+    group: App - Speedtest Tracker
+    url: icmp://speedtest-tracker.home
 
   - <<: *default-http
     name: Speedtest Tracker HTTP
@@ -1126,6 +1272,11 @@ endpoints:
     url: tcp://speedtest-tracker.home:443
 
   ### Group: App - Tvheadend ###
+
+  - <<: *default-icmp
+    name: Tvheadend ICMP
+    group: App - Tvheadend
+    url: icmp://tvheadend.home
 
   - <<: *default-http
     name: Tvheadend HTTP
@@ -1178,6 +1329,11 @@ endpoints:
 
   ### Group: App - Unbound 1 ###
 
+  - <<: *default-icmp
+    name: Unbound 1 [default] ICMP
+    group: App - Unbound 1
+    url: icmp://unbound-1-default.home
+
   - <<: *default-dns
     name: Unbound 1 [default] DNS
     group: App - Unbound 1
@@ -1213,6 +1369,11 @@ endpoints:
 
   ### Group: App - Unbound 2 ###
 
+  - <<: *default-icmp
+    name: Unbound 2 [default] ICMP
+    group: App - Unbound 2
+    url: icmp://unbound-2-default.home
+
   - <<: *default-dns
     name: Unbound 2 [default] DNS
     group: App - Unbound 2
@@ -1247,6 +1408,11 @@ endpoints:
     url: udp://unbound-2-open.home:53
 
   ### Group: App - Unifi Controller ###
+
+  - <<: *default-icmp
+    name: Unifi Controller Admin ICMP
+    group: App - Unifi Controller
+    url: icmp://unifi-controller.home
 
   - <<: *default-http
     name: Unifi Controller Admin HTTP
@@ -1326,6 +1492,11 @@ endpoints:
     url: tcp://unifi-controller.home:6789
 
   ### Group: App - Vikunja ###
+
+  - <<: *default-icmp
+    name: Vikunja ICMP
+    group: App - Vikunja
+    url: icmp://vikunja.home
 
   - <<: *default-http
     name: Vikunja HTTP
