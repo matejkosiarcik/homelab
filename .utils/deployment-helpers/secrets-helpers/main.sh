@@ -243,9 +243,11 @@ case "$full_app_name" in
     ntfy_token="$(load_token ntfy app gatus-token)"
     gatus_1_prometheus_token="$(load_token gatus app prometheus)"
     gatus_2_prometheus_token="$(load_token gatus-2 app prometheus)"
+    minio_prometheus_token="$(load_token minio app prometheus)"
     printf 'NTFY_TOKEN=%s\n' "$ntfy_token" >>"$output/gatus.env"
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$gatus_1_prometheus_token" >>"$output/gatus.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$gatus_2_prometheus_token" >>"$output/gatus.env"
+    printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$minio_prometheus_token" >>"$output/gatus.env"
 
     # HTTP Proxy
     proxy_status_password="$(load_password "$full_app_name" http-proxy status)"

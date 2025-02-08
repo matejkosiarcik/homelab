@@ -738,6 +738,13 @@ endpoints:
     url: https://minio.home/minio/health/cluster/read
 
   - <<: *default-http
+    name: Minio Api Prometheus
+    group: App - Minio
+    url: https://minio.home/minio/v2/metrics/cluster
+    headers:
+      Authorization: Bearer ${MINIO_PROMETHEUS_TOKEN}
+
+  - <<: *default-http
     name: Minio Console HTTP
     group: App - Minio
     url: http://minio-console.home
