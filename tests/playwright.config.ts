@@ -10,6 +10,9 @@ import { defineConfig } from '@playwright/test';
 events.EventEmitter.defaultMaxListeners = 100;
 
 // Load env files
+if (fs.existsSync('.secrets.env')) {
+    dotenv.config({ path: '.secrets.env' });
+}
 if (fs.existsSync('.env')) {
     dotenv.config({ path: '.env' });
 }

@@ -1,10 +1,10 @@
-10.1.0.1 router.network.home
+10.1.0.1 network-router.home
 
-10.1.4.1 server.macbook-pro-2012.home
-10.1.4.2 server.raspberry-pi-3b.home
-10.1.4.3 server.raspberry-pi-4b-2g.home
-10.1.4.4 server.raspberry-pi-4b-4g.home
-10.1.4.8 server.odroid-h3.home
+10.1.4.1 server-macbook-pro-2012.home
+10.1.4.2 server-raspberry-pi-3b.home
+10.1.4.3 server-raspberry-pi-4b-2g.home
+10.1.4.4 server-raspberry-pi-4b-4g.home
+10.1.4.8 server-odroid-h3.home
 
 10.1.4.201 desklamp-left.home
 10.1.4.202 desklamp-right.home
@@ -13,12 +13,8 @@
 10.1.10.2 unbound-1-open.home
 # ...9 Reserved
 10.1.10.10 pihole-1-primary.home
-10.1.10.11 pihole-1-primary-dns-default.home
-10.1.10.12 pihole-1-primary-dns-open.home
 # ...19 Reserved
 10.1.10.20 pihole-1-secondary.home
-10.1.10.21 pihole-1-secondary-dns-default.home
-10.1.10.22 pihole-1-secondary-dns-open.home
 # ...29 Reserved
 # 10.1.10.31 Reserved for unifi-controller.home
 10.1.10.32 omada-controller.home
@@ -26,7 +22,7 @@
 10.1.10.34 homeassistant.home
 10.1.10.35 jellyfin.home
 10.1.10.36 minio.home
-10.1.10.37 console.minio.home
+10.1.10.37 minio-console.home
 10.1.10.38 smtp4dev.home
 10.1.10.39 healthchecks.home
 10.1.10.40 gatus.home
@@ -40,32 +36,28 @@
 # 10.1.10.48 desklamp-left-wrapper.home
 # 10.1.10.49 desklamp-right-wrapper.home
 10.1.10.50 dozzle.home
-10.1.10.51 dozzle-agent.odroid-h3.home
+10.1.10.51 dozzle-agent-odroid-h3.home
 10.1.10.52 netalertx.home
 10.1.10.53 vikunja.home
-10.1.10.54 glances.odroid-h3.home
+10.1.10.54 glances-odroid-h3.home
 10.1.10.55 vaultwarden.home
 
 10.1.12.1 tvheadend.home
-10.1.12.2 dozzle-agent.raspberry-pi-3b.home
-10.1.12.3 glances.raspberry-pi-3b.home
+10.1.12.2 dozzle-agent-raspberry-pi-3b.home
+10.1.12.3 glances-raspberry-pi-3b.home
 
-10.1.14.1 dozzle-agent.raspberry-pi-4b-2g.home
-10.1.14.2 glances.raspberry-pi-4b-2g.home
+10.1.14.1 dozzle-agent-raspberry-pi-4b-2g.home
+10.1.14.2 glances-raspberry-pi-4b-2g.home
 
 10.1.16.1 unbound-2-default.home
 10.1.16.2 unbound-2-open.home
 # ...9 Reserved
 10.1.16.10 pihole-2-primary.home
-10.1.16.11 pihole-2-primary-dns-default.home
-10.1.16.12 pihole-2-primary-dns-open.home
 # ...19 Reserved
 10.1.16.20 pihole-2-secondary.home
-10.1.16.21 pihole-2-secondary-dns-default.home
-10.1.16.22 pihole-2-secondary-dns-open.home
 # ...29 Reserved
 10.1.16.31 unifi-controller.home
 10.1.16.32 gatus-2.home
-10.1.16.33 dozzle-agent.raspberry-pi-4b-4g.home
+10.1.16.33 dozzle-agent-raspberry-pi-4b-4g.home
 10.1.16.34 motioneye-stove.home
-10.1.16.35 glances.raspberry-pi-4b-4g.home
+10.1.16.35 glances-raspberry-pi-4b-4g.home

@@ -39,6 +39,7 @@ sqlite3 /etc/pihole/gravity.db 'DELETE FROM adlist;'
 sqlite3 /etc/pihole/gravity.db 'DELETE FROM client;'
 sqlite3 /etc/pihole/gravity.db 'DELETE FROM client_by_group;'
 sqlite3 /etc/pihole/gravity.db 'DELETE FROM [group] WHERE id!=0;'
+sqlite3 /etc/pihole/gravity.db 'DELETE FROM domainlist_by_group WHERE group_id!=0;'
 
 # Update whitelist
 # Note: Only applies to default group
@@ -72,24 +73,30 @@ sed -E 's~#.*$~~' <'/homelab/domains-blacklist.txt' | (grep -E '.+' || true) | w
     fi
 done
 
-# Custom group
+# Add custom open group
 default_group_id='0'
-sqlite3 /etc/pihole/gravity.db "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Open', 0, 0, 'custom');"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Open', 0, 0, 'The group without adblocking');"
 open_group_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM [group] WHERE name='Open';")"
 
 # Custom clients
-# - Default client
-default_transport_proxy_ip="$(dig +short dns-default-transport-proxy)"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$default_transport_proxy_ip', 0, 0, 'custom');"
-default_transport_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$default_transport_proxy_ip';")"
-# - Open client
-open_transport_proxy_ip="$(dig +short dns-open-transport-proxy)"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$open_transport_proxy_ip', 0, 0, 'custom');"
-open_transport_proxy_client_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$open_transport_proxy_ip';")"
+unbound_default_1_ip='10.1.10.1'
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_1_ip', 0, 0, 'Unbound 1 default');"
+unbound_default_1_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$unbound_default_1_ip';")"
+unbound_open_1_ip='10.1.10.2'
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_open_1_ip', 0, 0, 'Unbound 1 open');"
+unbound_open_1_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$unbound_open_1_ip';")"
+unbound_default_2_ip='10.1.16.1'
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 default');"
+unbound_default_2_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$unbound_default_2_ip';")"
+unbound_open_2_ip='10.1.16.2'
+sqlite3 /etc/pihole/gravity.db "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_open_2_ip', 0, 0, 'Unbound 2 open');"
+unbound_open_2_id="$(sqlite3 /etc/pihole/gravity.db "SELECT id FROM client WHERE ip='$unbound_open_2_ip';")"
 
 # Assign clients to groups
-sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$default_transport_proxy_client_id;"
-sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$open_transport_proxy_client_id;"
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_1_id;"
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_2_id;"
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_1_id;"
+sqlite3 /etc/pihole/gravity.db "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_2_id;"
 
 # Custom adlists
 sed -E 's~#.*$~~' <'/homelab/adlists-default.txt' | (grep -E '.+' || true) | while read -r entry; do

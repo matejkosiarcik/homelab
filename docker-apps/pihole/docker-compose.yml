@@ -33,7 +33,7 @@ services:
       - 1.1.1.1
     stop_grace_period: 30s
 
-  pihole-setup:
+  app-setup:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     init: true
@@ -70,30 +70,6 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
-
-  transport-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
-
-  dns-default-transport-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-dns-default-transport-proxy
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
-
-  dns-open-transport-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-dns-open-transport-proxy
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
 
 networks:
   default: # Just disable default network

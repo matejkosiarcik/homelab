@@ -2,7 +2,7 @@ x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_ENV: prod
     HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP_1}
+    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
     HOMELAB_APP_EXTERNAL_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
   common-service-options: &common-service-options
     environment:
@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      MINIO_BROWSER_REDIRECT_URL: https://console.${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
 
   app-setup:
     <<: *common-service-options
@@ -23,8 +23,8 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN},console.${DOCKER_COMPOSE_NETWORK_DOMAIN}
-      HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP_1},${DOCKER_COMPOSE_NETWORK_IP_2}
+      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN},${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
+      HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP},${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}
 
   http-proxy-api:
     <<: *common-service-options
@@ -35,16 +35,16 @@ services:
   transport-proxy-api:
     <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP_1}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP_1}:443:443
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
     networks:
       external-network:
 
   transport-proxy-console:
     <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP_2}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP_2}:443:443
+      - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:443:443
     networks:
       external-network:
 
