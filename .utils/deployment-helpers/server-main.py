@@ -90,7 +90,7 @@ def main(argv: List[str]):
     command = args.subcommand
     force = args.force
     dryrun = args.dry_run
-    is_online = args.offline is False or args.online is True
+    is_online = (args.online is not None and args.online is True) or (args.offline is None or args.offline is False)
     mode = "dev" if args.dev else "prod"
 
     if command == "install":
