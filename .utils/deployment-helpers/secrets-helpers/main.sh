@@ -12,6 +12,7 @@ export LC_ALL
 LC_CTYPE=en_US.UTF-8
 export LC_CTYPE
 
+online='yes'
 mode=''
 force_mode='0'
 while [ "$#" -gt 0 ]; do
@@ -26,6 +27,10 @@ while [ "$#" -gt 0 ]; do
         ;;
     -p | --prod)
         mode='prod'
+        shift
+        ;;
+    --offline)
+        online='no'
         shift
         ;;
     *)
@@ -96,7 +101,7 @@ load_token() {
     # $2 - container name
     # $3 - account name
 
-    if [ "$mode" = 'prod' ]; then
+    if [ "$mode" = 'prod' ] || ([ "$mode" = 'dev' ] && [ "$online" = 'yes' ]); then
         bw get item "homelab--$1--$2--$3" | jq -er '.login.password'
     else
         printf '\n'
@@ -108,7 +113,7 @@ load_notes() {
     # $2 - container name
     # $3 - account name
 
-    if [ "$mode" = 'prod' ]; then
+    if [ "$mode" = 'prod' ] || ([ "$mode" = 'dev' ] && [ "$online" = 'yes' ]); then
         bw get item "homelab--$1--$2--$3" | jq -er '.notes'
     else
         printf '\n'
