@@ -66,8 +66,8 @@ def main(argv: List[str]):
         #     subcommand.add_argument("--parallel", type=int, help=f"A number of simultaneous threads to use")
         if subcommand_name in ["secrets"]:
             online_group = subcommand.add_mutually_exclusive_group()
-            online_group.add_argument("--online", action="store_true", default=True, help="Access vaultwarden for tokens always")
-            online_group.add_argument("--offline", action="store_true", help="Only generate local secrets - Do not access vaultwarden")
+            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for tokens always")
+            online_group.add_argument("--offline", action="store_true", help="Do not access vaultwarden for anything")
         group = subcommand.add_mutually_exclusive_group(required=True)
         group.add_argument("-d", "--dev", action="store_true", help="Dev mode")
         group.add_argument("-p", "--prod", action="store_true", help="Production mode")
@@ -90,7 +90,7 @@ def main(argv: List[str]):
     command = args.subcommand
     force = args.force
     dryrun = args.dry_run
-    is_online = args.online is True
+    is_online = args.offline is False or args.online is True
     mode = "dev" if args.dev else "prod"
 
     if command == "install":
