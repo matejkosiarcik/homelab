@@ -998,13 +998,11 @@ endpoints:
     name: OpenSpeedTest ICMP
     group: App - OpenSpeedTest
     url: icmp://openspeedtest.home
-    enabled: false
 
   - <<: *default-http
     name: OpenSpeedTest HTTP
     group: App - OpenSpeedTest
     url: http://openspeedtest.home
-    enabled: false
 
   - <<: *default-http
     name: OpenSpeedTest HTTPS
@@ -1013,19 +1011,16 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
-    enabled: false
 
   - <<: *default-tcp
     name: OpenSpeedTest TCP:80
     group: App - OpenSpeedTest
     url: tcp://openspeedtest.home:80
-    enabled: false
 
   - <<: *default-tcp
     name: OpenSpeedTest TCP:443
     group: App - OpenSpeedTest
     url: tcp://openspeedtest.home:443
-    enabled: false
 
   ### Group: App - PiHole 1 Primary ###
 
