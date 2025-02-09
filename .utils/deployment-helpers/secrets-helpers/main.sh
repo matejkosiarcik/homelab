@@ -577,16 +577,23 @@ case "$full_app_name" in
 *vaultwarden*)
     # App
     superadmin_password="$(load_password "$full_app_name" app superadmin)"
+    superadmin_password_hashed="$(printf '%s' "$superadmin_password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4 | sed 's~\$~$$~g')"
     admin_password="$(load_password "$full_app_name" app admin)"
     if [ "$mode" = 'dev' ]; then
         admin_email='admin@vaultwarden.localhost'
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
-    superadmin_password_hashed="$(printf '%s' "$superadmin_password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4 | sed 's~\$~$$~g')" # >"$tmpdir/superadmin-hashed-password.txt"
+    homelab_password="$(load_password "$full_app_name" app homelab)"
+    if [ "$mode" = 'dev' ]; then
+        homelab_email='homelab@vaultwarden.localhost'
+    else
+        homelab_email="homelab@$DOCKER_COMPOSE_NETWORK_DOMAIN"
+    fi
     printf 'ADMIN_TOKEN=%s\n' "$superadmin_password_hashed" >>"$output/vaultwarden.env"
     printf 'superadmin,%s\n' "$superadmin_password" >>"$output/all-credentials.csv"
     printf '%s,%s\n' "$admin_email" "$admin_password" >>"$output/all-credentials.csv"
+    printf '%s,%s\n' "$homelab_email" "$homelab_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
     proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
