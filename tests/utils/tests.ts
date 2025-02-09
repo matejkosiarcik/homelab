@@ -16,7 +16,7 @@ export function createTcpTest(url: string, port: number, subtitle?: string | und
     });
 }
 
-export function createHttpToHttpsRedirectTest(url: string) {
+export function createHttpToHttpsRedirectTests(url: string) {
     return [
         test('API: Redirect HTTP to HTTPS (root)', async () => {
             const response = await axios.get(url.replace(/^https:\/\//, 'http://'), { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });

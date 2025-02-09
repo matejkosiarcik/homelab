@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import { createHttpToHttpsRedirectTest, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
 
 type SpeedtestTrackerHealthcheckResponse = {
     message: string,
@@ -17,7 +17,7 @@ test.describe(apps['speedtest-tracker'].title, () => {
                 createTcpTest(instance.url, port);
             }
 
-            createHttpToHttpsRedirectTest(instance.url);
+            createHttpToHttpsRedirectTests(instance.url);
             createProxyStatusTests(instance.url);
 
             const users = [
