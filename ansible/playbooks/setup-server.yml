@@ -25,6 +25,7 @@
           - dnsutils
           - firmware-linux-nonfree
           - git
+          - jq
           - lm-sensors
           - locales
           - lshw
