@@ -1,5 +1,7 @@
+import net from 'node:net';
 import https from 'node:https';
 import axios from 'axios';
+import PromiseSocket from 'promise-socket';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
@@ -23,7 +25,7 @@ test.describe(apps.tvheadend.title, () => {
                 await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
             });
 
-            test('UI: Open :9981', async ({ page }) => {
+            test('UI: Open :9981', async ({ page }) => { // TODO: Remove after real Let's encrypt certificates
                 await page.goto(httpUrl9981);
                 await page.waitForURL(`${httpUrl9981}/extjs.html`);
                 await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
@@ -34,7 +36,7 @@ test.describe(apps.tvheadend.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
-            test('API: Root :9981', async () => {
+            test('API: Root :9981', async () => {  // TODO: Remove after real Let's encrypt certificates
                 const response = await axios.get(httpUrl9981, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
@@ -48,6 +50,16 @@ test.describe(apps.tvheadend.title, () => {
                 expect(body.name, 'Name').toMatch(/.+/);
                 expect(body.capabilities, 'Capabilities').not.toHaveLength(0);
             });
+
+            for (const port of [80, 443, 9981, 9982]) {
+                test(`TCP: Connect to port ${port}`, async () => {
+                    const host = instance.url.replace(/^https?:\/\//, '');
+                    const socket = new net.Socket();
+                    const promiseSocket = new PromiseSocket(socket);
+                    await promiseSocket.connect(port, host);
+                    await promiseSocket.end();
+                });
+            }
 
             const proxyStatusVariants = [
                 {
