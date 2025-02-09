@@ -1,11 +1,10 @@
-import net from 'node:net';
 import https from 'node:https';
 import axios from 'axios';
-import PromiseSocket from 'promise-socket';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
+import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
 
 type TvheadendServerInfoResponse = {
     sw_version: string,
@@ -17,6 +16,12 @@ type TvheadendServerInfoResponse = {
 test.describe(apps.tvheadend.title, () => {
     for (const instance of apps.tvheadend.instances) {
         test.describe(instance.title, () => {
+            for (const port of [80, 443, 9981, 9982]) {
+                createTcpTest(instance.url, port);
+            }
+
+            createHttpsRedirectTest(instance.url);
+
             const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`;
 
             test('UI: Open', async ({ page }) => {
@@ -50,16 +55,6 @@ test.describe(apps.tvheadend.title, () => {
                 expect(body.name, 'Name').toMatch(/.+/);
                 expect(body.capabilities, 'Capabilities').not.toHaveLength(0);
             });
-
-            for (const port of [80, 443, 9981, 9982]) {
-                test(`TCP: Connect to port ${port}`, async () => {
-                    const host = instance.url.replace(/^https?:\/\//, '');
-                    const socket = new net.Socket();
-                    const promiseSocket = new PromiseSocket(socket);
-                    await promiseSocket.connect(port, host);
-                    await promiseSocket.end();
-                });
-            }
 
             const proxyStatusVariants = [
                 {

@@ -4,10 +4,17 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
+import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps['omada-controller'].title, () => {
     for (const instance of apps['omada-controller'].instances) {
         test.describe(instance.title, () => {
+            for (const port of [80, 443, 29811, 29812, 29813, 29814, 29815, 29816]) {
+                createTcpTest(instance.url, port);
+            }
+
+            createHttpsRedirectTest(instance.url);
+
             const users = [
                 {
                     username: 'admin',

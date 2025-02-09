@@ -4,10 +4,17 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
+import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps.healthchecks.title, () => {
     for (const instance of apps.healthchecks.instances) {
         test.describe(instance.title, () => {
+            for (const port of [80, 443]) {
+                createTcpTest(instance.url, port);
+            }
+
+            createHttpsRedirectTest(instance.url);
+
             const users = [
                 {
                     username: 'admin',

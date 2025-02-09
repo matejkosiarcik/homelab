@@ -3,11 +3,15 @@ import _ from 'lodash';
 import { expect, test } from '@playwright/test';
 import { dnsLookup } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
+import { createTcpTest } from '../../../utils/tests';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
-
         test.describe(instance.title, () => {
+            for (const dnsVariant of ['default', 'open'] as const) {
+                createTcpTest(instance.url.replace(/\.(.+)$/, `-${dnsVariant}.$1`), 53, dnsVariant);
+            }
+
             for (const transportVariant of ['tcp', 'udp'] as const) {
                 for (const dnsVariant of ['default', 'open'] as const) {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
