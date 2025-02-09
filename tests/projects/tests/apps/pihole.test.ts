@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { dnsLookup, getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
+import { createHttpToHttpsRedirectTests, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
@@ -15,7 +15,7 @@ test.describe(apps.pihole.title, () => {
                 createTcpTest(instance.url, port);
             }
 
-            createHttpsRedirectTest(instance.url);
+            createHttpToHttpsRedirectTests(instance.url);
 
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);

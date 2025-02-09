@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
+import { createHttpToHttpsRedirectTests, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
@@ -15,7 +15,7 @@ test.describe(apps.minio.title, () => {
                 createTcpTest(instance.consoleUrl, port, 'console');
             }
 
-            createHttpsRedirectTest(instance.url);
+            createHttpToHttpsRedirectTests(instance.url);
 
             const users = [
                 {

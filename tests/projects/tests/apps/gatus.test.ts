@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../../utils/apps';
 import { getEnv } from '../../../utils/utils';
-import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
+import { createHttpToHttpsRedirectTests, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
@@ -13,7 +13,7 @@ test.describe(apps.gatus.title, () => {
                 createTcpTest(instance.url, port);
             }
 
-            createHttpsRedirectTest(instance.url);
+            createHttpToHttpsRedirectTests(instance.url);
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
