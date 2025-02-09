@@ -51,6 +51,11 @@ if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
     fi
 fi
 
+if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
+    bw sync # Sync latest changes
+    bw list items >/dev/null # Verify we can access Vaultwarden
+fi
+
 output='app-secrets'
 if [ -e "$output" ]; then
     if [ "$force_mode" -eq 1 ]; then
@@ -76,11 +81,6 @@ fi
 if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
     # shellcheck source=/dev/null
     . "$PWD/config/docker-compose-$mode.env"
-fi
-
-# Download latest passwords from Vaultwarden
-if [ "$mode" = 'prod' ]; then
-    bw sync
 fi
 
 load_username() {

@@ -8,7 +8,9 @@ if [ "${BW_SESSION-}" = '' ]; then
     exit 1
 fi
 
-bw sync
+bw sync # Sync latest changes
+bw list items >/dev/null # Verify we can access Vaultwarden
+
 rm -f .secrets.env
 
 load_password() {
