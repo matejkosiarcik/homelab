@@ -80,6 +80,7 @@ test.describe(apps.pihole.title, () => {
                         // Resolved external domain
                         const ips = await dnsLookup('example.com', transportVariant, ipVariant, piholeDnsIps[0]);
                         expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                        expect(ips[0], `Resolved domain should be IPv${ipVariant === 'A' ? '4' : '6'}`).toMatch(ipVariant === 'A' ? /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ : /([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
                     });
                 }
             }
