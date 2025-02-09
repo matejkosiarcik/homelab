@@ -8,23 +8,32 @@ import { apps } from '../../../utils/apps';
 test.describe(apps['home-assistant'].title, () => {
     for (const instance of apps['home-assistant'].instances) {
         test.describe(instance.title, () => {
-            for (const user of ['admin', `invalid-${faker.string.alpha(6)}`]) {
-                if (!user.startsWith('invalid-')) {
-                    test(`UI: Successful login - User ${user}`, async ({ page }) => {
+            const users = [
+                {
+                    username: 'admin',
+                },
+                {
+                    username: `invalid${faker.string.alpha(6)}`,
+                    random: true,
+                }
+            ];
+            for (const variant of users) {
+                if (!variant.random) {
+                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
                         await page.goto(instance.url);
                         await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                        await page.locator('input[name="username"]').fill(user);
-                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.toUpperCase()}_PASSWORD`));
+                        await page.locator('input[name="username"]').fill(variant.username);
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
                         await page.locator('button#button').click();
                         await page.waitForURL(`${instance.url}/lovelace/0`);
                     });
                 }
 
-                test(`UI: Unsuccessful login - ${user.startsWith('invalid-') ? 'Random user' : `User ${user}`}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
                     const originalUrl = page.url();
-                    await page.locator('input[name="username"]').fill(user);
+                    await page.locator('input[name="username"]').fill(variant.username);
                     await page.locator('input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('button#button').click();
                     await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
