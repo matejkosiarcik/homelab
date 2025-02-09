@@ -5,6 +5,16 @@ import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
 
+type UnifiControllerStatusResponse = {
+    meta: {
+        rc: string,
+        server_version: string,
+        up: boolean,
+        uuid: string,
+    },
+    data: unknown[],
+};
+
 test.describe(apps['unifi-controller'].title, () => {
     for (const instance of apps['unifi-controller'].instances) {
         test.describe(instance.title, () => {
@@ -52,15 +62,6 @@ test.describe(apps['unifi-controller'].title, () => {
                 const response = await axios.get(`${instance.url}/status`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const body = response.data as UnifiControllerStatusResponse;
-                type UnifiControllerStatusResponse = {
-                    meta: {
-                        rc: string,
-                        server_version: string,
-                        up: boolean,
-                        uuid: string,
-                    },
-                    data: unknown[],
-                };
                 expect(body.meta.rc, 'Response body .meta.rc').toStrictEqual('ok');
                 expect(body.meta.up, 'Response body .meta.up').toStrictEqual(true);
                 expect(body.meta.uuid, 'Response body .meta.uuid').toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
