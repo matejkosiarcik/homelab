@@ -42,7 +42,7 @@ load_notes() {
     printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app prometheus-api-key)"
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant http-proxy status)"
 
-    printf 'JELLYFIN_PASSWORD=%s\n' "$(load_password jellyfin app admin)"
+    printf 'JELLYFIN_ADMIN_PASSWORD=%s\n' "$(load_password jellyfin app admin)"
     printf 'JELLYFIN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin http-proxy status)"
 
     printf 'MINIO_PASSWORD=%s\n' "$(load_password minio app admin)"

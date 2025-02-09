@@ -8,25 +8,39 @@ import { apps } from '../../../utils/apps';
 test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
         test.describe(instance.title, () => {
-            test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/login\.html(?:\?.*)?$/);
-                await page.locator('input#txtManualName').fill('admin');
-                await page.locator('input#txtManualPassword').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('button[type=submit]').click();
-                await page.waitForURL(`${instance.url}/web/#/home.html`);
-            });
+            const users = [
+                {
+                    username: 'admin',
+                },
+                {
+                    username: `invalid${faker.string.alpha(6)}`,
+                    random: true,
+                }
+            ];
+            for (const variant of users) {
+                if (!variant.random) {
+                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                        await page.locator('input#txtManualName').fill(variant.username);
+                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('button[type=submit]').click();
+                        await page.waitForURL(`${instance.url}/web/#/home.html`);
+                    });
+                }
 
-            test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/login\.html(?:\?.*)?$/);
-                const originalUrl = page.url();
-                await page.locator('input#txtManualName').fill('admin');
-                await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
-                await page.locator('button[type=submit]').click();
-                await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
-                expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
-            });
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                    const originalUrl = page.url();
+                    await page.locator('input#txtManualName').fill(variant.username);
+                    await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
+                    await page.locator('button[type=submit]').click();
+                    await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
+                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                });
+            }
+
 
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
