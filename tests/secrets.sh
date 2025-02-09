@@ -2,6 +2,12 @@
 set -euf
 
 cd "$(dirname "$0")"
+
+if [ "${BW_SESSION-}" = '' ]; then
+    echo 'You must set BW_SESSION env variable before calling this script.' >&2
+    exit 1
+fi
+
 bw sync
 rm -f .secrets.env
 
