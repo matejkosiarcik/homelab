@@ -1495,6 +1495,36 @@ endpoints:
     group: App - Unifi Controller
     url: tcp://unifi-controller.home:6789
 
+  ### Group: App - Vaultwarden ###
+
+  - <<: *default-icmp
+    name: Vaultwarden ICMP
+    group: App - Vaultwarden
+    url: icmp://vaultwarden.home
+
+  - <<: *default-http
+    name: Vaultwarden HTTP
+    group: App - Vaultwarden
+    url: http://vaultwarden.home
+
+  - <<: *default-http
+    name: Vaultwarden HTTPS
+    group: App - Vaultwarden
+    url: https://vaultwarden.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-tcp
+    name: Vaultwarden TCP:80
+    group: App - Vaultwarden
+    url: tcp://vaultwarden.home:80
+
+  - <<: *default-tcp
+    name: Vaultwarden TCP:443
+    group: App - Vaultwarden
+    url: tcp://vaultwarden.home:443
+
   ### Group: App - Vikunja ###
 
   - <<: *default-icmp

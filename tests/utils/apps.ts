@@ -152,6 +152,12 @@ export const apps = {
             { url: 'https://unifi-controller.home', title: 'Unifi Controller' },
         ],
     },
+    vaultwarden: {
+        title: 'Vaultwarden',
+        instances: [
+            { url: 'https://vaultwarden.home', title: 'Vaultwarden' },
+        ],
+    },
     // TODO: Enable when Vikunja is deployed
     // vikunja: {
     //     title: 'Vikunja',
