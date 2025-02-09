@@ -18,7 +18,7 @@ test.describe(apps.unbound.title, () => {
                         const unboundDnsIps = await nodeDns.resolve(unboundDnsDomain);
                         expect(unboundDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
 
-                        // Resolved external domain
+                        // Resolve external domain
                         const ips = await dnsLookup('example.com', transportVariant, 'A', unboundDnsIps[0]);
                         expect(ips, 'Domain should be resolved').not.toHaveLength(0);
                     });
