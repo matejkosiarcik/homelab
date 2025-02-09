@@ -8,27 +8,40 @@ import { apps } from '../../../utils/apps';
 test.describe(apps['unifi-controller'].title, () => {
     for (const instance of apps['unifi-controller'].instances) {
         test.describe(instance.title, () => {
-            test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
-                await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
-                await page.locator('form input[name="username"]').fill('admin');
-                await page.locator('form input[name="password"]').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('button#loginButton').click();
-                await page.waitForURL(`${instance.url}/manage/default/dashboard`);
-            });
+            const users = [
+                {
+                    username: 'admin',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                }
+            ];
+            for (const variant of users) {
+                if (!variant.random) {
+                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
+                        await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
+                        await page.locator('form input[name="username"]').fill(variant.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('button#loginButton').click();
+                        await page.waitForURL(`${instance.url}/manage/default/dashboard`);
+                    });
+                }
 
-            test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
-                await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
-                const originalUrl = page.url();
-                await page.locator('form input[name="username"]').fill('admin');
-                await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                await page.locator('button#loginButton').click();
-                await expect(page.locator('.appInfoBox--danger:has-text("Invalid username and/or password.")')).toBeVisible();
-                expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
-            });
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
+                    await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
+                    const originalUrl = page.url();
+                    await page.locator('form input[name="username"]').fill(variant.username);
+                    await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
+                    await page.locator('button#loginButton').click();
+                    await expect(page.locator('.appInfoBox--danger:has-text("Invalid username and/or password.")')).toBeVisible();
+                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                });
+            }
 
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });

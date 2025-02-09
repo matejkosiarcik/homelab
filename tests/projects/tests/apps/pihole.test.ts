@@ -68,18 +68,21 @@ test.describe(apps.pihole.title, () => {
             }
 
             for (const transportVariant of ['tcp', 'udp'] as const) {
-                test(`DNS: ${transportVariant.toUpperCase()}`, async () => {
-                    // Get domain for DNS server for a given variant
-                    const piholeDnsDomain = instance.url.replace(/^https?:\/\//, '');
+                for (const ipVariant of ['A', 'AAAA'] as const) {
+                    test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                        // Get domain for DNS server for a given variant
+                        const piholeDnsDomain = instance.url.replace(/^https?:\/\//, '');
 
-                    // Get IP address
-                    const piholeDnsIps = await nodeDns.resolve(piholeDnsDomain);
-                    expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+                        // Get IP address
+                        const piholeDnsIps = await nodeDns.resolve(piholeDnsDomain);
+                        expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
 
-                    // Resolved external domain
-                    const ips = await dnsLookup('example.com', transportVariant, 'A', piholeDnsIps[0]);
-                    expect(ips, 'Domain should be resolved').not.toHaveLength(0);
-                });
+                        // Resolved external domain
+                        const ips = await dnsLookup('example.com', transportVariant, ipVariant, piholeDnsIps[0]);
+                        expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                        expect(ips[0], `Resolved domain should be IPv${ipVariant === 'A' ? '4' : '6'}`).toMatch(ipVariant === 'A' ? /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ : /([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                    });
+                }
             }
         });
     }
