@@ -16,6 +16,10 @@ type TvheadendServerInfoResponse = {
 test.describe(apps.tvheadend.title, () => {
     for (const instance of apps.tvheadend.instances) {
         test.describe(instance.title, () => {
+            for (const port of [80, 443, 9981, 9982]) {
+                createTcpTest(instance.url, port);
+            }
+
             const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`;
 
             test('UI: Open', async ({ page }) => {
@@ -83,10 +87,6 @@ test.describe(apps.tvheadend.title, () => {
                     });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
-            }
-
-            for (const port of [80, 443, 9981, 9982]) {
-                createTcpTest(instance.url, port);
             }
         });
     }
