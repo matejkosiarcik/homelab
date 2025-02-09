@@ -9,25 +9,38 @@ import { apps } from '../../../utils/apps';
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
         test.describe(instance.title, () => {
-            test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.consoleUrl);
-                await page.waitForURL(`${instance.consoleUrl}/login`);
-                await page.locator('input#accessKey').fill('admin');
-                await page.locator('input#secretKey').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('button#do-login[type=submit]').click();
-                await page.waitForURL(`${instance.consoleUrl}/browser`);
-            });
+            const users = [
+                {
+                    username: 'admin',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                }
+            ];
+            for (const variant of users) {
+                if (!variant.random) {
+                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
+                        await page.goto(instance.consoleUrl);
+                        await page.waitForURL(`${instance.consoleUrl}/login`);
+                        await page.locator('input#accessKey').fill(variant.username);
+                        await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('button#do-login[type=submit]').click();
+                        await page.waitForURL(`${instance.consoleUrl}/browser`);
+                    });
+                }
 
-            test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.consoleUrl);
-                await page.waitForURL(`${instance.consoleUrl}/login`);
-                const originalUrl = page.url();
-                await page.locator('input#accessKey').fill('admin');
-                await page.locator('input#secretKey').fill(faker.string.alpha(10));
-                await page.locator('button#do-login[type=submit]').click();
-                await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
-                expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
-            });
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.goto(instance.consoleUrl);
+                    await page.waitForURL(`${instance.consoleUrl}/login`);
+                    const originalUrl = page.url();
+                    await page.locator('input#accessKey').fill(variant.username);
+                    await page.locator('input#secretKey').fill(faker.string.alpha(10));
+                    await page.locator('button#do-login[type=submit]').click();
+                    await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
+                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                });
+            }
 
             test('API: Root', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();

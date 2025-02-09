@@ -13,7 +13,7 @@ test.describe(apps['home-assistant'].title, () => {
                     username: 'admin',
                 },
                 {
-                    username: `invalid${faker.string.alpha(6)}`,
+                    username: faker.string.alpha(10),
                     random: true,
                 }
             ];

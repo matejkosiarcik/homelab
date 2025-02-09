@@ -35,7 +35,7 @@ load_notes() {
     printf 'GATUS_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus app prometheus)"
     printf 'GATUS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus http-proxy status)"
 
-    printf 'HEALTHCHECKS_PASSWORD=%s\n' "$(load_password healthchecks app admin)"
+    printf 'HEALTHCHECKS_ADMIN_PASSWORD=%s\n' "$(load_password healthchecks app admin)"
     printf 'HEALTHCHECKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password healthchecks http-proxy status)"
 
     printf 'HOMEASSISTANT_ADMIN_PASSWORD=%s\n' "$(load_password homeassistant app admin)"
@@ -45,11 +45,11 @@ load_notes() {
     printf 'JELLYFIN_ADMIN_PASSWORD=%s\n' "$(load_password jellyfin app admin)"
     printf 'JELLYFIN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin http-proxy status)"
 
-    printf 'MINIO_PASSWORD=%s\n' "$(load_password minio app admin)"
+    printf 'MINIO_ADMIN_PASSWORD=%s\n' "$(load_password minio app admin)"
     printf 'MINIO_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password minio app prometheus-token)"
     printf 'MINIO_PROXY_STATUS_PASSWORD=%s\n' "$(load_password minio http-proxy status)"
 
-    printf 'OMADA_CONTROLLER_PASSWORD=%s\n' "$(load_password omada-controller app admin)"
+    printf 'OMADA_CONTROLLER_ADMIN_PASSWORD=%s\n' "$(load_password omada-controller app admin)"
     printf 'OMADA_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password omada-controller http-proxy status)"
 
     printf 'PIHOLE_1_PRIMARY_PASSWORD=%s\n' "$(load_password pihole-1-primary app admin)"
@@ -61,6 +61,6 @@ load_notes() {
     printf 'PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_password pihole-2-secondary app admin)"
     printf 'PIHOLE_2_SECONDARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary http-proxy status)"
 
-    printf 'UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_password unifi-controller app admin)"
+    printf 'UNIFI_CONTROLLER_ADMIN_PASSWORD=%s\n' "$(load_password unifi-controller app admin)"
     printf 'UNIFI_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unifi-controller http-proxy status)"
 } >>'.secrets.env'

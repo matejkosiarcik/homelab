@@ -13,7 +13,7 @@ test.describe(apps.jellyfin.title, () => {
                     username: 'admin',
                 },
                 {
-                    username: `invalid${faker.string.alpha(6)}`,
+                    username: faker.string.alpha(10),
                     random: true,
                 }
             ];
@@ -40,7 +40,6 @@ test.describe(apps.jellyfin.title, () => {
                     expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
                 });
             }
-
 
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
