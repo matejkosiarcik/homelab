@@ -322,6 +322,12 @@
         ping: openspeedtest.home
         icon: /icons/openspeedtest.png
 
+    - Vaultwarden:
+        description: Password manager
+        href: https://vaultwarden.home
+        ping: vaultwarden.home
+        icon: /icons/vaultwarden.png
+
     - Vikunja:
         description: ToDo app
         href: https://vikunja.home
