@@ -15,14 +15,27 @@ type TvheadendServerInfoResponse = {
 test.describe(apps.tvheadend.title, () => {
     for (const instance of apps.tvheadend.instances) {
         test.describe(instance.title, () => {
+            const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`;
+
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/extjs.html`);
                 await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
             });
 
+            test('UI: Open :9981', async ({ page }) => {
+                await page.goto(httpUrl9981);
+                await page.waitForURL(`${httpUrl9981}/extjs.html`);
+                await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
+            });
+
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
+            test('API: Root :9981', async () => {
+                const response = await axios.get(httpUrl9981, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
