@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
+import { createHttpToHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps['home-assistant'].title, () => {
     for (const instance of apps['home-assistant'].instances) {
@@ -13,7 +13,7 @@ test.describe(apps['home-assistant'].title, () => {
                 createTcpTest(instance.url, port);
             }
 
-            createHttpsRedirectTest(instance.url);
+            createHttpToHttpsRedirectTest(instance.url);
 
             const users = [
                 {
