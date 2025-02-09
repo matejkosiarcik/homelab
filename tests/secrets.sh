@@ -8,7 +8,7 @@ if [ "${BW_SESSION-}" = '' ]; then
     exit 1
 fi
 
-bw sync # Sync latest changes
+bw sync                  # Sync latest changes
 bw list items >/dev/null # Verify we can access Vaultwarden
 
 rm -f .secrets.env

@@ -52,7 +52,7 @@ if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
 fi
 
 if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-    bw sync # Sync latest changes
+    bw sync                  # Sync latest changes
     bw list items >/dev/null # Verify we can access Vaultwarden
 fi
 
