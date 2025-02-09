@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../../utils/apps';
 import { getEnv } from '../../../utils/utils';
-import { createHttpToHttpsRedirectTests, createTcpTest } from '../../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
@@ -14,6 +14,7 @@ test.describe(apps.gatus.title, () => {
             }
 
             createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
@@ -28,41 +29,6 @@ test.describe(apps.gatus.title, () => {
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
-
-            const proxyStatusVariants = [
-                {
-                    title: 'missing credentials',
-                    auth: undefined as unknown as { username: string, password: string },
-                    status: 401,
-                },
-                {
-                    title: 'wrong credentials',
-                    auth: {
-                        username: 'proxy-status',
-                        password: faker.string.alphanumeric(10),
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'successful',
-                    auth: {
-                        username: 'proxy-status',
-                        password: getEnv(instance.url, 'PROXY_STATUS_PASSWORD'),
-                    },
-                    status: 200,
-                },
-            ];
-            for (const variant of proxyStatusVariants) {
-                test(`API: Proxy status (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/.proxy/status`, {
-                        auth: variant.auth,
-                        maxRedirects: 999,
-                        validateStatus: () => true,
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                    });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
-                });
-            }
 
             const prometheusVariants = [
                 {

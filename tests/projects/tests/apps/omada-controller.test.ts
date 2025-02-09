@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import { createHttpToHttpsRedirectTests, createTcpTest } from '../../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
 
 test.describe(apps['omada-controller'].title, () => {
     for (const instance of apps['omada-controller'].instances) {
@@ -14,6 +14,7 @@ test.describe(apps['omada-controller'].title, () => {
             }
 
             createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
 
             const users = [
                 {
@@ -86,41 +87,6 @@ test.describe(apps['omada-controller'].title, () => {
                 expect(body.result.omadacCategory, 'Response body .result.omadacCategory').toMatch('advanced');
                 expect(body.result.mspMode, 'Response body .result.mspMode').toStrictEqual(false);
             });
-
-            const proxyStatusVariants = [
-                {
-                    title: 'missing credentials',
-                    auth: undefined as unknown as { username: string, password: string },
-                    status: 401,
-                },
-                {
-                    title: 'wrong credentials',
-                    auth: {
-                        username: 'proxy-status',
-                        password: faker.string.alphanumeric(10),
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'successful',
-                    auth: {
-                        username: 'proxy-status',
-                        password: getEnv(instance.url, 'PROXY_STATUS_PASSWORD'),
-                    },
-                    status: 200,
-                },
-            ];
-            for (const variant of proxyStatusVariants) {
-                test(`API: Proxy status (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/.proxy/status`, {
-                        auth: variant.auth,
-                        maxRedirects: 999,
-                        validateStatus: () => true,
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                    });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
-                });
-            }
         });
     }
 });
