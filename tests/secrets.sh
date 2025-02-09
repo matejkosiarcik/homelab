@@ -38,7 +38,7 @@ load_notes() {
     printf 'HEALTHCHECKS_PASSWORD=%s\n' "$(load_password healthchecks app admin)"
     printf 'HEALTHCHECKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password healthchecks http-proxy status)"
 
-    printf 'HOMEASSISTANT_PASSWORD=%s\n' "$(load_password homeassistant app admin)"
+    printf 'HOMEASSISTANT_ADMIN_PASSWORD=%s\n' "$(load_password homeassistant app admin)"
     printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app prometheus-api-key)"
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant http-proxy status)"
 

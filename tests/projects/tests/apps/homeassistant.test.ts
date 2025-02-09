@@ -8,25 +8,29 @@ import { apps } from '../../../utils/apps';
 test.describe(apps['home-assistant'].title, () => {
     for (const instance of apps['home-assistant'].instances) {
         test.describe(instance.title, () => {
-            test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                await page.locator('input[name="username"]').fill('admin');
-                await page.locator('input[name="password"]').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('button#button').click();
-                await page.waitForURL(`${instance.url}/lovelace/0`);
-            });
+            for (const user of ['admin', `invalid-${faker.string.alpha(6)}`]) {
+                if (!user.startsWith('invalid-')) {
+                    test(`UI: Successful login - User ${user}`, async ({ page }) => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
+                        await page.locator('input[name="username"]').fill(user);
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.toUpperCase()}_PASSWORD`));
+                        await page.locator('button#button').click();
+                        await page.waitForURL(`${instance.url}/lovelace/0`);
+                    });
+                }
 
-            test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                const originalUrl = page.url();
-                await page.locator('input[name="username"]').fill('admin');
-                await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                await page.locator('button#button').click();
-                await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
-                expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
-            });
+                test(`UI: Unsuccessful login - ${user.startsWith('invalid-') ? 'Random user' : `User ${user}`}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
+                    const originalUrl = page.url();
+                    await page.locator('input[name="username"]').fill(user);
+                    await page.locator('input[name="password"]').fill(faker.string.alpha(10));
+                    await page.locator('button#button').click();
+                    await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
+                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                });
+            }
 
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
