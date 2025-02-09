@@ -14,12 +14,12 @@ type TvheadendServerInfoResponse = {
 test.describe(apps.tvheadend.title, () => {
     for (const instance of apps.tvheadend.instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [80, 443, 9981, 9982]) {
                 createTcpTest(instance.url, port);
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`;
 

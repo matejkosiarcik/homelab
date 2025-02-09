@@ -19,12 +19,12 @@ type UnifiControllerStatusResponse = {
 test.describe(apps['unifi-controller'].title, () => {
     for (const instance of apps['unifi-controller'].instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [80, 443, 6789, 8080, 8443]) {
                 createTcpTest(instance.url, port);
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             const users = [
                 {

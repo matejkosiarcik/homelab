@@ -10,13 +10,13 @@ import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest }
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
                 createTcpTest(instance.consoleUrl, port, 'console');
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             const users = [
                 {

@@ -9,12 +9,12 @@ import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest }
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);

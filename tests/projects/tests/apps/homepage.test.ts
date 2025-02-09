@@ -7,12 +7,12 @@ import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest }
 test.describe(apps.homepage.title, () => {
     for (const instance of apps.homepage.instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);

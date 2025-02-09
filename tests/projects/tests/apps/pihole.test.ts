@@ -11,12 +11,12 @@ import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest }
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [53, 80, 443]) {
                 createTcpTest(instance.url, port);
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);

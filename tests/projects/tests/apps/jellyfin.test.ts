@@ -9,12 +9,12 @@ import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest }
 test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [80, 443, 8096]) {
                 createTcpTest(instance.url, port);
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             const users = [
                 {
