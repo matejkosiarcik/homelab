@@ -57,7 +57,7 @@ test.describe(apps['vaultwarden'].title, () => {
                 await page.goto(`${instance.url}/admin`);
                 await page.locator('form input[type="password"][name="token"]').waitFor({ state: 'visible', timeout: 6000 });
                 await page.locator('form input[type="password"][name="token"]').fill(getEnv(instance.url, 'SUPERADMIN_PASSWORD'));
-                await page.locator('form button:has-text("Enter")').click();
+                await page.locator('form button:has-text("Enter")').click({ timeout: 10_000 });
                 await expect(page.locator('a[href="/admin/logout"]').first()).toBeVisible({ timeout: 10_000 });
             });
 
