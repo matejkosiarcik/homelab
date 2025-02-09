@@ -1,0 +1,110 @@
+import https from 'node:https';
+import axios from 'axios';
+import { faker } from '@faker-js/faker';
+import { expect, test } from '@playwright/test';
+import { getEnv } from '../../../utils/utils';
+import { apps } from '../../../utils/apps';
+import { createHttpToHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
+
+type SpeedtestTrackerHealthcheckResponse = {
+    message: string,
+};
+
+test.describe(apps['speedtest-tracker'].title, () => {
+    for (const instance of apps['speedtest-tracker'].instances) {
+        test.describe(instance.title, () => {
+            for (const port of [80, 443]) {
+                createTcpTest(instance.url, port);
+            }
+
+            createHttpToHttpsRedirectTest(instance.url);
+
+            const users = [
+                {
+                    username: 'admin',
+                    email: 'admin@speedtest-tracker.home',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    email: `${faker.string.alpha(10)}@speedtest-tracker.home`,
+                    random: true,
+                }
+            ];
+            for (const variant of users) {
+                if (!variant.random) {
+                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
+                        await page.goto(`${instance.url}/admin/login`);
+                        await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                        await page.locator('form input[id="data.email"][type="email"]').fill(variant.email);
+                        await page.locator('form input[id="data.password"][type="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('form button:has-text("Sign in")').click();
+                        await page.waitForURL(`${instance.url}/admin`);
+                    });
+                }
+
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.goto(`${instance.url}/admin/login`);
+                    await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                    const originalUrl = page.url();
+                    await page.locator('form input[id="data.email"][type="email"]').fill(variant.email);
+                    await page.locator('form input[id="data.password"][type="password"]').fill(faker.string.alpha(10));
+                    await page.locator('form button:has-text("Sign in")').click();
+                    await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
+                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                });
+            }
+
+            test('UI: Open', async ({ page }) => {
+                await page.goto(instance.url);
+                await expect(page.locator('.fi-wi-stats-overview-stat').first()).toBeVisible({ timeout: 5000 });
+            });
+
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
+            test('API: Healthcheck', async () => {
+                const response = await axios.get(`${instance.url}/api/healthcheck`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const body = response.data as SpeedtestTrackerHealthcheckResponse;
+                expect(body.message, 'Response Message').toMatch(/.+/);
+            });
+
+            const proxyStatusVariants = [
+                {
+                    title: 'missing credentials',
+                    auth: undefined as unknown as { username: string, password: string },
+                    status: 401,
+                },
+                {
+                    title: 'wrong credentials',
+                    auth: {
+                        username: 'proxy-status',
+                        password: faker.string.alphanumeric(10),
+                    },
+                    status: 401,
+                },
+                {
+                    title: 'successful',
+                    auth: {
+                        username: 'proxy-status',
+                        password: getEnv(instance.url, 'PROXY_STATUS_PASSWORD'),
+                    },
+                    status: 200,
+                },
+            ];
+            for (const variant of proxyStatusVariants) {
+                test(`API: Proxy status (${variant.title})`, async () => {
+                    const response = await axios.get(`${instance.url}/.proxy/status`, {
+                        auth: variant.auth,
+                        maxRedirects: 999,
+                        validateStatus: () => true,
+                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                });
+            }
+        });
+    }
+});
