@@ -2,12 +2,12 @@ import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
+import { createProxyStatusTests, createTcpTest } from '../../../utils/tests';
 
-test.describe(apps.homepage.title, () => {
-    for (const instance of apps.homepage.instances) {
+test.describe(apps.openspeedtest.title, () => {
+    for (const instance of apps.openspeedtest.instances) {
         test.describe(instance.title, () => {
-            createHttpToHttpsRedirectTests(instance.url);
+            // NOTE: HTTP->HTTPS not tested because redirect is disable because of speed variance
             createProxyStatusTests(instance.url);
 
             for (const port of [80, 443]) {
@@ -16,7 +16,7 @@ test.describe(apps.homepage.title, () => {
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
-                await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
+                await expect(page.locator('#OpenSpeedtest')).toBeVisible({ timeout: 5000 });
             });
 
             test('API: Root', async () => {

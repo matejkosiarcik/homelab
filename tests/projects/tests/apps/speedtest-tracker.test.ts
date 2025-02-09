@@ -13,12 +13,12 @@ type SpeedtestTrackerHealthcheckResponse = {
 test.describe(apps['speedtest-tracker'].title, () => {
     for (const instance of apps['speedtest-tracker'].instances) {
         test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
             }
-
-            createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
 
             const users = [
                 {
