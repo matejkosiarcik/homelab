@@ -154,6 +154,7 @@ export const apps = {
     },
     vaultwarden: {
         title: 'Vaultwarden',
+        forceHttps: false, // TODO: Remove after real Let's Encrypt certificates
         instances: [
             { url: 'https://vaultwarden.home', title: 'Vaultwarden' },
         ],
