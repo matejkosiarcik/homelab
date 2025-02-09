@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import { createTcpTest } from '../../../utils/tests';
+import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
 
 type TvheadendServerInfoResponse = {
     sw_version: string,
@@ -19,6 +19,8 @@ test.describe(apps.tvheadend.title, () => {
             for (const port of [80, 443, 9981, 9982]) {
                 createTcpTest(instance.url, port);
             }
+
+            createHttpsRedirectTest(instance.url);
 
             const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`;
 

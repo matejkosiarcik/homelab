@@ -13,6 +13,8 @@ test.describe(apps['vaultwarden'].title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            // TODO: Add test for HTTPS redirects after real Let's Encrypt certificates
+
             const users = [
                 {
                     username: 'admin',

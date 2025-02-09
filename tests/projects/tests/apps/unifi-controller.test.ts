@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
-import { createTcpTest } from '../../../utils/tests';
+import { createHttpsRedirectTest, createTcpTest } from '../../../utils/tests';
 
 type UnifiControllerStatusResponse = {
     meta: {
@@ -22,6 +22,8 @@ test.describe(apps['unifi-controller'].title, () => {
             for (const port of [80, 443, 6789, 8080, 8443]) {
                 createTcpTest(instance.url, port);
             }
+
+            createHttpsRedirectTest(instance.url);
 
             const users = [
                 {
