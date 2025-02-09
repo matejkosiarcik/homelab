@@ -1,5 +1,7 @@
+import net from 'node:net';
 import https from 'node:https';
 import axios from 'axios';
+import PromiseSocket from 'promise-socket';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../../utils/utils';
@@ -48,6 +50,16 @@ test.describe(apps.tvheadend.title, () => {
                 expect(body.name, 'Name').toMatch(/.+/);
                 expect(body.capabilities, 'Capabilities').not.toHaveLength(0);
             });
+
+            for (const port of [80, 443, 9981, 9982]) {
+                test(`TCP: Connect to port ${port}`, async () => {
+                    const host = instance.url.replace(/^https?:\/\//, '');
+                    const socket = new net.Socket();
+                    const promiseSocket = new PromiseSocket(socket);
+                    await promiseSocket.connect(port, host);
+                    await promiseSocket.end();
+                });
+            }
 
             const proxyStatusVariants = [
                 {
