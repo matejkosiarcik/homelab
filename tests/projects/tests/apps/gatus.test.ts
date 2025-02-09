@@ -10,6 +10,7 @@ test.describe(apps.gatus.title, () => {
         test.describe(instance.title, () => {
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
+                await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
             });
 
             test('API: Root', async () => {
