@@ -23,7 +23,7 @@ test.describe(apps.tvheadend.title, () => {
                 await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
             });
 
-            test('UI: Open :9981', async ({ page }) => {
+            test('UI: Open :9981', async ({ page }) => { // TODO: Remove after real Let's encrypt certificates
                 await page.goto(httpUrl9981);
                 await page.waitForURL(`${httpUrl9981}/extjs.html`);
                 await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
@@ -34,7 +34,7 @@ test.describe(apps.tvheadend.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
-            test('API: Root :9981', async () => {
+            test('API: Root :9981', async () => {  // TODO: Remove after real Let's encrypt certificates
                 const response = await axios.get(httpUrl9981, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
