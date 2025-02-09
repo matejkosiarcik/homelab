@@ -6,10 +6,15 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { dnsLookup, getEnv } from '../../../utils/utils';
 import { apps } from '../../../utils/apps';
+import { createTcpTest } from '../../../utils/tests';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
         test.describe(instance.title, () => {
+            for (const port of [53, 80, 443]) {
+                createTcpTest(instance.url, port);
+            }
+
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/admin/login.php`);
