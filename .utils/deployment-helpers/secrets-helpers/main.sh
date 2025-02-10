@@ -241,12 +241,12 @@ case "$full_app_name" in
     fi
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
+    proxy_status_password="$(load_password dozzle http-proxy status)"
     write_http_auth_user proxy-status "$proxy_status_password"
     printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
 
     # Certificate Manager
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
+    healthcheck_id="$(load_healthcheck_id dozzle certificate-manager)"
     write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *gatus*)
