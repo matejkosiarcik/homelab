@@ -136,7 +136,7 @@ load_healthcheck_id() {
     # $2 - container name
 
     if [ "$mode" = 'prod' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+        bw list items --search "homelab--$1--$2--healthchecks-id" | jq ".[] | select(.name == \"homelab--$1--$2--healthchecks-id\").login.password"
     else
         printf '\n'
     fi
