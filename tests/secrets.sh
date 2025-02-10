@@ -18,15 +18,7 @@ load_password() {
     # $2 - container name
     # $3 - account name
 
-    bw get item "homelab--$1--$2--$3" | jq -er '.login.password'
-}
-
-load_notes() {
-    # $1 - app name
-    # $2 - container name
-    # $3 - account name
-
-    bw get item "homelab--$1--$2--$3" | jq -er '.notes'
+    bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
 }
 
 {
@@ -62,6 +54,7 @@ load_notes() {
     printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(load_password ntfy app admin)"
     printf 'NTFY_USER_PASSWORD=%s\n' "$(load_password ntfy app user)"
     printf 'NTFY_PUBLISHER_PASSWORD=%s\n' "$(load_password ntfy app publisher)"
+    printf 'NTFY_PUBLISHER_TOKEN=%s\n' "$(load_password ntfy app publisher-token)"
     printf 'NTFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ntfy http-proxy status)"
 
     printf 'OMADA_CONTROLLER_ADMIN_PASSWORD=%s\n' "$(load_password omada-controller app admin)"
