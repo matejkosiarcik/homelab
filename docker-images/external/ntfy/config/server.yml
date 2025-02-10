@@ -13,7 +13,7 @@ attachment-expiry-duration: 24h # Default is 3h
 
 # Authentication config
 auth-file: /var/lib/ntfy/user.db
-auth-default-access: read-only # deny-all
+auth-default-access: deny-all # read-only
 
 # Email
 smtp-server-listen: :25
