@@ -1,8 +1,8 @@
 import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
-import { apps } from '../../../utils/apps';
-import { createProxyStatusTests, createTcpTest } from '../../../utils/tests';
+import { apps } from '../../utils/apps';
+import { createProxyStatusTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.openspeedtest.title, () => {
     for (const instance of apps.openspeedtest.instances) {

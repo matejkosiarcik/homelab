@@ -4,9 +4,9 @@ import axios from 'axios';
 import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { dnsLookup, getEnv } from '../../../utils/utils';
-import { apps } from '../../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
+import { dnsLookup, getEnv } from '../../utils/utils';
+import { apps } from '../../utils/apps';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {

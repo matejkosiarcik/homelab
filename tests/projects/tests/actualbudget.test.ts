@@ -1,9 +1,9 @@
 import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
-import { apps } from '../../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
-import { getEnv } from '../../../utils/utils';
+import { apps } from '../../utils/apps';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
+import { getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
 test.describe(apps.actualbudget.title, () => {

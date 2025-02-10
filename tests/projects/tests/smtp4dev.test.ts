@@ -1,8 +1,8 @@
 import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
-import { apps } from '../../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
+import { apps } from '../../utils/apps';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.smtp4dev.title, () => {
     for (const instance of apps.smtp4dev.instances) {

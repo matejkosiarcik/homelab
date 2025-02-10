@@ -1,9 +1,9 @@
 import nodeDns from 'node:dns/promises';
 import _ from 'lodash';
 import { expect, test } from '@playwright/test';
-import { dnsLookup } from '../../../utils/utils';
-import { apps } from '../../../utils/apps';
-import { createTcpTest } from '../../../utils/tests';
+import { dnsLookup } from '../../utils/utils';
+import { apps } from '../../utils/apps';
+import { createTcpTest } from '../../utils/tests';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {

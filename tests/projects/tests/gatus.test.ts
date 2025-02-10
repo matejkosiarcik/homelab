@@ -2,9 +2,9 @@ import https from 'node:https';
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { apps } from '../../../utils/apps';
-import { getEnv } from '../../../utils/utils';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
+import { apps } from '../../utils/apps';
+import { getEnv } from '../../utils/utils';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
