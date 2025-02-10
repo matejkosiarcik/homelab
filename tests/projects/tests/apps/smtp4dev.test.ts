@@ -20,11 +20,7 @@ test.describe(apps.smtp4dev.title, () => {
             });
 
             test('API: Root', async () => {
-                const response = await axios.get(instance.url, {
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                    maxRedirects: 999,
-                    validateStatus: () => true
-                });
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
         });
