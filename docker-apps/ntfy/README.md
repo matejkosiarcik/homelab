@@ -28,7 +28,6 @@ For publishing notifications to ntfy (see also: <https://github.com/caronc/appri
 
 ```txt
 ntfy://<token>@ntfy.home/<topic>
-ntfy://publisher:<password>@ntfy.home/<topic>
 ```
 
 Alternatively you can also publish via email (see also <https://github.com/caronc/apprise/wiki/Notify_email>):
@@ -37,4 +36,4 @@ Alternatively you can also publish via email (see also <https://github.com/caron
 mailto://ntfy-<topic>+<token>@ntfy.home
 ```
 
-Obviously replace `<password>`, `<token>` and `<topic>` with their respective values (remove enclosing `<>`).
+Obviously replace `<token>` and `<topic>` with their respective values (remove enclosing `<>`).
