@@ -30,6 +30,9 @@ load_notes() {
 }
 
 {
+    printf 'CHANGEDETECTION_PASSWORD=%s\n' "$(load_password changedetection app admin)"
+    printf 'CHANGEDETECTION_PROXY_STATUS_PASSWORD=%s\n' "$(load_password changedetection http-proxy status)"
+
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 app prometheus)"
     printf 'GATUS_2_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-2 http-proxy status)"
     printf 'GATUS_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus app prometheus)"
