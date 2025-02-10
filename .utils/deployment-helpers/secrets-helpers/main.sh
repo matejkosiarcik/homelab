@@ -89,7 +89,7 @@ load_username() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.username"
+        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.username"
     else
         printf '%s\n' "$3"
     fi
@@ -101,7 +101,7 @@ load_password() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
     else
         printf 'Password123.\n'
     fi
@@ -113,7 +113,7 @@ load_token() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
     else
         printf '\n'
     fi
@@ -125,7 +125,7 @@ load_notes() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").notes"
+        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").notes"
     else
         printf '\n'
     fi
@@ -136,7 +136,7 @@ load_healthcheck_id() {
     # $2 - container name
 
     if [ "$mode" = 'prod' ]; then
-        bw list items --search "homelab--$1--$2--healthchecks-id" | jq ".[] | select(.name == \"homelab--$1--$2--healthchecks-id\").login.password"
+        bw list items --search "homelab--$1--$2--healthchecks-id" | jq -er ".[] | select(.name == \"homelab--$1--$2--healthchecks-id\").login.password"
     else
         printf '\n'
     fi
