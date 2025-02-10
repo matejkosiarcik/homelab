@@ -34,7 +34,7 @@ test.describe(apps.healthchecks.title, () => {
                         await page.waitForURL(/\/accounts\/login\/?$/);
                         await page.locator('input[name="email"]').fill(variant.email);
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
-                        await page.locator('button[type=submit]:has-text("Log In")').click({ timeout: 10_000 });
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
                         await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
                     });
                 }
@@ -45,7 +45,7 @@ test.describe(apps.healthchecks.title, () => {
                     const originalUrl = page.url();
                     await page.locator('input[name="email"]').fill(variant.email);
                     await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('button[type=submit]:has-text("Log In")').click({ timeout: 10_000 });
+                    await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
                     await page.waitForURL(/\/accounts\/login\/?$/);
                     await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
                     expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);

@@ -34,3 +34,9 @@ ntfy access user '*' read-write
 NTFY_PASSWORD="$NTFY_PASSWORD_PUBLISHER" ntfy user change-pass publisher
 ntfy user change-role publisher user
 ntfy access publisher '*' write-only
+
+# Create publishing token if not already created
+publisher_tokens="$(ntfy token list publisher | tail -n 1)"
+if ! (printf '%s' "$publisher_tokens" | grep -E '^- tk_' >/dev/null); then
+    ntfy token add publisher
+fi
