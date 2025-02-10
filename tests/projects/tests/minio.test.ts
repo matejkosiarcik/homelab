@@ -3,9 +3,9 @@ import UserAgent from 'user-agents';
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { getEnv } from '../../../utils/utils';
-import { apps } from '../../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../../utils/tests';
+import { getEnv } from '../../utils/utils';
+import { apps } from '../../utils/apps';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
