@@ -18,20 +18,23 @@
 ## After initial installation
 
 - \[Prod\] Configure basic settings
-- \[Prod\] Create any necessary Auth tokens for publishing notifications
+- \[Prod\] Read pubsliher token:
+  - `docker exec -it ntfy-app /bin/bash`
+  - `ntfy token list`
 
 ## Publishing notifications
 
 For publishing notifications to ntfy (see also: <https://github.com/caronc/apprise/wiki/Notify_ntfy>):
 
 ```txt
-ntfy://publisher:<password>@<domain>/<topic>
+ntfy://<token>@ntfy.home/<topic>
+ntfy://publisher:<password>@ntfy.home/<topic>
 ```
 
 Alternatively you can also publish via email (see also <https://github.com/caronc/apprise/wiki/Notify_email>):
 
 ```txt
-mailto://ntfy-<topic>+<token>@<domain>
+mailto://ntfy-<topic>+<token>@ntfy.home
 ```
 
-Obviously replace `<domain>`, `<passowrd>`, `<token>` and `<topic>` with their respective values (remove enclosing `<>`).
+Obviously replace `<password>`, `<token>` and `<topic>` with their respective values (remove enclosing `<>`).
