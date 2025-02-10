@@ -34,7 +34,7 @@ test.describe(apps.minio.title, () => {
                         await page.waitForURL(`${instance.consoleUrl}/login`);
                         await page.locator('input#accessKey').fill(variant.username);
                         await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
-                        await page.locator('button#do-login[type=submit]').click();
+                        await page.locator('button#do-login[type="submit"]').click();
                         await page.waitForURL(`${instance.consoleUrl}/browser`);
                     });
                 }
@@ -45,7 +45,7 @@ test.describe(apps.minio.title, () => {
                     const originalUrl = page.url();
                     await page.locator('input#accessKey').fill(variant.username);
                     await page.locator('input#secretKey').fill(faker.string.alpha(10));
-                    await page.locator('button#do-login[type=submit]').click();
+                    await page.locator('button#do-login[type="submit"]').click();
                     await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
                     expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
                 });

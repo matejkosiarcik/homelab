@@ -22,7 +22,7 @@ test.describe(apps.pihole.title, () => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/admin/login.php`);
                 await page.locator('form#loginform input#loginpw').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('form#loginform button[type=submit]').click();
+                await page.locator('form#loginform button[type="submit"]').click();
                 await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
             });
 
@@ -30,7 +30,7 @@ test.describe(apps.pihole.title, () => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/admin/login.php`);
                 await page.locator('form#loginform input#loginpw').fill(faker.string.alpha(10));
-                await page.locator('form#loginform button[type=submit]').click();
+                await page.locator('form#loginform button[type="submit"]').click();
                 await page.waitForSelector('.login-box-msg.has-error >> text="Wrong password!"', { timeout: 10_000 });
                 expect(page.url()).toStrictEqual(`${instance.url}/admin/login.php`);
             });
