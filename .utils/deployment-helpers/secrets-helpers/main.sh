@@ -89,7 +89,7 @@ load_username() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ]; then
-        bw get item "homelab--$1--$2--$3" | jq -er '.login.username'
+        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.username"
     else
         printf '%s\n' "$3"
     fi
@@ -101,7 +101,7 @@ load_password() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ]; then
-        bw get item "homelab--$1--$2--$3" | jq -er '.login.password'
+        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
     else
         printf 'Password123.\n'
     fi
@@ -113,7 +113,7 @@ load_token() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        bw get item "homelab--$1--$2--$3" | jq -er '.login.password'
+        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
     else
         printf '\n'
     fi
@@ -125,7 +125,7 @@ load_notes() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        bw get item "homelab--$1--$2--$3" | jq -er '.notes'
+        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").notes"
     else
         printf '\n'
     fi
@@ -136,7 +136,7 @@ load_healthcheck_id() {
     # $2 - container name
 
     if [ "$mode" = 'prod' ]; then
-        bw get item "homelab--$1--$2--healthchecks-id" | jq -er '.login.password'
+        bw list items --search "homelab--$1--$2--$3" | jq ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
     else
         printf '\n'
     fi
@@ -255,7 +255,7 @@ case "$full_app_name" in
     gatus_2_prometheus_token="$(load_token gatus-2 app prometheus)"
     homeassistant_prometheus_token="$(load_token homeassistant app prometheus)"
     minio_prometheus_token="$(load_token minio app prometheus)"
-    ntfy_token="$(load_token ntfy app gatus-token)"
+    ntfy_token="$(load_token ntfy app publisher-token)"
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$gatus_1_prometheus_token" >>"$output/gatus.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$gatus_2_prometheus_token" >>"$output/gatus.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$homeassistant_prometheus_token" >>"$output/gatus.env"
