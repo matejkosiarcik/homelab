@@ -19,8 +19,8 @@
 
 - \[Prod\] Configure basic settings
 - \[Prod\] Read pubsliher token:
-  - `docker exec -it ntfy-app /bin/bash`
-  - `ntfy token list`
+    - `docker exec -it ntfy-app /bin/bash`
+    - `ntfy token list`
 
 ## Publishing notifications
 
