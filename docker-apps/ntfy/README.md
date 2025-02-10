@@ -18,7 +18,7 @@
 ## After initial installation
 
 - \[Prod\] Configure basic settings
-- \[Prod\] Read pubsliher token:
+- \[Prod\] Read publisher token and save it in Vaultwarden:
     - `docker exec -it ntfy-app /bin/bash`
     - `ntfy token list`
 
