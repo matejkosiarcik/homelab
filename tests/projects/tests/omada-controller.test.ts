@@ -6,6 +6,23 @@ import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 
+type OmadaControllerStatusResponse = {
+    errorCode: number,
+    msg: string,
+    result: {
+        controllerVer: string,
+        controllerBasicVersion: string,
+        apiVer: string,
+        configured: boolean,
+        type: number,
+        supportApp: boolean,
+        omadacId: string,
+        registeredRoot: boolean,
+        omadacCategory: string,
+        mspMode: boolean,
+    },
+};
+
 test.describe(apps['omada-controller'].title, () => {
     for (const instance of apps['omada-controller'].instances) {
         test.describe(instance.title, () => {
@@ -58,22 +75,6 @@ test.describe(apps['omada-controller'].title, () => {
                 const response = await axios.get(`${instance.url}/api/v2/anon/info`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const body = response.data as OmadaControllerStatusResponse;
-                type OmadaControllerStatusResponse = {
-                    errorCode: number,
-                    msg: string,
-                    result: {
-                        controllerVer: string,
-                        controllerBasicVersion: string,
-                        apiVer: string,
-                        configured: boolean,
-                        type: number,
-                        supportApp: boolean,
-                        omadacId: string,
-                        registeredRoot: boolean,
-                        omadacCategory: string,
-                        mspMode: boolean,
-                    },
-                };
                 expect(body.errorCode, 'Response body .errorCode').toStrictEqual(0);
                 expect(body.msg, 'Response body .msg').toStrictEqual('Success.');
                 expect(body.result.controllerBasicVersion, 'Response body .result.controllerBasicVersion').toMatch(/\d+\.\d+\.\d+\.\d+/);
