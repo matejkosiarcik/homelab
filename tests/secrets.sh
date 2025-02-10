@@ -32,7 +32,7 @@ load_password() {
 
     printf 'DOCKERHUB_PROXY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dockerhub-proxy http-proxy status)"
 
-    printf 'DOZZLE_PASSWORD=%s\n' "$(load_password dozzle app admin)"
+    printf 'DOZZLE_ADMIN_PASSWORD=%s\n' "$(load_password dozzle app admin)"
     printf 'DOZZLE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dozzle http-proxy status)"
 
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 app prometheus)"
