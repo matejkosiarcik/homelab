@@ -2,6 +2,11 @@ storage:
   type: sqlite
   path: /data/gatus.db
 
+security:
+  basic:
+    username: admin
+    password-bcrypt-base64: ${GATUS_PASSWORD_ENCRYPTED}
+
 metrics: true
 
 alerting:

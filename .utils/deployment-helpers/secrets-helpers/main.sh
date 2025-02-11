@@ -251,6 +251,9 @@ case "$full_app_name" in
     ;;
 *gatus*)
     # App
+    admin_password="$(load_password "$full_app_name" app admin)"
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+    printf 'GATUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64)" >>"$output/gatus.env"
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus app prometheus)" >>"$output/gatus.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app admin)" >>"$output/gatus.env"
