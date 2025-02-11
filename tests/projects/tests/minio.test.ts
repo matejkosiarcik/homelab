@@ -53,12 +53,12 @@ test.describe(apps.minio.title, () => {
 
             const prometheusVariants = [
                 {
-                    title: 'missing credentials',
+                    title: 'no token',
                     auth: undefined as unknown as { username: string, password: string },
                     status: 403,
                 },
                 {
-                    title: 'wrong credentials',
+                    title: 'wrong token',
                     auth: faker.internet.jwt(),
                     status: 403,
                 },
@@ -84,6 +84,20 @@ test.describe(apps.minio.title, () => {
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
             }
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/minio/v2/metrics/cluster`, {
+                    headers: { Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}` },
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                const lines = content.split('\n');
+                expect(lines.find((el) => el.startsWith('minio_s3_requests_total'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('minio_s3_traffic_sent_bytes'))).toBeDefined();
+            });
 
             const users = [
                 {

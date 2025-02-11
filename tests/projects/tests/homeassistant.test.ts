@@ -23,12 +23,12 @@ test.describe(apps['home-assistant'].title, () => {
 
             const prometheusVariants = [
                 {
-                    title: 'missing credentials',
+                    title: 'no token',
                     auth: undefined as unknown as { username: string, password: string },
                     status: 401,
                 },
                 {
-                    title: 'wrong credentials',
+                    title: 'wrong token',
                     auth: faker.internet.jwt(),
                     status: 401,
                 },
@@ -54,6 +54,22 @@ test.describe(apps['home-assistant'].title, () => {
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
             }
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/api/prometheus`, {
+                    headers: { Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}` },
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                const lines = content.split('\n');
+                expect(lines.find((el) => el.startsWith('python_info'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('homeassistant_state_change_total'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('homeassistant_entity_available'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('homeassistant_last_updated_time_seconds'))).toBeDefined();
+            });
 
             const users = [
                 {
