@@ -1,7 +1,7 @@
 import https from 'node:https';
 import axios from 'axios';
-import { expect, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
+import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
