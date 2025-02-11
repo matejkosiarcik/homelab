@@ -45,6 +45,8 @@ test.describe(apps.jellyfin.title, () => {
                         await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
                         await page.locator('button[type="submit"]').click();
                         await page.waitForURL(`${instance.url}/web/#/home.html`);
+                        await expect(page.locator('#indexPage.homePage')).toBeVisible();
+                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
                     });
                 }
 

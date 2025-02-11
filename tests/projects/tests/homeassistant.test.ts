@@ -89,6 +89,9 @@ test.describe(apps['home-assistant'].title, () => {
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
                         await page.locator('button#button').click();
                         await page.waitForURL(`${instance.url}/lovelace/0`);
+                        await expect(page.locator('home-assistant')).toBeVisible();
+                        await expect(page.locator('ha-sidebar')).toBeVisible();
+                        await expect(page.locator('ha-panel-lovelace')).toBeVisible();
                     });
                 }
 

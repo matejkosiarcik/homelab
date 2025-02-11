@@ -27,6 +27,8 @@ test.describe(apps.actualbudget.title, () => {
                 await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'PASSWORD'));
                 await page.locator('button[type="button"]:has-text("Sign in")').click();
                 await page.waitForURL(instance.url);
+                await expect(page.locator('#root:has-text("Files")')).toBeVisible();
+                await expect(page.locator('button:has-text("Create new file")')).toBeVisible();
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {

@@ -74,6 +74,8 @@ test.describe(apps['omada-controller'].title, () => {
                         await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
                         await page.locator('.login-form a.button-button[title="Log in"]').click();
                         await page.waitForURL(`${instance.url}/#dashboardGlobal`);
+                        await expect(page.locator('#main-view .header__menu')).toBeVisible();
+                        await expect(page.locator('#main-view #app')).toBeVisible();
                     });
                 }
 
