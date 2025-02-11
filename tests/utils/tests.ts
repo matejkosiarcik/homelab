@@ -42,7 +42,7 @@ export function createHttpToHttpsRedirectTests(url: string) {
 export function createProxyStatusTests(url: string) {
     const proxyStatusVariants = [
         {
-            title: 'missing credentials',
+            title: 'no credentials',
             auth: undefined as unknown as { username: string, password: string },
             status: 401,
         },

@@ -16,6 +16,11 @@ test.describe(apps['vaultwarden'].title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
             const users = [
                 {
                     username: 'admin',
@@ -70,11 +75,6 @@ test.describe(apps['vaultwarden'].title, () => {
             });
 
             // NOTE: Unsuccessful Superadmin login skipped because of application throttling bad attempts and locking the account temporarily
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
         });
     }
 });

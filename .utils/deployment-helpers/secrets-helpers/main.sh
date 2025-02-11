@@ -251,16 +251,15 @@ case "$full_app_name" in
     ;;
 *gatus*)
     # App
-    gatus_1_prometheus_token="$(load_token gatus app prometheus)"
-    gatus_2_prometheus_token="$(load_token gatus-2 app prometheus)"
-    homeassistant_prometheus_token="$(load_token homeassistant app prometheus-api-key)"
-    minio_prometheus_token="$(load_token minio app prometheus-token)"
-    ntfy_token="$(load_token ntfy app publisher-token)"
-    printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$gatus_1_prometheus_token" >>"$output/gatus.env"
-    printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$gatus_2_prometheus_token" >>"$output/gatus.env"
-    printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$homeassistant_prometheus_token" >>"$output/gatus.env"
-    printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$minio_prometheus_token" >>"$output/gatus.env"
-    printf 'NTFY_TOKEN=%s\n' "$ntfy_token" >>"$output/gatus.env"
+    printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus app prometheus)" >>"$output/gatus.env"
+    printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/gatus.env"
+    printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app admin)" >>"$output/gatus.env"
+    printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b app admin)" >>"$output/gatus.env"
+    printf 'GLANCES_RASPBERRY_PI_4B_2G_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g app admin)" >>"$output/gatus.env"
+    printf 'GLANCES_RASPBERRY_PI_4B_4G_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-4g app admin)" >>"$output/gatus.env"
+    printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app prometheus-api-key)" >>"$output/gatus.env"
+    printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$output/gatus.env"
+    printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$output/gatus.env"
 
     # HTTP Proxy
     proxy_status_password="$(load_password "$full_app_name" http-proxy status)"

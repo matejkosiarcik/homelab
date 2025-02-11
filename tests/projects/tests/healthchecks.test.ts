@@ -16,6 +16,17 @@ test.describe(apps.healthchecks.title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
+            test('API: Status endpoint', async () => {
+                const response = await axios.get(`${instance.url}/api/v3/status`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                expect(response.data, 'Response body').toStrictEqual('OK');
+            });
+
             const users = [
                 {
                     username: 'admin',
@@ -51,17 +62,6 @@ test.describe(apps.healthchecks.title, () => {
                     expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
                 });
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
-
-            test('API: Status endpoint', async () => {
-                const response = await axios.get(`${instance.url}/api/v3/status`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response body').toStrictEqual('OK');
-            });
         });
     }
 });

@@ -18,39 +18,6 @@ test.describe(apps.minio.title, () => {
                 createTcpTest(instance.consoleUrl, port, 'console');
             }
 
-            const users = [
-                {
-                    username: 'admin',
-                },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
-            ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await page.goto(instance.consoleUrl);
-                        await page.waitForURL(`${instance.consoleUrl}/login`);
-                        await page.locator('input#accessKey').fill(variant.username);
-                        await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
-                        await page.locator('button#do-login[type="submit"]').click();
-                        await page.waitForURL(`${instance.consoleUrl}/browser`);
-                    });
-                }
-
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.goto(instance.consoleUrl);
-                    await page.waitForURL(`${instance.consoleUrl}/login`);
-                    const originalUrl = page.url();
-                    await page.locator('input#accessKey').fill(variant.username);
-                    await page.locator('input#secretKey').fill(faker.string.alpha(10));
-                    await page.locator('button#do-login[type="submit"]').click();
-                    await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
-                });
-            }
-
             test('API: Root', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, headers: { 'User-Agent': userAgent }, validateStatus: () => true});
@@ -86,12 +53,12 @@ test.describe(apps.minio.title, () => {
 
             const prometheusVariants = [
                 {
-                    title: 'missing credentials',
+                    title: 'no token',
                     auth: undefined as unknown as { username: string, password: string },
                     status: 403,
                 },
                 {
-                    title: 'wrong credentials',
+                    title: 'wrong token',
                     auth: faker.internet.jwt(),
                     status: 403,
                 },
@@ -115,6 +82,53 @@ test.describe(apps.minio.title, () => {
                         httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                     });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                });
+            }
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/minio/v2/metrics/cluster`, {
+                    headers: { Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}` },
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                const lines = content.split('\n');
+                expect(lines.find((el) => el.startsWith('minio_s3_requests_total'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('minio_s3_traffic_sent_bytes'))).toBeDefined();
+            });
+
+            const users = [
+                {
+                    username: 'admin',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                }
+            ];
+            for (const variant of users) {
+                if (!variant.random) {
+                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
+                        await page.goto(instance.consoleUrl);
+                        await page.waitForURL(`${instance.consoleUrl}/login`);
+                        await page.locator('input#accessKey').fill(variant.username);
+                        await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('button#do-login[type="submit"]').click();
+                        await page.waitForURL(`${instance.consoleUrl}/browser`);
+                    });
+                }
+
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.goto(instance.consoleUrl);
+                    await page.waitForURL(`${instance.consoleUrl}/login`);
+                    const originalUrl = page.url();
+                    await page.locator('input#accessKey').fill(variant.username);
+                    await page.locator('input#secretKey').fill(faker.string.alpha(10));
+                    await page.locator('button#do-login[type="submit"]').click();
+                    await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
+                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
                 });
             }
         });

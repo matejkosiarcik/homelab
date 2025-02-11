@@ -14,26 +14,14 @@ type TvheadendServerInfoResponse = {
 test.describe(apps.tvheadend.title, () => {
     for (const instance of apps.tvheadend.instances) {
         test.describe(instance.title, () => {
+            const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`; // TODO: Remove after real Let's encrypt certificates
+
             createHttpToHttpsRedirectTests(instance.url);
             createProxyStatusTests(instance.url);
 
             for (const port of [80, 443, 9981, 9982]) {
                 createTcpTest(instance.url, port);
             }
-
-            const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`;
-
-            test('UI: Open', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/extjs.html`);
-                await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
-            });
-
-            test('UI: Open :9981', async ({ page }) => { // TODO: Remove after real Let's encrypt certificates
-                await page.goto(httpUrl9981);
-                await page.waitForURL(`${httpUrl9981}/extjs.html`);
-                await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
-            });
 
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
@@ -53,6 +41,18 @@ test.describe(apps.tvheadend.title, () => {
                 expect(body.sw_version, 'SW Version').toMatch(/.+/);
                 expect(body.name, 'Name').toMatch(/.+/);
                 expect(body.capabilities, 'Capabilities').not.toHaveLength(0);
+            });
+
+            test('UI: Open', async ({ page }) => {
+                await page.goto(instance.url);
+                await page.waitForURL(`${instance.url}/extjs.html`);
+                await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
+            });
+
+            test('UI: Open :9981', async ({ page }) => { // TODO: Remove after real Let's encrypt certificates
+                await page.goto(httpUrl9981);
+                await page.waitForURL(`${httpUrl9981}/extjs.html`);
+                await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').waitFor({ state: 'visible', timeout: 5000 });
             });
         });
     }

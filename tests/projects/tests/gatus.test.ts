@@ -16,11 +16,6 @@ test.describe(apps.gatus.title, () => {
                 createTcpTest(instance.url, port);
             }
 
-            test('UI: Open', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
-            });
-
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, {
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
@@ -32,12 +27,20 @@ test.describe(apps.gatus.title, () => {
 
             const prometheusVariants = [
                 {
-                    title: 'missing credentials',
+                    title: 'no credentials',
                     auth: undefined as unknown as { username: string, password: string },
                     status: 401,
                 },
                 {
-                    title: 'wrong credentials',
+                    title: 'wrong username and password',
+                    auth: {
+                        username: faker.string.alphanumeric(10),
+                        password: faker.string.alphanumeric(10),
+                    },
+                    status: 401,
+                },
+                {
+                    title: 'wrong password',
                     auth: {
                         username: 'prometheus',
                         password: faker.string.alphanumeric(10),
@@ -64,6 +67,30 @@ test.describe(apps.gatus.title, () => {
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
             }
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/metrics`, {
+                    auth: {
+                        username: 'prometheus',
+                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                    },
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                const lines = content.split('\n');
+                expect(lines.find((el) => el.startsWith('gatus_results_connected_total'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('gatus_results_total'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('gatus_results_duration_seconds'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('promhttp_metric_handler_requests_total'))).toBeDefined();
+            });
+
+            test('UI: Open', async ({ page }) => {
+                await page.goto(instance.url);
+                await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
+            });
         });
     }
 });

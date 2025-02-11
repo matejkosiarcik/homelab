@@ -418,25 +418,12 @@ endpoints:
 
   ### Group: App - Dozzle agents ###
 
+  # Odroid H3
+
   - <<: *default-icmp
     name: Dozzle agent - Odroid H3 - ICMP
     group: App - Dozzle agents
     url: icmp://dozzle-agent-odroid-h3.home
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 3B - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-3b.home
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home
 
   - <<: *default-tcp
     name: Dozzle agent - Odroid H3 - TCP:7007
@@ -446,6 +433,13 @@ endpoints:
       - type: ntfy
       - type: email
 
+  # Raspberry Pi 3B
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 3B - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-3b.home
+
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 3B - TCP:7007
     group: App - Dozzle agents
@@ -454,6 +448,13 @@ endpoints:
       - type: ntfy
       - type: email
 
+  # Raspberry Pi 4B 2GB
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home
+
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
     group: App - Dozzle agents
@@ -461,6 +462,13 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  # Raspberry Pi 4B 4GB
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
@@ -539,6 +547,136 @@ endpoints:
     name: Gatus (2) TCP:443
     group: App - Gatus (2)
     url: tcp://gatus-2.home:443
+
+  ### Group: App - Glances ###
+
+  # Odroid H3
+
+  - <<: *default-icmp
+    name: Glances - Odroid H3 - ICMP
+    group: App - Glances
+    url: icmp://glances-odroid-h3.home
+
+  - <<: *default-http
+    name: Glances - Odroid H3 - HTTP
+    group: App - Glances
+    url: http://glances-odroid-h3.home
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-http
+    name: Glances - Odroid H3 - HTTPS
+    group: App - Glances
+    url: https://glances:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-tcp
+    name: Glances - Odroid H3 - TCP:80
+    group: App - Glances
+    url: tcp://glances-odroid-h3.home:80
+
+  - <<: *default-tcp
+    name: Glances - Odroid H3 - TCP:443
+    group: App - Glances
+    url: tcp://glances-odroid-h3.home:443
+
+  # Raspberry Pi 3B
+
+  - <<: *default-icmp
+    name: Glances - Raspberry Pi 3B - ICMP
+    group: App - Glances
+    url: icmp://glances-raspberry-pi-3b.home
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 3B - HTTP
+    group: App - Glances
+    url: http://glances-raspberry-pi-3b.home
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 3B - HTTPS
+    group: App - Glances
+    url: https://glances:${GLANCES_RASPBERRY_PI_3B_PASSWORD}@glances-raspberry-pi-3b.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-tcp
+    name: Glances - Raspberry Pi 3B - TCP:80
+    group: App - Glances
+    url: tcp://glances-raspberry-pi-3b.home:80
+
+  - <<: *default-tcp
+    name: Glances - Raspberry Pi 3B - TCP:443
+    group: App - Glances
+    url: tcp://glances-raspberry-pi-3b.home:443
+
+  # Raspberry Pi 4B 2GB
+
+  - <<: *default-icmp
+    name: Glances - Raspberry Pi 4B 2GB - ICMP
+    group: App - Glances
+    url: icmp://glances-raspberry-pi-4b-2g.home
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 4B 2GB - HTTP
+    group: App - Glances
+    url: http://glances-raspberry-pi-4b-2g.home
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 4B 2GB - HTTPS
+    group: App - Glances
+    url: https://glances:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-tcp
+    name: Glances - Raspberry Pi 4B 2GB - TCP:80
+    group: App - Glances
+    url: tcp://glances-raspberry-pi-4b-2g.home:80
+
+  - <<: *default-tcp
+    name: Glances - Raspberry Pi 4B 2GB - TCP:443
+    group: App - Glances
+    url: tcp://glances-raspberry-pi-4b-2g.home:443
+
+  # Raspberry Pi 4B 4GB
+
+  - <<: *default-icmp
+    name: Glances - Raspberry Pi 4B 4GB - ICMP
+    group: App - Glances
+    url: icmp://glances-raspberry-pi-4b-4g.home
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 4B 4GB - HTTP
+    group: App - Glances
+    url: http://glances-raspberry-pi-4b-4g.home
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 4B 4GB - HTTPS
+    group: App - Glances
+    url: https://glances:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-tcp
+    name: Glances - Raspberry Pi 4B 4GB - TCP:80
+    group: App - Glances
+    url: tcp://glances-raspberry-pi-4b-4g.home:80
+
+  - <<: *default-tcp
+    name: Glances - Raspberry Pi 4B 4GB - TCP:443
+    group: App - Glances
+    url: tcp://glances-raspberry-pi-4b-4g.home:443
 
   ### Group: App - Healthchecks ###
 
