@@ -418,25 +418,12 @@ endpoints:
 
   ### Group: App - Dozzle agents ###
 
+  # Odroid H3
+
   - <<: *default-icmp
     name: Dozzle agent - Odroid H3 - ICMP
     group: App - Dozzle agents
     url: icmp://dozzle-agent-odroid-h3.home
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 3B - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-3b.home
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home
 
   - <<: *default-tcp
     name: Dozzle agent - Odroid H3 - TCP:7007
@@ -446,6 +433,13 @@ endpoints:
       - type: ntfy
       - type: email
 
+  # Raspberry Pi 3B
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 3B - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-3b.home
+
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 3B - TCP:7007
     group: App - Dozzle agents
@@ -454,6 +448,13 @@ endpoints:
       - type: ntfy
       - type: email
 
+  # Raspberry Pi 4B 2GB
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home
+
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
     group: App - Dozzle agents
@@ -461,6 +462,13 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  # Raspberry Pi 4B 4GB
+
+  - <<: *default-icmp
+    name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
