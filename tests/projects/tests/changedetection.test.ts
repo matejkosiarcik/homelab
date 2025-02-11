@@ -27,7 +27,7 @@ test.describe(apps.changedetection.title, () => {
                 await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'PASSWORD'));
                 await page.locator('form button[type="submit"]:has-text("Login")').click();
                 await page.waitForURL(instance.url);
-                await page.goto(`${instance.url}/settings#general`)
+                await page.goto(`${instance.url}/settings#general`);
                 expect(page.url()).toStrictEqual(`${instance.url}/settings#general`);
             });
 
