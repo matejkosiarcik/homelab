@@ -1,10 +1,10 @@
 import https from 'node:https';
 import axios from 'axios';
+import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
-import { faker } from '@faker-js/faker';
 
 test.describe(apps.glances.title, () => {
     for (const instance of apps.glances.instances) {
