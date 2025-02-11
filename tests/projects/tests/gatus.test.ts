@@ -87,9 +87,34 @@ test.describe(apps.gatus.title, () => {
                 expect(lines.find((el) => el.startsWith('promhttp_metric_handler_requests_total'))).toBeDefined();
             });
 
-            test('UI: Open', async ({ page }) => {
+            const users = [
+                {
+                    username: 'admin',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                }
+            ];
+            for (const variant of users) {
+                if (!variant.random) {
+                    test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                        await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
+                    });
+                }
+
+                test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await expect(page.locator('#results .endpoint-group').first()).not.toBeVisible({ timeout: 10_000 });
+                });
+            }
+
+            test('UI: Unsuccessful open - No user', async ({ page }) => {
                 await page.goto(instance.url);
-                await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
+                await expect(page.locator('#results .endpoint-group').first()).not.toBeVisible({ timeout: 10_000 });
             });
         });
     }
