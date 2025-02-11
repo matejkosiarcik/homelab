@@ -254,7 +254,7 @@ case "$full_app_name" in
     gatus_1_prometheus_token="$(load_token gatus app prometheus)"
     gatus_2_prometheus_token="$(load_token gatus-2 app prometheus)"
     homeassistant_prometheus_token="$(load_token homeassistant app prometheus)"
-    minio_prometheus_token="$(load_token minio app prometheus)"
+    minio_prometheus_token="$(load_token minio app prometheus-token)"
     ntfy_token="$(load_token ntfy app publisher-token)"
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$gatus_1_prometheus_token" >>"$output/gatus.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$gatus_2_prometheus_token" >>"$output/gatus.env"
