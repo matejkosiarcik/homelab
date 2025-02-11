@@ -16,6 +16,17 @@ test.describe(apps.jellyfin.title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
+            test('API: Health endpoint', async () => {
+                const response = await axios.get(`${instance.url}/health`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                expect(response.data, 'Response body').toStrictEqual('Healthy');
+            });
+
             const users = [
                 {
                     username: 'admin',
@@ -48,17 +59,6 @@ test.describe(apps.jellyfin.title, () => {
                     expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
                 });
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
-
-            test('API: Health endpoint', async () => {
-                const response = await axios.get(`${instance.url}/health`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response body').toStrictEqual('Healthy');
-            });
         });
     }
 });

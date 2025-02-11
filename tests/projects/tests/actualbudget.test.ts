@@ -16,6 +16,11 @@ test.describe(apps.actualbudget.title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
@@ -31,11 +36,6 @@ test.describe(apps.actualbudget.title, () => {
                 await page.locator('button[type="button"]:has-text("Sign in")').click();
                 await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
                 expect(page.url()).toStrictEqual(`${instance.url}/login`);
-            });
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
             });
         });
     }

@@ -16,6 +16,11 @@ test.describe(apps.changedetection.title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login?next=/`);
@@ -23,7 +28,7 @@ test.describe(apps.changedetection.title, () => {
                 await page.locator('form button[type="submit"]:has-text("Login")').click();
                 await page.waitForURL(instance.url);
                 await page.goto(`${instance.url}/settings#general`)
-                await expect(page.url()).toStrictEqual(`${instance.url}/settings#general`);
+                expect(page.url()).toStrictEqual(`${instance.url}/settings#general`);
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
@@ -32,11 +37,6 @@ test.describe(apps.changedetection.title, () => {
                 await page.locator('form button[type="submit"]:has-text("Login")').click();
                 await page.waitForSelector('.error:has-text("Incorrect password")', { timeout: 10_000 });
                 expect(page.url()).toStrictEqual(`${instance.url}/login`);
-            });
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
             });
         });
     }

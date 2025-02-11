@@ -20,6 +20,18 @@ test.describe(apps['speedtest-tracker'].title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
+            test('API: Healthcheck', async () => {
+                const response = await axios.get(`${instance.url}/api/healthcheck`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const body = response.data as SpeedtestTrackerHealthcheckResponse;
+                expect(body.message, 'Response Message').toMatch(/.+/);
+            });
+
             const users = [
                 {
                     username: 'admin',
@@ -58,18 +70,6 @@ test.describe(apps['speedtest-tracker'].title, () => {
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
                 await expect(page.locator('.fi-wi-stats-overview-stat').first()).toBeVisible({ timeout: 5000 });
-            });
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
-
-            test('API: Healthcheck', async () => {
-                const response = await axios.get(`${instance.url}/api/healthcheck`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const body = response.data as SpeedtestTrackerHealthcheckResponse;
-                expect(body.message, 'Response Message').toMatch(/.+/);
             });
         });
     }

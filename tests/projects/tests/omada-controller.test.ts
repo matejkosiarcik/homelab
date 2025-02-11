@@ -33,6 +33,29 @@ test.describe(apps['omada-controller'].title, () => {
                 createTcpTest(instance.url, port);
             }
 
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
+            test('API: Status endpoint', async () => {
+                const response = await axios.get(`${instance.url}/api/v2/anon/info`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const body = response.data as OmadaControllerStatusResponse;
+                expect(body.errorCode, 'Response body .errorCode').toStrictEqual(0);
+                expect(body.msg, 'Response body .msg').toStrictEqual('Success.');
+                expect(body.result.controllerBasicVersion, 'Response body .result.controllerBasicVersion').toMatch(/\d+\.\d+\.\d+\.\d+/);
+                expect(body.result.controllerVer, 'Response body .result.controllerVer').toMatch(/\d+\.\d+\.\d+\.\d+/);
+                expect(body.result.apiVer, 'Response body .result.apiVer').toStrictEqual('3');
+                expect(body.result.configured, 'Response body .result.configured').toStrictEqual(true);
+                expect(body.result.type, 'Response body .result.type').toStrictEqual(1);
+                expect(body.result.supportApp, 'Response body .result.supportApp').toStrictEqual(true);
+                expect(body.result.omadacId, 'Response body .result.omadacId').toMatch(/[0-9a-f]+/);
+                expect(body.result.registeredRoot, 'Response body .result.registeredRoot').toStrictEqual(true);
+                expect(body.result.omadacCategory, 'Response body .result.omadacCategory').toMatch('advanced');
+                expect(body.result.mspMode, 'Response body .result.mspMode').toStrictEqual(false);
+            });
+
             const users = [
                 {
                     username: 'admin',
@@ -65,29 +88,6 @@ test.describe(apps['omada-controller'].title, () => {
                     expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
                 });
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
-
-            test('API: Status endpoint', async () => {
-                const response = await axios.get(`${instance.url}/api/v2/anon/info`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const body = response.data as OmadaControllerStatusResponse;
-                expect(body.errorCode, 'Response body .errorCode').toStrictEqual(0);
-                expect(body.msg, 'Response body .msg').toStrictEqual('Success.');
-                expect(body.result.controllerBasicVersion, 'Response body .result.controllerBasicVersion').toMatch(/\d+\.\d+\.\d+\.\d+/);
-                expect(body.result.controllerVer, 'Response body .result.controllerVer').toMatch(/\d+\.\d+\.\d+\.\d+/);
-                expect(body.result.apiVer, 'Response body .result.apiVer').toStrictEqual('3');
-                expect(body.result.configured, 'Response body .result.configured').toStrictEqual(true);
-                expect(body.result.type, 'Response body .result.type').toStrictEqual(1);
-                expect(body.result.supportApp, 'Response body .result.supportApp').toStrictEqual(true);
-                expect(body.result.omadacId, 'Response body .result.omadacId').toMatch(/[0-9a-f]+/);
-                expect(body.result.registeredRoot, 'Response body .result.registeredRoot').toStrictEqual(true);
-                expect(body.result.omadacCategory, 'Response body .result.omadacCategory').toMatch('advanced');
-                expect(body.result.mspMode, 'Response body .result.mspMode').toStrictEqual(false);
-            });
         });
     }
 });

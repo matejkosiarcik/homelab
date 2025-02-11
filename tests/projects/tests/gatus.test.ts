@@ -16,11 +16,6 @@ test.describe(apps.gatus.title, () => {
                 createTcpTest(instance.url, port);
             }
 
-            test('UI: Open', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
-            });
-
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, {
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
@@ -64,6 +59,11 @@ test.describe(apps.gatus.title, () => {
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
             }
+
+            test('UI: Open', async ({ page }) => {
+                await page.goto(instance.url);
+                await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
+            });
         });
     }
 });

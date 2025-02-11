@@ -14,14 +14,14 @@ test.describe(apps.smtp4dev.title, () => {
                 createTcpTest(instance.url, port);
             }
 
-            test('UI: Open', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
-            });
-
             test('API: Root', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
+            test('UI: Open', async ({ page }) => {
+                await page.goto(instance.url);
+                await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
             });
         });
     }
