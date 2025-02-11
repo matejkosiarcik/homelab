@@ -253,7 +253,7 @@ case "$full_app_name" in
     # App
     gatus_1_prometheus_token="$(load_token gatus app prometheus)"
     gatus_2_prometheus_token="$(load_token gatus-2 app prometheus)"
-    homeassistant_prometheus_token="$(load_token homeassistant app prometheus)"
+    homeassistant_prometheus_token="$(load_token homeassistant app prometheus-api-key)"
     minio_prometheus_token="$(load_token minio app prometheus-token)"
     ntfy_token="$(load_token ntfy app publisher-token)"
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$gatus_1_prometheus_token" >>"$output/gatus.env"
@@ -344,8 +344,8 @@ case "$full_app_name" in
     jellyfin_apikey="$(load_token jellyfin app homepage-api-key)"
     printf 'HOMEPAGE_VAR_JELLYFIN_PASSWORD=%s\n' "$jellyfin_apikey" >>"$output/homepage.env"
     # TODO: Enable NetAlertX integration
-    # jellyfin_apikey="$(load_password jellyfin app homepage-api-key)"
-    # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$jellyfin_apikey" "$output/homepage.env"
+    # netalertx_apikey="$(load_password netalertx app homepage-api-key)"
+    # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$netalertx_apikey" "$output/homepage.env"
     omadacontroller_password="$(load_password omada-controller app homepage)"
     printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$omadacontroller_password" >>"$output/homepage.env"
     pihole1p_apikey="$(load_token pihole-1-primary app api-key)"
