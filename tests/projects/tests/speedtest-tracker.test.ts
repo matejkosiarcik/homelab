@@ -52,6 +52,8 @@ test.describe(apps['speedtest-tracker'].title, () => {
                         await page.locator('form input[id="data.password"][type="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
                         await page.locator('form button:has-text("Sign in")').click();
                         await page.waitForURL(`${instance.url}/admin`);
+                        await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
+                        await expect(page.locator('main .fi-wi-stats-overview-stat').first()).toBeVisible();
                     });
                 }
 

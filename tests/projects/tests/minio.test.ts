@@ -117,6 +117,9 @@ test.describe(apps.minio.title, () => {
                         await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
                         await page.locator('button#do-login[type="submit"]').click();
                         await page.waitForURL(`${instance.consoleUrl}/browser`);
+                        await expect(page.locator('#root .menuItems')).toBeVisible();
+                        await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
+
                     });
                 }
 

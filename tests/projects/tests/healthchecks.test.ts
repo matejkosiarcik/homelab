@@ -47,6 +47,7 @@ test.describe(apps.healthchecks.title, () => {
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
                         await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
                         await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
+                        await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
                     });
                 }
 

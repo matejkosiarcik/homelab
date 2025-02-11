@@ -47,6 +47,8 @@ test.describe(apps.pihole.title, () => {
                 await page.locator('form#loginform input#loginpw').fill(getEnv(instance.url, 'PASSWORD'));
                 await page.locator('form#loginform button[type="submit"]').click();
                 await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
+                await expect(page.locator('.sidebar li a:has-text("Dashboard")')).toBeVisible();
+                await expect(page.locator('.content-wrapper #queries-over-time')).toBeVisible();
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
