@@ -45,7 +45,7 @@ test.describe(apps['vaultwarden'].title, () => {
                         await page.locator('app-login input[type="email"]').fill(variant.email);
                         await page.locator('app-login button:has-text("Continue")').click();
                         await page.locator('app-login input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
-                        await page.locator('app-login input[type="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('app-login input[type="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('app-login button:has-text("Log in with master password")').click();
                         await page.waitForURL(`${instance.url}/#/vault`);
                         await expect(page.locator('app-header h1:has-text("All vaults")')).toBeVisible();

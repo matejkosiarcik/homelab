@@ -42,7 +42,7 @@ test.describe(apps.jellyfin.title, () => {
                         await page.goto(instance.url);
                         await page.waitForURL(/\/login\.html(?:\?.*)?$/);
                         await page.locator('input#txtManualName').fill(variant.username);
-                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('button[type="submit"]').click();
                         await page.waitForURL(`${instance.url}/web/#/home.html`);
                         await expect(page.locator('#indexPage.homePage')).toBeVisible();

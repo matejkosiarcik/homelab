@@ -86,7 +86,7 @@ test.describe(apps['home-assistant'].title, () => {
                         await page.goto(instance.url);
                         await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
                         await page.locator('input[name="username"]').fill(variant.username);
-                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('button#button').click();
                         await page.waitForURL(`${instance.url}/lovelace/0`);
                         await expect(page.locator('home-assistant')).toBeVisible();

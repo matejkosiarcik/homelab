@@ -49,7 +49,7 @@ test.describe(apps['speedtest-tracker'].title, () => {
                         await page.goto(`${instance.url}/admin/login`);
                         await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
                         await page.locator('form input[id="data.email"][type="email"]').fill(variant.email);
-                        await page.locator('form input[id="data.password"][type="password"]').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('form input[id="data.password"][type="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('form button:has-text("Sign in")').click();
                         await page.waitForURL(`${instance.url}/admin`);
                         await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
