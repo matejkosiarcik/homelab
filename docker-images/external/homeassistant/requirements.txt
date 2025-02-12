@@ -27,5 +27,5 @@ radios==0.3.2
 securetar==2025.1.4
 wheel==0.45.1
 xmltodict==0.14.2
-zeroconf==0.143.0
+zeroconf==0.143.1
 zlib-ng==0.5.1
