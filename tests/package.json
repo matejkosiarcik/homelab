@@ -6,7 +6,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.4.0",
+    "@faker-js/faker": "^9.5.0",
     "@playwright/test": "^1.50.1",
     "async": "^3.2.6",
     "axios": "^1.7.9",
@@ -18,7 +18,7 @@
     "p-parallel": "^1.0.3",
     "promise-socket": "^8.0.0",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.445"
+    "user-agents": "^1.1.448"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
