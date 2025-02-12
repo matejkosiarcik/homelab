@@ -47,6 +47,12 @@ test.describe(apps['unifi-controller'].title, () => {
                     username: 'admin',
                 },
                 {
+                    username: 'viewer',
+                },
+                {
+                    username: 'homepage',
+                },
+                {
                     username: faker.string.alpha(10),
                     random: true,
                 }
