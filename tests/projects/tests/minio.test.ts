@@ -114,7 +114,7 @@ test.describe(apps.minio.title, () => {
                         await page.goto(instance.consoleUrl);
                         await page.waitForURL(`${instance.consoleUrl}/login`);
                         await page.locator('input#accessKey').fill(variant.username);
-                        await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`));
+                        await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('button#do-login[type="submit"]').click();
                         await page.waitForURL(`${instance.consoleUrl}/browser`);
                         await expect(page.locator('#root .menuItems')).toBeVisible();

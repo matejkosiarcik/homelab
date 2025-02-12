@@ -2,8 +2,8 @@ import process from 'node:process';
 import dns from 'native-dns';
 
 export function getEnv(instanceUrl: string, name: string): string {
-    const instanceName = URL.parse(instanceUrl)!.hostname.replace(/\.home$/, '').replaceAll('-', '_').toUpperCase();
-    const envName = `${instanceName}_${name}`;
+    const instanceName = URL.parse(instanceUrl)!.hostname.replace(/\.home$/, '').replaceAll('-', '_');
+    const envName = `${instanceName}_${name}`.toUpperCase();
     if (!(envName in process.env) || !process.env[envName]) {
         throw new Error(`Environment variable "${envName}" not set`);
     }
