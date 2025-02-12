@@ -555,7 +555,7 @@ case "$full_app_name" in
 *unifi-controller*)
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
-    viewer_password="$(load_password "$full_app_name" app viwer)"
+    viewer_password="$(load_password "$full_app_name" app viewer)"
     homepage_password="$(load_password "$full_app_name" app homepage)"
     mongodb_password="$(load_password "$full_app_name" mongodb admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
