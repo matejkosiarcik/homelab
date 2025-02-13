@@ -221,6 +221,8 @@
         widget:
           type: gatus
           url: https://gatus.home
+          username: admin
+          password: "{{HOMEPAGE_VAR_GATUS_PASSWORD}}"
 
     - Gatus 2:
         description: Uptime monitoring system
@@ -230,6 +232,8 @@
         widget:
           type: gatus
           url: https://gatus-2.home
+          username: admin
+          password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
 
     - Dozzle:
         description: Docker monitoring

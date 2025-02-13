@@ -327,18 +327,13 @@ case "$full_app_name" in
     write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *homepage*)
-    # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
-
-    # Certificate Manager
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
-    write_healthcheck_url certificate-manager "$healthcheck_id"
-
     # App
     changedetection_apikey="$(load_token changedetection app api-key)"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$changedetection_apikey" >>"$output/homepage.env"
+    gatus_password="$(load_token gatus app admin)"
+    printf 'HOMEPAGE_VAR_GATUS_PASSWORD=%s\n' "$gatus_password" >>"$output/homepage.env"
+    gatus_2_password="$(load_token gatus-2 app admin)"
+    printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$gatus_2_password" >>"$output/homepage.env"
     healthchecks_apikey="$(load_token healthchecks app api-key)"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$healthchecks_apikey" >>"$output/homepage.env"
     homeassistant_apikey="$(load_token homeassistant app homepage-api-key)"
@@ -363,6 +358,15 @@ case "$full_app_name" in
     # TODO: Enable Vikunja integration
     # vikunja_apikey="$(load_password vikunja app homepage-api-key)"
     # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$vikunja_apikey" "$output/homepage.env"
+
+    # HTTP Proxy
+    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
+    write_http_auth_user proxy-status "$proxy_status_password"
+    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+
+    # Certificate Manager
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
+    write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *jellyfin*)
     # App
