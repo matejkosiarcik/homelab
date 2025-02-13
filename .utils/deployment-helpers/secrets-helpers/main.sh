@@ -348,7 +348,7 @@ case "$full_app_name" in
     # TODO: Enable NetAlertX integration
     # netalertx_apikey="$(load_password netalertx app homepage-api-key)"
     # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$netalertx_apikey" "$output/homepage.env"
-    omadacontroller_password="$(load_password omada-controller app homepage)"
+    omadacontroller_password="$(load_token omada-controller app homepage)"
     printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$omadacontroller_password" >>"$output/homepage.env"
     pihole1p_apikey="$(load_token pihole-1-primary app api-key)"
     printf 'HOMEPAGE_VAR_PIHOLE_1_PRIMARY_APIKEY=%s\n' "$pihole1p_apikey" >>"$output/homepage.env"
@@ -358,7 +358,7 @@ case "$full_app_name" in
     printf 'HOMEPAGE_VAR_PIHOLE_2_PRIMARY_APIKEY=%s\n' "$pihole2p_apikey" >>"$output/homepage.env"
     pihole2s_apikey="$(load_token pihole-2-secondary app api-key)"
     printf 'HOMEPAGE_VAR_PIHOLE_2_SECONDARY_APIKEY=%s\n' "$pihole2s_apikey" >>"$output/homepage.env"
-    unificontroller_password="$(load_password unifi-controller app homepage)"
+    unificontroller_password="$(load_token unifi-controller app homepage)"
     printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$unificontroller_password" >>"$output/homepage.env"
     # TODO: Enable Vikunja integration
     # vikunja_apikey="$(load_password vikunja app homepage-api-key)"
