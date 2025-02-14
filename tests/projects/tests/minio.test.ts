@@ -104,6 +104,9 @@ test.describe(apps.minio.title, () => {
                     username: 'admin',
                 },
                 {
+                    username: 'user',
+                },
+                {
                     username: faker.string.alpha(10),
                     random: true,
                 }

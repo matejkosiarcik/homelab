@@ -76,6 +76,9 @@ test.describe(apps['home-assistant'].title, () => {
                     username: 'admin',
                 },
                 {
+                    username: 'homepage',
+                },
+                {
                     username: faker.string.alpha(10),
                     random: true,
                 }
