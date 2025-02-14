@@ -55,6 +55,7 @@ load_password() {
     printf 'HEALTHCHECKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password healthchecks http-proxy status)"
 
     printf 'HOMEASSISTANT_ADMIN_PASSWORD=%s\n' "$(load_password homeassistant app admin)"
+    printf 'HOMEASSISTANT_HOMEPAGE_PASSWORD=%s\n' "$(load_password homeassistant app homepage)"
     printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app prometheus-api-key)"
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant http-proxy status)"
 
@@ -64,6 +65,7 @@ load_password() {
     printf 'JELLYFIN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin http-proxy status)"
 
     printf 'MINIO_ADMIN_PASSWORD=%s\n' "$(load_password minio app admin)"
+    printf 'MINIO_USER_PASSWORD=%s\n' "$(load_password minio app user)"
     printf 'MINIO_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password minio app prometheus-token)"
     printf 'MINIO_PROXY_STATUS_PASSWORD=%s\n' "$(load_password minio http-proxy status)"
 
