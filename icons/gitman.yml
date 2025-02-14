@@ -102,7 +102,7 @@ sources_locked:
       -
   - repo: https://github.com/NX211/homer-icons.git
     name: homer-icons
-    rev: f19ce001a0e863255993ff31671da429b676c8e2
+    rev: 065fffc488f6a0c998b4f7ab46f3c393779b23d5
     type: git
     params:
     sparse_paths:
@@ -113,7 +113,7 @@ sources_locked:
       -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
-    rev: e22cc42fba8078b8a7242a894d7fee9507ad92dc
+    rev: d1b3d78d26bbb501ab235ea14c604554707c9af4
     type: git
     params:
     sparse_paths:
