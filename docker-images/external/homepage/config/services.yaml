@@ -347,23 +347,23 @@
     - Glances Odroid H3:
         description: Resource monitoring
         href: https://glances-odroid-h3.home
-        ping: glances.odroid-h3.home
+        ping: glances-odroid-h3.home
         icon: /icons/glances.png
 
     - Glances Raspberry Pi 4B 4GB:
         description: Resource monitoring
         href: https://glances-raspberry-pi-4b-4g.home
-        ping: glances.raspberry-pi-4b-4g.home
+        ping: glances-raspberry-pi-4b-4g.home
         icon: /icons/glances.png
 
     - Glances Raspberry Pi 4B 2GB:
         description: Resource monitoring
         href: https://glances-raspberry-pi-4b-2g.home
-        ping: glances.raspberry-pi-4b-2g.home
+        ping: glances-raspberry-pi-4b-2g.home
         icon: /icons/glances.png
 
     - Glances Raspberry Pi 3B:
         description: Resource monitoring
         href: https://glances-raspberry-pi-3b.home
-        ping: glances.raspberry-pi-3b.home
+        ping: glances-raspberry-pi-3b.home
         icon: /icons/glances.png
