@@ -65,7 +65,7 @@ test.describe(apps.tvheadend.title, () => {
                             await page.goto(instance.url);
                             await page.waitForURL(`${instance.url}/extjs.html`);
                             await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
-                            await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click();
+                            await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
                             await expect(page.locator(`.x-tab-panel-header .x-tab-strip-text:has-text("Logged in as ${variant.username}")`)).toBeVisible({ timeout: 10_000 });
                         } finally {
                             await page.close();
@@ -79,8 +79,8 @@ test.describe(apps.tvheadend.title, () => {
                         // await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/extjs.html`);
-                        await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible();
-                        await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click();
+                        await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
+                        await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
                         await expect(page.locator('body h1:has-text("403 Forbidden")')).toBeVisible();
                     } finally {
                         await page.close();
@@ -91,13 +91,13 @@ test.describe(apps.tvheadend.title, () => {
             test('UI: Open - No user', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/extjs.html`);
-                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible();
+                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
             });
 
             test('UI: Open :9981', async ({ page }) => { // TODO: Remove after real Let's encrypt certificates
                 await page.goto(httpUrl9981);
                 await page.waitForURL(`${httpUrl9981}/extjs.html`);
-                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible();
+                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
             });
         });
     }
