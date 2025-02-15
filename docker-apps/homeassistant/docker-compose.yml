@@ -53,14 +53,6 @@ services:
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
 
-  transport-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
-
   # web-backup:
   #   <<: *common-service-options
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
