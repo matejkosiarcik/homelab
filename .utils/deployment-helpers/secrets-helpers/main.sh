@@ -261,6 +261,7 @@ case "$full_app_name" in
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g app admin)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-4g app admin)" >>"$output/gatus.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app prometheus-api-key)" >>"$output/gatus.env"
+    printf 'HOMEPAGE_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$output/gatus.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$output/gatus.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$output/gatus.env"
 

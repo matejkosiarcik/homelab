@@ -769,11 +769,13 @@ endpoints:
     name: Homepage HTTP
     group: App - Homepage
     url: http://homepage.home
+    conditions:
+      - "[STATUS] == 401"
 
   - <<: *default-http
     name: Homepage HTTPS
     group: App - Homepage
-    url: https://homepage.home
+    url: https://admin:${HOMEPAGE_PASSWORD}@homepage.home
     alerts:
       - type: ntfy
       - type: email
