@@ -111,7 +111,7 @@ RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 </If>
 
 # Protect homepage
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage'" && %{REQUEST_URI} !~ m#^/.proxy(?:/.*)?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/.proxy(?:/.*)?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
