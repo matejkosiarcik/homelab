@@ -63,6 +63,7 @@ test.describe(apps.actualbudget.title, () => {
                     expect(accounts, 'There should be some accounts').not.toHaveLength(0);
                     expect(accounts, 'There should be exactly 1 account').toHaveLength(1);
                     await actualbudgetApi.getTransactions(accounts[0].id, '1900-01-01', '2999-12-31');
+                    await actualbudgetApi.shutdown();
                 } finally {
                     console.log = originalConsoleLog;
                     await fs.rm(cacheDir, { recursive: true, force: true });
