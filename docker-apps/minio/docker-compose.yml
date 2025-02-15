@@ -77,28 +77,6 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
 
-  transport-proxy-api:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy-api
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: api
-
-  transport-proxy-console:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy-console
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: console
-
 networks:
   default: # Just disable default network
     driver: none
