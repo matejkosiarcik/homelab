@@ -1,5 +1,8 @@
 import https from 'node:https';
+import os from 'node:os';
+import fs from 'node:fs/promises';
 import axios from 'axios';
+import actualbudgetApi from '@actual-app/api';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
@@ -39,6 +42,32 @@ test.describe(apps.actualbudget.title, () => {
                 await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
                 expect(page.url()).toStrictEqual(`${instance.url}/login`);
             });
+
+            test('API: Download budget', async () => {
+                const cacheDir = await fs.mkdtemp(`${os.tmpdir()}/actualbudget-`);
+                const originalConsoleLog = console.log;
+                const silentConsoleLog = () => {};
+
+                try {
+                    await fs.mkdir(cacheDir, { recursive: true });
+                    console.log = silentConsoleLog;
+
+                    await actualbudgetApi.init({
+                        dataDir: cacheDir,
+                        serverURL: instance.url,
+                        password: getEnv(instance.url, 'PASSWORD'),
+                    });
+                    await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'));
+                    await actualbudgetApi.sync();
+                    const accounts = await actualbudgetApi.getAccounts();
+                    expect(accounts, 'There should be some accounts').not.toHaveLength(0);
+                    expect(accounts, 'There should be exactly 1 account').toHaveLength(1);
+                    await actualbudgetApi.getTransactions(accounts[0].id, '1900-01-01', '2999-12-31');
+                } finally {
+                    console.log = originalConsoleLog;
+                    await fs.rm(cacheDir, { recursive: true, force: true });
+                }
+            })
         });
     }
 });

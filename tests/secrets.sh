@@ -23,8 +23,10 @@ load_password() {
 
 {
     printf 'ACTUALBUDGET_PASSWORD=%s\n' "$(load_password actualbudget app admin)"
+    printf 'ACTUALBUDGET_SYNC_ID=%s\n' "$(load_password actualbudget app sync-id)"
     printf 'ACTUALBUDGET_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget http-proxy status)"
     printf 'ACTUALBUDGET_PUBLIC_PASSWORD=%s\n' "$(load_password actualbudget-public app admin)"
+    printf 'ACTUALBUDGET_PUBLIC_SYNC_ID=%s\n' "$(load_password actualbudget-public app sync-id)"
     printf 'ACTUALBUDGET_PUBLIC_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget-public http-proxy status)"
 
     printf 'CHANGEDETECTION_PASSWORD=%s\n' "$(load_password changedetection app admin)"
