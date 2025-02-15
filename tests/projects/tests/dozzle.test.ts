@@ -56,3 +56,11 @@ test.describe(apps.dozzle.title, () => {
         });
     }
 });
+
+test.describe(apps['dozzle-agent'].title, () => {
+    for (const instance of apps['dozzle-agent'].instances) {
+        test.describe(instance.title, () => {
+            createTcpTest(instance.url, 7007);
+        });
+    }
+});
