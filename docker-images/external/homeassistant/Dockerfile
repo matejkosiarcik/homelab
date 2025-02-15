@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM homeassistant/home-assistant:2025.2.3
+FROM homeassistant/home-assistant:2025.2.4
 ENV HOMELAB_CONTAINER_NAME=homeassistant \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
