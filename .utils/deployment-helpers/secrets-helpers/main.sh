@@ -328,6 +328,9 @@ case "$full_app_name" in
     ;;
 *homepage*)
     # App
+    admin_password="$(load_password "$full_app_name" app admin)"
+    write_http_auth_user admin "$admin_password"
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     changedetection_apikey="$(load_token changedetection app api-key)"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$changedetection_apikey" >>"$output/homepage.env"
     gatus_password="$(load_token gatus app admin)"
