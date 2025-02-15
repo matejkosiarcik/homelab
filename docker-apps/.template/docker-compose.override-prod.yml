@@ -12,14 +12,15 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
+    # ports:
+    #   # Fill in ports if necessary #
+    # networks:
+    #   external-network:
 
   certificate-manager:
     <<: *common-service-options
 
   http-proxy:
-    <<: *common-service-options
-
-  transport-proxy:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80

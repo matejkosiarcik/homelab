@@ -215,7 +215,7 @@ case "$full_app_name" in
     ;;
 *dozzle-agent*)
     # App
-    if [ "$mode" = 'prod' ]; then
+    if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         app_key="$(load_notes dozzle app key)"
         printf '%s\n' "$app_key" >"$output/dozzle-key.pem"
         app_cert="$(load_notes dozzle app cert)"
@@ -231,7 +231,7 @@ case "$full_app_name" in
     hash_password_bcrypt "$admin_password" >"$tmpdir/admin-password-bcrypt.txt"
     printf 'users:\n admin:\n  email: admin@%s\n  name: admin\n  password: %s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" "$(cat "$tmpdir/admin-password-bcrypt.txt")" |
         sed -E 's~^( +)~\1\1\1\1~' >"$output/dozzle-users.yml"
-    if [ "$mode" = 'prod' ]; then
+    if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         app_key="$(load_notes dozzle app key)"
         printf '%s\n' "$app_key" >"$output/dozzle-key.pem"
         app_cert="$(load_notes dozzle app cert)"

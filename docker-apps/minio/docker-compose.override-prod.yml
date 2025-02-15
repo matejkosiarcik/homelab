@@ -28,19 +28,13 @@ services:
 
   http-proxy-api:
     <<: *common-service-options
-
-  http-proxy-console:
-    <<: *common-service-options
-
-  transport-proxy-api:
-    <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
     networks:
       external-network:
 
-  transport-proxy-console:
+  http-proxy-console:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:80:80
