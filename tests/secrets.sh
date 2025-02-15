@@ -59,6 +59,7 @@ load_password() {
     printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app prometheus-api-key)"
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant http-proxy status)"
 
+    printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$(load_password homepage app admin)"
     printf 'HOMEPAGE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homepage http-proxy status)"
 
     printf 'JELLYFIN_ADMIN_PASSWORD=%s\n' "$(load_password jellyfin app admin)"

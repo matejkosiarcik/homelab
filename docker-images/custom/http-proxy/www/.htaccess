@@ -102,11 +102,20 @@ RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
 RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 
 # Protect gatus prometheus endpoint
-<If "%{ENV:HOMELAB_APP_TYPE} == 'gatus' && %{REQUEST_URI} =~ m#^/metrics/*$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'gatus' && %{REQUEST_URI} =~ m#^/metrics/*$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
     AuthUserFile /homelab/http-user--prometheus.htpasswd
+    Require valid-user
+</If>
+
+# Protect homepage
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage'">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/http-user--admin.htpasswd
     Require valid-user
 </If>
 

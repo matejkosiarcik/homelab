@@ -43,6 +43,7 @@ services:
       dockerfile: ./custom/http-proxy/Dockerfile
     volumes:
       - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--admin.htpasswd:/homelab/http-user--admin.htpasswd:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
 
