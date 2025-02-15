@@ -33,7 +33,7 @@ test.describe(apps.homepage.title, () => {
                         await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
                     });
 
-                    test(`API: Root - User ${variant.username}`, async () => {
+                    test(`API: Successful root - User ${variant.username}`, async () => {
                         const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true, headers: { Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` } });
                         expect(response.status, 'Response Status').toStrictEqual(200);
                     });
@@ -45,7 +45,7 @@ test.describe(apps.homepage.title, () => {
                     await expect(page.locator('ul.services-list li.service').first()).not.toBeVisible();
                 });
 
-                test(`API: Root - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful root - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
                     const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true, headers: { Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` } });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
@@ -56,7 +56,7 @@ test.describe(apps.homepage.title, () => {
                 await expect(page.locator('ul.services-list li.service').first()).not.toBeVisible();
             });
 
-            test('API: Root - No user', async () => {
+            test('API: Unsuccessful root - No user', async () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true });
                 expect(response.status, 'Response Status').toStrictEqual(401);
             });
