@@ -16,19 +16,19 @@ services:
       <<: *common-env-variables
       HOSTNAME: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       ServerOptions__HostName: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:25:25
+      # - ${DOCKER_COMPOSE_NETWORK_IP}:143:143
+    networks:
+      external-network:
 
   certificate-manager:
     <<: *common-service-options
 
   http-proxy:
     <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:25:25
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-      # - ${DOCKER_COMPOSE_NETWORK_IP}:143:143
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
     networks:
       external-network:
