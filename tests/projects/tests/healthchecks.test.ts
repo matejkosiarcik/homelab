@@ -51,17 +51,20 @@ test.describe(apps.healthchecks.title, () => {
                     });
                 }
 
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    const originalUrl = page.url();
-                    await page.locator('input[name="email"]').fill(variant.email);
-                    await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
-                });
+                // NOTE: Only single negative test because of rate limits
+                if (variant.random) {
+                    test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                        const originalUrl = page.url();
+                        await page.locator('input[name="email"]').fill(variant.email);
+                        await page.locator('input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                        await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
+                        expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    });
+                }
             }
         });
     }
