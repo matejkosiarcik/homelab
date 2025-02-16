@@ -17,9 +17,6 @@ services:
       SAMBA_TITLE: samba.localhost
     volumes:
       - ./app-data/samba-data:/data:rw
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - 127.0.0.1:8139:139
       - 127.0.0.1:8445:445

@@ -17,9 +17,6 @@ services:
       SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
       - ${DOCKER_COMPOSE_SAMBA_PATH}:/data:rw
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:139:139
       - ${DOCKER_COMPOSE_NETWORK_IP}:445:445
