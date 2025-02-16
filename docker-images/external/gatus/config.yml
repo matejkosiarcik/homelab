@@ -19,7 +19,7 @@ alerting:
       insecure: true
     default-alert:
       enabled: true
-      failure-threshold: 2
+      failure-threshold: 10
       success-threshold: 1
       send-on-resolved: true
       description: Gatus healthcheck failed
@@ -30,7 +30,7 @@ alerting:
     token: ${NTFY_TOKEN}
     default-alert:
       enabled: true
-      failure-threshold: 2
+      failure-threshold: 5
       success-threshold: 1
       send-on-resolved: true
       description: Gatus healthcheck failed
