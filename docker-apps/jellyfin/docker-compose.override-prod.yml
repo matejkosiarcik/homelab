@@ -34,7 +34,7 @@ services:
   http-proxy-direct: # TODO: Remove this whole service after Let's Encrypt certificates
     <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:8096:8096
+      - ${DOCKER_COMPOSE_NETWORK_IP}:8096:80
     networks:
       external-network:
 
