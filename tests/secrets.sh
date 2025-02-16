@@ -72,6 +72,10 @@ load_password() {
     printf 'MINIO_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password minio app prometheus-token)"
     printf 'MINIO_PROXY_STATUS_PASSWORD=%s\n' "$(load_password minio http-proxy status)"
 
+    printf 'MOTIONEYE_STOVE_ADMIN_PASSWORD=%s\n' "$(load_password motioneye-stove app admin)"
+    printf 'MOTIONEYE_STOVE_USER_PASSWORD=%s\n' "$(load_password motioneye-stove app user)"
+    printf 'MOTIONEYE_STOVE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password motioneye-stove http-proxy status)"
+
     printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(load_password ntfy app admin)"
     printf 'NTFY_USER_PASSWORD=%s\n' "$(load_password ntfy app user)"
     printf 'NTFY_PUBLISHER_PASSWORD=%s\n' "$(load_password ntfy app publisher)"
