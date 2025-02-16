@@ -9,6 +9,8 @@ import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest }
 test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
         test.describe(instance.title, () => {
+            const httpUrl8096 = `${instance.url.replace('https://', 'http://')}:8096`; // TODO: Remove after real Let's encrypt certificates
+
             createHttpToHttpsRedirectTests(instance.url);
             createProxyStatusTests(instance.url);
 
@@ -48,10 +50,32 @@ test.describe(apps.jellyfin.title, () => {
                         await expect(page.locator('#indexPage.homePage')).toBeVisible();
                         await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
                     });
+
+                    test(`UI: Successful login on port 8096 - User ${variant.username}`, async ({ page }) => {
+                        await page.goto(httpUrl8096);
+                        await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                        await page.locator('input#txtManualName').fill(variant.username);
+                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
+                        await page.locator('button[type="submit"]').click();
+                        await page.waitForURL(`${httpUrl8096}/web/#/home.html`);
+                        await expect(page.locator('#indexPage.homePage')).toBeVisible();
+                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+                    });
                 }
 
                 test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
+                    await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                    const originalUrl = page.url();
+                    await page.locator('input#txtManualName').fill(variant.username);
+                    await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
+                    await page.locator('button[type="submit"]').click();
+                    await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
+                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                });
+
+                test(`UI: Unsuccessful login on port 8096 - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.goto(httpUrl8096);
                     await page.waitForURL(/\/login\.html(?:\?.*)?$/);
                     const originalUrl = page.url();
                     await page.locator('input#txtManualName').fill(variant.username);
