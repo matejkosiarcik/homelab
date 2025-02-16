@@ -16,17 +16,15 @@ services:
       <<: *common-env-variables
       HOSTNAME: localhost
       ServerOptions__HostName: localhost
+    ports:
+      - 127.0.0.1:8025:25
+      # - 127.0.0.1:8143:143
 
   certificate-manager:
     <<: *common-service-options
 
   http-proxy:
     <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
-      - 127.0.0.1:8025:25
       - 127.0.0.1:8080:80
-      # - 127.0.0.1:8143:143
       - 127.0.0.1:8443:443

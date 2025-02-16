@@ -19,12 +19,11 @@ services:
 
   http-proxy-default:
     <<: *common-service-options
-
-  http-proxy-stream:
-    <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
+
+  http-proxy-stream:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:9081:9081
