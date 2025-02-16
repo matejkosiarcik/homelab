@@ -21,9 +21,6 @@ services:
 
   http-proxy:
     <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
