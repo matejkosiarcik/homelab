@@ -20,7 +20,6 @@ services:
       - 127.0.0.1:8025:25
       # - 127.0.0.1:8143:143
 
-
   certificate-manager:
     <<: *common-service-options
 
