@@ -30,7 +30,7 @@ services:
   http-proxy-stream:
     <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:9081:9081
+      - ${DOCKER_COMPOSE_NETWORK_IP}:9081:443
     networks:
       external-network:
 

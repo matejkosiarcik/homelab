@@ -26,4 +26,4 @@ services:
   http-proxy-stream:
     <<: *common-service-options
     ports:
-      - 127.0.0.1:9081:9081
+      - 127.0.0.1:9081:443
