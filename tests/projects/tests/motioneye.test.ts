@@ -43,7 +43,14 @@ test.describe(apps.motioneye.title, () => {
                         await page.locator('.button:has-text("Login")').click();
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('.page .camera-frame .camera')).toBeVisible();
+                    });
+                }
 
+                if (variant.username === 'user') {
+                    test(`UI: Successful image open - User ${variant.username}`, async ({ page }) => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username}_PASSWORD`)}`).toString('base64')}` });
+                        await page.goto(`${instance.url}:9081`, { waitUntil: 'commit' });
+                        await expect(page.locator('body > img')).toBeVisible({ timeout: 5000 });
                     });
                 }
 
@@ -57,7 +64,31 @@ test.describe(apps.motioneye.title, () => {
                     await expect(page.locator('.page .camera-frame .camera')).not.toBeVisible();
                     await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
                 });
+
+                test(`API: Unsuccessful stream open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}:9081`, {
+                        auth: {
+                            username: variant.username,
+                            password: faker.string.alpha(10),
+                        },
+                        timeout: 5000,
+                        maxRedirects: 999,
+                        validateStatus: () => true,
+                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
             }
+
+            test(`API: Unsuccessful stream open - No user`, async () => {
+                const response = await axios.get(`${instance.url}:9081`, {
+                    timeout: 5000,
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(401);
+            });
         });
     }
 });

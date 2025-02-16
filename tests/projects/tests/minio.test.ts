@@ -1,6 +1,6 @@
 import https from 'node:https';
-import UserAgent from 'user-agents';
 import axios from 'axios';
+import UserAgent from 'user-agents';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
@@ -122,7 +122,6 @@ test.describe(apps.minio.title, () => {
                         await page.waitForURL(`${instance.consoleUrl}/browser`);
                         await expect(page.locator('#root .menuItems')).toBeVisible();
                         await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
-
                     });
                 }
 
