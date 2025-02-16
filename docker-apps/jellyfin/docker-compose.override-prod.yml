@@ -25,16 +25,16 @@ services:
 
   http-proxy:
     <<: *common-service-options
-
-  http-proxy-direct:
-    <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-      - ${DOCKER_COMPOSE_NETWORK_IP}:8096:8096 # TODO: Remove this port after Let's Encrypt certificates
+    networks:
+      external-network:
+
+  http-proxy-direct: # TODO: Remove this whole service after Let's Encrypt certificates
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:8096:8096
     networks:
       external-network:
 

@@ -21,13 +21,11 @@ services:
 
   http-proxy:
     <<: *common-service-options
-
-  http-proxy-direct:
-    <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
-      - 127.0.0.1:8096:8096 # TODO: Remove this port after Let's Encrypt certificates
+
+  http-proxy-direct: # TODO: Remove this whole service after Let's Encrypt certificates
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:8096:8096
