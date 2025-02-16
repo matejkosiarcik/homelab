@@ -6,6 +6,11 @@ import { apps } from '../../utils/apps';
 import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 
+type MotioneyeError = {
+    error: string,
+    prompt: boolean,
+};
+
 test.describe(apps.motioneye.title, () => {
     for (const instance of apps.motioneye.instances) {
         test.describe(instance.title, () => {
@@ -71,7 +76,6 @@ test.describe(apps.motioneye.title, () => {
                             username: variant.username,
                             password: faker.string.alpha(10),
                         },
-                        timeout: 5000,
                         maxRedirects: 999,
                         validateStatus: () => true,
                         httpsAgent: new https.Agent({ rejectUnauthorized: false }),
@@ -82,12 +86,22 @@ test.describe(apps.motioneye.title, () => {
 
             test(`API: Unsuccessful stream open - No user`, async () => {
                 const response = await axios.get(`${instance.url}:9081`, {
-                    timeout: 5000,
                     maxRedirects: 999,
                     validateStatus: () => true,
                     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                 });
                 expect(response.status, 'Response Status').toStrictEqual(401);
+            });
+
+            test(`API: Unsuccessful last picture open - No user`, async () => {
+                const response = await axios.get(`${instance.url}/picture/1/current`, {
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(403);
+                const body = response.data as MotioneyeError;
+                expect(body).toStrictEqual({ error: 'unauthorized', prompt: false });
             });
         });
     }
