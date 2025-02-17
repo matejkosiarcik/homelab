@@ -6,6 +6,7 @@ WORKDIR /homelab
 COPY ./external/pihole-exporter/healthcheck/main.go ./external/pihole-exporter/healthcheck/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
+# hadolint ignore=DL3007
 FROM ekofr/pihole-exporter:latest
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 ENV HOMELAB_CONTAINER_NAME=pihole-exporter \
