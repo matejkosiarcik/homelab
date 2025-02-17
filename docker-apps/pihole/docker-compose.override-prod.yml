@@ -35,6 +35,8 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+    networks:
+      external-network:
 
 networks:
   external-network:
