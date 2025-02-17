@@ -164,7 +164,7 @@ printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envva
 
 # Set PROXY_FORCE_HTTPS
 if [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
-    PROXY_FORCE_HTTPS='false'
+    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'direct' ]; then
@@ -180,6 +180,15 @@ else
 fi
 export PROXY_FORCE_HTTPS
 printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
+
+# Set PROXY_UPSTREAM_URL_PROMETHEUS
+if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter'
+else
+    PROXY_UPSTREAM_URL_PROMETHEUS=''
+fi
+export PROXY_UPSTREAM_URL_PROMETHEUS
+printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
 
 # Wait for certificates to exist before starting
 timeout 30s sh <<EOF

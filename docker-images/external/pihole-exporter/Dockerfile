@@ -1,15 +1,18 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_7: Other tags are too old, so we have to use :latest
 
 FROM golang:1.24.0-alpine3.20 AS healthcheck-builder
 WORKDIR /homelab
 COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
-FROM twinproduction/gatus:v5.15.0
-COPY ./external/gatus/config.yml /config/config.yaml
+# hadolint ignore=DL3007
+FROM ekofr/pihole-exporter:latest
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
-ENV HOMELAB_CONTAINER_NAME=gatus \
+ENV HOMELAB_CONTAINER_NAME=pihole-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
+    PIHOLE_PROTOCOL=http \
+    PORT=80 \
     TZ=Europe/Bratislava
 
 # There isn't a way to do a real healthcheck inside this container, see: https://github.com/TwiN/gatus/issues/711

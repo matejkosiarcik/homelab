@@ -479,9 +479,17 @@ case "$full_app_name" in
     ;;
 *pihole*)
     # App
+    api_key="$(load_token "$full_app_name" app api-key)"
     admin_password="$(load_password "$full_app_name" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf '%s\n' "$admin_password" >>"$output/pihole-password.txt"
+
+    # Prometheus exporter
+    if [ "$mode" = 'prod' ]; then
+        printf 'PIHOLE_API_TOKEN=%s\n' "$api_key" >>"$output/prometheus-exporter.env"
+    else
+        printf 'PIHOLE_PASSWORD=%s\n' "$admin_password" >>"$output/prometheus-exporter.env"
+    fi
 
     # HTTP Proxy
     proxy_status_password="$(load_password "$full_app_name" http-proxy status)"

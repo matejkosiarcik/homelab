@@ -26,6 +26,9 @@ services:
   app-setup:
     <<: *common-service-options
 
+  prometheus-exporter:
+    <<: *common-service-options
+
   certificate-manager:
     <<: *common-service-options
 

@@ -119,6 +119,13 @@ RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
     Require valid-user
 </If>
 
+# Custom prometheus metrics for PiHole
+RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+RewriteCond %{REQUEST_URI} ^/metrics(/*)?$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
+
 # Proxy websockets upstream
 RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} websocket [NC]

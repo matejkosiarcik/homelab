@@ -46,6 +46,20 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+  prometheus-exporter:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-prometheus-exporter
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/pihole-exporter/Dockerfile
+    environment:
+      <<: *common-env-variables
+      PIHOLE_HOSTNAME: app
+      PIHOLE_PORT: 80
+    env_file:
+      - ./app-secrets/prometheus-exporter.env
+
   certificate-manager:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
