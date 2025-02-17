@@ -181,6 +181,15 @@ fi
 export PROXY_FORCE_HTTPS
 printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
 
+# Set PROXY_UPSTREAM_URL_PROMETHEUS
+if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter'
+else
+    PROXY_UPSTREAM_URL_PROMETHEUS=''
+fi
+export PROXY_UPSTREAM_URL_PROMETHEUS
+printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
+
 # Wait for certificates to exist before starting
 timeout 30s sh <<EOF
 if [ -e '/homelab/certs/certificate.crt' ]; then
