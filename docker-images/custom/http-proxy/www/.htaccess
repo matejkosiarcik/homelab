@@ -101,16 +101,7 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
 RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
 RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 
-# Protect gatus prometheus endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'gatus' && %{REQUEST_URI} =~ m#^/metrics/*$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/http-user--prometheus.htpasswd
-    Require valid-user
-</If>
-
-# Protect homepage
+# Protect Homepage
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/.proxy(?:/.*)?$#">
     AuthType Basic
     AuthName Protected
@@ -119,9 +110,27 @@ RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
     Require valid-user
 </If>
 
+# Protect Gatus prometheus endpoint
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'gatus' && %{REQUEST_URI} =~ m#^/metrics/*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/http-user--prometheus.htpasswd
+    Require valid-user
+</If>
+
+# Protect PiHole prometheus endpoint
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'pihole' && %{REQUEST_URI} =~ m#^/metrics/*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/http-user--prometheus.htpasswd
+    Require valid-user
+</If>
+
 # Custom prometheus metrics for PiHole
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
-RewriteCond %{REQUEST_URI} ^/metrics(/*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
