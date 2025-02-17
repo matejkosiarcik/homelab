@@ -1,4 +1,5 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_7: Other tags are too old, so we have to use :latest
 
 FROM golang:1.24.0-alpine3.20 AS healthcheck-builder
 WORKDIR /homelab
