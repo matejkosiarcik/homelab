@@ -3,7 +3,7 @@
 
 FROM golang:1.24.0-alpine3.20 AS healthcheck-builder
 WORKDIR /homelab
-COPY ./external/pihole-exporter/healthcheck/main.go ./external/pihole-exporter/healthcheck/go.mod ./
+COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 # hadolint ignore=DL3007

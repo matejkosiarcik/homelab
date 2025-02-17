@@ -2,7 +2,7 @@
 
 FROM golang:1.24.0-alpine3.20 AS healthcheck-builder
 WORKDIR /homelab
-COPY ./external/gatus/healthcheck/main.go ./external/gatus/healthcheck/go.mod ./
+COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 FROM twinproduction/gatus:v5.15.0
