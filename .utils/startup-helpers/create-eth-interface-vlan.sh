@@ -24,7 +24,7 @@ if [ "$found_interface" = '' ]; then
     exit 1
 fi
 
-printf 'Found network interface %s\n' "$found_interface"
+# printf 'Found network interface %s\n' "$found_interface"
 
 router_name="ethvlan-$vlan"
 sudo ip link add link "$found_interface" name "$router_name" type vlan id "$vlan"
