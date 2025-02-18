@@ -14,4 +14,4 @@ This can also be workaround by having a virtual router, which is created on syst
 
 Follow this guide to setup "shim router" which allows the host to connect to these containers as well: <https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks>
 
-This script is already setup in `startup-initial.sh` script.
+This script is already setup in `startup.sh` script.

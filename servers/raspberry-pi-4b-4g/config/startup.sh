@@ -11,4 +11,6 @@ seq 1 255 | while read -r i; do
     sh "$git_dir/.utils/startup-helpers/create-eth-interface-bridge.sh" "$i" "10.1.16.$i"
 done
 
-sh "$(dirname "$0")/startup-always.sh"
+(find "$git_dir/servers/.current/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | while read -r file; do
+    sh "$git_dir/.utils/startup-helpers/unbound.sh" "$(basename "$file")"
+done
