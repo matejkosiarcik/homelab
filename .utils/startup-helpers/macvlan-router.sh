@@ -25,9 +25,8 @@ if [ "$found_interface" = '' ]; then
     exit 1
 fi
 
-printf 'Found network interface %s\n' "$found_interface"
-
-printf 'Creating new router %s with IP %s for network %s\n' "$router_name" "$external_ip" "$internal_docker_ip"
+# printf 'Found network interface %s\n' "$found_interface"
+# printf 'Creating new router %s with IP %s for network %s\n' "$router_name" "$external_ip" "$internal_docker_ip"
 
 # Add macvlan-shim "router" to be able to access containers from host
 sudo ip link add "$router_name" link "$found_interface" type macvlan mode bridge
