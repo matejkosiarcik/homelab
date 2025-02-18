@@ -9,14 +9,9 @@ server_dir="$git_dir/servers/.current"
 mkdir -p "$HOME/config" "$HOME/.log"
 sudo mkdir -p /root/config /root/.log
 
-if [ -f "$server_dir/config/startup-initial.sh" ]; then
-    printf 'Copy startup-initial script\n' >&2
-    cp "$server_dir/config/startup-initial.sh" "$HOME/config/startup-initial.sh"
-fi
-
-if [ -f "$server_dir/config/startup-always.sh" ]; then
-    printf 'Copy startup-always script\n' >&2
-    cp "$server_dir/config/startup-always.sh" "$HOME/config/startup-always.sh"
+if [ -f "$server_dir/config/startup.sh" ]; then
+    printf 'Copy startup script\n' >&2
+    cp "$server_dir/config/startup.sh" "$HOME/config/startup.sh"
 fi
 
 if [ -f "$server_dir/config/crontab.cron" ]; then
@@ -44,10 +39,4 @@ if [ "$(find "$server_dir/config" -mindepth 1 -maxdepth 1 -type f -name 'unbound
         sudo find '/root/config' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge '/etc/apparmor.d/local/usr.sbin.unbound'
     fi
     sudo systemctl restart apparmor
-fi
-
-### Startup services again ###
-
-if [ -f "$HOME/config/startup-always.sh" ]; then
-    sh "$HOME/config/startup-always.sh"
 fi
