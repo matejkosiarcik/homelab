@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-git_dir="$(cd "$(dirname "$(realpath "$0")")" >/dev/null 2>&1 && git rev-parse --show-toplevel || printf '%s\n' "$HOME/git/homelab")"
+git_dir="$(cd "$(dirname "$(realpath "$0")")" >/dev/null 2>&1 && git rev-parse --show-toplevel 2>/dev/null || printf '%s\n' "$HOME/git/homelab")"
 
 sh "$git_dir/.utils/startup-helpers/disable-swap.sh"
 sh "$git_dir/.utils/startup-helpers/rfkill.sh"
