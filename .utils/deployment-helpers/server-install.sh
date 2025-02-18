@@ -41,7 +41,7 @@ if [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f 
         sudo chmod a+rw "/root/config/unbound/$(basename "$file")"
     done
     if [ -f '/etc/apparmor.d/local/usr.sbin.unbound' ]; then
-        sudo find '/root/config' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge '/etc/apparmor.d/local/usr.sbin.unbound'
+        sudo find '/root/config/unbound' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge '/etc/apparmor.d/local/usr.sbin.unbound'
     fi
     sudo systemctl restart apparmor
 fi
