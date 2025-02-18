@@ -7,6 +7,8 @@ if [ "$#" -lt 1 ]; then
     exit 1
 fi
 
+sudo mkdir -p /root/config/unbound /root/.log/unbound
+
 config_file="$1"
 
 log_file="/root/.log/unbound/$(basename "$config_file" .conf).log"
