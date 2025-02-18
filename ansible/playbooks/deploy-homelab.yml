@@ -36,7 +36,6 @@
     - name: Deploy homelab
       register: deploy
       changed_when: "'CHANGED' in deploy.stdout"
-      throttle: 1
       ansible.builtin.shell: |
         set -eufo pipefail
 
