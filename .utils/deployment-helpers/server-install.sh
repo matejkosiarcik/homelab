@@ -7,7 +7,11 @@ server_dir="$git_dir/servers/.current"
 ### General config ###
 
 mkdir -p "$HOME/config" "$HOME/.log"
-sudo mkdir -p /root/config/unbound /root/.log
+sudo mkdir -p /root/config /root/.log
+
+if [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
+    sudo mkdir -p /root/config/unbound
+fi
 
 if [ -f "$server_dir/config/startup.sh" ]; then
     printf 'Copy startup script\n' >&2
