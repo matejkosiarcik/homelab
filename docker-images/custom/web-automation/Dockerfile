@@ -55,7 +55,8 @@ RUN --mount=type=cache,target=/root/.cache/ms-playwright \
         find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -name "$dir"'-*' | sort | head -n -1 | while read -r old_dir; do \
             rm -rf "$old_dir" && \
         true; done && \
-    true; done
+    true; done && \
+    mkdir -p /backup /log
 COPY --from=nodejs-build /homelab/dist ./dist
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-automation/main.sh ./
 COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
@@ -63,7 +64,6 @@ COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 
 FROM node:23.8.0-slim
 WORKDIR /homelab
-RUN mkdir -p /backup /log
 COPY --from=prefinal /homelab/node_modules ./node_modules
 RUN apt-get update && \
     npx --no-install playwright install-deps chromium && \
