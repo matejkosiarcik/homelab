@@ -29,7 +29,7 @@ if [ "$(sudo find "/root/config/unbound" -mindepth 1 -maxdepth 1 -type f -name '
         sudo rm -f "$file"
     done
 fi
-if [ "$((find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
+if [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
     printf 'Copy new unbound configs\n' >&2
     find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         sudo cp "$file" "/root/config/unbound/$(basename "$file")"
