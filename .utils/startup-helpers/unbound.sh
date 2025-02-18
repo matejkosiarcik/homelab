@@ -16,4 +16,8 @@ sudo touch "$log_file"
 sudo chown root:root "$log_file"
 sudo chmod a+rw "$log_file"
 
+sudo touch "/root/config/unbound/$(basename "$config_file" .conf).sock"
+sudo chown root:root "/root/config/unbound/$(basename "$config_file" .conf).sock"
+sudo chmod a+rwx "/root/config/unbound/$(basename "$config_file" .conf).sock"
+
 sudo unbound -v -c "/root/config/unbound/$(basename "$config_file")" &
