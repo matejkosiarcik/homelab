@@ -43,8 +43,10 @@ if [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f 
         sudo chmod a+rw "/homelab/config/unbound/$(basename "$file")"
     done
     if [ -f '/etc/apparmor.d/local/usr.sbin.unbound' ]; then
-        sudo find '/homelab/config/unbound' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | sed -E 's~$~ rw,~' | sudo sponge '/etc/apparmor.d/local/usr.sbin.unbound'
-        sudo find '/homelab/config/unbound' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' -exec sh -c 'printf "%s/%s\n" "$(dirname "$0")" "$(basename "$0" .conf).sock"' {} \; | sed -E 's~$~ rw,~' | sudo sponge '/etc/apparmor.d/local/usr.sbin.unbound'
+        (
+            sudo find '/homelab/config/unbound' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf'
+            sudo find '/homelab/config/unbound' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' -exec sh -c 'printf "%s/%s\n" "$(dirname "$0")" "$(basename "$0" .conf).sock"' {} \;
+        ) | sed -E 's~$~ rw,~' | sudo sponge '/etc/apparmor.d/local/usr.sbin.unbound'
         sudo systemctl restart apparmor
     fi
 fi
