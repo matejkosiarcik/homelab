@@ -98,9 +98,11 @@ test.describe(apps.unbound.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
                 const lines = content.split('\n');
-                expect(lines.find((el) => el.startsWith('???'))).toBeDefined(); // TODO: Replace with actual values
+                expect(lines.find((el) => el.startsWith('unbound_query_flags_total'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('unbound_query_types_total'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('unbound_response_time_seconds_bucket'))).toBeDefined();
+                expect(lines.find((el) => el.startsWith('unbound_time_up_seconds_total'))).toBeDefined();
             });
-
         });
     }
 });
