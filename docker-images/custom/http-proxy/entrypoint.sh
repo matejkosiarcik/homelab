@@ -54,7 +54,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'motioneye' ]; then
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'stream' ]; then
         PROXY_UPSTREAM_URL="http://app:9081"
     else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
@@ -63,7 +63,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
         PROXY_UPSTREAM_URL="http://app:9001"
     else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
@@ -75,7 +75,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
             PROXY_UPSTREAM_URL="https://app:8444"
         else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
             exit 1
         fi
     elif [ "$HOMELAB_ENV" = 'prod' ]; then
@@ -84,11 +84,11 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
         elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
             PROXY_UPSTREAM_URL="https://app:444"
         else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
             exit 1
         fi
     else
-        printf 'Unknown HOMELAB_ENV: %s\n' "${HOMELAB_ENV-N/A}"
+        printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
@@ -101,6 +101,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'speedtest-tracker' ]; then
     PROXY_UPSTREAM_URL="https://app"
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     PROXY_UPSTREAM_URL="http://app:9981"
+elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
+    PROXY_UPSTREAM_URL="http://not-found" # Just a placeholder
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
         PROXY_UPSTREAM_URL="https://app:8443"
@@ -109,7 +111,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
         PROXY_UPSTREAM_URL="https://app:8444"
     else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}"
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
@@ -117,7 +119,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'vikunja' ]; then
     PROXY_UPSTREAM_URL="http://app:3456"
 else
-    printf 'Unknown HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}"
+    printf 'Unknown HOMELAB_APP_TYPE: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}" "${HOMELAB_APP_TYPE}"
     exit 1
 fi
 export PROXY_UPSTREAM_URL
@@ -134,7 +136,7 @@ if [ "$HOMELAB_ENV" = 'prod' ]; then
 elif [ "$HOMELAB_ENV" = 'dev' ]; then
     PROXY_HTTP_PORT='8080'
 else
-    printf 'Unknown HOMELAB_ENV %s\n' "$HOMELAB_ENV" >&2
+    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
     exit 1
 fi
 export PROXY_HTTP_PORT
@@ -156,7 +158,7 @@ elif [ "$HOMELAB_ENV" = 'dev' ]; then
         fi
     fi
 else
-    printf 'Unknown HOMELAB_ENV %s\n' "$HOMELAB_ENV" >&2
+    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
     exit 1
 fi
 export PROXY_HTTPS_PORT
@@ -184,6 +186,8 @@ printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/env
 # Set PROXY_UPSTREAM_URL_PROMETHEUS
 if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter'
+elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter:9167'
 else
     PROXY_UPSTREAM_URL_PROMETHEUS=''
 fi

@@ -1,0 +1,56 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: unbound
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    networks:
+      internal-network: {}
+    dns_opt:
+      - single-request
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+
+services:
+  # NOTE: unbound app is not here, because it's running natively without docker
+
+  prometheus-exporter:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-prometheus-exporter
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/unbound-prometheus-exporter/Dockerfile
+
+  certificate-manager:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    env_file:
+      - ./app-secrets/certificate-manager.env
+    volumes:
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
+
+  http-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    volumes:
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--prometheus.htpasswd:/homelab/http-user--prometheus.htpasswd:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
+
+networks:
+  default: # Just disable default network
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps

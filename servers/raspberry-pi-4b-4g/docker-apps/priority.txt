@@ -6,6 +6,8 @@ unifi-controller
 dozzle-agent
 motioneye-stove
 glances
+unbound-2-default
+unbound-2-open
 
 # DNS last
 pihole-2-secondary

@@ -28,6 +28,8 @@ actualbudget-public
 openspeedtest
 speedtest-tracker
 # TODO: vikunja
+unbound-1-default
+unbound-1-open
 
 # DNS backup
 pihole-1-secondary
