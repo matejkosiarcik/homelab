@@ -9,7 +9,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 # hadolint ignore=DL3007
 FROM ekofr/pihole-exporter:latest
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
-ENV HOMELAB_CONTAINER_NAME=pihole-exporter \
+ENV HOMELAB_CONTAINER_NAME=pihole-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
     PIHOLE_PROTOCOL=http \
     PORT=80 \

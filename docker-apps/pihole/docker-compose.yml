@@ -52,7 +52,7 @@ services:
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./external/pihole-exporter/Dockerfile
+      dockerfile: ./external/pihole-prometheus-exporter/Dockerfile
     environment:
       <<: *common-env-variables
       PIHOLE_HOSTNAME: app
