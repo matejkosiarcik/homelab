@@ -2,7 +2,7 @@ import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
@@ -19,7 +19,7 @@ test.describe(apps.tvheadend.title, () => {
             const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`; // TODO: Remove after real Let's encrypt certificates
 
             createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
+            createProxyTests(instance.url);
 
             for (const port of [80, 443, 9981, 9982]) {
                 createTcpTest(instance.url, port);

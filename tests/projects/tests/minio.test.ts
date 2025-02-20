@@ -5,13 +5,13 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
+            createProxyTests(instance.url);
 
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);

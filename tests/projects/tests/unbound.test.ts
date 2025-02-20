@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { expect, test } from '@playwright/test';
 import { dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
 
@@ -16,7 +16,7 @@ test.describe(apps.unbound.title, () => {
             }
 
             createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
+            createProxyTests(instance.url);
 
 
             for (const transportVariant of ['tcp', 'udp'] as const) {

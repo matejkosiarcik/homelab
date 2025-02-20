@@ -4,13 +4,13 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { getEnv } from '../../utils/utils';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
+            createProxyTests(instance.url);
 
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
