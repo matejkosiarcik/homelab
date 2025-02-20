@@ -240,11 +240,11 @@
       when: ansible_facts['system'] == 'Linux'
       changed_when: "'CHANGED' in docker_throttle.stdout"
       ansible.builtin.shell: |
+        set -eufo pipefail
         if [ ! -d /etc/systemd/system/docker.service.d ]; then
           sudo mkdir /etc/systemd/system/docker.service.d
           printf 'CHANGED\n'
         fi
-
         before_sha="$(shasum /etc/systemd/system/docker.service.d/override.conf || true)"
         printf '[Service]\nExecStartPre=/bin/sleep 10\n' | sudo sponge /etc/systemd/system/docker.service.d/override.conf
         after_sha="$(shasum /etc/systemd/system/docker.service.d/override.conf)"
