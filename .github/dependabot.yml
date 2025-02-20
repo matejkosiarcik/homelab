@@ -93,7 +93,7 @@ updates:
   - package-ecosystem: pip
     directories:
       - /ansible
-      - /docker-images/.dependencies/gitman
+      - /docker-images/.shared/dependencies/gitman
       - /docker-images/external/homeassistant
       - /icons
     schedule:
