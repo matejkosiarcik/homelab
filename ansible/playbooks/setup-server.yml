@@ -234,6 +234,13 @@
         set -eufo pipefail
         sudo service docker restart
 
+    - name: Throtlle docker after reboot
+      become: true
+      when: ansible_facts['system'] == 'Linux'
+      ansible.builtin.shell: |
+        sudo mkdir /etc/systemd/system/docker.service.d
+        printf '[Service]\nExecStartPre=/bin/sleep 10\n' | sudo sponge /etc/systemd/system/docker.service.d/override.conf
+
     - name: Setup locale
       register: setup_locale
       when: ansible_facts['system'] == 'Linux'
