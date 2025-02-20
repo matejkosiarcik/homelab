@@ -6,12 +6,12 @@ RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.dependencies/gitman/requirements.txt ./
+COPY ./.shared/dependencies/gitman/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./.dependencies/minio-mc/gitman.yml ./
+COPY ./custom/minio-client/gitman.yml ./
 RUN gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 

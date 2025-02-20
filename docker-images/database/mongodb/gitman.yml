@@ -26,3 +26,4 @@ sources_locked:
 default_group: ""
 groups:
   -
+# TODO: Remove after MongoDB and Unifi Controller are moved to new server (with AVX instructions)
