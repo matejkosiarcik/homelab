@@ -39,7 +39,16 @@ export function createHttpToHttpsRedirectTests(url: string) {
     ];
 }
 
-export function createProxyStatusTests(url: string) {
+export function createProxyTests(url: string) {
+    const output = [test(`API: Proxy root`, async () => {
+        const response = await axios.get(`${url}/.proxy`, {
+            maxRedirects: 999,
+            validateStatus: () => true,
+            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+        });
+        expect(response.status, 'Response Status').toStrictEqual(200);
+    })];
+
     const proxyStatusVariants = [
         {
             title: 'no credentials',
@@ -63,7 +72,7 @@ export function createProxyStatusTests(url: string) {
             status: 200,
         },
     ];
-    return proxyStatusVariants.map((variant) => {
+    output.push(...proxyStatusVariants.map((variant) => {
         return test(`API: Proxy status (${variant.title})`, async () => {
             const response = await axios.get(`${url}/.proxy/status`, {
                 auth: variant.auth,
@@ -73,5 +82,6 @@ export function createProxyStatusTests(url: string) {
             });
             expect(response.status, 'Response Status').toStrictEqual(variant.status);
         });
-    });
+    }));
+    return output;
 }

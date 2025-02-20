@@ -3,7 +3,7 @@ import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 
 type MotioneyeError = {
@@ -15,7 +15,7 @@ test.describe(apps.motioneye.title, () => {
     for (const instance of apps.motioneye.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
+            createProxyTests(instance.url);
 
             for (const port of [80, 443, 9081]) {
                 createTcpTest(instance.url, port);

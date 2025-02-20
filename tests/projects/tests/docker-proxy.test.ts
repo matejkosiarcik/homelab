@@ -2,7 +2,7 @@ import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 type DockerProxyCatalogResponse = {
     repositories: string[];
@@ -12,7 +12,7 @@ test.describe(apps['docker-proxy'].title, () => {
     for (const instance of apps['docker-proxy'].instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
-            createProxyStatusTests(instance.url);
+            createProxyTests(instance.url);
 
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
