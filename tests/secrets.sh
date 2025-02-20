@@ -25,6 +25,7 @@ load_password() {
     printf 'ACTUALBUDGET_PASSWORD=%s\n' "$(load_password actualbudget app admin)"
     printf 'ACTUALBUDGET_SYNC_ID=%s\n' "$(load_password actualbudget app sync-id)"
     printf 'ACTUALBUDGET_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget http-proxy status)"
+
     printf 'ACTUALBUDGET_PUBLIC_PASSWORD=%s\n' "$(load_password actualbudget-public app admin)"
     printf 'ACTUALBUDGET_PUBLIC_SYNC_ID=%s\n' "$(load_password actualbudget-public app sync-id)"
     printf 'ACTUALBUDGET_PUBLIC_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget-public http-proxy status)"
@@ -40,16 +41,20 @@ load_password() {
     printf 'GATUS_ADMIN_PASSWORD=%s\n' "$(load_password gatus app admin)"
     printf 'GATUS_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus app prometheus)"
     printf 'GATUS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus http-proxy status)"
+
     printf 'GATUS_2_ADMIN_PASSWORD=%s\n' "$(load_password gatus-2 app admin)"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 app prometheus)"
     printf 'GATUS_2_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-2 http-proxy status)"
 
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_password glances--odroid-h3 app admin)"
     printf 'GLANCES_ODROID_H3_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--odroid-h3 http-proxy status)"
+
     printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-3b app admin)"
     printf 'GLANCES_RASPBERRY_PI_3B_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-3b http-proxy status)"
+
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-4b-2g app admin)"
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-4b-2g http-proxy status)"
+
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-4b-4g app admin)"
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-4b-4g http-proxy status)"
 
@@ -92,12 +97,15 @@ load_password() {
     printf 'PIHOLE_1_PRIMARY_PASSWORD=%s\n' "$(load_password pihole-1-primary app admin)"
     printf 'PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-primary app prometheus)"
     printf 'PIHOLE_1_PRIMARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-primary http-proxy status)"
+
     printf 'PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_password pihole-1-secondary app admin)"
     printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary app prometheus)"
     printf 'PIHOLE_1_SECONDARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary http-proxy status)"
+
     printf 'PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_password pihole-2-primary app admin)"
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-primary app prometheus)"
     printf 'PIHOLE_2_PRIMARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-primary http-proxy status)"
+
     printf 'PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_password pihole-2-secondary app admin)"
     printf 'PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary app prometheus)"
     printf 'PIHOLE_2_SECONDARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary http-proxy status)"
