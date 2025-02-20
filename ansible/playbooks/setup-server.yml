@@ -221,9 +221,9 @@
             }
           ]
         }'
-        before_sha="$(shasum '/etc/docker/daemon.json' || true)"
+        before_sha="$(shasum /etc/docker/daemon.json || true)"
         printf '%s\n' "$new_config" | sudo tee '/etc/docker/daemon.json' >/dev/null
-        after_sha="$(shasum '/etc/docker/daemon.json')"
+        after_sha="$(shasum /etc/docker/daemon.json)"
         if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
@@ -235,11 +235,22 @@
         sudo service docker restart
 
     - name: Throtlle docker after reboot
+      register: docker_throttle
       become: true
       when: ansible_facts['system'] == 'Linux'
+      changed_when: "'CHANGED' in docker_throttle.stdout"
       ansible.builtin.shell: |
-        sudo mkdir /etc/systemd/system/docker.service.d
+        if [ ! -d /etc/systemd/system/docker.service.d ]; then
+          sudo mkdir /etc/systemd/system/docker.service.d
+          printf 'CHANGED\n'
+        fi
+
+        before_sha="$(shasum /etc/systemd/system/docker.service.d/override.conf || true)"
         printf '[Service]\nExecStartPre=/bin/sleep 10\n' | sudo sponge /etc/systemd/system/docker.service.d/override.conf
+        after_sha="$(shasum /etc/systemd/system/docker.service.d/override.conf)"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
 
     - name: Setup locale
       register: setup_locale
