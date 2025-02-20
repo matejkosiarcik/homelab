@@ -11,7 +11,7 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./.dependencies/minio-mc/gitman.yml ./
+COPY ./custom/minio-client/gitman.yml ./
 RUN gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
