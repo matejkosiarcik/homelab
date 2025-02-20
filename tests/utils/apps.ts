@@ -140,10 +140,12 @@ export const apps = {
         ],
     },
     unbound: {
-        title: 'Unbound (native)',
+        title: 'Unbound',
         instances: [
-            { url: 'unbound-1.home', title: 'Unbound 1' },
-            { url: 'unbound-2.home', title: 'Unbound 2' },
+            { url: 'https://unbound-1-default.home', title: 'Unbound 1 Default' },
+            { url: 'https://unbound-1-open.home', title: 'Unbound 1 Open' },
+            { url: 'https://unbound-2-default.home', title: 'Unbound 2 Default' },
+            { url: 'https://unbound-2-open.home', title: 'Unbound 2 Open' },
         ]
     },
     'unifi-controller': {

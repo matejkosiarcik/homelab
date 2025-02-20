@@ -4,36 +4,43 @@ import _ from 'lodash';
 import { expect, test } from '@playwright/test';
 import { dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createProxyStatusTests, createTcpTest } from '../../utils/tests';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
         test.describe(instance.title, () => {
-            for (const dnsVariant of ['default', 'open'] as const) {
-                createTcpTest(instance.url.replace(/\.(.+)$/, `-${dnsVariant}.$1`), 53, dnsVariant);
+            for (const port of [53, 80, 443]) {
+                createTcpTest(instance.url, port);
             }
+
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyStatusTests(instance.url);
+
 
             for (const transportVariant of ['tcp', 'udp'] as const) {
-                for (const dnsVariant of ['default', 'open'] as const) {
-                    for (const ipVariant of ['A', 'AAAA'] as const) {
-                        test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant} ${_.capitalize(dnsVariant)}`, async () => {
-                            // Get domain for DNS server for a given variant
-                            const unboundDnsDomain = instance.url.replace(/\.(.+)$/, `-${dnsVariant}.$1`);
+                for (const ipVariant of ['A', 'AAAA'] as const) {
+                    test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                        // Get domain for DNS server for a given variant
+                        const unboundDnsDomain = instance.url.replace(/^https?:\/\//, '');
 
-                            // Get IP address
-                            const unboundDnsIps = await nodeDns.resolve(unboundDnsDomain);
-                            expect(unboundDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+                        // Get IP address
+                        const unboundDnsIps = await nodeDns.resolve(unboundDnsDomain);
+                        expect(unboundDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
 
-                            // Resolve external domain
-                            const ips = await dnsLookup('example.com', transportVariant, ipVariant, unboundDnsIps[0]);
-                            expect(ips, 'Domain should be resolved').not.toHaveLength(0);
-                            expect(ips[0], `Resolved domain should be IPv${ipVariant === 'A' ? '4' : '6'}`).toMatch(ipVariant === 'A' ? /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ : /([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
-                        });
-                    }
+                        // Resolve external domain
+                        const ips = await dnsLookup('example.com', transportVariant, ipVariant, unboundDnsIps[0]);
+                        expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                        expect(ips[0], `Resolved domain should be IPv${ipVariant === 'A' ? '4' : '6'}`).toMatch(ipVariant === 'A' ? /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ : /([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                    });
                 }
             }
+
+            test('API: Root', async () => {
+                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true });
+                expect(response.status, 'Response Status').toStrictEqual(404);
+            });
 
             const prometheusVariants = [
                 {
