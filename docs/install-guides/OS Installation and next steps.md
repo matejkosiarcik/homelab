@@ -44,6 +44,22 @@ cd "$(git rev-parse --show-toplevel)/ansible"
 ansible-playbook --limit <machine-name> playbooks/setup-system.yml
 ```
 
+## Postinstall - Slow docker
+
+Sometimes docker can cause issues when starting too fast when network interfaces are not available.
+To prevent this, run the following command:
+
+```sh
+sudo systemctl edit docker.service
+``
+
+And save following content:
+
+```txt
+[Service]
+ExecStartPre=/bin/sleep 30
+```
+
 ## Postinstall - Deploy homelab
 
 TL;DR:
