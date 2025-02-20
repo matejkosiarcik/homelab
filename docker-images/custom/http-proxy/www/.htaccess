@@ -101,6 +101,12 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
 RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
 RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 
+# Route all invalid unbound requests to 404
+RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
+RewriteCond %{REQUEST_URI} !^/metrics/*$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy/*(.+)?$ [NC]
+RewriteRule ^ /.proxy/not-found [L]
+
 # Protect Homepage
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/.proxy(?:/.*)?$#">
     AuthType Basic
@@ -130,6 +136,13 @@ RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 
 # Custom prometheus metrics for PiHole
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
+
+# Custom prometheus metrics for Unbound
+RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
 RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]

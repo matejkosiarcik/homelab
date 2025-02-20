@@ -119,6 +119,18 @@ load_password() {
     printf 'TVHEADEND_USER_PASSWORD=%s\n' "$(load_password tvheadend app user)"
     printf 'TVHEADEND_PROXY_STATUS_PASSWORD=%s\n' "$(load_password tvheadend http-proxy status)"
 
+    printf 'UNBOUND_1_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-default app prometheus)"
+    printf 'UNBOUND_1_DEFAULT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-default http-proxy status)"
+
+    printf 'UNBOUND_1_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-open app prometheus)"
+    printf 'UNBOUND_1_OPEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-open http-proxy status)"
+
+    printf 'UNBOUND_2_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-default app prometheus)"
+    printf 'UNBOUND_2_DEFAULT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-default http-proxy status)"
+
+    printf 'UNBOUND_2_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-open app prometheus)"
+    printf 'UNBOUND_2_OPEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-open http-proxy status)"
+
     printf 'UNIFI_CONTROLLER_ADMIN_PASSWORD=%s\n' "$(load_password unifi-controller app admin)"
     printf 'UNIFI_CONTROLLER_VIEWER_PASSWORD=%s\n' "$(load_password unifi-controller app viewer)"
     printf 'UNIFI_CONTROLLER_HOMEPAGE_PASSWORD=%s\n' "$(load_password unifi-controller app homepage)"

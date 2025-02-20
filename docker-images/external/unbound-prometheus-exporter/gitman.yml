@@ -1,0 +1,28 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/letsencrypt/unbound_exporter.git
+    name: unbound_exporter
+    rev: main
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+sources_locked:
+  - repo: https://github.com/letsencrypt/unbound_exporter.git
+    name: unbound_exporter
+    rev: 39672d0656e5d22594e22735a53236eac3802add
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+default_group: ""
+groups:
+  -

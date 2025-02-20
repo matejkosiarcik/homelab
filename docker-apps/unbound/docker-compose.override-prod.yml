@@ -1,0 +1,33 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: prod
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
+    HOMELAB_APP_EXTERNAL_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    restart: unless-stopped
+
+services:
+  prometheus-exporter:
+    <<: *common-service-options
+    volumes:
+      - /homelab/config/unbound/${DOCKER_COMPOSE_UNBOUND_NAME}.sock:/homelab/sock/unbound.sock:rw
+
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+    networks:
+      external-network:
+
+networks:
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

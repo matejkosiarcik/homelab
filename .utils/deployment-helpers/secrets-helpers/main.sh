@@ -571,6 +571,19 @@ case "$full_app_name" in
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
     write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
+*unbound*)
+    # HTTP Proxy
+    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
+    write_http_auth_user proxy-status "$proxy_status_password"
+    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    prometheus_password="$(load_password "$full_app_name" app prometheus)"
+    write_http_auth_user prometheus "$prometheus_password"
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
+
+    # Certificate Manager
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
+    write_healthcheck_url certificate-manager "$healthcheck_id"
+    ;;
 *unifi-controller*)
     # App
     admin_password="$(load_password "$full_app_name" app admin)"

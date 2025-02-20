@@ -1,9 +1,12 @@
 import nodeDns from 'node:dns/promises';
+import https from 'node:https';
 import _ from 'lodash';
 import { expect, test } from '@playwright/test';
-import { dnsLookup } from '../../utils/utils';
+import { dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createTcpTest } from '../../utils/tests';
+import { faker } from '@faker-js/faker';
+import axios from 'axios';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
@@ -31,6 +34,66 @@ test.describe(apps.unbound.title, () => {
                     }
                 }
             }
+
+            const prometheusVariants = [
+                {
+                    title: 'no credentials',
+                    auth: undefined as unknown as { username: string, password: string },
+                    status: 401,
+                },
+                {
+                    title: 'wrong username and password',
+                    auth: {
+                        username: faker.string.alphanumeric(10),
+                        password: faker.string.alphanumeric(10),
+                    },
+                    status: 401,
+                },
+                {
+                    title: 'wrong password',
+                    auth: {
+                        username: 'prometheus',
+                        password: faker.string.alphanumeric(10),
+                    },
+                    status: 401,
+                },
+                {
+                    title: 'successful',
+                    auth: {
+                        username: 'prometheus',
+                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                    },
+                    status: 200,
+                },
+            ];
+            for (const variant of prometheusVariants) {
+                test(`API: Prometheus metrics (${variant.title})`, async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: variant.auth,
+                        maxRedirects: 999,
+                        validateStatus: () => true,
+                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                });
+            }
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/metrics`, {
+                    auth: {
+                        username: 'prometheus',
+                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                    },
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                const lines = content.split('\n');
+                expect(lines.find((el) => el.startsWith('???'))).toBeDefined(); // TODO: Replace with actual values
+            });
+
         });
     }
 });
