@@ -234,7 +234,7 @@
         set -eufo pipefail
         sudo service docker restart
 
-    - name: Throtlle docker after reboot
+    - name: Throtlle docker service start
       register: docker_throttle
       become: true
       when: ansible_facts['system'] == 'Linux'
