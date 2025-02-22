@@ -23,10 +23,9 @@ flowchart LR
         tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
         antenna("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/antenna.png' style='min-width:80px;max-width:80px' /></div>Antenna")
 
-        network_interface --->|:80,443,9981,9982| transport_proxy
-        transport_proxy --->|:80,443| http_proxy --->|:9981| tvheadend
-        transport_proxy --->|:9981| http_proxy_direct --->|:9981| tvheadend
-        transport_proxy --->|:9982| tvheadend
+        network_interface --->|:80,443| http_proxy --->|:9981| tvheadend
+        network_interface --->|:9981| http_proxy_direct --->|:9981| tvheadend
+        network_interface --->|:9982| tvheadend
         http_proxy & http_proxy_direct -..-|fs| certificate_manager
         tvheadend ~~~ antenna
         antenna --->|signal| tvheadend
@@ -36,6 +35,5 @@ flowchart LR
     antenna ~~~ healthchecks
 
     home_network <---> app_wrapper
-    personal_devices ~~~~ transport_proxy
     personal_devices -..->|view| app_wrapper
     certificate_manager -..->|report status| healthchecks
