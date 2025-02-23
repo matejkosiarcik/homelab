@@ -1,5 +1,4 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
-# checkov:skip=CKV_DOCKER_7: Other tags are too old, so we have to use :latest
 
 FROM golang:1.24.0-alpine3.20 AS healthcheck-builder
 WORKDIR /homelab
@@ -7,7 +6,7 @@ COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 # hadolint ignore=DL3007
-FROM ekofr/pihole-exporter:latest
+FROM ekofr/pihole-exporter:v0.4.0
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 ENV HOMELAB_CONTAINER_NAME=pihole-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
