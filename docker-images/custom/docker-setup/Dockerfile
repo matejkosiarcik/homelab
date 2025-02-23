@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM docker:27.5.1
+FROM docker:28.0.0
 COPY ./custom/docker-setup/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=docker-setup \
     HOMELAB_CONTAINER_VARIANT=default \
