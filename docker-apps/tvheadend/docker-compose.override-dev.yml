@@ -13,7 +13,7 @@ services:
   app:
     <<: *common-service-options
     ports:
-      - 127.0.0.1:9981:9981  # TODO: Move this port to proxy after Let's Encrypt certificates
+      - 127.0.0.1:9981:9981 # TODO: Move this port to proxy after Let's Encrypt certificates
       - 127.0.0.1:9982:9982
 
   certificate-manager:
