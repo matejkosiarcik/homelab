@@ -14,26 +14,26 @@ services:
     <<: *common-service-options
     devices:
       - /dev/dvb:/dev/dvb
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:9981:9981
+      - ${DOCKER_COMPOSE_NETWORK_IP}:9982:9982
+    networks:
+      external-network:
 
   certificate-manager:
     <<: *common-service-options
 
   http-proxy:
     <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+    networks:
+      external-network:
 
   # TODO: Remove direct proxy after Let's Encrypt certificates
   http-proxy-direct:
     <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-      - ${DOCKER_COMPOSE_NETWORK_IP}:9981:9981
-      - ${DOCKER_COMPOSE_NETWORK_IP}:9982:9982
-    networks:
-      external-network:
 
 networks:
   external-network:

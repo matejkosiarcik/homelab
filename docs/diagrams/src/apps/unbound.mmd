@@ -21,7 +21,7 @@ flowchart LR
 
         network_interface --->|:80,443| http_proxy --->|:80| unbound_prometheus_exporter
         network_interface --->|:53| unbound
-        unbound_prometheus_exporter -->|use| unbound
+        unbound_prometheus_exporter -.->|use| unbound
         http_proxy -..-|fs| certificate_manager
     end
 

@@ -16,15 +16,13 @@ flowchart LR
 
     subgraph app_wrapper[" "]
         network_interface(" ")
-        transport_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
         certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>manager")
         ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
         ntfy_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
 
-        network_interface -->|:25,80,443| transport_proxy
-        transport_proxy --->|:80,443| http_proxy --->|:80| ntfy
-        transport_proxy --->|:25| ntfy
+        network_interface --->|:80,443| http_proxy --->|:80| ntfy
+        network_interface --->|:25| ntfy
         ntfy ~~~ ntfy_setup -..->|docker-cli| ntfy
         http_proxy -..-|fs| certificate_manager
     end

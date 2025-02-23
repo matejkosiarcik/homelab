@@ -12,6 +12,9 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
+    ports:
+      - 127.0.0.1:9981:9981
+      - 127.0.0.1:9982:9982
 
   certificate-manager:
     <<: *common-service-options
@@ -22,11 +25,6 @@ services:
 
   http-proxy:
     <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
-      - 127.0.0.1:9981:9981
-      - 127.0.0.1:9982:9982
