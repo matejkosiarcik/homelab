@@ -47,22 +47,6 @@ services:
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
 
-  # TODO: Remove direct proxy after Let's Encrypt certificates
-  http-proxy-direct:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-direct
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: direct
-    volumes:
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-      - ./app-logs/http-proxy-direct:/homelab/logs:rw
-
 networks:
   default: # Just disable default network
     driver: none

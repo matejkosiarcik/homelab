@@ -15,7 +15,7 @@ services:
     devices:
       - /dev/dvb:/dev/dvb
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:9981:9981
+      - ${DOCKER_COMPOSE_NETWORK_IP}:9981:9981 # TODO: Move this port to proxy after Let's Encrypt certificates
       - ${DOCKER_COMPOSE_NETWORK_IP}:9982:9982
     networks:
       external-network:
@@ -30,10 +30,6 @@ services:
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
     networks:
       external-network:
-
-  # TODO: Remove direct proxy after Let's Encrypt certificates
-  http-proxy-direct:
-    <<: *common-service-options
 
 networks:
   external-network:
