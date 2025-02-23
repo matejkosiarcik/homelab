@@ -52,12 +52,11 @@
 10.1.16.1 unbound-2-default.home
 10.1.16.2 unbound-2-open.home
 # ...9 Reserved
-10.1.16.10 pihole-2-primary.home
+10.1.16.11 pihole-2-primary.home
+10.1.16.12 pihole-2-secondary.home
 # ...19 Reserved
-10.1.16.20 pihole-2-secondary.home
-# ...29 Reserved
-10.1.16.31 unifi-controller.home
-10.1.16.32 gatus-2.home
-10.1.16.33 dozzle-agent-raspberry-pi-4b-4g.home
-10.1.16.34 motioneye-stove.home
-10.1.16.35 glances-raspberry-pi-4b-4g.home
+10.1.16.21 unifi-controller.home
+10.1.16.22 gatus-2.home
+10.1.16.23 dozzle-agent-raspberry-pi-4b-4g.home
+10.1.16.24 motioneye-stove.home
+10.1.16.25 glances-raspberry-pi-4b-4g.home
