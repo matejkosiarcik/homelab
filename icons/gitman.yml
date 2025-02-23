@@ -4,7 +4,7 @@ sources:
     name: bash-logo
     rev: master
     type: git
-    params:
+    params: --depth=1
     sparse_paths:
       -
     links:
@@ -15,7 +15,7 @@ sources:
     name: dashboard-icons
     rev: main
     type: git
-    params:
+    params: --depth=1
     sparse_paths:
       -
     links:
@@ -26,7 +26,7 @@ sources:
     name: dia-vrt-sheets
     rev: master
     type: git
-    params:
+    params: --depth=1
     sparse_paths:
       -
     links:
@@ -37,7 +37,7 @@ sources:
     name: homer-icons
     rev: master
     type: git
-    params:
+    params: --depth=1
     sparse_paths:
       -
     links:
@@ -48,7 +48,7 @@ sources:
     name: kubernetes-community
     rev: master
     type: git
-    params:
+    params: --depth=1
     sparse_paths:
       -
     links:
@@ -59,7 +59,7 @@ sources:
     name: organizr
     rev: v2-master
     type: git
-    params:
+    params: --depth=1
     sparse_paths:
       -
     links:
