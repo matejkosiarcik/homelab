@@ -4,7 +4,7 @@ sources:
     name: supercronic
     rev: master
     type: git
-    params:
+    params: --depth=1
     sparse_paths:
       -
     links:

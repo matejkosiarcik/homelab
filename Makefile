@@ -5,11 +5,12 @@ SHELL := /bin/sh
 .SHELLFLAGS := -ec
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
-DOCKER_APPS := $(shell find 'servers' -type f -name 'docker-compose.yml' -exec dirname {} \; | base64)
-DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not -path '*/node_modules/*' -exec dirname {} \; | base64)
-NPM_COMPONENTS_FOR_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/node_modules/*' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
-NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not -path '*/node_modules/*' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
+DOCKER_APPS := $(shell find 'servers' -type f -name 'docker-compose.yml' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
+DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
+NPM_COMPONENTS_FOR_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/node_modules/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
+NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8 ' | tr ' ' '\n' | base64)
+PYTHON_COMPONENTS := $(shell find '.' -type f -name 'requirements.txt' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 
 .POSIX:
 .SILENT:
@@ -24,21 +25,18 @@ bootstrap:
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
-	python3 -m venv icons/venv
+	printf '%s' "$(PYTHON_COMPONENTS)" | tr -d ' ' | base64 -d | while read -r component; do \
+		cd "$(PROJECT_DIR)/$$component" && \
+		python3 -m venv venv && \
+		PATH="$(PROJECT_DIR)/$$component/venv/bin:$$PATH" \
+		PIP_DISABLE_PIP_VERSION_CHECK=1 \
+			python3 -m pip install --requirement requirements.txt --quiet --upgrade && \
+	true; done
+
 	PATH="$(PROJECT_DIR)/icons/venv/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-		python3 -m pip install --requirement icons/requirements.txt --target icons/python-vendor --quiet --upgrade
-
-	PATH="$(PROJECT_DIR)/venv/bin:$(PROJECT_DIR)/icons/python-vendor/bin:$$PATH" \
-	PYTHONPATH="$(PROJECT_DIR)/icons/python-vendor" \
-	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-		gitman install --quiet --force --root icons
-
-	python3 -m venv ansible/venv
-	PATH="$(PROJECT_DIR)/ansible/venv/bin:$$PATH" \
-	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-		python3 -m pip install --requirement ansible/requirements.txt --quiet --upgrade
+		gitman install --root icons
+	# --quiet --force
 
 	printf '\n\n'
 
