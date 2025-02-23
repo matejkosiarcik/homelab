@@ -15,31 +15,31 @@
 10.1.10.11 pihole-1-primary.home
 10.1.10.12 pihole-1-secondary.home
 # ...19 Reserved
-# 10.1.10.31 Reserved for unifi-controller.home
-10.1.10.32 omada-controller.home
-10.1.10.33 dockerhub-proxy.home
-10.1.10.34 homeassistant.home
-10.1.10.35 jellyfin.home
-10.1.10.36 minio.home
-10.1.10.37 minio-console.home
-10.1.10.38 smtp4dev.home
-10.1.10.39 healthchecks.home
-10.1.10.40 gatus.home
-10.1.10.41 speedtest-tracker.home
-10.1.10.42 homepage.home
-10.1.10.43 changedetection.home
-10.1.10.44 ntfy.home
-10.1.10.45 openspeedtest.home
-10.1.10.46 actualbudget.home
-10.1.10.47 actualbudget-public.home
-# 10.1.10.48 desklamp-left-wrapper.home
-# 10.1.10.49 desklamp-right-wrapper.home
-10.1.10.50 dozzle.home
-10.1.10.51 dozzle-agent-odroid-h3.home
-10.1.10.52 netalertx.home
-10.1.10.53 vikunja.home
-10.1.10.54 glances-odroid-h3.home
-10.1.10.55 vaultwarden.home
+# 10.1.10.21 Reserved for unifi-controller.home
+10.1.10.22 omada-controller.home
+10.1.10.23 dockerhub-proxy.home
+10.1.10.24 homeassistant.home
+10.1.10.25 jellyfin.home
+10.1.10.26 minio.home
+10.1.10.27 minio-console.home
+10.1.10.28 smtp4dev.home
+10.1.10.29 healthchecks.home
+10.1.10.30 gatus.home
+10.1.10.31 speedtest-tracker.home
+10.1.10.32 homepage.home
+10.1.10.33 changedetection.home
+10.1.10.34 ntfy.home
+10.1.10.35 openspeedtest.home
+10.1.10.36 actualbudget.home
+10.1.10.37 actualbudget-public.home
+# 10.1.10.38 desklamp-left-wrapper.home
+# 10.1.10.39 desklamp-right-wrapper.home
+10.1.10.40 dozzle.home
+10.1.10.41 dozzle-agent-odroid-h3.home
+10.1.10.42 netalertx.home
+10.1.10.43 vikunja.home
+10.1.10.44 glances-odroid-h3.home
+10.1.10.45 vaultwarden.home
 
 10.1.12.1 tvheadend.home
 10.1.12.2 dozzle-agent-raspberry-pi-3b.home
