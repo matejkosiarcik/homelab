@@ -97,8 +97,28 @@ test.describe(apps.pihole.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
                 const lines = content.split('\n');
-                expect(lines.find((el) => el.startsWith('pihole_ads_blocked_today'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('pihole_reply'))).toBeDefined();
+                const metrics = [
+                    'pihole_ads_blocked_today',
+                    'pihole_ads_percentage_today',
+                    'pihole_clients_ever_seen',
+                    'pihole_dns_queries_all_types',
+                    'pihole_dns_queries_today',
+                    'pihole_domains_being_blocked',
+                    'pihole_forward_destinations',
+                    'pihole_queries_cached',
+                    'pihole_queries_forwarded',
+                    'pihole_querytypes',
+                    'pihole_reply',
+                    'pihole_status',
+                    'pihole_top_ads',
+                    'pihole_top_queries',
+                    'pihole_top_sources',
+                    'pihole_unique_clients',
+                    'pihole_unique_domains',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
             });
 
             test('UI: Successful login', async ({ page }) => {

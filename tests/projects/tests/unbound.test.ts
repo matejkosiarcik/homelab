@@ -98,10 +98,55 @@ test.describe(apps.unbound.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
                 const lines = content.split('\n');
-                expect(lines.find((el) => el.startsWith('unbound_query_flags_total'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('unbound_query_types_total'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('unbound_response_time_seconds_bucket'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('unbound_time_up_seconds_total'))).toBeDefined();
+                const metrics = [
+                    'unbound_answer_rcodes_total',
+                    'unbound_answers_bogus',
+                    'unbound_answers_secure_total',
+                    'unbound_cache_hits_total',
+                    'unbound_cache_misses_total',
+                    'unbound_expired_total',
+                    'unbound_memory_caches_bytes',
+                    'unbound_memory_doh_bytes',
+                    'unbound_memory_modules_bytes',
+                    'unbound_msg_cache_count',
+                    'unbound_prefetches_total',
+                    'unbound_queries_total',
+                    'unbound_query_aggressive_nsec',
+                    'unbound_query_classes_total',
+                    'unbound_query_edns_DO_total',
+                    'unbound_query_edns_present_total',
+                    'unbound_query_flags_total',
+                    'unbound_query_https_total',
+                    'unbound_query_ipv6_total',
+                    'unbound_query_opcodes_total',
+                    'unbound_query_tcp_total',
+                    'unbound_query_tcpout_total',
+                    'unbound_query_tls_resume_total',
+                    'unbound_query_tls_total',
+                    'unbound_query_types_total',
+                    'unbound_query_udpout_total',
+                    'unbound_recursion_time_seconds_avg',
+                    'unbound_recursion_time_seconds_median',
+                    'unbound_recursive_replies_total',
+                    'unbound_request_list_current_all',
+                    'unbound_request_list_current_user',
+                    'unbound_request_list_exceeded_total',
+                    'unbound_request_list_overwritten_total',
+                    'unbound_response_time_seconds_bucket',
+                    'unbound_response_time_seconds_count',
+                    'unbound_response_time_seconds_sum',
+                    'unbound_rrset_bogus_total',
+                    'unbound_rrset_cache_count',
+                    'unbound_time_elapsed_seconds',
+                    'unbound_time_now_seconds',
+                    'unbound_time_up_seconds_total',
+                    'unbound_unwanted_queries_total',
+                    'unbound_unwanted_replies_total',
+                    'unbound_up',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
             });
         });
     }

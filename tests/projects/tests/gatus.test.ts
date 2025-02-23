@@ -81,10 +81,19 @@ test.describe(apps.gatus.title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
                 const lines = content.split('\n');
-                expect(lines.find((el) => el.startsWith('gatus_results_connected_total'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('gatus_results_total'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('gatus_results_duration_seconds'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('promhttp_metric_handler_requests_total'))).toBeDefined();
+                const metrics = [
+                    'gatus_results_certificate_expiration_seconds',
+                    'gatus_results_code_total',
+                    'gatus_results_connected_total',
+                    'gatus_results_duration_seconds',
+                    'gatus_results_endpoint_success',
+                    'gatus_results_total',
+                    'promhttp_metric_handler_requests_in_flight',
+                    'promhttp_metric_handler_requests_total',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
             });
 
             const users = [
