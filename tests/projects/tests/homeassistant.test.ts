@@ -65,10 +65,28 @@ test.describe(apps['home-assistant'].title, () => {
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
                 const lines = content.split('\n');
-                expect(lines.find((el) => el.startsWith('python_info'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('homeassistant_state_change_total'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('homeassistant_entity_available'))).toBeDefined();
-                expect(lines.find((el) => el.startsWith('homeassistant_last_updated_time_seconds'))).toBeDefined();
+                const metrics = [
+                    'homeassistant_binary_sensor_state',
+                    'homeassistant_device_tracker_state',
+                    'homeassistant_entity_available',
+                    'homeassistant_last_updated_time_seconds',
+                    'homeassistant_light_brightness_percent',
+                    'homeassistant_person_state',
+                    'homeassistant_sensor_battery_percent',
+                    'homeassistant_sensor_state',
+                    'homeassistant_sensor_timestamp_seconds',
+                    'homeassistant_sensor_unit_floors',
+                    'homeassistant_sensor_unit_m',
+                    'homeassistant_sensor_unit_m_per_s',
+                    'homeassistant_sensor_unit_steps',
+                    'homeassistant_sensor_unit_u0x25u0x20available',
+                    'homeassistant_state_change_created',
+                    'homeassistant_state_change_total',
+                    'python_info',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
             });
 
             const users = [
