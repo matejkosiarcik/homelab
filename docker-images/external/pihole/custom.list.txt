@@ -12,10 +12,9 @@
 10.1.10.1 unbound-1-default.home
 10.1.10.2 unbound-1-open.home
 # ...9 Reserved
-10.1.10.10 pihole-1-primary.home
+10.1.10.11 pihole-1-primary.home
+10.1.10.12 pihole-1-secondary.home
 # ...19 Reserved
-10.1.10.20 pihole-1-secondary.home
-# ...29 Reserved
 # 10.1.10.31 Reserved for unifi-controller.home
 10.1.10.32 omada-controller.home
 10.1.10.33 dockerhub-proxy.home
