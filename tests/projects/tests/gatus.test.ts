@@ -80,6 +80,7 @@ test.describe(apps.gatus.title, () => {
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
+                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
                 const lines = content.split('\n');
                 const metrics = [
                     'gatus_results_certificate_expiration_seconds',

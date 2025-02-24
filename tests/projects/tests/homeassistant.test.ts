@@ -64,6 +64,7 @@ test.describe(apps['home-assistant'].title, () => {
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
+                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
                 const lines = content.split('\n');
                 const metrics = [
                     'homeassistant_binary_sensor_state',
