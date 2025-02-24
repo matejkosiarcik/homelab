@@ -5,7 +5,6 @@ WORKDIR /homelab
 COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
-# hadolint ignore=DL3007
 FROM ekofr/pihole-exporter:v0.4.0
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 ENV HOMELAB_CONTAINER_NAME=pihole-prometheus-exporter \
