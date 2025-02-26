@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 # TODO: Remove gitman.yml file after MongoDB and Unifi Controller are moved to new server (with AVX instructions)
-FROM mongo:8.0.4
+FROM mongo:8.0.5
 COPY ./database/mongodb/init-mongo-default.js /docker-entrypoint-initdb.d/init-mongo.js
 COPY ./database/mongodb/healthcheck.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=mongodb \
