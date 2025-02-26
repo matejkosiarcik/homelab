@@ -107,7 +107,16 @@ RewriteCond %{REQUEST_URI} !^/metrics/*$ [NC]
 RewriteCond %{REQUEST_URI} !^/.proxy/*(.+)?$ [NC]
 RewriteRule ^ /.proxy/not-found [L]
 
-# Protect Homepage
+# Protect Apache proxy prometheus endpoint
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/.proxy/metrics/*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/http-user--proxy-status.htpasswd
+    Require valid-user
+</If>
+
+# Protect entire Homepage
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/.proxy(?:/.*)?$#">
     AuthType Basic
     AuthName Protected
@@ -142,6 +151,12 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthUserFile /homelab/http-user--prometheus.htpasswd
     Require valid-user
 </If>
+
+# Custom prometheus metrics for http-proxy itself
+RewriteCond %{REQUEST_URI} ^/.proxy/metrics/*$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "http://http-proxy-prometheus-exporter:9117/metrics" [P,L]
 
 # Custom prometheus metrics for PiHole
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
