@@ -17,8 +17,7 @@ RewriteRule ^ - [E=_HOST:%1,NE]
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
 RewriteCond %{ENV:PROXY_FORCE_HTTPS} true [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
-RewriteCond %{REQUEST_URI} ^/.well-known/acme-challenge/ [NC,OR]
-RewriteCond %{REQUEST_URI} ^/.proxy(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/.well-known/acme-challenge/ [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
 
 # Use 301/302 for GET & HEAD requests and 308/307 for all others (POST, PUT, ...)
