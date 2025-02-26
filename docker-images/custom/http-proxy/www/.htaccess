@@ -17,6 +17,8 @@ RewriteRule ^ - [E=_HOST:%1,NE]
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
 RewriteCond %{ENV:PROXY_FORCE_HTTPS} true [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
+RewriteCond %{REQUEST_URI} ^/.proxy(/.*)?$ [NC]
+RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
 RewriteCond %{REQUEST_URI} ^/.well-known/acme-challenge/ [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
 
@@ -34,10 +36,10 @@ RewriteCond %{ENV:_FORCE_HTTPS} true [NC]
 RewriteRule ^ - [E=_REDIRECT_FOR_HTTPS:true,NE]
 
 # Set target protocol and port
-RewriteRule ^ - [E=_PROTOCOL:https,E=_PORT::%{ENV:PROXY_HTTPS_PORT},NE]
-RewriteCond %{HTTPS} off [NC]
-RewriteCond %{ENV:_FORCE_HTTPS} false [NC]
 RewriteRule ^ - [E=_PROTOCOL:http,E=_PORT::%{ENV:PROXY_HTTP_PORT},NE]
+RewriteCond %{HTTPS} on [NC,OR]
+RewriteCond %{ENV:_REDIRECT_FOR_HTTPS} true [NC]
+RewriteRule ^ - [E=_PROTOCOL:https,E=_PORT::%{ENV:PROXY_HTTPS_PORT},NE]
 
 # Hide default protocols
 RewriteCond %{ENV:_PROTOCOL} http [NC]
@@ -49,6 +51,7 @@ RewriteRule ^ - [E=_PORT:,NE]
 
 # Redirect [internally] all directories without trailing slash
 RewriteCond %{REQUEST_URI} ^/.proxy(/.*)?$ [NC]
+RewriteCond %{HTTPS} on [NC]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} !/$
 RewriteRule ^ "%{REQUEST_URI}/" [L]
