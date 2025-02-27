@@ -114,7 +114,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--proxy-status.htpasswd
+    AuthUserFile /homelab/http-user--proxy-prometheus.htpasswd
     Require valid-user
 </If>
 
