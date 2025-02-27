@@ -268,10 +268,14 @@ case "$full_app_name" in
     # HTTP Proxy
     proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
     write_http_auth_user proxy-status "$proxy_status_password"
+    printf 'PROXY_STATUS_PASSWORD=%s\n' "$proxy_status_password" >>"$output/http-proxy-prometheus-exporter.env"
     printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    proxy_prometheus_password="$(load_password "$full_app_name" http-proxy prometheus)"
+    write_http_auth_user proxy-prometheus "$proxy_prometheus_password"
+    printf 'proxy-prometheus,%s\n' "$proxy_prometheus_password" >>"$output/all-credentials.csv"
     app_prometheus_password="$(load_password "$full_app_name" app prometheus)"
     write_http_auth_user prometheus "$app_prometheus_password"
-    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
+    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
