@@ -18,14 +18,15 @@ services:
       MANAGE_HTTPS_PORT: 8443
       PORTAL_HTTP_PORT: 8081
       PORTAL_HTTPS_PORT: 8444
+    ports:
+      - 127.0.0.1:27001:27001/udp
+      - 127.0.0.1:29810:29810/udp
+      - 127.0.0.1:29811-29816:29811-29816
 
   certificate-manager:
     <<: *common-service-options
 
   http-proxy-admin:
-    <<: *common-service-options
-
-  transport-proxy:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
