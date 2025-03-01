@@ -4,10 +4,10 @@
     - Add any custom config files
     - Check if the parent image has a built-in `HEALTHCHECK` -> If not, set it up.
 2. Add directory with `docker-compose.yml` files in `docker-apps/`
-    - Add all usual scaffolding (_certificate-manager_, _http-proxy_, _transport-proxy_)
+    - Add all usual scaffolding (_certificate-manager_, _http-proxy_)
     - Specific scaffolding (db-backup (litestream)?, bespoke prometheus-exporter?, other?)
 3. Configure scripts
-    - _http-proxy_ and _transport-proxy_ redirects
+    - _http-proxy_ redirects
     - _secrets_ integration
 4. Check if the app has a favicon and it displays in web browser
     - If not -> Add a custom one in `Dockerfile` (preferred) or in _http-proxy_ (fallback)
