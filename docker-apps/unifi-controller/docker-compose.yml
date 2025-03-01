@@ -101,20 +101,6 @@ services:
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-logs/http-proxy-admin-raw:/homelab/logs:rw
 
-  transport-proxy:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-transport-proxy
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/transport-proxy/Dockerfile
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP-127.0.0.1}:1900:1900/udp
-      - ${DOCKER_COMPOSE_NETWORK_IP-127.0.0.1}:3478:3478/udp
-      - ${DOCKER_COMPOSE_NETWORK_IP-127.0.0.1}:5514:5514/udp
-      - ${DOCKER_COMPOSE_NETWORK_IP-127.0.0.1}:6789:6789
-      - ${DOCKER_COMPOSE_NETWORK_IP-127.0.0.1}:10001:10001/udp
-
   # web-backup:
   #   <<: *common-service-options
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup

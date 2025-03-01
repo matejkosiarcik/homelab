@@ -17,6 +17,14 @@ services:
       dockerfile: ./external/unifi-network-application/Dockerfile
       args:
         HOMELAB_BUILD_ENV: prod
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:1900:1900/udp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:3478:3478/udp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:5514:5514/udp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:6789:6789
+      - ${DOCKER_COMPOSE_NETWORK_IP}:10001:10001/udp
+    networks:
+      external-network:
 
   mongodb:
     <<: *common-service-options
@@ -26,17 +34,17 @@ services:
 
   http-proxy-admin:
     <<: *common-service-options
-
-  http-proxy-admin-raw:
-    <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-      - ${DOCKER_COMPOSE_NETWORK_IP}:8080:8080
-      - ${DOCKER_COMPOSE_NETWORK_IP}:8443:8443
+    networks:
+      external-network:
+
+  http-proxy-admin-raw:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:8080:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:8443:443
     networks:
       external-network:
 

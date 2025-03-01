@@ -17,6 +17,12 @@ services:
       dockerfile: ./external/unifi-network-application/Dockerfile
       args:
         HOMELAB_BUILD_ENV: dev
+    ports:
+      - 127.0.0.1:1900:1900/udp
+      - 127.0.0.1:3478:3478/udp
+      - 127.0.0.1:5514:5514/udp
+      - 127.0.0.1:6789:6789
+      - 127.0.0.1:10001:10001/udp
 
   mongodb:
     <<: *common-service-options
@@ -28,12 +34,9 @@ services:
 
   http-proxy-admin:
     <<: *common-service-options
-
-  http-proxy-admin-raw:
-    <<: *common-service-options
-
-  transport-proxy:
-    <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
+
+  http-proxy-admin-raw:
+    <<: *common-service-options
