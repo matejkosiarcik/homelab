@@ -20,7 +20,7 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
         });
 
         req.on('timeout', () => {
-            reject(new Error('Timeout'));
+            reject(new Error('DNS Timeout'));
         });
 
         req.on('message', function (err: any, answer: { answer: { address: string }[] }) {
