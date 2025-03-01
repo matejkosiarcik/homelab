@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM actualbudget/actual-server:25.2.1 AS actualbudget-original
+FROM actualbudget/actual-server:25.3.0 AS actualbudget-original
 
 FROM debian:12.9-slim AS actualbudget-patch
 WORKDIR /homelab
@@ -12,7 +12,7 @@ COPY ./external/actualbudget/app.js.patch ./
 COPY --from=actualbudget-original /app/src/app.js ./
 RUN git apply app.js.patch
 
-FROM actualbudget/actual-server:25.2.1
+FROM actualbudget/actual-server:25.3.0
 COPY --from=actualbudget-patch /homelab/app.js /app/src/app.js
 COPY ./external/actualbudget/healthcheck.js /homelab/
 ENV ERR_ERL_UNEXPECTED_X_FORWARDED_FOR=false \
