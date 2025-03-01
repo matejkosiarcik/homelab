@@ -18,14 +18,17 @@ services:
       MANAGE_HTTPS_PORT: 443
       PORTAL_HTTP_PORT: 81
       PORTAL_HTTPS_PORT: 444
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:27001:27001/udp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:29810:29810/udp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:29811-29816:29811-29816
+    networks:
+      external-network:
 
   certificate-manager:
     <<: *common-service-options
 
   http-proxy-admin:
-    <<: *common-service-options
-
-  transport-proxy:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
