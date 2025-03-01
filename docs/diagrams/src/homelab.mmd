@@ -39,7 +39,8 @@ flowchart LR
     end
 
     subgraph odroid_h3["Odroid H3"]
-        actualbudget("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget")
+        actualbudget_main("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(main)")
+        actualbudget_public("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(public)")
         changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
         dockerhub_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>DockerHub<br/>cache<br/>proxy")
         dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
@@ -62,13 +63,13 @@ flowchart LR
         hidden_odroid_h3(" ")
         class hidden_odroid_h3 no_border
 
-        actualbudget ~~~ changedetection ~~~ dockerhub_proxy
-        dozzle ~~~ dozzle_agent_4 ~~~ gatus_1
-        healthchecks ~~~ home_assistant ~~~ homepage
-        jellyfin ~~~ minio ~~~ ntfy
-        omada_controller ~~~ renovatebot ~~~ speedtest_tracker
-        pihole_1_primary ~~~ pihole_1_secondary ~~~ smtp4dev
-        unbound_1 ~~~~ hidden_odroid_h3
+        actualbudget_main ~~~ actualbudget_public ~~~ changedetection
+        dockerhub_proxy ~~~ dozzle ~~~ dozzle_agent_4
+        gatus_1 ~~~ healthchecks ~~~ home_assistant
+        homepage ~~~ jellyfin ~~~ minio
+        ntfy ~~~ omada_controller ~~~ renovatebot
+        speedtest_tracker ~~~ pihole_1_primary ~~~ pihole_1_secondary
+        smtp4dev ~~~ unbound_1 ~~~ hidden_odroid_h3
     end
 
     odroid_h3
