@@ -168,6 +168,17 @@ hash_password_bcrypt() {
     rm -f "$tmpdir/bcrypt-password-placeholder.txt"
 }
 
+write_default_proxy_users() {
+    # $1 - app name
+    proxy_status_password="$(load_password "$1" http-proxy status)"
+    write_http_auth_user proxy-status "$proxy_status_password"
+    printf 'PROXY_STATUS_PASSWORD=%s\n' "$proxy_status_password" >>"$output/http-proxy-prometheus-exporter.env"
+    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    proxy_prometheus_password="$(load_password "$1" http-proxy prometheus)"
+    write_http_auth_user proxy-prometheus "$proxy_prometheus_password"
+    printf 'proxy-prometheus,%s\n' "$proxy_prometheus_password" >>"$output/all-credentials.csv"
+}
+
 case "$full_app_name" in
 *actualbudget*)
     # App
@@ -175,9 +186,7 @@ case "$full_app_name" in
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -189,9 +198,7 @@ case "$full_app_name" in
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -205,9 +212,7 @@ case "$full_app_name" in
     printf 'REGISTRY_PROXY_PASSWORD=\n' >>"$output/docker-registry.env"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -241,9 +246,7 @@ case "$full_app_name" in
     fi
 
     # HTTP Proxy
-    proxy_status_password="$(load_password dozzle http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users dozzle
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id dozzle certificate-manager)"
@@ -266,13 +269,7 @@ case "$full_app_name" in
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$output/gatus.env"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'PROXY_STATUS_PASSWORD=%s\n' "$proxy_status_password" >>"$output/http-proxy-prometheus-exporter.env"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
-    proxy_prometheus_password="$(load_password "$full_app_name" http-proxy prometheus)"
-    write_http_auth_user proxy-prometheus "$proxy_prometheus_password"
-    printf 'proxy-prometheus,%s\n' "$proxy_prometheus_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
     app_prometheus_password="$(load_password "$full_app_name" app prometheus)"
     write_http_auth_user prometheus "$app_prometheus_password"
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
@@ -288,9 +285,7 @@ case "$full_app_name" in
     sh "$helper_script_dir/glances/main.sh" "$admin_password" "$output/glances-password.txt"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name--$server_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name--$server_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificate-manager)"
@@ -309,9 +304,7 @@ case "$full_app_name" in
     printf 'SECRET_KEY=%s\n' "$ntfy_token" >>"$output/healthchecks.env"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -323,9 +316,7 @@ case "$full_app_name" in
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -368,9 +359,7 @@ case "$full_app_name" in
     # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$vikunja_apikey" "$output/homepage.env"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -382,9 +371,7 @@ case "$full_app_name" in
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -406,9 +393,7 @@ case "$full_app_name" in
     printf 'HOMELAB_USER_PASSWORD=%s\n' "$user_password" >>"$output/minio-setup.env"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -422,9 +407,7 @@ case "$full_app_name" in
     printf 'user,%s\n' "$user_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -443,9 +426,7 @@ case "$full_app_name" in
     printf 'NTFY_PASSWORD_PUBLISHER=%s\n' "$publisher_password" >>"$output/ntfy.env"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -463,9 +444,7 @@ case "$full_app_name" in
     printf 'homepage,%s\n' "$homepage_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -473,9 +452,7 @@ case "$full_app_name" in
     ;;
 *openspeedtest*)
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -496,9 +473,7 @@ case "$full_app_name" in
     fi
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
     prometheus_password="$(load_password "$full_app_name" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
@@ -525,9 +500,7 @@ case "$full_app_name" in
     ;;
 *smtp4dev*)
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -551,9 +524,7 @@ case "$full_app_name" in
     printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/speedtest-tracker.env"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -567,9 +538,7 @@ case "$full_app_name" in
     printf 'user,%s\n' "$user_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -577,9 +546,7 @@ case "$full_app_name" in
     ;;
 *unbound*)
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
     prometheus_password="$(load_password "$full_app_name" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
@@ -604,9 +571,7 @@ case "$full_app_name" in
     printf '%s' "$mongodb_password" >>"$output/mongodb-password.txt"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
@@ -634,9 +599,7 @@ case "$full_app_name" in
     printf '%s,%s\n' "$homelab_email" "$homelab_password" >>"$output/all-credentials.csv"
 
     # HTTP Proxy
-    proxy_status_password="$(load_password "$full_app_name" http-proxy status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
-    printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
