@@ -10,16 +10,16 @@ flowchart LR
     classDef no_border stroke:#ffffff00,stroke-width:0px;
 
     subgraph raspberry_pi_3b["Raspberry Pi 3B"]
-        tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
         dozzle_agent_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
+        tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
 
         %% hidden_raspberry_pi_3b(" ")
         %% class hidden_raspberry_pi_3b no_border
     end
 
     subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2GB"]
-        dwservice("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dwservice.png' style='min-width:80px;max-width:80px' /></div>DWService")
         dozzle_agent_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
+        dwservice("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dwservice.png' style='min-width:80px;max-width:80px' /></div>DWService")
 
         %% hidden_raspberry_pi_4b_2g(" ")
         %% class hidden_raspberry_pi_4b_2g no_border
@@ -27,11 +27,12 @@ flowchart LR
 
     subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4GB"]
         dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
-        gatus_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus-2")
+        gatus_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus 2")
         motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
         pihole_2_primary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Primary")
         pihole_2_secondary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Secondary")
-        unbound_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound")
+        unbound_2_default("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Default")
+        unbound_2_open("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Open")
         unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br/>Controller")
 
         %% hidden_raspberry_pi_4b_4g(" ")
@@ -58,10 +59,11 @@ flowchart LR
         renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>Renovatebot")
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
-        unbound_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound")
+        unbound_1_default("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Default")
+        unbound_1_open("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Open")
 
-        hidden_odroid_h3(" ")
-        class hidden_odroid_h3 no_border
+        %% hidden_odroid_h3(" ")
+        %% class hidden_odroid_h3 no_border
 
         actualbudget_main ~~~ actualbudget_public ~~~ changedetection
         dockerhub_proxy ~~~ dozzle ~~~ dozzle_agent_4
@@ -69,7 +71,7 @@ flowchart LR
         homepage ~~~ jellyfin ~~~ minio
         ntfy ~~~ omada_controller ~~~ renovatebot
         speedtest_tracker ~~~ pihole_1_primary ~~~ pihole_1_secondary
-        smtp4dev ~~~ unbound_1 ~~~ hidden_odroid_h3
+        smtp4dev ~~~ unbound_1_default ~~~ unbound_1_open
     end
 
     odroid_h3
