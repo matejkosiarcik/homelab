@@ -79,6 +79,14 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg"
 magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/github.svg" -resize "$default_image_size" -density 1200 -fill black -colorize 100% "$tmpdir/github-tmp.png"
 convert_image_full "$tmpdir/github-tmp.png" "$output_dir/github.png"
 
+## VRT Icons ##
+
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$output_dir/router.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$output_dir/switch.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Wireless Access Point 2.svg" "$output_dir/wifi-ap.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Tower Server 1.svg" "$output_dir/server-big.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Appliance 1.svg" "$output_dir/server-small.png"
+
 ## Other Icons ###
 
 convert_image_full "$input_dir/other/actualbudget.png" "$output_dir/actualbudget.png"
