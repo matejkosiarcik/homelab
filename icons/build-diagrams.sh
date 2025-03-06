@@ -79,9 +79,11 @@ convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_home.svg" "$output_dir/home.
 convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$output_dir/lightbulb.png"
 convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$output_dir/network.png"
 convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_device-usb.svg" "$output_dir/usb.png"
+convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_device-usb-wifi.svg" "$output_dir/usb-wifi.png"
 
 ## VRT Icons ##
 
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Clients & Peripherals/Laptop 3.svg" "$output_dir/notebook.png"
 convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$output_dir/router.png"
 convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$output_dir/switch.png"
 convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Wireless Access Point 2.svg" "$output_dir/wifi-ap.png"
