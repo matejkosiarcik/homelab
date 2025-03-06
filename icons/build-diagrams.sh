@@ -83,12 +83,29 @@ convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_device-usb-wifi.svg" "$outpu
 
 ## VRT Icons ##
 
-convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Clients & Peripherals/Laptop 3.svg" "$output_dir/notebook.png"
-convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$output_dir/router.png"
-convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$output_dir/switch.png"
-convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Wireless Access Point 2.svg" "$output_dir/wifi-ap.png"
-convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Tower Server 1.svg" "$output_dir/server-big.png"
-convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Appliance 1.svg" "$output_dir/server-small.png"
+perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Clients & Peripherals/Laptop 3.svg" >"$tmpdir/notebook.svg"
+convert_image_full "$tmpdir/notebook.svg" "$output_dir/notebook.png"
+rm -f "$tmpdir/notebook.svg"
+
+perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" >"$tmpdir/router.png"
+convert_image_full "$tmpdir/router.png" "$output_dir/router.png"
+rm -f "$tmpdir/router.png"
+
+perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" >"$tmpdir/switch.png"
+convert_image_full "$tmpdir/switch.png" "$output_dir/switch.png"
+rm -f "$tmpdir/switch.png"
+
+perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Wireless Access Point 2.svg" >"$tmpdir/wifi-ap.png"
+convert_image_full "$tmpdir/wifi-ap.png" "$output_dir/wifi-ap.png"
+rm -f "$tmpdir/wifi-ap.png"
+
+perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Tower Server 1.svg" >"$tmpdir/server-big.png"
+convert_image_full "$tmpdir/server-big.png" "$output_dir/server-big.png"
+rm -f "$tmpdir/server-big.png"
+
+perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Appliance 1.svg" >"$tmpdir/server-small.png"
+convert_image_full "$tmpdir/server-small.png" "$output_dir/server-small.png"
+rm -f "$tmpdir/server-small.png"
 
 ## Other Icons ###
 
