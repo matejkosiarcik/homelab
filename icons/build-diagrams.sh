@@ -20,13 +20,6 @@ default_convert_options='magick -background none -bordercolor transparent INPUT_
 
 convert_image_full "$input_dir/gitman-repositories/bash-logo/assets/Logos/Icons/SVG/512x512_white.svg" "$output_dir/bash.png"
 
-### OSA Icons ###
-
-convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$output_dir/cloud.png"
-convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_home.svg" "$output_dir/home.png"
-convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$output_dir/lightbulb.png"
-convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$output_dir/network.png"
-
 ### Dashboard Icons ###
 
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/gitlab.png" "$output_dir/gitlab.png"
@@ -40,22 +33,6 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vaultwarden-light.svg" "$output_dir/vaultwarden.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vikunja.svg" "$output_dir/vikunja.png"
-
-### Organizr Icons ###
-
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$output_dir/healthchecks.png"
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$output_dir/homeassistant.png"
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$output_dir/pihole.png"
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$output_dir/speedtest-tracker.png"
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/unifi-protect.png" "$output_dir/unifi-protect.png"
-
-### Kubernetes Icons ###
-
-convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "$output_dir/apps.png"
-convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" "$output_dir/cronjob.png"
-convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/vol.svg" "$output_dir/database.png"
-convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ing.svg" "$output_dir/ingress.png"
-convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/placeholder.png"
 
 ### Homer icons ###
 
@@ -78,6 +55,40 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg"
 
 magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/github.svg" -resize "$default_image_size" -density 1200 -fill black -colorize 100% "$tmpdir/github-tmp.png"
 convert_image_full "$tmpdir/github-tmp.png" "$output_dir/github.png"
+
+### Kubernetes Icons ###
+
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "$output_dir/apps.png"
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" "$output_dir/cronjob.png"
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/vol.svg" "$output_dir/database.png"
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ing.svg" "$output_dir/ingress.png"
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/placeholder.png"
+
+### Organizr Icons ###
+
+convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$output_dir/healthchecks.png"
+convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$output_dir/homeassistant.png"
+convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$output_dir/pihole.png"
+convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$output_dir/speedtest-tracker.png"
+convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/unifi-protect.png" "$output_dir/unifi-protect.png"
+
+### OSA Icons ###
+
+convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$output_dir/cloud.png"
+convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_home.svg" "$output_dir/home.png"
+convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_awareness.svg" "$output_dir/lightbulb.png"
+convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_hub.svg" "$output_dir/network.png"
+convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_device-usb.svg" "$output_dir/usb.png"
+convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_device-usb-wifi.svg" "$output_dir/usb-wifi.png"
+
+## VRT Icons ##
+
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Clients & Peripherals/Laptop 3.svg" "$output_dir/notebook.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$output_dir/router.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$output_dir/switch.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Wireless Access Point 2.svg" "$output_dir/wifi-ap.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Tower Server 1.svg" "$output_dir/server-big.png"
+convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Appliance 1.svg" "$output_dir/server-small.png"
 
 ## Other Icons ###
 
