@@ -126,7 +126,7 @@ test.describe(apps.pihole.title, () => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/admin/login.php`);
                 await page.locator('form#loginform input#loginpw').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('form#loginform button[type="submit"]').click();
+                await page.locator('form#loginform button[type="submit"]').click({ timeout: 5000 });
                 await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
                 await expect(page.locator('.sidebar li a:has-text("Dashboard")')).toBeVisible();
                 await expect(page.locator('.content-wrapper #queries-over-time')).toBeVisible();
