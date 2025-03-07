@@ -5,7 +5,7 @@ WORKDIR /homelab
 COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
-FROM ekofr/pihole-exporter:v0.4.0
+FROM ekofr/pihole-exporter:v1.0.1
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 ENV HOMELAB_CONTAINER_NAME=pihole-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
