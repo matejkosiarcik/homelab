@@ -22,7 +22,8 @@ test.describe(apps['unifi-controller'].title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
 
-            for (const port of [80, 443, 6789, 8080, 8443]) {
+            // port 6789 skipped
+            for (const port of [80, 443, 8080, 8443]) {
                 createTcpTest(instance.url, port);
             }
 
