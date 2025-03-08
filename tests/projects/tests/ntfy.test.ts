@@ -27,7 +27,6 @@ test.describe(apps.ntfy.title, () => {
             });
         });
 
-
         const users = [
             {
                 username: 'admin',
