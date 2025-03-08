@@ -194,6 +194,13 @@ fi
 export PROXY_UPSTREAM_URL_PROMETHEUS
 printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
 
+# Set PROXY_PROMETHEUS_EXPORTER_HOSTNAME
+if [ "${PROXY_PROMETHEUS_EXPORTER_HOSTNAME-}" = '' ]; then
+    PROXY_PROMETHEUS_EXPORTER_HOSTNAME='http-proxy-prometheus-exporter'
+fi
+export PROXY_PROMETHEUS_EXPORTER_HOSTNAME
+printf "export PROXY_PROMETHEUS_EXPORTER_HOSTNAME='%s'\n" "$PROXY_PROMETHEUS_EXPORTER_HOSTNAME" >>/etc/apache2/envvars
+
 # Wait for certificates to exist before starting
 timeout 30s sh <<EOF
 if [ -e '/homelab/certs/certificate.crt' ]; then
