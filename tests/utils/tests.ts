@@ -100,57 +100,56 @@ export function createProxyTests(url: string) {
         });
     }));
 
-    // TODO: Enable proxy tests
-    // const proxyPrometheusVariants = [
-    //     {
-    //         title: 'no credentials',
-    //         auth: undefined as unknown as { username: string, password: string },
-    //         status: 401,
-    //     },
-    //     {
-    //         title: 'empty password',
-    //         auth: {
-    //             username: 'proxy-prometheus',
-    //             password: '',
-    //         },
-    //         status: 401,
-    //     },
-    //     {
-    //         title: 'wrong password',
-    //         auth: {
-    //             username: 'proxy-prometheus',
-    //             password: faker.string.alphanumeric(10),
-    //         },
-    //         status: 401,
-    //     },
-    //     {
-    //         title: 'wrong username/password',
-    //         auth: {
-    //             username: faker.string.alphanumeric(10),
-    //             password: faker.string.alphanumeric(10),
-    //         },
-    //         status: 401,
-    //     },
-    //     {
-    //         title: 'successful',
-    //         auth: {
-    //             username: 'proxy-prometheus',
-    //             password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
-    //         },
-    //         status: 200,
-    //     },
-    // ];
-    // output.push(...proxyPrometheusVariants.map((variant) => {
-    //     return test(`API: Proxy prometheus (${variant.title})`, async () => {
-    //         const response = await axios.get(`${url}/.proxy/metrics`, {
-    //             auth: variant.auth,
-    //             maxRedirects: 999,
-    //             validateStatus: () => true,
-    //             httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-    //         });
-    //         expect(response.status, 'Response Status').toStrictEqual(variant.status);
-    //     });
-    // }));
+    const proxyPrometheusVariants = [
+        {
+            title: 'no credentials',
+            auth: undefined as unknown as { username: string, password: string },
+            status: 401,
+        },
+        {
+            title: 'empty password',
+            auth: {
+                username: 'proxy-prometheus',
+                password: '',
+            },
+            status: 401,
+        },
+        {
+            title: 'wrong password',
+            auth: {
+                username: 'proxy-prometheus',
+                password: faker.string.alphanumeric(10),
+            },
+            status: 401,
+        },
+        {
+            title: 'wrong username/password',
+            auth: {
+                username: faker.string.alphanumeric(10),
+                password: faker.string.alphanumeric(10),
+            },
+            status: 401,
+        },
+        {
+            title: 'successful',
+            auth: {
+                username: 'proxy-prometheus',
+                password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
+            },
+            status: 200,
+        },
+    ];
+    output.push(...proxyPrometheusVariants.map((variant) => {
+        return test(`API: Proxy prometheus metrics (${variant.title})`, async () => {
+            const response = await axios.get(`${url}/.proxy/metrics`, {
+                auth: variant.auth,
+                maxRedirects: 999,
+                validateStatus: () => true,
+                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+            });
+            expect(response.status, 'Response Status').toStrictEqual(variant.status);
+        });
+    }));
 
     return output;
 }
