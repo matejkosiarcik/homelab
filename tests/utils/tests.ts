@@ -100,7 +100,7 @@ export function createProxyTests(url: string) {
         });
     }));
 
-    // TODO: Enable proxy tests
+    // TODO: Reenable proxy prometheus tests
     // const proxyPrometheusVariants = [
     //     {
     //         title: 'no credentials',
@@ -141,7 +141,7 @@ export function createProxyTests(url: string) {
     //     },
     // ];
     // output.push(...proxyPrometheusVariants.map((variant) => {
-    //     return test(`API: Proxy prometheus (${variant.title})`, async () => {
+    //     return test(`API: Proxy prometheus metrics (${variant.title})`, async () => {
     //         const response = await axios.get(`${url}/.proxy/metrics`, {
     //             auth: variant.auth,
     //             maxRedirects: 999,
@@ -153,4 +153,92 @@ export function createProxyTests(url: string) {
     // }));
 
     return output;
+}
+
+export function createPrometheusTests(url: string, _options: { auth: 'basic' | 'token'; path?: string | undefined  }) {
+    const options = {
+        auth: _options.auth,
+        path: _options.path ?? '/metrics',
+    };
+
+    switch (options.auth) {
+        case 'basic': {
+            const prometheusVariants = [
+                {
+                    title: 'no credentials',
+                    auth: undefined as unknown as { username: string, password: string },
+                    status: 401,
+                },
+                {
+                    title: 'wrong username and password',
+                    auth: {
+                        username: faker.string.alphanumeric(10),
+                        password: faker.string.alphanumeric(10),
+                    },
+                    status: 401,
+                },
+                {
+                    title: 'wrong password',
+                    auth: {
+                        username: 'prometheus',
+                        password: faker.string.alphanumeric(10),
+                    },
+                    status: 401,
+                },
+                {
+                    title: 'successful',
+                    auth: {
+                        username: 'prometheus',
+                        password: getEnv(url, 'PROMETHEUS_PASSWORD'),
+                    },
+                    status: 200,
+                },
+            ];
+            return prometheusVariants.map((variant) => test(`API: Prometheus metrics (${variant.title})`, async () => {
+                const response = await axios.get(`${url}${options.path}`, {
+                    auth: variant.auth,
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            }));
+        }
+        case 'token': {
+            const prometheusVariants = [
+                {
+                    title: 'no credentials',
+                    auth: undefined as unknown as string,
+                    status: url.includes('minio') ? 403 : 401,
+                },
+                {
+                    title: 'wrong token',
+                    auth: faker.internet.jwt(),
+                    status: url.includes('minio') ? 403 : 401,
+                },
+                {
+                    title: 'successful',
+                    auth: getEnv(url, 'PROMETHEUS_BEARER_TOKEN'),
+                    status: 200,
+                },
+            ];
+            return prometheusVariants.map((variant) => test(`API: Prometheus metrics (${variant.title})`, async () => {
+                const headers: Record<string, string> = {};
+                if (variant.auth) {
+                    headers['Authorization'] = `Bearer ${variant.auth}`;
+                }
+
+                const response = await axios.get(`${url}${options.path}`, {
+                    headers: headers,
+                    maxRedirects: 999,
+                    validateStatus: () => true,
+                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                });
+                expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            }));
+        }
+        default: {
+            return [];
+        }
+    };
 }

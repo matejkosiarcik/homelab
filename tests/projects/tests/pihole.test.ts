@@ -6,13 +6,14 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
+            createPrometheusTests(instance.url, { auth: 'basic' });
 
             for (const port of [53, 80, 443]) {
                 createTcpTest(instance.url, port);
@@ -40,49 +41,6 @@ test.describe(apps.pihole.title, () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
-
-            const prometheusVariants = [
-                {
-                    title: 'no credentials',
-                    auth: undefined as unknown as { username: string, password: string },
-                    status: 401,
-                },
-                {
-                    title: 'wrong username and password',
-                    auth: {
-                        username: faker.string.alphanumeric(10),
-                        password: faker.string.alphanumeric(10),
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'wrong password',
-                    auth: {
-                        username: 'prometheus',
-                        password: faker.string.alphanumeric(10),
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'successful',
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
-                    status: 200,
-                },
-            ];
-            for (const variant of prometheusVariants) {
-                test(`API: Prometheus metrics (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/metrics`, {
-                        auth: variant.auth,
-                        maxRedirects: 999,
-                        validateStatus: () => true,
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                    });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
-                });
-            }
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {

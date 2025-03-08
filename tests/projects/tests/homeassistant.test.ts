@@ -4,13 +4,14 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps['home-assistant'].title, () => {
     for (const instance of apps['home-assistant'].instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
+            createPrometheusTests(instance.url, { auth: 'token', path: '/api/prometheus' });
 
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
@@ -20,40 +21,6 @@ test.describe(apps['home-assistant'].title, () => {
                 const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
-
-            const prometheusVariants = [
-                {
-                    title: 'no token',
-                    auth: undefined as unknown as { username: string, password: string },
-                    status: 401,
-                },
-                {
-                    title: 'wrong token',
-                    auth: faker.internet.jwt(),
-                    status: 401,
-                },
-                {
-                    title: 'successful',
-                    auth: getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN'),
-                    status: 200,
-                },
-            ];
-            for (const variant of prometheusVariants) {
-                test(`API: Prometheus metrics (${variant.title})`, async () => {
-                    const headers: Record<string, string> = {};
-                    if (variant.auth) {
-                        headers['Authorization'] = `Bearer ${variant.auth}`;
-                    }
-
-                    const response = await axios.get(`${instance.url}/api/prometheus`, {
-                        headers: headers,
-                        maxRedirects: 999,
-                        validateStatus: () => true,
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                    });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
-                });
-            }
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/api/prometheus`, {
