@@ -158,7 +158,7 @@ RewriteRule ^ /.proxy/not-found [L]
 RewriteCond %{REQUEST_URI} ^/.proxy/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "http://http-proxy-prometheus-exporter:9117/metrics" [P,L]
+RewriteRule ^ "http://%{ENV:PROXY_PROMETHEUS_EXPORTER_HOSTNAME}:9117/metrics" [P,L]
 
 # Custom prometheus metrics for PiHole
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
