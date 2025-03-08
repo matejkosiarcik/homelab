@@ -67,6 +67,7 @@ test.describe(apps.jellyfin.title, () => {
                     await page.goto(instance.url);
                     await page.waitForURL(/\/login\.html(?:\?.*)?$/);
                     const originalUrl = page.url();
+                    await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
                     await page.locator('input#txtManualName').fill(variant.username);
                     await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
                     await page.locator('button[type="submit"]').click();
