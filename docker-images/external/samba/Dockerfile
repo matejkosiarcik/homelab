@@ -6,8 +6,8 @@ RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         gnutls-bin samba moreutils && \
     rm -rf /var/lib/apt/lists/*
-COPY ./custom/samba/smb.conf /etc/samba/smb.conf
-COPY ./custom/samba/entrypoint.sh ./
+COPY ./external/samba/smb.conf /etc/samba/smb.conf
+COPY ./external/samba/entrypoint.sh ./
 ENV HOMELAB_CONTAINER_NAME=samba \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

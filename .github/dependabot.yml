@@ -23,8 +23,6 @@ updates:
       - /docker-images/custom/certificate-manager
       - /docker-images/custom/docker-setup
       - /docker-images/custom/http-proxy
-      - /docker-images/custom/minio-client
-      - /docker-images/custom/samba
       - /docker-images/custom/web-automation
       - /docker-images/database/mongodb
       - /docker-images/external/actualbudget
@@ -36,6 +34,7 @@ updates:
       - /docker-images/external/homeassistant
       - /docker-images/external/homepage
       - /docker-images/external/jellyfin
+      - /docker-images/external/minio-client
       - /docker-images/external/minio-server
       - /docker-images/external/motioneye
       - /docker-images/external/netalertx
@@ -43,6 +42,7 @@ updates:
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole
       - /docker-images/external/renovatebot
+      - /docker-images/external/samba
       - /docker-images/external/smtp4dev
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/tvheadend

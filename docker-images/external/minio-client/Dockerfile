@@ -11,7 +11,7 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./custom/minio-client/gitman.yml ./
+COPY ./external/minio-client/gitman.yml ./
 RUN gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
@@ -33,7 +33,7 @@ RUN sh validate-executable.sh ./minio-mc/mc
 FROM debian:12.9-slim AS prefinal
 WORKDIR /homelab
 COPY --from=minio-mc-build /homelab/minio-mc/mc ./bin/
-COPY ./custom/minio-client/entrypoint.sh ./custom/minio-client/main.sh ./custom/minio-client/plain-buckets.txt ./custom/minio-client/versioned-buckets.txt ./
+COPY ./external/minio-client/entrypoint.sh ./external/minio-client/main.sh ./external/minio-client/plain-buckets.txt ./external/minio-client/versioned-buckets.txt ./
 
 FROM debian:12.9-slim
 WORKDIR /homelab

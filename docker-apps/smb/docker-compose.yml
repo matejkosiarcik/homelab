@@ -17,7 +17,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/samba/Dockerfile
+      dockerfile: ./external/samba/Dockerfile
     env_file:
       - ./app-secrets/samba.env
     volumes:
