@@ -20,7 +20,7 @@ services:
       dockerfile: ./external/glances/Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./app-secrets/glances-password.txt:/root/.config/glances/glances.pwd:ro
+      - ./app-secrets/glances-password.txt:/root/.config/glances/admin.pwd:ro
     pid: host
 
   certificate-manager:
