@@ -31,6 +31,9 @@ test.describe(apps.jellyfin.title, () => {
                     username: 'admin',
                 },
                 {
+                    username: 'monika',
+                },
+                {
                     username: faker.string.alpha(10),
                     random: true,
                 }
