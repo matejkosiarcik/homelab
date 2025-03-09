@@ -165,6 +165,45 @@ export function createProxyTests(url: string) {
         });
     }));
 
+    output.push(
+        test('API: Proxy prometheus metrics content', async () => {
+            const response = await axios.get(`${url}/.proxy/metrics`, {
+                auth: {
+                    username: 'proxy-prometheus',
+                    password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
+                },
+                maxRedirects: 999,
+                validateStatus: () => true,
+                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+            });
+            expect(response.status, 'Response Status').toStrictEqual(200);
+            const content = response.data as string;
+            await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+            const lines = content.split('\n');
+            const metrics = [
+                'apache_accesses_total',
+                'apache_connections',
+                'apache_cpu_time_ms_total',
+                'apache_cpuload',
+                'apache_duration_ms_total',
+                'apache_exporter_build_info',
+                'apache_generation',
+                'apache_info',
+                'apache_load',
+                'apache_processes',
+                'apache_scoreboard',
+                'apache_sent_kilobytes_total',
+                'apache_up',
+                'apache_uptime_seconds_total',
+                'apache_version',
+                'apache_workers',
+            ];
+            for (const metric of metrics) {
+                expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+            }
+        }),
+    );
+
     return output;
 }
 
