@@ -40,6 +40,7 @@
 10.1.10.43 vikunja.home
 10.1.10.44 glances-odroid-h3.home
 10.1.10.45 vaultwarden.home
+10.1.10.46 prometheus.home
 
 10.1.12.1 tvheadend.home
 10.1.12.2 dozzle-agent-raspberry-pi-3b.home
