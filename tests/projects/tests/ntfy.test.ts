@@ -76,25 +76,6 @@ test.describe(apps.ntfy.title, () => {
                     random: true,
                 }
             ]) {
-                if (!variant.random) {
-                    test(`API: Successful send notification - User ${variant.username}`, async () => {
-                        await delay(1000); // Must delay tests a bit
-                        const response = await axios.request({
-                            auth: {
-                                username: variant.username,
-                                password: getEnv(instance.url, `${variant.username}_PASSWORD`),
-                            },
-                            data: faker.string.alphanumeric(30),
-                            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                            maxRedirects: 0,
-                            method: 'POST',
-                            validateStatus: () => true,
-                            url: `${instance.url}/test`,
-                        });
-                        expect(response.status, 'Response Status').toStrictEqual(200);
-                    });
-                }
-
                 test(`API: Unsuccessful send notification  - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
                     await delay(1000); // Must delay tests a bit
                     const response = await axios.request({
@@ -152,6 +133,8 @@ test.describe(apps.ntfy.title, () => {
                     expect(response.status, 'Response Status').toStrictEqual(200);
 
                     await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).toBeVisible();
+                    await page.locator(`.MuiCardContent-root:has-text("${notification}") button:has([data-testid="CloseIcon"])`).click();
+                    await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).not.toBeVisible();
                 });
             }
         });
