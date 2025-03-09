@@ -84,6 +84,7 @@ services:
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
       - ./app-logs/http-proxy-admin:/homelab/logs:rw
 
   http-proxy-admin-raw:
