@@ -358,22 +358,22 @@ endpoints:
   - <<: *default-icmp
     name: DockerHub proxy ICMP
     group: App - DockerHub proxy
-    url: icmp://dockerhub-proxy.home
+    url: icmp://dockerhub-cache-proxy.home
 
   - <<: *default-http
     name: DockerHub proxy HTTP
     group: App - DockerHub proxy
-    url: http://dockerhub-proxy.home
+    url: http://dockerhub-cache-proxy.home
 
   - <<: *default-http
     name: DockerHub proxy HTTPS
     group: App - DockerHub proxy
-    url: https://dockerhub-proxy.home
+    url: https://dockerhub-cache-proxy.home
 
   - <<: *default-http
     name: DockerHub proxy Api
     group: App - DockerHub proxy
-    url: https://dockerhub-proxy.home/v2/_catalog
+    url: https://dockerhub-cache-proxy.home/v2/_catalog
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].repositories) == true"
@@ -384,12 +384,12 @@ endpoints:
   - <<: *default-tcp
     name: DockerHub proxy TCP:80
     group: App - DockerHub proxy
-    url: tcp://dockerhub-proxy.home:80
+    url: tcp://dockerhub-cache-proxy.home:80
 
   - <<: *default-tcp
     name: DockerHub proxy TCP:443
     group: App - DockerHub proxy
-    url: tcp://dockerhub-proxy.home:443
+    url: tcp://dockerhub-cache-proxy.home:443
 
   ### Group: App - Dozzle ###
 

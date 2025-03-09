@@ -105,7 +105,7 @@ jobs:
             printf '%s ' '{'
             printf '%s ' '"actualbudget": ["/servers/odroid-h3/docker-apps/actualbudget"],'
             printf '%s ' '"changedetection": ["/servers/odroid-h3/docker-apps/changedetection"],'
-            printf '%s ' '"docker-proxy": ["/servers/odroid-h3/docker-apps/dockerhub-proxy"],'
+            printf '%s ' '"docker-proxy": ["/servers/odroid-h3/docker-apps/dockerhub-cache-proxy"],'
             printf '%s %s %s' \
               '"dozzle-agent":' \
               '["/servers/odroid-h3/docker-apps/dozzle-agent", "/servers/raspberry-pi-3b/docker-apps/dozzle-agent",' \

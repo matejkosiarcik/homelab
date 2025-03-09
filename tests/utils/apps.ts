@@ -15,7 +15,7 @@ export const apps = {
     'docker-proxy': {
         title: 'Docker Proxy',
         instances: [
-            { url: 'https://dockerhub-proxy.home', title: 'DockerHub Proxy' },
+            { url: 'https://dockerhub-cache-proxy.home', title: 'DockerHub Proxy' },
         ],
     },
     dozzle: {
