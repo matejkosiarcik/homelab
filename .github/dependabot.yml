@@ -41,6 +41,7 @@ updates:
       - /docker-images/external/ntfy
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole
+      - /docker-images/external/prometheus
       - /docker-images/external/renovatebot
       - /docker-images/external/samba
       - /docker-images/external/smtp4dev
