@@ -61,6 +61,7 @@ services:
       - ./app-logs/http-proxy-api:/homelab/logs:rw
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
 
   http-proxy-console:
     <<: *common-service-options
@@ -76,6 +77,19 @@ services:
       - ./app-logs/http-proxy-console:/homelab/logs:rw
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-prometheus-exporter
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
+    environment:
+      APACHE_HOST: http-proxy-api
+    env_file:
+      - ./app-secrets/http-proxy-prometheus-exporter.env
 
 networks:
   default: # Just disable default network

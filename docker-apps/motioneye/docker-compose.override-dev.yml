@@ -27,3 +27,6 @@ services:
     <<: *common-service-options
     ports:
       - 127.0.0.1:9081:443
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options

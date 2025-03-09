@@ -33,3 +33,6 @@ services:
     ports:
       - 127.0.0.1:8081:80
       - 127.0.0.1:8444:443
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options
