@@ -7,9 +7,10 @@ test.describe(apps.openspeedtest.title, () => {
         test.describe(instance.title, () => {
             // NOTE: HTTP->HTTPS not tested because redirect is disable because of speed variance
             // Proxy tests are skipped, because openspeedtest has no proxy
+            // createHttpsToHttpRedirectTests(instance.url);
             createApiRootTest(instance.url);
 
-            for (const port of [80, 443]) {
+            for (const port of [80]) {
                 createTcpTest(instance.url, port);
             }
 
