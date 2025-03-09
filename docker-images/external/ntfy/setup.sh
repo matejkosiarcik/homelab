@@ -36,7 +36,7 @@ ntfy user change-role publisher user
 ntfy access publisher '*' write-only
 
 # Create publishing token if not already created
-publisher_tokens_count="$(ntfy token list publisher 2>&1 | grep -E '^- tk_' | wc -l)"
+publisher_tokens_count="$(ntfy token list publisher 2>&1 | grep -c -E '^- tk_')"
 if [ "$publisher_tokens_count" -eq '0' ]; then
     printf 'Creating initial publisher token\n' >&2
     ntfy token add publisher
