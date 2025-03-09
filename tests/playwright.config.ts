@@ -39,7 +39,7 @@ const projects: Project[] = [
 // Final config
 const config: PlaywrightTestConfig = {
     forbidOnly: false,
-    fullyParallel: true,
+    fullyParallel: false,
     globalTimeout: 55 * 60_000,
     outputDir: path.join('test-report', 'artifacts'),
     projects: projects,

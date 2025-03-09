@@ -1,6 +1,14 @@
 import process from 'node:process';
 import dns from 'native-dns';
 
+export async function delay(timeout: number): Promise<void> {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, timeout);
+    })
+}
+
 export function getEnv(instanceUrl: string, name: string): string {
     const instanceName = URL.parse(instanceUrl)!.hostname.replace(/\.home$/, '').replaceAll('-', '_');
     const envName = `${instanceName}_${name}`.toUpperCase();
