@@ -2,7 +2,7 @@ import https from 'node:https';
 import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
@@ -20,15 +20,11 @@ test.describe(apps.tvheadend.title, () => {
 
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
+            createApiRootTest(instance.url);
 
             for (const port of [80, 443, 9981, 9982]) {
                 createTcpTest(instance.url, port);
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
 
             test('API: Root :9981', async () => {  // TODO: Remove after real Let's encrypt certificates
                 const response = await axios.get(httpUrl9981, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });

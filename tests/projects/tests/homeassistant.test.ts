@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps['home-assistant'].title, () => {
     for (const instance of apps['home-assistant'].instances) {
@@ -12,15 +12,11 @@ test.describe(apps['home-assistant'].title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'token', path: '/api/prometheus' });
+            createApiRootTest(instance.url);
 
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/api/prometheus`, {

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { expect, test } from '@playwright/test';
 import { dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 import axios from 'axios';
 
 test.describe(apps.unbound.title, () => {
@@ -13,6 +13,7 @@ test.describe(apps.unbound.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
+            createApiRootTest(instance.url, { status: 404 });
 
             for (const port of [53, 80, 443]) {
                 createTcpTest(instance.url, port);
@@ -35,11 +36,6 @@ test.describe(apps.unbound.title, () => {
                     });
                 }
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true });
-                expect(response.status, 'Response Status').toStrictEqual(404);
-            });
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {

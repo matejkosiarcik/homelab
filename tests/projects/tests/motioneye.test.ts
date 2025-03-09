@@ -3,7 +3,7 @@ import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 
 type MotioneyeError = {
@@ -16,15 +16,11 @@ test.describe(apps.motioneye.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
+            createApiRootTest(instance.url);
 
             for (const port of [80, 443, 9081]) {
                 createTcpTest(instance.url, port);
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
 
             const users = [
                 {

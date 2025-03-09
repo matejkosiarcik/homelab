@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
@@ -13,17 +13,12 @@ test.describe(apps.minio.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'token', path: '/minio/v2/metrics/cluster' });
+            createApiRootTest(instance.url, { headers: { 'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString() }});
 
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
                 createTcpTest(instance.consoleUrl, port, 'console');
             }
-
-            test('API: Root', async () => {
-                const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, headers: { 'User-Agent': userAgent }, validateStatus: () => true});
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
 
             test('API: Redirect to console', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
