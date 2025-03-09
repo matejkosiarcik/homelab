@@ -2,7 +2,7 @@
 pihole-1-primary
 
 # Caches
-dockerhub-proxy
+dockerhub-cache-proxy
 
 # Network controllers
 omada-controller

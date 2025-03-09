@@ -17,7 +17,7 @@
 # ...19 Reserved
 # 10.1.10.21 Reserved for unifi-controller.home
 10.1.10.22 omada-controller.home
-10.1.10.23 dockerhub-proxy.home
+10.1.10.23 dockerhub-cache-proxy.home
 10.1.10.24 homeassistant.home
 10.1.10.25 jellyfin.home
 10.1.10.26 minio.home

@@ -209,10 +209,10 @@
             "max-size": "100m"
           },
           "insecure-registries": [
-            "dockerhub-proxy.home"
+            "dockerhub-cache-proxy.home"
           ],
           "registry-mirrors": [
-            "https://dockerhub-proxy.home"
+            "https://dockerhub-cache-proxy.home"
           ],
           "default-address-pools": [
             {
