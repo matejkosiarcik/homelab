@@ -40,3 +40,6 @@ services:
 
   http-proxy-admin-raw:
     <<: *common-service-options
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options

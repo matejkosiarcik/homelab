@@ -24,3 +24,6 @@ services:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
       # Fill in other ports as necessary #
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options
