@@ -40,6 +40,7 @@ test.describe(apps.jellyfin.title, () => {
                     test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
                         await page.goto(instance.url);
                         await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
                         await page.locator('input#txtManualName').fill(variant.username);
                         await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('button[type="submit"]').click();
@@ -51,6 +52,7 @@ test.describe(apps.jellyfin.title, () => {
                     test(`UI: Successful login on port 8096 - User ${variant.username}`, async ({ page }) => {
                         await page.goto(httpUrl8096);
                         await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
                         await page.locator('input#txtManualName').fill(variant.username);
                         await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('button[type="submit"]').click();
@@ -76,6 +78,7 @@ test.describe(apps.jellyfin.title, () => {
                     await page.goto(httpUrl8096);
                     await page.waitForURL(/\/login\.html(?:\?.*)?$/);
                     const originalUrl = page.url();
+                    await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
                     await page.locator('input#txtManualName').fill(variant.username);
                     await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
                     await page.locator('button[type="submit"]').click();
