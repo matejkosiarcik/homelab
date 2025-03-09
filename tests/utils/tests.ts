@@ -16,6 +16,19 @@ export function createTcpTest(url: string, port: number, subtitle?: string | und
     });
 }
 
+export function createApiRootTest(url: string, _options?: { headers?: Record<string, string> | undefined, title?: string | undefined }) {
+    const options = {
+        headers: _options?.headers ?? {},
+        title: _options?.title ?? '',
+    };
+    return [
+        test(`API: Get root${options.title ? ` - ${options.title}` : ''}`, async () => {
+            const response = await axios.get(url, { headers: options.headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+            expect(response.status, 'Response Status').toStrictEqual(200);
+        }),
+    ];
+}
+
 export function createHttpToHttpsRedirectTests(url: string) {
     return [
         test('API: Redirect HTTP to HTTPS (root)', async () => {

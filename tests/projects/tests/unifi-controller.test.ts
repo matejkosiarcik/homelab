@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 type UnifiControllerStatusResponse = {
     meta: {
@@ -21,16 +21,12 @@ test.describe(apps['unifi-controller'].title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
+            createApiRootTest(instance.url);
 
             // port 6789 skipped
             for (const port of [80, 443, 8080, 8443]) {
                 createTcpTest(instance.url, port);
             }
-
-            test('API: Root', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
 
             test('API: Status endpoint', async () => {
                 const response = await axios.get(`${instance.url}/status`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
