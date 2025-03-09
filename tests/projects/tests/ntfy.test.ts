@@ -36,7 +36,7 @@ test.describe(apps.ntfy.title, () => {
             ]) {
                 if (!variant.random) {
                     test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await delay(1000); // Must delay tests a bit
+                        await delay(2500); // Must delay tests a bit
                         await page.goto(instance.url);
                         await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
                         await page.locator('.MuiDialogContent-root input#topic').fill('test');
@@ -44,6 +44,7 @@ test.describe(apps.ntfy.title, () => {
                         await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
                         await page.locator('.MuiDialogContent-root input#username').fill(variant.username);
                         await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
+                        await delay(100);
                         await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
                         await page.waitForURL(`${instance.url}/test`);
                         await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
@@ -51,7 +52,7 @@ test.describe(apps.ntfy.title, () => {
                 }
 
                 test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await delay(1000); // Must delay tests a bit
+                    await delay(2500); // Must delay tests a bit
                     await page.goto(instance.url);
                     await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().waitFor()
                     const originalUrl = page.url();
@@ -61,6 +62,7 @@ test.describe(apps.ntfy.title, () => {
                     await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
                     await page.locator('.MuiDialogContent-root input#username').fill(variant.username);
                     await page.locator('.MuiDialogContent-root input#password').fill(faker.string.alpha(10));
+                    await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
                     await expect(page.locator('.MuiDialog-container')).toContainText(`User ${variant.username} not authorized`);
                     expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
@@ -77,7 +79,7 @@ test.describe(apps.ntfy.title, () => {
                 }
             ]) {
                 test(`API: Unsuccessful send notification  - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
-                    await delay(1000); // Must delay tests a bit
+                    await delay(2500); // Must delay tests a bit
                     const response = await axios.request({
                         auth: {
                             username: variant.username,
@@ -103,7 +105,7 @@ test.describe(apps.ntfy.title, () => {
                 },
             ]) {
                 test(`API+UI: Send notification in "publisher" and view in "${variant.username}"`, async ({ page }) => {
-                    await delay(1000); // Must delay tests a bit
+                    await delay(2500); // Must delay tests a bit
                     await page.goto(instance.url);
                     await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
                     await page.locator('.MuiDialogContent-root input#topic').fill('test');
@@ -111,6 +113,7 @@ test.describe(apps.ntfy.title, () => {
                     await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
                     await page.locator('.MuiDialogContent-root input#username').fill(variant.username);
                     await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
+                    await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
                     await page.waitForURL(`${instance.url}/test`);
                     await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
