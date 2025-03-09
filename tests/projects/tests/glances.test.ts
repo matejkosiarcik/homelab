@@ -18,7 +18,7 @@ test.describe(apps.glances.title, () => {
 
             const users = [
                 {
-                    username: 'glances',
+                    username: 'admin',
                 },
                 {
                     username: faker.string.alpha(10),
@@ -47,7 +47,7 @@ test.describe(apps.glances.title, () => {
                     });
                 }
 
-                test(`API: Unsuccessful get root - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful get root with bad password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
                     const response = await axios.get(instance.url, {
                         auth: {
                             username: variant.username,
@@ -60,8 +60,27 @@ test.describe(apps.glances.title, () => {
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
-                test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                test(`API: Unsuccessful get root without password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: variant.username,
+                            password: '',
+                        },
+                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                        maxRedirects: 999,
+                        validateStatus: () => true
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
+
+                test(`UI: Unsuccessful open with bad password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await expect(page.locator('#app #cpu.plugin')).not.toBeVisible();
+                });
+
+                test(`UI: Unsuccessful open without password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('#app #cpu.plugin')).not.toBeVisible();
                 });
