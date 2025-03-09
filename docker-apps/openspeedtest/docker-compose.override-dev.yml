@@ -16,18 +16,6 @@ services:
       <<: *common-env-variables
       DOMAIN_NAME: localhost
       USER_EMAIL: admin@openspeedtest.localhost
-    # ports:
-    #   - 127.0.0.1:3000:3000
-    #   - 127.0.0.1:3001:3001
-
-  certificate-manager:
-    <<: *common-service-options
-
-  http-proxy:
-    <<: *common-service-options
     ports:
-      - 127.0.0.1:8080:80
-      - 127.0.0.1:8443:443
-
-  http-proxy-prometheus-exporter:
-    <<: *common-service-options
+      - 127.0.0.1:8080:3000
+      # 3001 ignored

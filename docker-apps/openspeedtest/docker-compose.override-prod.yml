@@ -16,20 +16,11 @@ services:
       <<: *common-env-variables
       DOMAIN_NAME: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       USER_EMAIL: admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
-
-  certificate-manager:
-    <<: *common-service-options
-
-  http-proxy:
-    <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:3000
+      # 3000 ignored
     networks:
       external-network:
-
-  http-proxy-prometheus-exporter:
-    <<: *common-service-options
 
 networks:
   external-network:
