@@ -18,7 +18,7 @@ test.describe(apps.glances.title, () => {
 
             const users = [
                 {
-                    username: 'glances',
+                    username: 'admin',
                 },
                 {
                     username: faker.string.alpha(10),

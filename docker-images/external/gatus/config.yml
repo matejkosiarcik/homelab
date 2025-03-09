@@ -572,7 +572,7 @@ endpoints:
   - <<: *default-http
     name: Glances - Odroid H3 - HTTPS
     group: App - Glances
-    url: https://glances:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home
+    url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home
     alerts:
       - type: ntfy
       - type: email
