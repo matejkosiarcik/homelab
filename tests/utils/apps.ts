@@ -109,7 +109,7 @@ export const apps = {
         title: 'Openspeedtest',
         forceHttps: false,
         instances: [
-            { url: 'https://openspeedtest.home', title: 'Openspeedtest' },
+            { url: 'http://openspeedtest.home', title: 'Openspeedtest' },
         ],
     },
     pihole: {
