@@ -13,6 +13,9 @@ services:
   app:
     <<: *common-service-options
 
+  app-prometheus:
+    <<: *common-service-options
+
   certificate-manager:
     <<: *common-service-options
 

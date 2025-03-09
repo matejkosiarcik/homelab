@@ -127,6 +127,15 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect Glances prometheus endpoint
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'glances' && %{REQUEST_URI} =~ m#^/metrics/*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/http-user--prometheus.htpasswd
+    Require valid-user
+</If>
+
 # Protect Gatus prometheus endpoint
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'gatus' && %{REQUEST_URI} =~ m#^/metrics/*$#">
     AuthType Basic
@@ -159,6 +168,13 @@ RewriteCond %{REQUEST_URI} ^/.proxy/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "http://%{ENV:PROXY_PROMETHEUS_EXPORTER_HOSTNAME}:9117/metrics" [P,L]
+
+# Custom prometheus metrics for Glances
+RewriteCond %{ENV:HOMELAB_APP_TYPE} glances [NC]
+RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}/" [P,L]
 
 # Custom prometheus metrics for PiHole
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
