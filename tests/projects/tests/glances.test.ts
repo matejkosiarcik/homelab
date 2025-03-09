@@ -3,7 +3,7 @@ import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 
 test.describe(apps.glances.title, () => {
@@ -11,6 +11,7 @@ test.describe(apps.glances.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
+            createApiRootTest(instance.url, { status: 401 });
 
             for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);

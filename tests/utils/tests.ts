@@ -16,15 +16,16 @@ export function createTcpTest(url: string, port: number, subtitle?: string | und
     });
 }
 
-export function createApiRootTest(url: string, _options?: { headers?: Record<string, string> | undefined, title?: string | undefined }) {
+export function createApiRootTest(url: string, _options?: { headers?: Record<string, string> | undefined, title?: string | undefined, status?: number | undefined }) {
     const options = {
         headers: _options?.headers ?? {},
         title: _options?.title ?? '',
+        status: _options?.status ?? 200,
     };
     return [
         test(`API: Get root${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(url, { headers: options.headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
-            expect(response.status, 'Response Status').toStrictEqual(200);
+            const response = await axios.get(url, { headers: options.headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true });
+            expect(response.status, 'Response Status').toStrictEqual(options.status);
         }),
     ];
 }
