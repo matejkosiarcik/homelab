@@ -260,9 +260,13 @@ case "$full_app_name" in
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus app prometheus)" >>"$output/gatus.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app admin)" >>"$output/gatus.env"
+    printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b app admin)" >>"$output/gatus.env"
+    printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b app prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g app admin)" >>"$output/gatus.env"
+    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g app prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-4g app admin)" >>"$output/gatus.env"
+    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-4g app prometheus)" >>"$output/gatus.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app prometheus-api-key)" >>"$output/gatus.env"
     printf 'HOMEPAGE_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$output/gatus.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$output/gatus.env"
@@ -286,6 +290,9 @@ case "$full_app_name" in
 
     # HTTP Proxy
     write_default_proxy_users "$full_app_name--$server_name"
+    app_prometheus_password="$(load_password "$full_app_name--$server_name" app prometheus)"
+    write_http_auth_user prometheus "$app_prometheus_password"
+    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificate-manager)"

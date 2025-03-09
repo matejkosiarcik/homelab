@@ -577,6 +577,11 @@ endpoints:
       - type: ntfy
       - type: email
 
+  - <<: *default-http
+    name: Glances - Odroid H3 - Api Prometheus
+    group: App - Glances
+    url: https://prometheus:${GLANCES_ODROID_H3_PROMETHEUS_PASSWORD}@glances-odroid-h3.home/metrics
+
   - <<: *default-tcp
     name: Glances - Odroid H3 - TCP:80
     group: App - Glances
@@ -608,6 +613,11 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 3B - Api Prometheus
+    group: App - Glances
+    url: https://prometheus:${GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD}@glances-raspberry-pi-3b.home/metrics
 
   - <<: *default-tcp
     name: Glances - Raspberry Pi 3B - TCP:80
@@ -641,6 +651,11 @@ endpoints:
       - type: ntfy
       - type: email
 
+  - <<: *default-http
+    name: Glances - Raspberry Pi 4B 2GB - Api Prometheus
+    group: App - Glances
+    url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-2g.home/metrics
+
   - <<: *default-tcp
     name: Glances - Raspberry Pi 4B 2GB - TCP:80
     group: App - Glances
@@ -672,6 +687,11 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 4B 4GB - Api Prometheus
+    group: App - Glances
+    url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-4g.home/metrics
 
   - <<: *default-tcp
     name: Glances - Raspberry Pi 4B 4GB - TCP:80

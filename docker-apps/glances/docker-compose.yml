@@ -22,6 +22,21 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./app-secrets/glances-password.txt:/root/.config/glances/admin.pwd:ro
     pid: host
+    environment:
+      GLANCES_OPT: "-w --password -u admin"
+
+  app-prometheus:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/glances/Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ../../../../docker-images/external/glances/prometheus/glances.conf:/root/.config/glances/glances.conf:ro
+    pid: host
+    environment:
+      GLANCES_OPT: "--export prometheus --config /homelab/glances.conf"
 
   certificate-manager:
     <<: *common-service-options
@@ -47,6 +62,7 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
+      - ./app-secrets/http-user--prometheus.htpasswd:/homelab/http-user--prometheus.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
 
   http-proxy-prometheus-exporter:

@@ -15,6 +15,11 @@ services:
     volumes:
       - /etc/os-release:/etc/os-release:ro
 
+  app-prometheus:
+    <<: *common-service-options
+    volumes:
+      - /etc/os-release:/etc/os-release:ro
+
   certificate-manager:
     <<: *common-service-options
 

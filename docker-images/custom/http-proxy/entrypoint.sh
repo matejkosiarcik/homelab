@@ -184,7 +184,9 @@ export PROXY_FORCE_HTTPS
 printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL_PROMETHEUS
-if [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://app-prometheus:61208'
+elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter'
 elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
     PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter:9167'
