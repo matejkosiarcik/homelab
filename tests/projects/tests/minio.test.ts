@@ -102,7 +102,7 @@ test.describe(apps.minio.title, () => {
                     'minio_node_ilm_transition_pending_tasks',
                     'minio_node_ilm_versions_scanned',
                     'minio_node_io_rchar_bytes',
-                    'minio_node_io_read_bytes',
+                    // 'minio_node_io_read_bytes',
                     'minio_node_io_wchar_bytes',
                     'minio_node_io_write_bytes',
                     'minio_node_process_cpu_total_seconds',

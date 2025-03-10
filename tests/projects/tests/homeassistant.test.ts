@@ -73,6 +73,7 @@ test.describe(apps['home-assistant'].title, () => {
                     test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
                         await page.goto(instance.url);
                         await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
+                        await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
                         await page.locator('input[name="username"]').fill(variant.username);
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('button#button').click();
@@ -87,6 +88,7 @@ test.describe(apps['home-assistant'].title, () => {
                     await page.goto(instance.url);
                     await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
                     const originalUrl = page.url();
+                    await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
                     await page.locator('input[name="username"]').fill(variant.username);
                     await page.locator('input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('button#button').click();
