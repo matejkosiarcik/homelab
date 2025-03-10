@@ -136,6 +136,7 @@ test.describe(apps.ntfy.title, () => {
                     expect(response.status, 'Response Status').toStrictEqual(200);
 
                     await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).toBeVisible();
+                    await delay(500);
                     await page.locator(`.MuiCardContent-root:has-text("${notification}") button:has([data-testid="CloseIcon"])`).click();
                     await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).not.toBeVisible();
                 });

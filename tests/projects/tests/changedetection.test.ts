@@ -19,7 +19,7 @@ test.describe(apps.changedetection.title, () => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login?next=/`);
                 await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('form button[type="submit"]:has-text("Login")').click();
+                await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
                 await page.waitForURL(instance.url);
                 await expect(page.locator('#new-watch-form')).toBeVisible();
                 await expect(page.locator('table.watch-table td.last-checked').first()).toBeVisible();
@@ -30,7 +30,7 @@ test.describe(apps.changedetection.title, () => {
             test('UI: Unsuccessful login', async ({ page }) => {
                 await page.goto(`${instance.url}/login`);
                 await page.locator('form input[type="password"][name="password"]').fill(faker.string.alpha(10));
-                await page.locator('form button[type="submit"]:has-text("Login")').click();
+                await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
                 await page.waitForSelector('.error:has-text("Incorrect password")', { timeout: 10_000 });
                 expect(page.url()).toStrictEqual(`${instance.url}/login`);
             });
