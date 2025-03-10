@@ -235,6 +235,15 @@
           username: admin
           password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
 
+    - Prometheus:
+        description: Prometheus
+        href: https://prometheus.home
+        ping: prometheus.home
+        icon: /icons/prometheus.png
+        widget:
+          type: prometheus
+          url: https://prometheus.home
+
     - Dozzle:
         description: Docker monitoring
         href: https://dozzle.home
