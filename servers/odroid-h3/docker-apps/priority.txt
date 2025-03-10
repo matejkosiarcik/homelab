@@ -41,6 +41,7 @@ changedetection
 healthchecks
 # netalertx
 glances
+prometheus
 
 # App Monitoring
 gatus
