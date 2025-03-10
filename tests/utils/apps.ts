@@ -121,6 +121,12 @@ export const apps = {
             { url: 'https://pihole-2-secondary.home', title: 'PiHole Secondary 2' },
         ],
     },
+    prometheus: {
+        title: 'Prometheus',
+        instances: [
+            { url: 'https://prometheus.home', title: 'Prometheus' },
+        ],
+    },
     smtp4dev: {
         title: 'Smtp4dev',
         instances: [

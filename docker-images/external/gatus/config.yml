@@ -1367,6 +1367,36 @@ endpoints:
     group: App - PiHole 2 Secondary
     url: tcp://pihole-2-secondary.home:443
 
+  ### Group: App - Prometheus ###
+
+  - <<: *default-icmp
+    name: Prometheus ICMP
+    group: App - Prometheus
+    url: icmp://prometheus.home
+
+  - <<: *default-http
+    name: Prometheus HTTP
+    group: App - Prometheus
+    url: http://prometheus.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
+    name: Prometheus HTTPS
+    group: App - Prometheus
+    url: https://prometheus.home
+
+  - <<: *default-tcp
+    name: Prometheus TCP:80
+    group: App - Prometheus
+    url: tcp://prometheus.home:80
+
+  - <<: *default-tcp
+    name: Prometheus TCP:443
+    group: App - Prometheus
+    url: tcp://prometheus.home:443
+
   ### Group: App - Smtp4dev ###
 
   - <<: *default-icmp
