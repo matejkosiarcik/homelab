@@ -2,7 +2,7 @@
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM prom/prometheus:v3.2.1
-# COPY ./external/prometheus/config.yml /etc/prometheus/prometheus.yml
+COPY ./external/prometheus/config.yml /etc/prometheus/prometheus.yml
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

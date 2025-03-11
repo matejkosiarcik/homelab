@@ -65,7 +65,7 @@ test.describe(apps.ntfy.title, () => {
                     await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
                     await expect(page.locator('.MuiDialog-container')).toContainText(`User ${variant.username} not authorized`);
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
 

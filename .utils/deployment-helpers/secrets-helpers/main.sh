@@ -271,6 +271,10 @@ case "$full_app_name" in
     printf 'HOMEPAGE_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$output/gatus.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$output/gatus.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$output/gatus.env"
+    printf 'PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary app prometheus)" >>"$output/gatus.env"
+    printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/gatus.env"
+    printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/gatus.env"
+    printf 'PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/gatus.env"
 
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
@@ -485,6 +489,20 @@ case "$full_app_name" in
     write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *prometheus*)
+    # App
+    printf '%s\n' "$(load_token gatus app prometheus)" >>"$output/gatus-1-password.txt"
+    printf '%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/gatus-2-password.txt"
+    printf '%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/glances-odroid-h3-password.txt"
+    printf '%s\n' "$(load_token glances--raspberry-pi-3b app prometheus)" >>"$output/glances-raspberry-pi-3b-password.txt"
+    printf '%s\n' "$(load_token glances--raspberry-pi-4b-2g app prometheus)" >>"$output/glances-raspberry-pi-4b-2g-password.txt"
+    printf '%s\n' "$(load_token glances--raspberry-pi-4b-4g app prometheus)" >>"$output/glances-raspberry-pi-4b-4g-password.txt"
+    printf '%s\n' "$(load_token homeassistant app prometheus-api-key)" >>"$output/homeassistant-token.txt"
+    printf '%s\n' "$(load_token minio app prometheus-token)" >>"$output/minio-token.txt"
+    printf '%s\n' "$(load_token pihole-1-primary app prometheus)" >>"$output/pihole-1-primary-password.txt"
+    printf '%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/pihole-1-secondary-password.txt"
+    printf '%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/pihole-2-primary-password.txt"
+    printf '%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/pihole-2-secondary-password.txt"
+
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 

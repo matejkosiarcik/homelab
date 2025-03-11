@@ -60,7 +60,7 @@ test.describe(apps['vaultwarden'].title, () => {
                         await page.locator('app-login input[type="password"]').fill(faker.string.alpha(10));
                         await page.locator('app-login button:has-text("Log in with master password")').click();
                         await expect(page.locator('.toast-container:has-text("Username or password is incorrect.")')).toBeVisible();
-                        expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });
                 }
             }

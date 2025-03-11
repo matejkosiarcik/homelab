@@ -89,7 +89,7 @@ test.describe(apps['omada-controller'].title, () => {
                     await page.locator('.login-form input[type="password"]').fill(faker.string.alpha(10));
                     await page.locator('.login-form a.button-button[title="Log in"]').click();
                     await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
         });

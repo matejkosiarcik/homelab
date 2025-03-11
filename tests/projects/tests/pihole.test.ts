@@ -92,7 +92,7 @@ test.describe(apps.pihole.title, () => {
                 await page.locator('form#loginform input#loginpw').fill(faker.string.alpha(10));
                 await page.locator('form#loginform button[type="submit"]').click();
                 await page.waitForSelector('.login-box-msg.has-error >> text="Wrong password!"', { timeout: 10_000 });
-                expect(page.url()).toStrictEqual(`${instance.url}/admin/login.php`);
+                await expect(page, 'URL should not change').toHaveURL(`${instance.url}/admin/login.php`);
             });
         });
     }
