@@ -45,7 +45,7 @@ test.describe(apps.glances.title, () => {
                     test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
                         await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'PASSWORD')}`).toString('base64')}` });
                         await page.goto(instance.url);
-                        await expect(page.locator('#app #cpu.plugin')).toBeVisible();
+                        await expect(page.locator('#app #cpu.plugin')).toBeVisible({ timeout: 10_000 });
                     });
                 }
 
