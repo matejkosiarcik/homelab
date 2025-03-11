@@ -1207,6 +1207,11 @@ endpoints:
       - type: ntfy
       - type: email
 
+  - <<: *default-http
+    name: PiHole 1 Primary - Prometheus metrics
+    group: App - PiHole 1 Primary
+    url: https://prometheus:${PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD}@pihole-1-primary.home/metrics
+
   - <<: *default-dns
     name: PiHole 1 Primary DNS
     group: App - PiHole 1 Primary
@@ -1251,6 +1256,11 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-http
+    name: PiHole 1 Secondary - Prometheus metrics
+    group: App - PiHole 1 Secondary
+    url: https://prometheus:${PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home/metrics
 
   - <<: *default-dns
     name: PiHole 1 Secondary DNS
@@ -1297,6 +1307,11 @@ endpoints:
       - type: ntfy
       - type: email
 
+  - <<: *default-http
+    name: PiHole 2 Primary - Prometheus metrics
+    group: App - PiHole 2 Primary
+    url: https://prometheus:${PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD}@pihole-2-primary.home/metrics
+
   - <<: *default-dns
     name: PiHole 2 Primary DNS
     group: App - PiHole 2 Primary
@@ -1341,6 +1356,11 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-http
+    name: PiHole 2 Secondary - Prometheus metrics
+    group: App - PiHole 2 Secondary
+    url: https://prometheus:${PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home/metrics
 
   - <<: *default-dns
     name: PiHole 2 Secondary DNS
