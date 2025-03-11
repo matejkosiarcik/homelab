@@ -1,2 +1,133 @@
-global: {}
-scrape_configs: []
+global:
+   scrape_interval: 60s
+
+scrape_configs:
+  - job_name: gatus-1
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/gatus-1-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [gatus.home]
+
+  - job_name: gatus-2
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/gatus-2-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [gatus-2.home]
+
+  - job_name: glances-odroid-h3
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/glances-odroid-h3-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [glances-odroid-h3.home]
+
+  - job_name: glances-raspberry-pi-3b
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/glances-raspberry-pi-3b-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [glances-raspberry-pi-3b.home]
+
+  - job_name: glances-raspberry-pi-4b-2g
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/glances-raspberry-pi-4b-2g-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [glances-raspberry-pi-4b-2g.home]
+
+  - job_name: glances-raspberry-pi-4b-4g
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/glances-raspberry-pi-4b-4g-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [glances-raspberry-pi-4b-4g.home]
+
+  - job_name: homeassistant
+    scheme: https
+    metrics_path: /api/prometheus
+    authorization:
+      credentials_file: /homelab/credentials/homeassistant-token.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [homeassistant.home]
+
+  - job_name: minio
+    scheme: https
+    metrics_path: /minio/v2/metrics/cluster
+    authorization:
+      credentials_file: /homelab/credentials/minio-token.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [minio.home]
+
+  - job_name: pihole-1-primary
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/pihole-1-primary-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [pihole-1-primary.home]
+
+  - job_name: pihole-1-secondary
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/pihole-1-secondary-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [pihole-1-secondary.home]
+
+  - job_name: pihole-2-primary
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/pihole-2-primary-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [pihole-2-primary.home]
+
+  - job_name: pihole-2-secondary
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password_file: /homelab/credentials/pihole-2-secondary-password.txt
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: [pihole-2-secondary.home]
