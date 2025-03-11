@@ -37,4 +37,4 @@ ENV TZ=Europe/Bratislava
 # - MONGO_TLS= # optional
 # - MONGO_AUTHSOURCE= # optional
 
-HEALTHCHECK --interval=5s --start-period=240s --timeout=2s --retries=1 CMD [ "sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && if [ \"$(curl --insecure https://localhost:$https_port/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]
+HEALTHCHECK --interval=5s --start-period=300s --timeout=2s --retries=1 CMD [ "sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && if [ \"$(curl --insecure https://localhost:$https_port/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]
