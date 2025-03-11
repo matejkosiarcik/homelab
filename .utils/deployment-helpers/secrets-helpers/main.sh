@@ -490,6 +490,7 @@ case "$full_app_name" in
     ;;
 *prometheus*)
     # App
+    admin_password="$(load_password "$full_app_name" app admin)"
     printf '%s\n' "$(load_token gatus app prometheus)" >>"$output/gatus-1-password.txt"
     printf '%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/gatus-2-password.txt"
     printf '%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/glances-odroid-h3-password.txt"
@@ -502,6 +503,7 @@ case "$full_app_name" in
     printf '%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/pihole-1-secondary-password.txt"
     printf '%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/pihole-2-primary-password.txt"
     printf '%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/pihole-2-secondary-password.txt"
+    printf 'PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/prometheus.env"
 
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
