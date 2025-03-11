@@ -18,6 +18,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/prometheus/Dockerfile
+    env_file:
+      - ./app-secrets/prometheus.env
     volumes:
       - ./app-data/prometheus:/prometheus:rw
       - ./app-secrets/gatus-1-password.txt:/homelab/credentials/gatus-1-password.txt:ro
