@@ -175,7 +175,7 @@ test.describe(apps.minio.title, () => {
                     await page.locator('input#secretKey').fill(faker.string.alpha(10));
                     await page.locator('button#do-login[type="submit"]').click();
                     await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
         });

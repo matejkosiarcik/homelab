@@ -61,7 +61,7 @@ test.describe(apps['speedtest-tracker'].title, () => {
                     await page.locator('form input[id="data.password"][type="password"]').fill(faker.string.alpha(10));
                     await page.locator('form button:has-text("Sign in")').click();
                     await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
 

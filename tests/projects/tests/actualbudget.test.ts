@@ -34,7 +34,7 @@ test.describe(apps.actualbudget.title, () => {
                 await page.locator('input[type="password"][placeholder="Password"]').fill(faker.string.alpha(10));
                 await page.locator('button[type="button"]:has-text("Sign in")').click();
                 await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
-                expect(page.url()).toStrictEqual(`${instance.url}/login`);
+                await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login`);
             });
 
             test('API: Download budget', async () => {

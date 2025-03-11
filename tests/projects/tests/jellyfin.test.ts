@@ -74,7 +74,7 @@ test.describe(apps.jellyfin.title, () => {
                     await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
                     await page.locator('button[type="submit"]').click();
                     await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
 
                 test(`UI: Unsuccessful login on port 8096 - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
@@ -86,7 +86,7 @@ test.describe(apps.jellyfin.title, () => {
                     await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
                     await page.locator('button[type="submit"]').click();
                     await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
         });

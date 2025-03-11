@@ -58,7 +58,7 @@ test.describe(apps.healthchecks.title, () => {
                         await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
                         await page.waitForURL(/\/accounts\/login\/?$/);
                         await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
-                        expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });
                 }
             }

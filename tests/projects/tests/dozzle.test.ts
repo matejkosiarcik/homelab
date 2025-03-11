@@ -44,7 +44,7 @@ test.describe(apps.dozzle.title, () => {
                     await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('form button[type="submit"]:has-text("Login")').click();
                     await page.waitForSelector('.text-error:has-text("Username or password are not valid")', { timeout: 10_000 });
-                    expect(page.url()).toStrictEqual(`${instance.url}/login?redirectUrl=/`);
+                    await expect(page).toHaveURL(`${instance.url}/login?redirectUrl=/`);
                 });
             }
         });

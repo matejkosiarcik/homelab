@@ -77,7 +77,7 @@ test.describe(apps['unifi-controller'].title, () => {
                     await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('button#loginButton').click();
                     await expect(page.locator('.appInfoBox--danger:has-text("Invalid username and/or password.")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
         });

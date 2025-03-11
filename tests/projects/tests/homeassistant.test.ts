@@ -93,7 +93,7 @@ test.describe(apps['home-assistant'].title, () => {
                     await page.locator('input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('button#button').click();
                     await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
-                    expect(page.url(), 'URL should not change').toStrictEqual(originalUrl);
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
         });
