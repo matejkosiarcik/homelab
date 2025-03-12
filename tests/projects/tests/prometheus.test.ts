@@ -107,7 +107,7 @@ test.describe(apps.prometheus.title, () => {
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
-                        username: 'admin',
+                        username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                     },
                     maxRedirects: 999,
