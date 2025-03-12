@@ -131,3 +131,14 @@ scrape_configs:
       insecure_skip_verify: true
     static_configs:
       - targets: [pihole-2-secondary.home]
+
+  - job_name: prometheus
+    scheme: https
+    metrics_path: /metrics
+    basic_auth:
+      username: prometheus
+      password: ${PROMETHEUS_PROMETHEUS_PASSWORD}
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets: [prometheus.home]
