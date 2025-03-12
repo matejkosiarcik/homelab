@@ -491,6 +491,7 @@ case "$full_app_name" in
 *prometheus*)
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
+    prometheus_password="$(load_password "$full_app_name" app prometheus)"
     printf 'GATUS_1_PASSWORD=%s\n' "$(load_token gatus app prometheus)" >>"$output/prometheus.env"
     printf 'GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/prometheus.env"
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/prometheus.env"
@@ -505,6 +506,8 @@ case "$full_app_name" in
     printf 'PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/prometheus.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/prometheus.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/prometheus.env"
+    printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$output/prometheus.env"
+    printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$output/prometheus.env"
 
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
