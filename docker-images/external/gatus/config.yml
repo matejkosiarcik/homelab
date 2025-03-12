@@ -1398,14 +1398,18 @@ endpoints:
     name: Prometheus - HTTP
     group: App - Prometheus
     url: http://prometheus.home
-    alerts:
-      - type: ntfy
-      - type: email
+    conditions:
+      - "[STATUS] == 401"
 
   - <<: *default-http
     name: Prometheus - HTTPS
     group: App - Prometheus
     url: https://prometheus.home
+    conditions:
+      - "[STATUS] == 401"
+    alerts:
+      - type: ntfy
+      - type: email
 
   - <<: *default-http
     name: Prometheus - Prometheus metrics
