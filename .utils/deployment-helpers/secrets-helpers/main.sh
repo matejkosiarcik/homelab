@@ -491,7 +491,7 @@ case "$full_app_name" in
 *prometheus*)
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
-    prometheus_password="$(load_password "$full_app_name" app prometheus)"
+    prometheus_password="$(load_token "$full_app_name" app prometheus)"
     printf 'GATUS_1_PASSWORD=%s\n' "$(load_token gatus app prometheus)" >>"$output/prometheus.env"
     printf 'GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/prometheus.env"
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/prometheus.env"
