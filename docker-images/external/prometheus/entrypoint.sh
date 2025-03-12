@@ -11,4 +11,7 @@ rm -f "$tmpfile"
 promtool check web-config /etc/prometheus/web.yml
 promtool check config /etc/prometheus/prometheus.yml
 
-prometheus --config.file=/etc/prometheus/prometheus.yml --web.config.file=/etc/prometheus/web.yml
+prometheus \
+    --config.file=/etc/prometheus/prometheus.yml \
+    --web.config.file=/etc/prometheus/web.yml \
+    --storage.tsdb.path=/prometheus
