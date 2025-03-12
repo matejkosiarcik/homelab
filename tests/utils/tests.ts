@@ -230,7 +230,7 @@ export function createProxyTests(url: string) {
     return output;
 }
 
-export function createPrometheusTests(url: string, _options: { auth: 'basic' | 'token'; path?: string | undefined  }) {
+export function createPrometheusTests(url: string, _options: { auth: 'basic' | 'token'; path?: string | undefined }) {
     const options = {
         auth: _options.auth,
         path: _options.path ?? '/metrics',
