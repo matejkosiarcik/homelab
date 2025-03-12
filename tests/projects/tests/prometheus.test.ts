@@ -34,9 +34,13 @@ test.describe(apps.prometheus.title, () => {
                 if (!variant.random) {
                     test(`API: Successful get root - User ${variant.username}`, async () => {
                         const response = await axios.get(instance.url, {
-                            auth: {
-                                username: variant.username,
-                                password: getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`),
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                            },
+                            beforeRedirect: (opts) => {
+                                opts['headers'] = {
+                                    Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                                };
                             },
                             httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                             maxRedirects: 999,
