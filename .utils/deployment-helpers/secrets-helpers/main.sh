@@ -503,6 +503,7 @@ case "$full_app_name" in
     printf 'PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/prometheus.env"
     printf 'PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/prometheus.env"
     printf 'PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/prometheus.env"
+    printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/prometheus.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/prometheus.env"
 
     # HTTP Proxy
