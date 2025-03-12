@@ -23,6 +23,9 @@ test.describe(apps.prometheus.title, () => {
                     username: 'admin',
                 },
                 {
+                    username: 'prometheus',
+                },
+                {
                     username: faker.string.alpha(10),
                     random: true,
                 }
