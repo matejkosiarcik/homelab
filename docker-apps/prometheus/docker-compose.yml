@@ -22,18 +22,6 @@ services:
       - ./app-secrets/prometheus.env
     volumes:
       - ./app-data/prometheus:/prometheus:rw
-      - ./app-secrets/gatus-1-password.txt:/homelab/credentials/gatus-1-password.txt:ro
-      - ./app-secrets/gatus-2-password.txt:/homelab/credentials/gatus-2-password.txt:ro
-      - ./app-secrets/glances-odroid-h3-password.txt:/homelab/credentials/glances-odroid-h3-password.txt:ro
-      - ./app-secrets/glances-raspberry-pi-3b-password.txt:/homelab/credentials/glances-raspberry-pi-3b-password.txt:ro
-      - ./app-secrets/glances-raspberry-pi-4b-2g-password.txt:/homelab/credentials/glances-raspberry-pi-4b-2g-password.txt:ro
-      - ./app-secrets/glances-raspberry-pi-4b-4g-password.txt:/homelab/credentials/glances-raspberry-pi-4b-4g-password.txt:ro
-      - ./app-secrets/homeassistant-token.txt:/homelab/credentials/homeassistant-token.txt:ro
-      - ./app-secrets/minio-token.txt:/homelab/credentials/minio-token.txt:ro
-      - ./app-secrets/pihole-1-primary-password.txt:/homelab/credentials/pihole-1-primary-password.txt:ro
-      - ./app-secrets/pihole-1-secondary-password.txt:/homelab/credentials/pihole-1-secondary-password.txt:ro
-      - ./app-secrets/pihole-2-primary-password.txt:/homelab/credentials/pihole-2-primary-password.txt:ro
-      - ./app-secrets/pihole-2-secondary-password.txt:/homelab/credentials/pihole-2-secondary-password.txt:ro
 
   certificate-manager:
     <<: *common-service-options
