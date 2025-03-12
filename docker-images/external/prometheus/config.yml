@@ -7,7 +7,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/gatus-1-password.txt
+      password: ${GATUS_1_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -18,7 +18,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/gatus-2-password.txt
+      password: ${GATUS_2_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -29,7 +29,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/glances-odroid-h3-password.txt
+      password: ${GLANCES_ODROID_H3_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -40,7 +40,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/glances-raspberry-pi-3b-password.txt
+      password: ${GLANCES_RASPBERRY_PI_3B_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -51,7 +51,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/glances-raspberry-pi-4b-2g-password.txt
+      password: ${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -62,7 +62,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/glances-raspberry-pi-4b-4g-password.txt
+      password: ${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -72,7 +72,7 @@ scrape_configs:
     scheme: https
     metrics_path: /api/prometheus
     authorization:
-      credentials_file: /homelab/credentials/homeassistant-token.txt
+      credentials: ${HOMEASSISTANT_TOKEN}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -82,7 +82,7 @@ scrape_configs:
     scheme: https
     metrics_path: /minio/v2/metrics/cluster
     authorization:
-      credentials_file: /homelab/credentials/minio-token.txt
+      credentials: ${MINIO_TOKEN}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -93,7 +93,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/pihole-1-primary-password.txt
+      password: ${PIHOLE_1_PRIMARY_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -104,7 +104,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/pihole-1-secondary-password.txt
+      password: ${PIHOLE_1_SECONDARY_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -115,7 +115,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/pihole-2-primary-password.txt
+      password: ${PIHOLE_2_PRIMARY_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
@@ -126,7 +126,7 @@ scrape_configs:
     metrics_path: /metrics
     basic_auth:
       username: prometheus
-      password_file: /homelab/credentials/pihole-2-secondary-password.txt
+      password: ${PIHOLE_2_SECONDARY_PASSWORD}
     tls_config:
       insecure_skip_verify: true
     static_configs:
