@@ -3,7 +3,7 @@
 
 FROM prom/prometheus:v3.2.1
 COPY ./external/prometheus/web.yml /etc/prometheus/web.yml
-COPY ./external/prometheus/config.yml /etc/prometheus/prometheus.yml
+COPY ./external/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
 COPY ./external/prometheus/entrypoint.sh /etc/prometheus/entrypoint.sh
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
