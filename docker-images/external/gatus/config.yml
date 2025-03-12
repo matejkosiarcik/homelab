@@ -1407,6 +1407,11 @@ endpoints:
     group: App - Prometheus
     url: https://prometheus.home
 
+  - <<: *default-http
+    name: Prometheus - Prometheus metrics
+    group: App - Prometheus
+    url: https://prometheus:${PROMETHEUS_PROMETHEUS_PASSWORD}@prometheus.home/metrics
+
   - <<: *default-tcp
     name: Prometheus TCP:80
     group: App - Prometheus
