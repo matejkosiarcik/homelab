@@ -29,7 +29,7 @@ test.describe(apps.glances.title, () => {
             ];
             for (const variant of users) {
                 if (!variant.random) {
-                    test('API: Successful get root', async () => {
+                    test(`API: Successful get root - User ${variant.username}`, async () => {
                         const response = await axios.get(instance.url, {
                             auth: {
                                 username: variant.username,
