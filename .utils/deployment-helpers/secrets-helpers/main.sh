@@ -256,9 +256,9 @@ case "$full_app_name" in
     # App
     admin_password="$(load_password "$full_app_name" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
-    printf 'GATUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/gatus.env"
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus app prometheus)" >>"$output/gatus.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/gatus.env"
+    printf 'GATUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/gatus.env"
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app admin)" >>"$output/gatus.env"
     printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b app admin)" >>"$output/gatus.env"
@@ -505,10 +505,10 @@ case "$full_app_name" in
     printf 'PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/prometheus.env"
     printf 'PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/prometheus.env"
     printf 'PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/prometheus.env"
-    printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/prometheus.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/prometheus.env"
-    printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$output/prometheus.env"
+    printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/prometheus.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$output/prometheus.env"
+    printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$output/prometheus.env"
 
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
