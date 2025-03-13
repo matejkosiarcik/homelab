@@ -18,7 +18,7 @@ flowchart LR
         certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>manager")
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
 
-        network_interface --->|:80,443| http_proxy --->|:8080| prometheus
+        network_interface --->|:80,443| http_proxy --->|:9090| prometheus
         http_proxy -..-|fs| certificate_manager
     end
 
