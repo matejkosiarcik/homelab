@@ -28,6 +28,6 @@ flowchart LR
     other_apps["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Apps"]
     class other_apps dashed_border
 
-    prometheus -.->|read metrics| other_apps
+    prometheus -..->|read metrics| other_apps
     home_network <---> app_wrapper
     certificate_manager -..->|report status| healthchecks
