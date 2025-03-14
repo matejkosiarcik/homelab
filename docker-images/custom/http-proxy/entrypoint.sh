@@ -167,7 +167,9 @@ export PROXY_HTTPS_PORT
 printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envvars
 
 # Set PROXY_FORCE_HTTPS
-if [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
+if [ "$HOMELAB_FORCE_PROTOCOL" = 'HTTP' ]; then
+    PROXY_FORCE_HTTPS='false'
+elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
@@ -184,6 +186,15 @@ else
 fi
 export PROXY_FORCE_HTTPS
 printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
+
+# Set PROXY_REDIRECT_TO_HTTP_OR_HTTPS
+if [ "$HOMELAB_FORCE_PROTOCOL" = 'HTTP' ]; then
+    PROXY_REDIRECT_TO_HTTP_OR_HTTPS='HTTP'
+else
+    PROXY_REDIRECT_TO_HTTP_OR_HTTPS='HTTPS'
+fi
+export PROXY_REDIRECT_TO_HTTP_OR_HTTPS
+printf "export PROXY_REDIRECT_TO_HTTP_OR_HTTPS='%s'\n" "$PROXY_REDIRECT_TO_HTTP_OR_HTTPS" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL_PROMETHEUS
 if [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
