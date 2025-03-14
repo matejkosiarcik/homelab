@@ -50,6 +50,7 @@ services:
       - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
       - ./app-logs/http-proxy:/homelab/logs:rw
     environment:
+      <<: *common-env-variables
       HOMELAB_FORCE_PROTOCOL: HTTP
 
   http-proxy-prometheus-exporter:
