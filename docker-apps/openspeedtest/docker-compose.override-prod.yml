@@ -18,9 +18,22 @@ services:
       USER_EMAIL: admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:3000
-      # 3000 ignored
+      # 3001 ignored
     networks:
       external-network:
+
+  certificate-manager:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+    networks:
+      external-network:
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options
 
 networks:
   external-network:
