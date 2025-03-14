@@ -504,7 +504,12 @@ case "$full_app_name" in
     write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *openspeedtest*)
-    # Placeholder
+    # HTTP Proxy
+    write_default_proxy_users "$full_app_name"
+
+    # Certificate Manager
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
+    write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *pihole*)
     # App
