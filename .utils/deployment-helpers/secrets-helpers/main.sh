@@ -504,7 +504,12 @@ case "$full_app_name" in
     write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *openspeedtest*)
-    # Placeholder
+    # HTTP Proxy
+    write_default_proxy_users "$full_app_name"
+
+    # Certificate Manager
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
+    write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
 *pihole*)
     # App
@@ -551,6 +556,45 @@ case "$full_app_name" in
     printf 'PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/prometheus.env"
     printf 'PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/prometheus.env"
     printf 'PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/prometheus.env"
+    # Proxy prometheus credentials
+    printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget-public http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token changedetection http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dockerhub-cache-proxy http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h3 http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-4g http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token healthchecks http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homeassistant http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homepage http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'JELLYFIN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'MINIO_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'MOTIONEYE_STOVE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token motioneye-stove http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'NTFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ntfy http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omada-controller http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'PIHOLE_1_SECONDARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'PIHOLE_2_PRIMARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'PIHOLE_2_SECONDARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'PROMETHEUS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'SMTP4DEV_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token smtp4dev http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'SPEEDTEST_TRACKER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token speedtest-tracker http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'TVHEADEND_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token tvheadend http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-default http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'UNBOUND_1_OPEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-open http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-default http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-open http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unifi-controller http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vaultwarden http-proxy prometheus)" >>"$output/prometheus.env"
+    # printf 'DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-left http-proxy prometheus)" >>"$output/prometheus.env"
+    # printf 'DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-right http-proxy prometheus)" >>"$output/prometheus.env"
+    # printf 'NETALERTX_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token netalertx http-proxy prometheus)" >>"$output/prometheus.env"
+    # printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vikunja http-proxy prometheus)" >>"$output/prometheus.env"
 
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"

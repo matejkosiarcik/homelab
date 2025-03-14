@@ -11,7 +11,7 @@ scrape_configs:
     tls_config:
       insecure_skip_verify: true
     static_configs:
-      - targets: [gatus.home]
+      - targets: [gatus-1.home]
 
   - job_name: gatus-2
     scheme: https

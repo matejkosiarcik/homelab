@@ -36,7 +36,7 @@ export const apps = {
     gatus: {
         title: 'Gatus',
         instances: [
-            { url: 'https://gatus.home', title: 'Gatus 1' },
+            { url: 'https://gatus-1.home', title: 'Gatus 1' },
             { url: 'https://gatus-2.home', title: 'Gatus 2' },
         ],
     },

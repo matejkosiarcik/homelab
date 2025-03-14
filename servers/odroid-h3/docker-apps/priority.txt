@@ -44,7 +44,7 @@ glances
 prometheus
 
 # App Monitoring
-gatus
+gatus-1
 
 # Non-server apps
 renovatebot

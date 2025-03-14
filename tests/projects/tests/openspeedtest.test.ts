@@ -1,13 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpsToHttpRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.openspeedtest.title, () => {
     for (const instance of apps.openspeedtest.instances) {
         test.describe(instance.title, () => {
-            // NOTE: HTTP->HTTPS not tested because redirect is disable because of speed variance
-            // Proxy tests are skipped, because openspeedtest has no proxy
-            // createHttpsToHttpRedirectTests(instance.url);
+            createHttpsToHttpRedirectTests(instance.url);
+            createProxyTests(instance.url);
             createApiRootTest(instance.url);
 
             for (const port of [80]) {
