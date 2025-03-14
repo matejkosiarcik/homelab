@@ -11,10 +11,10 @@ metrics: true
 
 alerting:
   email:
-    from: gatus@gatus.home
+    from: gatus@${HOMELAB_APP_EXTERNAL_DOMAIN}
     host: smtp4dev.home
     port: 25
-    to: notifications@gatus.home
+    to: notifications@${HOMELAB_APP_EXTERNAL_DOMAIN}
     client:
       insecure: true
     default-alert:
