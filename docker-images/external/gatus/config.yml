@@ -525,17 +525,17 @@ endpoints:
   - <<: *default-icmp
     name: Gatus (1) - ICMP
     group: App - Gatus (1)
-    url: icmp://gatus.home
+    url: icmp://gatus-1.home
 
   - <<: *default-http
     name: Gatus (1) - HTTP
     group: App - Gatus (1)
-    url: http://gatus.home
+    url: http://gatus-1.home
 
   - <<: *default-http
     name: Gatus (1) - HTTPS
     group: App - Gatus (1)
-    url: https://gatus.home
+    url: https://gatus-1.home
     alerts:
       - type: ntfy
       - type: email
@@ -543,22 +543,22 @@ endpoints:
   - <<: *default-http
     name: Gatus (1) - Prometheus metrics
     group: App - Gatus (1)
-    url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus.home/metrics
+    url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus-1.home/metrics
 
   - <<: *default-http
     name: Gatus (1) - Proxy prometheus metrics
     group: App - Gatus (1)
-    url: https://proxy-prometheus:${GATUS_1_PROXY_PROMETHEUS_PASSWORD}@gatus.home/.proxy/metrics
+    url: https://proxy-prometheus:${GATUS_1_PROXY_PROMETHEUS_PASSWORD}@gatus-1.home/.proxy/metrics
 
   - <<: *default-tcp
     name: Gatus (1) - TCP:80
     group: App - Gatus (1)
-    url: tcp://gatus.home:80
+    url: tcp://gatus-1.home:80
 
   - <<: *default-tcp
     name: Gatus (1) - TCP:443
     group: App - Gatus (1)
-    url: tcp://gatus.home:443
+    url: tcp://gatus-1.home:443
 
   ### Group: App - Gatus (2) ###
 

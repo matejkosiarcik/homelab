@@ -24,7 +24,7 @@
 10.1.10.27 minio-console.home
 10.1.10.28 smtp4dev.home
 10.1.10.29 healthchecks.home
-10.1.10.30 gatus.home
+10.1.10.30 gatus-1.home
 10.1.10.31 speedtest-tracker.home
 10.1.10.32 homepage.home
 10.1.10.33 changedetection.home

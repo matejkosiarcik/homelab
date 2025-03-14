@@ -215,12 +215,12 @@
 
     - Gatus:
         description: Uptime monitoring system
-        href: https://gatus.home
-        ping: gatus.home
+        href: https://gatus-1.home
+        ping: gatus-1.home
         icon: /icons/gatus.png
         widget:
           type: gatus
-          url: https://gatus.home
+          url: https://gatus-1.home
           username: admin
           password: "{{HOMEPAGE_VAR_GATUS_PASSWORD}}"
 

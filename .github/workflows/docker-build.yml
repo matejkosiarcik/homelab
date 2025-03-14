@@ -111,7 +111,7 @@ jobs:
               '["/servers/odroid-h3/docker-apps/dozzle-agent", "/servers/raspberry-pi-3b/docker-apps/dozzle-agent",' \
               '"/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],'
             printf '%s ' '"dozzle-server": ["/servers/odroid-h3/docker-apps/dozzle-server"],'
-            printf '%s ' '"gatus": ["/servers/odroid-h3/docker-apps/gatus", "/servers/raspberry-pi-4b-4g/docker-apps/gatus-2"],'
+            printf '%s ' '"gatus": ["/servers/odroid-h3/docker-apps/gatus-1", "/servers/raspberry-pi-4b-4g/docker-apps/gatus-2"],'
             printf '%s ' '"healthchecks": ["/servers/odroid-h3/docker-apps/healthchecks"],'
             printf '%s ' '"homeassistant": ["/servers/odroid-h3/docker-apps/homeassistant"],'
             printf '%s ' '"homepage": ["/servers/odroid-h3/docker-apps/homepage"],'
