@@ -1294,10 +1294,10 @@ endpoints:
       - type: ntfy
       - type: email
 
-  # - <<: *default-http
-  #   name: OpenSpeedTest - HTTPS
-  #   group: App - OpenSpeedTest
-  #   url: https://openspeedtest.home
+  - <<: *default-http
+    name: OpenSpeedTest - HTTPS
+    group: App - OpenSpeedTest
+    url: https://openspeedtest.home
 
   - <<: *default-http
     name: OpenSpeedTest - Proxy prometheus metrics
@@ -1309,10 +1309,10 @@ endpoints:
     group: App - OpenSpeedTest
     url: tcp://openspeedtest.home:80
 
-  # - <<: *default-tcp
-  #   name: OpenSpeedTest - TCP:443
-  #   group: App - OpenSpeedTest
-  #   url: tcp://openspeedtest.home:443
+  - <<: *default-tcp
+    name: OpenSpeedTest - TCP:443
+    group: App - OpenSpeedTest
+    url: tcp://openspeedtest.home:443
 
   ### Group: App - PiHole 1 Primary ###
 
@@ -1738,6 +1738,19 @@ endpoints:
       - type: email
 
   - <<: *default-http
+    name: Unbound 1 [default] - HTTP
+    group: App - Unbound 1 [default]
+    url: http://unbound-1-default.home/.proxy
+
+  - <<: *default-http
+    name: Unbound 1 [default] - HTTPS
+    group: App - Unbound 1 [default]
+    url: https://unbound-1-default.home/.proxy
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
     name: Unbound 1 [default] - Proxy prometheus metrics
     group: App - Unbound 1 [default]
     url: https://proxy-prometheus:${UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-1-default.home/.proxy/metrics
@@ -1763,6 +1776,19 @@ endpoints:
     name: Unbound 1 [open] - DNS
     group: App - Unbound 1 [open]
     url: unbound-1-open.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
+    name: Unbound 1 [open] - HTTP
+    group: App - Unbound 1 [open]
+    url: http://unbound-1-open.home/.proxy
+
+  - <<: *default-http
+    name: Unbound 1 [open] - HTTPS
+    group: App - Unbound 1 [open]
+    url: https://unbound-1-open.home/.proxy
     alerts:
       - type: ntfy
       - type: email
@@ -1798,6 +1824,19 @@ endpoints:
       - type: email
 
   - <<: *default-http
+    name: Unbound 2 [default] - HTTP
+    group: App - Unbound 2 [default]
+    url: http://unbound-2-default.home/.proxy
+
+  - <<: *default-http
+    name: Unbound 2 [default] - HTTPS
+    group: App - Unbound 2 [default]
+    url: https://unbound-2-default.home/.proxy
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
     name: Unbound 2 [default] - Proxy prometheus metrics
     group: App - Unbound 2 [default]
     url: https://proxy-prometheus:${UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-2-default.home/.proxy/metrics
@@ -1823,6 +1862,19 @@ endpoints:
     name: Unbound 2 [open] - DNS
     group: App - Unbound 2 [open]
     url: unbound-2-open.home
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
+    name: Unbound 2 [open] - HTTP
+    group: App - Unbound 2 [open]
+    url: http://unbound-2-open.home/.proxy
+
+  - <<: *default-http
+    name: Unbound 2 [open] - HTTPS
+    group: App - Unbound 2 [open]
+    url: https://unbound-2-open.home/.proxy
     alerts:
       - type: ntfy
       - type: email
