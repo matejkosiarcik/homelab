@@ -84,14 +84,9 @@ jobs:
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:
-            HOMELAB_SPEEDTEST_TRACKER_APP_KEY: base64:ZXhhbXBsZQ== # "example"
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
             set -euf
-            if find './servers/<< parameters.server >>/docker-apps/' -maxdepth 1 | grep 'speedtest-tracker' >/dev/null 2>&1; then
-              npm --prefix './.utils/deployment-helpers/secrets-helpers/speedtest-tracker' ci
-              npm --prefix './docker-images/custom/web-automation' ci
-            fi
             sh './servers/<< parameters.server >>/main.sh' secrets --dev --offline
       # - run:
       #     name: Build apps on << parameters.server >>
