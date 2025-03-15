@@ -179,6 +179,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'd
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
     PROXY_FORCE_HTTPS='false'
+elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
+    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 else
     PROXY_FORCE_HTTPS='true'
 fi
