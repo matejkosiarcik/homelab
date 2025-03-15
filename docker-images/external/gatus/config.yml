@@ -1294,10 +1294,10 @@ endpoints:
       - type: ntfy
       - type: email
 
-  # - <<: *default-http
-  #   name: OpenSpeedTest - HTTPS
-  #   group: App - OpenSpeedTest
-  #   url: https://openspeedtest.home
+  - <<: *default-http
+    name: OpenSpeedTest - HTTPS
+    group: App - OpenSpeedTest
+    url: https://openspeedtest.home
 
   - <<: *default-http
     name: OpenSpeedTest - Proxy prometheus metrics
@@ -1309,10 +1309,10 @@ endpoints:
     group: App - OpenSpeedTest
     url: tcp://openspeedtest.home:80
 
-  # - <<: *default-tcp
-  #   name: OpenSpeedTest - TCP:443
-  #   group: App - OpenSpeedTest
-  #   url: tcp://openspeedtest.home:443
+  - <<: *default-tcp
+    name: OpenSpeedTest - TCP:443
+    group: App - OpenSpeedTest
+    url: tcp://openspeedtest.home:443
 
   ### Group: App - PiHole 1 Primary ###
 
