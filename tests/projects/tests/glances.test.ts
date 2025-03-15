@@ -33,6 +33,7 @@ test.describe(apps.glances.title, () => {
                                 username: variant.username,
                                 password: getEnv(instance.url, 'PASSWORD'),
                             },
+                            timeout: 10_000,
                         });
                         expect(response.status, 'Response Status').toStrictEqual(200);
                     });
@@ -50,6 +51,7 @@ test.describe(apps.glances.title, () => {
                             username: variant.username,
                             password: faker.string.alphanumeric(10),
                         },
+                        timeout: 10_000,
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
@@ -60,6 +62,7 @@ test.describe(apps.glances.title, () => {
                             username: variant.username,
                             password: '',
                         },
+                        timeout: 10_000,
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
@@ -78,7 +81,7 @@ test.describe(apps.glances.title, () => {
             }
 
             test('API: Unsuccessful get root - No user', async () => {
-                const response = await axios.get(instance.url);
+                const response = await axios.get(instance.url, { timeout: 10_000 });
                 expect(response.status, 'Response Status').toStrictEqual(401);
             });
 
