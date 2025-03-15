@@ -9,7 +9,7 @@ test.describe(apps.openspeedtest.title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
 
-            for (const port of [80]) {
+            for (const port of [80, 443]) {
                 createTcpTest(instance.url, port);
             }
 
