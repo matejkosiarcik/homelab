@@ -15,10 +15,6 @@ import { chromium } from 'playwright';
     const args = await argumentParser.parse();
 
     const outputValue = await (async () => {
-        if (process.env['HOMELAB_SPEEDTEST_TRACKER_APP_KEY']) { // TODO: Still necessary???
-            return process.env['HOMELAB_SPEEDTEST_TRACKER_APP_KEY']!;
-        }
-
         const browser = await chromium.launch({ headless: true });
         try {
             const page = await browser.newPage({ baseURL: 'https://speedtest-tracker.dev' });
