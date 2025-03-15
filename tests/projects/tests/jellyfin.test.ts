@@ -1,8 +1,6 @@
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
@@ -21,7 +19,7 @@ test.describe(apps.jellyfin.title, () => {
             }
 
             test('API: Health endpoint', async () => {
-                const response = await axios.get(`${instance.url}/health`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(`${instance.url}/health`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 expect(response.data, 'Response body').toStrictEqual('Healthy');
             });

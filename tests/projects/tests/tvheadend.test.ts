@@ -1,9 +1,7 @@
-import https from 'node:https';
-import axios from 'axios';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
 type TvheadendServerInfoResponse = {
@@ -27,12 +25,12 @@ test.describe(apps.tvheadend.title, () => {
             }
 
             test('API: Root :9981', async () => {  // TODO: Remove after real Let's encrypt certificates
-                const response = await axios.get(httpUrl9981, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(httpUrl9981);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Info', async () => {
-                const response = await axios.get(`${instance.url}/api/serverinfo`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(`${instance.url}/api/serverinfo`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const body = response.data as TvheadendServerInfoResponse;
                 expect(body.api_version, 'API Version').toBeGreaterThan(0);

@@ -1,8 +1,6 @@
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
@@ -20,10 +18,9 @@ test.describe(apps['home-assistant'].title, () => {
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/api/prometheus`, {
-                    headers: { Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}` },
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                    headers: {
+                        Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}`,
+                    },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;

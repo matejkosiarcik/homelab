@@ -1,10 +1,8 @@
 import nodeDns from 'node:dns/promises';
-import https from 'node:https';
-import axios from 'axios';
 import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { dnsLookup, getEnv } from '../../utils/utils';
+import { axios, dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
@@ -44,9 +42,6 @@ test.describe(apps.pihole.title, () => {
                         username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                     },
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;

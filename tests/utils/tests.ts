@@ -1,15 +1,13 @@
 import net from 'node:net';
 import PromiseSocket from 'promise-socket';
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { getEnv } from './utils';
+import { axios, getEnv } from './utils';
 
 export function createTcpTest(url: string, port: number, subtitle?: string | undefined) {
     return test(`TCP: Connect to port ${port}${subtitle ? ` ${subtitle}` : ''}`, async () => {
         const host = url.replace(/^.*?:\/\//, '');
-    const socket = new net.Socket();
+        const socket = new net.Socket();
         const promiseSocket = new PromiseSocket(socket);
         await promiseSocket.connect(port, host);
         await promiseSocket.end();
@@ -24,7 +22,7 @@ export function createApiRootTest(url: string, _options?: { headers?: Record<str
     };
     return [
         test(`API: Get root${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(url, { headers: options.headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true });
+            const response = await axios.get(url, { headers: options.headers });
             expect(response.status, 'Response Status').toStrictEqual(options.status);
         }),
     ];
@@ -33,22 +31,22 @@ export function createApiRootTest(url: string, _options?: { headers?: Record<str
 export function createHttpToHttpsRedirectTests(url: string) {
     return [
         test('API: Redirect HTTP to HTTPS (root)', async () => {
-            const response = await axios.get(url.replace(/^https:\/\//, 'http://'), { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+            const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace(/^http:\/\//, 'https://'));
+            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://'));
         }),
 
         test('API: Redirect HTTP to HTTPS (root slash)', async () => {
-            const response = await axios.get(`${url.replace(/^https:\/\//, 'http://')}/`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+            const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace(/^http:\/\//, 'https://'));
+            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://'));
         }),
 
         test('API: Redirect HTTP to HTTPS (random subpage)', async () => {
             const subpage = `/${faker.string.alpha(10)}`;
-            const response = await axios.get(`${url.replace(/^https:\/\//, 'http://')}${subpage}`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+            const response = await axios.get(`${url.replace('https://', 'http://')}${subpage}`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace(/^http:\/\//, 'https://')}${subpage}`);
+            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}${subpage}`);
         }),
     ];
 }
@@ -56,35 +54,39 @@ export function createHttpToHttpsRedirectTests(url: string) {
 export function createHttpsToHttpRedirectTests(url: string) {
     return [
         test('API: Redirect HTTPS to HTTP (root)', async () => {
-            const response = await axios.get(url.replace(/^http:\/\//, 'https://'), { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+            const response = await axios.get(url.replace('http://', 'https://'), { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace(/^https:\/\//, 'http://'));
+            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('https://', 'http://'));
         }),
 
         test('API: Redirect HTTPS to HTTP (root slash)', async () => {
-            const response = await axios.get(`${url.replace(/^http:\/\//, 'https://')}/`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+            const response = await axios.get(`${url.replace('http://', 'https://')}/`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace(/^https:\/\//, 'http://'));
+            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('https://', 'http://'));
         }),
 
         test('API: Redirect HTTPS to HTTP (random subpage)', async () => {
             const subpage = `/${faker.string.alpha(10)}`;
-            const response = await axios.get(`${url.replace(/^http:\/\//, 'https://')}${subpage}`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, validateStatus: () => true });
+            const response = await axios.get(`${url.replace('http://', 'https://')}${subpage}`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace(/^https:\/\//, 'http://')}${subpage}`);
+            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('https://', 'http://')}${subpage}`);
         }),
     ];
 }
 
 export function createProxyTests(url: string) {
-    const output = [test(`API: Proxy root`, async () => {
-        const response = await axios.get(`${url}/.proxy`, {
-            maxRedirects: 999,
-            validateStatus: () => true,
-            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-        });
-        expect(response.status, 'Response Status').toStrictEqual(200);
-    })];
+    const output = [
+        test('API: Proxy root', async () => {
+            const response = await axios.get(`${url}/.proxy`);
+            expect(response.status, 'Response Status').toStrictEqual(200);
+        }),
+
+        test('API: Proxy redirect to HTTPS', async () => {
+            const response = await axios.get(`${url.replace('https://', 'http://')}/.proxy`, { maxRedirects: 0 });
+            expect(response.status, 'Response Status').toStrictEqual(302);
+            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}/.proxy`);
+        }),
+    ];
 
     const proxyStatusVariants = [
         {
@@ -127,12 +129,7 @@ export function createProxyTests(url: string) {
     ];
     output.push(...proxyStatusVariants.map((variant) => {
         return test(`API: Proxy status (${variant.title})`, async () => {
-            const response = await axios.get(`${url}/.proxy/status`, {
-                auth: variant.auth,
-                maxRedirects: 999,
-                validateStatus: () => true,
-                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-            });
+            const response = await axios.get(`${url}/.proxy/status`, { auth: variant.auth });
             expect(response.status, 'Response Status').toStrictEqual(variant.status);
         });
     }));
@@ -178,12 +175,7 @@ export function createProxyTests(url: string) {
     ];
     output.push(...proxyPrometheusVariants.map((variant) => {
         return test(`API: Proxy prometheus metrics (${variant.title})`, async () => {
-            const response = await axios.get(`${url}/.proxy/metrics`, {
-                auth: variant.auth,
-                maxRedirects: 999,
-                validateStatus: () => true,
-                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-            });
+            const response = await axios.get(`${url}/.proxy/metrics`, { auth: variant.auth });
             expect(response.status, 'Response Status').toStrictEqual(variant.status);
         });
     }));
@@ -195,9 +187,6 @@ export function createProxyTests(url: string) {
                     username: 'proxy-prometheus',
                     password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
                 },
-                maxRedirects: 999,
-                validateStatus: () => true,
-                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
             });
             expect(response.status, 'Response Status').toStrictEqual(200);
             const content = response.data as string;
@@ -270,12 +259,7 @@ export function createPrometheusTests(url: string, _options: { auth: 'basic' | '
                 },
             ];
             return prometheusVariants.map((variant) => test(`API: Prometheus metrics (${variant.title})`, async () => {
-                const response = await axios.get(`${url}${options.path}`, {
-                    auth: variant.auth,
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                });
+                const response = await axios.get(`${url}${options.path}`, { auth: variant.auth });
                 expect(response.status, 'Response Status').toStrictEqual(variant.status);
             }));
         }
@@ -303,12 +287,7 @@ export function createPrometheusTests(url: string, _options: { auth: 'basic' | '
                     headers['Authorization'] = `Bearer ${variant.auth}`;
                 }
 
-                const response = await axios.get(`${url}${options.path}`, {
-                    headers: headers,
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                });
+                const response = await axios.get(`${url}${options.path}`, { headers: headers });
                 expect(response.status, 'Response Status').toStrictEqual(variant.status);
             }));
         }

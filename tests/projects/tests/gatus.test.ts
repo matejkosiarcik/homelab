@@ -1,9 +1,7 @@
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
 test.describe(apps.gatus.title, () => {
@@ -24,9 +22,6 @@ test.describe(apps.gatus.title, () => {
                         username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                     },
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
@@ -61,20 +56,22 @@ test.describe(apps.gatus.title, () => {
                     test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
                         await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
                         await page.goto(instance.url);
-                        await expect(page.locator('#results .endpoint-group').first()).toBeVisible({ timeout: 10_000 });
+                        await expect(page.locator('.animate-spin')).toBeVisible();
+                        await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
+                        await expect(page.locator('#results .endpoint-group').first()).toBeVisible();
                     });
                 }
 
                 test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     await page.goto(instance.url);
-                    await expect(page.locator('#results .endpoint-group').first()).not.toBeVisible({ timeout: 10_000 });
+                    await expect(page.locator('#results .endpoint-group').first()).not.toBeVisible();
                 });
             }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
                 await page.goto(instance.url);
-                await expect(page.locator('#results .endpoint-group').first()).not.toBeVisible({ timeout: 10_000 });
+                await expect(page.locator('#results .endpoint-group').first()).not.toBeVisible();
             });
         });
     }

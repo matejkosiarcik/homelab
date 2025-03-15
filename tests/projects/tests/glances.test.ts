@@ -1,10 +1,8 @@
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 
 test.describe(apps.glances.title, () => {
     for (const instance of apps.glances.instances) {
@@ -35,9 +33,7 @@ test.describe(apps.glances.title, () => {
                                 username: variant.username,
                                 password: getEnv(instance.url, 'PASSWORD'),
                             },
-                            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                            maxRedirects: 999,
-                            validateStatus: () => true
+                            timeout: 10_000,
                         });
                         expect(response.status, 'Response Status').toStrictEqual(200);
                     });
@@ -55,9 +51,7 @@ test.describe(apps.glances.title, () => {
                             username: variant.username,
                             password: faker.string.alphanumeric(10),
                         },
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                        maxRedirects: 999,
-                        validateStatus: () => true
+                        timeout: 10_000,
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
@@ -68,9 +62,7 @@ test.describe(apps.glances.title, () => {
                             username: variant.username,
                             password: '',
                         },
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                        maxRedirects: 999,
-                        validateStatus: () => true
+                        timeout: 10_000,
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
@@ -89,7 +81,7 @@ test.describe(apps.glances.title, () => {
             }
 
             test('API: Unsuccessful get root - No user', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true });
+                const response = await axios.get(instance.url, { timeout: 10_000 });
                 expect(response.status, 'Response Status').toStrictEqual(401);
             });
 
@@ -104,9 +96,6 @@ test.describe(apps.glances.title, () => {
                         username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                     },
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;

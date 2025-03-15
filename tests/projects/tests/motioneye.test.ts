@@ -1,10 +1,8 @@
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 
 type MotioneyeError = {
     error: string,
@@ -93,29 +91,18 @@ test.describe(apps.motioneye.title, () => {
                             username: variant.username,
                             password: faker.string.alpha(10),
                         },
-                        maxRedirects: 999,
-                        validateStatus: () => true,
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
             test(`API: Unsuccessful stream open - No user`, async () => {
-                const response = await axios.get(`${instance.url}:9081`, {
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                });
+                const response = await axios.get(`${instance.url}:9081`);
                 expect(response.status, 'Response Status').toStrictEqual(401);
             });
 
             test(`API: Unsuccessful snapshot open - No user`, async () => {
-                const response = await axios.get(`${instance.url}/picture/1/current`, {
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-                });
+                const response = await axios.get(`${instance.url}/picture/1/current`);
                 expect(response.status, 'Response Status').toStrictEqual(403);
                 const body = response.data as MotioneyeError;
                 expect(body).toStrictEqual({ error: 'unauthorized', prompt: false });

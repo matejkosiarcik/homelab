@@ -1,5 +1,7 @@
-import process from 'node:process';
 import dns from 'native-dns';
+import https from 'node:https';
+import process from 'node:process';
+import { default as baseAxios } from 'axios';
 
 export async function delay(timeout: number): Promise<void> {
     return new Promise((resolve) => {
@@ -46,3 +48,10 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
         req.send();
     });
 }
+
+export const axios = baseAxios.create({
+    timeout: 2500,
+    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+    maxRedirects: 999,
+    validateStatus: () => true,
+});
