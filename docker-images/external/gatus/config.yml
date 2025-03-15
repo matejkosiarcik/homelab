@@ -19,7 +19,7 @@ alerting:
       insecure: true
     default-alert:
       enabled: true
-      failure-threshold: 10
+      failure-threshold: 3
       success-threshold: 1
       send-on-resolved: true
       description: Gatus healthcheck failed
@@ -30,7 +30,7 @@ alerting:
     token: ${NTFY_TOKEN}
     default-alert:
       enabled: true
-      failure-threshold: 5
+      failure-threshold: 3
       success-threshold: 1
       send-on-resolved: true
       description: Gatus healthcheck failed
@@ -484,21 +484,6 @@ endpoints:
       - type: ntfy
       - type: email
 
-  # Raspberry Pi 3B
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 3B - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-3b.home
-
-  - <<: *default-tcp
-    name: Dozzle agent - Raspberry Pi 3B - TCP:7007
-    group: App - Dozzle agents
-    url: tcp://dozzle-agent-raspberry-pi-3b.home:7007
-    alerts:
-      - type: ntfy
-      - type: email
-
   # Raspberry Pi 4B 2GB
 
   - <<: *default-icmp
@@ -652,48 +637,6 @@ endpoints:
     name: Glances - Odroid H3 - TCP:443
     group: App - Glances
     url: tcp://glances-odroid-h3.home:443
-
-  # Raspberry Pi 3B
-
-  - <<: *default-icmp
-    name: Glances - Raspberry Pi 3B - ICMP
-    group: App - Glances
-    url: icmp://glances-raspberry-pi-3b.home
-
-  - <<: *default-http
-    name: Glances - Raspberry Pi 3B - HTTP
-    group: App - Glances
-    url: http://glances-raspberry-pi-3b.home
-    conditions:
-      - "[STATUS] == 401"
-
-  - <<: *default-http
-    name: Glances - Raspberry Pi 3B - HTTPS
-    group: App - Glances
-    url: https://admin:${GLANCES_RASPBERRY_PI_3B_PASSWORD}@glances-raspberry-pi-3b.home
-    alerts:
-      - type: ntfy
-      - type: email
-
-  - <<: *default-http
-    name: Glances - Raspberry Pi 3B - Prometheus metrics
-    group: App - Glances
-    url: https://prometheus:${GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD}@glances-raspberry-pi-3b.home/metrics
-
-  - <<: *default-http
-    name: Glances - Raspberry Pi 3B - Proxy prometheus metrics
-    group: App - Glances
-    url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-3b.home/.proxy/metrics
-
-  - <<: *default-tcp
-    name: Glances - Raspberry Pi 3B - TCP:80
-    group: App - Glances
-    url: tcp://glances-raspberry-pi-3b.home:80
-
-  - <<: *default-tcp
-    name: Glances - Raspberry Pi 3B - TCP:443
-    group: App - Glances
-    url: tcp://glances-raspberry-pi-3b.home:443
 
   # Raspberry Pi 4B 2GB
 

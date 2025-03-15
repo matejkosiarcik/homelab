@@ -43,8 +43,6 @@
 10.1.10.46 prometheus.home
 
 10.1.12.1 tvheadend.home
-10.1.12.2 dozzle-agent-raspberry-pi-3b.home
-10.1.12.3 glances-raspberry-pi-3b.home
 
 10.1.14.1 dozzle-agent-raspberry-pi-4b-2g.home
 10.1.14.2 glances-raspberry-pi-4b-2g.home
