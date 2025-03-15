@@ -2,7 +2,7 @@
 set -euf
 
 # Set custom local domains
-custom_domains="[$(cat /homelab/custom-domains.txt | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
+custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
 printf 'Custom domains: %s\n' "$custom_domains"
 pihole-FTL --config dns.hosts "$custom_domains"
 
