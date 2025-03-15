@@ -1,9 +1,7 @@
-import https from 'node:https';
-import axios from 'axios';
 import UserAgent from 'user-agents';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
@@ -22,37 +20,41 @@ test.describe(apps.minio.title, () => {
 
             test('API: Redirect to console', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 0, headers: { 'User-Agent': userAgent }, validateStatus: () => true });
+                const response = await axios.get(instance.url, {
+                    headers: {
+                        'User-Agent': userAgent,
+                    },
+                    maxRedirects: 0,
+                });
                 expect(response.status, 'Response Status').toStrictEqual(307);
                 expect(response.headers['location'], 'Response header location').toStrictEqual(instance.consoleUrl);
             });
 
             test('API: Console root', async () => {
-                const response = await axios.get(instance.consoleUrl, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(instance.consoleUrl);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Health endpoint (live)', async () => {
-                const response = await axios.get(`${instance.url}/minio/health/live`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(`${instance.url}/minio/health/live`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Health endpoint (cluster)', async () => {
-                const response = await axios.get(`${instance.url}/minio/health/cluster`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(`${instance.url}/minio/health/cluster`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Health endpoint (cluster-read)', async () => {
-                const response = await axios.get(`${instance.url}/minio/health/cluster/read`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(`${instance.url}/minio/health/cluster/read`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/minio/v2/metrics/cluster`, {
-                    headers: { Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}` },
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                    headers: {
+                        Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}`,
+                    },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;

@@ -1,11 +1,9 @@
 import nodeDns from 'node:dns/promises';
-import https from 'node:https';
 import _ from 'lodash';
 import { expect, test } from '@playwright/test';
-import { dnsLookup, getEnv } from '../../utils/utils';
+import { axios, dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
-import axios from 'axios';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
@@ -43,9 +41,6 @@ test.describe(apps.unbound.title, () => {
                         username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                     },
-                    maxRedirects: 999,
-                    validateStatus: () => true,
-                    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;

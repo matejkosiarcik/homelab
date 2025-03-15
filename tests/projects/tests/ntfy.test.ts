@@ -1,10 +1,8 @@
-import https from 'node:https';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createProxyTests, createTcpTest } from '../../utils/tests';
-import { delay, getEnv } from '../../utils/utils';
-import axios from 'axios';
+import { axios, delay, getEnv } from '../../utils/utils';
 
 test.describe(apps.ntfy.title, () => {
     for (const instance of apps.ntfy.instances) {
@@ -86,10 +84,8 @@ test.describe(apps.ntfy.title, () => {
                             password: faker.string.alpha(10),
                         },
                         data: faker.string.alphanumeric(30),
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                         maxRedirects: 0,
                         method: 'POST',
-                        validateStatus: () => true,
                         url: `${instance.url}/test`,
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
@@ -127,10 +123,8 @@ test.describe(apps.ntfy.title, () => {
                             password: getEnv(instance.url, `${variant.username}_PASSWORD`),
                         },
                         data: notification,
-                        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                         maxRedirects: 0,
                         method: 'POST',
-                        validateStatus: () => true,
                         url: `${instance.url}/test`,
                     });
                     expect(response.status, 'Response Status').toStrictEqual(200);

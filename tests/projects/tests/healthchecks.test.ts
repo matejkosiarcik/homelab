@@ -1,8 +1,6 @@
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
 
@@ -18,7 +16,7 @@ test.describe(apps.healthchecks.title, () => {
             }
 
             test('API: Status endpoint', async () => {
-                const response = await axios.get(`${instance.url}/api/v3/status`, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999 });
+                const response = await axios.get(`${instance.url}/api/v3/status`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 expect(response.data, 'Response body').toStrictEqual('OK');
             });

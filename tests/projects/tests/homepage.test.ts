@@ -1,10 +1,8 @@
-import https from 'node:https';
-import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 
 test.describe(apps.homepage.title, () => {
     for (const instance of apps.homepage.instances) {
@@ -35,7 +33,11 @@ test.describe(apps.homepage.title, () => {
                     });
 
                     test(`API: Successful root - User ${variant.username}`, async () => {
-                        const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true, headers: { Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` } });
+                        const response = await axios.get(instance.url, {
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`,
+                            },
+                        });
                         expect(response.status, 'Response Status').toStrictEqual(200);
                     });
                 }
@@ -47,7 +49,11 @@ test.describe(apps.homepage.title, () => {
                 });
 
                 test(`API: Unsuccessful root - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
-                    const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true, headers: { Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` } });
+                    const response = await axios.get(instance.url, {
+                        headers: {
+                            Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
+                        },
+                    });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
@@ -58,7 +64,7 @@ test.describe(apps.homepage.title, () => {
             });
 
             test('API: Unsuccessful root - No user', async () => {
-                const response = await axios.get(instance.url, { httpsAgent: new https.Agent({ rejectUnauthorized: false }), maxRedirects: 999, validateStatus: () => true });
+                const response = await axios.get(instance.url);
                 expect(response.status, 'Response Status').toStrictEqual(401);
             });
         });
