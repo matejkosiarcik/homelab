@@ -32,7 +32,11 @@ RewriteCond %{ENV:PROXY_REDIRECT_TO_HTTP_OR_HTTPS} ^HTTPS$ [NC]
 RewriteCond %{ENV:_ALLOW_HTTPS} true [NC]
 RewriteRule ^ - [E=_PROTOCOL:https,NE]
 RewriteCond %{ENV:_PROTOCOL} ^$ [NC]
+RewriteCond %{HTTPS} off [NC]
 RewriteRule ^ - [E=_PROTOCOL:http,NE]
+RewriteCond %{ENV:_PROTOCOL} ^$ [NC]
+RewriteCond %{HTTPS} on [NC]
+RewriteRule ^ - [E=_PROTOCOL:https,NE]
 
 # Set target port
 RewriteRule ^ - [E=_PORT:,NE]
