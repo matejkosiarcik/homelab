@@ -13,11 +13,6 @@ services:
   app:
     <<: *common-service-options
     hostname: ${DOCKER_COMPOSE_NETWORK_DOMAIN} # This fixes random container hostname in dashboard header
-    environment:
-      <<: *common-env-variables
-      FTLCONF_LOCAL_IPV4: ${DOCKER_COMPOSE_NETWORK_IP}
-      FTLCONF_PRIVACYLEVEL: "0"
-      VIRTUAL_HOST: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp

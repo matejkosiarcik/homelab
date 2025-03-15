@@ -13,12 +13,6 @@ services:
   app:
     <<: *common-service-options
     hostname: pihole.localhost # This fixes random container hostname in dashboard header
-    environment:
-      <<: *common-env-variables
-      FTLCONF_PRIVACYLEVEL: "0"
-      # FTLCONF_LOCAL_IPV4: "127.0.0.1"
-      # VIRTUAL_HOST: localhost
-      # PIHOLE_DOMAIN: localhost
     ports:
       - 127.0.0.1:8053:53/tcp
       - 127.0.0.1:8053:53/udp

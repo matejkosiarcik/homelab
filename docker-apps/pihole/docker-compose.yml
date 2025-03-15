@@ -18,14 +18,10 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
-    environment:
-      <<: *common-env-variables
-      FTLCONF_RATE_LIMIT: "0/0" # Necessary because of https://www.reddit.com/r/pihole/comments/osm2fn/psa_if_you_are_having_random_dns_resolution
+    env_file:
+      - ./app-secrets/pihole.env
     volumes:
       - ./app-data/pihole/data:/etc/pihole:rw
-      - ./app-data/pihole/dnsmasq.d:/etc/dnsmasq.d:rw
-      - ./app-secrets/pihole-password.txt:/homelab/pihole-password.txt:ro
-      - ../../../../docker-images/external/pihole/custom.list.txt:/etc/pihole/custom.list:ro
     # Hard-coded DNS is necessary because of bootstrapping problem
     # Basically PiHole needs functional DNS in order to start (eg. to update adlists before start - which it can't do until it itself started, when it's the only DNS server on network)
     dns:

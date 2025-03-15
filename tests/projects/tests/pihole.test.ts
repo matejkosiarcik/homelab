@@ -70,21 +70,23 @@ test.describe(apps.pihole.title, () => {
 
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login.php`);
-                await page.locator('form#loginform input#loginpw').fill(getEnv(instance.url, 'PASSWORD'));
+                await page.waitForURL(`${instance.url}/admin/login`);
+                await page.locator('form#loginform input[type="password"]').fill(getEnv(instance.url, 'PASSWORD'));
                 await page.locator('form#loginform button[type="submit"]').click({ timeout: 5000 });
                 await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
-                await expect(page.locator('.sidebar li a:has-text("Dashboard")')).toBeVisible();
+                await expect(page.locator('aside.main-sidebar li a:has-text("Dashboard")')).toBeVisible();
+                await expect(page.locator('.content-wrapper #total_queries')).toBeVisible();
                 await expect(page.locator('.content-wrapper #queries-over-time')).toBeVisible();
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
                 await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login.php`);
-                await page.locator('form#loginform input#loginpw').fill(faker.string.alpha(10));
+                await page.waitForURL(`${instance.url}/admin/login`);
+                const originalUrl = page.url();
+                await page.locator('form#loginform input[type="password"]').fill(faker.string.alpha(10));
                 await page.locator('form#loginform button[type="submit"]').click();
-                await page.waitForSelector('.login-box-msg.has-error >> text="Wrong password!"', { timeout: 10_000 });
-                await expect(page, 'URL should not change').toHaveURL(`${instance.url}/admin/login.php`);
+                await page.waitForSelector('#error-message:has-text("Wrong password!")', { timeout: 10_000 });
+                await expect(page, 'URL should not change').toHaveURL(originalUrl);
             });
         });
     }

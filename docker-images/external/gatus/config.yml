@@ -62,12 +62,21 @@ default-udp: &default-udp
   conditions:
     - "[CONNECTED] == true"
 
-default-dns: &default-dns
+default-dns: &default-dns-a
   <<: *default-alerts
   interval: 5m
   dns:
     query-name: "example.com"
     query-type: "A"
+  conditions:
+    - "[DNS_RCODE] == NOERROR"
+
+default-dns-aaaa: &default-dns-aaaa
+  <<: *default-alerts
+  interval: 5m
+  dns:
+    query-name: "example.com"
+    query-type: "AAAA"
   conditions:
     - "[DNS_RCODE] == NOERROR"
 
@@ -1344,8 +1353,13 @@ endpoints:
     group: App - PiHole 1 Primary
     url: https://proxy-prometheus:${PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-primary.home/.proxy/metrics
 
-  - <<: *default-dns
-    name: PiHole 1 Primary - DNS
+  - <<: *default-dns-a
+    name: PiHole 1 Primary - DNS A
+    group: App - PiHole 1 Primary
+    url: pihole-1-primary.home
+
+  - <<: *default-dns-aaaa
+    name: PiHole 1 Primary - DNS AAAA
     group: App - PiHole 1 Primary
     url: pihole-1-primary.home
 
@@ -1399,8 +1413,13 @@ endpoints:
     group: App - PiHole 1 Secondary
     url: https://proxy-prometheus:${PIHOLE_1_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home/.proxy/metrics
 
-  - <<: *default-dns
-    name: PiHole 1 Secondary - DNS
+  - <<: *default-dns-a
+    name: PiHole 1 Secondary - DNS A
+    group: App - PiHole 1 Secondary
+    url: pihole-1-secondary.home
+
+  - <<: *default-dns-aaaa
+    name: PiHole 1 Secondary - DNS AAAA
     group: App - PiHole 1 Secondary
     url: pihole-1-secondary.home
 
@@ -1454,8 +1473,13 @@ endpoints:
     group: App - PiHole 2 Primary
     url: https://proxy-prometheus:${PIHOLE_2_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-primary.home/.proxy/metrics
 
-  - <<: *default-dns
-    name: PiHole 2 Primary - DNS
+  - <<: *default-dns-a
+    name: PiHole 2 Primary - DNS A
+    group: App - PiHole 2 Primary
+    url: pihole-2-primary.home
+
+  - <<: *default-dns-aaaa
+    name: PiHole 2 Primary - DNS AAAA
     group: App - PiHole 2 Primary
     url: pihole-2-primary.home
 
@@ -1509,8 +1533,13 @@ endpoints:
     group: App - PiHole 2 Secondary
     url: https://proxy-prometheus:${PIHOLE_2_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home/.proxy/metrics
 
-  - <<: *default-dns
-    name: PiHole 2 Secondary - DNS
+  - <<: *default-dns-a
+    name: PiHole 2 Secondary - DNS A
+    group: App - PiHole 2 Secondary
+    url: pihole-2-secondary.home
+
+  - <<: *default-dns-aaaa
+    name: PiHole 2 Secondary - DNS AAAA
     group: App - PiHole 2 Secondary
     url: pihole-2-secondary.home
 
@@ -1729,13 +1758,18 @@ endpoints:
     group: App - Unbound 1 [default]
     url: icmp://unbound-1-default.home
 
-  - <<: *default-dns
-    name: Unbound 1 [default] - DNS
+  - <<: *default-dns-a
+    name: Unbound 1 [default] - DNS A
     group: App - Unbound 1 [default]
     url: unbound-1-default.home
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-dns-aaaa
+    name: Unbound 1 [default] - DNS AAAA
+    group: App - Unbound 1 [default]
+    url: unbound-1-default.home
 
   - <<: *default-http
     name: Unbound 1 [default] - HTTP
@@ -1772,13 +1806,18 @@ endpoints:
     group: App - Unbound 1 [open]
     url: icmp://unbound-1-open.home
 
-  - <<: *default-dns
-    name: Unbound 1 [open] - DNS
+  - <<: *default-dns-a
+    name: Unbound 1 [open] - DNS A
     group: App - Unbound 1 [open]
     url: unbound-1-open.home
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-dns-aaaa
+    name: Unbound 1 [open] - DNS AAAA
+    group: App - Unbound 1 [open]
+    url: unbound-1-open.home
 
   - <<: *default-http
     name: Unbound 1 [open] - HTTP
@@ -1815,13 +1854,18 @@ endpoints:
     group: App - Unbound 2 [default]
     url: icmp://unbound-2-default.home
 
-  - <<: *default-dns
-    name: Unbound 2 [default] - DNS
+  - <<: *default-dns-a
+    name: Unbound 2 [default] - DNS A
     group: App - Unbound 2 [default]
     url: unbound-2-default.home
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-dns-aaaa
+    name: Unbound 2 [default] - DNS AAAA
+    group: App - Unbound 2 [default]
+    url: unbound-2-default.home
 
   - <<: *default-http
     name: Unbound 2 [default] - HTTP
@@ -1858,13 +1902,18 @@ endpoints:
     group: App - Unbound 2 [open]
     url: icmp://unbound-2-open.home
 
-  - <<: *default-dns
-    name: Unbound 2 [open] - DNS
+  - <<: *default-dns-a
+    name: Unbound 2 [open] - DNS A
     group: App - Unbound 2 [open]
     url: unbound-2-open.home
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-dns-aaaa
+    name: Unbound 2 [open] - DNS AAAA
+    group: App - Unbound 2 [open]
+    url: unbound-2-open.home
 
   - <<: *default-http
     name: Unbound 2 [open] - HTTP
