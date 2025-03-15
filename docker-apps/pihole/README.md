@@ -6,10 +6,11 @@
 
 PiHole:
 
-- Docs: <https://docs.pi-hole.net>
 - GitHub: <https://github.com/pi-hole/docker-pi-hole>
 - DockerHub: <https://hub.docker.com/r/pihole/pihole>
-- FTL Configuration: <https://docs.pi-hole.net/ftldns/configfile>
+- Docs: <https://docs.pi-hole.net>
+- Docs - Docker: <https://docs.pi-hole.net/docker>
+- Docs - FTL Configuration: <https://docs.pi-hole.net/ftldns/configfile>
 
 Prometheus exporter:
 
