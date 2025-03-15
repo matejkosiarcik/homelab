@@ -28,7 +28,6 @@ export const apps = {
         title: 'Dozzle Agent',
         instances: [
             { url: 'tcp://dozzle-agent-odroid-h3.home', title: 'Dozzle Agent - Odroid H3' },
-            { url: 'tcp://dozzle-agent-raspberry-pi-3b.home', title: 'Dozzle Agent - Raspberry Pi 3B' },
             { url: 'tcp://dozzle-agent-raspberry-pi-4b-2g.home', title: 'Dozzle Agent - Raspberry Pi 4B 2GB' },
             { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.home', title: 'Dozzle Agent - Raspberry Pi 4B 4GB' },
         ],

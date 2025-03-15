@@ -484,21 +484,6 @@ endpoints:
       - type: ntfy
       - type: email
 
-  # Raspberry Pi 3B
-
-  - <<: *default-icmp
-    name: Dozzle agent - Raspberry Pi 3B - ICMP
-    group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-3b.home
-
-  - <<: *default-tcp
-    name: Dozzle agent - Raspberry Pi 3B - TCP:7007
-    group: App - Dozzle agents
-    url: tcp://dozzle-agent-raspberry-pi-3b.home:7007
-    alerts:
-      - type: ntfy
-      - type: email
-
   # Raspberry Pi 4B 2GB
 
   - <<: *default-icmp
