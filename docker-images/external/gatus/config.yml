@@ -71,7 +71,7 @@ default-dns: &default-dns-a
   conditions:
     - "[DNS_RCODE] == NOERROR"
 
-default-dns-aaaa: &default-dns-a
+default-dns-aaaa: &default-dns-aaaa
   <<: *default-alerts
   interval: 5m
   dns:
