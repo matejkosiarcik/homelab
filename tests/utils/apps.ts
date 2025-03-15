@@ -113,10 +113,10 @@ export const apps = {
     pihole: {
         title: 'PiHole',
         instances: [
-            { url: 'https://pihole-1-primary.home', title: 'PiHole Primary 1' },
-            { url: 'https://pihole-1-secondary.home', title: 'PiHole Secondary 1' },
-            { url: 'https://pihole-2-primary.home', title: 'PiHole Primary 2' },
-            { url: 'https://pihole-2-secondary.home', title: 'PiHole Secondary 2' },
+            { url: 'https://pihole-1-primary.home', title: 'PiHole 1 Primary' },
+            { url: 'https://pihole-1-secondary.home', title: 'PiHole 1 Secondary' },
+            { url: 'https://pihole-2-primary.home', title: 'PiHole 2 Primary' },
+            { url: 'https://pihole-2-secondary.home', title: 'PiHole 2 Secondary' },
         ],
     },
     prometheus: {
