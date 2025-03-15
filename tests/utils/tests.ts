@@ -75,19 +75,27 @@ export function createHttpsToHttpRedirectTests(url: string) {
     ];
 }
 
-export function createProxyTests(url: string) {
+export function createProxyTests(url: string, _options?: { redirect?: boolean | undefined } | undefined) {
+    const options = {
+        redirect: _options?.redirect ?? true,
+    };
+
     const output = [
         test('API: Proxy root', async () => {
             const response = await axios.get(`${url}/.proxy`);
             expect(response.status, 'Response Status').toStrictEqual(200);
         }),
-
-        test('API: Proxy redirect to HTTPS', async () => {
-            const response = await axios.get(`${url.replace('https://', 'http://')}/.proxy`, { maxRedirects: 0 });
-            expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}/.proxy`);
-        }),
     ];
+
+    if (options.redirect) {
+        output.push(
+            test('API: Proxy redirect to HTTPS', async () => {
+                const response = await axios.get(`${url.replace('https://', 'http://')}/.proxy`, { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}/.proxy`);
+            }),
+        );
+    }
 
     const proxyStatusVariants = [
         {
