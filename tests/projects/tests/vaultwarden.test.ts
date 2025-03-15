@@ -7,7 +7,7 @@ import { createApiRootTest, createProxyTests, createTcpTests } from '../../utils
 test.describe(apps['vaultwarden'].title, () => {
     for (const instance of apps['vaultwarden'].instances) {
         test.describe(instance.title, () => {
-            // TODO: Add test for HTTP->HTTPS redirects after real Let's Encrypt certificates
+            // TODO: Add tests for HTTP->HTTPS redirects after real Let's Encrypt certificates
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
