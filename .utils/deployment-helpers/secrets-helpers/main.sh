@@ -632,8 +632,7 @@ case "$full_app_name" in
     admin_password="$(load_password "$full_app_name" app admin)"
     if [ "$mode" = 'dev' ]; then
         admin_email='admin@speedtest-tracker.localhost'
-        sh "$helper_script_dir/speedtest-tracker/main.sh" "$tmpdir/speedtest-tracker-app-key.txt"
-        app_key="$(cat "$tmpdir/speedtest-tracker-app-key.txt")"
+        app_key="$(printf 'base64:' && openssl rand -base64 32)"
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
         app_key="$(load_token "$full_app_name" app app-key)"
