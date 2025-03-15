@@ -6,7 +6,7 @@ test.describe(apps.openspeedtest.title, () => {
     for (const instance of apps.openspeedtest.instances) {
         test.describe(instance.title, () => {
             createHttpsToHttpRedirectTests(instance.url);
-            createProxyTests(instance.url);
+            createProxyTests(instance.url, { redirect: false });
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
 
