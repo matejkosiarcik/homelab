@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 
 test.describe(apps.changedetection.title, () => {
@@ -10,10 +10,7 @@ test.describe(apps.changedetection.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-
-            for (const port of [80, 443]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [80, 443]);
 
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);

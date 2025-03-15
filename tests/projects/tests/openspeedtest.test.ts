@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpsToHttpRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpsToHttpRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.openspeedtest.title, () => {
     for (const instance of apps.openspeedtest.instances) {
@@ -8,10 +8,7 @@ test.describe(apps.openspeedtest.title, () => {
             createHttpsToHttpRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-
-            for (const port of [80]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [80, 443]);
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
