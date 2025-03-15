@@ -1,3 +1,2 @@
 tvheadend
 dozzle-agent
-glances

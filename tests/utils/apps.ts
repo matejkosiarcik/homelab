@@ -44,7 +44,6 @@ export const apps = {
         title: 'Glances',
         instances: [
             { url: 'https://glances-odroid-h3.home', title: 'Glances - Odroid H3' },
-            { url: 'https://glances-raspberry-pi-3b.home', title: 'Glances - Raspberry Pi 3B' },
             { url: 'https://glances-raspberry-pi-4b-2g.home', title: 'Glances - Raspberry Pi 4B 2GB' },
             { url: 'https://glances-raspberry-pi-4b-4g.home', title: 'Glances - Raspberry Pi 4B 4GB' },
         ],

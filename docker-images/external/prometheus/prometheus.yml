@@ -35,17 +35,6 @@ scrape_configs:
     static_configs:
       - targets: [glances-odroid-h3.home]
 
-  - job_name: glances-raspberry-pi-3b
-    scheme: https
-    metrics_path: /metrics
-    basic_auth:
-      username: prometheus
-      password: ${GLANCES_RASPBERRY_PI_3B_PASSWORD}
-    tls_config:
-      insecure_skip_verify: true
-    static_configs:
-      - targets: [glances-raspberry-pi-3b.home]
-
   - job_name: glances-raspberry-pi-4b-2g
     scheme: https
     metrics_path: /metrics
