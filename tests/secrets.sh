@@ -43,10 +43,10 @@ load_password() {
     printf 'DOZZLE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dozzle http-proxy status)"
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dozzle http-proxy prometheus)"
 
-    printf 'GATUS_ADMIN_PASSWORD=%s\n' "$(load_password gatus app admin)"
-    printf 'GATUS_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus app prometheus)"
-    printf 'GATUS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus http-proxy status)"
-    printf 'GATUS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus http-proxy prometheus)"
+    printf 'GATUS_1_ADMIN_PASSWORD=%s\n' "$(load_password gatus-1 app admin)"
+    printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-1 app prometheus)"
+    printf 'GATUS_1_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-1 http-proxy status)"
+    printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-1 http-proxy prometheus)"
 
     printf 'GATUS_2_ADMIN_PASSWORD=%s\n' "$(load_password gatus-2 app admin)"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 app prometheus)"

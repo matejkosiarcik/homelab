@@ -18,9 +18,7 @@ RUN apt-get update -qq && \
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
 COPY ./custom/http-proxy/apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY --from=prefinal /homelab/ ./
-ENV APACHE_HTTP_PORT_NUMBER=80 \
-    APACHE_HTTPS_PORT_NUMBER=443 \
-    HOMELAB_CONTAINER_NAME=http-proxy \
+ENV HOMELAB_CONTAINER_NAME=http-proxy \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.proxy || exit 1" ]
