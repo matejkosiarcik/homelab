@@ -167,7 +167,7 @@ export PROXY_HTTPS_PORT
 printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envvars
 
 # Set PROXY_FORCE_HTTPS
-if [ "$HOMELAB_FORCE_PROTOCOL" = 'HTTP' ]; then
+if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
     PROXY_FORCE_HTTPS='false'
 elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
