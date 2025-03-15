@@ -516,7 +516,7 @@ case "$full_app_name" in
     api_key="$(load_token "$full_app_name" app api-key)"
     admin_password="$(load_password "$full_app_name" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
-    printf '%s\n' "$admin_password" >>"$output/pihole-password.txt"
+    printf 'FTLCONF_webserver_api_password=%s\n' "$admin_password" >>"$output/pihole.env"
 
     # Prometheus exporter
     if [ "$mode" = 'prod' ]; then
