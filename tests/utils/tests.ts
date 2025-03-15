@@ -4,14 +4,15 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, getEnv } from './utils';
 
-export function createTcpTest(url: string, port: number, subtitle?: string | undefined) {
-    return test(`TCP: Connect to port ${port}${subtitle ? ` ${subtitle}` : ''}`, async () => {
+export function createTcpTests(url: string, ports: number | number[], subtitle?: string | undefined) {
+    const _ports = [ports].flat();
+    return _ports.map((port) => test(`TCP: Connect to port ${port}${subtitle ? ` ${subtitle}` : ''}`, async () => {
         const host = url.replace(/^.*?:\/\//, '');
         const socket = new net.Socket();
         const promiseSocket = new PromiseSocket(socket);
         await promiseSocket.connect(port, host);
         await promiseSocket.end();
-    });
+    }));
 }
 
 export function createApiRootTest(url: string, _options?: { headers?: Record<string, string> | undefined, title?: string | undefined, status?: number | undefined }) {

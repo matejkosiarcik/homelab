@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
@@ -13,10 +13,7 @@ test.describe(apps.pihole.title, () => {
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
             createApiRootTest(instance.url);
-
-            for (const port of [53, 80, 443]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [53, 80, 443]);
 
             for (const transportVariant of ['tcp', 'udp'] as const) {
                 for (const ipVariant of ['A', 'AAAA'] as const) {

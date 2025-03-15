@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { axios, getEnv } from '../../utils/utils';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
@@ -11,10 +11,7 @@ test.describe(apps.gatus.title, () => {
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
             createApiRootTest(instance.url);
-
-            for (const port of [80, 443]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [80, 443]);
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {

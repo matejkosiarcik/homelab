@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
@@ -12,11 +12,8 @@ test.describe(apps.minio.title, () => {
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'token', path: '/minio/v2/metrics/cluster' });
             createApiRootTest(instance.url, { headers: { 'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString() }});
-
-            for (const port of [80, 443]) {
-                createTcpTest(instance.url, port);
-                createTcpTest(instance.consoleUrl, port, 'console');
-            }
+            createTcpTests(instance.url, [80, 443]);
+            createTcpTests(instance.consoleUrl, [80, 443], 'console');
 
             test('API: Redirect to console', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();

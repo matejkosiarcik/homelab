@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps['vaultwarden'].title, () => {
     for (const instance of apps['vaultwarden'].instances) {
@@ -10,10 +10,7 @@ test.describe(apps['vaultwarden'].title, () => {
             // TODO: Add test for HTTP->HTTPS redirects after real Let's Encrypt certificates
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-
-            for (const port of [80, 443]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [80, 443]);
 
             const users = [
                 {

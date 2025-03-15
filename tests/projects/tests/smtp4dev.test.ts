@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.smtp4dev.title, () => {
     for (const instance of apps.smtp4dev.instances) {
@@ -8,10 +8,7 @@ test.describe(apps.smtp4dev.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-
-            for (const port of [25, 80, 443]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [25, 80, 443]);
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);

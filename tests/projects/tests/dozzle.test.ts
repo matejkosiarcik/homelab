@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 
 test.describe(apps.dozzle.title, () => {
@@ -10,10 +10,7 @@ test.describe(apps.dozzle.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-
-            for (const port of [80, 443]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [80, 443]);
 
             const users = [
                 {
@@ -54,7 +51,7 @@ test.describe(apps.dozzle.title, () => {
 test.describe(apps['dozzle-agent'].title, () => {
     for (const instance of apps['dozzle-agent'].instances) {
         test.describe(instance.title, () => {
-            createTcpTest(instance.url, 7007);
+            createTcpTests(instance.url, 7007);
         });
     }
 });

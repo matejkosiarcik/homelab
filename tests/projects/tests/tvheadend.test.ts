@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
@@ -19,10 +19,7 @@ test.describe(apps.tvheadend.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-
-            for (const port of [80, 443, 9981, 9982]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [80, 443, 9981, 9982]);
 
             test('API: Root :9981', async () => {  // TODO: Remove after real Let's encrypt certificates
                 const response = await axios.get(httpUrl9981);

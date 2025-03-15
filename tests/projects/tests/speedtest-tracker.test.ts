@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTest } from '../../utils/tests';
+import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 type SpeedtestTrackerHealthcheckResponse = {
     message: string,
@@ -14,10 +14,7 @@ test.describe(apps['speedtest-tracker'].title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-
-            for (const port of [80, 443]) {
-                createTcpTest(instance.url, port);
-            }
+            createTcpTests(instance.url, [80, 443]);
 
             test('API: Healthcheck', async () => {
                 const response = await axios.get(`${instance.url}/api/healthcheck`);
