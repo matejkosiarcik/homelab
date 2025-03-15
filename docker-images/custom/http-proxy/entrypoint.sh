@@ -178,9 +178,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ] && [ "$HOMELAB_CONTAINER_VARIANT" = '
 elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'direct' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
-    PROXY_FORCE_HTTPS='false' # TODO: Maybe enable HTTPS redirection if it doesn't slow down production server
-elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
-    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
+    PROXY_FORCE_HTTPS='false'
 else
     PROXY_FORCE_HTTPS='true'
 fi
