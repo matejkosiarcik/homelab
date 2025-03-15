@@ -20,14 +20,17 @@ RewriteRule ^ - [E=_ALLOW_HTTPS:false,NE]
 
 # Set _FORCE_HTTPS depending on current path
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
-RewriteCond %{REQUEST_URI} ^/.proxy/ [NC]
+RewriteCond %{REQUEST_URI} ^/.proxy$ [NC]
+RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
+RewriteCond %{REQUEST_URI} ^/.proxy/+ [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
 
 # Set target protocol
 RewriteRule ^ - [E=_PROTOCOL:,NE]
 RewriteCond %{ENV:PROXY_REDIRECT_TO_HTTP_OR_HTTPS} ^HTTP$ [NC]
-RewriteCond %{ENV:_FORCE_HTTPS} false [NC]
 RewriteRule ^ - [E=_PROTOCOL:http,NE]
+RewriteCond %{ENV:_FORCE_HTTPS} true [NC]
+RewriteRule ^ - [E=_PROTOCOL:https,NE]
 RewriteCond %{ENV:PROXY_REDIRECT_TO_HTTP_OR_HTTPS} ^HTTPS$ [NC]
 RewriteCond %{ENV:_ALLOW_HTTPS} true [NC]
 RewriteRule ^ - [E=_PROTOCOL:https,NE]
