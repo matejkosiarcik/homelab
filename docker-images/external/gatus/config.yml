@@ -71,6 +71,15 @@ default-dns: &default-dns
   conditions:
     - "[DNS_RCODE] == NOERROR"
 
+default-dns-aaaa: &default-dns
+  <<: *default-alerts
+  interval: 5m
+  dns:
+    query-name: "example.com"
+    query-type: "AAAA"
+  conditions:
+    - "[DNS_RCODE] == NOERROR"
+
 default-http: &default-http
   <<: *default-alerts
   interval: 5m
@@ -1349,6 +1358,11 @@ endpoints:
     group: App - PiHole 1 Primary
     url: pihole-1-primary.home
 
+  - <<: *default-dns-aaaa
+    name: PiHole 1 Primary - DNS AAAA
+    group: App - PiHole 1 Primary
+    url: pihole-1-primary.home
+
   - <<: *default-tcp
     name: PiHole 1 Primary - TCP:53
     group: App - PiHole 1 Primary
@@ -1401,6 +1415,11 @@ endpoints:
 
   - <<: *default-dns
     name: PiHole 1 Secondary - DNS
+    group: App - PiHole 1 Secondary
+    url: pihole-1-secondary.home
+
+  - <<: *default-dns-aaaa
+    name: PiHole 1 Secondary - DNS AAAA
     group: App - PiHole 1 Secondary
     url: pihole-1-secondary.home
 
@@ -1459,6 +1478,11 @@ endpoints:
     group: App - PiHole 2 Primary
     url: pihole-2-primary.home
 
+  - <<: *default-dns-aaaa
+    name: PiHole 2 Primary - DNS AAAA
+    group: App - PiHole 2 Primary
+    url: pihole-2-primary.home
+
   - <<: *default-tcp
     name: PiHole 2 Primary - TCP:53
     group: App - PiHole 2 Primary
@@ -1511,6 +1535,11 @@ endpoints:
 
   - <<: *default-dns
     name: PiHole 2 Secondary - DNS
+    group: App - PiHole 2 Secondary
+    url: pihole-2-secondary.home
+
+  - <<: *default-dns-aaaa
+    name: PiHole 2 Secondary - DNS AAAA
     group: App - PiHole 2 Secondary
     url: pihole-2-secondary.home
 
@@ -1737,6 +1766,11 @@ endpoints:
       - type: ntfy
       - type: email
 
+  - <<: *default-dns-aaaa
+    name: Unbound 1 [default] - DNS AAAA
+    group: App - Unbound 1 [default]
+    url: unbound-1-default.home
+
   - <<: *default-http
     name: Unbound 1 [default] - HTTP
     group: App - Unbound 1 [default]
@@ -1779,6 +1813,11 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-dns-aaaa
+    name: Unbound 1 [open] - DNS AAAA
+    group: App - Unbound 1 [open]
+    url: unbound-1-open.home
 
   - <<: *default-http
     name: Unbound 1 [open] - HTTP
@@ -1823,6 +1862,11 @@ endpoints:
       - type: ntfy
       - type: email
 
+  - <<: *default-dns-aaaa
+    name: Unbound 2 [default] - DNS AAAA
+    group: App - Unbound 2 [default]
+    url: unbound-2-default.home
+
   - <<: *default-http
     name: Unbound 2 [default] - HTTP
     group: App - Unbound 2 [default]
@@ -1865,6 +1909,11 @@ endpoints:
     alerts:
       - type: ntfy
       - type: email
+
+  - <<: *default-dns-aaaa
+    name: Unbound 2 [open] - DNS AAAA
+    group: App - Unbound 2 [open]
+    url: unbound-2-open.home
 
   - <<: *default-http
     name: Unbound 2 [open] - HTTP
