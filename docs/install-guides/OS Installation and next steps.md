@@ -23,17 +23,7 @@ Notes for installation:
 
 Run the installation...
 
-## Postinstall - Setup SSH
-
-Copy `homelab` public key to server, disable password authentication, enable key authentication.
-
-TL;DR:
-
-```sh
-TBD
-```
-
-## Postinstall - Prepare system for ansible
+## Postinstall - Prepare crucial packages
 
 Install `openssh-server` in order to be able to connect to this machine via SSH.
 Install `python3` in order to be able to run ansible on this machine.
@@ -41,8 +31,23 @@ Install `python3` in order to be able to run ansible on this machine.
 TL;DR:
 
 ```sh
-sudo apt-get update
-sudo apt-get install --yes openssh-server python3
+sudo apt-get update && sudo apt-get install --yes openssh-server python3
+```
+
+## Postinstall - Setup SSH
+
+Copy `homelab` public key to server, disable password authentication, enable key authentication.
+
+TL;DR:
+
+```sh
+ssh-copy-id -i ~/.ssh/id_homelab.pub homelab@[host]
+```
+
+```sh
+sudo nano /etc/ssh/sshd_config
+# Set following line: PasswordAuthentication no
+sudo service ssh restart
 ```
 
 ## Postinstall - Run ansible setup
@@ -50,7 +55,7 @@ sudo apt-get install --yes openssh-server python3
 TL;DR:
 
 ```sh
-ansible-playbook --limit <machine-name> playbooks/setup-server.yml
+ansible-playbook --limit [machine-name] playbooks/setup-server.yml
 ```
 
 ## Postinstall - Deploy homelab
@@ -58,7 +63,7 @@ ansible-playbook --limit <machine-name> playbooks/setup-server.yml
 TL;DR:
 
 ```sh
-ansible-playbook --limit <machine-name> playbooks/deploy-homelab.yml
+ansible-playbook --limit [machine-name] playbooks/deploy-homelab.yml
 ```
 
 ## Postinstall - Docker memory monitoring
