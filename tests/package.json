@@ -10,7 +10,7 @@
     "@faker-js/faker": "^9.6.0",
     "@playwright/test": "^1.51.0",
     "async": "^3.2.6",
-    "axios": "^1.8.2",
+    "axios": "^1.8.3",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "execa": "^9.5.2",
@@ -19,7 +19,7 @@
     "p-parallel": "^1.0.3",
     "promise-socket": "^8.0.0",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.475"
+    "user-agents": "^1.1.480"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
