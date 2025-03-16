@@ -17,21 +17,32 @@ Notes for installation:
 - Disable SSH authentication via password
 - Disable Wi-Fi
 - Set Timezone _Europe/Bratislava_
-- Set username to _matej_
+- Set username to _homelab_
 
 ## Other
 
+Run the installation...
+
+## Postinstall - Setup SSH
+
+Copy `homelab` public key to server, disable password authentication, enable key authentication.
+
+TL;DR:
+
+```sh
 TBD
+```
 
 ## Postinstall - Prepare system for ansible
 
-Install `python3` in order to be able to run ansible on this machine:
+Install `openssh-server` in order to be able to connect to this machine via SSH.
+Install `python3` in order to be able to run ansible on this machine.
 
 TL;DR:
 
 ```sh
 sudo apt-get update
-sudo apt-get install --yes python3
+sudo apt-get install --yes openssh-server python3
 ```
 
 ## Postinstall - Run ansible setup
@@ -39,9 +50,7 @@ sudo apt-get install --yes python3
 TL;DR:
 
 ```sh
-cd "$(git rev-parse --show-toplevel)/ansible"
-. ./venv/bin/activate
-ansible-playbook --limit <machine-name> playbooks/setup-system.yml
+ansible-playbook --limit <machine-name> playbooks/setup-server.yml
 ```
 
 ## Postinstall - Deploy homelab
@@ -49,12 +58,10 @@ ansible-playbook --limit <machine-name> playbooks/setup-system.yml
 TL;DR:
 
 ```sh
-cd "$(git rev-parse --show-toplevel)/ansible"
-. ./venv/bin/activate
-ansible-playbook --limit <machine-name> playbooks/deploy-homelab-initial.yml
+ansible-playbook --limit <machine-name> playbooks/deploy-homelab.yml
 ```
 
-## Postinstall - Docker memory
+## Postinstall - Docker memory monitoring
 
 Only for ARM devices (Raspberry Pi)!
 

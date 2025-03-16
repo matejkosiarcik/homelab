@@ -4,6 +4,8 @@
     - name: Ping
       ansible.builtin.ping:
 
+      ## APT ##
+
     - name: Update APT index
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       become: true
@@ -31,6 +33,7 @@
           - lshw
           - lsof
           - moreutils
+          - openssh-server
           - openssl
           - psmisc
           - python-is-python3
@@ -40,6 +43,15 @@
           - smartmontools
           - unbound
           - wget
+
+    # Just a note, this can take a long time, especially on first run
+    - name: Update APT packages
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
+      become: true
+      ansible.builtin.apt:
+        upgrade: true
+        autoclean: true
+        autoremove: true
 
     - name: Vacuum journal logs
       register: journactl_vacuum
@@ -65,6 +77,8 @@
         if [ "$status_before" != "$status_after" ]; then
           printf 'CHANGED\n'
         fi
+
+      ## Log2Ram ##
 
     - name: Install log2ram
       register: log2ram_install
@@ -96,12 +110,7 @@
         set -eufo pipefail
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
 
-    - name: Configure sensors
-      when: apt_packages.changed
-      changed_when: "True"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        (yes || true) | sudo sensors-detect
+    ## NodeJS ##
 
     - name: Install NodeJS
       register: install_nodejs
@@ -123,11 +132,39 @@
         node --version
         npm --version
 
+    - name: Ignore NodeJS warnings
+      register: ignore_nodejs_warnings
+      changed_when: "'CHANGED' in ignore_nodejs_warnings.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        if [ ! -e "$HOME/.profile" ]; then
+          touch "$HOME/.profile"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
+          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
+          printf 'CHANGED\n'
+        fi
+        if [ ! -e "$HOME/.bashrc" ]; then
+          touch "$HOME/.bashrc"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
+          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
+          printf 'CHANGED\n'
+        fi
+
     - name: Install Bitwarden CLI
       become: true
       community.general.npm:
         name: "@bitwarden/cli"
         global: true
+
+    - name: Update NPM packages
+      become: true
+      community.general.npm:
+        global: true
+        state: latest
 
     - name: Configure Bitwarden CLI
       register: config_bitwarden_cli
@@ -141,6 +178,8 @@
         fi
         bw config server "$target"
         printf 'CHANGED\n'
+
+    ## Docker ##
 
     - name: Install docker
       register: docker_install
@@ -252,6 +291,15 @@
           printf 'CHANGED\n'
         fi
 
+    ## Other ##
+
+    - name: Configure sensors
+      when: apt_packages.changed
+      changed_when: "True"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        (yes || true) | sudo sensors-detect
+
     - name: Setup locale
       register: setup_locale
       when: ansible_facts['system'] == 'Linux'
@@ -283,27 +331,7 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Ignore NodeJS warnings
-      register: ignore_nodejs_warnings
-      changed_when: "'CHANGED' in ignore_nodejs_warnings.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        if [ ! -e "$HOME/.profile" ]; then
-          touch "$HOME/.profile"
-          printf 'CHANGED\n'
-        fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
-          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
-          printf 'CHANGED\n'
-        fi
-        if [ ! -e "$HOME/.bashrc" ]; then
-          touch "$HOME/.bashrc"
-          printf 'CHANGED\n'
-        fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
-          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
-          printf 'CHANGED\n'
-        fi
+    ## Homelab repository ##
 
     - name: Git clone homelab
       register: git_clone_homelab
@@ -316,7 +344,7 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Setup current server symlink
+    - name: Setup current server symlink in homelab repository
       register: git_current_symlink
       changed_when: "'CHANGED' in git_current_symlink.stdout"
       ansible.builtin.shell: |
@@ -327,10 +355,47 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Validate current server symlink
+    - name: Validate current server symlink in homelab repository
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
         if [ ! -e "$HOME/git/homelab/servers/.current/main.sh" ]; then
           exit 1
+        fi
+
+    - name: Update homelab repository
+      register: update_git_homelab
+      changed_when: "'CHANGED' in update_git_homelab.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+
+        if [ -d "$HOME/git/homelab" ]; then
+          cd "$HOME/git/homelab"
+        else
+          printf 'Directory ~/git/homelab not found\n'
+          exit 1
+        fi
+
+        if [ "$(git branch --show-current)" != main ]; then
+          git checkout main
+          printf 'CHANGED\n'
+        fi
+
+        if [ "$(git status --short)" != '' ]; then
+          git checkout .
+          git clean -df
+          printf 'CHANGED\n'
+        fi
+
+        if [ "$(git status --short)" != '' ]; then
+          git checkout .
+          git clean -df
+          printf 'CHANGED\n'
+        fi
+
+        git fetch
+
+        if [ "$(git diff --name-only origin/main)" != '' ]; then
+          git pull --ff-only
+          printf 'CHANGED\n'
         fi
