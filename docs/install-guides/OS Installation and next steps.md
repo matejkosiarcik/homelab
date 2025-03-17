@@ -50,6 +50,15 @@ sudo nano /etc/ssh/sshd_config
 sudo service ssh restart
 ```
 
+## Postinstall - Enable passwordless sudo
+
+TL;DR:
+
+```sh
+sudo visudo
+# Set following line: homelab ALL=(ALL) NOPASSWD: ALL
+```
+
 ## Postinstall - Run ansible setup
 
 TL;DR:
