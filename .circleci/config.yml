@@ -10,6 +10,7 @@ workflows:
           matrix:
             parameters:
               server:
+                - macbook-pro-2012
                 - odroid-h3
                 - raspberry-pi-3b
                 - raspberry-pi-4b-2g
