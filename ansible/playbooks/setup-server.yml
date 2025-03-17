@@ -44,6 +44,20 @@
           - unbound
           - wget
 
+    - name: Install x64 APT packages
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian' and ansible_facts['architecture'] == 'x86_64'
+      become: true
+      ansible.builtin.apt:
+        pkg:
+          - linux-headers-amd64
+
+    - name: Install arm64 APT packages
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian' and ansible_facts['architecture'] == 'aarch64'
+      become: true
+      ansible.builtin.apt:
+        pkg:
+          - linux-headers-arm64
+
     # Just a note, this can take a long time, especially on first run
     - name: Update APT packages
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
