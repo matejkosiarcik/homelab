@@ -353,6 +353,12 @@
           enableTaskList: true
 
 - Resources:
+    - Glances MacBook Pro 2012:
+        description: Resource monitoring
+        href: https://glances-macbook-pro-2012.home
+        ping: glances-macbook-pro-2012.home
+        icon: /icons/glances.png
+
     - Glances Odroid H3:
         description: Resource monitoring
         href: https://glances-odroid-h3.home

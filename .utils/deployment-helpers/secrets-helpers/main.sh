@@ -258,6 +258,7 @@ case "$full_app_name" in
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     # Main credentials
     printf 'GATUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/gatus.env"
+    printf 'GLANCES_MACBOOK_PRO_2012_PASSWORD=%s\n' "$(load_token glances--macbook-pro-2012 app admin)" >>"$output/gatus.env"
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app admin)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b app admin)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g app admin)" >>"$output/gatus.env"
@@ -285,6 +286,7 @@ case "$full_app_name" in
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle http-proxy prometheus)" >>"$output/gatus.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 http-proxy prometheus)" >>"$output/gatus.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 http-proxy prometheus)" >>"$output/gatus.env"
+    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--macbook-pro-2012 http-proxy prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h3 http-proxy prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g http-proxy prometheus)" >>"$output/gatus.env"
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-4g http-proxy prometheus)" >>"$output/gatus.env"

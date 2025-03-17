@@ -53,6 +53,11 @@ load_password() {
     printf 'GATUS_2_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-2 http-proxy status)"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 http-proxy prometheus)"
 
+    printf 'GLANCES_MACBOOK_PRO_2012_PASSWORD=%s\n' "$(load_password glances--macbook-pro-2012 app admin)"
+    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--macbook-pro-2012 app prometheus)"
+    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--macbook-pro-2012 http-proxy status)"
+    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--macbook-pro-2012 http-proxy prometheus)"
+
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_password glances--odroid-h3 app admin)"
     printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--odroid-h3 app prometheus)"
     printf 'GLANCES_ODROID_H3_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--odroid-h3 http-proxy status)"

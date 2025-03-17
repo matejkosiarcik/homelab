@@ -469,6 +469,21 @@ endpoints:
 
   ### Group: App - Dozzle agents ###
 
+  # MacBook Pro 2012
+
+  - <<: *default-icmp
+    name: Dozzle agent - MacBook Pro 2012 - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-macbook-pro-2012.home
+
+  - <<: *default-tcp
+    name: Dozzle agent - MacBook Pro 2012 - TCP:7007
+    group: App - Dozzle agents
+    url: tcp://dozzle-agent-macbook-pro-2012.home:7007
+    alerts:
+      - type: ntfy
+      - type: email
+
   # Odroid H3
 
   - <<: *default-icmp
