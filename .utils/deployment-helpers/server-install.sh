@@ -10,7 +10,7 @@ mkdir -p "$HOME/config" "$HOME/.log"
 sudo mkdir -p /homelab/config /homelab/log
 sudo chmod a+rwx /homelab /homelab/config /homelab/log # TODO: Remove permissions after homelab user is created
 
-if [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
+if [ -d "$server_dir/other-apps/unbound" ] && [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
     sudo mkdir -p /homelab/config/unbound /homelab/log/unbound
     sudo chmod a+rwx /homelab/config/unbound /homelab/log/unbound # TODO: Remove permissions after homelab user is created
 fi
@@ -29,13 +29,13 @@ fi
 
 sudo killall unbound || true
 
-if [ "$(sudo find "/homelab/config/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
+if [ -d "$server_dir/other-apps/unbound" ] && [ "$(sudo find "/homelab/config/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | wc -l)" -ge '1' ]; then
     printf 'Remove old unbound configs\n' >&2
     sudo find '/homelab/config' -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         sudo rm -f "$file"
     done
 fi
-if [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
+if [ -d "$server_dir/other-apps/unbound" ] && [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
     printf 'Copy new unbound configs\n' >&2
     find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' | while read -r file; do
         sudo cp "$file" "/homelab/config/unbound/$(basename "$file")"
