@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM bitnami/apache-exporter:1.0.9
+FROM bitnami/apache-exporter:1.0.10
 WORKDIR /homelab
 COPY ./external/apache-prometheus-exporter/entrypoint.sh ./
 ENV HOMELAB_CONTAINER_NAME=apache-prometheus-exporter \
