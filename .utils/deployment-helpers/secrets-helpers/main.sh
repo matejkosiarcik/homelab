@@ -610,8 +610,7 @@ case "$full_app_name" in
 *smb*)
     # App
     smb_password="$(load_password "$full_app_name" app user)"
-    printf 'smb,%s\n' "$smb_password" >>"$output/all-credentials.csv"
-    printf 'SAMBA_USERNAME=user\n' >>"$output/samba.env"
+    printf 'admin,%s\n' "$smb_password" >>"$output/all-credentials.csv"
     printf 'SAMBA_PASSWORD=%s\n' "$smb_password" >>"$output/samba.env"
     ;;
 *smtp4dev*)
