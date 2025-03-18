@@ -609,7 +609,7 @@ case "$full_app_name" in
     ;;
 *smb*)
     # App
-    smb_password="$(load_password "$full_app_name" app user)"
+    smb_password="$(load_password "$full_app_name" app admin)"
     printf 'admin,%s\n' "$smb_password" >>"$output/all-credentials.csv"
     printf 'SAMBA_PASSWORD=%s\n' "$smb_password" >>"$output/samba.env"
     ;;
