@@ -60,3 +60,4 @@
 10.1.16.25 glances-raspberry-pi-4b-4g.home
 
 10.1.18.1 smb-data.home
+10.1.18.2 smb-snapshots.home

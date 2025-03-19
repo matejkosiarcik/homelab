@@ -3,7 +3,17 @@ set -euf
 
 SAMBA_GROUP="$SAMBA_USERNAME-group"
 
-sed "s~#smb-title#~$SAMBA_TITLE~;s~#smb-user#~$SAMBA_USERNAME~;s~#smb-group#~$SAMBA_GROUP~" </etc/samba/smb.conf |
+SAMBA_CONFIG_READONLY=''
+SAMBA_CONFIG_WRITEABLE=''
+if [ "${SAMBA_READONLY-}" = 'true' ]; then
+    SAMBA_CONFIG_READONLY='yes'
+    SAMBA_CONFIG_WRITEABLE='no'
+else
+    SAMBA_CONFIG_READONLY='no'
+    SAMBA_CONFIG_WRITEABLE='yes'
+fi
+
+sed "s~#smb-title#~$SAMBA_TITLE~;s~#smb-user#~$SAMBA_USERNAME~;s~#smb-group#~$SAMBA_GROUP~;s~#smb-readonly#~$SAMBA_CONFIG_READONLY~;s~#smb-writeable#~$SAMBA_CONFIG_WRITEABLE~" </etc/samba/smb.conf |
     sponge /etc/samba/smb.conf
 
 groupadd "$SAMBA_GROUP"

@@ -1585,6 +1585,26 @@ endpoints:
     group: App - SMB (data)
     url: tcp://smb-data.home:445
 
+  ### Group: App - SMB (snapshots) ###
+
+  - <<: *default-icmp
+    name: SMB (snapshots) - ICMP
+    group: App - SMB (snapshots)
+    url: icmp://smb-snapshots.home
+
+  - <<: *default-tcp
+    name: SMB (snapshots) - TCP:139
+    group: App - SMB (snapshots)
+    url: tcp://smb-snapshots.home:139
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-tcp
+    name: SMB (snapshots) - TCP:445
+    group: App - SMB (snapshots)
+    url: tcp://smb-snapshots.home:445
+
   ### Group: App - Smtp4dev ###
 
   - <<: *default-icmp
