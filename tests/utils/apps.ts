@@ -128,7 +128,8 @@ export const apps = {
     smb: {
         title: 'SMB',
         instances: [
-            { url: 'https://smb-data.home', title: 'SMB (data)' },
+            { url: 'smb://smb-data.home', title: 'SMB (data)' },
+            { url: 'smb://smb-snapshots.home', title: 'SMB (snapshots)' },
         ],
     },
     smtp4dev: {
