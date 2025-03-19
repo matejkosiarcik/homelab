@@ -39,8 +39,8 @@ test.describe(apps.ntfy.title, () => {
                         await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
                         await page.locator('.MuiDialogContent-root input#username').fill(variant.username);
                         await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
+                        await delay(250);
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ timeout: 4000 });
                         await page.waitForURL(`${instance.url}/test`);
                         await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
                     });
