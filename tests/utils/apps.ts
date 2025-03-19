@@ -125,6 +125,12 @@ export const apps = {
             { url: 'https://prometheus.home', title: 'Prometheus' },
         ],
     },
+    smb: {
+        title: 'SMB',
+        instances: [
+            { url: 'https://smb-data.home', title: 'SMB (data)' },
+        ],
+    },
     smtp4dev: {
         title: 'Smtp4dev',
         instances: [

@@ -17,6 +17,9 @@ layout:
   Smart Home:
     style: row
     columns: 4
+  Data:
+    style: row
+    columns: 4
   Media:
     style: row
     columns: 4

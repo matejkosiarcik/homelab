@@ -1565,6 +1565,26 @@ endpoints:
     group: App - Prometheus
     url: tcp://prometheus.home:443
 
+  ### Group: App - SMB (data) ###
+
+  - <<: *default-icmp
+    name: SMB (data) - ICMP
+    group: App - SMB (data)
+    url: icmp://smb-data.home
+
+  - <<: *default-tcp
+    name: SMB (data) - TCP:139
+    group: App - SMB (data)
+    url: tcp://smb-data.home:139
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-tcp
+    name: SMB (data) - TCP:445
+    group: App - SMB (data)
+    url: tcp://smb-data.home:445
+
   ### Group: App - Smtp4dev ###
 
   - <<: *default-icmp
