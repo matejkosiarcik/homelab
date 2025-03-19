@@ -180,6 +180,14 @@
         ping: desklamp-right.home
         icon: /icons/lightbulb.png
 
+- Data:
+    - SMB (data):
+        description: Main data store
+        href: javascript:copyUrl('smb://smb-data.home')
+        ping: smb-data.home
+        icon: /icons/filebrowser.png
+        target: _self
+
 - Media:
     - Jellyfin:
         description: Media server
