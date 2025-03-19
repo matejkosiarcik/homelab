@@ -11,14 +11,17 @@ id="$1"
 external_ip="$2"
 
 # Get appropriate network interface
-has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
-has_enp1s0="$(ip link show enp1s0 >/dev/null 2>/dev/null || printf '0\n')"
 found_interface=''
-if [ "$has_eth0" = '' ]; then
-    found_interface='eth0'
-elif [ "$has_enp1s0" = '' ]; then
-    found_interface='enp1s0'
+if [ "$found_interface" = '' ]; then
+    found_interface="$( ( (ip link show eth0 >/dev/null 2>/dev/null) && printf 'eth0') || true)"
 fi
+if [ "$found_interface" = '' ]; then
+    found_interface="$( ( (ip link show enp1s0 >/dev/null 2>/dev/null) && printf 'enp1s0') || true)"
+fi
+if [ "$found_interface" = '' ]; then
+    found_interface="$( ( (ip link show enp1s0f0 >/dev/null 2>/dev/null) && printf 'enp1s0f0') || true)"
+fi
+
 if [ "$found_interface" = '' ]; then
     printf 'No suitable network interface found\n'
     exit 1
