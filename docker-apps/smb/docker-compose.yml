@@ -22,7 +22,7 @@ services:
       - ./app-secrets/samba.env
     environment:
       <<: *common-env-variables
-      SAMBA_READONLY: ${DOCKER_COMPOSE_SAMBA_READONLY}
+      SAMBA_READONLY: ${DOCKER_COMPOSE_SAMBA_READONLY-false}
     volumes:
       - ./app-logs/samba:/var/log/samba:rw
 
