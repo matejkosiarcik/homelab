@@ -13,13 +13,13 @@ external_ip="$2"
 # Get appropriate network interface
 found_interface=''
 if [ "$found_interface" = '' ]; then
-    found_interface="$(((ip link show eth0 >/dev/null 2>/dev/null) && printf 'eth0') || true)"
+    found_interface="$( ( (ip link show eth0 >/dev/null 2>/dev/null) && printf 'eth0') || true)"
 fi
 if [ "$found_interface" = '' ]; then
-    found_interface="$(((ip link show enp1s0 >/dev/null 2>/dev/null) && printf 'enp1s0') || true)"
+    found_interface="$( ( (ip link show enp1s0 >/dev/null 2>/dev/null) && printf 'enp1s0') || true)"
 fi
 if [ "$found_interface" = '' ]; then
-    found_interface="$(((ip link show enp1s0f0 >/dev/null 2>/dev/null) && printf 'enp1s0f0') || true)"
+    found_interface="$( ( (ip link show enp1s0f0 >/dev/null 2>/dev/null) && printf 'enp1s0f0') || true)"
 fi
 
 if [ "$found_interface" = '' ]; then
