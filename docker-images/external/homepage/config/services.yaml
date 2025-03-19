@@ -188,6 +188,13 @@
         icon: /icons/filebrowser.png
         target: _self
 
+    - SMB (snapshots):
+        description: ZFS Snapshots from main data store
+        href: javascript:copyUrl('smb://smb-snapshots.home')
+        ping: smb-snapshots.home
+        icon: /icons/filebrowser.png
+        target: _self
+
 - Media:
     - Jellyfin:
         description: Media server
