@@ -48,7 +48,7 @@ const config: PlaywrightTestConfig = {
     retries: 0,
     testDir: path.join('projects', 'tests'),
     timeout: 2 * 60_000,
-    workers: os.cpus().length,
+    workers: Math.ceil(os.cpus().length * 0.75),
     use: {
         baseURL: 'https://example.com',
         headless: true,
