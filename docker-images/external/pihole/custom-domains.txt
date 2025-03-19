@@ -58,3 +58,5 @@
 10.1.16.23 dozzle-agent-raspberry-pi-4b-4g.home
 10.1.16.24 motioneye-stove.home
 10.1.16.25 glances-raspberry-pi-4b-4g.home
+
+10.1.18.1 smb-data.home
