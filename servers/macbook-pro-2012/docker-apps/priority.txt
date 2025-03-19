@@ -1,1 +1,2 @@
 smb-data
+smb-snapshots
