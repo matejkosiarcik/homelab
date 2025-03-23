@@ -116,6 +116,11 @@ load_password() {
     printf 'NTFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ntfy http-proxy status)"
     printf 'NTFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ntfy http-proxy prometheus)"
 
+    printf 'NETALERTX_ADMIN_PASSWORD=%s\n' "$(load_password netalertx app admin)"
+    printf 'NETALERTX_PROMETHEUS_PASSWORD=%s\n' "$(load_password netalertx app prometheus)"
+    printf 'NETALERTX_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ntfy http-proxy status)"
+    printf 'NETALERTX_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ntfy http-proxy prometheus)"
+
     printf 'OMADA_CONTROLLER_ADMIN_PASSWORD=%s\n' "$(load_password omada-controller app admin)"
     printf 'OMADA_CONTROLLER_VIEWER_PASSWORD=%s\n' "$(load_password omada-controller app viewer)"
     printf 'OMADA_CONTROLLER_HOMEPAGE_PASSWORD=%s\n' "$(load_password omada-controller app homepage)"
