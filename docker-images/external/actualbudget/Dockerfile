@@ -2,7 +2,7 @@
 
 # FROM actualbudget/actual-server:25.3.1 AS actualbudget-original
 
-# FROM debian:12.9-slim AS actualbudget-patch
+# FROM debian:12.10-slim AS actualbudget-patch
 # WORKDIR /homelab
 # RUN apt-get update && \
 #     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
