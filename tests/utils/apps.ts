@@ -83,13 +83,12 @@ export const apps = {
             { url: 'https://motioneye-stove.home', title: 'MotionEye Stove' },
         ],
     },
-    // TODO: Enable when NetAlertX is deployed
-    // netalertx: {
-    //     title: 'NetAlertX',
-    //     instances: [
-    //         { url: 'https://netalertx.home', title: 'NetAlertX' },
-    //     ],
-    // },
+    netalertx: {
+        title: 'NetAlertX',
+        instances: [
+            { url: 'https://netalertx.home', title: 'NetAlertX' },
+        ],
+    },
     ntfy: {
         title: 'Ntfy',
         forceHttps: false, // TODO: Remove after real Let's Encrypt certificates
