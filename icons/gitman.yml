@@ -80,7 +80,7 @@ sources_locked:
       -
   - repo: https://github.com/walkxcode/dashboard-icons.git
     name: dashboard-icons
-    rev: 31f3c099cada04ebf62ffc366801cbfe5270436d
+    rev: 28638932ead9711742d945070f90ac1c5348683c
     type: git
     params:
     sparse_paths:
@@ -102,7 +102,7 @@ sources_locked:
       -
   - repo: https://github.com/NX211/homer-icons.git
     name: homer-icons
-    rev: eb3799883652efae0f7f4ba1def5d768c2058869
+    rev: 7f15a0ec749f4604b9f18e5bd4ee955002d8c896
     type: git
     params:
     sparse_paths:
