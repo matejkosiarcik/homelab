@@ -80,7 +80,7 @@ sources_locked:
       -
   - repo: https://github.com/walkxcode/dashboard-icons.git
     name: dashboard-icons
-    rev: 28638932ead9711742d945070f90ac1c5348683c
+    rev: 7e7694c7c858fc77557ae01095941e34c10f3805
     type: git
     params:
     sparse_paths:
