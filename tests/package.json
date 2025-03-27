@@ -1,5 +1,4 @@
 {
-  "name": "@matejkosiarcik/homelab-tests",
   "type": "module",
   "private": true,
   "scripts": {
