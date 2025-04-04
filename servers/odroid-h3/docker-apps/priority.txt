@@ -4,14 +4,14 @@ pihole-1-primary
 # Caches
 dockerhub-cache-proxy
 
+# Media
+jellyfin
+
 # Network controllers
 omada-controller
 
 # Home automation
 homeassistant
-
-# Media
-jellyfin
 
 # Notifications
 smtp4dev
