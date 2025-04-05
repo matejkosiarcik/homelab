@@ -12,7 +12,7 @@
 # COPY --from=actualbudget-original /app/src/app.js ./
 # RUN git apply app.js.patch
 
-FROM actualbudget/actual-server:25.3.1
+FROM actualbudget/actual-server:25.4.0
 # COPY --from=actualbudget-patch /homelab/app.js /app/src/app.js
 COPY ./external/actualbudget/healthcheck.js /homelab/
 ENV ERR_ERL_UNEXPECTED_X_FORWARDED_FOR=false \
