@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM pihole/pihole:2025.03.1
+FROM pihole/pihole:2025.04.0
 COPY ./external/pihole/custom-domains.txt ./external/pihole/setup.sh /homelab/
 ENV DHCP_ACTIVE=false \
     FTLCONF_dns_ignoreLocalhost=false \
