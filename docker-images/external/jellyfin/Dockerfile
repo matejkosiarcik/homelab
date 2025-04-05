@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM linuxserver/jellyfin:10.10.6
+FROM linuxserver/jellyfin:10.10.7
 ENV HOMELAB_CONTAINER_NAME=jellyfin \
     HOMELAB_CONTAINER_VARIANT=default \
     PUID=1000 \
