@@ -3,13 +3,18 @@
 
 FROM python:3.13.2-slim AS python
 WORKDIR /homelab
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        jq >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
 ENV PIP_ROOT_USER_ACTION=ignore
 COPY ./external/prometheus/requirements.txt ./
 RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./external/prometheus/prometheus.json ./external/prometheus/prometheus.yml.j2 ./
-RUN jinja2 prometheus.yml.j2 prometheus.json --format json -o prometheus.yml
+COPY ./external/prometheus/data.yml ./external/prometheus/prometheus.yml.j2 ./
+RUN yq . data.yml >data.json && \
+    jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 
 FROM debian:12.10-slim AS prefinal
 WORKDIR /homelab
