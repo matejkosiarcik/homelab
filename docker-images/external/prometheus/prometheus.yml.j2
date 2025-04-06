@@ -1,0 +1,33 @@
+global:
+  scrape_interval: 60s
+
+scrape_configs:
+{%- for app in apps %}
+  - job_name: {{ app.url | replace(".home", "") }}-app
+    scheme: https
+    metrics_path: {{ app.path }}
+    {%- if app.auth == "basic" %}
+    basic_auth:
+      username: prometheus
+      password: ${{ "{" }}{{ app.url | replace(".home", "") | replace("-", "_") | upper() }}_PROMETHEUS_PASSWORD{{ "}" }}
+    {%- elif app.auth == "token" %}
+    authorization:
+      credentials: ${{ "{" }}{{ app.url | replace(".home", "") | replace("-", "_") | upper() }}_PROMETHEUS_TOKEN{{ "}" }}
+    {%- endif %}
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets: [{{ app.url }}]
+{%- endfor %}
+{%- for proxy in proxies %}
+  - job_name: {{ proxy.url | replace(".home", "") }}-proxy
+    scheme: https
+    metrics_path: /.proxy/metrics
+    basic_auth:
+      username: proxy-prometheus
+      password: ${{ "{" }}{{ proxy.url | replace(".home", "") | replace("-", "_") | upper() }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets: [{{ proxy.url }}]
+{%- endfor %}
