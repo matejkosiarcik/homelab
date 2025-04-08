@@ -52,6 +52,7 @@ proxies:
   - url: homepage.home
   - url: jellyfin.home
   - url: minio.home
+  - url: minio-console.home
   - url: motioneye-stove.home
   - url: ntfy.home
   - url: omada-controller.home
