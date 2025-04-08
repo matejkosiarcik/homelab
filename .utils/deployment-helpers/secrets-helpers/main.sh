@@ -568,6 +568,7 @@ case "$full_app_name" in
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homepage http-proxy prometheus)" >>"$output/prometheus.env"
     printf 'JELLYFIN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin http-proxy prometheus)" >>"$output/prometheus.env"
     printf 'MINIO_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio http-proxy prometheus)" >>"$output/prometheus.env"
+    printf 'MINIO_CONSOLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio http-proxy prometheus)" >>"$output/prometheus.env"
     printf 'MOTIONEYE_STOVE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token motioneye-stove http-proxy prometheus)" >>"$output/prometheus.env"
     printf 'NTFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ntfy http-proxy prometheus)" >>"$output/prometheus.env"
     printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omada-controller http-proxy prometheus)" >>"$output/prometheus.env"
