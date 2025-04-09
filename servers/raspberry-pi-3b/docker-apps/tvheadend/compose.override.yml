@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/tvheadend/compose.override-dev.yml
+    project_directory: .

@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/actualbudget/compose.override-prod.yml
+    project_directory: .

@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/smtp4dev/compose.override-dev.yml
+    project_directory: .

@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/tvheadend/docker-compose.yml
-    project_directory: .

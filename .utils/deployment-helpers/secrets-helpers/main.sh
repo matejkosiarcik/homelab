@@ -73,14 +73,14 @@ full_app_name="$(basename "$app_dir")"
 server_name="$(basename "$(realpath "$(dirname "$(dirname "$app_dir")")")")"
 tmpdir="$(mktemp -d)"
 
-# Load custom docker-compose overrides if available
-if [ -f "$PWD/config/docker-compose.env" ]; then
+# Load custom docker compose overrides if available
+if [ -f "$PWD/config/compose.env" ]; then
     # shellcheck source=/dev/null
-    . "$PWD/config/docker-compose.env"
+    . "$PWD/config/compose.env"
 fi
-if [ -f "$PWD/config/docker-compose-$mode.env" ]; then
+if [ -f "$PWD/config/compose-$mode.env" ]; then
     # shellcheck source=/dev/null
-    . "$PWD/config/docker-compose-$mode.env"
+    . "$PWD/config/compose-$mode.env"
 fi
 
 load_username() {

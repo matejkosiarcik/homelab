@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/gatus/docker-compose.override-prod.yml
-    project_directory: .

@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/dozzle-server/compose.override-prod.yml
+    project_directory: .

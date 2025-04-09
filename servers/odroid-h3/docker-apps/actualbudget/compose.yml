@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/actualbudget/compose.yml
+    project_directory: .

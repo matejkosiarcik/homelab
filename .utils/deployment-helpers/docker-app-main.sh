@@ -108,7 +108,7 @@ fi
 
 docker_file_args=''
 if [ "$mode" = 'prod' ]; then
-    docker_file_args='--file docker-compose.yml --file docker-compose.prod.yml'
+    docker_file_args='--file compose.yml --file compose.prod.yml'
 fi
 
 docker_dryrun_args=''
@@ -135,19 +135,19 @@ docker_compose_args="$docker_file_args"
 if [ "$mode" = 'dev' ]; then
     docker_compose_args="$docker_compose_args --ansi always"
 fi
-if [ -f "$app_dir/config/docker-compose.env" ]; then
-    docker_compose_args="$docker_compose_args --env-file $app_dir/config/docker-compose.env"
+if [ -f "$app_dir/config/compose.env" ]; then
+    docker_compose_args="$docker_compose_args --env-file $app_dir/config/compose.env"
     # shellcheck source=/dev/null
-    . "$app_dir/config/docker-compose.env"
+    . "$app_dir/config/compose.env"
 fi
-if [ -f "$app_dir/config/docker-compose-$mode.env" ]; then
-    docker_compose_args="$docker_compose_args --env-file $app_dir/config/docker-compose-$mode.env"
+if [ -f "$app_dir/config/compose-$mode.env" ]; then
+    docker_compose_args="$docker_compose_args --env-file $app_dir/config/compose-$mode.env"
     # shellcheck source=/dev/null
-    . "$app_dir/config/docker-compose-$mode.env"
+    . "$app_dir/config/compose-$mode.env"
 fi
 
-# Get default value for docker-compose
-extra_docker_compose_env="$tmpdir/docker-compose.env"
+# Get default value for docker compose
+extra_docker_compose_env="$tmpdir/compose.env"
 touch "$extra_docker_compose_env"
 if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
     DOCKER_COMPOSE_APP_NAME="$full_app_name"

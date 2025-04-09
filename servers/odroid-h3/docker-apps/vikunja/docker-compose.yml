@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/vikunja/docker-compose.yml
-    project_directory: .

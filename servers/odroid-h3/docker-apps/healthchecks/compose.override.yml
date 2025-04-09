@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/healthchecks/compose.override-dev.yml
+    project_directory: .

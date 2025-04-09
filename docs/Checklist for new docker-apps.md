@@ -3,7 +3,7 @@
 1. Add directory with `Dockerfile` in `docker-images/`
     - Add any custom config files
     - Check if the parent image has a built-in `HEALTHCHECK` -> If not, set it up.
-2. Add directory with `docker-compose.yml` files in `docker-apps/`
+2. Add directory with `compose.yml` files in `docker-apps/`
     - Add all usual scaffolding (_certificate-manager_, _http-proxy_)
     - Specific scaffolding (db-backup (litestream)?, bespoke prometheus-exporter?, other?)
 3. Configure scripts
