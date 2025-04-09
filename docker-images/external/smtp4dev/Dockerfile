@@ -2,11 +2,11 @@
 
 FROM rnwood/smtp4dev:3.8.0
 COPY ./external/smtp4dev/icons/favicon.ico /app/wwwroot/favicon.ico
-ENV ASPNETCORE_HTTP_PORTS=80 \
-    HOMELAB_CONTAINER_NAME=smtp4dev \
+ENV HOMELAB_CONTAINER_NAME=smtp4dev \
     HOMELAB_CONTAINER_VARIANT=default \
     ServerOptions__LockSettings=true \
-    TZ=Europe/Bratislava
+    TZ=Europe/Bratislava \
+    URLS=http://*:5000
 
 # TODO: Enable TLS below
 # ServerOptions__TlsMode=StartTls
@@ -15,4 +15,4 @@ ENV ASPNETCORE_HTTP_PORTS=80 \
 # ServerOptions__AuthenticationRequired=true
 
 # Note: curl/wget isn't available, so we have to resort to bash
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/80' || exit 1" ]
+HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/5000' || exit 1" ]
