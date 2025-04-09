@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/minio/compose.yml
+    project_directory: .

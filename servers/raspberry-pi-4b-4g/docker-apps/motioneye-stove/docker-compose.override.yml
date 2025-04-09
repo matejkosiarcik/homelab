@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/motioneye/docker-compose.override-dev.yml
-    project_directory: .

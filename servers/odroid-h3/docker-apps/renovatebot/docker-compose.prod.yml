@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/renovatebot/docker-compose.override-prod.yml
-    project_directory: .

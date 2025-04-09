@@ -5,7 +5,7 @@ SHELL := /bin/sh
 .SHELLFLAGS := -ec
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
-DOCKER_APPS := $(shell find 'servers' -type f -name 'docker-compose.yml' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
+DOCKER_APPS := $(shell find 'servers' -type f -name 'compose.yml' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 NPM_COMPONENTS_FOR_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/node_modules/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
 NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
@@ -56,7 +56,7 @@ docker-build:
 		printf '\n\n' && \
 	true; done
 
-	# Disabled (it's complicated)
+	# Disabled - It's complicated
 	# printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
 	# 	printf 'Building %s\n' "$$app" && \
 	# 	docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies && \

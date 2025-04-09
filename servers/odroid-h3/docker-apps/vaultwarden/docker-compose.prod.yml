@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/vaultwarden/docker-compose.override-prod.yml
-    project_directory: .
