@@ -112,7 +112,7 @@
         widget:
           type: pihole
           url: https://pihole-1-primary.home
-          version: 5
+          version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_APIKEY}}"
 
     - PiHole 1 Secondary:
@@ -123,7 +123,7 @@
         widget:
           type: pihole
           url: https://pihole-1-secondary.home
-          version: 5
+          version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_APIKEY}}"
 
     - PiHole 2 Primary:
@@ -134,7 +134,7 @@
         widget:
           type: pihole
           url: https://pihole-2-primary.home
-          version: 5
+          version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_APIKEY}}"
 
     - PiHole 2 Secondary:
@@ -145,7 +145,7 @@
         widget:
           type: pihole
           url: https://pihole-2-secondary.home
-          version: 5
+          version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_APIKEY}}"
 
 - Smart Home:
