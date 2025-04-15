@@ -21,7 +21,7 @@ WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /etc/prometheus/
 COPY --from=python ./homelab/prometheus.yml /etc/prometheus/prometheus.yml
 
-FROM prom/prometheus:v3.2.1
+FROM prom/prometheus:v3.3.0
 COPY --from=prefinal /etc/prometheus/web.yml /etc/prometheus/prometheus.yml /etc/prometheus/entrypoint.sh /etc/prometheus/
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
