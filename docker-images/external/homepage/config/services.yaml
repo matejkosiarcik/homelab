@@ -12,7 +12,7 @@
         icon: /icons/router.png
 
     - Wifi AP:
-        description: Unifi U6 Mesh
+        description: UniFi U6 Mesh
         href: ""
         ping: "10.1.0.2"
         icon: /icons/wifi-ap.png
@@ -29,7 +29,7 @@
         ping: "10.1.0.4"
         icon: /icons/switch.png
 
-    - Unifi Controller:
+    - UniFi Controller:
         description: SDN manager
         href: https://unifi-controller.home
         ping: unifi-controller.home

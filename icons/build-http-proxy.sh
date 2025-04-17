@@ -10,7 +10,7 @@ tmpdir=''
 # shellcheck source=/dev/null
 . "$(dirname "$0")/.build-utils.sh"
 
-### Unifi Controller ###
+### UniFi Controller ###
 
 # shellcheck disable=SC2034
 default_image_size='32x32'

@@ -127,7 +127,7 @@ endpoints:
     enabled: false
 
   - <<: *default-icmp
-    name: WiFi AP - Unifi U6
+    name: WiFi AP - UniFi U6
     group: Network equipment
     url: icmp://10.1.0.2
     alerts:
@@ -1941,29 +1941,29 @@ endpoints:
     group: App - Unbound 2 [open]
     url: udp://unbound-2-open.home:53
 
-  ### Group: App - Unifi Controller ###
+  ### Group: App - UniFi Controller ###
 
   - <<: *default-icmp
-    name: Unifi Controller Admin - ICMP
-    group: App - Unifi Controller
+    name: UniFi Controller Admin - ICMP
+    group: App - UniFi Controller
     url: icmp://unifi-controller.home
 
   - <<: *default-http
-    name: Unifi Controller Admin - HTTP
-    group: App - Unifi Controller
+    name: UniFi Controller Admin - HTTP
+    group: App - UniFi Controller
     url: http://unifi-controller.home
 
   - <<: *default-http
-    name: Unifi Controller Admin - HTTPS
-    group: App - Unifi Controller
+    name: UniFi Controller Admin - HTTPS
+    group: App - UniFi Controller
     url: https://unifi-controller.home
     alerts:
       - type: ntfy
       - type: email
 
   - <<: *default-http
-    name: Unifi Controller Admin - API Health
-    group: App - Unifi Controller
+    name: UniFi Controller Admin - API Health
+    group: App - UniFi Controller
     url: https://unifi-controller.home/status
     conditions:
       - "[STATUS] == 200"
@@ -1971,63 +1971,63 @@ endpoints:
       - "[BODY].meta.up == true"
 
   - <<: *default-http
-    name: Unifi Controller Admin - Proxy prometheus metrics
-    group: App - Unifi Controller
+    name: UniFi Controller Admin - Proxy prometheus metrics
+    group: App - UniFi Controller
     url: https://proxy-prometheus:${UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@unifi-controller.home/.proxy/metrics
 
   - <<: *default-http
-    name: Unifi Controller Admin - HTTP (raw)
-    group: App - Unifi Controller
+    name: UniFi Controller Admin - HTTP (raw)
+    group: App - UniFi Controller
     url: http://unifi-controller.home:8080
 
   - <<: *default-http
-    name: Unifi Controller Admin - HTTPS (raw)
-    group: App - Unifi Controller
+    name: UniFi Controller Admin - HTTPS (raw)
+    group: App - UniFi Controller
     url: https://unifi-controller.home:8443
 
   - <<: *default-tcp
-    name: Unifi Controller - TCP:80
-    group: App - Unifi Controller
+    name: UniFi Controller - TCP:80
+    group: App - UniFi Controller
     url: tcp://unifi-controller.home:80
 
   - <<: *default-udp
-    name: Unifi Controller - UDP:1900
-    group: App - Unifi Controller
+    name: UniFi Controller - UDP:1900
+    group: App - UniFi Controller
     url: udp://unifi-controller.home:1900
 
   - <<: *default-udp
-    name: Unifi Controller - UDP:3478
-    group: App - Unifi Controller
+    name: UniFi Controller - UDP:3478
+    group: App - UniFi Controller
     url: udp://unifi-controller.home:3478
 
   - <<: *default-udp
-    name: Unifi Controller - UDP:5514
-    group: App - Unifi Controller
+    name: UniFi Controller - UDP:5514
+    group: App - UniFi Controller
     url: udp://unifi-controller.home:5514
 
   - <<: *default-udp
-    name: Unifi Controller - UDP:10001
-    group: App - Unifi Controller
+    name: UniFi Controller - UDP:10001
+    group: App - UniFi Controller
     url: udp://unifi-controller.home:10001
 
   - <<: *default-tcp
-    name: Unifi Controller - TCP:8080
-    group: App - Unifi Controller
+    name: UniFi Controller - TCP:8080
+    group: App - UniFi Controller
     url: tcp://unifi-controller.home:8080
 
   - <<: *default-tcp
-    name: Unifi Controller - TCP:443
-    group: App - Unifi Controller
+    name: UniFi Controller - TCP:443
+    group: App - UniFi Controller
     url: tcp://unifi-controller.home:443
 
   - <<: *default-tcp
-    name: Unifi Controller - TCP:8443
-    group: App - Unifi Controller
+    name: UniFi Controller - TCP:8443
+    group: App - UniFi Controller
     url: tcp://unifi-controller.home:8443
 
   - <<: *default-tcp
-    name: Unifi Controller - TCP:6789
-    group: App - Unifi Controller
+    name: UniFi Controller - TCP:6789
+    group: App - UniFi Controller
     url: tcp://unifi-controller.home:6789
 
   ### Group: App - Vaultwarden ###

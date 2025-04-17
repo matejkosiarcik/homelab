@@ -12,11 +12,11 @@ flowchart LR
     internet("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /></div>Internet")
 
     subgraph living_room["Living Room"]
-        4g_modem("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/usb-wifi.png' style='min-width:80px;max-width:80px' /></div>Huawei E3372")
+        lte_modem("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/usb-wifi.png' style='min-width:80px;max-width:80px' /></div>Huawei E3372")
         router("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/router.png' style='min-width:80px;max-width:80px' /></div>TP-Link ER605")
         switch_8_dumb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/switch.png' style='min-width:80px;max-width:80px' /></div>Switch<br/>TP-Link SG108")
         switch_8_smart("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/switch.png' style='min-width:80px;max-width:80px' /></div>Switch<br/>TP-Link SG108E")
-        unifi_u6_mesh("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/wifi-ap.png' style='min-width:80px;max-width:80px' /></div>WiFi AP<br/>Unifi U6 Mesh")
+        unifi_u6_mesh("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/wifi-ap.png' style='min-width:80px;max-width:80px' /></div>WiFi AP<br/>UniFi U6 Mesh")
         usb_ethernet_adapter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/usb.png' style='min-width:80px;max-width:80px' /></div>USB Ethernet adapter")
         personal_notebook("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/notebook.png' style='min-width:80px;max-width:80px' /></div>Personal Notebook")
         desklamp_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /></div>DeskLamp<br/>Raspberry Pi Pico")
@@ -24,7 +24,7 @@ flowchart LR
         macbook_pro_2012("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/notebook.png' style='min-width:80px;max-width:80px' /></div>Server<br/>MacBook Pro 2012")
 
         subgraph rack["Rack"]
-        odroid_h4_ultra("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/server-big.png' style='min-width:80px;max-width:80px' /></div>Server<br/>Odroid H4 Ultra")
+            odroid_h4_ultra("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/server-big.png' style='min-width:80px;max-width:80px' /></div>Server<br/>Odroid H4 Ultra")
             odroid_h3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/server-big.png' style='min-width:80px;max-width:80px' /></div>Server<br/>Odroid H3")
             raspberry_pi_4b_2gb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/server-small.png' style='min-width:80px;max-width:80px' /></div>Server<br/>Raspberry Pi 4B 2GB")
             switch_unifi_2g_mini("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/switch.png' style='min-width:80px;max-width:80px' /></div>Switch<br/>UniFi Flex 2.5G mini")
@@ -38,7 +38,7 @@ flowchart LR
         switch_8_smart <--> switch_unifi_2g_mini
     end
 
-    notebook_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/notebook.png' style='min-width:80px;max-width:80px' /></div>Personal devices")
+    notebook_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Personal devices")
 
     living_room ~~~ notebook_2
     unifi_u6_mesh <-.-> notebook_2
@@ -54,7 +54,7 @@ flowchart LR
         raspberry_pi_4b_4gb ~~~ webcamera --> raspberry_pi_4b_4gb
     end
 
-    internet <-->|4G| 4g_modem <--> router
+    internet <-->|4G| lte_modem <--> router
     router <--> switch_5_smart & switch_8_dumb & switch_8_smart
 
     %% living_room ~~~ kitchen
