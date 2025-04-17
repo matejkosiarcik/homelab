@@ -159,9 +159,9 @@ export const apps = {
         ]
     },
     'unifi-controller': {
-        title: 'Unifi Controller',
+        title: 'UniFi Controller',
         instances: [
-            { url: 'https://unifi-controller.home', title: 'Unifi Controller' },
+            { url: 'https://unifi-controller.home', title: 'UniFi Controller' },
         ],
     },
     vaultwarden: {

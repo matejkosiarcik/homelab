@@ -1,4 +1,4 @@
-# Unifi controller
+# UniFi controller
 
 For general `unifi-controller` docs see [/docker-apps/unifi-controller/README.md](../../../../docker-apps/unifi-controller/README.md).
 

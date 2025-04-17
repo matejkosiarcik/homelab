@@ -1,10 +1,10 @@
-# Unifi Controller
+# UniFi Controller
 
 ![diagram](../../docs/diagrams/out/apps/unifi-controller.png)
 
 ## Docs
 
-Unifi (official):
+UniFi (official):
 
 - Open Ports overview: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
 
@@ -63,4 +63,4 @@ This is bad (still starting) `/status`:
 - \[Prod\] Create extra users: `viewer` and `homepage`
 - \[Prod\] Configure basic settings
     - Setup SMTP server address for emails
-- \[Prod\] Connect and configure Unifi devices
+- \[Prod\] Connect and configure UniFi devices
