@@ -1,1 +1,2 @@
 @reboot sh "$HOME/config/startup.sh" >"$HOME/.log/startup-cron.log" 2>&1
+0 5 * * * sh "$HOME/config/update.sh" >"$HOME/.log/update-cron.log" 2>&1
