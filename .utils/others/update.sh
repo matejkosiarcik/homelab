@@ -10,7 +10,7 @@ if [ "$(git branch --show-current)" != 'main' ]; then
     exit 1
 fi
 if [ "$(git status --short)" != '' ]; then
-    printf "Git repository is dirty, can't update. Current changes: \n" "$(git status --short)"
+    printf "Git repository is dirty, can't update. Current changes: %s\n" "$(git status --short)"
     exit 1
 fi
 git pull --ff-only
