@@ -7,7 +7,8 @@ server_dir="$git_dir/servers/.current"
 ### General config ###
 
 mkdir -p "$HOME/config" "$HOME/.log"
-sudo mkdir -p /homelab/config /homelab/log
+sudo mkdir -p /homelab /homelab/config /homelab/log
+sudo chown -R "$(whoami)" /homelab
 sudo chmod a+rwx /homelab /homelab/config /homelab/log # TODO: Remove permissions after homelab user is created
 
 if [ -d "$server_dir/other-apps/unbound" ] && [ "$( (find "$server_dir/other-apps/unbound" -mindepth 1 -maxdepth 1 -type f -name 'unbound-*.conf' || true) | wc -l)" -ge '1' ]; then
