@@ -20,6 +20,11 @@ if [ -f "$server_dir/config/startup.sh" ]; then
     cp "$server_dir/config/startup.sh" "$HOME/config/startup.sh"
 fi
 
+if [ -f "$server_dir/config/update.sh" ]; then
+    printf 'Copy update script\n' >&2
+    cp "$server_dir/config/update.sh" "$HOME/config/update.sh"
+fi
+
 if [ -f "$server_dir/config/crontab.cron" ]; then
     printf 'Installing crontab\n' >&2
     crontab - <"$server_dir/config/crontab.cron"
