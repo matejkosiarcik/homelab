@@ -2,6 +2,7 @@
 set -euf
 
 cd "$(git rev-parse --show-toplevel 2>/dev/null)/docker-images"
+
 find . -type d -mindepth 2 -maxdepth 2 | while read -r dir; do
     if [ ! -f "$dir/Dockerfile" ]; then
         continue
