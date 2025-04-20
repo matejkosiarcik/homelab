@@ -69,7 +69,7 @@ mkdir "$output"
 printf 'user,password\n' >"$output/all-credentials.csv"
 
 app_dir="$PWD"
-full_app_name="$(basename "$app_dir")"
+full_app_name="$(basename "$app_dir" | sed -E 's~^\.~~')"
 server_name="$(basename "$(realpath "$(dirname "$(dirname "$app_dir")")")")"
 tmpdir="$(mktemp -d)"
 
@@ -203,6 +203,11 @@ case "$full_app_name" in
     # Certificate Manager
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
     write_healthcheck_url certificate-manager "$healthcheck_id"
+    ;;
+*docker-build*)
+    # App
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
+    write_healthcheck_url app "$healthcheck_id"
     ;;
 *docker*-proxy*)
     # App
