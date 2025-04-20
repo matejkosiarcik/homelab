@@ -21,6 +21,6 @@ find docker-apps -type d -mindepth 1 -maxdepth 1 -not -name '.*' | while read -r
 done
 
 # Run deploy
-find docker-apps -type d -mindepth 1 -maxdepth 1 | while read -r dir; do
+find docker-apps -type d -mindepth 1 -maxdepth 1 -not -name '.*' | while read -r dir; do
     sh main.sh deploy --only "$dir" "--$mode"
 done
