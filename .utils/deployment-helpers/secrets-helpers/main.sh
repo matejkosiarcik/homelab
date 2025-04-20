@@ -204,6 +204,11 @@ case "$full_app_name" in
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-manager)"
     write_healthcheck_url certificate-manager "$healthcheck_id"
     ;;
+*docker-build*)
+    # App
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
+    write_healthcheck_url app "$healthcheck_id"
+    ;;
 *docker*-proxy*)
     # App
     http_secret="$(load_password "$full_app_name" app http-secret)"
