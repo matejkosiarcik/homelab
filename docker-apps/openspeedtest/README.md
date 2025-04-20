@@ -12,8 +12,7 @@
 
 ## Before initial installation
 
-- \[All\] Create base secrets
-- \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
+- Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
 ## After initial installation
 

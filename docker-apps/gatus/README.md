@@ -9,10 +9,7 @@
 
 ## Before initial installation
 
-- \[All\] Create base secrets
-- \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
-- \[Prod\] Configure access tokens for some services:
-    - `NTFY_TOKEN`
+- Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
 ## After initial installation
 

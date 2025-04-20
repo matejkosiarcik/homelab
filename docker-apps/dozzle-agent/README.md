@@ -8,8 +8,7 @@ Look for [dozzle-server](../dozzle-server/README.md)
 
 ## Before initial installation
 
-- \[All\] Create base secrets
-    - \[Prod\] Add custom agent key/certificate
+- Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
 ## After initial installation
 
