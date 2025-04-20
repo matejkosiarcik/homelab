@@ -47,8 +47,8 @@ with Diagram("Homelab Network", show=False, filename="./out/network2"):
             switch_unifi_2g_mini >> Edge() << raspberry_pi_4b_2gb
             odroid_h4_ultra - Edge(color="transparent") - odroid_h3 - Edge(color="transparent") - raspberry_pi_4b_2gb
 
-    personal_notebook_2 = Custom("Personal Devices", f"{icons_path}/personal-devices.png", **common_node_attributes)
-    unifi_u6_mesh >> Edge(style="dotted") << personal_notebook_2
+    personal_devices = Custom("Personal Devices", f"{icons_path}/personal-devices.png", **common_node_attributes)
+    unifi_u6_mesh >> Edge(style="dotted") << personal_devices
 
     with Cluster("Kitchen"):
         switch_5_smart = Custom("Switch\nTP-Link SG105E", f"{icons_path}/switch.png", **common_node_attributes)
