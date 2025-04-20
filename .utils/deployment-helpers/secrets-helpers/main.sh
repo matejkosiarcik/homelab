@@ -69,7 +69,7 @@ mkdir "$output"
 printf 'user,password\n' >"$output/all-credentials.csv"
 
 app_dir="$PWD"
-full_app_name="$(basename "$app_dir")"
+full_app_name="$(basename "$app_dir" | sed -E 's~^\.~~')"
 server_name="$(basename "$(realpath "$(dirname "$(dirname "$app_dir")")")")"
 tmpdir="$(mktemp -d)"
 

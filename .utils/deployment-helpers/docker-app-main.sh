@@ -95,7 +95,7 @@ export START_DATE
 
 app_dir="$PWD"
 git_dir="$(git rev-parse --show-toplevel)"
-full_app_name="$(basename "$app_dir")"
+full_app_name="$(basename "$app_dir" | sed -E 's~^\.~~')"
 log_dir="$HOME/.homelab-logs/$START_DATE-$full_app_name"
 log_file="$log_dir/deploy.txt"
 backup_dir="$HOME/.homelab-backup/$START_DATE-$full_app_name"
