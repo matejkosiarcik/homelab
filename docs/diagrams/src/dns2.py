@@ -10,7 +10,10 @@ common_node_attributes = {
     "imagescale": "true",
 }
 
-with Diagram("Homelab Network", show=False, filename="./out/dns"):
+with Diagram("Homelab Network", show=False, filename="./out/dns2"):
+    google_dns = Custom("8.8.8.8", f"{icons_path}/cloud.png", **common_node_attributes)
+    cloudflare_dns = Custom("1.1.1.1", f"{icons_path}/cloud.png", **common_node_attributes)
+
     with Cluster("Raspberry Pi 4B 4GB"):
         with Cluster("Pihole 2"):
             pihole_2_primary = Custom("PiHole 2 Primary", f"{icons_path}/pihole.png")
@@ -35,6 +38,8 @@ with Diagram("Homelab Network", show=False, filename="./out/dns"):
     personal_devices = Custom("Personal Devices", f"{icons_path}/personal-devices.png", **common_node_attributes)
     # monika_devices = Custom("Monika's Devices", f"{icons_path}/personal-devices.png", **common_node_attributes)
 
+    external_dns = [google_dns, cloudflare_dns]
+
     unbounds_default = [unbound_1_default, unbound_2_default]
     unbounds_open = [unbound_1_open, unbound_2_open]
     piholes = [pihole_1_primary, pihole_2_primary, pihole_1_secondary, pihole_2_secondary]
@@ -43,3 +48,6 @@ with Diagram("Homelab Network", show=False, filename="./out/dns"):
     # monika_devices >> unbounds_open
     for unbound in [*unbounds_default, *unbounds_open]:
         unbound >> piholes
+
+    for pihole in piholes:
+        pihole >> external_dns
