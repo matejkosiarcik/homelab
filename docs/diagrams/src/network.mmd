@@ -38,10 +38,10 @@ flowchart LR
         switch_8_smart <--> switch_unifi_2g_mini
     end
 
-    notebook_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Personal devices")
+    personal_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Personal devices")
 
-    living_room ~~~ notebook_2
-    unifi_u6_mesh <-.-> notebook_2
+    living_room ~~~ personal_devices
+    unifi_u6_mesh <-.-> personal_devices
 
     subgraph kitchen["Kitchen"]
         switch_5_smart("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/switch.png' style='min-width:80px;max-width:80px' /></div>Switch<br/>TP-Link SG105E")

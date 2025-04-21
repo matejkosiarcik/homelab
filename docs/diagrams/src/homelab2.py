@@ -17,7 +17,6 @@ with Diagram("Homelab Network", show=False, filename="./out/homelab2"):
 
         dozzle_agent_1 - Edge(color="transparent") - tvheadend
 
-
     with Cluster("Raspberry Pi 4B 2GB"):
         dozzle_agent_2 = Custom("Dozzle Agent", f"{icons_path}/dozzle.png")
         dwservice = Custom("DWService", f"{icons_path}/dwservice.png")
