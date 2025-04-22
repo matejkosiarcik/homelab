@@ -9,7 +9,7 @@
 
 ## Before initial installation
 
-- \[All\] Create base secrets
+- Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
 ## After initial installation
 

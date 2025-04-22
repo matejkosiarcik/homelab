@@ -18,10 +18,7 @@ LinuxServer (unofficial):
 
 ## Before initial installation
 
-- \[Prod\] Create secrets in Vaultwarden
-    - Note: Get `APP_KEY` from <https://speedtest-tracker.dev>
-    - Add healthchecks monitor and save URL
-- \[All\] Update local secrets
+- Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
 ## After initial installation
 

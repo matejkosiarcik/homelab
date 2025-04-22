@@ -17,9 +17,7 @@ LinuxServer (unofficial):
 
 ## Before initial installation
 
-- \[All\] Create base secrets
-- \[Prod\] Add healthchecks monitor and configure `HOMELAB_HEALTHCHECK_URL` for:
-    - `certificate-manager.env`
+- Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
 ## After initial installation
 

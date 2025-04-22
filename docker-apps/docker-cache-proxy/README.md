@@ -23,10 +23,8 @@ Generic resources:
 
 ## Before initial installation
 
-- \[All\] Create base secrets
+- Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
     - \[Prod\] Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `docker-registry.env` for authenticated mirror
-- \[Prod\] Add healthchecks monitor for `certificate-manager` and configure `HOMELAB_HEALTHCHECK_URL`
-- \[Prod\] Add healthchecks monitor for `admin-setup` and configure `HOMELAB_HEALTHCHECK_URL`
 
 ## After initial installation
 
