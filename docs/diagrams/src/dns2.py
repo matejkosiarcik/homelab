@@ -1,4 +1,4 @@
-from diagrams import Cluster, Diagram, Edge, Node
+from diagrams import Cluster, Diagram, Edge
 from diagrams.custom import Custom # type: ignore
 
 icons_path = "../icons"
