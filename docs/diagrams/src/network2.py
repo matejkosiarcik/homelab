@@ -1,5 +1,5 @@
 from diagrams import Cluster, Diagram, Edge, Node
-from diagrams.custom import Custom
+from diagrams.custom import Custom # type: ignore
 
 icons_path = "../icons"
 common_node_attributes = {
