@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_2: No need for healthcheck
 
-FROM arduinoci/ci-arduino-cli:v1.2.0
+FROM arduinoci/ci-arduino-cli:v1.2.2
 WORKDIR /homelab
 RUN arduino-cli core update-index && \
     arduino-cli core install arduino:mbed_rp2040
