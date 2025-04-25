@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM rnwood/smtp4dev:3.8.4
+FROM rnwood/smtp4dev:3.8.6
 COPY ./external/smtp4dev/icons/favicon.ico /app/wwwroot/favicon.ico
 ENV HOMELAB_CONTAINER_NAME=smtp4dev \
     HOMELAB_CONTAINER_VARIANT=default \
