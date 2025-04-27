@@ -37,7 +37,7 @@ LinuxServer (unofficial):
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
 - \[Prod\] Create extra users (matej, monika)
 - \[Prod\] Enable Hardware Acceleration:
-    - This requires the host system to support it - additional system packages required, follow Jellyfin HWA docs to install them <https://jellyfin.org/docs/general/administration/hardware-acceleration/intel#low-power-encoding>
+    - This requires the host system to support it - additional system packages required, follow Jellyfin HWA docs to install them <https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/intel/#low-power-encoding>
         - `sudo apt-get install --yes firmware-linux-nonfree intel-gpu-tools vainfo`
     - Then enable Hardware Acceleration in settings accordingly (location: Settings -> Administration -> Playback):
         - Enable HWA via VAAPI
