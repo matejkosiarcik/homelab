@@ -29,6 +29,7 @@ Thumbs.db
 *.sublime-*
 *.vim
 Package Control.*
+*.bkp
 
 # dependencies
 .mypy_cache/
