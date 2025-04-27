@@ -43,6 +43,9 @@
           - smartmontools
           - unbound
           - wget
+          - btop
+          - htop
+          # - s-tui
       # Note: also install "nvtop", but this requires contrib and non-free packages in /etc/apt/sources.list
 
     - name: Install x64 APT packages
