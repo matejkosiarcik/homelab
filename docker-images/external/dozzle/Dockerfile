@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM amir20/dozzle:v8.12.10
+FROM amir20/dozzle:v8.12.12
 ENV DOZZLE_AUTH_PROVIDER=simple \
     DOZZLE_HOSTNAME=Server \
     DOZZLE_ENABLE_ACTIONS=false \
