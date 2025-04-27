@@ -59,6 +59,6 @@ promtool check config /etc/prometheus/prometheus.yml
 
 prometheus \
     --config.file=/etc/prometheus/prometheus.yml \
-    --web.config.file=/etc/prometheus/web.yml \
     --storage.tsdb.path=/prometheus \
-    --storage.tsdb.retention.time=30d
+    --storage.tsdb.retention.time=30d \
+    --web.config.file=/etc/prometheus/web.yml
