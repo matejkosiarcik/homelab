@@ -43,6 +43,7 @@
           - smartmontools
           - unbound
           - wget
+      # Note: also install "nvtop", but this requires contrib and non-free packages in /etc/apt/sources.list
 
     - name: Install x64 APT packages
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian' and ansible_facts['architecture'] == 'x86_64'
