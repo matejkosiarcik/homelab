@@ -224,13 +224,13 @@
     #     sudo docker run hello-world
 
     - name: Reboot
-      when: docker_install.changed
+      when: ansible_facts['system'] == 'Linux' and docker_install.changed
       throttle: 1
       ansible.builtin.reboot:
         reboot_command: sudo reboot
 
     - name: Verify docker installation
-      when: docker_install.changed
+      when: ansible_facts['system'] == 'Linux' and docker_install.changed
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
@@ -252,6 +252,7 @@
         fi
 
     - name: Docker config
+      when: ansible_facts['system'] == 'Linux'
       register: docker_config
       changed_when: "'CHANGED' in docker_config.stdout"
       ansible.builtin.shell: |
@@ -282,7 +283,7 @@
         fi
 
     - name: Restart docker
-      when: docker_config.changed
+      when: ansible_facts['system'] == 'Linux' and docker_config.changed
       ansible.builtin.shell: |
         set -eufo pipefail
         sudo service docker restart
