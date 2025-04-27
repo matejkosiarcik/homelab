@@ -23,12 +23,17 @@ test-report/
 *~
 Thumbs.db
 
-# editors
+# Editors:
+# JetBrains
 .idea/
+# VSCode
 .vscode/
-*.sublime-*
+# Vim
 *.vim
+# Sublime Text
+*.sublime-*
 Package Control.*
+# DrawIO
 *.bkp
 
 # dependencies
