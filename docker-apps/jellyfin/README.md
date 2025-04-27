@@ -7,7 +7,7 @@
 Jellyfin (official):
 
 - Jellyfin docs: <https://jellyfin.org/docs/general/quick-start>
-- Jellyfin Hardware Acceleration docs: <https://jellyfin.org/docs/general/administration/hardware-acceleration> and <https://jellyfin.org/docs/general/administration/hardware-acceleration/intel>
+- Jellyfin Hardware Acceleration docs: <https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/> and <https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/intel>
 
 LinuxServer (unofficial):
 
