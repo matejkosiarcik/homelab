@@ -10,5 +10,6 @@ module.exports = {
         'matejkosiarcik/azminifier',
         'matejkosiarcik/dotfiles',
         'matejkosiarcik/homelab',
+        'matejkosiarcik/website',
     ],
 };
