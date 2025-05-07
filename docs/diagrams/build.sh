@@ -21,9 +21,9 @@ build_diagram() {
         mmdc --scale 2 --input "$diagrams_dir/$1" --output "$diagrams_dir/out/$output_file" --cssFile "$diagrams_dir/style.css"
     elif [ "$extension" = 'ts' ]; then
         tsx "$diagrams_dir/$1"
-        drawio -x -f png --scale 2 --border 100 -o "$diagrams_dir/out/$output_file"  "$diagrams_dir/$(printf '%s' "$1" | sed -E 's~\.ts$~~').drawio"
+        drawio -x -f png --scale 2 --border 100 -o "$diagrams_dir/out/$output_file" "$diagrams_dir/$(printf '%s' "$1" | sed -E 's~\.ts$~~').drawio"
     elif [ "$extension" = 'drawio' ]; then
-        drawio -x -f png --scale 2 --border 100 -o "$diagrams_dir/out/$output_file"  "$diagrams_dir/$1"
+        drawio -x -f png --scale 2 --border 100 -o "$diagrams_dir/out/$output_file" "$diagrams_dir/$1"
     fi
 }
 
