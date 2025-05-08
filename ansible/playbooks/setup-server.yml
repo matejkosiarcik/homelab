@@ -43,6 +43,7 @@
           - rfkill
           - rsync
           - smartmontools
+          - tmux
           - udisks2
           - unbound
           - wget
