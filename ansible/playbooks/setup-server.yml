@@ -4,7 +4,7 @@
     - name: Ping
       ansible.builtin.ping:
 
-      ## APT ##
+    ## APT ##
 
     - name: Update APT index
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
@@ -98,7 +98,7 @@
           printf 'CHANGED\n'
         fi
 
-      ## Log2Ram ##
+    ## Log2Ram ##
 
     - name: Install log2ram
       register: log2ram_install
