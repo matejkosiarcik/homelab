@@ -61,3 +61,6 @@
 
 10.1.18.1 smb-data.home
 10.1.18.2 smb-snapshots.home
+
+# Some UniFi devices require this
+10.1.16.21 unifi
