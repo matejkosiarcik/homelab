@@ -6,7 +6,7 @@
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
     "@mermaid-js/mermaid-cli": "^11.4.2",
-    "fast-xml-parser": "^5.2.2",
+    "fast-xml-parser": "^5.2.3",
     "lodash": "^4.17.21",
     "npm-run-all2": "^8.0.1",
     "tsx": "^4.19.4",
