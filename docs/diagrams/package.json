@@ -4,7 +4,7 @@
     "build": "sh build.sh"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.7.0",
+    "@faker-js/faker": "^9.8.0",
     "@mermaid-js/mermaid-cli": "^11.4.2",
     "fast-xml-parser": "^5.2.3",
     "lodash": "^4.17.21",
