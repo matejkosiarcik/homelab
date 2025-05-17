@@ -14,7 +14,7 @@ sources:
 sources_locked:
   - repo: https://github.com/themattman/mongodb-raspberrypi-docker.git
     name: mongodb-raspberrypi-docker
-    rev: fbd5280dde07efdea1b4c23c953ebb999ded8693
+    rev: e5f3a2d76515a520aecefc18ca115d18406a6443
     type: git
     params:
     sparse_paths:
