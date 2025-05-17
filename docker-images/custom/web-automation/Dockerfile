@@ -30,7 +30,7 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM node:23.11.0-slim AS nodejs-build
+FROM node:23.11.1-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json ./
 COPY ./custom/web-automation/src/ ./src/
@@ -39,7 +39,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:23.11.0-slim AS prefinal
+FROM node:23.11.1-slim AS prefinal
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
@@ -62,7 +62,7 @@ COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./c
 COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 
-FROM node:23.11.0-slim
+FROM node:23.11.1-slim
 WORKDIR /homelab
 COPY --from=prefinal /homelab/node_modules ./node_modules
 RUN apt-get update && \
