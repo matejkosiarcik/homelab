@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM linuxserver/speedtest-tracker:1.5.0
+FROM linuxserver/speedtest-tracker:1.6.0
 ENV APP_TIMEZONE=Etc/Utc \
     DASHBOARD_POLLING=5s \
     DB_CONNECTION=sqlite \
