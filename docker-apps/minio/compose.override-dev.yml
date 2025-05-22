@@ -19,7 +19,7 @@ services:
   app-setup:
     <<: *common-service-options
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy-api:

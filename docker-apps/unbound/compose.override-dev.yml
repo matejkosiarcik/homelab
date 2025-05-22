@@ -16,7 +16,7 @@ services:
       - ./app-data/unbound:/homelab/sock:rw
       # - ./app-data/unbound/${DOCKER_COMPOSE_UNBOUND_NAME}.sock:/homelab/sock/unbound.sock:rw
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy:

@@ -15,7 +15,7 @@ services:
     # ports:
     #   # Fill in ports if necessary #
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy:

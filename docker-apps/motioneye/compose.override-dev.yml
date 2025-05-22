@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     hostname: localhost
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy-default:

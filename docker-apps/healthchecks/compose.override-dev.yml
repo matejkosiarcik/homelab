@@ -21,7 +21,7 @@ services:
       REGISTRATION_OPEN: "True"
       SITE_ROOT: https://localhost:8443
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy:

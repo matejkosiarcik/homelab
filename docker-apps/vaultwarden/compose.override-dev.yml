@@ -18,7 +18,7 @@ services:
       DOMAIN: https://localhost:8443
       SMTP_FROM: system@vaultwarden.localhost
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy:
