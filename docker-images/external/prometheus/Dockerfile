@@ -16,7 +16,7 @@ COPY ./external/prometheus/data.yml ./external/prometheus/prometheus.yml.j2 ./
 RUN yq . data.yml >data.json && \
     jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 
-FROM debian:12.10-slim AS prefinal
+FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /etc/prometheus/
 COPY --from=python ./homelab/prometheus.yml /etc/prometheus/prometheus.yml

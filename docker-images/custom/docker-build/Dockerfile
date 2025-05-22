@@ -30,7 +30,7 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:12.10-slim AS prefinal
+FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/docker-build/main.sh ./custom/docker-build/crontab.cron ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/

@@ -1,12 +1,12 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM debian:12.10-slim AS prefinal
+FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./custom/http-proxy/www/ ./www/
 COPY ./custom/http-proxy/entrypoint.sh ./
 
-FROM debian:12.10-slim
+FROM debian:12.11-slim
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \

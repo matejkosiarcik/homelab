@@ -10,7 +10,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM debian:12.10-slim AS prefinal
+FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
 COPY ./external/homepage/config/ ./config/
 COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
