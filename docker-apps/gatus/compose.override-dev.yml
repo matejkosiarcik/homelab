@@ -16,7 +16,7 @@ services:
       <<: *common-env-variables
       GATUS_DELAY_START_SECONDS: 0
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy:

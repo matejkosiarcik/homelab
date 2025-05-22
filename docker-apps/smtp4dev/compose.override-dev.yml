@@ -20,7 +20,7 @@ services:
       - 127.0.0.1:8025:25
       # - 127.0.0.1:8143:143
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy:

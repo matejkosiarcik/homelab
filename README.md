@@ -17,7 +17,7 @@ Below is a general structure for this repository:
     - Each _docker image_ contains reusable general config
     - Each _docker image_ can be used in 1 or more docker-apps
 - `/docker-apps/` - Reusable config for individual docker-apps, eg. PiHole
-    - Each _docker app_ contains reusable general config, including auxiliary services (eg. PiHole itself, Apache/Nginx reverse proxy, cron certificate manager, cron web backups, ...)
+    - Each _docker app_ contains reusable general config, including auxiliary services (eg. PiHole itself, Apache/Nginx reverse proxy, cron certificate loader, cron web backups, ...)
     - Each _docker app_ can be used in 1 or more docker-apps on individual servers
 - `/other-apps/` - Non-Docker apps (eg. for microcontrollers)
 - `/servers/` - Setup for individual physical servers

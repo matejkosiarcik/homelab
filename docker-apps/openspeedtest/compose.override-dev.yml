@@ -20,7 +20,7 @@ services:
       - 127.0.0.1:8080:3000
       # 3001 ignored
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy:

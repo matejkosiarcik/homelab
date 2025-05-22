@@ -20,7 +20,7 @@ updates:
   # Docker
   - package-ecosystem: docker
     directories:
-      - /docker-images/custom/certificate-manager
+      - /docker-images/custom/certificate-loader
       - /docker-images/custom/docker-setup
       - /docker-images/custom/http-proxy
       - /docker-images/custom/web-automation

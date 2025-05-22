@@ -16,7 +16,7 @@ services:
     devices:
       - ${DOCKER_COMPOSE_VIDEO_DEVICE}:${DOCKER_COMPOSE_VIDEO_DEVICE}
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
 
   http-proxy-default:

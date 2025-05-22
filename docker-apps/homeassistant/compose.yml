@@ -28,18 +28,18 @@ services:
     # privileged: true
     stop_grace_period: 30s
 
-  certificate-manager:
+  certificate-loader:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-manager
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-loader
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/certificate-manager/Dockerfile
+      dockerfile: ./custom/certificate-loader/Dockerfile
     env_file:
-      - ./app-secrets/certificate-manager.env
+      - ./app-secrets/certificate-loader.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-manager:/homelab/logs:rw
+      - ./app-logs/certificate-loader:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options

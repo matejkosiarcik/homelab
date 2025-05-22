@@ -42,7 +42,7 @@ RUN apt-get update && \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /homelab/ ./
-ENV HOMELAB_CONTAINER_NAME=certificate-manager \
+ENV HOMELAB_CONTAINER_NAME=certificate-loader \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="$PATH:/homelab/bin" \
     TZ=Europe/Bratislava
