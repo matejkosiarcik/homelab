@@ -18,18 +18,18 @@
     "p-parallel": "^1.0.3",
     "promise-socket": "^8.0.0",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.542"
+    "user-agents": "^1.1.547"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
     "@types/async": "^3.2.24",
-    "@types/lodash": "^4.17.16",
-    "@types/node": "^22.15.18",
+    "@types/lodash": "^4.17.17",
+    "@types/node": "^22.15.21",
     "@types/user-agents": "^1.0.4",
     "cross-env": "^7.0.3",
     "exitzero": "^1.0.1",
     "mkdirp": "^3.0.1",
-    "npm-run-all2": "^8.0.2",
+    "npm-run-all2": "^8.0.3",
     "tsx": "^4.19.4"
   }
 }
