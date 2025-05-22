@@ -15,11 +15,11 @@ flowchart LR
     subgraph app_wrapper[" "]
         network_interface(" ")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>manager")
+        certificate_loader("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>loader")
         netalertx("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/netalertx.png' style='min-width:80px;max-width:80px' /></div>NetAlertX")
 
         network_interface --->|:80,443| http_proxy --->|:20211| network_interface
-        http_proxy -..-|fs| certificate_manager
+        http_proxy -..-|fs| certificate_loader
         network_interface --->|:20211| netalertx
     end
 
@@ -28,6 +28,6 @@ flowchart LR
     class network dashed_border
 
     home_network <---> app_wrapper
-    certificate_manager --->|report status| healthchecks
-    certificate_manager ~~~ network
+    certificate_loader --->|report status| healthchecks
+    certificate_loader ~~~ network
     netalertx <--->|scan| network

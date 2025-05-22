@@ -17,12 +17,12 @@ flowchart LR
     subgraph app_wrapper[" "]
         network_interface(" ")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>manager")
+        certificate_loader("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>loader")
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
 
         network_interface --->|:80,443| http_proxy --->|:8000| healthchecks
-        http_proxy -..-|fs| certificate_manager
+        http_proxy -..-|fs| certificate_loader
         healthchecks ~~~ db_sync -..->|fs| healthchecks
     end
 
@@ -32,4 +32,4 @@ flowchart LR
     home_network <---> app_wrapper
     other_apps -..->|send cron job status| app_wrapper
     db_sync -.->|send| s3_database
-    certificate_manager -..->|report status| healthchecks
+    certificate_loader -..->|report status| healthchecks
