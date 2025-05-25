@@ -44,7 +44,7 @@ COPY --from=prefinal /homelab/ /homelab/
 COPY ./external/renovatebot/config.js /usr/src/app/config.js
 ENV HOMELAB_CONTAINER_NAME=renovatebot \
     HOMELAB_CONTAINER_VARIANT=default \
-    PATH="$PATH:/homelab/bin" \
+    PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=5s --start-period=10m --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
