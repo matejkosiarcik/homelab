@@ -35,7 +35,7 @@ WORKDIR /homelab
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/docker-build/main.sh ./custom/docker-build/crontab.cron ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 
-FROM docker:28.1.1
+FROM docker:28.2.2
 WORKDIR /homelab
 COPY --from=prefinal /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=docker-build \
