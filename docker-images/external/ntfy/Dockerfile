@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM binwiederhier/ntfy:v2.11.0
+FROM binwiederhier/ntfy:v2.12.0
 COPY ./external/ntfy/setup.sh /homelab/
 COPY ./external/ntfy/config/server.yml /etc/ntfy/server.yml
 ENV HOMELAB_CONTAINER_NAME=ntfy \
