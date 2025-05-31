@@ -6,8 +6,7 @@ certificate_archive_file='/homelab/data/certs.tar.xz'
 
 create_certs='0'
 if [ -e '/homelab/certs/fullchain.pem' ]; then
-    certificate_domain="$(openssl x509 -noout -subject -in /homelab/certs/fullchain.pem | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')"
-    if [ "$certificate_domain" != "*.$domain" ]; then
+    if [ "$(openssl x509 -noout -subject -in /homelab/certs/fullchain.pem | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.$domain" ]; then
         printf 'Renewing certificate (wrong domain)\n' >&2
         create_certs='1'
     elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in '/homelab/certs/fullchain.pem' >/dev/null; then
