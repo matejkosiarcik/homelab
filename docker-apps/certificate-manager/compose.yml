@@ -21,8 +21,6 @@ services:
     volumes:
       - ./app-data/certificate-manager-data:/homelab/data:rw
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-secrets/linode-private-key.txt:/homelab/linode-private-key.txt:rw
-      - ./app-secrets/linode-public-key.txt:/homelab/linode-public-key.txt:rw
       - ./app-logs/certificate-manager:/homelab/logs:rw
     env_file:
       - ./app-secrets/certificate-manager.env

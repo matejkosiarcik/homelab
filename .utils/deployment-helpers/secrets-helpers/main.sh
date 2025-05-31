@@ -207,20 +207,12 @@ case "$full_app_name" in
     ;;
 *certificate-manager*)
     # App
-    load_notes "$full_app_name" linode ssh-private-key >>"$output/linode-private-key.txt"
-    load_notes "$full_app_name" linode ssh-public-key >>"$output/linode-public-key.txt"
     certificate_loader_password="$(load_password "$full_app_name" http-proxy certificate-loader)"
     write_http_auth_user certificate-loader "$certificate_loader_password"
     printf 'certificate-loader,%s\n' "$certificate_loader_password" >>"$output/all-credentials.csv"
-    linode_api_key="$(load_token "$full_app_name" linode api-key)"
-    printf 'LINODE_CLI_TOKEN=%s\n' "$linode_api_key" >>"$output/certificate-manager.env"
-    printf 'linode-api-key,%s\n' "$linode_api_key" >>"$output/all-credentials.csv"
-    linode_admin_password="$(load_token "$full_app_name" linode admin)"
-    printf 'LINODE_ADMIN_PASSWORD=%s\n' "$linode_admin_password" >>"$output/certificate-manager.env"
-    printf 'linode-admin-password,%s\n' "$linode_admin_password" >>"$output/all-credentials.csv"
-    linode_admin_email="$(load_token "$full_app_name" linode email)"
-    printf 'LINODE_ADMIN_EMAIL=%s\n' "$linode_admin_email" >>"$output/certificate-manager.env"
-    printf 'linode-admin-email,%s\n' "$linode_admin_email" >>"$output/all-credentials.csv"
+    websupport_admin_email="$(load_token "$full_app_name" websupport email)"
+    printf 'WEBSUPPORT_ADMIN_EMAIL=%s\n' "$websupport_admin_email" >>"$output/certificate-manager.env"
+    printf 'websupport-admin-email,%s\n' "$websupport_admin_email" >>"$output/all-credentials.csv"
     websupport_api_key="$(load_token "$full_app_name" websupport api-key)"
     printf 'WEBSUPPORT_API_KEY=%s\n' "$websupport_api_key" >>"$output/certificate-manager.env"
     printf 'websupport-api-key,%s\n' "$websupport_api_key" >>"$output/all-credentials.csv"
