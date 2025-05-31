@@ -24,6 +24,7 @@ services:
       - ./app-logs/certificate-manager:/homelab/logs:rw
     env_file:
       - ./app-secrets/certificate-manager.env
+    restart: "no"
 
   http-proxy:
     <<: *common-service-options
