@@ -1,5 +1,5 @@
 # TLS
-# certificate-manager
+certificate-manager
 
 # DNS
 pihole-1-primary
