@@ -1,7 +1,10 @@
-import dns from 'native-dns';
+import fs from 'node:fs';
 import https from 'node:https';
 import process from 'node:process';
 import { default as baseAxios } from 'axios';
+import dns from 'native-dns';
+import * as tar from 'tar';
+import lzma from 'lzma-native';
 
 export async function delay(timeout: number): Promise<void> {
     return new Promise((resolve) => {
@@ -55,3 +58,18 @@ export const axios = baseAxios.create({
     maxRedirects: 999,
     validateStatus: () => true,
 });
+
+export async function extractTar(file: string, destination: string): Promise<void> {
+    await new Promise((resolve, reject) => {
+        const stream = fs.createReadStream(file)
+            .pipe(lzma.createDecompressor())
+            .pipe(
+                tar.x({
+                    strip: 1,
+                    C: destination,
+                }),
+            );
+        stream.on('error', (error) => reject(error));
+        stream.on('finish', () => resolve(true));
+    });
+}

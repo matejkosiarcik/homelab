@@ -1,0 +1,23 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_ENV: dev
+    HOMELAB_APP_EXTERNAL_DOMAIN: localhost
+    HOMELAB_APP_EXTERNAL_IP: "127.0.0.1"
+    HOMELAB_APP_EXTERNAL_URL: https://localhost
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    restart: "no"
+
+services:
+  app:
+    <<: *common-service-options
+
+  http-proxy:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:8080:80
+      - 127.0.0.1:8443:443
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options

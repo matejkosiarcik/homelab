@@ -152,6 +152,7 @@ write_healthcheck_url() {
         healthcheck_url="https://healthchecks.home/ping/$2"
     fi
     printf 'HOMELAB_HEALTHCHECK_URL=%s\n' "$healthcheck_url" >>"$output/$1.env"
+    printf 'healthchecks-%s,%s\n' "$1" "$healthcheck_url" >>"$output/all-credentials.csv"
 }
 
 write_http_auth_user() {
@@ -203,6 +204,37 @@ case "$full_app_name" in
     # Certificate Loader
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
+    ;;
+*certificate-manager*)
+    # App
+    load_notes "$full_app_name" linode ssh-private-key >>"$output/linode-private-key.txt"
+    load_notes "$full_app_name" linode ssh-public-key >>"$output/linode-public-key.txt"
+    certificate_loader_password="$(load_password "$full_app_name" http-proxy certificate-loader)"
+    write_http_auth_user certificate-loader "$certificate_loader_password"
+    printf 'certificate-loader,%s\n' "$certificate_loader_password" >>"$output/all-credentials.csv"
+    linode_api_key="$(load_token "$full_app_name" linode api-key)"
+    printf 'LINODE_CLI_TOKEN=%s\n' "$linode_api_key" >>"$output/certificate-manager.env"
+    printf 'linode-api-key,%s\n' "$linode_api_key" >>"$output/all-credentials.csv"
+    linode_admin_password="$(load_token "$full_app_name" linode admin)"
+    printf 'LINODE_ADMIN_PASSWORD=%s\n' "$linode_admin_password" >>"$output/certificate-manager.env"
+    printf 'linode-admin-password,%s\n' "$linode_admin_password" >>"$output/all-credentials.csv"
+    linode_admin_email="$(load_token "$full_app_name" linode email)"
+    printf 'LINODE_ADMIN_EMAIL=%s\n' "$linode_admin_email" >>"$output/certificate-manager.env"
+    printf 'linode-admin-email,%s\n' "$linode_admin_email" >>"$output/all-credentials.csv"
+    websupport_api_key="$(load_token "$full_app_name" websupport api-key)"
+    printf 'WEBSUPPORT_API_KEY=%s\n' "$websupport_api_key" >>"$output/certificate-manager.env"
+    printf 'websupport-api-key,%s\n' "$websupport_api_key" >>"$output/all-credentials.csv"
+    websupport_api_secret="$(load_token "$full_app_name" websupport api-secret)"
+    printf 'WEBSUPPORT_API_SECRET=%s\n' "$websupport_api_secret" >>"$output/certificate-manager.env"
+    printf 'websupport-api-secret,%s\n' "$websupport_api_secret" >>"$output/all-credentials.csv"
+    websupport_service_id="$(load_token "$full_app_name" websupport service-id)"
+    printf 'WEBSUPPORT_SERVICE_ID=%s\n' "$websupport_service_id" >>"$output/certificate-manager.env"
+    printf 'websupport-service-id,%s\n' "$websupport_service_id" >>"$output/all-credentials.csv"
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
+    write_healthcheck_url certificate-manager "$healthcheck_id"
+
+    # HTTP Proxy
+    write_default_proxy_users "$full_app_name"
     ;;
 *docker-build*)
     # App

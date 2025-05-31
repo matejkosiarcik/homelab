@@ -1,0 +1,62 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: certificate-manager
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    networks:
+      internal-network: {}
+    dns_opt:
+      - single-request
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+
+services:
+  app:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificate-manager/Dockerfile
+    volumes:
+      - ./app-data/certificate-manager-data:/homelab/data:rw
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-secrets/linode-private-key.txt:/homelab/linode-private-key.txt:rw
+      - ./app-secrets/linode-public-key.txt:/homelab/linode-public-key.txt:rw
+      - ./app-logs/certificate-manager:/homelab/logs:rw
+    env_file:
+      - ./app-secrets/certificate-manager.env
+
+  http-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/http-proxy/Dockerfile
+    volumes:
+      - ./app-data/certificate-manager-data:/homelab/www/download:rw
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/http-user--certificate-loader.htpasswd:/homelab/http-user--certificate-loader.htpasswd:ro
+      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
+      - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
+      - ./app-logs/http-proxy:/homelab/logs:rw
+
+  http-proxy-prometheus-exporter:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-prometheus-exporter
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
+    environment:
+      APACHE_HOST: http-proxy
+    env_file:
+      - ./app-secrets/http-proxy-prometheus-exporter.env
+
+networks:
+  default: # Just disable default network
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
