@@ -40,7 +40,7 @@ FROM python:3.13.3-slim
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        ca-certificates certbot curl jq python3 xz-utils >/dev/null && \
+        ca-certificates certbot curl jq xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=certificate-manager \
