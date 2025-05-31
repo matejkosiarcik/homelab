@@ -67,6 +67,7 @@ test_cert_mode='--test-cert'
 if [ "$HOMELAB_ENV" = dev ] || [ "$HOMELAB_ENV" = prod ]; then
     test_cert_mode=''
 fi
+# shellcheck disable=SC2248
 certbot certonly --manual --non-interactive --agree-tos \
     --preferred-challenges dns \
     --domain "*.$domain" \
