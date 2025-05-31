@@ -30,6 +30,8 @@ printf "export HOMELAB_APP_EXTERNAL_DOMAIN='%s'\n" "$HOMELAB_APP_EXTERNAL_DOMAIN
 # Set PROXY_UPSTREAM_URL
 if [ "$HOMELAB_APP_TYPE" = 'actualbudget' ]; then
     PROXY_UPSTREAM_URL="http://app:5006"
+elif [ "$HOMELAB_APP_TYPE" = 'certificate-manager' ]; then
+    PROXY_UPSTREAM_URL=''
 elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
     PROXY_UPSTREAM_URL="http://app:5000"
 elif [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
@@ -219,19 +221,31 @@ export PROXY_PROMETHEUS_EXPORTER_HOSTNAME
 printf "export PROXY_PROMETHEUS_EXPORTER_HOSTNAME='%s'\n" "$PROXY_PROMETHEUS_EXPORTER_HOSTNAME" >>/etc/apache2/envvars
 
 # Wait for certificates to exist before starting
-timeout 30s sh <<EOF
+timeout 60s sh <<EOF
 if [ -e '/homelab/certs/certificate.crt' ]; then
     return 0
 fi
-printf 'Waiting for certificates before starting\n' >&2
+printf 'Waiting for certificate before starting\n' >&2
 while [ ! -e '/homelab/certs/certificate.crt' ]; do
     sleep 1
 done
 sleep 1
 EOF
+# timeout 60s sh <<EOF
+# if [ -e '/homelab/certs/fullchain.pem' ]; then
+#     return 0
+# fi
+# printf 'Waiting for certificate before starting\n' >&2
+# while [ ! -e '/homelab/certs/fullchain.pem' ]; do
+#     sleep 1
+# done
+# sleep 1
+# EOF
 
 # Watch certificates in background
 inotifywait --monitor --event modify --format '%w%f' --include 'certificate\.crt' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
+# inotifywait --monitor --event modify --format '%w%f' --include 'fullchain\.pem' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
 
 # Start apache
+printf 'Starting Apache\n' >&2
 apachectl -D FOREGROUND

@@ -136,8 +136,17 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect Certificate Manager endpoints
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certificate-manager' && %{REQUEST_URI} =~ m#^/download/.*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/http-user--certificate-loader.htpasswd
+    Require valid-user
+</If>
+
 # Protect entire Homepage
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/.proxy(?:/.*)?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -212,10 +221,12 @@ RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{HTTP:Connection} upgrade [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL_WS} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_WS}%{REQUEST_URI}" [P,L]
 
 # Proxy regular requests upstream
 RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}%{REQUEST_URI}" [P,L]
