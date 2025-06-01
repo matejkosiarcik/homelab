@@ -28,7 +28,7 @@ if [ "$(wc -l <'/homelab/data/timestamps.log')" -ge '2' ]; then
     current_date_ts="$(date -u -d "$(tail -n 1 <'/homelab/data/timestamps.log')" +'%s')"
     comparator_date_ts="$(date -u -d "$(tail -n 2 <'/homelab/data/timestamps.log' | head -n 1)" +'%s')"
     difference="$((current_date_ts - comparator_date_ts))"
-    if [ "$difference" -lt "$(60 * 30)" ]; then # 30 minutes
+    if [ "$difference" -lt "$((60 * 60))" ]; then # 1 hour
         printf 'There are too many certificate requests in short time, previous %s s ago, stopping\n' "$difference" >&2
         exit 1
     fi
