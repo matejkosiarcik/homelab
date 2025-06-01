@@ -25,7 +25,6 @@ services:
       - ./app-logs/certificate-manager-letsencrypt:/var/log/letsencrypt:rw
     env_file:
       - ./app-secrets/certificate-manager.env
-    restart: "no"
 
   http-proxy:
     <<: *common-service-options
