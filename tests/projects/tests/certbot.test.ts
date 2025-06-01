@@ -12,13 +12,13 @@ test.describe(apps.certbot.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { status: 403 });
             createTcpTests(instance.url, [80, 443]);
 
             test(`API: HTTPS redirect for certificate`, async () => {
-                const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/certs.tar.xz`, { maxRedirects: 0 });
+                const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/certificate.tar.xz`, { maxRedirects: 0 });
                 expect(response.status, 'Response Status').toStrictEqual(302);
-                expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/certs.tar.xz`);
+                expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/certificate.tar.xz`);
             });
 
             const dataVariants = [
@@ -38,7 +38,7 @@ test.describe(apps.certbot.title, () => {
                 {
                     title: 'wrong password',
                     auth: {
-                        username: 'certificate-loader',
+                        username: 'viewer',
                         password: faker.string.alphanumeric(10),
                     },
                     status: 401,
@@ -54,31 +54,31 @@ test.describe(apps.certbot.title, () => {
                 {
                     title: 'successful',
                     auth: {
-                        username: 'certificate-loader',
-                        password: getEnv(instance.url, 'PROXY_CERTIFICATE_LOADER_PASSWORD'),
+                        username: 'viewer',
+                        password: getEnv(instance.url, 'VIEWER_PASSWORD'),
                     },
                     status: 200,
                 },
             ];
             for (const variant of dataVariants) {
                 test(`API: Read certificates (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/download/certs.tar.xz`, { auth: variant.auth });
+                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, { auth: variant.auth });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
             }
 
             test('API: Read and validate certificates', async () => {
-                const response = await axios.get(`${instance.url}/download/certs.tar.xz`, {
+                const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
                     auth: {
-                        username: 'certificate-loader',
-                        password: getEnv(instance.url, 'PROXY_CERTIFICATE_LOADER_PASSWORD'),
+                        username: 'viewer',
+                        password: getEnv(instance.url, 'VIEWER_PASSWORD'),
                     },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const randomDir = (await fsx.mkdir(path.join(os.tmpdir(), 'homelab-'), { recursive: true }))!;
                 try {
-                    await fsx.writeFile(path.join(randomDir, 'certs.tar.xz'), response.data, { encoding: 'binary' });
-                    await extractTar(path.join(randomDir, 'certs.tar.xz'), path.join(randomDir, 'certificate'));
+                    await fsx.writeFile(path.join(randomDir, 'certificate.tar.xz'), response.data, { encoding: 'binary' });
+                    await extractTar(path.join(randomDir, 'certificate.tar.xz'), path.join(randomDir, 'certificate'));
                     // TODO: Validate extracted certificate
                 } finally {
                     await fsx.rm(randomDir, { recursive: true, force: true });
