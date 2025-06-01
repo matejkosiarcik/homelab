@@ -14,7 +14,7 @@ test.describe(apps.certbot.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url, { status: 403 });
+            createApiRootTest(instance.url, { status: 404 });
             createTcpTests(instance.url, [80, 443]);
 
             test(`API: HTTPS redirect for certificate`, async () => {
@@ -82,7 +82,6 @@ test.describe(apps.certbot.title, () => {
                 const randomDir = (await fsx.mkdtemp(path.join(os.tmpdir(), 'homelab-')))!;
                 try {
                     await fsx.writeFile(path.join(randomDir, 'certificate.tar.xz'), response.data, { encoding: 'binary' });
-                    await fsx.copyFile(path.join(randomDir, 'certificate.tar.xz'), 'certificate.tar.xz');
 
                     const certificateDir = path.join(randomDir, 'certificate');
                     await fsx.mkdir(certificateDir);
