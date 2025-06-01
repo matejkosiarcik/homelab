@@ -211,9 +211,9 @@ case "$full_app_name" in
     ;;
 *certbot*)
     # App
-    certificate_loader_password="$(load_password "$full_app_name" http-proxy certificate-loader)"
-    write_http_auth_user certificate-loader "$certificate_loader_password"
-    printf 'certificate-loader,%s\n' "$certificate_loader_password" >>"$output/all-credentials.csv"
+    certbot_viewer_password="$(load_password "$full_app_name" http-proxy viewer)"
+    write_http_auth_user viewer "$certbot_viewer_password"
+    printf 'viewer,%s\n' "$certbot_viewer_password" >>"$output/all-credentials.csv"
     certbot_admin_email="$(load_token "$full_app_name" certbot admin-email)"
     printf 'CERTBOT_ADMIN_EMAIL=%s\n' "$certbot_admin_email" >>"$output/certbot.env"
     printf 'certbot-admin-email,%s\n' "$certbot_admin_email" >>"$output/all-credentials.csv"
@@ -290,6 +290,7 @@ case "$full_app_name" in
     admin_password="$(load_password "$full_app_name" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     # Main credentials
+    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_token certbot http-proxy viewer)" >>"$output/gatus.env"
     printf 'GATUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/gatus.env"
     printf 'GLANCES_MACBOOK_PRO_2012_PASSWORD=%s\n' "$(load_token glances--macbook-pro-2012 app admin)" >>"$output/gatus.env"
     printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app admin)" >>"$output/gatus.env"

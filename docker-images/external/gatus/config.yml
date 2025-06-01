@@ -266,6 +266,50 @@ endpoints:
     group: App - ActualBudget (Public)
     url: tcp://actualbudget-public.home:443
 
+  ### Group: App - Certbot ###
+
+  - <<: *default-icmp
+    name: Certbot - ICMP
+    group: App - Certbot
+    url: icmp://certbot.home
+
+  - <<: *default-http
+    name: Certbot - HTTP
+    group: App - Certbot
+    url: http://certbot.home
+    conditions:
+      - "[STATUS] == 403"
+
+  - <<: *default-http
+    name: Certbot - HTTPS
+    group: App - Certbot
+    url: https://certbot.home
+    conditions:
+      - "[STATUS] == 403"
+
+  - <<: *default-http
+    name: Certbot - HTTPS
+    group: App - Certbot
+    url: https://admin:${CERTBOT_VIEWER_PASSWORD}@certbot.home/download/certificate.tar.xz
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
+    name: Certbot - Proxy prometheus metrics
+    group: App - Certbot
+    url: https://proxy-prometheus:${CERTBOT_PROXY_PROMETHEUS_PASSWORD}@certbot.home/.proxy/metrics
+
+  - <<: *default-tcp
+    name: Certbot - TCP:80
+    group: App - Certbot
+    url: tcp://certbot.home:80
+
+  - <<: *default-tcp
+    name: Certbot - TCP:443
+    group: App - Certbot
+    url: tcp://certbot.home:443
+
   ### Group: App - Changedetection ###
 
   - <<: *default-icmp
