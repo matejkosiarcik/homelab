@@ -106,7 +106,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'speedtest-tracker' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     PROXY_UPSTREAM_URL="http://app:9981"
 elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
-    PROXY_UPSTREAM_URL="http://not-found" # Just a placeholder
+    PROXY_UPSTREAM_URL=''
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
         PROXY_UPSTREAM_URL="https://app:8443"
