@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { expect, test } from '@playwright/test';
 import { axios, dnsLookup, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
@@ -13,6 +13,7 @@ test.describe(apps.unbound.title, () => {
             createPrometheusTests(instance.url, { auth: 'basic' });
             createApiRootTest(instance.url, { status: 404 });
             createTcpTests(instance.url, [53, 80, 443]);
+            createFaviconTests(instance.url);
 
             for (const transportVariant of ['tcp', 'udp'] as const) {
                 for (const ipVariant of ['A', 'AAAA'] as const) {

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.healthchecks.title, () => {
     for (const instance of apps.healthchecks.instances) {
@@ -11,6 +11,7 @@ test.describe(apps.healthchecks.title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
+            createFaviconTests(instance.url);
 
             test('API: Status endpoint', async () => {
                 const response = await axios.get(`${instance.url}/api/v3/status`);

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, getEnv } from '../../utils/utils';
 
 test.describe(apps.homepage.title, () => {
@@ -11,6 +11,7 @@ test.describe(apps.homepage.title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url, { status: 401 });
             createTcpTests(instance.url, [80, 443]);
+            createFaviconTests(instance.url);
 
             const users = [
                 {
