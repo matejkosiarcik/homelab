@@ -25,6 +25,13 @@ fi
 printf 'Downloading certificate from certbot\n' >&2
 tmpdir="$(mktemp -d)"
 certificate_archive_file="$tmpdir/certificate.tar.xz"
-# TODO: Remove "-k" after Let's Encrypt certificates
-curl -L -k --fail -u "viewer:$CERTBOT_VIEWER_PASSWORD" --output "$certificate_archive_file" 'https://certbot.home/download/certificate.tar.xz'
+# TODO: Remove "--insecure" after Let's Encrypt certificates
+timeout 45s sh <<EOF
+while ! curl --insecure --fail --silent --show-error --output /dev/null --user "viewer:$CERTBOT_VIEWER_PASSWORD" 'https://certbot.home/download/certificate.tar.xz'; do
+    echo "sleeping"
+    sleep 5
+done
+EOF
+curl --insecure --fail --silent --show-error --output "$certificate_archive_file" --user "viewer:$CERTBOT_VIEWER_PASSWORD" 'https://certbot.home/download/certificate.tar.xz'
+find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
 tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1
