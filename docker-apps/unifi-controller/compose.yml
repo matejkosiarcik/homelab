@@ -71,13 +71,13 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificator:/homelab/logs:rw
 
-  http-proxy-admin:
+  apache-admin:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-admin
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-admin
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
+      dockerfile: ./custom/apache/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: admin
@@ -85,15 +85,15 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
-      - ./app-logs/http-proxy-admin:/homelab/logs:rw
+      - ./app-logs/apache-admin:/homelab/logs:rw
 
-  http-proxy-admin-raw:
+  apache-admin-raw:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-admin-raw
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-admin-raw
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
+      dockerfile: ./custom/apache/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: admin-raw
@@ -101,19 +101,19 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
-      - ./app-logs/http-proxy-admin-raw:/homelab/logs:rw
+      - ./app-logs/apache-admin-raw:/homelab/logs:rw
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
     environment:
-      APACHE_HOST: http-proxy-admin
+      APACHE_HOST: apache-admin
     env_file:
-      - ./app-secrets/http-proxy-prometheus-exporter.env
+      - ./app-secrets/apache-prometheus-exporter.env
 
   # web-backup:
   #   <<: *common-service-options

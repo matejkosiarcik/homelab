@@ -264,7 +264,7 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
-# Custom prometheus metrics for http-proxy itself
+# Custom prometheus metrics for apache itself
 RewriteCond %{REQUEST_URI} ^/.proxy/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]

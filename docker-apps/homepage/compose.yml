@@ -34,31 +34,31 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificator:/homelab/logs:rw
 
-  http-proxy:
+  apache:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
+      dockerfile: ./custom/apache/Dockerfile
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--admin.htpasswd:/homelab/http-user--admin.htpasswd:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
-      - ./app-logs/http-proxy:/homelab/logs:rw
+      - ./app-logs/apache:/homelab/logs:rw
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
     environment:
-      APACHE_HOST: http-proxy
+      APACHE_HOST: apache
     env_file:
-      - ./app-secrets/http-proxy-prometheus-exporter.env
+      - ./app-secrets/apache-prometheus-exporter.env
 
 networks:
   default: # Just disable default network

@@ -20,7 +20,7 @@ services:
   certificator:
     <<: *common-service-options
 
-  http-proxy:
+  apache:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
@@ -29,7 +29,7 @@ services:
     networks:
       external-network:
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options
 
 networks:

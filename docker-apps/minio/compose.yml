@@ -47,49 +47,49 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificator:/homelab/logs:rw
 
-  http-proxy-api:
+  apache-api:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-api
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-api
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
+      dockerfile: ./custom/apache/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
-      - ./app-logs/http-proxy-api:/homelab/logs:rw
+      - ./app-logs/apache-api:/homelab/logs:rw
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
 
-  http-proxy-console:
+  apache-console:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-console
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-console
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/http-proxy/Dockerfile
+      dockerfile: ./custom/apache/Dockerfile
     environment:
       <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: console
     volumes:
-      - ./app-logs/http-proxy-console:/homelab/logs:rw
+      - ./app-logs/apache-console:/homelab/logs:rw
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
       - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-http-proxy-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
     environment:
-      APACHE_HOST: http-proxy-api
+      APACHE_HOST: apache-api
     env_file:
-      - ./app-secrets/http-proxy-prometheus-exporter.env
+      - ./app-secrets/apache-prometheus-exporter.env
 
 networks:
   default: # Just disable default network
