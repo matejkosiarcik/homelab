@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, delay, getEnv } from '../../utils/utils';
 
 test.describe(apps.ntfy.title, () => {
@@ -11,6 +11,7 @@ test.describe(apps.ntfy.title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
+            createFaviconTests(instance.url);
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);

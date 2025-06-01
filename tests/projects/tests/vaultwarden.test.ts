@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps['vaultwarden'].title, () => {
     for (const instance of apps['vaultwarden'].instances) {
@@ -11,6 +11,7 @@ test.describe(apps['vaultwarden'].title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
+            createFaviconTests(instance.url);
 
             const users = [
                 {

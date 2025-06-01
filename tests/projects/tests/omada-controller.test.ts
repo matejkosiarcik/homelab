@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 type OmadaControllerStatusResponse = {
     errorCode: number,
@@ -28,6 +28,7 @@ test.describe(apps['omada-controller'].title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443, 29811, 29812, 29813, 29814, 29815, 29816]);
+            createFaviconTests(instance.url);
 
             test('API: Status endpoint', async () => {
                 const response = await axios.get(`${instance.url}/api/v2/anon/info`);

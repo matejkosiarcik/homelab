@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
@@ -14,6 +14,7 @@ test.describe(apps.jellyfin.title, () => {
             createApiRootTest(instance.url);
             createApiRootTest(httpUrl8096, { title: ':8096' });
             createTcpTests(instance.url, [80, 443, 8096]);
+            createFaviconTests(instance.url);
 
             test('API: Health endpoint', async () => {
                 const response = await axios.get(`${instance.url}/health`);
