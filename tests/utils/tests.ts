@@ -1,9 +1,9 @@
 import net from 'node:net';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import icoToPng from 'ico-to-png';
 import PromiseSocket from 'promise-socket';
 import sharp from 'sharp';
+import sharpIco from 'sharp-ico';
 import { axios, getEnv } from './utils';
 
 export function createTcpTests(url: string, ports: number | number[], subtitle?: string | undefined) {
@@ -85,9 +85,16 @@ export function createFaviconTests(url: string) {
                 responseType: 'arraybuffer',
             });
             expect(response.status, 'Response Status').toStrictEqual(200);
-            const pngBuffer = await icoToPng(response.data, 16);
-            const faviconBuffer = await sharp(pngBuffer).toFormat('raw').toBuffer();
-            expect(faviconBuffer.length, 'Favicon.ico decoded size should be nonzero').toBeGreaterThan(1);
+            const sharpIcons = sharpIco.sharpsFromIco(response.data);
+            for (const el of sharpIcons.entries()) {
+                const faviconBuffer = await (async () => {
+                    if ('data' in el[1]) {
+                        return await sharp(el[1].data).toFormat('raw').toBuffer();
+                    }
+                    return el[1].toFormat('raw').toBuffer();
+                })();
+                expect(faviconBuffer.length, `Favicon.ico image ${el[0]} decoded size should be nonzero`).toBeGreaterThan(1);
+            }
         }),
         test('API: Get favicon.png', async () => {
             const response = await axios.get(`${url}/favicon.png`, {
