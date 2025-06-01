@@ -1,7 +1,9 @@
 import net from 'node:net';
-import PromiseSocket from 'promise-socket';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
+import icoToPng from 'ico-to-png';
+import PromiseSocket from 'promise-socket';
+import sharp from 'sharp';
 import { axios, getEnv } from './utils';
 
 export function createTcpTests(url: string, ports: number | number[], subtitle?: string | undefined) {
@@ -71,6 +73,30 @@ export function createHttpsToHttpRedirectTests(url: string) {
             const response = await axios.get(`${url.replace('http://', 'https://')}${subpage}`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
             expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('https://', 'http://')}${subpage}`);
+        }),
+    ];
+}
+
+export function createFaviconTests(url: string) {
+    return [
+        test('API: Get favicon.ico', async () => {
+            const response = await axios.get(`${url}/favicon.ico`,{
+                decompress: false,
+                responseType: 'arraybuffer',
+            });
+            expect(response.status, 'Response Status').toStrictEqual(200);
+            const pngBuffer = await icoToPng(response.data, 16);
+            const faviconBuffer = await sharp(pngBuffer).toFormat('raw').toBuffer();
+            expect(faviconBuffer.length, 'Favicon.ico decoded size should be nonzero').toBeGreaterThan(1);
+        }),
+        test('API: Get favicon.png', async () => {
+            const response = await axios.get(`${url}/favicon.png`, {
+                decompress: false,
+                responseType: 'arraybuffer',
+            });
+            expect(response.status, 'Response Status').toStrictEqual(200);
+            const faviconBuffer = await sharp(response.data).toFormat('raw').toBuffer();
+            expect(faviconBuffer.length, 'Favicon.png decoded size should be nonzero').toBeGreaterThan(1);
         }),
     ];
 }
