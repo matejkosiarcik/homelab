@@ -1,8 +1,10 @@
+import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
+import { execa } from 'execa';
 import { apps } from '../../utils/apps';
 import { axios, extractTar, getEnv } from '../../utils/utils';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
@@ -12,7 +14,7 @@ test.describe(apps.certbot.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url, { status: 403 });
+            createApiRootTest(instance.url, { status: 404 });
             createTcpTests(instance.url, [80, 443]);
 
             test(`API: HTTPS redirect for certificate`, async () => {
@@ -61,25 +63,44 @@ test.describe(apps.certbot.title, () => {
                 },
             ];
             for (const variant of dataVariants) {
-                test(`API: Read certificates (${variant.title})`, async () => {
+                test(`API: Read certificate (${variant.title})`, async () => {
                     const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, { auth: variant.auth });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
             }
 
-            test('API: Read and validate certificates', async () => {
+            test('API: Read and validate certificate', async () => {
                 const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                    decompress: false,
+                    responseType: 'arraybuffer',
                     auth: {
                         username: 'viewer',
                         password: getEnv(instance.url, 'VIEWER_PASSWORD'),
                     },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
-                const randomDir = (await fsx.mkdir(path.join(os.tmpdir(), 'homelab-'), { recursive: true }))!;
+                const randomDir = (await fsx.mkdtemp(path.join(os.tmpdir(), 'homelab-')))!;
                 try {
                     await fsx.writeFile(path.join(randomDir, 'certificate.tar.xz'), response.data, { encoding: 'binary' });
-                    await extractTar(path.join(randomDir, 'certificate.tar.xz'), path.join(randomDir, 'certificate'));
-                    // TODO: Validate extracted certificate
+
+                    const certificateDir = path.join(randomDir, 'certificate');
+                    await fsx.mkdir(certificateDir);
+                    await extractTar(path.join(randomDir, 'certificate.tar.xz'), certificateDir);
+                    const certificateFile = path.join(randomDir, 'certificate', 'fullchain.pem');
+
+                    expect(fs.existsSync(path.join(certificateDir, 'cert.pem')), 'File cert.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'chain.pem')), 'File chain.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'fullchain.pem')), 'File fullchain.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'privkey.pem')), 'File privkey.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'README')), 'File README should exist').toStrictEqual(true);
+
+                    const subprocess = await execa('openssl', ['x509', '-noout', '-subject', '-in', certificateFile]);
+                    expect(subprocess.exitCode, 'OpenSSL subject exit code').toStrictEqual(0);
+                    const domain = subprocess.stdout.trim().replace(/^subject\s*=\s*CN\s*=\s*/, '');
+                    expect(domain, 'OpenSSL exit code').toStrictEqual('*.home.matejkosiarcik.com');
+
+                    const subprocess2 = await execa('openssl', ['x509', '-noout', '-checkend', (60 * 60 * 24 * 30).toFixed(0), '-in', certificateFile]);
+                    expect(subprocess2.exitCode, 'OpenSSL validity exit code').toStrictEqual(0);
                 } finally {
                     await fsx.rm(randomDir, { recursive: true, force: true });
                 }
