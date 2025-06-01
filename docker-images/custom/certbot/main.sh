@@ -2,7 +2,7 @@
 set -euf
 
 domain='home.matejkosiarcik.com'
-certificate_archive_file='/homelab/data/certs.tar.xz'
+certificate_archive_file='/homelab/data/certificate.tar.xz'
 
 create_certs='0'
 if [ -e '/homelab/certs/fullchain.pem' ]; then
@@ -90,11 +90,11 @@ if [ "$(cat "$statusfile")" != '0' ]; then
     printf 'Certificate creation failed\n' >&2
 else
     printf "Archiving certificate\n" >&2
-    tar -chJf /etc/letsencrypt/live/certs.tar.xz -C /etc/letsencrypt/live --transform="s~^$domain~certs~" "$domain"
+    tar -chJf /etc/letsencrypt/live/certificate.tar.xz -C /etc/letsencrypt/live --transform="s~^$domain~certificate~" "$domain"
     if [ -e "$certificate_archive_file" ]; then
         rm -rf "$certificate_archive_file"
     fi
-    mv '/etc/letsencrypt/live/certs.tar.xz' "$certificate_archive_file"
+    mv '/etc/letsencrypt/live/certificate.tar.xz' "$certificate_archive_file"
     find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
     tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1
 fi
