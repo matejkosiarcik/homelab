@@ -1,6 +1,11 @@
 #!/bin/sh
 set -euf
 
+if [ "${CERTBOT_REMAINING_CHALLENGES-}" != '0' ]; then
+    printf 'There should be 0 remaining challenges, but found: %s\n' "$CERTBOT_REMAINING_CHALLENGES" >&2
+    exit 1
+fi
+
 printf 'Loading created DNS records\n' >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'GET /v2/service/%s/dns/record %s' "$WEBSUPPORT_SERVICE_ID" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
