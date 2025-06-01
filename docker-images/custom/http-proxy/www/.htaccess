@@ -124,6 +124,11 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
+# ActualBudget favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} actualbudget [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /favicon-32x32.png [L,R=302]
+
 # Certbot favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
