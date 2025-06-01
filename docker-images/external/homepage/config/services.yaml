@@ -314,6 +314,12 @@
         ping: actualbudget-public.home
         icon: /icons/actualbudget.png
 
+    - Certbot:
+        description: Let's Encrypt certificates
+        href: https://certbot.home
+        ping: certbot.home
+        icon: /icons/letsencrypt.png
+
     - Dockerhub proxy:
         description: Dockerhub transparent caching proxy
         href: https://dockerhub-cache-proxy.home
