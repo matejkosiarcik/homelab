@@ -3,6 +3,10 @@ set -euf
 
 helper_script_dir="$(cd "$(dirname "$0")" >/dev/null && pwd)"
 
+# TODO: Remove this workaround after Let's Encrypt certificates
+NODE_TLS_REJECT_UNAUTHORIZED=0
+export NODE_TLS_REJECT_UNAUTHORIZED
+
 LANG=en_US.UTF-8
 export LANG
 LANGUAGE=en_US.UTF-8
