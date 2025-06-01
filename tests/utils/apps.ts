@@ -7,9 +7,9 @@ export const apps = {
         ],
     },
     certbot: {
-        title: 'Certificate Manager',
+        title: 'Certbot',
         instances: [
-            { url: 'https://certbot.home', title: 'Certificate Manager' },
+            { url: 'https://certbot.home', title: 'Certbot' },
         ],
     },
     changedetection: {

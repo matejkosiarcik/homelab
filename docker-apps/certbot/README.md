@@ -1,4 +1,4 @@
-# Certificate Manager
+# Certbot
 
 ![diagram](../../docs/diagrams/out/apps/certbot.png)
 
