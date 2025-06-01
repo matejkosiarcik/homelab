@@ -184,6 +184,12 @@ write_default_proxy_users() {
     printf 'proxy-prometheus,%s\n' "$proxy_prometheus_password" >>"$output/all-credentials.csv"
 }
 
+write_certificate_loader_users() {
+    # No arguments
+    certbot_viewer_password="$(load_token certbot http-proxy viewer)"
+    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$certbot_viewer_password" >>"$output/certificate-loader.env"
+}
+
 case "$full_app_name" in
 *actualbudget*)
     # App
@@ -194,6 +200,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -206,6 +213,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -248,6 +256,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -282,6 +291,7 @@ case "$full_app_name" in
     write_default_proxy_users dozzle
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id dozzle certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -359,6 +369,7 @@ case "$full_app_name" in
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -375,6 +386,7 @@ case "$full_app_name" in
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -394,6 +406,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -406,6 +419,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -449,6 +463,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -461,6 +476,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -483,6 +499,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -497,6 +514,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -516,6 +534,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -534,6 +553,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -542,6 +562,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -561,6 +582,7 @@ case "$full_app_name" in
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -630,6 +652,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -653,6 +676,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -676,6 +700,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -690,6 +715,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -701,6 +727,7 @@ case "$full_app_name" in
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -723,6 +750,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
@@ -751,6 +779,7 @@ case "$full_app_name" in
     write_default_proxy_users "$full_app_name"
 
     # Certificate Loader
+    write_certificate_loader_users
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
