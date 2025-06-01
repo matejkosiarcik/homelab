@@ -14,8 +14,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/* && \
     a2enmod auth_basic env headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     a2dismod -f alias && \
-    rm -rf /etc/apache2/sites-enabled/* /var/www/html/* && \
-    mkdir -p /homelab/www-empty
+    rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
 COPY ./custom/http-proxy/apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY --from=prefinal /homelab/ ./
