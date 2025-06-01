@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -83,9 +84,16 @@ test.describe(apps.certbot.title, () => {
                     await fsx.writeFile(path.join(randomDir, 'certificate.tar.xz'), response.data, { encoding: 'binary' });
                     await fsx.copyFile(path.join(randomDir, 'certificate.tar.xz'), 'certificate.tar.xz');
 
-                    await fsx.mkdir(path.join(randomDir, 'certificate'));
-                    await extractTar(path.join(randomDir, 'certificate.tar.xz'), path.join(randomDir, 'certificate'));
+                    const certificateDir = path.join(randomDir, 'certificate');
+                    await fsx.mkdir(certificateDir);
+                    await extractTar(path.join(randomDir, 'certificate.tar.xz'), certificateDir);
                     const certificateFile = path.join(randomDir, 'certificate', 'fullchain.pem');
+
+                    expect(fs.existsSync(path.join(certificateDir, 'cert.pem')), 'File cert.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'chain.pem')), 'File chain.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'fullchain.pem')), 'File fullchain.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'privkey.pem')), 'File privkey.pem should exist').toStrictEqual(true);
+                    expect(fs.existsSync(path.join(certificateDir, 'README')), 'File README should exist').toStrictEqual(true);
 
                     const subprocess = await execa('openssl', ['x509', '-noout', '-subject', '-in', certificateFile]);
                     expect(subprocess.exitCode, 'OpenSSL subject exit code').toStrictEqual(0);
