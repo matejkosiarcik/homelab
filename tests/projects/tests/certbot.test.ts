@@ -7,7 +7,7 @@ import { expect, test } from '@playwright/test';
 import { execa } from 'execa';
 import { apps } from '../../utils/apps';
 import { axios, extractTar, getEnv } from '../../utils/utils';
-import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.certbot.title, () => {
     for (const instance of apps.certbot.instances) {
@@ -16,6 +16,7 @@ test.describe(apps.certbot.title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url, { status: 404 });
             createTcpTests(instance.url, [80, 443]);
+            createFaviconTests(instance.url);
 
             test(`API: HTTPS redirect for certificate`, async () => {
                 const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/certificate.tar.xz`, { maxRedirects: 0 });

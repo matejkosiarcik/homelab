@@ -1,7 +1,9 @@
 import net from 'node:net';
-import PromiseSocket from 'promise-socket';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
+import PromiseSocket from 'promise-socket';
+import sharp from 'sharp';
+import sharpIco from 'sharp-ico';
 import { axios, getEnv } from './utils';
 
 export function createTcpTests(url: string, ports: number | number[], subtitle?: string | undefined) {
@@ -71,6 +73,37 @@ export function createHttpsToHttpRedirectTests(url: string) {
             const response = await axios.get(`${url.replace('http://', 'https://')}${subpage}`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
             expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('https://', 'http://')}${subpage}`);
+        }),
+    ];
+}
+
+export function createFaviconTests(url: string) {
+    return [
+        test('API: Get favicon.ico', async () => {
+            const response = await axios.get(`${url}/favicon.ico`,{
+                decompress: false,
+                responseType: 'arraybuffer',
+            });
+            expect(response.status, 'Response Status').toStrictEqual(200);
+            const sharpIcons = sharpIco.sharpsFromIco(response.data);
+            for (const el of sharpIcons.entries()) {
+                const faviconBuffer = await (async () => {
+                    if ('data' in el[1]) {
+                        return await sharp(el[1].data).toFormat('raw').toBuffer();
+                    }
+                    return el[1].toFormat('raw').toBuffer();
+                })();
+                expect(faviconBuffer.length, `Favicon.ico image ${el[0]} decoded size should be nonzero`).toBeGreaterThan(1);
+            }
+        }),
+        test('API: Get favicon.png', async () => {
+            const response = await axios.get(`${url}/favicon.png`, {
+                decompress: false,
+                responseType: 'arraybuffer',
+            });
+            expect(response.status, 'Response Status').toStrictEqual(200);
+            const faviconBuffer = await sharp(response.data).toFormat('raw').toBuffer();
+            expect(faviconBuffer.length, 'Favicon.png decoded size should be nonzero').toBeGreaterThan(1);
         }),
     ];
 }
