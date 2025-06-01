@@ -23,6 +23,13 @@ test.describe(apps.certbot.title, () => {
                 expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/certificate.tar.xz`);
             });
 
+            test(`API: HTTPS redirect for random download subpath`, async () => {
+                const randomSubpath = faker.string.alphanumeric(10);
+                const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/${randomSubpath}`, { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/${randomSubpath}`);
+            });
+
             const dataVariants = [
                 {
                     title: 'no credentials',
@@ -66,6 +73,11 @@ test.describe(apps.certbot.title, () => {
                 test(`API: Read certificate (${variant.title})`, async () => {
                     const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, { auth: variant.auth });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                });
+
+                test(`API: Read random download subpath (${variant.title})`, async () => {
+                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, { auth: variant.auth });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status === 200 ? 404 : variant.status);
                 });
             }
 
