@@ -20,7 +20,9 @@ updates:
   # Docker
   - package-ecosystem: docker
     directories:
-      - /docker-images/custom/certificate-loader
+      - /docker-images/custom/certbot
+      - /docker-images/custom/certificator
+      - /docker-images/custom/docker-build
       - /docker-images/custom/docker-setup
       - /docker-images/custom/http-proxy
       - /docker-images/custom/web-automation

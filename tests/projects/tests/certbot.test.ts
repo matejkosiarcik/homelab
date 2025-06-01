@@ -39,7 +39,7 @@ test.describe(apps.certbot.title, () => {
                 {
                     title: 'empty password',
                     auth: {
-                        username: 'certificate-loader',
+                        username: 'viewer',
                         password: '',
                     },
                     status: 401,
