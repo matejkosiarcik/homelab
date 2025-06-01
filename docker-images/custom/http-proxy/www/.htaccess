@@ -141,7 +141,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--certificate-loader.htpasswd
+    AuthUserFile /homelab/http-user--viewer.htpasswd
     Require valid-user
 </If>
 
