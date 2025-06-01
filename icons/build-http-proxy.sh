@@ -17,10 +17,10 @@ default_image_size='64x64'
 # shellcheck disable=SC2034
 default_convert_options='magick -background none INPUT_FILE -resize RESOLUTION -density 1200 OUTPUT_FILE'
 
-# UniFi Controller
+### UniFi Controller ###
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/unifi-controller/favicon.png"
 
-# Unbound
+### Unbound ###
 # PNG
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound/favicon.png"
 # ICO
