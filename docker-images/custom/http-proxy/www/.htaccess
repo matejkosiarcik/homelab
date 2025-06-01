@@ -177,6 +177,14 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} tvheadend [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /static/img/logo.png [L,R=302]
 
+# Unbound favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.ico$
+RewriteRule ^ /.proxy/icons/unbound/favicon.ico [L]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /.proxy/icons/unbound/favicon.png [L]
+
 # Unifi Controller favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
 RewriteCond %{REQUEST_URI} ^/setup/favicon.png$

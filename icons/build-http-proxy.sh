@@ -17,10 +17,20 @@ default_image_size='64x64'
 # shellcheck disable=SC2034
 default_convert_options='magick -background none INPUT_FILE -resize RESOLUTION -density 1200 OUTPUT_FILE'
 
+# UniFi Controller
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/unifi-controller/favicon.png"
 
-### Certbot ###
+# Unbound
+# PNG
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound/favicon.png"
+# ICO
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "$output_dir/unbound/favicon.png" "$tmpdir/unbound-16.png"
+optimize_image "$tmpdir/unbound-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "$output_dir/unbound/favicon.png" "$tmpdir/unbound-32.png"
+optimize_image "$tmpdir/unbound-32.png"
+convert_ico "$tmpdir/unbound-16.png $tmpdir/unbound-32.png" "$output_dir/unbound/favicon.ico"
 
+### Certbot ###
 # PNG
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/lets-encrypt-background.png"
 magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/lets-encrypt-background-mask.png"
@@ -29,7 +39,6 @@ magick "$tmpdir/lets-encrypt-background.png" -define png:color-type=6 "$tmpdir/l
 magick -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" -resize '56x56' -density 1200 "$tmpdir/lets-encrypt-tmp.png"
 magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-tmp.png" -gravity Center -composite "$tmpdir/lets-encrypt-final.png"
 convert_image_full "$tmpdir/lets-encrypt-final.png" "$output_dir/certbot/favicon.png"
-
 # ICO
 convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "$output_dir/certbot/favicon.png" "$tmpdir/lets-encrypt-16.png"
 optimize_image "$tmpdir/lets-encrypt-16.png"
