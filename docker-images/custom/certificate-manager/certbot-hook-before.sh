@@ -28,7 +28,7 @@ date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'POST /v2/service/%s/dns/record %s' "$WEBSUPPORT_SERVICE_ID" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
 curl -s --fail -X POST \
     -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
-    -H "Accept: application/json" \
+    -H 'Accept: application/json' \
     -H 'Content-Type: application/json' \
     -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
     -d "$record_payload" \
