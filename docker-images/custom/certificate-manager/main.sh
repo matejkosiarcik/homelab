@@ -23,6 +23,18 @@ if [ "$create_certs" != '1' ]; then
     exit 0
 fi
 
+date +'%Y-%m-%dT%H:%M:%S' >>'/homelab/data/timestamps.log'
+if [ "$(wc -l <'/homelab/data/timestamps.log')" -ge '2' ]; then
+    current_date_ts="$(date -u -d "$(tail -n 1 <'/homelab/data/timestamps.log')" +'%s')"
+    comparator_date_ts="$(date -u -d "$(tail -n 2 <'/homelab/data/timestamps.log' | head -n 1)" +'%s')"
+    difference="$((current_date_ts - comparator_date_ts))"
+    echo "Time difference: $difference" >&2
+    if [ "$difference" -lt '600' ]; then
+        printf 'There are too many certificate requests in short time, stopping\n' >&2
+        exit 1
+    fi
+fi
+
 printf 'Checking DNS authentication\n' >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
