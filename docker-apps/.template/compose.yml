@@ -20,18 +20,18 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/PLACEHOLDER/Dockerfile
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificate-loader
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/certificate-loader/Dockerfile
+      dockerfile: ./custom/certificator/Dockerfile
     env_file:
-      - ./app-secrets/certificate-loader.env
+      - ./app-secrets/certificator.env
     volumes:
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-loader:/homelab/logs:rw
+      - ./app-logs/certificator:/homelab/logs:rw
 
   http-proxy:
     <<: *common-service-options

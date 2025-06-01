@@ -26,5 +26,5 @@ printf 'Downloading certificate from certbot\n' >&2
 tmpdir="$(mktemp -d)"
 certificate_archive_file="$tmpdir/certificate.tar.xz"
 # TODO: Remove "-k" after Let's Encrypt certificates
-curl -L -k -u "viewer:$CERTBOT_VIEWER_PASSWORD" --output "$certificate_archive_file" 'https://certbot.home/download/certificate.tar.xz'
+curl -L -k --fail -u "viewer:$CERTBOT_VIEWER_PASSWORD" --output "$certificate_archive_file" 'https://certbot.home/download/certificate.tar.xz'
 tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1

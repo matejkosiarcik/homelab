@@ -18,7 +18,7 @@ services:
     ports:
       - 127.0.0.1:8096:8096 # TODO: Move this port to proxy after Let's Encrypt certificates
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:

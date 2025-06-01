@@ -34,7 +34,7 @@ FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
-COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/certificate-loader/crontab.cron ./custom/certificate-loader/main.sh ./
+COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/certificator/crontab.cron ./custom/certificator/main.sh ./
 
 FROM debian:12.11-slim
 WORKDIR /homelab
@@ -43,7 +43,7 @@ RUN apt-get update && \
         ca-certificates curl openssl xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /homelab/ ./
-ENV HOMELAB_CONTAINER_NAME=certificate-loader \
+ENV HOMELAB_CONTAINER_NAME=certificator \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava

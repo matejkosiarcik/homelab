@@ -184,10 +184,10 @@ write_default_proxy_users() {
     printf 'proxy-prometheus,%s\n' "$proxy_prometheus_password" >>"$output/all-credentials.csv"
 }
 
-write_certificate_loader_users() {
+write_certificator_users() {
     # No arguments
     certbot_viewer_password="$(load_token certbot http-proxy viewer)"
-    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$certbot_viewer_password" >>"$output/certificate-loader.env"
+    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$certbot_viewer_password" >>"$output/certificator.env"
 }
 
 case "$full_app_name" in
@@ -199,10 +199,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *changedetection*)
     # App
@@ -212,10 +212,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *certbot*)
     # App
@@ -255,10 +255,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *dozzle-agent*)
     # App
@@ -290,10 +290,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users dozzle
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id dozzle certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id dozzle certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *gatus*)
     # App
@@ -368,10 +368,10 @@ case "$full_app_name" in
     write_http_auth_user prometheus "$app_prometheus_password"
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *glances*)
     # App
@@ -385,10 +385,10 @@ case "$full_app_name" in
     write_http_auth_user prometheus "$app_prometheus_password"
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *healthchecks*)
     # App
@@ -405,10 +405,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *homeassistant*)
     # App
@@ -418,10 +418,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *homepage*)
     # App
@@ -462,10 +462,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *jellyfin*)
     # App
@@ -475,10 +475,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *minio*)
     # App
@@ -498,10 +498,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *motioneye*)
     # App
@@ -513,10 +513,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *ntfy*)
     # App
@@ -533,10 +533,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *omada-controller*)
     # App
@@ -552,19 +552,19 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *openspeedtest*)
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *pihole*)
     # App
@@ -581,10 +581,10 @@ case "$full_app_name" in
     write_http_auth_user prometheus "$prometheus_password"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *prometheus*)
     # App
@@ -651,10 +651,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *renovatebot*)
     # App
@@ -675,10 +675,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *speedtest-tracker*)
     # App
@@ -699,10 +699,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *tvheadend*)
     # App
@@ -714,10 +714,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *unbound*)
     # HTTP Proxy
@@ -726,10 +726,10 @@ case "$full_app_name" in
     write_http_auth_user prometheus "$prometheus_password"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *unifi-controller*)
     # App
@@ -749,10 +749,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *vaultwarden*)
     # App
@@ -778,10 +778,10 @@ case "$full_app_name" in
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"
 
-    # Certificate Loader
-    write_certificate_loader_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
-    write_healthcheck_url certificate-loader "$healthcheck_id"
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *)
     printf 'Unknown app directory name: %s\n' "$app_dir" >&2

@@ -20,7 +20,7 @@ services:
       REGISTRATION_OPEN: "False"
       SITE_ROOT: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:

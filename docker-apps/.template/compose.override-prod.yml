@@ -17,7 +17,7 @@ services:
     # networks:
     #   external-network:
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:

@@ -15,7 +15,7 @@ services:
     volumes:
       - /run/dbus:/run/dbus:ro
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:
