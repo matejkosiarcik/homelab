@@ -73,7 +73,8 @@ tmpdir="$(mktemp -d)"
 statusfile="$tmpdir/status.txt"
 printf '0\n' >"$statusfile"
 test_cert_mode='--test-cert'
-if [ "$HOMELAB_ENV" = prod ]; then
+# TODO: Remove test-cert-mode on production servers
+if [ "$HOMELAB_ENV" = dev ] || [ "$HOMELAB_ENV" = prod ]; then
     test_cert_mode=''
 fi
 # shellcheck disable=SC2248
