@@ -114,14 +114,6 @@ RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_FILENAME}/index.html -f
 RewriteRule ^ "%{REQUEST_URI}/index.html" [L]
 
-# Return 404 instead of 403 for not found directory-index
-RewriteCond %{REQUEST_URI} !^/.proxy/status$ [NC]
-RewriteCond %{REQUEST_URI} !^/.proxy/metrics$ [NC]
-RewriteCond %{ENV:_REDIRECT} false [NC]
-RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ - [L,R=404]
-
 # Specific redirect for PiHole: "/" -> "/admin"
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
@@ -142,8 +134,8 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /.proxy/icons/certbot/favicon.png [L]
 RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.icon$
-RewriteRule ^ /.proxy/icons/certbot/favicon.icon [L]
+RewriteCond %{REQUEST_URI} ^/favicon.ico$
+RewriteRule ^ /.proxy/icons/certbot/favicon.ico [L]
 
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
@@ -254,3 +246,11 @@ RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}%{REQUEST_URI}" [P,L]
+
+# Return 404 instead of 403 for not found directory-index
+RewriteCond %{REQUEST_URI} !^/.proxy/status$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy/metrics$ [NC]
+RewriteCond %{ENV:_REDIRECT} false [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ - [L,R=404]
