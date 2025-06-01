@@ -136,8 +136,8 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
-# Protect Certificate Manager endpoints
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certificate-manager' && %{REQUEST_URI} =~ m#^/download/.*$#">
+# Protect Certbot endpoints
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download/.*$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file

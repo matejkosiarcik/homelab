@@ -7,8 +7,8 @@ import { apps } from '../../utils/apps';
 import { axios, extractTar, getEnv } from '../../utils/utils';
 import { createApiRootTest, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe(apps['certificate-manager'].title, () => {
-    for (const instance of apps['certificate-manager'].instances) {
+test.describe(apps.certbot.title, () => {
+    for (const instance of apps.certbot.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

@@ -23,6 +23,17 @@ if [ "$create_certs" != '1' ]; then
     exit 0
 fi
 
+date +'%Y-%m-%dT%H:%M:%S' >>'/homelab/data/timestamps.log'
+if [ "$(wc -l <'/homelab/data/timestamps.log')" -ge '2' ]; then
+    current_date_ts="$(date -u -d "$(tail -n 1 <'/homelab/data/timestamps.log')" +'%s')"
+    comparator_date_ts="$(date -u -d "$(tail -n 2 <'/homelab/data/timestamps.log' | head -n 1)" +'%s')"
+    difference="$((current_date_ts - comparator_date_ts))"
+    if [ "$difference" -lt "$((60 * 60))" ]; then # 1 hour
+        printf 'There are too many certificate requests in short time, previous %s s ago, stopping\n' "$difference" >&2
+        exit 1
+    fi
+fi
+
 printf 'Checking DNS authentication\n' >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
@@ -36,10 +47,9 @@ date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'GET /v2/service/%s/dns/record %s' "$WEBSUPPORT_SERVICE_ID" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
 record_ids="$(curl -s --fail -X GET \
     -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
-    -H "Accept: application/json" \
+    -H 'Accept: application/json' \
     -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
-    "https://rest.websupport.sk/v2/service/$WEBSUPPORT_SERVICE_ID/dns/record?page=1&rowsPerPage=1000" |
-    jq -r ".data[] | select(.type == \"TXT\") | select(.name == \"_acme-challenge.$domain\") | .id")"
+    "https://rest.websupport.sk/v2/service/$WEBSUPPORT_SERVICE_ID/dns/record?page=1&rowsPerPage=1000" | jq -r ".data[] | select(.type == \"TXT\") | select(.name == \"_acme-challenge.$domain\") | .id")"
 
 printf '%s\n' "$record_ids" | while read -r record_id; do
     if [ "$record_id" = '' ]; then
@@ -53,7 +63,7 @@ printf '%s\n' "$record_ids" | while read -r record_id; do
     websupport_request_signature="$(printf 'DELETE /v2/service/%s/dns/record/%s %s' "$WEBSUPPORT_SERVICE_ID" "$record_id" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
     curl -s --fail -X DELETE \
         -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
-        -H "Accept: application/json" \
+        -H 'Accept: application/json' \
         -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
         "https://rest.websupport.sk/v2/service/$WEBSUPPORT_SERVICE_ID/dns/record/$record_id"
 done
@@ -71,7 +81,7 @@ fi
 certbot certonly --manual --non-interactive --agree-tos \
     --preferred-challenges dns \
     --domain "*.$domain" \
-    --email "$WEBSUPPORT_ADMIN_EMAIL" \
+    --email "$CERTBOT_ADMIN_EMAIL" \
     --manual-auth-hook 'sh certbot-hook-before.sh >>/homelab/logs/certbot.log 2>&1' \
     --manual-cleanup-hook 'sh certbot-hook-after.sh >>/homelab/logs/certbot.log 2>&1' \
     $test_cert_mode || printf '%s\n' "$?" >"$statusfile"

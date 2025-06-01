@@ -1,5 +1,5 @@
 ---
-title: Certificate Manager
+title: Certbot
 config:
     theme: dark
 ---
@@ -15,13 +15,13 @@ flowchart LR
     subgraph app_wrapper[" "]
         network_interface(" ")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>Manager")
+        certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
 
         network_interface --->|:80,443| http_proxy
-        http_proxy -..-|fs| certificate_manager
+        http_proxy -..-|fs| certbot
     end
 
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
     home_network <---> app_wrapper
-    certificate_manager -..->|report status| healthchecks
+    certbot -..->|report status| healthchecks

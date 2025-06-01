@@ -6,10 +6,10 @@ export const apps = {
             { url: 'https://actualbudget-public.home', title: 'ActualBudget (public)' },
         ],
     },
-    'certificate-manager': {
-        title: 'Certificate Manager',
+    certbot: {
+        title: 'Certbot',
         instances: [
-            { url: 'https://certificate-manager.home', title: 'Certificate Manager' },
+            { url: 'https://certbot.home', title: 'Certbot' },
         ],
     },
     changedetection: {
