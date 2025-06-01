@@ -12,7 +12,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    restart: "no"
 
   http-proxy:
     <<: *common-service-options
