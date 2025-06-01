@@ -16,7 +16,7 @@ services:
   app-prometheus:
     <<: *common-service-options
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:

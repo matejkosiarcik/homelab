@@ -15,11 +15,11 @@ flowchart LR
     subgraph app_wrapper[" "]
         network_interface(" ")
         http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        certificate_loader("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>loader")
+        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         dozzle("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle")
 
         network_interface --->|:80,443| http_proxy --->|:8080| dozzle
-        http_proxy -..-|fs| certificate_loader
+        http_proxy -..-|fs| certificator
     end
 
     dozzle_agents["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dozzle.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-5px;right:0' /></div>Dozzle<br/>agents"]
@@ -29,4 +29,4 @@ flowchart LR
 
     home_network <---> app_wrapper
     dozzle -..->|read| dozzle_agents
-    certificate_loader -..->|report status| healthchecks
+    certificator -..->|report status| healthchecks

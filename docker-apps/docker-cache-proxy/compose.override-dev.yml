@@ -16,7 +16,7 @@ services:
       <<: *common-env-variables
       REGISTRY_HTTP_HOST: https://localhost:8443
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:

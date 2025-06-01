@@ -18,14 +18,14 @@ flowchart LR
         network_interface(" ")
         http_proxy_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>default")
         http_proxy_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>portal")
-        certificate_loader("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br/>loader")
+        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         omada_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br/>Controller")
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
 
         network_interface --->|:80,443| http_proxy_1 --->|:443| omada_controller
         network_interface --->|:81,444| http_proxy_2 --->|:444| omada_controller
         network_interface --->|:27001,29810-29816| omada_controller
-        http_proxy_1 & http_proxy_2 -..-|fs| certificate_loader
+        http_proxy_1 & http_proxy_2 -..-|fs| certificator
         omada_controller ~~~ script_backup -..->|use| omada_controller
     end
 
@@ -38,4 +38,4 @@ flowchart LR
     home_network <---> app_wrapper
     tp_link_equipment <-..->|use/control| app_wrapper
     script_backup -.->|send backup| minio
-    certificate_loader -..->|report status| healthchecks
+    certificator -..->|report status| healthchecks

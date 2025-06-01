@@ -17,7 +17,7 @@ services:
       APP_URL: https://localhost:8443
       # SPEEDTEST_SCHEDULE: "* * * * *"
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:

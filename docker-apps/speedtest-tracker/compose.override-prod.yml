@@ -16,7 +16,7 @@ services:
       <<: *common-env-variables
       APP_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy:

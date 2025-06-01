@@ -19,7 +19,7 @@ services:
   app-setup:
     <<: *common-service-options
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
     environment:
       <<: *common-env-variables

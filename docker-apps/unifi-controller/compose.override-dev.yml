@@ -29,7 +29,7 @@ services:
     # ports: # Only for local debugging
     #   - 127.0.0.1:27017:27017
 
-  certificate-loader:
+  certificator:
     <<: *common-service-options
 
   http-proxy-admin:
