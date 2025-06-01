@@ -124,18 +124,68 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
-# Serve custom favicon for unifi-controller
-RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
-RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
-RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
+# ActualBudget favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} actualbudget [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /favicon-32x32.png [L,R=302]
 
-# Serve custom favicon for certbot
+# Certbot favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /.proxy/icons/certbot/favicon.png [L]
 RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.ico$
 RewriteRule ^ /.proxy/icons/certbot/favicon.ico [L]
+
+# Changedetection favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} changedetection [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /static/favicons/favicon-32x32.png [L,R=302]
+
+# Glances favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} glances [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.ico$
+RewriteRule ^ /static/favicon.ico [L,R=302]
+
+# Homepage favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} homepage [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /favicon-32x32.png [L,R=302]
+
+# Minio favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /favicon-32x32.png [L,R=302]
+
+# Ntfy favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ntfy [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /static/images/apple-touch-icon.png [L,R=302]
+
+# PiHole favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /admin/img/favicons/favicon-32x32.png [L,R=302]
+
+# Smtp4Dev favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} smtp4dev [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /logo.png [L,R=302]
+
+# TVHeadend favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} tvheadend [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /static/img/logo.png [L,R=302]
+
+# Unifi Controller favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
+RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
+RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
+
+# Vaultwarden favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} vaultwarden [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /images/favicon-32x32.png [L,R=302]
 
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]

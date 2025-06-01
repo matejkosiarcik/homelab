@@ -86,6 +86,7 @@ export function createFaviconTests(url: string) {
             });
             expect(response.status, 'Response Status').toStrictEqual(200);
             const sharpIcons = sharpIco.sharpsFromIco(response.data);
+            expect(sharpIcons.length, `Favicon.ico should have some decoded images`).toBeGreaterThanOrEqual(1);
             for (const el of sharpIcons.entries()) {
                 const faviconBuffer = await (async () => {
                     if ('data' in el[1]) {
