@@ -79,18 +79,6 @@ RewriteRule ^ - [E=_REDIRECT_STATUS_SAFE_GET:false,NE]
 RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
 RewriteRule ^ - [E=_REDIRECT_STATUS_SAFE_GET:true,NE]
 
-# Return 404 instead of 403 for not found directory-index
-RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC,OR]
-RewriteCond %{REQUEST_URI} ^/.proxy(/*.*)?$ [NC]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_FILENAME}/index.html -f
-RewriteRule ^ "%{REQUEST_URI}/index.html" [L]
-
-# Return 404 instead of 403 for not found directory-index
-RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ - [L,R=404]
-
 # Perform redirects if applicable (empty path)
 RewriteCond %{REQUEST_URI} ^$ [NC,OR]
 RewriteCond %{REQUEST_URI} ^/$ [NC]
@@ -117,6 +105,20 @@ RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{REQUEST_URI}" [L,R=3
 # More info: https://github.com/whatwg/fetch/issues/609
 # Header always set Content-Type "" "expr=%{HTTPS} =~ m#^off$#"
 # Header always unset Content-Type "expr=%{HTTPS} =~ m#^off$#"
+
+# Return index.html for directories
+RewriteCond %{ENV:_REDIRECT} false [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/.proxy(/*.*)?$ [NC]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^ "%{REQUEST_URI}/index.html" [L]
+
+# Return 404 instead of 403 for not found directory-index
+RewriteCond %{ENV:_REDIRECT} false [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ - [L,R=404]
 
 # Specific redirect for PiHole: "/" -> "/admin"
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
