@@ -32,6 +32,10 @@ load_password() {
     printf 'ACTUALBUDGET_PUBLIC_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget-public http-proxy status)"
     printf 'ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget-public http-proxy prometheus)"
 
+    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_password certbot http-proxy viewer)"
+    printf 'CERTBOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password certbot http-proxy status)"
+    printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password certbot http-proxy prometheus)"
+
     printf 'CHANGEDETECTION_PASSWORD=%s\n' "$(load_password changedetection app admin)"
     printf 'CHANGEDETECTION_PROXY_STATUS_PASSWORD=%s\n' "$(load_password changedetection http-proxy status)"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password changedetection http-proxy prometheus)"
