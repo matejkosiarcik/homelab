@@ -79,6 +79,18 @@ RewriteRule ^ - [E=_REDIRECT_STATUS_SAFE_GET:false,NE]
 RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
 RewriteRule ^ - [E=_REDIRECT_STATUS_SAFE_GET:true,NE]
 
+# Return 404 instead of 403 for not found directory-index
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/.proxy(/*.*)?$ [NC]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^ "%{REQUEST_URI}/index.html" [L]
+
+# Return 404 instead of 403 for not found directory-index
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ - [L,R=404]
+
 # Perform redirects if applicable (empty path)
 RewriteCond %{REQUEST_URI} ^$ [NC,OR]
 RewriteCond %{REQUEST_URI} ^/$ [NC]
@@ -124,7 +136,7 @@ RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
 RewriteCond %{REQUEST_URI} !^/metrics/*$ [NC]
-RewriteCond %{REQUEST_URI} !^/.proxy/*(.+)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
 RewriteRule ^ /.proxy/not-found [L]
 
 # Protect Apache proxy prometheus endpoint
@@ -218,14 +230,14 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
 # Proxy websockets upstream
-RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{HTTP:Connection} upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL_WS} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_WS}%{REQUEST_URI}" [P,L]
 
 # Proxy regular requests upstream
-RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
