@@ -19,9 +19,10 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/certificate-manager/Dockerfile
     volumes:
-      - ./app-data/certificate-manager-data:/homelab/data:rw
+      - ./app-data/certificate-manager:/homelab/data:rw
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificate-manager:/homelab/logs:rw
+      - ./app-logs/certificate-manager-letsencrypt:/var/log/letsencrypt:rw
     env_file:
       - ./app-secrets/certificate-manager.env
     restart: "no"
