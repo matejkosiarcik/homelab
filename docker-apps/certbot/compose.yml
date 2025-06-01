@@ -1,6 +1,6 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_TYPE: certificate-manager
+    HOMELAB_APP_TYPE: certbot
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -17,14 +17,14 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/certificate-manager/Dockerfile
+      dockerfile: ./custom/certbot/Dockerfile
     volumes:
-      - ./app-data/certificate-manager:/homelab/data:rw
+      - ./app-data/certbot:/homelab/data:rw
       - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificate-manager:/homelab/logs:rw
-      - ./app-logs/certificate-manager-letsencrypt:/var/log/letsencrypt:rw
+      - ./app-logs/certbot:/homelab/logs:rw
+      - ./app-logs/letsencrypt:/var/log/letsencrypt:rw
     env_file:
-      - ./app-secrets/certificate-manager.env
+      - ./app-secrets/certbot.env
 
   http-proxy:
     <<: *common-service-options
@@ -34,7 +34,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./custom/http-proxy/Dockerfile
     volumes:
-      - ./app-data/certificate-manager-data:/homelab/www/download:rw
+      - ./app-data/certbot:/homelab/www/download:rw
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/http-user--certificate-loader.htpasswd:/homelab/http-user--certificate-loader.htpasswd:ro
       - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro

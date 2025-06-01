@@ -1,6 +1,6 @@
 # Certificate Manager
 
-![diagram](../../docs/diagrams/out/apps/certificate-manager.png)
+![diagram](../../docs/diagrams/out/apps/certbot.png)
 
 Websupport:
 

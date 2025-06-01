@@ -205,25 +205,25 @@ case "$full_app_name" in
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificate-loader)"
     write_healthcheck_url certificate-loader "$healthcheck_id"
     ;;
-*certificate-manager*)
+*certbot*)
     # App
     certificate_loader_password="$(load_password "$full_app_name" http-proxy certificate-loader)"
     write_http_auth_user certificate-loader "$certificate_loader_password"
     printf 'certificate-loader,%s\n' "$certificate_loader_password" >>"$output/all-credentials.csv"
     websupport_admin_email="$(load_token "$full_app_name" websupport email)"
-    printf 'WEBSUPPORT_ADMIN_EMAIL=%s\n' "$websupport_admin_email" >>"$output/certificate-manager.env"
+    printf 'WEBSUPPORT_ADMIN_EMAIL=%s\n' "$websupport_admin_email" >>"$output/certbot.env"
     printf 'websupport-admin-email,%s\n' "$websupport_admin_email" >>"$output/all-credentials.csv"
     websupport_api_key="$(load_token "$full_app_name" websupport api-key)"
-    printf 'WEBSUPPORT_API_KEY=%s\n' "$websupport_api_key" >>"$output/certificate-manager.env"
+    printf 'WEBSUPPORT_API_KEY=%s\n' "$websupport_api_key" >>"$output/certbot.env"
     printf 'websupport-api-key,%s\n' "$websupport_api_key" >>"$output/all-credentials.csv"
     websupport_api_secret="$(load_token "$full_app_name" websupport api-secret)"
-    printf 'WEBSUPPORT_API_SECRET=%s\n' "$websupport_api_secret" >>"$output/certificate-manager.env"
+    printf 'WEBSUPPORT_API_SECRET=%s\n' "$websupport_api_secret" >>"$output/certbot.env"
     printf 'websupport-api-secret,%s\n' "$websupport_api_secret" >>"$output/all-credentials.csv"
     websupport_service_id="$(load_token "$full_app_name" websupport service-id)"
-    printf 'WEBSUPPORT_SERVICE_ID=%s\n' "$websupport_service_id" >>"$output/certificate-manager.env"
+    printf 'WEBSUPPORT_SERVICE_ID=%s\n' "$websupport_service_id" >>"$output/certbot.env"
     printf 'websupport-service-id,%s\n' "$websupport_service_id" >>"$output/all-credentials.csv"
     healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
-    write_healthcheck_url certificate-manager "$healthcheck_id"
+    write_healthcheck_url certbot "$healthcheck_id"
 
     # HTTP Proxy
     write_default_proxy_users "$full_app_name"

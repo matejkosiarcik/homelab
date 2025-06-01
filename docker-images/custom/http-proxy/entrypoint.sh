@@ -30,7 +30,7 @@ printf "export HOMELAB_APP_EXTERNAL_DOMAIN='%s'\n" "$HOMELAB_APP_EXTERNAL_DOMAIN
 # Set PROXY_UPSTREAM_URL
 if [ "$HOMELAB_APP_TYPE" = 'actualbudget' ]; then
     PROXY_UPSTREAM_URL="http://app:5006"
-elif [ "$HOMELAB_APP_TYPE" = 'certificate-manager' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'certbot' ]; then
     PROXY_UPSTREAM_URL=''
 elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
     PROXY_UPSTREAM_URL="http://app:5000"
