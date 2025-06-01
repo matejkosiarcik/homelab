@@ -132,10 +132,18 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
-# Serve custom favicon.png for unifi-controller
+# Serve custom favicon for unifi-controller
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
 RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
 RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
+
+# Serve custom favicon for certbot
+RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /.proxy/icons/certbot/favicon.png [L]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.icon$
+RewriteRule ^ /.proxy/icons/certbot/favicon.icon [L]
 
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
