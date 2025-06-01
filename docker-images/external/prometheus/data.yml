@@ -39,6 +39,7 @@ apps:
 proxies:
   - url: actualbudget-public.home
   - url: actualbudget.home
+  - url: certbot.home
   - url: changedetection.home
   - url: dockerhub-cache-proxy.home
   - url: dozzle.home
