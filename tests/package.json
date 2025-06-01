@@ -20,7 +20,7 @@
     "promise-socket": "^8.0.0",
     "tar": "^7.4.3",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.556"
+    "user-agents": "^1.1.557"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
