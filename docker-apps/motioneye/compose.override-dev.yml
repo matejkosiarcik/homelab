@@ -17,16 +17,16 @@ services:
   certificator:
     <<: *common-service-options
 
-  http-proxy-default:
+  apache-default:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
 
-  http-proxy-stream:
+  apache-stream:
     <<: *common-service-options
     ports:
       - 127.0.0.1:9081:443
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options

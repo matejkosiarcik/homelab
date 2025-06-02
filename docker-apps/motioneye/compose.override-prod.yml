@@ -19,7 +19,7 @@ services:
   certificator:
     <<: *common-service-options
 
-  http-proxy-default:
+  apache-default:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
@@ -27,14 +27,14 @@ services:
     networks:
       external-network:
 
-  http-proxy-stream:
+  apache-stream:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:9081:443
     networks:
       external-network:
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options
 
 networks:

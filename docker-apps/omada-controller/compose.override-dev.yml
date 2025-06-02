@@ -26,7 +26,7 @@ services:
   certificator:
     <<: *common-service-options
 
-  http-proxy-admin:
+  apache-admin:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
@@ -34,5 +34,5 @@ services:
       - 127.0.0.1:8443:443
       - 127.0.0.1:8444:444
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options

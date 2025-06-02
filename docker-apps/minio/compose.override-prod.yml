@@ -26,7 +26,7 @@ services:
       HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN},${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
       HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP},${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}
 
-  http-proxy-api:
+  apache-api:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
@@ -34,7 +34,7 @@ services:
     networks:
       external-network:
 
-  http-proxy-console:
+  apache-console:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:80:80
@@ -42,7 +42,7 @@ services:
     networks:
       external-network:
 
-  http-proxy-prometheus-exporter:
+  apache-prometheus-exporter:
     <<: *common-service-options
 
 networks:
