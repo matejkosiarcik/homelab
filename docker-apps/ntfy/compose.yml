@@ -19,7 +19,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/ntfy/Dockerfile
     env_file:
-      - ./app-secrets/ntfy.env
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/ntfy-cache:/var/cache/ntfy:rw
       - ./app-data/ntfy-lib:/var/lib/ntfy:rw

@@ -25,7 +25,7 @@ services:
       - ./app-logs/certbot:/homelab/logs:rw
       - ./app-logs/letsencrypt:/var/log/letsencrypt:rw
     env_file:
-      - ./app-secrets/certbot.env
+      - ./app-secrets/app.env
 
   apache:
     <<: *common-service-options

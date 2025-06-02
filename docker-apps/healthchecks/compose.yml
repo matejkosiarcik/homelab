@@ -22,7 +22,7 @@ services:
       <<: *common-env-variables
       SITE_NAME: Healthchecks
     env_file:
-      - ./app-secrets/healthchecks.env
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/healthchecks:/homelab/healthchecks:rw
     stop_grace_period: 30s

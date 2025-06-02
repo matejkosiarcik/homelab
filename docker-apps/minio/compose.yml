@@ -19,7 +19,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/minio-server/Dockerfile
     env_file:
-      - ./app-secrets/minio.env
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/minio:/data
     command: server /data --address ":9000" --console-address ":9001"
@@ -32,7 +32,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/minio-client/Dockerfile
     env_file:
-      - ./app-secrets/minio-setup.env
+      - ./app-secrets/app-setup.env
 
   certificator:
     <<: *common-service-options

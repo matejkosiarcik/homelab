@@ -19,7 +19,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/prometheus/Dockerfile
     env_file:
-      - ./app-secrets/prometheus.env
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/prometheus:/prometheus:rw
 

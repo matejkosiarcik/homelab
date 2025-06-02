@@ -21,7 +21,7 @@ services:
     volumes:
       - ./app-data/gatus:/data:rw
     env_file:
-      - ./app-secrets/gatus.env
+      - ./app-secrets/app.env
     stop_grace_period: 30s
 
   certificator:

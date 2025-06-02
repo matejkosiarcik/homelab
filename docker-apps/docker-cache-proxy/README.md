@@ -24,7 +24,7 @@ Generic resources:
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
-    - \[Prod\] Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `docker-registry.env` for authenticated mirror
+    - \[Prod\] Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `app.env` for authenticated mirror
 
 ## After initial installation
 
