@@ -44,9 +44,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  prometheus-exporter:
+  app-prometheus-exporter:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
     init: true
     build:
       context: ../../../../docker-images/
