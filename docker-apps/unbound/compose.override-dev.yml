@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  prometheus-exporter:
+  app-prometheus-exporter:
     <<: *common-service-options
     volumes:
       - ./app-data/unbound:/homelab/sock:rw

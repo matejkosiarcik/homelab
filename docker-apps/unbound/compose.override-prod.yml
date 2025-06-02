@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  prometheus-exporter:
+  app-prometheus-exporter:
     <<: *common-service-options
     volumes:
       - /homelab/config/unbound/${DOCKER_COMPOSE_UNBOUND_NAME}.sock:/homelab/sock/unbound.sock:rw

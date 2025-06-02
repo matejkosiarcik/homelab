@@ -22,7 +22,7 @@ services:
   app-setup:
     <<: *common-service-options
 
-  prometheus-exporter:
+  app-prometheus-exporter:
     <<: *common-service-options
 
   certificator:

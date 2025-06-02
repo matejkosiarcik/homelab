@@ -14,9 +14,9 @@ x-definitions:
 services:
   # NOTE: unbound app is not here, because it's running natively without docker
 
-  prometheus-exporter:
+  app-prometheus-exporter:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
     init: true
     build:
       context: ../../../../docker-images/
