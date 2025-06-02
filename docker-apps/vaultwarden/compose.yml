@@ -22,7 +22,7 @@ services:
       - ./app-data/vaultwarden:/data
       - ./app-logs/vaultwarden:/homelab/logs
     env_file:
-      - ./app-secrets/vaultwarden.env
+      - ./app-secrets/app.env
 
   certificator:
     <<: *common-service-options

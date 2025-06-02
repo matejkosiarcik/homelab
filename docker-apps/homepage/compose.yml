@@ -19,7 +19,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/homepage/Dockerfile
     env_file:
-      - ./app-secrets/homepage.env
+      - ./app-secrets/app.env
 
   certificator:
     <<: *common-service-options

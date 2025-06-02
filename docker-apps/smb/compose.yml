@@ -19,7 +19,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/samba/Dockerfile
     env_file:
-      - ./app-secrets/samba.env
+      - ./app-secrets/app.env
     environment:
       <<: *common-env-variables
       SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}

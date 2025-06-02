@@ -19,7 +19,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/renovatebot/Dockerfile
     env_file:
-      - ./app-secrets/renovatebot.env
+      - ./app-secrets/app.env
 
 networks:
   default: # Just disable default network

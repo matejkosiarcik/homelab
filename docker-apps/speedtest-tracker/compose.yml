@@ -19,7 +19,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/speedtest-tracker/Dockerfile
     env_file:
-      - ./app-secrets/speedtest-tracker.env
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/speedtest-tracker:/config:rw
 
