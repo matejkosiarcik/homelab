@@ -152,6 +152,14 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} homepage [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /favicon-32x32.png [L,R=302]
 
+# Jellyfin favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} jellyfin [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.ico$
+RewriteRule ^ /web/favicon.ico [L,R=302]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} jellyfin [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /web/favicon.png [L,R=302]
+
 # Minio favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
