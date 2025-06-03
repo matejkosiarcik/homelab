@@ -2,7 +2,7 @@
 pihole-2-primary
 
 # Other
-unifi-controller
+# unifi-controller
 dozzle-agent
 motioneye-stove
 glances
