@@ -4,6 +4,6 @@ exclude = [
   '^shivammathur/setup-php@.+$', # Invalid email address
   '^https?://localhost', # Localhost
   '^https?://[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+', # IPs
-  '^https?://.*\.home', # Private domain
+  '^https?://.*\.home\.matejkosiarcik\.com', # Private domain
   '^https?://.*', # Everything else
 ]

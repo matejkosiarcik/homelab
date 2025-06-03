@@ -25,13 +25,13 @@
 For publishing notifications to ntfy (see also: <https://github.com/caronc/apprise/wiki/Notify_ntfy>):
 
 ```txt
-ntfy://<token>@ntfy.home/<topic>
+ntfy://<token>@ntfy.home.matejkosiarcik.com/<topic>
 ```
 
 Alternatively you can also publish via email (see also <https://github.com/caronc/apprise/wiki/Notify_email>):
 
 ```txt
-mailto://ntfy-<topic>+<token>@ntfy.home
+mailto://ntfy-<topic>+<token>@ntfy.home.matejkosiarcik.com
 ```
 
 Obviously replace `<token>` and `<topic>` with their respective values (remove enclosing `<>`).

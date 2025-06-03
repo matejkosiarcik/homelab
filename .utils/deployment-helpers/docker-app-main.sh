@@ -155,7 +155,7 @@ if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
     printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
 fi
 if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
-    DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home"
+    DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home.matejkosiarcik.com"
     export DOCKER_COMPOSE_NETWORK_DOMAIN
     printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >>"$extra_docker_compose_env"
 fi

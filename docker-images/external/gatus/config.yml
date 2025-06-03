@@ -12,7 +12,7 @@ metrics: true
 alerting:
   email:
     from: gatus@${HOMELAB_APP_EXTERNAL_DOMAIN}
-    host: smtp4dev.home
+    host: smtp4dev.home.matejkosiarcik.com
     port: 25
     to: notifications@${HOMELAB_APP_EXTERNAL_DOMAIN}
     client:
@@ -24,7 +24,7 @@ alerting:
       send-on-resolved: true
       description: Gatus healthcheck failed
   ntfy:
-    url: http://ntfy.home # TODO: Change to HTTPS once real certificates are implemented
+    url: http://ntfy.home.matejkosiarcik.com # TODO: Change to HTTPS once real certificates are implemented
     topic: gatus
     priority: 3
     token: ${NTFY_TOKEN}
@@ -201,17 +201,17 @@ endpoints:
   - <<: *default-icmp
     name: ActualBudget - ICMP
     group: App - ActualBudget
-    url: icmp://actualbudget.home
+    url: icmp://actualbudget.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget - HTTP
     group: App - ActualBudget
-    url: http://actualbudget.home
+    url: http://actualbudget.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget - HTTPS
     group: App - ActualBudget
-    url: https://actualbudget.home
+    url: https://actualbudget.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -219,34 +219,34 @@ endpoints:
   - <<: *default-http
     name: ActualBudget - Proxy prometheus metrics
     group: App - ActualBudget
-    url: https://proxy-prometheus:${ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD}@actualbudget.home/.proxy/metrics
+    url: https://proxy-prometheus:${ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD}@actualbudget.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: ActualBudget - TCP:80
     group: App - ActualBudget
-    url: tcp://actualbudget.home:80
+    url: tcp://actualbudget.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: ActualBudget - TCP:443
     group: App - ActualBudget
-    url: tcp://actualbudget.home:443
+    url: tcp://actualbudget.home.matejkosiarcik.com:443
 
   ### Group: App - ActualBudget (Public) ###
 
   - <<: *default-icmp
     name: ActualBudget (Public) - ICMP
     group: App - ActualBudget (Public)
-    url: icmp://actualbudget-public.home
+    url: icmp://actualbudget-public.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget (Public) - HTTP
     group: App - ActualBudget (Public)
-    url: http://actualbudget-public.home
+    url: http://actualbudget-public.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget (Public) - HTTPS
     group: App - ActualBudget (Public)
-    url: https://actualbudget-public.home
+    url: https://actualbudget-public.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -254,43 +254,43 @@ endpoints:
   - <<: *default-http
     name: ActualBudget (Public) - Proxy prometheus metrics
     group: App - ActualBudget (Public)
-    url: https://proxy-prometheus:${ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD}@actualbudget-public.home/.proxy/metrics
+    url: https://proxy-prometheus:${ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD}@actualbudget-public.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: ActualBudget (Public) - TCP:80
     group: App - ActualBudget (Public)
-    url: tcp://actualbudget-public.home:80
+    url: tcp://actualbudget-public.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: ActualBudget (Public) - TCP:443
     group: App - ActualBudget (Public)
-    url: tcp://actualbudget-public.home:443
+    url: tcp://actualbudget-public.home.matejkosiarcik.com:443
 
   ### Group: App - Certbot ###
 
   - <<: *default-icmp
     name: Certbot - ICMP
     group: App - Certbot
-    url: icmp://certbot.home
+    url: icmp://certbot.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Certbot - HTTP
     group: App - Certbot
-    url: http://certbot.home
+    url: http://certbot.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 403"
 
   - <<: *default-http
     name: Certbot - HTTPS
     group: App - Certbot
-    url: https://certbot.home
+    url: https://certbot.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 403"
 
   - <<: *default-http
     name: Certbot - HTTPS
     group: App - Certbot
-    url: https://admin:${CERTBOT_VIEWER_PASSWORD}@certbot.home/download/certificate.tar.xz
+    url: https://admin:${CERTBOT_VIEWER_PASSWORD}@certbot.home.matejkosiarcik.com/download/certificate.tar.xz
     alerts:
       - type: ntfy
       - type: email
@@ -298,34 +298,34 @@ endpoints:
   - <<: *default-http
     name: Certbot - Proxy prometheus metrics
     group: App - Certbot
-    url: https://proxy-prometheus:${CERTBOT_PROXY_PROMETHEUS_PASSWORD}@certbot.home/.proxy/metrics
+    url: https://proxy-prometheus:${CERTBOT_PROXY_PROMETHEUS_PASSWORD}@certbot.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Certbot - TCP:80
     group: App - Certbot
-    url: tcp://certbot.home:80
+    url: tcp://certbot.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Certbot - TCP:443
     group: App - Certbot
-    url: tcp://certbot.home:443
+    url: tcp://certbot.home.matejkosiarcik.com:443
 
   ### Group: App - Changedetection ###
 
   - <<: *default-icmp
     name: Changedetection - ICMP
     group: App - Changedetection
-    url: icmp://changedetection.home
+    url: icmp://changedetection.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Changedetection - HTTP
     group: App - Changedetection
-    url: http://changedetection.home
+    url: http://changedetection.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Changedetection - HTTPS
     group: App - Changedetection
-    url: https://changedetection.home
+    url: https://changedetection.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -333,40 +333,40 @@ endpoints:
   - <<: *default-http
     name: Changedetection - Proxy prometheus metrics
     group: App - Changedetection
-    url: https://proxy-prometheus:${CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD}@changedetection.home/.proxy/metrics
+    url: https://proxy-prometheus:${CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD}@changedetection.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Changedetection - TCP:80
     group: App - Changedetection
-    url: tcp://changedetection.home:80
+    url: tcp://changedetection.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Changedetection - TCP:443
     group: App - Changedetection
-    url: tcp://changedetection.home:443
+    url: tcp://changedetection.home.matejkosiarcik.com:443
 
   ### Group: App - Desklamp - Left ###
 
   # - <<: *default-icmp
   #   name: Desklamp - Left - ICMP
   #   group: App - Desklamp - Left
-  #   url: icmp://desklamp-left.home
+  #   url: icmp://desklamp-left.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Left - HTTP
   #   group: App - Desklamp - Left
-  #   url: http://desklamp-left.home
+  #   url: http://desklamp-left.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Left - HTTPS
   #   group: App - Desklamp - Left
-  #   url: https://desklamp-left.home
+  #   url: https://desklamp-left.home.matejkosiarcik.com
   #   enabled: false
 
   # - <<: *default-http
   #   name: Desklamp - Left - API Health
   #   group: App - Desklamp - Left
-  #   url: http://desklamp-left.home/api/status
+  #   url: http://desklamp-left.home.matejkosiarcik.com/api/status
   #   conditions:
   #     - "[STATUS] == 200"
   #     - "has([BODY].status) == true"
@@ -375,18 +375,18 @@ endpoints:
   # - <<: *default-http
   #   name: Desklamp - Left - Proxy prometheus metrics
   #   group: App - Desklamp - Left
-  #   url: https://proxy-prometheus:${DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD}@desklamp-left.home/.proxy/metrics
+  #   url: https://proxy-prometheus:${DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD}@desklamp-left.home.matejkosiarcik.com/.proxy/metrics
   #   enabled: false
 
   # - <<: *default-tcp
   #   name: Desklamp - Left - TCP:80
   #   group: App - Desklamp - Left
-  #   url: tcp://desklamp-left.home:80
+  #   url: tcp://desklamp-left.home.matejkosiarcik.com:80
 
   # - <<: *default-tcp
   #   name: Desklamp - Left - TCP:443
   #   group: App - Desklamp - Left
-  #   url: tcp://desklamp-left.home:443
+  #   url: tcp://desklamp-left.home.matejkosiarcik.com:443
   #   enabled: false
 
   ### Group: App - Desklamp - Right ###
@@ -394,23 +394,23 @@ endpoints:
   # - <<: *default-icmp
   #   name: Desklamp - Right - ICMP
   #   group: App - Desklamp - Right
-  #   url: icmp://desklamp-right.home
+  #   url: icmp://desklamp-right.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Right - HTTP
   #   group: App - Desklamp - Right
-  #   url: http://desklamp-right.home
+  #   url: http://desklamp-right.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Right - HTTPS
   #   group: App - Desklamp - Right
-  #   url: https://desklamp-right.home
+  #   url: https://desklamp-right.home.matejkosiarcik.com
   #   enabled: false
 
   # - <<: *default-http
   #   name: Desklamp - Right - API Health
   #   group: App - Desklamp - Right
-  #   url: http://desklamp-right.home/api/status
+  #   url: http://desklamp-right.home.matejkosiarcik.com/api/status
   #   conditions:
   #     - "[STATUS] == 200"
   #     - "has([BODY].status) == true"
@@ -419,18 +419,18 @@ endpoints:
   # - <<: *default-http
   #   name: Desklamp - Right - Proxy prometheus metrics
   #   group: App - Desklamp - Right
-  #   url: https://proxy-prometheus:${DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD}@desklamp-right.home/.proxy/metrics
+  #   url: https://proxy-prometheus:${DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD}@desklamp-right.home.matejkosiarcik.com/.proxy/metrics
   #   enabled: false
 
   # - <<: *default-tcp
   #   name: Desklamp - Right - TCP:80
   #   group: App - Desklamp - Right
-  #   url: tcp://desklamp-right.home:80
+  #   url: tcp://desklamp-right.home.matejkosiarcik.com:80
 
   # - <<: *default-tcp
   #   name: Desklamp - Right - TCP:443
   #   group: App - Desklamp - Right
-  #   url: tcp://desklamp-right.home:443
+  #   url: tcp://desklamp-right.home.matejkosiarcik.com:443
   #   enabled: false
 
   ### Group: App - Dockerhub proxy ###
@@ -438,27 +438,27 @@ endpoints:
   - <<: *default-icmp
     name: DockerHub proxy - ICMP
     group: App - DockerHub proxy
-    url: icmp://dockerhub-cache-proxy.home
+    url: icmp://dockerhub-cache-proxy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: DockerHub proxy - HTTP
     group: App - DockerHub proxy
-    url: http://dockerhub-cache-proxy.home
+    url: http://dockerhub-cache-proxy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: DockerHub proxy - HTTPS
     group: App - DockerHub proxy
-    url: https://dockerhub-cache-proxy.home
+    url: https://dockerhub-cache-proxy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: DockerHub proxy - Proxy prometheus metrics
     group: App - DockerHub proxy
-    url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@dockerhub-cache-proxy.home/.proxy/metrics
+    url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@dockerhub-cache-proxy.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-http
     name: DockerHub proxy Api
     group: App - DockerHub proxy
-    url: https://dockerhub-cache-proxy.home/v2/_catalog
+    url: https://dockerhub-cache-proxy.home.matejkosiarcik.com/v2/_catalog
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].repositories) == true"
@@ -469,29 +469,29 @@ endpoints:
   - <<: *default-tcp
     name: DockerHub proxy - TCP:80
     group: App - DockerHub proxy
-    url: tcp://dockerhub-cache-proxy.home:80
+    url: tcp://dockerhub-cache-proxy.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: DockerHub proxy - TCP:443
     group: App - DockerHub proxy
-    url: tcp://dockerhub-cache-proxy.home:443
+    url: tcp://dockerhub-cache-proxy.home.matejkosiarcik.com:443
 
   ### Group: App - Dozzle ###
 
   - <<: *default-icmp
     name: Dozzle - ICMP
     group: App - Dozzle
-    url: icmp://dozzle.home
+    url: icmp://dozzle.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Dozzle - HTTP
     group: App - Dozzle
-    url: http://dozzle.home
+    url: http://dozzle.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Dozzle - HTTPS
     group: App - Dozzle
-    url: https://dozzle.home
+    url: https://dozzle.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -499,17 +499,17 @@ endpoints:
   - <<: *default-http
     name: Dozzle - Proxy prometheus metrics
     group: App - Dozzle
-    url: https://proxy-prometheus:${DOZZLE_PROXY_PROMETHEUS_PASSWORD}@dozzle.home/.proxy/metrics
+    url: https://proxy-prometheus:${DOZZLE_PROXY_PROMETHEUS_PASSWORD}@dozzle.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Dozzle - TCP:80
     group: App - Dozzle
-    url: tcp://dozzle.home:80
+    url: tcp://dozzle.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Dozzle - TCP:443
     group: App - Dozzle
-    url: tcp://dozzle.home:443
+    url: tcp://dozzle.home.matejkosiarcik.com:443
 
   ### Group: App - Dozzle agents ###
 
@@ -518,12 +518,12 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - MacBook Pro 2012 - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-macbook-pro-2012.home
+    url: icmp://dozzle-agent-macbook-pro-2012.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - MacBook Pro 2012 - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle-agent-macbook-pro-2012.home:7007
+    url: tcp://dozzle-agent-macbook-pro-2012.home.matejkosiarcik.com:7007
     alerts:
       - type: ntfy
       - type: email
@@ -533,12 +533,12 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - Odroid H3 - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-odroid-h3.home
+    url: icmp://dozzle-agent-odroid-h3.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - Odroid H3 - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle-agent-odroid-h3.home:7007
+    url: tcp://dozzle-agent-odroid-h3.home.matejkosiarcik.com:7007
     alerts:
       - type: ntfy
       - type: email
@@ -548,12 +548,12 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home
+    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle-agent-raspberry-pi-4b-2g.home:7007
+    url: tcp://dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com:7007
     alerts:
       - type: ntfy
       - type: email
@@ -563,12 +563,12 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home
+    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
     group: App - Dozzle agents
-    url: tcp://dozzle-agent-raspberry-pi-4b-4g.home:7007
+    url: tcp://dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com:7007
     alerts:
       - type: ntfy
       - type: email
@@ -578,17 +578,17 @@ endpoints:
   - <<: *default-icmp
     name: Gatus (1) - ICMP
     group: App - Gatus (1)
-    url: icmp://gatus-1.home
+    url: icmp://gatus-1.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (1) - HTTP
     group: App - Gatus (1)
-    url: http://gatus-1.home
+    url: http://gatus-1.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (1) - HTTPS
     group: App - Gatus (1)
-    url: https://gatus-1.home
+    url: https://gatus-1.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -596,39 +596,39 @@ endpoints:
   - <<: *default-http
     name: Gatus (1) - Prometheus metrics
     group: App - Gatus (1)
-    url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus-1.home/metrics
+    url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus-1.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: Gatus (1) - Proxy prometheus metrics
     group: App - Gatus (1)
-    url: https://proxy-prometheus:${GATUS_1_PROXY_PROMETHEUS_PASSWORD}@gatus-1.home/.proxy/metrics
+    url: https://proxy-prometheus:${GATUS_1_PROXY_PROMETHEUS_PASSWORD}@gatus-1.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Gatus (1) - TCP:80
     group: App - Gatus (1)
-    url: tcp://gatus-1.home:80
+    url: tcp://gatus-1.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Gatus (1) - TCP:443
     group: App - Gatus (1)
-    url: tcp://gatus-1.home:443
+    url: tcp://gatus-1.home.matejkosiarcik.com:443
 
   ### Group: App - Gatus (2) ###
 
   - <<: *default-icmp
     name: Gatus (2) - ICMP
     group: App - Gatus (2)
-    url: icmp://gatus-2.home
+    url: icmp://gatus-2.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (2) - HTTP
     group: App - Gatus (2)
-    url: http://gatus-2.home
+    url: http://gatus-2.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (2) - HTTPS
     group: App - Gatus (2)
-    url: https://gatus-2.home
+    url: https://gatus-2.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -636,22 +636,22 @@ endpoints:
   - <<: *default-http
     name: Gatus (2) - Prometheus metrics
     group: App - Gatus (2)
-    url: https://prometheus:${GATUS_2_PROMETHEUS_TOKEN}@gatus-2.home/metrics
+    url: https://prometheus:${GATUS_2_PROMETHEUS_TOKEN}@gatus-2.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: Gatus (2) - Proxy prometheus metrics
     group: App - Gatus (2)
-    url: https://proxy-prometheus:${GATUS_2_PROXY_PROMETHEUS_PASSWORD}@gatus-2.home/.proxy/metrics
+    url: https://proxy-prometheus:${GATUS_2_PROXY_PROMETHEUS_PASSWORD}@gatus-2.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Gatus (2) - TCP:80
     group: App - Gatus (2)
-    url: tcp://gatus-2.home:80
+    url: tcp://gatus-2.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Gatus (2) - TCP:443
     group: App - Gatus (2)
-    url: tcp://gatus-2.home:443
+    url: tcp://gatus-2.home.matejkosiarcik.com:443
 
   ### Group: App - Glances ###
 
@@ -660,19 +660,19 @@ endpoints:
   - <<: *default-icmp
     name: Glances - Odroid H3 - ICMP
     group: App - Glances
-    url: icmp://glances-odroid-h3.home
+    url: icmp://glances-odroid-h3.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Glances - Odroid H3 - HTTP
     group: App - Glances
-    url: http://glances-odroid-h3.home
+    url: http://glances-odroid-h3.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Glances - Odroid H3 - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home
+    url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -680,41 +680,41 @@ endpoints:
   - <<: *default-http
     name: Glances - Odroid H3 - Prometheus metrics
     group: App - Glances
-    url: https://prometheus:${GLANCES_ODROID_H3_PROMETHEUS_PASSWORD}@glances-odroid-h3.home/metrics
+    url: https://prometheus:${GLANCES_ODROID_H3_PROMETHEUS_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: Glances - Odroid H3 - Proxy prometheus metrics
     group: App - Glances
-    url: https://proxy-prometheus:${GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD}@glances-odroid-h3.home/.proxy/metrics
+    url: https://proxy-prometheus:${GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Glances - Odroid H3 - TCP:80
     group: App - Glances
-    url: tcp://glances-odroid-h3.home:80
+    url: tcp://glances-odroid-h3.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Glances - Odroid H3 - TCP:443
     group: App - Glances
-    url: tcp://glances-odroid-h3.home:443
+    url: tcp://glances-odroid-h3.home.matejkosiarcik.com:443
 
   # Raspberry Pi 4B 2GB
 
   - <<: *default-icmp
     name: Glances - Raspberry Pi 4B 2GB - ICMP
     group: App - Glances
-    url: icmp://glances-raspberry-pi-4b-2g.home
+    url: icmp://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 2GB - HTTP
     group: App - Glances
-    url: http://glances-raspberry-pi-4b-2g.home
+    url: http://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 2GB - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.home
+    url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -722,41 +722,41 @@ endpoints:
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 2GB - Prometheus metrics
     group: App - Glances
-    url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-2g.home/metrics
+    url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 2GB - Proxy prometheus metrics
     group: App - Glances
-    url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-2g.home/.proxy/metrics
+    url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Glances - Raspberry Pi 4B 2GB - TCP:80
     group: App - Glances
-    url: tcp://glances-raspberry-pi-4b-2g.home:80
+    url: tcp://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Glances - Raspberry Pi 4B 2GB - TCP:443
     group: App - Glances
-    url: tcp://glances-raspberry-pi-4b-2g.home:443
+    url: tcp://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com:443
 
   # Raspberry Pi 4B 4GB
 
   - <<: *default-icmp
     name: Glances - Raspberry Pi 4B 4GB - ICMP
     group: App - Glances
-    url: icmp://glances-raspberry-pi-4b-4g.home
+    url: icmp://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 4GB - HTTP
     group: App - Glances
-    url: http://glances-raspberry-pi-4b-4g.home
+    url: http://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 4GB - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.home
+    url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -764,39 +764,39 @@ endpoints:
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 4GB - Prometheus metrics
     group: App - Glances
-    url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-4g.home/metrics
+    url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 4GB - Proxy prometheus metrics
     group: App - Glances
-    url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-4g.home/.proxy/metrics
+    url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Glances - Raspberry Pi 4B 4GB - TCP:80
     group: App - Glances
-    url: tcp://glances-raspberry-pi-4b-4g.home:80
+    url: tcp://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Glances - Raspberry Pi 4B 4GB - TCP:443
     group: App - Glances
-    url: tcp://glances-raspberry-pi-4b-4g.home:443
+    url: tcp://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com:443
 
   ### Group: App - Healthchecks ###
 
   - <<: *default-icmp
     name: Healthchecks - ICMP
     group: App - Healthchecks
-    url: icmp://healthchecks.home
+    url: icmp://healthchecks.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Healthchecks - HTTP
     group: App - Healthchecks
-    url: http://healthchecks.home
+    url: http://healthchecks.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Healthchecks - HTTPS
     group: App - Healthchecks
-    url: https://healthchecks.home
+    url: https://healthchecks.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -804,7 +804,7 @@ endpoints:
   - <<: *default-http
     name: Healthchecks - API health
     group: App - Healthchecks
-    url: https://healthchecks.home/api/v3/status
+    url: https://healthchecks.home.matejkosiarcik.com/api/v3/status
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == OK"
@@ -812,34 +812,34 @@ endpoints:
   - <<: *default-http
     name: Healthchecks - Proxy prometheus metrics
     group: App - Healthchecks
-    url: https://proxy-prometheus:${HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD}@healthchecks.home/.proxy/metrics
+    url: https://proxy-prometheus:${HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD}@healthchecks.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Healthchecks - TCP:80
     group: App - Healthchecks
-    url: tcp://healthchecks.home:80
+    url: tcp://healthchecks.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Healthchecks - TCP:443
     group: App - Healthchecks
-    url: tcp://healthchecks.home:443
+    url: tcp://healthchecks.home.matejkosiarcik.com:443
 
   ### Group: App - Home Assistant ###
 
   - <<: *default-icmp
     name: Home Assistant - ICMP
     group: App - Home Assistant
-    url: icmp://homeassistant.home
+    url: icmp://homeassistant.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Home Assistant - HTTP
     group: App - Home Assistant
-    url: http://homeassistant.home
+    url: http://homeassistant.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Home Assistant - HTTPS
     group: App - Home Assistant
-    url: https://homeassistant.home
+    url: https://homeassistant.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -847,43 +847,43 @@ endpoints:
   - <<: *default-http
     name: Home Assistant - Prometheus metrics
     group: App - Home Assistant
-    url: https://homeassistant.home/api/prometheus
+    url: https://homeassistant.home.matejkosiarcik.com/api/prometheus
     headers:
       Authorization: Bearer ${HOMEASSISTANT_PROMETHEUS_TOKEN}
 
   - <<: *default-http
     name: Home Assistant - Proxy prometheus metrics
     group: App - Home Assistant
-    url: https://proxy-prometheus:${HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD}@homeassistant.home/.proxy/metrics
+    url: https://proxy-prometheus:${HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD}@homeassistant.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Home Assistant - TCP:80
     group: App - Home Assistant
-    url: tcp://homeassistant.home:80
+    url: tcp://homeassistant.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Home Assistant - TCP:443
     group: App - Home Assistant
-    url: tcp://homeassistant.home:443
+    url: tcp://homeassistant.home.matejkosiarcik.com:443
 
   ### Group: App - Homepage ###
 
   - <<: *default-icmp
     name: Homepage - ICMP
     group: App - Homepage
-    url: icmp://homepage.home
+    url: icmp://homepage.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Homepage - HTTP
     group: App - Homepage
-    url: http://homepage.home
+    url: http://homepage.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Homepage - HTTPS
     group: App - Homepage
-    url: https://admin:${HOMEPAGE_PASSWORD}@homepage.home
+    url: https://admin:${HOMEPAGE_PASSWORD}@homepage.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -891,34 +891,34 @@ endpoints:
   - <<: *default-http
     name: Homepage - Proxy prometheus metrics
     group: App - Homepage
-    url: https://proxy-prometheus:${HOMEPAGE_PROXY_PROMETHEUS_PASSWORD}@homepage.home/.proxy/metrics
+    url: https://proxy-prometheus:${HOMEPAGE_PROXY_PROMETHEUS_PASSWORD}@homepage.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Homepage - TCP:80
     group: App - Homepage
-    url: tcp://homepage.home:80
+    url: tcp://homepage.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Homepage - TCP:443
     group: App - Homepage
-    url: tcp://homepage.home:443
+    url: tcp://homepage.home.matejkosiarcik.com:443
 
   ### Group: App - Jellyfin ###
 
   - <<: *default-icmp
     name: Jellyfin - ICMP
     group: App - Jellyfin
-    url: icmp://jellyfin.home
+    url: icmp://jellyfin.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Jellyfin - HTTP
     group: App - Jellyfin
-    url: http://jellyfin.home
+    url: http://jellyfin.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Jellyfin - HTTPS
     group: App - Jellyfin
-    url: https://jellyfin.home
+    url: https://jellyfin.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -926,7 +926,7 @@ endpoints:
   - <<: *default-http
     name: Jellyfin - API health
     group: App - Jellyfin
-    url: https://jellyfin.home/health
+    url: https://jellyfin.home.matejkosiarcik.com/health
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == Healthy"
@@ -934,55 +934,55 @@ endpoints:
   - <<: *default-http
     name: Jellyfin - Proxy prometheus metrics
     group: App - Jellyfin
-    url: https://proxy-prometheus:${JELLYFIN_PROXY_PROMETHEUS_PASSWORD}@jellyfin.home/.proxy/metrics
+    url: https://proxy-prometheus:${JELLYFIN_PROXY_PROMETHEUS_PASSWORD}@jellyfin.home.matejkosiarcik.com/.proxy/metrics
 
   # TODO: Remove this port after Let's encrypt certificates
   - <<: *default-http
     name: Jellyfin - HTTP:8096
     group: App - Jellyfin
-    url: http://jellyfin.home:8096
+    url: http://jellyfin.home.matejkosiarcik.com:8096
 
   - <<: *default-tcp
     name: Jellyfin - TCP:80
     group: App - Jellyfin
-    url: tcp://jellyfin.home:80
+    url: tcp://jellyfin.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Jellyfin - TCP:443
     group: App - Jellyfin
-    url: tcp://jellyfin.home:443
+    url: tcp://jellyfin.home.matejkosiarcik.com:443
 
   # TODO: Remove this port after Let's encrypt certificates
   - <<: *default-tcp
     name: Jellyfin - TCP:8096
     group: App - Jellyfin
-    url: tcp://jellyfin.home:8096
+    url: tcp://jellyfin.home.matejkosiarcik.com:8096
 
   ### Group: App - Minio ###
 
   - <<: *default-icmp
     name: Minio API - ICMP
     group: App - Minio
-    url: icmp://minio.home
+    url: icmp://minio.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Minio API - HTTP
     group: App - Minio
-    url: http://minio.home
+    url: http://minio.home.matejkosiarcik.com
     conditions:
       - "[STATUS] < 500"
 
   - <<: *default-http
     name: Minio API - HTTPS
     group: App - Minio
-    url: https://minio.home
+    url: https://minio.home.matejkosiarcik.com
     conditions:
       - "[STATUS] < 500"
 
   - <<: *default-http
     name: Minio API - API health
     group: App - Minio
-    url: https://minio.home/minio/health/live
+    url: https://minio.home.matejkosiarcik.com/minio/health/live
     alerts:
       - type: ntfy
       - type: email
@@ -990,49 +990,49 @@ endpoints:
   - <<: *default-http
     name: Minio API - Health cluster write
     group: App - Minio
-    url: https://minio.home/minio/health/cluster
+    url: https://minio.home.matejkosiarcik.com/minio/health/cluster
 
   - <<: *default-http
     name: Minio API - Health cluster read
     group: App - Minio
-    url: https://minio.home/minio/health/cluster/read
+    url: https://minio.home.matejkosiarcik.com/minio/health/cluster/read
 
   - <<: *default-http
     name: Minio API - Prometheus metrics
     group: App - Minio
-    url: https://minio.home/minio/v2/metrics/cluster
+    url: https://minio.home.matejkosiarcik.com/minio/v2/metrics/cluster
     headers:
       Authorization: Bearer ${MINIO_PROMETHEUS_TOKEN}
 
   - <<: *default-http
     name: Minio API - Proxy prometheus metrics
     group: App - Minio
-    url: https://proxy-prometheus:${MINIO_PROXY_PROMETHEUS_PASSWORD}@minio.home/.proxy/metrics
+    url: https://proxy-prometheus:${MINIO_PROXY_PROMETHEUS_PASSWORD}@minio.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Minio API - TCP:80
     group: App - Minio
-    url: tcp://minio.home:80
+    url: tcp://minio.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Minio API - TCP:443
     group: App - Minio
-    url: tcp://minio.home:443
+    url: tcp://minio.home.matejkosiarcik.com:443
 
   - <<: *default-icmp
     name: Minio Console - ICMP
     group: App - Minio
-    url: icmp://minio-console.home
+    url: icmp://minio-console.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Minio Console - HTTP
     group: App - Minio
-    url: http://minio-console.home
+    url: http://minio-console.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Minio Console - HTTPS
     group: App - Minio
-    url: https://minio-console.home
+    url: https://minio-console.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1040,29 +1040,29 @@ endpoints:
   - <<: *default-tcp
     name: Minio Console - TCP:80
     group: App - Minio
-    url: tcp://minio-console.home:80
+    url: tcp://minio-console.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Minio Console - TCP:443
     group: App - Minio
-    url: tcp://minio-console.home:443
+    url: tcp://minio-console.home.matejkosiarcik.com:443
 
   ### Group: App - MotionEye ###
 
   - <<: *default-icmp
     name: MotionEye (Stove) - ICMP
     group: App - MotionEye (Stove)
-    url: icmp://motioneye-stove.home
+    url: icmp://motioneye-stove.home.matejkosiarcik.com
 
   - <<: *default-http
     name: MotionEye (Stove) - HTTP
     group: App - MotionEye (Stove)
-    url: http://motioneye-stove.home
+    url: http://motioneye-stove.home.matejkosiarcik.com
 
   - <<: *default-http
     name: MotionEye (Stove) - HTTPS
     group: App - MotionEye (Stove)
-    url: https://motioneye-stove.home
+    url: https://motioneye-stove.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1070,29 +1070,29 @@ endpoints:
   - <<: *default-http
     name: MotionEye (Stove) - HTTPS:9081
     group: App - MotionEye (Stove)
-    url: https://motioneye-stove.home:9081
+    url: https://motioneye-stove.home.matejkosiarcik.com:9081
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: MotionEye (Stove) - Proxy prometheus metrics
     group: App - MotionEye (Stove)
-    url: https://proxy-prometheus:${MOTIONEYE_STOVE_PROXY_PROMETHEUS_PASSWORD}@motioneye-stove.home/.proxy/metrics
+    url: https://proxy-prometheus:${MOTIONEYE_STOVE_PROXY_PROMETHEUS_PASSWORD}@motioneye-stove.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: MotionEye (Stove) - TCP:80
     group: App - MotionEye (Stove)
-    url: tcp://motioneye-stove.home:80
+    url: tcp://motioneye-stove.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: MotionEye (Stove) - TCP:443
     group: App - MotionEye (Stove)
-    url: tcp://motioneye-stove.home:443
+    url: tcp://motioneye-stove.home.matejkosiarcik.com:443
 
   - <<: *default-tcp
     name: MotionEye (Stove) - TCP:9081
     group: App - MotionEye (Stove)
-    url: tcp://motioneye-stove.home:9081
+    url: tcp://motioneye-stove.home.matejkosiarcik.com:9081
 
   ### Group: App - NetAlertX ###
   # TODO: Enable NetAlertX
@@ -1100,19 +1100,19 @@ endpoints:
   - <<: *default-icmp
     name: NetAlertX - ICMP
     group: App - NetAlertX
-    url: icmp://netalertx.home
+    url: icmp://netalertx.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: NetAlertX - HTTP
     group: App - NetAlertX
-    url: http://netalertx.home
+    url: http://netalertx.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: NetAlertX - HTTPS
     group: App - NetAlertX
-    url: https://netalertx.home
+    url: https://netalertx.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1121,37 +1121,37 @@ endpoints:
   - <<: *default-http
     name: NetAlertX - HTTP (Direct)
     group: App - NetAlertX
-    url: http://netalertx.home:20211
+    url: http://netalertx.home.matejkosiarcik.com:20211
     enabled: false
 
   - <<: *default-http
     name: NetAlertX - Prometheus metrics
     group: App - NetAlertX
-    url: https://netalertx.home/api/prometheus
+    url: https://netalertx.home.matejkosiarcik.com/api/prometheus
     enabled: false
 
   - <<: *default-http
     name: NetAlertX - Proxy prometheus metrics
     group: App - NetAlertX
-    url: https://proxy-prometheus:${NETALERTX_PROXY_PROMETHEUS_PASSWORD}@netalertx.home/.proxy/metrics
+    url: https://proxy-prometheus:${NETALERTX_PROXY_PROMETHEUS_PASSWORD}@netalertx.home.matejkosiarcik.com/.proxy/metrics
     enabled: false
 
   - <<: *default-tcp
     name: NetAlertX - TCP:80
     group: App - NetAlertX
-    url: tcp://netalertx.home:80
+    url: tcp://netalertx.home.matejkosiarcik.com:80
     enabled: false
 
   - <<: *default-tcp
     name: NetAlertX - TCP:443
     group: App - NetAlertX
-    url: tcp://netalertx.home:443
+    url: tcp://netalertx.home.matejkosiarcik.com:443
     enabled: false
 
   - <<: *default-tcp
     name: NetAlertX - TCP:20211
     group: App - NetAlertX
-    url: tcp://netalertx.home:20211
+    url: tcp://netalertx.home.matejkosiarcik.com:20211
     enabled: false
 
   ### Group: App - Ntfy ###
@@ -1159,17 +1159,17 @@ endpoints:
   - <<: *default-icmp
     name: Ntfy - ICMP
     group: App - Ntfy
-    url: icmp://ntfy.home
+    url: icmp://ntfy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Ntfy - HTTP
     group: App - Ntfy
-    url: http://ntfy.home
+    url: http://ntfy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Ntfy - HTTPS
     group: App - Ntfy
-    url: https://ntfy.home
+    url: https://ntfy.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1177,7 +1177,7 @@ endpoints:
   - <<: *default-http
     name: Ntfy - API Health
     group: App - Ntfy
-    url: https://ntfy.home/v1/health
+    url: https://ntfy.home.matejkosiarcik.com/v1/health
     conditions:
       - "[STATUS] == 200"
       - "[BODY].healthy == true"
@@ -1185,39 +1185,39 @@ endpoints:
   - <<: *default-http
     name: Ntfy - Proxy prometheus metrics
     group: App - Ntfy
-    url: https://proxy-prometheus:${NTFY_PROXY_PROMETHEUS_PASSWORD}@ntfy.home/.proxy/metrics
+    url: https://proxy-prometheus:${NTFY_PROXY_PROMETHEUS_PASSWORD}@ntfy.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Ntfy - TCP:25
     group: App - Ntfy
-    url: tcp://ntfy.home:25
+    url: tcp://ntfy.home.matejkosiarcik.com:25
 
   - <<: *default-tcp
     name: Ntfy - TCP:80
     group: App - Ntfy
-    url: tcp://ntfy.home:80
+    url: tcp://ntfy.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Ntfy - TCP:443
     group: App - Ntfy
-    url: tcp://ntfy.home:443
+    url: tcp://ntfy.home.matejkosiarcik.com:443
 
   ### Group: App - Omada Controller ###
 
   - <<: *default-icmp
     name: Omada Controller Admin - ICMP
     group: App - Omada Controller
-    url: icmp://omada-controller.home
+    url: icmp://omada-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Omada Controller Admin - HTTP
     group: App - Omada Controller
-    url: http://omada-controller.home
+    url: http://omada-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Omada Controller Admin - HTTPS
     group: App - Omada Controller
-    url: https://omada-controller.home
+    url: https://omada-controller.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1225,7 +1225,7 @@ endpoints:
   - <<: *default-http
     name: Omada Controller - API Health
     group: App - Omada Controller
-    url: https://omada-controller.home/api/v2/anon/info
+    url: https://omada-controller.home.matejkosiarcik.com/api/v2/anon/info
     conditions:
       - "[STATUS] == 200"
       - "[BODY].errorCode == 0"
@@ -1238,69 +1238,69 @@ endpoints:
   - <<: *default-http
     name: Omada Controller - Proxy prometheus metrics
     group: App - Omada Controller
-    url: https://proxy-prometheus:${OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@omada-controller.home/.proxy/metrics
+    url: https://proxy-prometheus:${OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@omada-controller.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Omada Controller - TCP:80
     group: App - Omada Controller
-    url: tcp://omada-controller.home:80
+    url: tcp://omada-controller.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Omada Controller - TCP:443
     group: App - Omada Controller
-    url: tcp://omada-controller.home:443
+    url: tcp://omada-controller.home.matejkosiarcik.com:443
 
   - <<: *default-udp
     name: Omada Controller - UDP:27001
     group: App - Omada Controller
-    url: udp://omada-controller.home:27001
+    url: udp://omada-controller.home.matejkosiarcik.com:27001
 
   - <<: *default-udp
     name: Omada Controller - UDP:29810
     group: App - Omada Controller
-    url: udp://omada-controller.home:29810
+    url: udp://omada-controller.home.matejkosiarcik.com:29810
 
   - <<: *default-tcp
     name: Omada Controller - TCP:29811
     group: App - Omada Controller
-    url: tcp://omada-controller.home:29811
+    url: tcp://omada-controller.home.matejkosiarcik.com:29811
 
   - <<: *default-tcp
     name: Omada Controller - TCP:29812
     group: App - Omada Controller
-    url: tcp://omada-controller.home:29812
+    url: tcp://omada-controller.home.matejkosiarcik.com:29812
 
   - <<: *default-tcp
     name: Omada Controller - TCP:29813
     group: App - Omada Controller
-    url: tcp://omada-controller.home:29813
+    url: tcp://omada-controller.home.matejkosiarcik.com:29813
 
   - <<: *default-tcp
     name: Omada Controller - TCP:29814
     group: App - Omada Controller
-    url: tcp://omada-controller.home:29814
+    url: tcp://omada-controller.home.matejkosiarcik.com:29814
 
   - <<: *default-tcp
     name: Omada Controller - TCP:29815
     group: App - Omada Controller
-    url: tcp://omada-controller.home:29815
+    url: tcp://omada-controller.home.matejkosiarcik.com:29815
 
   - <<: *default-tcp
     name: Omada Controller - TCP:29816
     group: App - Omada Controller
-    url: tcp://omada-controller.home:29816
+    url: tcp://omada-controller.home.matejkosiarcik.com:29816
 
   ### Group: App - OpenSpeedTest ###
 
   - <<: *default-icmp
     name: OpenSpeedTest - ICMP
     group: App - OpenSpeedTest
-    url: icmp://openspeedtest.home
+    url: icmp://openspeedtest.home.matejkosiarcik.com
 
   - <<: *default-http
     name: OpenSpeedTest - HTTP
     group: App - OpenSpeedTest
-    url: http://openspeedtest.home
+    url: http://openspeedtest.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1308,39 +1308,39 @@ endpoints:
   - <<: *default-http
     name: OpenSpeedTest - HTTPS
     group: App - OpenSpeedTest
-    url: https://openspeedtest.home
+    url: https://openspeedtest.home.matejkosiarcik.com
 
   - <<: *default-http
     name: OpenSpeedTest - Proxy prometheus metrics
     group: App - OpenSpeedTest
-    url: https://proxy-prometheus:${OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD}@openspeedtest.home/.proxy/metrics
+    url: https://proxy-prometheus:${OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD}@openspeedtest.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: OpenSpeedTest - TCP:80
     group: App - OpenSpeedTest
-    url: tcp://openspeedtest.home:80
+    url: tcp://openspeedtest.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: OpenSpeedTest - TCP:443
     group: App - OpenSpeedTest
-    url: tcp://openspeedtest.home:443
+    url: tcp://openspeedtest.home.matejkosiarcik.com:443
 
   ### Group: App - PiHole 1 Primary ###
 
   - <<: *default-icmp
     name: PiHole 1 Primary - ICMP
     group: App - PiHole 1 Primary
-    url: icmp://pihole-1-primary.home
+    url: icmp://pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Primary - HTTP
     group: App - PiHole 1 Primary
-    url: http://pihole-1-primary.home
+    url: http://pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Primary - HTTPS
     group: App - PiHole 1 Primary
-    url: https://pihole-1-primary.home
+    url: https://pihole-1-primary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1348,59 +1348,59 @@ endpoints:
   - <<: *default-http
     name: PiHole 1 Primary - Prometheus metrics
     group: App - PiHole 1 Primary
-    url: https://prometheus:${PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD}@pihole-1-primary.home/metrics
+    url: https://prometheus:${PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD}@pihole-1-primary.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: PiHole 1 Primary - Proxy prometheus metrics
     group: App - PiHole 1 Primary
-    url: https://proxy-prometheus:${PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-primary.home/.proxy/metrics
+    url: https://proxy-prometheus:${PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-primary.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-dns-a
     name: PiHole 1 Primary - DNS A
     group: App - PiHole 1 Primary
-    url: pihole-1-primary.home
+    url: pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 1 Primary - DNS AAAA
     group: App - PiHole 1 Primary
-    url: pihole-1-primary.home
+    url: pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 1 Primary - TCP:53
     group: App - PiHole 1 Primary
-    url: tcp://pihole-1-primary.home:53
+    url: tcp://pihole-1-primary.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: PiHole 1 Primary - UDP:53
     group: App - PiHole 1 Primary
-    url: udp://pihole-1-primary.home:53
+    url: udp://pihole-1-primary.home.matejkosiarcik.com:53
 
   - <<: *default-tcp
     name: PiHole 1 Primary - TCP:80
     group: App - PiHole 1 Primary
-    url: tcp://pihole-1-primary.home:80
+    url: tcp://pihole-1-primary.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: PiHole 1 Primary - TCP:443
     group: App - PiHole 1 Primary
-    url: tcp://pihole-1-primary.home:443
+    url: tcp://pihole-1-primary.home.matejkosiarcik.com:443
 
   ### Group: App - PiHole 1 Secondary ###
 
   - <<: *default-icmp
     name: PiHole 1 Secondary - ICMP
     group: App - PiHole 1 Secondary
-    url: icmp://pihole-1-secondary.home
+    url: icmp://pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Secondary - HTTP
     group: App - PiHole 1 Secondary
-    url: http://pihole-1-secondary.home
+    url: http://pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Secondary - HTTPS
     group: App - PiHole 1 Secondary
-    url: https://pihole-1-secondary.home
+    url: https://pihole-1-secondary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1408,59 +1408,59 @@ endpoints:
   - <<: *default-http
     name: PiHole 1 Secondary - Prometheus metrics
     group: App - PiHole 1 Secondary
-    url: https://prometheus:${PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home/metrics
+    url: https://prometheus:${PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: PiHole 1 Secondary - Proxy prometheus metrics
     group: App - PiHole 1 Secondary
-    url: https://proxy-prometheus:${PIHOLE_1_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home/.proxy/metrics
+    url: https://proxy-prometheus:${PIHOLE_1_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-dns-a
     name: PiHole 1 Secondary - DNS A
     group: App - PiHole 1 Secondary
-    url: pihole-1-secondary.home
+    url: pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 1 Secondary - DNS AAAA
     group: App - PiHole 1 Secondary
-    url: pihole-1-secondary.home
+    url: pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 1 Secondary - TCP:53
     group: App - PiHole 1 Secondary
-    url: tcp://pihole-1-secondary.home:53
+    url: tcp://pihole-1-secondary.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: PiHole 1 Secondary - UDP:53
     group: App - PiHole 1 Secondary
-    url: udp://pihole-1-secondary.home:53
+    url: udp://pihole-1-secondary.home.matejkosiarcik.com:53
 
   - <<: *default-tcp
     name: PiHole 1 Secondary - TCP:80
     group: App - PiHole 1 Secondary
-    url: tcp://pihole-1-secondary.home:80
+    url: tcp://pihole-1-secondary.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: PiHole 1 Secondary - TCP:443
     group: App - PiHole 1 Secondary
-    url: tcp://pihole-1-secondary.home:443
+    url: tcp://pihole-1-secondary.home.matejkosiarcik.com:443
 
   ### Group: App - PiHole 2 Primary ###
 
   - <<: *default-icmp
     name: PiHole 2 Primary - ICMP
     group: App - PiHole 2 Primary
-    url: icmp://pihole-2-primary.home
+    url: icmp://pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Primary - HTTP
     group: App - PiHole 2 Primary
-    url: http://pihole-2-primary.home
+    url: http://pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Primary - HTTPS
     group: App - PiHole 2 Primary
-    url: https://pihole-2-primary.home
+    url: https://pihole-2-primary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1468,59 +1468,59 @@ endpoints:
   - <<: *default-http
     name: PiHole 2 Primary - Prometheus metrics
     group: App - PiHole 2 Primary
-    url: https://prometheus:${PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD}@pihole-2-primary.home/metrics
+    url: https://prometheus:${PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD}@pihole-2-primary.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: PiHole 2 Primary - Proxy prometheus metrics
     group: App - PiHole 2 Primary
-    url: https://proxy-prometheus:${PIHOLE_2_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-primary.home/.proxy/metrics
+    url: https://proxy-prometheus:${PIHOLE_2_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-primary.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-dns-a
     name: PiHole 2 Primary - DNS A
     group: App - PiHole 2 Primary
-    url: pihole-2-primary.home
+    url: pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 2 Primary - DNS AAAA
     group: App - PiHole 2 Primary
-    url: pihole-2-primary.home
+    url: pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 2 Primary - TCP:53
     group: App - PiHole 2 Primary
-    url: tcp://pihole-2-primary.home:53
+    url: tcp://pihole-2-primary.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: PiHole 2 Primary - UDP:53
     group: App - PiHole 2 Primary
-    url: udp://pihole-2-primary.home:53
+    url: udp://pihole-2-primary.home.matejkosiarcik.com:53
 
   - <<: *default-tcp
     name: PiHole 2 Primary - TCP:80
     group: App - PiHole 2 Primary
-    url: tcp://pihole-2-primary.home:80
+    url: tcp://pihole-2-primary.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: PiHole 2 Primary - TCP:443
     group: App - PiHole 2 Primary
-    url: tcp://pihole-2-primary.home:443
+    url: tcp://pihole-2-primary.home.matejkosiarcik.com:443
 
   ### Group: App - PiHole 2 Secondary ###
 
   - <<: *default-icmp
     name: PiHole 2 Secondary - ICMP
     group: App - PiHole 2 Secondary
-    url: icmp://pihole-2-secondary.home
+    url: icmp://pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Secondary - HTTP
     group: App - PiHole 2 Secondary
-    url: http://pihole-2-secondary.home
+    url: http://pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Secondary - HTTPS
     group: App - PiHole 2 Secondary
-    url: https://pihole-2-secondary.home
+    url: https://pihole-2-secondary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1528,61 +1528,61 @@ endpoints:
   - <<: *default-http
     name: PiHole 2 Secondary - Prometheus metrics
     group: App - PiHole 2 Secondary
-    url: https://prometheus:${PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home/metrics
+    url: https://prometheus:${PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: PiHole 2 Secondary - Proxy prometheus metrics
     group: App - PiHole 2 Secondary
-    url: https://proxy-prometheus:${PIHOLE_2_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home/.proxy/metrics
+    url: https://proxy-prometheus:${PIHOLE_2_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-dns-a
     name: PiHole 2 Secondary - DNS A
     group: App - PiHole 2 Secondary
-    url: pihole-2-secondary.home
+    url: pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 2 Secondary - DNS AAAA
     group: App - PiHole 2 Secondary
-    url: pihole-2-secondary.home
+    url: pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 2 Secondary - TCP:53
     group: App - PiHole 2 Secondary
-    url: tcp://pihole-2-secondary.home:53
+    url: tcp://pihole-2-secondary.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: PiHole 2 Secondary - UDP:53
     group: App - PiHole 2 Secondary
-    url: udp://pihole-2-secondary.home:53
+    url: udp://pihole-2-secondary.home.matejkosiarcik.com:53
 
   - <<: *default-tcp
     name: PiHole 2 Secondary - TCP:80
     group: App - PiHole 2 Secondary
-    url: tcp://pihole-2-secondary.home:80
+    url: tcp://pihole-2-secondary.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: PiHole 2 Secondary - TCP:443
     group: App - PiHole 2 Secondary
-    url: tcp://pihole-2-secondary.home:443
+    url: tcp://pihole-2-secondary.home.matejkosiarcik.com:443
 
   ### Group: App - Prometheus ###
 
   - <<: *default-icmp
     name: Prometheus - ICMP
     group: App - Prometheus
-    url: icmp://prometheus.home
+    url: icmp://prometheus.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Prometheus - HTTP
     group: App - Prometheus
-    url: http://prometheus.home
+    url: http://prometheus.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Prometheus - HTTPS
     group: App - Prometheus
-    url: https://prometheus.home
+    url: https://prometheus.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
     alerts:
@@ -1592,34 +1592,34 @@ endpoints:
   - <<: *default-http
     name: Prometheus - Prometheus metrics
     group: App - Prometheus
-    url: https://prometheus:${PROMETHEUS_PROMETHEUS_PASSWORD}@prometheus.home/metrics
+    url: https://prometheus:${PROMETHEUS_PROMETHEUS_PASSWORD}@prometheus.home.matejkosiarcik.com/metrics
 
   - <<: *default-http
     name: Prometheus - Proxy prometheus metrics
     group: App - Prometheus
-    url: https://proxy-prometheus:${PROMETHEUS_PROXY_PROMETHEUS_PASSWORD}@prometheus.home/.proxy/metrics
+    url: https://proxy-prometheus:${PROMETHEUS_PROXY_PROMETHEUS_PASSWORD}@prometheus.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Prometheus - TCP:80
     group: App - Prometheus
-    url: tcp://prometheus.home:80
+    url: tcp://prometheus.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Prometheus - TCP:443
     group: App - Prometheus
-    url: tcp://prometheus.home:443
+    url: tcp://prometheus.home.matejkosiarcik.com:443
 
   ### Group: App - SMB (data) ###
 
   - <<: *default-icmp
     name: SMB (data) - ICMP
     group: App - SMB (data)
-    url: icmp://smb-data.home
+    url: icmp://smb-data.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: SMB (data) - TCP:139
     group: App - SMB (data)
-    url: tcp://smb-data.home:139
+    url: tcp://smb-data.home.matejkosiarcik.com:139
     alerts:
       - type: ntfy
       - type: email
@@ -1627,19 +1627,19 @@ endpoints:
   - <<: *default-tcp
     name: SMB (data) - TCP:445
     group: App - SMB (data)
-    url: tcp://smb-data.home:445
+    url: tcp://smb-data.home.matejkosiarcik.com:445
 
   ### Group: App - SMB (snapshots) ###
 
   - <<: *default-icmp
     name: SMB (snapshots) - ICMP
     group: App - SMB (snapshots)
-    url: icmp://smb-snapshots.home
+    url: icmp://smb-snapshots.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: SMB (snapshots) - TCP:139
     group: App - SMB (snapshots)
-    url: tcp://smb-snapshots.home:139
+    url: tcp://smb-snapshots.home.matejkosiarcik.com:139
     alerts:
       - type: ntfy
       - type: email
@@ -1647,24 +1647,24 @@ endpoints:
   - <<: *default-tcp
     name: SMB (snapshots) - TCP:445
     group: App - SMB (snapshots)
-    url: tcp://smb-snapshots.home:445
+    url: tcp://smb-snapshots.home.matejkosiarcik.com:445
 
   ### Group: App - Smtp4dev ###
 
   - <<: *default-icmp
     name: Smtp4dev - ICMP
     group: App - Smtp4dev
-    url: icmp://smtp4dev.home
+    url: icmp://smtp4dev.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Smtp4dev - HTTP
     group: App - Smtp4dev
-    url: http://smtp4dev.home
+    url: http://smtp4dev.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Smtp4dev - HTTPS
     group: App - Smtp4dev
-    url: https://smtp4dev.home
+    url: https://smtp4dev.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1672,39 +1672,39 @@ endpoints:
   - <<: *default-http
     name: Smtp4dev - Proxy prometheus metrics
     group: App - Smtp4dev
-    url: https://proxy-prometheus:${SMTP4DEV_PROXY_PROMETHEUS_PASSWORD}@smtp4dev.home/.proxy/metrics
+    url: https://proxy-prometheus:${SMTP4DEV_PROXY_PROMETHEUS_PASSWORD}@smtp4dev.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Smtp4dev - TCP:25
     group: App - Smtp4dev
-    url: tcp://smtp4dev.home:25
+    url: tcp://smtp4dev.home.matejkosiarcik.com:25
 
   - <<: *default-tcp
     name: Smtp4dev - TCP:80
     group: App - Smtp4dev
-    url: tcp://smtp4dev.home:80
+    url: tcp://smtp4dev.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Smtp4dev - TCP:443
     group: App - Smtp4dev
-    url: tcp://smtp4dev.home:443
+    url: tcp://smtp4dev.home.matejkosiarcik.com:443
 
   ### Group: App - Speedtest Tracker ###
 
   - <<: *default-icmp
     name: Speedtest Tracker - ICMP
     group: App - Speedtest Tracker
-    url: icmp://speedtest-tracker.home
+    url: icmp://speedtest-tracker.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Speedtest Tracker - HTTP
     group: App - Speedtest Tracker
-    url: http://speedtest-tracker.home
+    url: http://speedtest-tracker.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Speedtest Tracker - HTTPS
     group: App - Speedtest Tracker
-    url: https://speedtest-tracker.home
+    url: https://speedtest-tracker.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1712,7 +1712,7 @@ endpoints:
   - <<: *default-http
     name: Speedtest Tracker - API health
     group: App - Speedtest Tracker
-    url: https://speedtest-tracker.home/api/healthcheck
+    url: https://speedtest-tracker.home.matejkosiarcik.com/api/healthcheck
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].message) == true"
@@ -1720,34 +1720,34 @@ endpoints:
   - <<: *default-http
     name: Speedtest Tracker - Proxy prometheus metrics
     group: App - Speedtest Tracker
-    url: https://proxy-prometheus:${SPEEDTEST_TRACKER_PROXY_PROMETHEUS_PASSWORD}@speedtest-tracker.home/.proxy/metrics
+    url: https://proxy-prometheus:${SPEEDTEST_TRACKER_PROXY_PROMETHEUS_PASSWORD}@speedtest-tracker.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Speedtest Tracker - TCP:80
     group: App - Speedtest Tracker
-    url: tcp://speedtest-tracker.home:80
+    url: tcp://speedtest-tracker.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Speedtest Tracker - TCP:443
     group: App - Speedtest Tracker
-    url: tcp://speedtest-tracker.home:443
+    url: tcp://speedtest-tracker.home.matejkosiarcik.com:443
 
   ### Group: App - Tvheadend ###
 
   - <<: *default-icmp
     name: Tvheadend - ICMP
     group: App - Tvheadend
-    url: icmp://tvheadend.home
+    url: icmp://tvheadend.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Tvheadend - HTTP
     group: App - Tvheadend
-    url: http://tvheadend.home
+    url: http://tvheadend.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Tvheadend - HTTPS
     group: App - Tvheadend
-    url: https://tvheadend.home
+    url: https://tvheadend.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1755,7 +1755,7 @@ endpoints:
   - <<: *default-http
     name: Tvheadend - API health
     group: App - Tvheadend
-    url: https://tvheadend.home/api/serverinfo
+    url: https://tvheadend.home.matejkosiarcik.com/api/serverinfo
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].capabilities) == true"
@@ -1766,44 +1766,44 @@ endpoints:
   - <<: *default-http
     name: Tvheadend - HTTP:9981
     group: App - Tvheadend
-    url: http://tvheadend.home:9981
+    url: http://tvheadend.home.matejkosiarcik.com:9981
 
   - <<: *default-http
     name: Tvheadend - Proxy prometheus metrics
     group: App - Tvheadend
-    url: https://proxy-prometheus:${TVHEADEND_PROXY_PROMETHEUS_PASSWORD}@tvheadend.home/.proxy/metrics
+    url: https://proxy-prometheus:${TVHEADEND_PROXY_PROMETHEUS_PASSWORD}@tvheadend.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Tvheadend - TCP:80
     group: App - Tvheadend
-    url: tcp://tvheadend.home:80
+    url: tcp://tvheadend.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Tvheadend - TCP:443
     group: App - Tvheadend
-    url: tcp://tvheadend.home:443
+    url: tcp://tvheadend.home.matejkosiarcik.com:443
 
   - <<: *default-tcp
     name: Tvheadend - TCP:9981
     group: App - Tvheadend
-    url: tcp://tvheadend.home:9981
+    url: tcp://tvheadend.home.matejkosiarcik.com:9981
 
   - <<: *default-tcp
     name: Tvheadend - TCP:9982
     group: App - Tvheadend
-    url: tcp://tvheadend.home:9982
+    url: tcp://tvheadend.home.matejkosiarcik.com:9982
 
   ### Group: App - Unbound 1 [default] ###
 
   - <<: *default-icmp
     name: Unbound 1 [default] - ICMP
     group: App - Unbound 1 [default]
-    url: icmp://unbound-1-default.home
+    url: icmp://unbound-1-default.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 1 [default] - DNS A
     group: App - Unbound 1 [default]
-    url: unbound-1-default.home
+    url: unbound-1-default.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1811,17 +1811,17 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 1 [default] - DNS AAAA
     group: App - Unbound 1 [default]
-    url: unbound-1-default.home
+    url: unbound-1-default.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 1 [default] - HTTP
     group: App - Unbound 1 [default]
-    url: http://unbound-1-default.home/.proxy
+    url: http://unbound-1-default.home.matejkosiarcik.com/.proxy
 
   - <<: *default-http
     name: Unbound 1 [default] - HTTPS
     group: App - Unbound 1 [default]
-    url: https://unbound-1-default.home/.proxy
+    url: https://unbound-1-default.home.matejkosiarcik.com/.proxy
     alerts:
       - type: ntfy
       - type: email
@@ -1829,29 +1829,29 @@ endpoints:
   - <<: *default-http
     name: Unbound 1 [default] - Proxy prometheus metrics
     group: App - Unbound 1 [default]
-    url: https://proxy-prometheus:${UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-1-default.home/.proxy/metrics
+    url: https://proxy-prometheus:${UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-1-default.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Unbound 1 [default] - TCP:53
     group: App - Unbound 1 [default]
-    url: tcp://unbound-1-default.home:53
+    url: tcp://unbound-1-default.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: Unbound 1 [default] - UDP:53
     group: App - Unbound 1 [default]
-    url: udp://unbound-1-default.home:53
+    url: udp://unbound-1-default.home.matejkosiarcik.com:53
 
   ### Group: App - Unbound 1 [open] ###
 
   - <<: *default-icmp
     name: Unbound 1 [open] - ICMP
     group: App - Unbound 1 [open]
-    url: icmp://unbound-1-open.home
+    url: icmp://unbound-1-open.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 1 [open] - DNS A
     group: App - Unbound 1 [open]
-    url: unbound-1-open.home
+    url: unbound-1-open.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1859,17 +1859,17 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 1 [open] - DNS AAAA
     group: App - Unbound 1 [open]
-    url: unbound-1-open.home
+    url: unbound-1-open.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 1 [open] - HTTP
     group: App - Unbound 1 [open]
-    url: http://unbound-1-open.home/.proxy
+    url: http://unbound-1-open.home.matejkosiarcik.com/.proxy
 
   - <<: *default-http
     name: Unbound 1 [open] - HTTPS
     group: App - Unbound 1 [open]
-    url: https://unbound-1-open.home/.proxy
+    url: https://unbound-1-open.home.matejkosiarcik.com/.proxy
     alerts:
       - type: ntfy
       - type: email
@@ -1877,29 +1877,29 @@ endpoints:
   - <<: *default-http
     name: Unbound 1 [open] - Proxy prometheus metrics
     group: App - Unbound 1 [open]
-    url: https://proxy-prometheus:${UNBOUND_1_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-1-open.home/.proxy/metrics
+    url: https://proxy-prometheus:${UNBOUND_1_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-1-open.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Unbound 1 [open] - TCP:53
     group: App - Unbound 1 [open]
-    url: tcp://unbound-1-open.home:53
+    url: tcp://unbound-1-open.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: Unbound 1 [open] - UDP:53
     group: App - Unbound 1 [open]
-    url: udp://unbound-1-open.home:53
+    url: udp://unbound-1-open.home.matejkosiarcik.com:53
 
   ### Group: App - Unbound 2 [default] ###
 
   - <<: *default-icmp
     name: Unbound 2 [default] - ICMP
     group: App - Unbound 2 [default]
-    url: icmp://unbound-2-default.home
+    url: icmp://unbound-2-default.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 2 [default] - DNS A
     group: App - Unbound 2 [default]
-    url: unbound-2-default.home
+    url: unbound-2-default.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1907,17 +1907,17 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 2 [default] - DNS AAAA
     group: App - Unbound 2 [default]
-    url: unbound-2-default.home
+    url: unbound-2-default.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 2 [default] - HTTP
     group: App - Unbound 2 [default]
-    url: http://unbound-2-default.home/.proxy
+    url: http://unbound-2-default.home.matejkosiarcik.com/.proxy
 
   - <<: *default-http
     name: Unbound 2 [default] - HTTPS
     group: App - Unbound 2 [default]
-    url: https://unbound-2-default.home/.proxy
+    url: https://unbound-2-default.home.matejkosiarcik.com/.proxy
     alerts:
       - type: ntfy
       - type: email
@@ -1925,29 +1925,29 @@ endpoints:
   - <<: *default-http
     name: Unbound 2 [default] - Proxy prometheus metrics
     group: App - Unbound 2 [default]
-    url: https://proxy-prometheus:${UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-2-default.home/.proxy/metrics
+    url: https://proxy-prometheus:${UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-2-default.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Unbound 2 [default] - TCP:53
     group: App - Unbound 2 [default]
-    url: tcp://unbound-2-default.home:53
+    url: tcp://unbound-2-default.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: Unbound 2 [default] - UDP:53
     group: App - Unbound 2 [default]
-    url: udp://unbound-2-default.home:53
+    url: udp://unbound-2-default.home.matejkosiarcik.com:53
 
   ### Group: App - Unbound 2 [open] ###
 
   - <<: *default-icmp
     name: Unbound 2 [open] - ICMP
     group: App - Unbound 2 [open]
-    url: icmp://unbound-2-open.home
+    url: icmp://unbound-2-open.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 2 [open] - DNS A
     group: App - Unbound 2 [open]
-    url: unbound-2-open.home
+    url: unbound-2-open.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1955,17 +1955,17 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 2 [open] - DNS AAAA
     group: App - Unbound 2 [open]
-    url: unbound-2-open.home
+    url: unbound-2-open.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 2 [open] - HTTP
     group: App - Unbound 2 [open]
-    url: http://unbound-2-open.home/.proxy
+    url: http://unbound-2-open.home.matejkosiarcik.com/.proxy
 
   - <<: *default-http
     name: Unbound 2 [open] - HTTPS
     group: App - Unbound 2 [open]
-    url: https://unbound-2-open.home/.proxy
+    url: https://unbound-2-open.home.matejkosiarcik.com/.proxy
     alerts:
       - type: ntfy
       - type: email
@@ -1973,34 +1973,34 @@ endpoints:
   - <<: *default-http
     name: Unbound 2 [open] - Proxy prometheus metrics
     group: App - Unbound 2 [open]
-    url: https://proxy-prometheus:${UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-2-open.home/.proxy/metrics
+    url: https://proxy-prometheus:${UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-2-open.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Unbound 2 [open] - TCP:53
     group: App - Unbound 2 [open]
-    url: tcp://unbound-2-open.home:53
+    url: tcp://unbound-2-open.home.matejkosiarcik.com:53
 
   - <<: *default-udp
     name: Unbound 2 [open] - UDP:53
     group: App - Unbound 2 [open]
-    url: udp://unbound-2-open.home:53
+    url: udp://unbound-2-open.home.matejkosiarcik.com:53
 
   ### Group: App - UniFi Controller ###
 
   - <<: *default-icmp
     name: UniFi Controller Admin - ICMP
     group: App - UniFi Controller
-    url: icmp://unifi-controller.home
+    url: icmp://unifi-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: UniFi Controller Admin - HTTP
     group: App - UniFi Controller
-    url: http://unifi-controller.home
+    url: http://unifi-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: UniFi Controller Admin - HTTPS
     group: App - UniFi Controller
-    url: https://unifi-controller.home
+    url: https://unifi-controller.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -2008,7 +2008,7 @@ endpoints:
   - <<: *default-http
     name: UniFi Controller Admin - API Health
     group: App - UniFi Controller
-    url: https://unifi-controller.home/status
+    url: https://unifi-controller.home.matejkosiarcik.com/status
     conditions:
       - "[STATUS] == 200"
       - "[BODY].meta.rc == ok"
@@ -2017,79 +2017,79 @@ endpoints:
   - <<: *default-http
     name: UniFi Controller Admin - Proxy prometheus metrics
     group: App - UniFi Controller
-    url: https://proxy-prometheus:${UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@unifi-controller.home/.proxy/metrics
+    url: https://proxy-prometheus:${UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@unifi-controller.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-http
     name: UniFi Controller Admin - HTTP (raw)
     group: App - UniFi Controller
-    url: http://unifi-controller.home:8080
+    url: http://unifi-controller.home.matejkosiarcik.com:8080
 
   - <<: *default-http
     name: UniFi Controller Admin - HTTPS (raw)
     group: App - UniFi Controller
-    url: https://unifi-controller.home:8443
+    url: https://unifi-controller.home.matejkosiarcik.com:8443
 
   - <<: *default-tcp
     name: UniFi Controller - TCP:80
     group: App - UniFi Controller
-    url: tcp://unifi-controller.home:80
+    url: tcp://unifi-controller.home.matejkosiarcik.com:80
 
   - <<: *default-udp
     name: UniFi Controller - UDP:1900
     group: App - UniFi Controller
-    url: udp://unifi-controller.home:1900
+    url: udp://unifi-controller.home.matejkosiarcik.com:1900
 
   - <<: *default-udp
     name: UniFi Controller - UDP:3478
     group: App - UniFi Controller
-    url: udp://unifi-controller.home:3478
+    url: udp://unifi-controller.home.matejkosiarcik.com:3478
 
   - <<: *default-udp
     name: UniFi Controller - UDP:5514
     group: App - UniFi Controller
-    url: udp://unifi-controller.home:5514
+    url: udp://unifi-controller.home.matejkosiarcik.com:5514
 
   - <<: *default-udp
     name: UniFi Controller - UDP:10001
     group: App - UniFi Controller
-    url: udp://unifi-controller.home:10001
+    url: udp://unifi-controller.home.matejkosiarcik.com:10001
 
   - <<: *default-tcp
     name: UniFi Controller - TCP:8080
     group: App - UniFi Controller
-    url: tcp://unifi-controller.home:8080
+    url: tcp://unifi-controller.home.matejkosiarcik.com:8080
 
   - <<: *default-tcp
     name: UniFi Controller - TCP:443
     group: App - UniFi Controller
-    url: tcp://unifi-controller.home:443
+    url: tcp://unifi-controller.home.matejkosiarcik.com:443
 
   - <<: *default-tcp
     name: UniFi Controller - TCP:8443
     group: App - UniFi Controller
-    url: tcp://unifi-controller.home:8443
+    url: tcp://unifi-controller.home.matejkosiarcik.com:8443
 
   - <<: *default-tcp
     name: UniFi Controller - TCP:6789
     group: App - UniFi Controller
-    url: tcp://unifi-controller.home:6789
+    url: tcp://unifi-controller.home.matejkosiarcik.com:6789
 
   ### Group: App - Vaultwarden ###
 
   - <<: *default-icmp
     name: Vaultwarden - ICMP
     group: App - Vaultwarden
-    url: icmp://vaultwarden.home
+    url: icmp://vaultwarden.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Vaultwarden - HTTP
     group: App - Vaultwarden
-    url: http://vaultwarden.home
+    url: http://vaultwarden.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Vaultwarden - HTTPS
     group: App - Vaultwarden
-    url: https://vaultwarden.home
+    url: https://vaultwarden.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -2097,17 +2097,17 @@ endpoints:
   - <<: *default-http
     name: Vaultwarden - Proxy prometheus metrics
     group: App - Vaultwarden
-    url: https://proxy-prometheus:${VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD}@vaultwarden.home/.proxy/metrics
+    url: https://proxy-prometheus:${VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD}@vaultwarden.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Vaultwarden - TCP:80
     group: App - Vaultwarden
-    url: tcp://vaultwarden.home:80
+    url: tcp://vaultwarden.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
     name: Vaultwarden - TCP:443
     group: App - Vaultwarden
-    url: tcp://vaultwarden.home:443
+    url: tcp://vaultwarden.home.matejkosiarcik.com:443
 
   ### Group: App - Vikunja ###
   # TODO: Enable Vikunja checks
@@ -2115,19 +2115,19 @@ endpoints:
   - <<: *default-icmp
     name: Vikunja - ICMP
     group: App - Vikunja
-    url: icmp://vikunja.home
+    url: icmp://vikunja.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: Vikunja - HTTP
     group: App - Vikunja
-    url: http://vikunja.home
+    url: http://vikunja.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: Vikunja - HTTPS
     group: App - Vikunja
-    url: https://vikunja.home
+    url: https://vikunja.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -2136,13 +2136,13 @@ endpoints:
   - <<: *default-http
     name: Vikunja - Proxy prometheus metrics
     group: App - Vikunja
-    url: https://proxy-prometheus:${VIKUNJA_PROXY_PROMETHEUS_PASSWORD}@vikunja.home/.proxy/metrics
+    url: https://proxy-prometheus:${VIKUNJA_PROXY_PROMETHEUS_PASSWORD}@vikunja.home.matejkosiarcik.com/.proxy/metrics
     enabled: false
 
   - <<: *default-http
     name: Vikunja - Prometheus metrics
     group: App - Vikunja
-    url: https://vikunja.home/api/v1/metrics
+    url: https://vikunja.home.matejkosiarcik.com/api/v1/metrics
     conditions:
       - "[STATUS] == 401"
     enabled: false
@@ -2150,11 +2150,11 @@ endpoints:
   - <<: *default-tcp
     name: Vikunja - TCP:80
     group: App - Vikunja
-    url: tcp://vikunja.home:80
+    url: tcp://vikunja.home.matejkosiarcik.com:80
     enabled: false
 
   - <<: *default-tcp
     name: Vikunja - TCP:443
     group: App - Vikunja
-    url: tcp://vikunja.home:443
+    url: tcp://vikunja.home.matejkosiarcik.com:443
     enabled: false

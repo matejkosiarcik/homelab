@@ -17,7 +17,7 @@ services:
       ALLOWED_HOSTS: "*"
       # DEBUG: "True" # Enable for debugging
       DEFAULT_FROM_EMAIL: system@healthchecks.localhost
-      EMAIL_HOST: smtp4dev.home
+      EMAIL_HOST: smtp4dev.home.matejkosiarcik.com
       REGISTRATION_OPEN: "True"
       SITE_ROOT: https://localhost:8443
 

@@ -2,7 +2,7 @@
 behind-proxy: true
 # "base-url" has to be the same URL as is configured in the iOS app if we want notifications to be received
 # because of self-signed certs, the app can't connect to HTTPS endpoint, so this has to be plain HTTP
-base-url: http://ntfy.home
+base-url: http://ntfy.home.matejkosiarcik.com
 upstream-base-url: https://ntfy.sh # This has to be set to ensure push notification delivery to iOS app
 
 # Data config
@@ -17,7 +17,7 @@ auth-default-access: deny-all # read-only
 
 # Email
 smtp-server-listen: :25
-smtp-server-domain: ntfy.home
+smtp-server-domain: ntfy.home.matejkosiarcik.com
 smtp-server-addr-prefix: ntfy-
 
 # Metrics

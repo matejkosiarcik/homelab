@@ -22,11 +22,11 @@ test.describe(apps.healthchecks.title, () => {
             const users = [
                 {
                     username: 'admin',
-                    email: 'admin@healthchecks.home',
+                    email: 'admin@healthchecks.home.matejkosiarcik.com',
                 },
                 {
                     username: faker.string.alpha(10),
-                    email: `${faker.string.alpha(8)}@healthchecks.home`,
+                    email: `${faker.string.alpha(8)}@healthchecks.home.matejkosiarcik.com`,
                     random: true,
                 }
             ];
