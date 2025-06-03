@@ -3,8 +3,10 @@ set -euf
 
 domain='home.matejkosiarcik.com'
 
-create_certificate='0'
 certificate_file='/homelab/certs/fullchain.pem'
+certificate_archive_file='/homelab/data/certificate.tar.xz'
+
+create_certificate='0'
 if [ -e "$certificate_file" ]; then
     if [ "$(openssl x509 -noout -subject -in "$certificate_file" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.$domain" ]; then
         printf 'Renewing certificate (wrong domain)\n' >&2
@@ -21,6 +23,31 @@ fi
 if [ "$create_certificate" != '1' ]; then
     printf 'Existing certificate is valid\n' >&2
     exit 0
+fi
+
+if [ -e "$certificate_archive_file" ]; then
+    tmpdir="$(mktemp -d)"
+    tar -xJf "$certificate_archive_file" -C "$tmpdir" --strip-components=1
+    tmp_certificate_file="$tmpdir/fullchain.pem"
+
+    certificate_valid='1'
+    if [ "$(openssl x509 -noout -subject -in "$tmp_certificate_file" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.$domain" ]; then
+        printf 'Renewing certificate archive (wrong domain)\n' >&2
+        certificate_valid='0'
+    elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in "$tmp_certificate_file" >/dev/null; then
+        # Certificate is valid for 1.5 months
+        printf 'Renewing certificate archive (renew period)\n' >&2
+        certificate_valid='0'
+    fi
+
+    if [ "$certificate_valid" = '1' ]; then
+        printf 'Existing certificate archive is valid\n' >&2
+        mkdir -p /homelab/certs
+        find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+        tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1
+        rm -rf "$tmpdir"
+        exit 0
+    fi
 fi
 
 date +'%Y-%m-%dT%H:%M:%S' >>'/homelab/data/timestamps.log'
@@ -86,7 +113,6 @@ certbot certonly --manual --non-interactive --agree-tos \
     --manual-cleanup-hook 'sh certbot-hook-after.sh >>/homelab/logs/certbot.log 2>&1' \
     $test_cert_mode || printf '%s\n' "$?" >"$statusfile"
 
-certificate_archive_file='/homelab/data/certificate.tar.xz'
 if [ "$(cat "$statusfile")" != '0' ]; then
     printf 'Certificate creation failed\n' >&2
 else
@@ -96,6 +122,7 @@ else
         rm -rf "$certificate_archive_file"
     fi
     mv '/etc/letsencrypt/live/certificate.tar.xz' "$certificate_archive_file"
+    mkdir -p /homelab/certs
     find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
     tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1
 fi
