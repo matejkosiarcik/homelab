@@ -27,11 +27,11 @@ test.describe(apps['speedtest-tracker'].title, () => {
             const users = [
                 {
                     username: 'admin',
-                    email: 'admin@speedtest-tracker.home',
+                    email: 'admin@speedtest-tracker.home.matejkosiarcik.com',
                 },
                 {
                     username: faker.string.alpha(10),
-                    email: `${faker.string.alpha(10)}@speedtest-tracker.home`,
+                    email: `${faker.string.alpha(10)}@speedtest-tracker.home.matejkosiarcik.com`,
                     random: true,
                 }
             ];

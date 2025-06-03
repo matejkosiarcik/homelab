@@ -192,7 +192,7 @@
       ansible.builtin.shell: |
         # TODO: Switch to HTTPS after real Let\'s encrypt certificates
         set -eufo pipefail
-        target='http://vaultwarden.home'
+        target='http://vaultwarden.home.matejkosiarcik.com'
         if [ "$(bw config server)" = "$target" ]; then
           exit 0
         fi
@@ -269,10 +269,10 @@
             "max-size": "100m"
           },
           "insecure-registries": [
-            "dockerhub-cache-proxy.home"
+            "dockerhub-cache-proxy.home.matejkosiarcik.com"
           ],
           "registry-mirrors": [
-            "https://dockerhub-cache-proxy.home"
+            "https://dockerhub-cache-proxy.home.matejkosiarcik.com"
           ],
           "default-address-pools": [
             {

@@ -17,4 +17,4 @@
 - \[Prod\] Setup admin password in `/settings#general`
 - \[Prod\] Setup notifications (ntfy, mail):
     - ntfy: see [ntfy/README.md](../ntfy/README.md)
-    - mail: `smtp4dev.home`
+    - mail: `smtp4dev.home.matejkosiarcik.com`
