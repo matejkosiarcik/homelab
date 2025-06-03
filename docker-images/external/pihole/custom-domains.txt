@@ -41,7 +41,7 @@
 10.1.10.44 glances-odroid-h3.home
 10.1.10.45 vaultwarden.home
 10.1.10.46 prometheus.home
-10.1.10.47 certbot.home
+10.1.10.47 certbot.home.matejkosiarcik.com
 
 10.1.12.1 tvheadend.home
 
