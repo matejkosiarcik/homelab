@@ -16,7 +16,7 @@ services:
       <<: *common-env-variables
       ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DEFAULT_FROM_EMAIL: system@healthchecks${DOCKER_COMPOSE_NETWORK_DOMAIN}
-      EMAIL_HOST: smtp4dev.home
+      EMAIL_HOST: smtp4dev.home.matejkosiarcik.com
       REGISTRATION_OPEN: "False"
       SITE_ROOT: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
 

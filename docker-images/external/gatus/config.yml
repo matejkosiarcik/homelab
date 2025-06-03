@@ -12,7 +12,7 @@ metrics: true
 alerting:
   email:
     from: gatus@${HOMELAB_APP_EXTERNAL_DOMAIN}
-    host: smtp4dev.home
+    host: smtp4dev.home.matejkosiarcik.com
     port: 25
     to: notifications@${HOMELAB_APP_EXTERNAL_DOMAIN}
     client:
@@ -201,17 +201,17 @@ endpoints:
   - <<: *default-icmp
     name: ActualBudget - ICMP
     group: App - ActualBudget
-    url: icmp://actualbudget.home
+    url: icmp://actualbudget.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget - HTTP
     group: App - ActualBudget
-    url: http://actualbudget.home
+    url: http://actualbudget.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget - HTTPS
     group: App - ActualBudget
-    url: https://actualbudget.home
+    url: https://actualbudget.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -236,17 +236,17 @@ endpoints:
   - <<: *default-icmp
     name: ActualBudget (Public) - ICMP
     group: App - ActualBudget (Public)
-    url: icmp://actualbudget-public.home
+    url: icmp://actualbudget-public.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget (Public) - HTTP
     group: App - ActualBudget (Public)
-    url: http://actualbudget-public.home
+    url: http://actualbudget-public.home.matejkosiarcik.com
 
   - <<: *default-http
     name: ActualBudget (Public) - HTTPS
     group: App - ActualBudget (Public)
-    url: https://actualbudget-public.home
+    url: https://actualbudget-public.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -271,19 +271,19 @@ endpoints:
   - <<: *default-icmp
     name: Certbot - ICMP
     group: App - Certbot
-    url: icmp://certbot.home
+    url: icmp://certbot.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Certbot - HTTP
     group: App - Certbot
-    url: http://certbot.home
+    url: http://certbot.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 403"
 
   - <<: *default-http
     name: Certbot - HTTPS
     group: App - Certbot
-    url: https://certbot.home
+    url: https://certbot.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 403"
 
@@ -315,17 +315,17 @@ endpoints:
   - <<: *default-icmp
     name: Changedetection - ICMP
     group: App - Changedetection
-    url: icmp://changedetection.home
+    url: icmp://changedetection.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Changedetection - HTTP
     group: App - Changedetection
-    url: http://changedetection.home
+    url: http://changedetection.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Changedetection - HTTPS
     group: App - Changedetection
-    url: https://changedetection.home
+    url: https://changedetection.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -350,17 +350,17 @@ endpoints:
   # - <<: *default-icmp
   #   name: Desklamp - Left - ICMP
   #   group: App - Desklamp - Left
-  #   url: icmp://desklamp-left.home
+  #   url: icmp://desklamp-left.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Left - HTTP
   #   group: App - Desklamp - Left
-  #   url: http://desklamp-left.home
+  #   url: http://desklamp-left.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Left - HTTPS
   #   group: App - Desklamp - Left
-  #   url: https://desklamp-left.home
+  #   url: https://desklamp-left.home.matejkosiarcik.com
   #   enabled: false
 
   # - <<: *default-http
@@ -394,17 +394,17 @@ endpoints:
   # - <<: *default-icmp
   #   name: Desklamp - Right - ICMP
   #   group: App - Desklamp - Right
-  #   url: icmp://desklamp-right.home
+  #   url: icmp://desklamp-right.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Right - HTTP
   #   group: App - Desklamp - Right
-  #   url: http://desklamp-right.home
+  #   url: http://desklamp-right.home.matejkosiarcik.com
 
   # - <<: *default-http
   #   name: Desklamp - Right - HTTPS
   #   group: App - Desklamp - Right
-  #   url: https://desklamp-right.home
+  #   url: https://desklamp-right.home.matejkosiarcik.com
   #   enabled: false
 
   # - <<: *default-http
@@ -438,17 +438,17 @@ endpoints:
   - <<: *default-icmp
     name: DockerHub proxy - ICMP
     group: App - DockerHub proxy
-    url: icmp://dockerhub-cache-proxy.home
+    url: icmp://dockerhub-cache-proxy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: DockerHub proxy - HTTP
     group: App - DockerHub proxy
-    url: http://dockerhub-cache-proxy.home
+    url: http://dockerhub-cache-proxy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: DockerHub proxy - HTTPS
     group: App - DockerHub proxy
-    url: https://dockerhub-cache-proxy.home
+    url: https://dockerhub-cache-proxy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: DockerHub proxy - Proxy prometheus metrics
@@ -481,17 +481,17 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle - ICMP
     group: App - Dozzle
-    url: icmp://dozzle.home
+    url: icmp://dozzle.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Dozzle - HTTP
     group: App - Dozzle
-    url: http://dozzle.home
+    url: http://dozzle.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Dozzle - HTTPS
     group: App - Dozzle
-    url: https://dozzle.home
+    url: https://dozzle.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -518,7 +518,7 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - MacBook Pro 2012 - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-macbook-pro-2012.home
+    url: icmp://dozzle-agent-macbook-pro-2012.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - MacBook Pro 2012 - TCP:7007
@@ -533,7 +533,7 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - Odroid H3 - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-odroid-h3.home
+    url: icmp://dozzle-agent-odroid-h3.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - Odroid H3 - TCP:7007
@@ -548,7 +548,7 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home
+    url: icmp://dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
@@ -563,7 +563,7 @@ endpoints:
   - <<: *default-icmp
     name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
     group: App - Dozzle agents
-    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home
+    url: icmp://dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
@@ -578,17 +578,17 @@ endpoints:
   - <<: *default-icmp
     name: Gatus (1) - ICMP
     group: App - Gatus (1)
-    url: icmp://gatus-1.home
+    url: icmp://gatus-1.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (1) - HTTP
     group: App - Gatus (1)
-    url: http://gatus-1.home
+    url: http://gatus-1.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (1) - HTTPS
     group: App - Gatus (1)
-    url: https://gatus-1.home
+    url: https://gatus-1.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -618,17 +618,17 @@ endpoints:
   - <<: *default-icmp
     name: Gatus (2) - ICMP
     group: App - Gatus (2)
-    url: icmp://gatus-2.home
+    url: icmp://gatus-2.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (2) - HTTP
     group: App - Gatus (2)
-    url: http://gatus-2.home
+    url: http://gatus-2.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Gatus (2) - HTTPS
     group: App - Gatus (2)
-    url: https://gatus-2.home
+    url: https://gatus-2.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -660,19 +660,19 @@ endpoints:
   - <<: *default-icmp
     name: Glances - Odroid H3 - ICMP
     group: App - Glances
-    url: icmp://glances-odroid-h3.home
+    url: icmp://glances-odroid-h3.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Glances - Odroid H3 - HTTP
     group: App - Glances
-    url: http://glances-odroid-h3.home
+    url: http://glances-odroid-h3.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Glances - Odroid H3 - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home
+    url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -702,19 +702,19 @@ endpoints:
   - <<: *default-icmp
     name: Glances - Raspberry Pi 4B 2GB - ICMP
     group: App - Glances
-    url: icmp://glances-raspberry-pi-4b-2g.home
+    url: icmp://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 2GB - HTTP
     group: App - Glances
-    url: http://glances-raspberry-pi-4b-2g.home
+    url: http://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 2GB - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.home
+    url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -744,19 +744,19 @@ endpoints:
   - <<: *default-icmp
     name: Glances - Raspberry Pi 4B 4GB - ICMP
     group: App - Glances
-    url: icmp://glances-raspberry-pi-4b-4g.home
+    url: icmp://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 4GB - HTTP
     group: App - Glances
-    url: http://glances-raspberry-pi-4b-4g.home
+    url: http://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 4GB - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.home
+    url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -786,17 +786,17 @@ endpoints:
   - <<: *default-icmp
     name: Healthchecks - ICMP
     group: App - Healthchecks
-    url: icmp://healthchecks.home
+    url: icmp://healthchecks.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Healthchecks - HTTP
     group: App - Healthchecks
-    url: http://healthchecks.home
+    url: http://healthchecks.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Healthchecks - HTTPS
     group: App - Healthchecks
-    url: https://healthchecks.home
+    url: https://healthchecks.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -829,17 +829,17 @@ endpoints:
   - <<: *default-icmp
     name: Home Assistant - ICMP
     group: App - Home Assistant
-    url: icmp://homeassistant.home
+    url: icmp://homeassistant.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Home Assistant - HTTP
     group: App - Home Assistant
-    url: http://homeassistant.home
+    url: http://homeassistant.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Home Assistant - HTTPS
     group: App - Home Assistant
-    url: https://homeassistant.home
+    url: https://homeassistant.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -871,19 +871,19 @@ endpoints:
   - <<: *default-icmp
     name: Homepage - ICMP
     group: App - Homepage
-    url: icmp://homepage.home
+    url: icmp://homepage.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Homepage - HTTP
     group: App - Homepage
-    url: http://homepage.home
+    url: http://homepage.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Homepage - HTTPS
     group: App - Homepage
-    url: https://admin:${HOMEPAGE_PASSWORD}@homepage.home
+    url: https://admin:${HOMEPAGE_PASSWORD}@homepage.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -908,17 +908,17 @@ endpoints:
   - <<: *default-icmp
     name: Jellyfin - ICMP
     group: App - Jellyfin
-    url: icmp://jellyfin.home
+    url: icmp://jellyfin.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Jellyfin - HTTP
     group: App - Jellyfin
-    url: http://jellyfin.home
+    url: http://jellyfin.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Jellyfin - HTTPS
     group: App - Jellyfin
-    url: https://jellyfin.home
+    url: https://jellyfin.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -963,19 +963,19 @@ endpoints:
   - <<: *default-icmp
     name: Minio API - ICMP
     group: App - Minio
-    url: icmp://minio.home
+    url: icmp://minio.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Minio API - HTTP
     group: App - Minio
-    url: http://minio.home
+    url: http://minio.home.matejkosiarcik.com
     conditions:
       - "[STATUS] < 500"
 
   - <<: *default-http
     name: Minio API - HTTPS
     group: App - Minio
-    url: https://minio.home
+    url: https://minio.home.matejkosiarcik.com
     conditions:
       - "[STATUS] < 500"
 
@@ -1022,17 +1022,17 @@ endpoints:
   - <<: *default-icmp
     name: Minio Console - ICMP
     group: App - Minio
-    url: icmp://minio-console.home
+    url: icmp://minio-console.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Minio Console - HTTP
     group: App - Minio
-    url: http://minio-console.home
+    url: http://minio-console.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Minio Console - HTTPS
     group: App - Minio
-    url: https://minio-console.home
+    url: https://minio-console.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1052,17 +1052,17 @@ endpoints:
   - <<: *default-icmp
     name: MotionEye (Stove) - ICMP
     group: App - MotionEye (Stove)
-    url: icmp://motioneye-stove.home
+    url: icmp://motioneye-stove.home.matejkosiarcik.com
 
   - <<: *default-http
     name: MotionEye (Stove) - HTTP
     group: App - MotionEye (Stove)
-    url: http://motioneye-stove.home
+    url: http://motioneye-stove.home.matejkosiarcik.com
 
   - <<: *default-http
     name: MotionEye (Stove) - HTTPS
     group: App - MotionEye (Stove)
-    url: https://motioneye-stove.home
+    url: https://motioneye-stove.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1100,19 +1100,19 @@ endpoints:
   - <<: *default-icmp
     name: NetAlertX - ICMP
     group: App - NetAlertX
-    url: icmp://netalertx.home
+    url: icmp://netalertx.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: NetAlertX - HTTP
     group: App - NetAlertX
-    url: http://netalertx.home
+    url: http://netalertx.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: NetAlertX - HTTPS
     group: App - NetAlertX
-    url: https://netalertx.home
+    url: https://netalertx.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1159,17 +1159,17 @@ endpoints:
   - <<: *default-icmp
     name: Ntfy - ICMP
     group: App - Ntfy
-    url: icmp://ntfy.home
+    url: icmp://ntfy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Ntfy - HTTP
     group: App - Ntfy
-    url: http://ntfy.home
+    url: http://ntfy.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Ntfy - HTTPS
     group: App - Ntfy
-    url: https://ntfy.home
+    url: https://ntfy.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1207,17 +1207,17 @@ endpoints:
   - <<: *default-icmp
     name: Omada Controller Admin - ICMP
     group: App - Omada Controller
-    url: icmp://omada-controller.home
+    url: icmp://omada-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Omada Controller Admin - HTTP
     group: App - Omada Controller
-    url: http://omada-controller.home
+    url: http://omada-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Omada Controller Admin - HTTPS
     group: App - Omada Controller
-    url: https://omada-controller.home
+    url: https://omada-controller.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1295,12 +1295,12 @@ endpoints:
   - <<: *default-icmp
     name: OpenSpeedTest - ICMP
     group: App - OpenSpeedTest
-    url: icmp://openspeedtest.home
+    url: icmp://openspeedtest.home.matejkosiarcik.com
 
   - <<: *default-http
     name: OpenSpeedTest - HTTP
     group: App - OpenSpeedTest
-    url: http://openspeedtest.home
+    url: http://openspeedtest.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1308,7 +1308,7 @@ endpoints:
   - <<: *default-http
     name: OpenSpeedTest - HTTPS
     group: App - OpenSpeedTest
-    url: https://openspeedtest.home
+    url: https://openspeedtest.home.matejkosiarcik.com
 
   - <<: *default-http
     name: OpenSpeedTest - Proxy prometheus metrics
@@ -1330,17 +1330,17 @@ endpoints:
   - <<: *default-icmp
     name: PiHole 1 Primary - ICMP
     group: App - PiHole 1 Primary
-    url: icmp://pihole-1-primary.home
+    url: icmp://pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Primary - HTTP
     group: App - PiHole 1 Primary
-    url: http://pihole-1-primary.home
+    url: http://pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Primary - HTTPS
     group: App - PiHole 1 Primary
-    url: https://pihole-1-primary.home
+    url: https://pihole-1-primary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1358,12 +1358,12 @@ endpoints:
   - <<: *default-dns-a
     name: PiHole 1 Primary - DNS A
     group: App - PiHole 1 Primary
-    url: pihole-1-primary.home
+    url: pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 1 Primary - DNS AAAA
     group: App - PiHole 1 Primary
-    url: pihole-1-primary.home
+    url: pihole-1-primary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 1 Primary - TCP:53
@@ -1390,17 +1390,17 @@ endpoints:
   - <<: *default-icmp
     name: PiHole 1 Secondary - ICMP
     group: App - PiHole 1 Secondary
-    url: icmp://pihole-1-secondary.home
+    url: icmp://pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Secondary - HTTP
     group: App - PiHole 1 Secondary
-    url: http://pihole-1-secondary.home
+    url: http://pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 1 Secondary - HTTPS
     group: App - PiHole 1 Secondary
-    url: https://pihole-1-secondary.home
+    url: https://pihole-1-secondary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1418,12 +1418,12 @@ endpoints:
   - <<: *default-dns-a
     name: PiHole 1 Secondary - DNS A
     group: App - PiHole 1 Secondary
-    url: pihole-1-secondary.home
+    url: pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 1 Secondary - DNS AAAA
     group: App - PiHole 1 Secondary
-    url: pihole-1-secondary.home
+    url: pihole-1-secondary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 1 Secondary - TCP:53
@@ -1450,17 +1450,17 @@ endpoints:
   - <<: *default-icmp
     name: PiHole 2 Primary - ICMP
     group: App - PiHole 2 Primary
-    url: icmp://pihole-2-primary.home
+    url: icmp://pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Primary - HTTP
     group: App - PiHole 2 Primary
-    url: http://pihole-2-primary.home
+    url: http://pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Primary - HTTPS
     group: App - PiHole 2 Primary
-    url: https://pihole-2-primary.home
+    url: https://pihole-2-primary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1478,12 +1478,12 @@ endpoints:
   - <<: *default-dns-a
     name: PiHole 2 Primary - DNS A
     group: App - PiHole 2 Primary
-    url: pihole-2-primary.home
+    url: pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 2 Primary - DNS AAAA
     group: App - PiHole 2 Primary
-    url: pihole-2-primary.home
+    url: pihole-2-primary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 2 Primary - TCP:53
@@ -1510,17 +1510,17 @@ endpoints:
   - <<: *default-icmp
     name: PiHole 2 Secondary - ICMP
     group: App - PiHole 2 Secondary
-    url: icmp://pihole-2-secondary.home
+    url: icmp://pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Secondary - HTTP
     group: App - PiHole 2 Secondary
-    url: http://pihole-2-secondary.home
+    url: http://pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-http
     name: PiHole 2 Secondary - HTTPS
     group: App - PiHole 2 Secondary
-    url: https://pihole-2-secondary.home
+    url: https://pihole-2-secondary.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1538,12 +1538,12 @@ endpoints:
   - <<: *default-dns-a
     name: PiHole 2 Secondary - DNS A
     group: App - PiHole 2 Secondary
-    url: pihole-2-secondary.home
+    url: pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-dns-aaaa
     name: PiHole 2 Secondary - DNS AAAA
     group: App - PiHole 2 Secondary
-    url: pihole-2-secondary.home
+    url: pihole-2-secondary.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: PiHole 2 Secondary - TCP:53
@@ -1570,19 +1570,19 @@ endpoints:
   - <<: *default-icmp
     name: Prometheus - ICMP
     group: App - Prometheus
-    url: icmp://prometheus.home
+    url: icmp://prometheus.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Prometheus - HTTP
     group: App - Prometheus
-    url: http://prometheus.home
+    url: http://prometheus.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
     name: Prometheus - HTTPS
     group: App - Prometheus
-    url: https://prometheus.home
+    url: https://prometheus.home.matejkosiarcik.com
     conditions:
       - "[STATUS] == 401"
     alerts:
@@ -1614,7 +1614,7 @@ endpoints:
   - <<: *default-icmp
     name: SMB (data) - ICMP
     group: App - SMB (data)
-    url: icmp://smb-data.home
+    url: icmp://smb-data.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: SMB (data) - TCP:139
@@ -1634,7 +1634,7 @@ endpoints:
   - <<: *default-icmp
     name: SMB (snapshots) - ICMP
     group: App - SMB (snapshots)
-    url: icmp://smb-snapshots.home
+    url: icmp://smb-snapshots.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: SMB (snapshots) - TCP:139
@@ -1654,17 +1654,17 @@ endpoints:
   - <<: *default-icmp
     name: Smtp4dev - ICMP
     group: App - Smtp4dev
-    url: icmp://smtp4dev.home
+    url: icmp://smtp4dev.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Smtp4dev - HTTP
     group: App - Smtp4dev
-    url: http://smtp4dev.home
+    url: http://smtp4dev.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Smtp4dev - HTTPS
     group: App - Smtp4dev
-    url: https://smtp4dev.home
+    url: https://smtp4dev.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1694,17 +1694,17 @@ endpoints:
   - <<: *default-icmp
     name: Speedtest Tracker - ICMP
     group: App - Speedtest Tracker
-    url: icmp://speedtest-tracker.home
+    url: icmp://speedtest-tracker.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Speedtest Tracker - HTTP
     group: App - Speedtest Tracker
-    url: http://speedtest-tracker.home
+    url: http://speedtest-tracker.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Speedtest Tracker - HTTPS
     group: App - Speedtest Tracker
-    url: https://speedtest-tracker.home
+    url: https://speedtest-tracker.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1737,17 +1737,17 @@ endpoints:
   - <<: *default-icmp
     name: Tvheadend - ICMP
     group: App - Tvheadend
-    url: icmp://tvheadend.home
+    url: icmp://tvheadend.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Tvheadend - HTTP
     group: App - Tvheadend
-    url: http://tvheadend.home
+    url: http://tvheadend.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Tvheadend - HTTPS
     group: App - Tvheadend
-    url: https://tvheadend.home
+    url: https://tvheadend.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1798,12 +1798,12 @@ endpoints:
   - <<: *default-icmp
     name: Unbound 1 [default] - ICMP
     group: App - Unbound 1 [default]
-    url: icmp://unbound-1-default.home
+    url: icmp://unbound-1-default.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 1 [default] - DNS A
     group: App - Unbound 1 [default]
-    url: unbound-1-default.home
+    url: unbound-1-default.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1811,7 +1811,7 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 1 [default] - DNS AAAA
     group: App - Unbound 1 [default]
-    url: unbound-1-default.home
+    url: unbound-1-default.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 1 [default] - HTTP
@@ -1846,12 +1846,12 @@ endpoints:
   - <<: *default-icmp
     name: Unbound 1 [open] - ICMP
     group: App - Unbound 1 [open]
-    url: icmp://unbound-1-open.home
+    url: icmp://unbound-1-open.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 1 [open] - DNS A
     group: App - Unbound 1 [open]
-    url: unbound-1-open.home
+    url: unbound-1-open.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1859,7 +1859,7 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 1 [open] - DNS AAAA
     group: App - Unbound 1 [open]
-    url: unbound-1-open.home
+    url: unbound-1-open.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 1 [open] - HTTP
@@ -1894,12 +1894,12 @@ endpoints:
   - <<: *default-icmp
     name: Unbound 2 [default] - ICMP
     group: App - Unbound 2 [default]
-    url: icmp://unbound-2-default.home
+    url: icmp://unbound-2-default.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 2 [default] - DNS A
     group: App - Unbound 2 [default]
-    url: unbound-2-default.home
+    url: unbound-2-default.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1907,7 +1907,7 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 2 [default] - DNS AAAA
     group: App - Unbound 2 [default]
-    url: unbound-2-default.home
+    url: unbound-2-default.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 2 [default] - HTTP
@@ -1942,12 +1942,12 @@ endpoints:
   - <<: *default-icmp
     name: Unbound 2 [open] - ICMP
     group: App - Unbound 2 [open]
-    url: icmp://unbound-2-open.home
+    url: icmp://unbound-2-open.home.matejkosiarcik.com
 
   - <<: *default-dns-a
     name: Unbound 2 [open] - DNS A
     group: App - Unbound 2 [open]
-    url: unbound-2-open.home
+    url: unbound-2-open.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -1955,7 +1955,7 @@ endpoints:
   - <<: *default-dns-aaaa
     name: Unbound 2 [open] - DNS AAAA
     group: App - Unbound 2 [open]
-    url: unbound-2-open.home
+    url: unbound-2-open.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Unbound 2 [open] - HTTP
@@ -1990,17 +1990,17 @@ endpoints:
   - <<: *default-icmp
     name: UniFi Controller Admin - ICMP
     group: App - UniFi Controller
-    url: icmp://unifi-controller.home
+    url: icmp://unifi-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: UniFi Controller Admin - HTTP
     group: App - UniFi Controller
-    url: http://unifi-controller.home
+    url: http://unifi-controller.home.matejkosiarcik.com
 
   - <<: *default-http
     name: UniFi Controller Admin - HTTPS
     group: App - UniFi Controller
-    url: https://unifi-controller.home
+    url: https://unifi-controller.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -2079,17 +2079,17 @@ endpoints:
   - <<: *default-icmp
     name: Vaultwarden - ICMP
     group: App - Vaultwarden
-    url: icmp://vaultwarden.home
+    url: icmp://vaultwarden.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Vaultwarden - HTTP
     group: App - Vaultwarden
-    url: http://vaultwarden.home
+    url: http://vaultwarden.home.matejkosiarcik.com
 
   - <<: *default-http
     name: Vaultwarden - HTTPS
     group: App - Vaultwarden
-    url: https://vaultwarden.home
+    url: https://vaultwarden.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
@@ -2115,19 +2115,19 @@ endpoints:
   - <<: *default-icmp
     name: Vikunja - ICMP
     group: App - Vikunja
-    url: icmp://vikunja.home
+    url: icmp://vikunja.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: Vikunja - HTTP
     group: App - Vikunja
-    url: http://vikunja.home
+    url: http://vikunja.home.matejkosiarcik.com
     enabled: false
 
   - <<: *default-http
     name: Vikunja - HTTPS
     group: App - Vikunja
-    url: https://vikunja.home
+    url: https://vikunja.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email

@@ -25,5 +25,5 @@ log:
 
 mailer:
   enabled: true
-  host: smtp4dev.home
+  host: smtp4dev.home.matejkosiarcik.com
   port: 25

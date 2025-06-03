@@ -31,7 +31,7 @@ ntfy://<token>@ntfy.home/<topic>
 Alternatively you can also publish via email (see also <https://github.com/caronc/apprise/wiki/Notify_email>):
 
 ```txt
-mailto://ntfy-<topic>+<token>@ntfy.home
+mailto://ntfy-<topic>+<token>@ntfy.home.matejkosiarcik.com
 ```
 
 Obviously replace `<token>` and `<topic>` with their respective values (remove enclosing `<>`).

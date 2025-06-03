@@ -31,23 +31,23 @@
 
     - UniFi Controller:
         description: SDN manager
-        href: https://unifi-controller.home
-        ping: unifi-controller.home
+        href: https://unifi-controller.home.matejkosiarcik.com
+        ping: unifi-controller.home.matejkosiarcik.com
         icon: /icons/unifi.png
         widget:
           type: unifi
-          url: https://unifi-controller.home
+          url: https://unifi-controller.home.matejkosiarcik.com
           username: homepage
           password: "{{HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD}}"
 
     - Omada Controller:
         description: SDN manager
-        href: https://omada-controller.home
-        ping: omada-controller.home
+        href: https://omada-controller.home.matejkosiarcik.com
+        ping: omada-controller.home.matejkosiarcik.com
         icon: /icons/tp-link-omada.png
         widget:
           type: omada
-          url: https://omada-controller.home
+          url: https://omada-controller.home.matejkosiarcik.com
           username: homepage
           password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
           site: Home
@@ -106,57 +106,57 @@
 - DNS:
     - PiHole 1 Primary:
         description: DNS server with built-in adblocking
-        href: https://pihole-1-primary.home
-        ping: pihole-1-primary.home
+        href: https://pihole-1-primary.home.matejkosiarcik.com
+        ping: pihole-1-primary.home.matejkosiarcik.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-primary.home
+          url: https://pihole-1-primary.home.matejkosiarcik.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_APIKEY}}"
 
     - PiHole 1 Secondary:
         description: DNS server with built-in adblocking
-        href: https://pihole-1-secondary.home
-        ping: pihole-1-secondary.home
+        href: https://pihole-1-secondary.home.matejkosiarcik.com
+        ping: pihole-1-secondary.home.matejkosiarcik.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-secondary.home
+          url: https://pihole-1-secondary.home.matejkosiarcik.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_APIKEY}}"
 
     - PiHole 2 Primary:
         description: DNS server with built-in adblocking
-        href: https://pihole-2-primary.home
-        ping: pihole-2-primary.home
+        href: https://pihole-2-primary.home.matejkosiarcik.com
+        ping: pihole-2-primary.home.matejkosiarcik.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-primary.home
+          url: https://pihole-2-primary.home.matejkosiarcik.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_APIKEY}}"
 
     - PiHole 2 Secondary:
         description: DNS server with built-in adblocking
-        href: https://pihole-2-secondary.home
-        ping: pihole-2-secondary.home
+        href: https://pihole-2-secondary.home.matejkosiarcik.com
+        ping: pihole-2-secondary.home.matejkosiarcik.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-secondary.home
+          url: https://pihole-2-secondary.home.matejkosiarcik.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_APIKEY}}"
 
 - Smart Home:
     - Home Assistant:
         description: Smart Home system
-        href: https://homeassistant.home
-        ping: homeassistant.home
+        href: https://homeassistant.home.matejkosiarcik.com
+        ping: homeassistant.home.matejkosiarcik.com
         icon: /icons/homeassistant.png
         widget:
           type: homeassistant
-          url: https://homeassistant.home
+          url: https://homeassistant.home.matejkosiarcik.com
           key: "{{HOMEPAGE_VAR_HOMEASSISTANT_APIKEY}}"
           custom:
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
@@ -164,46 +164,46 @@
 
     - MotionEye Stove:
         description: Camera system
-        href: https://motioneye-stove.home
-        ping: motioneye-stove.home
+        href: https://motioneye-stove.home.matejkosiarcik.com
+        ping: motioneye-stove.home.matejkosiarcik.com
         icon: /icons/motioneye.png
 
     - Desklamp - left:
         description: Custom smart lamp
-        href: http://desklamp-left.home
-        ping: desklamp-left.home
+        href: http://desklamp-left.home.matejkosiarcik.com
+        ping: desklamp-left.home.matejkosiarcik.com
         icon: /icons/lightbulb.png
 
     - Desklamp - right:
         description: Custom smart lamp
-        href: http://desklamp-right.home
-        ping: desklamp-right.home
+        href: http://desklamp-right.home.matejkosiarcik.com
+        ping: desklamp-right.home.matejkosiarcik.com
         icon: /icons/lightbulb.png
 
 - Data:
     - SMB (data):
         description: Main data store
         href: javascript:copyUrl('smb://smb-data.home')
-        ping: smb-data.home
+        ping: smb-data.home.matejkosiarcik.com
         icon: /icons/filebrowser.png
         target: _self
 
     - SMB (snapshots):
         description: ZFS Snapshots from main data store
         href: javascript:copyUrl('smb://smb-snapshots.home')
-        ping: smb-snapshots.home
+        ping: smb-snapshots.home.matejkosiarcik.com
         icon: /icons/filebrowser.png
         target: _self
 
 - Media:
     - Jellyfin:
         description: Media server
-        href: https://jellyfin.home
-        ping: jellyfin.home
+        href: https://jellyfin.home.matejkosiarcik.com
+        ping: jellyfin.home.matejkosiarcik.com
         icon: /icons/jellyfin.png
         widget:
           type: jellyfin
-          url: https://jellyfin.home
+          url: https://jellyfin.home.matejkosiarcik.com
           key: "{{HOMEPAGE_VAR_JELLYFIN_PASSWORD}}"
           enableBlocks: false
           enableNowPlaying: true
@@ -213,187 +213,187 @@
 
     - Tvheadend:
         description: Live TV
-        href: https://tvheadend.home
-        ping: tvheadend.home
+        href: https://tvheadend.home.matejkosiarcik.com
+        ping: tvheadend.home.matejkosiarcik.com
         icon: /icons/tvheadend.png
 
 - Monitoring:
     - Healthchecks:
         description: Cron monitoring system
-        href: https://healthchecks.home
-        ping: healthchecks.home
+        href: https://healthchecks.home.matejkosiarcik.com
+        ping: healthchecks.home.matejkosiarcik.com
         icon: /icons/healthchecks.png
         widget:
           type: healthchecks
-          url: https://healthchecks.home
+          url: https://healthchecks.home.matejkosiarcik.com
           key: "{{HOMEPAGE_VAR_HEALTHCHECKS_APIKEY}}"
 
     - Gatus:
         description: Uptime monitoring system
-        href: https://gatus-1.home
-        ping: gatus-1.home
+        href: https://gatus-1.home.matejkosiarcik.com
+        ping: gatus-1.home.matejkosiarcik.com
         icon: /icons/gatus.png
         widget:
           type: gatus
-          url: https://gatus-1.home
+          url: https://gatus-1.home.matejkosiarcik.com
           username: admin
           password: "{{HOMEPAGE_VAR_GATUS_PASSWORD}}"
 
     - Gatus 2:
         description: Uptime monitoring system
-        href: https://gatus-2.home
-        ping: gatus-2.home
+        href: https://gatus-2.home.matejkosiarcik.com
+        ping: gatus-2.home.matejkosiarcik.com
         icon: /icons/gatus.png
         widget:
           type: gatus
-          url: https://gatus-2.home
+          url: https://gatus-2.home.matejkosiarcik.com
           username: admin
           password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
 
     - Prometheus:
         description: Prometheus
-        href: https://prometheus.home
-        ping: prometheus.home
+        href: https://prometheus.home.matejkosiarcik.com
+        ping: prometheus.home.matejkosiarcik.com
         icon: /icons/prometheus.png
         widget:
           type: prometheus
-          url: https://prometheus.home
+          url: https://prometheus.home.matejkosiarcik.com
 
     - Dozzle:
         description: Docker monitoring
-        href: https://dozzle.home
-        ping: dozzle.home
+        href: https://dozzle.home.matejkosiarcik.com
+        ping: dozzle.home.matejkosiarcik.com
         icon: /icons/dozzle.png
 
     - SpeedTest Tracker:
         description: Internet speed monitoring system
-        href: https://speedtest-tracker.home
-        ping: speedtest-tracker.home
+        href: https://speedtest-tracker.home.matejkosiarcik.com
+        ping: speedtest-tracker.home.matejkosiarcik.com
         icon: /icons/speedtest.png
         widget:
           type: speedtest
-          url: https://speedtest-tracker.home
+          url: https://speedtest-tracker.home.matejkosiarcik.com
           bitratePrecision: 1
 
     - Changedetection:
         description: Website change monitoring system
-        href: https://changedetection.home
-        ping: changedetection.home
+        href: https://changedetection.home.matejkosiarcik.com
+        ping: changedetection.home.matejkosiarcik.com
         icon: /icons/changedetection.png
         widget:
           type: changedetectionio
-          url: https://changedetection.home
+          url: https://changedetection.home.matejkosiarcik.com
           key: "{{HOMEPAGE_VAR_CHANGEDETECTION_APIKEY}}"
 
     - NetAlertX:
         description: Network monitoring
-        href: https://netalertx.home
-        ping: netalertx.home
+        href: https://netalertx.home.matejkosiarcik.com
+        ping: netalertx.home.matejkosiarcik.com
         icon: /icons/netalertx.png
         widget:
           type: netalertx
-          url: https://netalertx.home
+          url: https://netalertx.home.matejkosiarcik.com
           key: "{{HOMEPAGE_VAR_NETALERTX_APIKEY}}"
 
 - Other Apps:
     - Homepage:
         description: Dashboard
-        href: https://homepage.home
-        ping: homepage.home
+        href: https://homepage.home.matejkosiarcik.com
+        ping: homepage.home.matejkosiarcik.com
         icon: /icons/homepage.png
 
     - ActualBudget:
         description: Finance manager
-        href: https://actualbudget.home
-        ping: actualbudget.home
+        href: https://actualbudget.home.matejkosiarcik.com
+        ping: actualbudget.home.matejkosiarcik.com
         icon: /icons/actualbudget.png
 
     - ActualBudget (Public):
         description: Finance manager
-        href: https://actualbudget-public.home
-        ping: actualbudget-public.home
+        href: https://actualbudget-public.home.matejkosiarcik.com
+        ping: actualbudget-public.home.matejkosiarcik.com
         icon: /icons/actualbudget.png
 
     - Certbot:
         description: Let's Encrypt certificates
-        href: https://certbot.home
-        ping: certbot.home
+        href: https://certbot.home.matejkosiarcik.com
+        ping: certbot.home.matejkosiarcik.com
         icon: /icons/letsencrypt.png
 
     - Dockerhub proxy:
         description: Dockerhub transparent caching proxy
-        href: https://dockerhub-cache-proxy.home
-        ping: dockerhub-cache-proxy.home
+        href: https://dockerhub-cache-proxy.home.matejkosiarcik.com
+        ping: dockerhub-cache-proxy.home.matejkosiarcik.com
         icon: /icons/docker.png
 
     - Smtp4dev:
         description: Simple email server
-        href: https://smtp4dev.home
-        ping: smtp4dev.home
+        href: https://smtp4dev.home.matejkosiarcik.com
+        ping: smtp4dev.home.matejkosiarcik.com
         icon: /icons/smtp4dev.png
 
     - Minio:
         description: S3 compatible storage
-        href: https://minio-console.home
-        ping: minio-console.home
+        href: https://minio-console.home.matejkosiarcik.com
+        ping: minio-console.home.matejkosiarcik.com
         icon: /icons/minio.png
 
     - Ntfy:
         description: Notifications
-        href: https://ntfy.home
-        ping: ntfy.home
+        href: https://ntfy.home.matejkosiarcik.com
+        ping: ntfy.home.matejkosiarcik.com
         icon: /icons/ntfy.png
 
     - OpenSpeedTest (HTTP):
         description: LAN speedtest
-        href: https://openspeedtest.home
-        ping: openspeedtest.home
+        href: https://openspeedtest.home.matejkosiarcik.com
+        ping: openspeedtest.home.matejkosiarcik.com
         icon: /icons/openspeedtest.png
 
     - OpenSpeedTest (HTTPS):
         description: LAN speedtest
-        href: http://openspeedtest.home
-        ping: openspeedtest.home
+        href: http://openspeedtest.home.matejkosiarcik.com
+        ping: openspeedtest.home.matejkosiarcik.com
         icon: /icons/openspeedtest.png
 
     - Vaultwarden:
         description: Password manager
-        href: https://vaultwarden.home
-        ping: vaultwarden.home
+        href: https://vaultwarden.home.matejkosiarcik.com
+        ping: vaultwarden.home.matejkosiarcik.com
         icon: /icons/vaultwarden.png
 
     - Vikunja:
         description: ToDo app
-        href: https://vikunja.home
-        ping: vikunja.home
+        href: https://vikunja.home.matejkosiarcik.com
+        ping: vikunja.home.matejkosiarcik.com
         icon: /icons/vikunja.png
         widget:
           type: vikunja
-          url: https://vikunja.home
+          url: https://vikunja.home.matejkosiarcik.com
           key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
           enableTaskList: true
 
 - Resources:
     - Glances MacBook Pro 2012:
         description: Resource monitoring
-        href: https://glances-macbook-pro-2012.home
-        ping: glances-macbook-pro-2012.home
+        href: https://glances-macbook-pro-2012.home.matejkosiarcik.com
+        ping: glances-macbook-pro-2012.home.matejkosiarcik.com
         icon: /icons/glances.png
 
     - Glances Odroid H3:
         description: Resource monitoring
-        href: https://glances-odroid-h3.home
-        ping: glances-odroid-h3.home
+        href: https://glances-odroid-h3.home.matejkosiarcik.com
+        ping: glances-odroid-h3.home.matejkosiarcik.com
         icon: /icons/glances.png
 
     - Glances Raspberry Pi 4B 4GB:
         description: Resource monitoring
-        href: https://glances-raspberry-pi-4b-4g.home
-        ping: glances-raspberry-pi-4b-4g.home
+        href: https://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
+        ping: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
         icon: /icons/glances.png
 
     - Glances Raspberry Pi 4B 2GB:
         description: Resource monitoring
-        href: https://glances-raspberry-pi-4b-2g.home
-        ping: glances-raspberry-pi-4b-2g.home
+        href: https://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+        ping: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
         icon: /icons/glances.png
