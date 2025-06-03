@@ -81,7 +81,6 @@ export function createFaviconTests(url: string) {
     return [
         test('API: Get favicon.ico', async () => {
             const response = await axios.get(`${url}/favicon.ico`,{
-                decompress: false,
                 responseType: 'arraybuffer',
             });
             expect(response.status, 'Response Status').toStrictEqual(200);
@@ -99,7 +98,6 @@ export function createFaviconTests(url: string) {
         }),
         test('API: Get favicon.png', async () => {
             const response = await axios.get(`${url}/favicon.png`, {
-                decompress: false,
                 responseType: 'arraybuffer',
             });
             expect(response.status, 'Response Status').toStrictEqual(200);
