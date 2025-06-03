@@ -2,7 +2,6 @@
 set -euf
 
 domain='home.matejkosiarcik.com'
-
 certificate_file='/homelab/certs/fullchain.pem'
 certificate_archive_file='/homelab/data/certificate.tar.xz'
 
@@ -100,8 +99,7 @@ tmpdir="$(mktemp -d)"
 statusfile="$tmpdir/status.txt"
 printf '0\n' >"$statusfile"
 test_cert_mode='--test-cert'
-# TODO: Remove test-cert-mode on production servers after Let's Encrypt certificates
-if [ "$HOMELAB_ENV" = dev ] || [ "$HOMELAB_ENV" = prod ]; then
+if [ "$HOMELAB_ENV" = prod ]; then
     test_cert_mode=''
 fi
 # shellcheck disable=SC2248
