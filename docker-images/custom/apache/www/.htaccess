@@ -173,6 +173,14 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /favicon-32x32.png [L,R=302]
 
+# MotionEye favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} motioneye [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /.proxy/icons/motioneye/favicon.png [L]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} motioneye [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.ico$
+RewriteRule ^ /.proxy/icons/motioneye/favicon.ico [L]
+
 # Ntfy favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ntfy [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$

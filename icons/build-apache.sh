@@ -46,6 +46,16 @@ convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1
 optimize_image "$tmpdir/docker-32.png"
 convert_ico "$tmpdir/docker-16.png $tmpdir/docker-32.png" "$output_dir/docker-cache-proxy/favicon.ico"
 
+### MotionEye ###
+# PNG
+convert_image_full "$input_dir/gitman-repositories/homer-icons/png/motioneye.png" "$output_dir/motioneye/favicon.png"
+# ICO
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "$output_dir/motioneye/favicon.png" "$tmpdir/motioneye-16.png"
+optimize_image "$tmpdir/motioneye-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "$output_dir/motioneye/favicon.png" "$tmpdir/motioneye-32.png"
+optimize_image "$tmpdir/motioneye-32.png"
+convert_ico "$tmpdir/motioneye-16.png $tmpdir/motioneye-32.png" "$output_dir/motioneye/favicon.ico"
+
 ### Prometheus ###
 # PNG
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$output_dir/prometheus/favicon.png"
