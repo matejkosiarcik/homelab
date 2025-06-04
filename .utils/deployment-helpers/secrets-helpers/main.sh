@@ -231,7 +231,7 @@ case "$full_app_name" in
     websupport_service_id="$(load_token "$full_app_name" websupport service-id)"
     printf 'WEBSUPPORT_SERVICE_ID=%s\n' "$websupport_service_id" >>"$output/app.env"
     healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
-    write_healthcheck_url certbot "$healthcheck_id"
+    write_healthcheck_url app "$healthcheck_id"
 
     # Apache
     write_default_proxy_users "$full_app_name"
@@ -655,7 +655,7 @@ case "$full_app_name" in
 *renovatebot*)
     # App
     healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
-    write_healthcheck_url renovatebot "$healthcheck_id"
+    write_healthcheck_url app "$healthcheck_id"
     renovate_token="$(load_token "$full_app_name" app renovate-token)" # PAT specific for each git host
     github_token="$(load_token "$full_app_name" app github-token)"     # GitHub PAT (even if using other git hosts)
     printf 'RENOVATE_TOKEN=%s\n' "$renovate_token" >>"$output/app.env"
