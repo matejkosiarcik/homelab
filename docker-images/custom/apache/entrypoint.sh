@@ -204,9 +204,9 @@ printf "export PROXY_REDIRECT_TO_HTTP_OR_HTTPS='%s'\n" "$PROXY_REDIRECT_TO_HTTP_
 if [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
     PROXY_UPSTREAM_URL_PROMETHEUS='http://app-prometheus:61208'
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
-    PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter'
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://app-prometheus-exporter'
 elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
-    PROXY_UPSTREAM_URL_PROMETHEUS='http://prometheus-exporter:9167'
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://app-prometheus-exporter:9167'
 else
     PROXY_UPSTREAM_URL_PROMETHEUS=''
 fi
