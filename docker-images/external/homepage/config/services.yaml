@@ -318,7 +318,7 @@
         description: Let's Encrypt certificates
         href: https://certbot.home.matejkosiarcik.com
         ping: certbot.home.matejkosiarcik.com
-        icon: /icons/letsencrypt.png
+        icon: /icons/lets-encrypt.png
 
     - Dockerhub proxy:
         description: Dockerhub transparent caching proxy
