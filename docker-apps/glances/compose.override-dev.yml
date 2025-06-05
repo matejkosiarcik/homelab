@@ -10,7 +10,7 @@ x-definitions:
     restart: "no"
 
 services:
-  app:
+  app-ui:
     <<: *common-service-options
 
   app-prometheus:
