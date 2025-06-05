@@ -243,7 +243,7 @@ RewriteRule ^ /.proxy/not-found [L]
 </If>
 
 # Protect Certbot endpoints
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download/.*$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download(/.*)?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -295,6 +295,11 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthUserFile /homelab/http-user--prometheus.htpasswd
     Require valid-user
 </If>
+
+# Redirect certbot download index.html
+RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
+RewriteCond %{REQUEST_URI} ^/download/*$ [NC]
+RewriteRule ^ /index.html [L]
 
 # Custom prometheus metrics for apache itself
 RewriteCond %{REQUEST_URI} ^/.proxy/metrics/*$ [NC]

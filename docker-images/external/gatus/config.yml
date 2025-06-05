@@ -277,23 +277,11 @@ endpoints:
     name: Certbot - HTTP
     group: App - Certbot
     url: http://certbot.home.matejkosiarcik.com
-    conditions:
-      - "[STATUS] == 404"
 
   - <<: *default-http
     name: Certbot - HTTPS
     group: App - Certbot
     url: https://certbot.home.matejkosiarcik.com
-    conditions:
-      - "[STATUS] == 404"
-
-  - <<: *default-http
-    name: Certbot - HTTPS - Download
-    group: App - Certbot
-    url: https://viewer:${CERTBOT_VIEWER_PASSWORD}@certbot.home.matejkosiarcik.com/download
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-http
     name: Certbot - Proxy prometheus metrics
