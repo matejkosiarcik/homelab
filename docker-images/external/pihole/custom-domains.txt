@@ -31,7 +31,6 @@
 10.1.10.34 ntfy.home.matejkosiarcik.com
 10.1.10.35 openspeedtest.home.matejkosiarcik.com
 10.1.10.36 actualbudget.home.matejkosiarcik.com
-10.1.10.37 actualbudget-public.home.matejkosiarcik.com
 # 10.1.10.38 desklamp-left-wrapper.home.matejkosiarcik.com
 # 10.1.10.39 desklamp-right-wrapper.home.matejkosiarcik.com
 10.1.10.40 dozzle.home.matejkosiarcik.com

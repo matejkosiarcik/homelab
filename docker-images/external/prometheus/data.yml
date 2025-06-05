@@ -37,7 +37,6 @@ apps:
     path: /metrics
 
 proxies:
-  - url: actualbudget-public.home.matejkosiarcik.com
   - url: actualbudget.home.matejkosiarcik.com
   - url: certbot.home.matejkosiarcik.com
   - url: changedetection.home.matejkosiarcik.com

@@ -308,12 +308,6 @@
         ping: actualbudget.home.matejkosiarcik.com
         icon: /icons/actualbudget.png
 
-    - ActualBudget (Public):
-        description: Finance manager
-        href: https://actualbudget-public.home.matejkosiarcik.com
-        ping: actualbudget-public.home.matejkosiarcik.com
-        icon: /icons/actualbudget.png
-
     - Certbot:
         description: Let's Encrypt certificates
         href: https://certbot.home.matejkosiarcik.com
