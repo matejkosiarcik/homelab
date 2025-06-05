@@ -238,7 +238,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--proxy-prometheus.htpasswd
+    AuthUserFile /homelab/proxy-prometheus.htpasswd
     Require valid-user
 </If>
 
@@ -247,7 +247,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--viewer.htpasswd
+    AuthUserFile /homelab/viewer.htpasswd
     Require valid-user
 </If>
 
@@ -256,7 +256,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--admin.htpasswd
+    AuthUserFile /homelab/admin.htpasswd
     Require valid-user
 </If>
 
@@ -265,7 +265,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--prometheus.htpasswd
+    AuthUserFile /homelab/prometheus.htpasswd
     Require valid-user
 </If>
 
@@ -274,7 +274,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--prometheus.htpasswd
+    AuthUserFile /homelab/prometheus.htpasswd
     Require valid-user
 </If>
 
@@ -283,7 +283,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--prometheus.htpasswd
+    AuthUserFile /homelab/prometheus.htpasswd
     Require valid-user
 </If>
 
@@ -292,7 +292,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/http-user--prometheus.htpasswd
+    AuthUserFile /homelab/prometheus.htpasswd
     Require valid-user
 </If>
 

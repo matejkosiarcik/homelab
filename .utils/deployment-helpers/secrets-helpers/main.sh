@@ -158,7 +158,7 @@ write_healthcheck_url() {
 write_http_auth_user() {
     # $1 - username
     # $2 - password
-    printf '%s' "$2" | chronic htpasswd -c -B -i "$output/http-user--$1.htpasswd" "$1"
+    printf '%s' "$2" | chronic htpasswd -c -B -i "$output/$1.htpasswd" "$1"
 }
 
 hash_password_bcrypt() {

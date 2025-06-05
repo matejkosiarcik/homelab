@@ -83,8 +83,8 @@ services:
       HOMELAB_CONTAINER_VARIANT: admin
     volumes:
       - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-      - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
+      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
+      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache-admin:/homelab/logs:rw
 
   apache-admin-raw:
@@ -99,8 +99,8 @@ services:
       HOMELAB_CONTAINER_VARIANT: admin-raw
     volumes:
       - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/http-user--proxy-status.htpasswd:/homelab/http-user--proxy-status.htpasswd:ro
-      - ./app-secrets/http-user--proxy-prometheus.htpasswd:/homelab/http-user--proxy-prometheus.htpasswd:ro
+      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
+      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache-admin-raw:/homelab/logs:rw
 
   apache-prometheus-exporter:
