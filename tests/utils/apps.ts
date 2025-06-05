@@ -96,7 +96,6 @@ export const apps = {
     },
     ntfy: {
         title: 'Ntfy',
-        forceHttps: false, // TODO: Remove after real Let's Encrypt certificates
         instances: [
             { url: 'https://ntfy.home.matejkosiarcik.com', title: 'Ntfy' },
         ],
@@ -171,7 +170,6 @@ export const apps = {
     },
     vaultwarden: {
         title: 'Vaultwarden',
-        forceHttps: false, // TODO: Remove after real Let's Encrypt certificates
         instances: [
             { url: 'https://vaultwarden.home.matejkosiarcik.com', title: 'Vaultwarden' },
         ],

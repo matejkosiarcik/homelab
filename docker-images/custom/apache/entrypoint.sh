@@ -171,17 +171,9 @@ printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envva
 # Set PROXY_FORCE_HTTPS
 if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
     PROXY_FORCE_HTTPS='false'
-elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
-    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
-elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
-    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
-elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'direct' ]; then
-    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
-elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'direct' ]; then
-    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
     PROXY_FORCE_HTTPS='false'
-elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 else
     PROXY_FORCE_HTTPS='true'
