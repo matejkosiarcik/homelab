@@ -53,7 +53,7 @@ proxies:
   - url: jellyfin.home.matejkosiarcik.com
   - url: minio.home.matejkosiarcik.com
   - url: minio-console.home.matejkosiarcik.com
-  - url: motioneye-stove.home.matejkosiarcik.com
+  - url: motioneye-kitchen.home.matejkosiarcik.com
   - url: ntfy.home.matejkosiarcik.com
   - url: omada-controller.home.matejkosiarcik.com
   - url: openspeedtest.home.matejkosiarcik.com

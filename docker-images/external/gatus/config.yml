@@ -1003,49 +1003,49 @@ endpoints:
   ### Group: App - MotionEye ###
 
   - <<: *default-icmp
-    name: MotionEye (Stove) - ICMP
-    group: App - MotionEye (Stove)
-    url: icmp://motioneye-stove.home.matejkosiarcik.com
+    name: MotionEye (Kitchen) - ICMP
+    group: App - MotionEye (Kitchen)
+    url: icmp://motioneye-kitchen.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: MotionEye (Stove) - HTTP
-    group: App - MotionEye (Stove)
-    url: http://motioneye-stove.home.matejkosiarcik.com
+    name: MotionEye (Kitchen) - HTTP
+    group: App - MotionEye (Kitchen)
+    url: http://motioneye-kitchen.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: MotionEye (Stove) - HTTPS
-    group: App - MotionEye (Stove)
-    url: https://motioneye-stove.home.matejkosiarcik.com
+    name: MotionEye (Kitchen) - HTTPS
+    group: App - MotionEye (Kitchen)
+    url: https://motioneye-kitchen.home.matejkosiarcik.com
     alerts:
       - type: ntfy
       - type: email
 
   - <<: *default-http
-    name: MotionEye (Stove) - HTTPS:9081
-    group: App - MotionEye (Stove)
-    url: https://motioneye-stove.home.matejkosiarcik.com:9081
+    name: MotionEye (Kitchen) - HTTPS:9081
+    group: App - MotionEye (Kitchen)
+    url: https://motioneye-kitchen.home.matejkosiarcik.com:9081
     conditions:
       - "[STATUS] == 401"
 
   - <<: *default-http
-    name: MotionEye (Stove) - Proxy prometheus metrics
-    group: App - MotionEye (Stove)
-    url: https://proxy-prometheus:${MOTIONEYE_STOVE_PROXY_PROMETHEUS_PASSWORD}@motioneye-stove.home.matejkosiarcik.com/.proxy/metrics
+    name: MotionEye (Kitchen) - Proxy prometheus metrics
+    group: App - MotionEye (Kitchen)
+    url: https://proxy-prometheus:${MOTIONEYE_KITCHEN_PROXY_PROMETHEUS_PASSWORD}@motioneye-kitchen.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
-    name: MotionEye (Stove) - TCP:80
-    group: App - MotionEye (Stove)
-    url: tcp://motioneye-stove.home.matejkosiarcik.com:80
+    name: MotionEye (Kitchen) - TCP:80
+    group: App - MotionEye (Kitchen)
+    url: tcp://motioneye-kitchen.home.matejkosiarcik.com:80
 
   - <<: *default-tcp
-    name: MotionEye (Stove) - TCP:443
-    group: App - MotionEye (Stove)
-    url: tcp://motioneye-stove.home.matejkosiarcik.com:443
+    name: MotionEye (Kitchen) - TCP:443
+    group: App - MotionEye (Kitchen)
+    url: tcp://motioneye-kitchen.home.matejkosiarcik.com:443
 
   - <<: *default-tcp
-    name: MotionEye (Stove) - TCP:9081
-    group: App - MotionEye (Stove)
-    url: tcp://motioneye-stove.home.matejkosiarcik.com:9081
+    name: MotionEye (Kitchen) - TCP:9081
+    group: App - MotionEye (Kitchen)
+    url: tcp://motioneye-kitchen.home.matejkosiarcik.com:9081
 
   ### Group: App - NetAlertX ###
   # TODO: Enable NetAlertX

@@ -56,7 +56,7 @@
 10.1.16.21 unifi-controller.home.matejkosiarcik.com
 10.1.16.22 gatus-2.home.matejkosiarcik.com
 10.1.16.23 dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
-10.1.16.24 motioneye-stove.home.matejkosiarcik.com
+10.1.16.24 motioneye-kitchen.home.matejkosiarcik.com
 10.1.16.25 glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
 10.1.18.1 smb-data.home.matejkosiarcik.com

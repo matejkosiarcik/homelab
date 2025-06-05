@@ -85,7 +85,7 @@ export const apps = {
     motioneye: {
         title: 'MotionEye',
         instances: [
-            { url: 'https://motioneye-stove.home.matejkosiarcik.com', title: 'MotionEye Stove' },
+            { url: 'https://motioneye-kitchen.home.matejkosiarcik.com', title: 'MotionEye Kitchen' },
         ],
     },
     netalertx: {
