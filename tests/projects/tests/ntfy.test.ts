@@ -1,13 +1,13 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createFaviconTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, delay, getEnv } from '../../utils/utils';
 
 test.describe(apps.ntfy.title, () => {
     for (const instance of apps.ntfy.instances) {
         test.describe(instance.title, () => {
-            // TODO: Add test for HTTP->HTTPS redirects after real Let's Encrypt certificates
+            createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);

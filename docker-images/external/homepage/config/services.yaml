@@ -162,10 +162,10 @@
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
               label: Turned on lights
 
-    - MotionEye Stove:
+    - MotionEye Kitchen:
         description: Camera system
-        href: https://motioneye-stove.home.matejkosiarcik.com
-        ping: motioneye-stove.home.matejkosiarcik.com
+        href: https://motioneye-kitchen.home.matejkosiarcik.com
+        ping: motioneye-kitchen.home.matejkosiarcik.com
         icon: /icons/motioneye.png
 
     - Desklamp - left:

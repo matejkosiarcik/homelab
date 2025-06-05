@@ -85,7 +85,7 @@ export const apps = {
     motioneye: {
         title: 'MotionEye',
         instances: [
-            { url: 'https://motioneye-stove.home.matejkosiarcik.com', title: 'MotionEye Stove' },
+            { url: 'https://motioneye-kitchen.home.matejkosiarcik.com', title: 'MotionEye Kitchen' },
         ],
     },
     netalertx: {
@@ -96,7 +96,6 @@ export const apps = {
     },
     ntfy: {
         title: 'Ntfy',
-        forceHttps: false, // TODO: Remove after real Let's Encrypt certificates
         instances: [
             { url: 'https://ntfy.home.matejkosiarcik.com', title: 'Ntfy' },
         ],
@@ -171,7 +170,6 @@ export const apps = {
     },
     vaultwarden: {
         title: 'Vaultwarden',
-        forceHttps: false, // TODO: Remove after real Let's Encrypt certificates
         instances: [
             { url: 'https://vaultwarden.home.matejkosiarcik.com', title: 'Vaultwarden' },
         ],

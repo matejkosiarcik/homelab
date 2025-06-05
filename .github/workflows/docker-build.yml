@@ -117,7 +117,7 @@ jobs:
             printf '%s ' '"homepage": ["/servers/odroid-h3/docker-apps/homepage"],'
             printf '%s ' '"jellyfin": ["/servers/odroid-h3/docker-apps/jellyfin"],'
             printf '%s ' '"minio": ["/servers/odroid-h3/docker-apps/minio"],'
-            printf '%s ' '"motioneye": ["/servers/raspberry-pi-4b-4g/docker-apps/motioneye-stove"],'
+            printf '%s ' '"motioneye": ["/servers/raspberry-pi-4b-4g/docker-apps/motioneye-kitchen"],'
             printf '%s ' '"netalertx": ["/servers/odroid-h3/docker-apps/netalertx"],'
             printf '%s ' '"ntfy": ["/servers/odroid-h3/docker-apps/ntfy"],'
             printf '%s ' '"omada-controller": ["/servers/odroid-h3/docker-apps/omada-controller"],'

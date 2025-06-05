@@ -4,7 +4,7 @@ pihole-2-primary
 # Other
 # unifi-controller
 dozzle-agent
-motioneye-stove
+motioneye-kitchen
 glances
 unbound-2-default
 unbound-2-open

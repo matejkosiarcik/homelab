@@ -103,10 +103,10 @@ load_password() {
     printf 'MINIO_PROXY_STATUS_PASSWORD=%s\n' "$(load_password minio apache status)"
     printf 'MINIO_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password minio apache prometheus)"
 
-    printf 'MOTIONEYE_STOVE_ADMIN_PASSWORD=%s\n' "$(load_password motioneye-stove app admin)"
-    printf 'MOTIONEYE_STOVE_USER_PASSWORD=%s\n' "$(load_password motioneye-stove app user)"
-    printf 'MOTIONEYE_STOVE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password motioneye-stove apache status)"
-    printf 'MOTIONEYE_STOVE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password motioneye-stove apache prometheus)"
+    printf 'MOTIONEYE_KITCHEN_ADMIN_PASSWORD=%s\n' "$(load_password motioneye-kitchen app admin)"
+    printf 'MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_password motioneye-kitchen app user)"
+    printf 'MOTIONEYE_KITCHEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache status)"
+    printf 'MOTIONEYE_KITCHEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache prometheus)"
 
     printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(load_password ntfy app admin)"
     printf 'NTFY_USER_PASSWORD=%s\n' "$(load_password ntfy app user)"

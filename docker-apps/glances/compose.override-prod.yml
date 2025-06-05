@@ -10,7 +10,7 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  app:
+  app-ui:
     <<: *common-service-options
     volumes:
       - /etc/os-release:/etc/os-release:ro
