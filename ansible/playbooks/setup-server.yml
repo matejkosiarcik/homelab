@@ -180,6 +180,12 @@
         name: "@bitwarden/cli"
         global: true
 
+    - name: Install Semver (Bitwarden CLI dependency)
+      become: true
+      community.general.npm:
+        name: semver
+        global: true
+
     - name: Update NPM packages
       become: true
       community.general.npm:
