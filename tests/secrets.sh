@@ -27,11 +27,6 @@ load_password() {
     printf 'ACTUALBUDGET_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget apache status)"
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget apache prometheus)"
 
-    printf 'ACTUALBUDGET_PUBLIC_PASSWORD=%s\n' "$(load_password actualbudget-public app admin)"
-    printf 'ACTUALBUDGET_PUBLIC_SYNC_ID=%s\n' "$(load_password actualbudget-public app sync-id)"
-    printf 'ACTUALBUDGET_PUBLIC_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget-public apache status)"
-    printf 'ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget-public apache prometheus)"
-
     printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_password certbot apache viewer)"
     printf 'CERTBOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password certbot apache status)"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password certbot apache prometheus)"

@@ -3,7 +3,6 @@ export const apps = {
         title: 'ActualBudget',
         instances: [
             { url: 'https://actualbudget.home.matejkosiarcik.com', title: 'ActualBudget (private)' },
-            { url: 'https://actualbudget-public.home.matejkosiarcik.com', title: 'ActualBudget (public)' },
         ],
     },
     certbot: {

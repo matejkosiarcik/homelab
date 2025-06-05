@@ -231,41 +231,6 @@ endpoints:
     group: App - ActualBudget
     url: tcp://actualbudget.home.matejkosiarcik.com:443
 
-  ### Group: App - ActualBudget (Public) ###
-
-  - <<: *default-icmp
-    name: ActualBudget (Public) - ICMP
-    group: App - ActualBudget (Public)
-    url: icmp://actualbudget-public.home.matejkosiarcik.com
-
-  - <<: *default-http
-    name: ActualBudget (Public) - HTTP
-    group: App - ActualBudget (Public)
-    url: http://actualbudget-public.home.matejkosiarcik.com
-
-  - <<: *default-http
-    name: ActualBudget (Public) - HTTPS
-    group: App - ActualBudget (Public)
-    url: https://actualbudget-public.home.matejkosiarcik.com
-    alerts:
-      - type: ntfy
-      - type: email
-
-  - <<: *default-http
-    name: ActualBudget (Public) - Proxy prometheus metrics
-    group: App - ActualBudget (Public)
-    url: https://proxy-prometheus:${ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD}@actualbudget-public.home.matejkosiarcik.com/.proxy/metrics
-
-  - <<: *default-tcp
-    name: ActualBudget (Public) - TCP:80
-    group: App - ActualBudget (Public)
-    url: tcp://actualbudget-public.home.matejkosiarcik.com:80
-
-  - <<: *default-tcp
-    name: ActualBudget (Public) - TCP:443
-    group: App - ActualBudget (Public)
-    url: tcp://actualbudget-public.home.matejkosiarcik.com:443
-
   ### Group: App - Certbot ###
 
   - <<: *default-icmp
@@ -277,23 +242,11 @@ endpoints:
     name: Certbot - HTTP
     group: App - Certbot
     url: http://certbot.home.matejkosiarcik.com
-    conditions:
-      - "[STATUS] == 404"
 
   - <<: *default-http
     name: Certbot - HTTPS
     group: App - Certbot
     url: https://certbot.home.matejkosiarcik.com
-    conditions:
-      - "[STATUS] == 404"
-
-  - <<: *default-http
-    name: Certbot - HTTPS - Download
-    group: App - Certbot
-    url: https://viewer:${CERTBOT_VIEWER_PASSWORD}@certbot.home.matejkosiarcik.com/download
-    alerts:
-      - type: ntfy
-      - type: email
 
   - <<: *default-http
     name: Certbot - Proxy prometheus metrics

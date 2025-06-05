@@ -27,7 +27,6 @@ minio
 homepage
 vaultwarden
 actualbudget
-actualbudget-public
 openspeedtest
 speedtest-tracker
 # TODO: vikunja

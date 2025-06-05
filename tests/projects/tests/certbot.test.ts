@@ -14,7 +14,7 @@ test.describe(apps.certbot.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url, { status: 404 });
+            createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
@@ -71,12 +71,17 @@ test.describe(apps.certbot.title, () => {
                 },
             ];
             for (const variant of dataVariants) {
-                test(`API: Read certificate (${variant.title})`, async () => {
+                test(`API: Get download directory (${variant.title})`, async () => {
+                    const response = await axios.get(`${instance.url}/download`, { auth: variant.auth });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                });
+
+                test(`API: Get certificate (${variant.title})`, async () => {
                     const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, { auth: variant.auth });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
                 });
 
-                test(`API: Read random download subpath (${variant.title})`, async () => {
+                test(`API: Get random download subpath (${variant.title})`, async () => {
                     const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, { auth: variant.auth });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status === 200 ? 404 : variant.status);
                 });
