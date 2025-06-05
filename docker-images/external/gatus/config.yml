@@ -24,7 +24,7 @@ alerting:
       send-on-resolved: true
       description: Gatus healthcheck failed
   ntfy:
-    url: http://ntfy.home.matejkosiarcik.com # TODO: Change to HTTPS once real certificates are implemented
+    url: https://ntfy.home.matejkosiarcik.com # TODO: Change to HTTPS once real certificates are implemented
     topic: gatus
     priority: 3
     token: ${NTFY_TOKEN}
