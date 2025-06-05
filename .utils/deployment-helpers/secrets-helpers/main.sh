@@ -692,6 +692,8 @@ case "$full_app_name" in
     printf 'ADMIN_NAME=Admin\n' >>"$output/app.env"
     printf 'ADMIN_EMAIL=%s\n' "$admin_email" >>"$output/app.env"
     printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/app.env"
+    printf 'MAIL_PASSWORD=\n' >>"$output/app.env"
+    printf 'MAIL_USERNAME=\n' >>"$output/app.env"
 
     # Apache
     write_default_proxy_users "$full_app_name"
