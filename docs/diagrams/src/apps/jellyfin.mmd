@@ -21,9 +21,7 @@ flowchart LR
         jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
         gpu("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/graphics-card.png' style='min-width:80px;max-width:80px' /></div>iGPU")
 
-        network_interface --->|:80,443| apache --->|:8096| jellyfin
-        %% TODO: Remove next route after real Let's encrypt certificates
-        network_interface --->|:8096| jellyfin
+        network_interface --->|:80,443,8096| apache --->|:8096| jellyfin
         apache -..-|fs| certificator
         jellyfin -.->|transcode| gpu
     end

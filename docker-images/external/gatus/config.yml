@@ -889,7 +889,6 @@ endpoints:
     group: App - Jellyfin
     url: https://proxy-prometheus:${JELLYFIN_PROXY_PROMETHEUS_PASSWORD}@jellyfin.home.matejkosiarcik.com/.proxy/metrics
 
-  # TODO: Remove this port after Let's encrypt certificates
   - <<: *default-http
     name: Jellyfin - HTTP:8096
     group: App - Jellyfin
@@ -905,7 +904,6 @@ endpoints:
     group: App - Jellyfin
     url: tcp://jellyfin.home.matejkosiarcik.com:443
 
-  # TODO: Remove this port after Let's encrypt certificates
   - <<: *default-tcp
     name: Jellyfin - TCP:8096
     group: App - Jellyfin

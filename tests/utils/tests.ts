@@ -37,20 +37,20 @@ export function createHttpToHttpsRedirectTests(url: string) {
         test('API: Redirect HTTP to HTTPS (root)', async () => {
             const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://'));
+            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
         }),
 
         test('API: Redirect HTTP to HTTPS (root slash)', async () => {
             const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://'));
+            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
         }),
 
         test('API: Redirect HTTP to HTTPS (random subpage)', async () => {
             const subpage = `/${faker.string.alpha(10)}`;
             const response = await axios.get(`${url.replace('https://', 'http://')}${subpage}`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}${subpage}`);
+            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://').replace(/:\d+$/, '')}${subpage}`);
         }),
     ];
 }
