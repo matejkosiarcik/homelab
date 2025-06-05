@@ -14,18 +14,12 @@ type TvheadendServerInfoResponse = {
 test.describe(apps.tvheadend.title, () => {
     for (const instance of apps.tvheadend.instances) {
         test.describe(instance.title, () => {
-            const httpUrl9981 = `${instance.url.replace('https://', 'http://')}:9981`; // TODO: Remove after real Let's encrypt certificates
-
             createHttpToHttpsRedirectTests(instance.url);
+            createHttpToHttpsRedirectTests(`${instance.url.replace('https://', 'http://')}:9981`);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443, 9981, 9982]);
             createFaviconTests(instance.url);
-
-            test('API: Root :9981', async () => {  // TODO: Remove after real Let's encrypt certificates
-                const response = await axios.get(httpUrl9981);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
 
             test('API: Info', async () => {
                 const response = await axios.get(`${instance.url}/api/serverinfo`);
@@ -83,12 +77,6 @@ test.describe(apps.tvheadend.title, () => {
             test('UI: Open - No user', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/extjs.html`);
-                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
-            });
-
-            test('UI: Open :9981', async ({ page }) => { // TODO: Remove after real Let's encrypt certificates
-                await page.goto(httpUrl9981);
-                await page.waitForURL(`${httpUrl9981}/extjs.html`);
                 await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
             });
         });

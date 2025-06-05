@@ -7,12 +7,10 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
         test.describe(instance.title, () => {
-            const httpUrl8096 = `${instance.url.replace('https://', 'http://')}:8096`; // TODO: Remove after real Let's encrypt certificates
-
             createHttpToHttpsRedirectTests(instance.url);
+            createHttpToHttpsRedirectTests(`${instance.url.replace('https://', 'http://')}:8096`);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-            createApiRootTest(httpUrl8096, { title: ':8096' });
             createTcpTests(instance.url, [80, 443, 8096]);
             createFaviconTests(instance.url);
 
@@ -47,34 +45,10 @@ test.describe(apps.jellyfin.title, () => {
                         await expect(page.locator('#indexPage.homePage')).toBeVisible();
                         await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
                     });
-
-                    test(`UI: Successful login on port 8096 - User ${variant.username}`, async ({ page }) => {
-                        await page.goto(httpUrl8096);
-                        await page.waitForURL(/\/login\.html(?:\?.*)?$/);
-                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                        await page.locator('input#txtManualName').fill(variant.username);
-                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await page.locator('button[type="submit"]').click();
-                        await page.waitForURL(`${httpUrl8096}/web/#/home.html`);
-                        await expect(page.locator('#indexPage.homePage')).toBeVisible();
-                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
-                    });
                 }
 
                 test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
-                    await page.waitForURL(/\/login\.html(?:\?.*)?$/);
-                    const originalUrl = page.url();
-                    await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                    await page.locator('input#txtManualName').fill(variant.username);
-                    await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
-                    await page.locator('button[type="submit"]').click();
-                    await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                });
-
-                test(`UI: Unsuccessful login on port 8096 - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.goto(httpUrl8096);
                     await page.waitForURL(/\/login\.html(?:\?.*)?$/);
                     const originalUrl = page.url();
                     await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
