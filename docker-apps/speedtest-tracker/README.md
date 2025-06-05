@@ -24,4 +24,4 @@ LinuxServer (unofficial):
 
 - Setup speed tresholds
 - Add webhook to healthchecks (always)
-- Add webhook to mail/ntfy (on treshold)
+- Add webhook to mail & ntfy (on treshold)
