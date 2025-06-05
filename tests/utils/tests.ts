@@ -27,26 +27,27 @@ export function createApiRootTest(url: string, _options?: { headers?: Record<str
         test(`API: Get root${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(url, { headers: options.headers });
             expect(response.status, 'Response Status').toStrictEqual(options.status);
-            expect(response.headers['Server'], 'Response Server header').toStrictEqual('Apache');
+            expect(response.headers['Server'], 'Response Proxy Server header').toStrictEqual('Apache');
         }),
     ];
 }
 
 export function createHttpToHttpsRedirectTests(url: string) {
+    const port = url.match(/:(\d+)$/)?.[0] ?? '';
     return [
-        test('API: Redirect HTTP to HTTPS (root)', async () => {
+        test(`API: Redirect HTTP${port} to HTTPS (root)`, async () => {
             const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
             expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
         }),
 
-        test('API: Redirect HTTP to HTTPS (root slash)', async () => {
+        test(`API: Redirect HTTP${port} to HTTPS (root slash)`, async () => {
             const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
             expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
         }),
 
-        test('API: Redirect HTTP to HTTPS (random subpage)', async () => {
+        test(`API: Redirect HTTP${port} to HTTPS (random subpage)`, async () => {
             const subpage = `/${faker.string.alpha(10)}`;
             const response = await axios.get(`${url.replace('https://', 'http://')}${subpage}`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
