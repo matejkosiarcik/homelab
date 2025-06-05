@@ -190,9 +190,8 @@
       register: config_bitwarden_cli
       changed_when: "'CHANGED' in config_bitwarden_cli.stdout"
       ansible.builtin.shell: |
-        # TODO: Switch to HTTPS after real Let\'s encrypt certificates
         set -eufo pipefail
-        target='http://vaultwarden.home.matejkosiarcik.com'
+        target='https://vaultwarden.home.matejkosiarcik.com'
         if [ "$(bw config server)" = "$target" ]; then
           exit 0
         fi
