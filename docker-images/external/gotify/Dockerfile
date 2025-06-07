@@ -95,22 +95,20 @@ RUN oxipng --opt max --strip safe *.png
 FROM --platform=linux/amd64 zopflipng AS favicon-3
 WORKDIR /homelab
 COPY --from=favicon-2 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
-RUN ls -laH >before.txt && \
-    find . -type f -name '*.png' -maxdepth 1 | while read -r file; do \
+RUN find . -type f -name '*.png' -maxdepth 1 | while read -r file; do \
         zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$file" "$file" && \
-    true; done && \
-    ls -laH >after.txt
+    true; done
 
-FROM png2ico AS favicon-3
+FROM png2ico AS favicon-4
 WORKDIR /homelab
-COPY --from=favicon-2 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
+COPY --from=favicon-3 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
 RUN python3 ./png2ico/png2ico.py favicon-16x16.png favicon-32x32.png -o favicon.ico
 
 ### Final ####
 
 FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
-COPY --from=favicon-3 /homelab/favicon.ico ./favicon/
+COPY --from=favicon-4 /homelab/favicon.ico ./favicon/
 
 FROM gotify/server:2.6.3
 COPY ./external/gotify/config.yml /etc/gotify/config.yml
