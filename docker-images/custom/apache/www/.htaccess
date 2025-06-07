@@ -164,6 +164,9 @@ RewriteRule ^ /favicon-32x32.png [L,R=302]
 RewriteCond %{ENV:HOMELAB_APP_TYPE} gotify [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /static/favicon-32x32.png [L,R=302]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} gotify [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.ico$
+RewriteRule ^ /.proxy/icons/gotify/favicon.ico [L]
 
 # Jellyfin favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} jellyfin [NC]
