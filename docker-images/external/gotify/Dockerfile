@@ -35,6 +35,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 # Must hardcode x86_64, because zoplipng is only built for this architecture
+# hadolint ignore=DL3029
 FROM --platform=linux/amd64 node:23.11.1-slim AS zopflipng
 WORKDIR /homelab
 COPY ./.shared/dependencies/zopflipng/package.json ./.shared/dependencies/zopflipng/package-lock.json ./
@@ -56,6 +57,7 @@ COPY --from=gotify-favicon-original /homelab/favicon-196x196.png ./
 RUN convert -background none ./favicon-196x196.png -resize 32x32 -density 1200 ./favicon-32x32.png && \
     convert -background none ./favicon-196x196.png -resize 16x16 -density 1200 ./favicon-16x16.png
 
+# hadolint ignore=DL3029
 FROM --platform=linux/amd64 zopflipng AS favicon-2
 WORKDIR /homelab
 COPY --from=favicon-1 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
