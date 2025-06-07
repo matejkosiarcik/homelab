@@ -903,6 +903,11 @@ endpoints:
     url: http://jellyfin.home.matejkosiarcik.com
 
   - <<: *default-http
+    name: Jellyfin - HTTP:8096
+    group: App - Jellyfin
+    url: http://jellyfin.home.matejkosiarcik.com:8096
+
+  - <<: *default-http
     name: Jellyfin - HTTPS
     group: App - Jellyfin
     url: https://jellyfin.home.matejkosiarcik.com
@@ -922,11 +927,6 @@ endpoints:
     name: Jellyfin - Proxy prometheus metrics
     group: App - Jellyfin
     url: https://proxy-prometheus:${JELLYFIN_PROXY_PROMETHEUS_PASSWORD}@jellyfin.home.matejkosiarcik.com/.proxy/metrics
-
-  - <<: *default-http
-    name: Jellyfin - HTTP:8096
-    group: App - Jellyfin
-    url: http://jellyfin.home.matejkosiarcik.com:8096
 
   - <<: *default-tcp
     name: Jellyfin - TCP:80
@@ -1730,6 +1730,11 @@ endpoints:
     url: http://tvheadend.home.matejkosiarcik.com
 
   - <<: *default-http
+    name: Tvheadend - HTTP:9981
+    group: App - Tvheadend
+    url: http://tvheadend.home.matejkosiarcik.com:9981
+
+  - <<: *default-http
     name: Tvheadend - HTTPS
     group: App - Tvheadend
     url: https://tvheadend.home.matejkosiarcik.com
@@ -1747,11 +1752,6 @@ endpoints:
       - "has([BODY].sw_version) == true"
       - "has([BODY].api_version) == true"
       - "has([BODY].name) == true"
-
-  - <<: *default-http
-    name: Tvheadend - HTTP:9981
-    group: App - Tvheadend
-    url: http://tvheadend.home.matejkosiarcik.com:9981
 
   - <<: *default-http
     name: Tvheadend - Proxy prometheus metrics
