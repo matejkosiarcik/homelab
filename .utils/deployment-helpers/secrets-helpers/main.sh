@@ -389,14 +389,11 @@ case "$full_app_name" in
     printf 'GOTIFY_DEFAULTUSER_PASS=%s\n' "$admin_password" >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name--$server_name"
-    app_prometheus_password="$(load_password "$full_app_name--$server_name" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password"
-    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
+    write_default_proxy_users "$full_app_name"
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificator)"
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
     write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *healthchecks*)
