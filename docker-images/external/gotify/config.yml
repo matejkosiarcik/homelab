@@ -1,0 +1,25 @@
+server:
+  keepaliveperiodseconds: 0 # Default
+  listenaddr: "0.0.0.0"
+  port: 80
+  ssl:
+    enabled: false
+  trustedproxies:
+    - 0.0.0.0/0 # TODO: Make more secure
+  stream:
+    pingperiodseconds: 45 # Default
+    allowedorigins:
+     - .+\.home\.matejkosiarcik\.com
+     - localhost
+
+database:
+  dialect: sqlite3
+  connection: data/gotify.db
+
+defaultuser:
+  name: admin
+
+passstrength: 10 # the bcrypt password strength (higher = better but also slower)
+uploadedimagesdir: data/images # the directory for storing uploaded images
+pluginsdir: data/plugins # the directory where plugin resides
+registration: false # enable registrations

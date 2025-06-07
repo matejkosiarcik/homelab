@@ -302,6 +302,12 @@
         ping: homepage.home.matejkosiarcik.com
         icon: /icons/homepage.png
 
+    - Gotify:
+        description: Dashboard
+        href: https://gotify.home.matejkosiarcik.com
+        ping: gotify.home.matejkosiarcik.com
+        icon: /icons/gotify.png
+
     - ActualBudget:
         description: Finance manager
         href: https://actualbudget.home.matejkosiarcik.com
