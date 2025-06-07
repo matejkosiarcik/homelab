@@ -89,7 +89,7 @@ RUN convert -background none ./favicon-196x196.png -resize 32x32 -density 1200 .
 FROM oxipng AS favicon-2
 WORKDIR /homelab
 COPY --from=favicon-1 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
-RUN oxipng --opt max --strip safe *.png
+RUN oxipng --opt max --strip safe favicon-16x16.png favicon-32x32.png
 
 # hadolint ignore=DL3029
 FROM --platform=linux/amd64 zopflipng AS favicon-3
