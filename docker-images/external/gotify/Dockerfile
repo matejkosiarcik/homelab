@@ -43,6 +43,35 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm prune --production
 ENV PATH="/homelab/node_modules/.bin:$PATH"
 
+FROM --platform=$BUILDPLATFORM debian:12.11-slim AS yq
+WORKDIR /homelab
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        jq python3 python3-pip >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/dependencies/yq/requirements.txt ./
+RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/homelab/python-vendor/bin:$PATH" \
+    PYTHONPATH=/homelab/python-vendor
+
+FROM yq AS oxipng-version
+WORKDIR /homelab
+COPY ./.shared/dependencies/oxipng/Cargo.toml ./
+RUN tomlq -r '."dev-dependencies" | to_entries | map("\(.key) \(.value)")[]' Cargo.toml >cargo-dependencies.txt
+
+FROM rust:1.87.0-slim-bookworm AS oxipng
+WORKDIR /homelab
+COPY --from=oxipng-version /homelab/cargo-dependencies.txt ./
+ENV CARGO_PROFILE_RELEASE_LTO=true \
+    CARGO_PROFILE_RELEASE_PANIC=abort \
+    CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1 \
+    CARGO_PROFILE_RELEASE_OPT_LEVEL=s \
+    RUSTFLAGS='-Cstrip=symbols -Clink-args=-Wl,--build-id=none'
+RUN while read -r package version; do \
+        cargo install "$package" --quiet --force --version "$version" --root "$PWD/cargo" && \
+    true; done <cargo-dependencies.txt
+ENV PATH="/homelab/cargo/bin:$PATH"
+
 ### Favicon ####
 
 FROM gotify/server:2.6.3 AS gotify-favicon-original
@@ -57,12 +86,20 @@ COPY --from=gotify-favicon-original /homelab/favicon-196x196.png ./
 RUN convert -background none ./favicon-196x196.png -resize 32x32 -density 1200 ./favicon-32x32.png && \
     convert -background none ./favicon-196x196.png -resize 16x16 -density 1200 ./favicon-16x16.png
 
-# hadolint ignore=DL3029
-FROM --platform=linux/amd64 zopflipng AS favicon-2
+FROM oxipng AS favicon-2
 WORKDIR /homelab
 COPY --from=favicon-1 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
-RUN zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y ./favicon-16x16.png ./favicon-16x16.png && \
-    zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y ./favicon-32x32.png ./favicon-32x32.png
+RUN oxipng --opt max --strip safe *.png
+
+# hadolint ignore=DL3029
+FROM --platform=linux/amd64 zopflipng AS favicon-3
+WORKDIR /homelab
+COPY --from=favicon-2 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
+RUN ls -laH >before.txt && \
+    find . -type f -name '*.png' -maxdepth 1 | while read -r file; do \
+        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$file" "$file" && \
+    true; done && \
+    ls -laH >after.txt
 
 FROM png2ico AS favicon-3
 WORKDIR /homelab
