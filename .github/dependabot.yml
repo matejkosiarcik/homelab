@@ -32,6 +32,8 @@ updates:
       - /docker-images/external/docker-registry
       - /docker-images/external/dozzle
       - /docker-images/external/gatus
+      - /docker-images/external/glances
+      - /docker-images/external/gotify
       - /docker-images/external/healthchecks
       - /docker-images/external/homeassistant
       - /docker-images/external/homepage
@@ -70,6 +72,7 @@ updates:
   # NPM
   - package-ecosystem: npm
     directories:
+      - /docker-images/.shared/dependencies/zopflipng
       - /docker-images/custom/lamp-wrapper
       - /docker-images/custom/web-automation
       - /docker-images/external/homepage
@@ -95,6 +98,7 @@ updates:
     directories:
       - /ansible
       - /docker-images/.shared/dependencies/gitman
+      - /docker-images/.shared/dependencies/yq
       - /docker-images/external/homeassistant
       - /icons
     schedule:
@@ -108,5 +112,23 @@ updates:
     open-pull-requests-limit: 1
     groups:
       pip:
+        patterns:
+          - "*"
+
+  # Cargo
+  - package-ecosystem: cargo
+    directories:
+      - /docker-images/.shared/dependencies/oxipng
+    schedule:
+      interval: daily
+      time: "03:00"
+      timezone: Europe/Bratislava
+    reviewers:
+      - matejkosiarcik
+    assignees:
+      - matejkosiarcik
+    open-pull-requests-limit: 1
+    groups:
+      cargo:
         patterns:
           - "*"
