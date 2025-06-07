@@ -15,14 +15,14 @@
     - Main _admin_ password
     - Regular user passwords (_matej_, _monika_)
     - _apache_ proxy-status and proxy-prometheus passwords
-    - Service specific passwords or API keys (_gatus_, _homepage_, _ntfy_, _prometheus_)
+    - Service specific passwords or API keys (_gatus_, _homepage_, _ntfy_, _prometheus_, ...)
     - Command: `bw generate -u -l -n --length 32` (note: add `-s` to include special characters)
 6. Integration with other apps
     - Add DNS entry in _pihole_
     - Add link in _homepage_ dashboard
     - Setup _gatus_ monitoring
     - Setup _prometheus_ monitoring
-    - Setup _healthchecks_ monitoring for CRON containers
+    - Setup _healthchecks_ monitoring (certificator, ...)
 7. Add tests for intranet apps:
     - API:
         - Root

@@ -47,6 +47,7 @@ proxies:
   - url: glances-odroid-h3.home.matejkosiarcik.com
   - url: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
   - url: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
+  - url: gotify.home.matejkosiarcik.com
   - url: healthchecks.home.matejkosiarcik.com
   - url: homeassistant.home.matejkosiarcik.com
   - url: homepage.home.matejkosiarcik.com
