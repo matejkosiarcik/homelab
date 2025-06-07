@@ -52,6 +52,12 @@ export const apps = {
             { url: 'https://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com', title: 'Glances - Raspberry Pi 4B 4GB' },
         ],
     },
+    gotify: {
+        title: 'Gotify',
+        instances: [
+            { url: 'https://gotify.home.matejkosiarcik.com', title: 'Gotify' },
+        ],
+    },
     healthchecks: {
         title: 'Healthchecks',
         instances: [
