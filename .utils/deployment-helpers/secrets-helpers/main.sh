@@ -393,7 +393,7 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificator)"
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
     write_healthcheck_url certificator "$healthcheck_id"
     ;;
 *healthchecks*)
