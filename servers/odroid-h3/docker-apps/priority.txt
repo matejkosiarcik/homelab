@@ -19,6 +19,7 @@ homeassistant
 # Notifications
 smtp4dev
 ntfy
+gotify
 
 # Storage services
 minio
