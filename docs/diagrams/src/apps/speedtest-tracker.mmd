@@ -19,8 +19,8 @@ flowchart LR
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
 
-        network_interface --->|:80,443| apache --->|:443| speedtest_tracker
-        apache -..-|fs| certificator
+        network_interface --->|:80,443| apache_proxy --->|:443| speedtest_tracker
+        apache_proxy -..-|fs| certificator
         speedtest_tracker ~~~ db_sync -..->|fs| speedtest_tracker
     end
 
