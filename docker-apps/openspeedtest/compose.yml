@@ -8,6 +8,8 @@ x-definitions:
       internal-network: {}
     dns_opt:
       - single-request
+    security_opt:
+      - no-new-privileges:true
     sysctls:
       net.ipv6.conf.all.disable_ipv6: 1
 

@@ -169,6 +169,13 @@ magick -background none -bordercolor transparent "$input_dir/other/dwservice.png
 magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-tmp.png" -gravity Center -composite "$tmpdir/dwservice-final.png"
 convert_image_full "$tmpdir/dwservice-final.png" "$output_dir/dwservice.png"
 
+# Apache prometheus exporter
+cp "$input_dir/other/apache.svg.bin" "$tmpdir/apache.svg"
+magick -background none -bordercolor transparent "$tmpdir/apache.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/apache-tmp.png"
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize 64x64 -border 32 -density 1200 "$tmpdir/prometheus-tmp.png"
+magick "$tmpdir/apache-tmp.png" "$tmpdir/prometheus-tmp.png" -gravity Center -geometry "$default_image_size+35+75" -composite -resize "$default_image_size" "$tmpdir/apache-prometheus-exporter-final.png"
+convert_image_full "$tmpdir/apache-prometheus-exporter-final.png" "$output_dir/apache-prometheus-exporter.png"
+
 ### Cleanup ###
 
 rm -rf "$tmpdir"

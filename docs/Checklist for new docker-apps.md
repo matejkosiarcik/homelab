@@ -19,9 +19,9 @@
     - Command: `bw generate -u -l -n --length 32` (note: add `-s` to include special characters)
 6. Integration with other apps
     - Add DNS entry in _pihole_
-    - Add link in _homepage_ dashboard
-    - Setup _gatus_ monitoring
-    - Setup _prometheus_ monitoring
+    - Add link in _homepage_ dashboard (don't forget secrets if using plugins)
+    - Setup _gatus_ monitoring (don't forget secrets if monitoring protected endpoints)
+    - Setup _prometheus_ monitoring  (don't forget secrets)
     - Setup _healthchecks_ monitoring (certificator, ...)
 7. Add tests for intranet apps:
     - API:
