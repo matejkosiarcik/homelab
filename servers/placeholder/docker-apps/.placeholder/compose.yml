@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/placeholder/compose.yml
+    project_directory: .

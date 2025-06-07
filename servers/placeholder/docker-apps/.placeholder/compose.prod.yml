@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/placeholder/compose.override-prod.yml
+    project_directory: .
