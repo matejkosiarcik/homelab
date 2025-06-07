@@ -18,6 +18,8 @@ flowchart LR
         network_interface(" ")
         apache_admin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>(admin)")
         apache_admin_raw("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>(*admin)")
+        apache_prometheus_exporter_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
+        apache_prometheus_exporter_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         unifi_network_application("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Network<br/>Application")
         database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /></div>MongoDB")
@@ -26,6 +28,8 @@ flowchart LR
         network_interface --->|:80,443| apache_admin --->|:8443| unifi_network_application
         network_interface --->|:8080,8443| apache_admin_raw --->|:8443| unifi_network_application
         network_interface --->|:1900,3478,5514,6789,10001| unifi_network_application
+        apache_admin -->|/.proxy/metrics| apache_prometheus_exporter_1 -.->|use status| apache_admin
+        apache_admin_raw -->|/.proxy/metrics| apache_prometheus_exporter_2 -.->|use status| apache_admin_raw
         apache_admin & apache_admin_raw -..-|fs| certificator
         unifi_network_application ~~~ script_backup -..->|use| unifi_network_application
         unifi_network_application --->|use:27017| database

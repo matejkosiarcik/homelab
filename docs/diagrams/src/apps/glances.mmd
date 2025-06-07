@@ -15,10 +15,12 @@ flowchart LR
     subgraph app_wrapper[" "]
         network_interface(" ")
         apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
+        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         glances("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/glances.png' style='min-width:80px;max-width:80px' /></div>Glances")
 
         network_interface --->|:80,443| apache_proxy --->|:61208| glances
+        apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -..-|fs| certificator
     end
 
