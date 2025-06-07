@@ -34,29 +34,47 @@ RUN apt-get update -qq && \
         imagemagick && \
     rm -rf /var/lib/apt/lists/*
 
+# Must hardcode x86_64, because zoplipng is only built for this architecture
+FROM --platform=linux/amd64 node:23.11.1-slim AS zopflipng
+WORKDIR /homelab
+COPY ./.shared/dependencies/zopflipng/package.json ./.shared/dependencies/zopflipng/package-lock.json ./
+RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+    npm prune --production
+ENV PATH="/homelab/node_modules/.bin:$PATH"
+
 ### Favicon ####
 
 FROM gotify/server:2.6.3 AS gotify-favicon-original
 WORKDIR /homelab
 RUN (/app/gotify-app &) && \
     sleep 1 && \
-    curl --location --fail --silent --show-error --output ./favicon-32x32.png http://localhost/static/favicon-32x32.png
+    curl --location --fail --silent --show-error --output ./favicon-196x196.png http://localhost/static/favicon-196x196.png
 
 FROM imagemagick AS favicon-1
 WORKDIR /homelab
-COPY --from=gotify-favicon-original /homelab/favicon-32x32.png ./
-RUN convert -background none ./favicon-32x32.png -resize 16x16 -density 1200 ./favicon-16x16.png
+COPY --from=gotify-favicon-original /homelab/favicon-196x196.png ./
+RUN convert -background none ./favicon-196x196.png -resize 64x64 -density 1200 ./favicon-64x64.png && \
+    convert -background none ./favicon-196x196.png -resize 32x32 -density 1200 ./favicon-32x32.png && \
+    convert -background none ./favicon-196x196.png -resize 16x16 -density 1200 ./favicon-16x16.png
 
-FROM png2ico AS favicon-2
+FROM --platform=linux/amd64 zopflipng AS favicon-2
 WORKDIR /homelab
-COPY --from=favicon-1 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
-RUN python3 ./png2ico/png2ico.py favicon-16x16.png favicon-32x32.png -o favicon.ico
+COPY --from=favicon-1 /homelab/favicon-16x16.png /homelab/favicon-32x32.png /homelab/favicon-64x64.png ./
+RUN zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y ./favicon-16x16.png ./favicon-16x16.png && \
+    zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y ./favicon-32x32.png ./favicon-32x32.png && \
+    zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y ./favicon-64x64.png ./favicon-64x64.png
+
+FROM png2ico AS favicon-3
+WORKDIR /homelab
+COPY --from=favicon-2 /homelab/favicon-16x16.png /homelab/favicon-32x32.png /homelab/favicon-64x64.png ./
+RUN python3 ./png2ico/png2ico.py favicon-16x16.png favicon-32x32.png -o favicon.ico && \
+    cp favicon-64x64.png favicon.png
 
 ### Final ####
 
 FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
-COPY --from=favicon-2 /homelab/favicon.ico ./favicon/
+COPY --from=favicon-3 /homelab/favicon.ico /homelab/favicon.png ./favicon/
 
 FROM gotify/server:2.6.3
 COPY ./external/gotify/config.yml /etc/gotify/config.yml
