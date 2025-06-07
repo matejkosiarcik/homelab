@@ -4,13 +4,6 @@ server:
   port: 80
   ssl:
     enabled: false
-  trustedproxies:
-    - 0.0.0.0/0 # TODO: Make more secure
-  stream:
-    pingperiodseconds: 45 # Default
-    allowedorigins:
-      - .+\.home\.matejkosiarcik\.com
-      - localhost
 
 database:
   dialect: sqlite3
