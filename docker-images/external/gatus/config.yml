@@ -24,10 +24,20 @@ alerting:
       send-on-resolved: true
       description: Gatus healthcheck failed
   ntfy:
-    url: https://ntfy.home.matejkosiarcik.com # TODO: Change to HTTPS once real certificates are implemented
+    url: https://ntfy.home.matejkosiarcik.com
     topic: gatus
     priority: 3
     token: ${NTFY_TOKEN}
+    default-alert:
+      enabled: true
+      failure-threshold: 3
+      success-threshold: 1
+      send-on-resolved: true
+      description: Gatus healthcheck failed
+  gotify:
+    url: https://gotify.home.matejkosiarcik.com
+    token: ${GOTIFY_TOKEN}
+    priority: 0
     default-alert:
       enabled: true
       failure-threshold: 3
