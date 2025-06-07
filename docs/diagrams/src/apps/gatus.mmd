@@ -18,22 +18,25 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
 
-        network_interface --->|:80,443| apache --->|:8080| gatus
-        apache -..-|fs| certificator
+        network_interface --->|:80,443| apache_proxy --->|:8080| gatus
+        apache_proxy -..-|fs| certificator
     end
 
     other_apps["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Apps"]
     class other_apps dashed_border
 
+    gotify["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify"]
+    class gotify dashed_border
+
     ntfy["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy"]
     class ntfy dashed_border
 
-    smtp["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>SMTP Email"]
+    smtp["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Email"]
     class smtp dashed_border
 
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
     home_network <---> app_wrapper
     gatus -.->|check| other_apps
-    gatus -..->|notification| ntfy & smtp
+    gatus -..->|notification| gotify & ntfy & smtp
     certificator -..->|report status| healthchecks

@@ -18,18 +18,19 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
 
-        network_interface --->|:80,443| apache --->|:5000| changedetection
-        apache -..-|fs| certificator
+        network_interface --->|:80,443| apache_proxy --->|:5000| changedetection
+        apache_proxy -..-|fs| certificator
     end
 
     websites["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/www.png' style='min-width:80px;max-width:80px' /></div>Websites"]
     class websites dashed_border
 
+    gotify["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify"]
     ntfy["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy"]
-    smtp["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>SMTP Email"]
+    smtp["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Email"]
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
     home_network <---> app_wrapper
     changedetection -.->|monitor| websites
-    changedetection -..->|notification| ntfy & smtp
+    changedetection -..->|notification| gotify & ntfy & smtp
     certificator -..->|report status| healthchecks

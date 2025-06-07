@@ -20,11 +20,11 @@ flowchart LR
         pihole_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
         pihole_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>PiHole<br/>Prometheus<br/>Exporter")
 
-        network_interface --->|:80,443| apache --->|:80| pihole
-        apache --->|/metrics:80| pihole_prometheus_exporter -..->|use| pihole
+        network_interface --->|:80,443| apache_proxy --->|:80| pihole
+        apache_proxy --->|/metrics:80| pihole_prometheus_exporter -..->|use| pihole
         network_interface --->|:53| pihole
         pihole ~~~ pihole_setup -..->|docker-cli| pihole
-        apache -..-|fs| certificator
+        apache_proxy -..-|fs| certificator
     end
 
     public_dns["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dns.png' style='min-width:40px;max-width:40px;position:absolute;bottom:10px;right:0' /></div>Public<br/>DNS"]

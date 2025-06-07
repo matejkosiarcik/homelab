@@ -8,7 +8,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 FROM twinproduction/gatus:v5.18.1
 COPY ./external/gatus/config.yml /config/config.yaml
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
-ENV HOMELAB_CONTAINER_NAME=gatus \
+ENV GATUS_DELAY_START_SECONDS=0 \
+    HOMELAB_CONTAINER_NAME=gatus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 

@@ -1,0 +1,71 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: gotify
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    networks:
+      internal-network: {}
+    dns_opt:
+      - single-request
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+
+services:
+  app:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    # init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/gotify/Dockerfile
+    env_file:
+      - ./app-secrets/app.env
+    volumes:
+      - ./app-data/gotify:/app/data:rw
+      - ./app-data/gotify-etc:/etc/gotify:rw
+
+  certificator:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificator/Dockerfile
+    env_file:
+      - ./app-secrets/certificator.env
+    volumes:
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificator:/homelab/logs:rw
+
+  apache:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/apache/Dockerfile
+    volumes:
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
+      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
+      - ./app-logs/apache:/homelab/logs:rw
+
+  apache-prometheus-exporter:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
+    environment:
+      APACHE_HOST: apache
+    env_file:
+      - ./app-secrets/apache-prometheus-exporter.env
+
+networks:
+  default: # Just disable default network
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps

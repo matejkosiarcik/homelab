@@ -21,8 +21,8 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
 
-        network_interface --->|:80,443| apache --->|:8000| healthchecks
-        apache -..-|fs| certificator
+        network_interface --->|:80,443| apache_proxy --->|:8000| healthchecks
+        apache_proxy -..-|fs| certificator
         healthchecks ~~~ db_sync -..->|fs| healthchecks
     end
 

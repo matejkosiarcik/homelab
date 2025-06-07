@@ -1,0 +1,28 @@
+---
+title: Gotify
+config:
+    theme: dark
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
+
+    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network"]
+    class home_network dashed_border
+
+    subgraph app_wrapper[" "]
+        network_interface(" ")
+        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
+        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
+        gotify("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify")
+
+        network_interface --->|:80,443| apache_proxy --->|:80| gotify
+        apache_proxy -..-|fs| certificator
+    end
+
+    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+
+    home_network <---> app_wrapper
+    certificator -..->|report status| healthchecks

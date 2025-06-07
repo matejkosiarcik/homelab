@@ -777,6 +777,40 @@ endpoints:
     group: App - Healthchecks
     url: tcp://healthchecks.home.matejkosiarcik.com:443
 
+  ### Group: App - Gotify
+  - <<: *default-icmp
+    name: Gotify - ICMP
+    group: App - Gotify
+    url: icmp://gotify.home.matejkosiarcik.com
+
+  - <<: *default-http
+    name: Gotify - HTTP
+    group: App - Gotify
+    url: http://gotify.home.matejkosiarcik.com
+
+  - <<: *default-http
+    name: Gotify - HTTPS
+    group: App - Gotify
+    url: https://gotify.home.matejkosiarcik.com
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
+    name: Gotify - Proxy prometheus metrics
+    group: App - Gotify
+    url: https://proxy-prometheus:${GOTIFY_PROXY_PROMETHEUS_PASSWORD}@gotify.home.matejkosiarcik.com/.proxy/metrics
+
+  - <<: *default-tcp
+    name: Gotify - TCP:80
+    group: App - Gotify
+    url: tcp://gotify.home.matejkosiarcik.com:80
+
+  - <<: *default-tcp
+    name: Gotify - TCP:443
+    group: App - Gotify
+    url: tcp://gotify.home.matejkosiarcik.com:443
+
   ### Group: App - Home Assistant ###
 
   - <<: *default-icmp

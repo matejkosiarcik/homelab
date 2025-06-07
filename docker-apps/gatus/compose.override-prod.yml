@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      GATUS_DELAY_START_SECONDS: 90
+      GATUS_DELAY_START_SECONDS: 10
 
   certificator:
     <<: *common-service-options

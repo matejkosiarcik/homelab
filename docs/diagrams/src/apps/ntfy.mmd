@@ -21,10 +21,10 @@ flowchart LR
         ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
         ntfy_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
 
-        network_interface --->|:80,443| apache --->|:80| ntfy
+        network_interface --->|:80,443| apache_proxy --->|:80| ntfy
         network_interface --->|:25| ntfy
         ntfy ~~~ ntfy_setup -..->|docker-cli| ntfy
-        apache -..-|fs| certificator
+        apache_proxy -..-|fs| certificator
     end
 
     personal_devices["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps"]

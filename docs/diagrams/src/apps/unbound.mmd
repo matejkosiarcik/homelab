@@ -19,10 +19,10 @@ flowchart LR
         unbound("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound")
         unbound_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Unbound<br/>Prometheus<br/>Exporter")
 
-        network_interface --->|:80,443| apache --->|:80| unbound_prometheus_exporter
+        network_interface --->|:80,443| apache_proxy --->|:80| unbound_prometheus_exporter
         network_interface --->|:53| unbound
         unbound_prometheus_exporter -.->|use| unbound
-        apache -..-|fs| certificator
+        apache_proxy -..-|fs| certificator
     end
 
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
