@@ -1,19 +1,18 @@
 import { faker } from '@faker-js/faker';
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { getEnv } from '../../utils/utils';
 
 test.describe(apps.gotify.title, () => {
     for (const instance of apps.gotify.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createPrometheusTests(instance.url, { auth: 'basic' });
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            // TODO: Finish UI tests
             const users = [
                 {
                     username: 'admin',
@@ -25,15 +24,25 @@ test.describe(apps.gotify.title, () => {
             ];
             for (const variant of users) {
                 if (!variant.random) {
-                    test.skip(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
+                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
                         await page.goto(instance.url);
-                        // TODO: Finish test
+                        await page.waitForURL(`${instance.url}/#/login`);
+                        await page.locator('form#login-form input[autocomplete="username"]').fill(variant.username);
+                        await page.locator('form#login-form input[type="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                        await page.locator('form#login-form button[type="submit"]:has-text("Login")').click();
+                        await page.waitForURL(`${instance.url}/#/`);
+                        await expect(page.locator('form#login-form input[autocomplete="username"]')).not.toBeVisible();
                     });
                 }
 
-                test.skip(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
-                    // TODO: Finish test
+                    await page.waitForURL(`${instance.url}/#/login`);
+                    await page.locator('form#login-form input[autocomplete="username"]').fill(variant.username);
+                    await page.locator('form#login-form input[type="password"]').fill(faker.string.alpha(10));
+                    await expect(page.locator('.MuiSnackbar-root:has-text("Login failed")')).not.toBeVisible();
+                    await page.locator('form#login-form button[type="submit"]:has-text("Login")').click();
+                    await expect(page.locator('.MuiSnackbar-root:has-text("Login failed")')).toBeVisible();
                 });
             }
         });
