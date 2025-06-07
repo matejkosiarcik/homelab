@@ -8,8 +8,8 @@ Gotify server:
 
 - Homepage: <https://gotify.net>
 - Docs: <https://gotify.net/docs/index>
-  - Installation: <https://gotify.net/docs/install>
-  - Configuration: <https://gotify.net/docs/config>
+    - Installation: <https://gotify.net/docs/install>
+    - Configuration: <https://gotify.net/docs/config>
 - DockerHub: <https://hub.docker.com/r/gotify/server>
 
 ## Before initial installation
