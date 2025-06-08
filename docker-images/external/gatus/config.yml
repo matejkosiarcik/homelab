@@ -7,43 +7,38 @@ security:
     username: admin
     password-bcrypt-base64: ${GATUS_PASSWORD_ENCRYPTED}
 
+# Enable prometheus metrics endpoint
 metrics: true
 
+default-alert-settings: &default-alert-settings
+  enabled: true
+  failure-threshold: 3
+  success-threshold: 1
+  send-on-resolved: true
 alerting:
   email:
-    from: gatus@${HOMELAB_APP_EXTERNAL_DOMAIN}
+    from: system@${HOMELAB_APP_EXTERNAL_DOMAIN}
     host: smtp4dev.home.matejkosiarcik.com
     port: 25
     to: notifications@${HOMELAB_APP_EXTERNAL_DOMAIN}
     client:
       insecure: true
     default-alert:
-      enabled: true
-      failure-threshold: 3
-      success-threshold: 1
-      send-on-resolved: true
-      description: Gatus healthcheck failed
+      <<: *default-alert-settings
   ntfy:
     url: https://ntfy.home.matejkosiarcik.com
     topic: gatus
-    priority: 3
+    priority: 1
     token: ${NTFY_TOKEN}
     default-alert:
-      enabled: true
-      failure-threshold: 3
-      success-threshold: 1
-      send-on-resolved: true
-      description: Gatus healthcheck failed
+      <<: *default-alert-settings
   gotify:
-    url: https://gotify.home.matejkosiarcik.com
+    server-url: https://gotify.home.matejkosiarcik.com
     token: ${GOTIFY_TOKEN}
-    priority: 0
+    priority: 1
+    title: Gatus monitor failed
     default-alert:
-      enabled: true
-      failure-threshold: 3
-      success-threshold: 1
-      send-on-resolved: true
-      description: Gatus healthcheck failed
+      <<: *default-alert-settings
 
 # connectivity:
 #   checker:
@@ -53,6 +48,12 @@ alerting:
 default-alerts: &default-alerts
   alerts:
     - type: email
+
+all-alerts: &all-alerts
+  alerts:
+    - type: email
+    - type: ntfy
+    - type: gotify
 
 default-icmp: &default-icmp
   <<: *default-alerts
@@ -72,7 +73,7 @@ default-udp: &default-udp
   conditions:
     - "[CONNECTED] == true"
 
-default-dns: &default-dns-a
+default-dns-a: &default-dns-a
   <<: *default-alerts
   interval: 5m
   dns:
@@ -106,8 +107,9 @@ endpoints:
     group: External DNS
     url: icmp://8.8.8.8
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-icmp
     name: External DNS - Google 2
@@ -126,8 +128,9 @@ endpoints:
     group: Network equipment
     url: icmp://10.1.0.1
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   # Disconnected
   - <<: *default-icmp
@@ -141,8 +144,9 @@ endpoints:
     group: Network equipment
     url: icmp://10.1.0.2
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-icmp
     name: Smart switch - TP-Link SG108E
@@ -161,40 +165,45 @@ endpoints:
     group: Servers
     url: icmp://10.1.4.8
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-icmp
     name: Raspberry Pi 3B
     group: Servers
     url: icmp://10.1.4.2
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-icmp
     name: Raspberry Pi 4B 2G
     group: Servers
     url: icmp://10.1.4.3
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-icmp
     name: Raspberry Pi 4B 4G
     group: Servers
     url: icmp://10.1.4.4
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-icmp
     name: Raspberry Pi Zero 2W 1
     group: Servers
     url: icmp://10.1.4.6
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
     enabled: false # TODO: Reenable
 
   - <<: *default-icmp
@@ -202,8 +211,9 @@ endpoints:
     group: Servers
     url: icmp://10.1.4.7
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
     enabled: false # TODO: Reenable
 
   ### Group: App - ActualBudget ###
@@ -223,8 +233,9 @@ endpoints:
     group: App - ActualBudget
     url: https://actualbudget.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: ActualBudget - Proxy prometheus metrics
@@ -290,8 +301,9 @@ endpoints:
     group: App - Changedetection
     url: https://changedetection.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Changedetection - Proxy prometheus metrics
@@ -426,8 +438,9 @@ endpoints:
       - "[STATUS] == 200"
       - "has([BODY].repositories) == true"
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-tcp
     name: DockerHub proxy - TCP:80
@@ -456,8 +469,9 @@ endpoints:
     group: App - Dozzle
     url: https://dozzle.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Dozzle - Proxy prometheus metrics
@@ -488,8 +502,9 @@ endpoints:
     group: App - Dozzle agents
     url: tcp://dozzle-agent-macbook-pro-2012.home.matejkosiarcik.com:7007
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   # Odroid H3
 
@@ -503,8 +518,9 @@ endpoints:
     group: App - Dozzle agents
     url: tcp://dozzle-agent-odroid-h3.home.matejkosiarcik.com:7007
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   # Raspberry Pi 4B 2GB
 
@@ -518,8 +534,9 @@ endpoints:
     group: App - Dozzle agents
     url: tcp://dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com:7007
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   # Raspberry Pi 4B 4GB
 
@@ -533,8 +550,9 @@ endpoints:
     group: App - Dozzle agents
     url: tcp://dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com:7007
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   ### Group: App - Gatus (1) ###
 
@@ -553,8 +571,9 @@ endpoints:
     group: App - Gatus (1)
     url: https://gatus-1.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Gatus (1) - Prometheus metrics
@@ -593,8 +612,9 @@ endpoints:
     group: App - Gatus (2)
     url: https://gatus-2.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Gatus (2) - Prometheus metrics
@@ -637,8 +657,9 @@ endpoints:
     group: App - Glances
     url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Glances - Odroid H3 - Prometheus metrics
@@ -679,8 +700,9 @@ endpoints:
     group: App - Glances
     url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 2GB - Prometheus metrics
@@ -721,8 +743,9 @@ endpoints:
     group: App - Glances
     url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Glances - Raspberry Pi 4B 4GB - Prometheus metrics
@@ -761,8 +784,9 @@ endpoints:
     group: App - Healthchecks
     url: https://healthchecks.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Healthchecks - API health
@@ -803,8 +827,9 @@ endpoints:
     group: App - Gotify
     url: https://gotify.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Gotify - Proxy prometheus metrics
@@ -838,8 +863,9 @@ endpoints:
     group: App - Home Assistant
     url: https://homeassistant.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Home Assistant - Prometheus metrics
@@ -882,8 +908,9 @@ endpoints:
     group: App - Homepage
     url: https://admin:${HOMEPAGE_PASSWORD}@homepage.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Homepage - Proxy prometheus metrics
@@ -922,8 +949,9 @@ endpoints:
     group: App - Jellyfin
     url: https://jellyfin.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Jellyfin - API health
@@ -979,8 +1007,9 @@ endpoints:
     group: App - Minio
     url: https://minio.home.matejkosiarcik.com/minio/health/live
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Minio API - Health cluster write
@@ -1029,8 +1058,9 @@ endpoints:
     group: App - Minio
     url: https://minio-console.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-tcp
     name: Minio Console - TCP:80
@@ -1059,8 +1089,9 @@ endpoints:
     group: App - MotionEye (Kitchen)
     url: https://motioneye-kitchen.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: MotionEye (Kitchen) - HTTPS:9081
@@ -1109,8 +1140,9 @@ endpoints:
     group: App - NetAlertX
     url: https://netalertx.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
     enabled: false
 
   - <<: *default-http
@@ -1166,8 +1198,9 @@ endpoints:
     group: App - Ntfy
     url: https://ntfy.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Ntfy - API Health
@@ -1214,8 +1247,9 @@ endpoints:
     group: App - Omada Controller
     url: https://omada-controller.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Omada Controller - API Health
@@ -1297,8 +1331,9 @@ endpoints:
     group: App - OpenSpeedTest
     url: http://openspeedtest.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: OpenSpeedTest - HTTPS
@@ -1337,8 +1372,9 @@ endpoints:
     group: App - PiHole 1 Primary
     url: https://pihole-1-primary.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: PiHole 1 Primary - Prometheus metrics
@@ -1397,8 +1433,9 @@ endpoints:
     group: App - PiHole 1 Secondary
     url: https://pihole-1-secondary.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: PiHole 1 Secondary - Prometheus metrics
@@ -1457,8 +1494,9 @@ endpoints:
     group: App - PiHole 2 Primary
     url: https://pihole-2-primary.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: PiHole 2 Primary - Prometheus metrics
@@ -1517,8 +1555,9 @@ endpoints:
     group: App - PiHole 2 Secondary
     url: https://pihole-2-secondary.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: PiHole 2 Secondary - Prometheus metrics
@@ -1581,8 +1620,9 @@ endpoints:
     conditions:
       - "[STATUS] == 401"
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Prometheus - Prometheus metrics
@@ -1616,8 +1656,9 @@ endpoints:
     group: App - SMB (data)
     url: tcp://smb-data.home.matejkosiarcik.com:139
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-tcp
     name: SMB (data) - TCP:445
@@ -1636,8 +1677,9 @@ endpoints:
     group: App - SMB (snapshots)
     url: tcp://smb-snapshots.home.matejkosiarcik.com:139
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-tcp
     name: SMB (snapshots) - TCP:445
@@ -1661,8 +1703,9 @@ endpoints:
     group: App - Smtp4dev
     url: https://smtp4dev.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Smtp4dev - Proxy prometheus metrics
@@ -1701,8 +1744,9 @@ endpoints:
     group: App - Speedtest Tracker
     url: https://speedtest-tracker.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Speedtest Tracker - API health
@@ -1749,8 +1793,9 @@ endpoints:
     group: App - Tvheadend
     url: https://tvheadend.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Tvheadend - API health
@@ -1800,8 +1845,9 @@ endpoints:
     group: App - Unbound 1 [default]
     url: unbound-1-default.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-dns-aaaa
     name: Unbound 1 [default] - DNS AAAA
@@ -1818,8 +1864,9 @@ endpoints:
     group: App - Unbound 1 [default]
     url: https://unbound-1-default.home.matejkosiarcik.com/.proxy
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Unbound 1 [default] - Proxy prometheus metrics
@@ -1848,8 +1895,9 @@ endpoints:
     group: App - Unbound 1 [open]
     url: unbound-1-open.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-dns-aaaa
     name: Unbound 1 [open] - DNS AAAA
@@ -1866,8 +1914,9 @@ endpoints:
     group: App - Unbound 1 [open]
     url: https://unbound-1-open.home.matejkosiarcik.com/.proxy
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Unbound 1 [open] - Proxy prometheus metrics
@@ -1896,8 +1945,9 @@ endpoints:
     group: App - Unbound 2 [default]
     url: unbound-2-default.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-dns-aaaa
     name: Unbound 2 [default] - DNS AAAA
@@ -1914,8 +1964,9 @@ endpoints:
     group: App - Unbound 2 [default]
     url: https://unbound-2-default.home.matejkosiarcik.com/.proxy
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Unbound 2 [default] - Proxy prometheus metrics
@@ -1944,8 +1995,9 @@ endpoints:
     group: App - Unbound 2 [open]
     url: unbound-2-open.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-dns-aaaa
     name: Unbound 2 [open] - DNS AAAA
@@ -1962,8 +2014,9 @@ endpoints:
     group: App - Unbound 2 [open]
     url: https://unbound-2-open.home.matejkosiarcik.com/.proxy
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Unbound 2 [open] - Proxy prometheus metrics
@@ -1997,8 +2050,9 @@ endpoints:
     group: App - UniFi Controller
     url: https://unifi-controller.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: UniFi Controller Admin - API Health
@@ -2086,8 +2140,9 @@ endpoints:
     group: App - Uptime Kuma
     url: https://uptime-kuma.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Uptime Kuma - Proxy prometheus metrics
@@ -2121,8 +2176,9 @@ endpoints:
     group: App - Vaultwarden
     url: https://vaultwarden.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
 
   - <<: *default-http
     name: Vaultwarden - Proxy prometheus metrics
@@ -2159,8 +2215,9 @@ endpoints:
     group: App - Vikunja
     url: https://vikunja.home.matejkosiarcik.com
     alerts:
-      - type: ntfy
       - type: email
+      - type: ntfy
+      - type: gotify
     enabled: false
 
   - <<: *default-http
