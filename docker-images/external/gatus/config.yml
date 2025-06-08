@@ -2159,7 +2159,7 @@ endpoints:
   - <<: *default-https
     name: Uptime Kuma - Prometheus metrics
     group: App - Uptime Kuma
-    url: https://proxy-prometheus:${UPTIME_KUMA_PROMETHEUS_PASSWORD}@uptime-kuma.home.matejkosiarcik.com/metrics
+    url: https://admin:${UPTIME_KUMA_PROMETHEUS_PASSWORD}@uptime-kuma.home.matejkosiarcik.com/metrics
 
   - <<: *default-https
     name: Uptime Kuma - Proxy prometheus metrics
