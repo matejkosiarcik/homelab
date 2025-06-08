@@ -80,6 +80,9 @@ default-dns-a: &default-dns-a
     query-name: "example.com"
     query-type: "A"
   conditions:
+    - "[CONNECTED] == true"
+    - "[BODY] != 0.0.0.0"
+    - "[BODY] != 127.0.0.1"
     - "[DNS_RCODE] == NOERROR"
 
 default-dns-aaaa: &default-dns-aaaa
@@ -89,6 +92,8 @@ default-dns-aaaa: &default-dns-aaaa
     query-name: "example.com"
     query-type: "AAAA"
   conditions:
+    - "[CONNECTED] == true"
+    - "[BODY] != ::1"
     - "[DNS_RCODE] == NOERROR"
 
 default-http: &default-http

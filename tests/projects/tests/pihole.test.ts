@@ -29,7 +29,19 @@ test.describe(apps.pihole.title, () => {
                         // Resolved external domain
                         const ips = await dnsLookup('example.com', transportVariant, ipVariant, piholeDnsIps[0]);
                         expect(ips, 'Domain should be resolved').not.toHaveLength(0);
-                        expect(ips[0], `Resolved domain should be IPv${ipVariant === 'A' ? '4' : '6'}`).toMatch(ipVariant === 'A' ? /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ : /([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                        for (const ip of ips) {
+                            expect(ip, `Resolved entry should be IPv${ipVariant === 'A' ? '4' : '6'}`).toMatch(ipVariant === 'A' ? /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ : /([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                            if (ipVariant === 'A') {
+                                expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
+                                expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
+                                expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
+                                expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(1[6-9]|2[0-9]|3[0-1])\./);
+                                expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
+                            } else if (ipVariant === 'AAAA') {
+                                expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
+                                expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
+                            }
+                        }
                     });
                 }
             }
