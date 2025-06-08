@@ -12,7 +12,7 @@ test.describe(apps['uptime-kuma'].title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
-            createPrometheusTests(instance.url, { auth: 'basic' });
+            createPrometheusTests(instance.url, { auth: 'basic', username: 'admin' });
 
             const users = [
                 {
@@ -52,11 +52,11 @@ test.describe(apps['uptime-kuma'].title, () => {
 
                     // Fill in form
                     await page.locator('form input[autocomplete="username"]').fill(variant.username);
-                    await page.locator('form input[type="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                    await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
                     await page.locator('form button[type="submit"]:has-text("Login")').click();
 
                     // Verify fail
-                    await expect(page.getByRole('alert', { name: 'Incorrect username or password.' })).toBeVisible();
+                    await expect(page.locator('[role="alert"]:has-text("Incorrect username or password.")')).toBeVisible();
                 });
             }
         });

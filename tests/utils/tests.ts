@@ -262,10 +262,11 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
     return output;
 }
 
-export function createPrometheusTests(url: string, _options: { auth: 'basic' | 'token'; path?: string | undefined }) {
+export function createPrometheusTests(url: string, _options: { auth?: 'basic' | 'token' | undefined; path?: string | undefined; username?: string | undefined } = {}) {
     const options = {
-        auth: _options.auth,
+        auth: _options.auth ?? 'basic',
         path: _options.path ?? '/metrics',
+        username: _options.username ?? 'prometheus',
     };
 
     switch (options.auth) {
@@ -287,7 +288,7 @@ export function createPrometheusTests(url: string, _options: { auth: 'basic' | '
                 {
                     title: 'wrong password',
                     auth: {
-                        username: 'prometheus',
+                        username: options.username,
                         password: faker.string.alphanumeric(10),
                     },
                     status: 401,
@@ -295,7 +296,7 @@ export function createPrometheusTests(url: string, _options: { auth: 'basic' | '
                 {
                     title: 'successful',
                     auth: {
-                        username: 'prometheus',
+                        username: options.username,
                         password: getEnv(url, 'PROMETHEUS_PASSWORD'),
                     },
                     status: 200,
