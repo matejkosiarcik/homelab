@@ -36,9 +36,6 @@ Generic resources:
 ```json
 {
   ...
-  "insecure-registries": [
-    "example.com"
-  ],
   "registry-mirrors": [
     "https://example.com"
   ]

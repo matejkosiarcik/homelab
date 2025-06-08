@@ -273,9 +273,6 @@
           "log-opts": {
             "max-size": "100m"
           },
-          "insecure-registries": [
-            "dockerhub-cache-proxy.home.matejkosiarcik.com"
-          ],
           "registry-mirrors": [
             "https://dockerhub-cache-proxy.home.matejkosiarcik.com"
           ],

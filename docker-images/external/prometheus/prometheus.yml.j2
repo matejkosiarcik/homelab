@@ -14,8 +14,6 @@ scrape_configs:
     authorization:
       credentials: ${{ "{" }}{{ app.url | replace(".home.matejkosiarcik.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_TOKEN{{ "}" }}
     {%- endif %}
-    tls_config:
-      insecure_skip_verify: true
     static_configs:
       - targets: [{{ app.url }}]
 {%- endfor %}
@@ -26,8 +24,6 @@ scrape_configs:
     basic_auth:
       username: proxy-prometheus
       password: ${{ "{" }}{{ proxy.url | replace(".home.matejkosiarcik.com", "") | replace("-", "_") | upper() }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}
-    tls_config:
-      insecure_skip_verify: true
     static_configs:
       - targets: [{{ proxy.url }}]
 {%- endfor %}
