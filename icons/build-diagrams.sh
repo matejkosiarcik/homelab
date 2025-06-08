@@ -53,6 +53,7 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/prometheus.sv
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/tp-link.png" "$output_dir/tp-link.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/tvheadend.png" "$output_dir/tvheadend.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/unifi.png"
+convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/uptime-kuma.svg" "$output_dir/uptime-kuma.png"
 
 magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/github.svg" -resize "$default_image_size" -density 1200 -fill black -colorize 100% "$tmpdir/github-tmp.png"
 convert_image_full "$tmpdir/github-tmp.png" "$output_dir/github.png"
