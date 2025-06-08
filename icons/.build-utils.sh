@@ -13,6 +13,7 @@ optimize_image() {
     # $1 - filepath
 
     if printf '%s' "$(basename "$1")" | grep -E '\.png$' >/dev/null 2>&1; then
+        oxipng --opt max --strip safe "$1"
         zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$1" "$1"
     fi
 }
