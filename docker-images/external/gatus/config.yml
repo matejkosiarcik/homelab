@@ -99,10 +99,17 @@ default-dns-aaaa: &default-dns-aaaa
 default-http: &default-http
   <<: *default-alerts
   interval: 5m
-  client:
-    insecure: true
   conditions:
+    - "[CONNECTED] == true"
     - "[STATUS] == 200"
+
+default-https: &default-https
+  <<: *default-alerts
+  interval: 5m
+  conditions:
+    - "[CONNECTED] == true"
+    - "[STATUS] == 200"
+    - "[CERTIFICATE_EXPIRATION] > 600h" # 25 days
 
 endpoints:
   ### Group: External DNS ###
@@ -233,7 +240,7 @@ endpoints:
     group: App - ActualBudget
     url: http://actualbudget.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: ActualBudget - HTTPS
     group: App - ActualBudget
     url: https://actualbudget.home.matejkosiarcik.com
@@ -242,7 +249,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: ActualBudget - Proxy prometheus metrics
     group: App - ActualBudget
     url: https://proxy-prometheus:${ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD}@actualbudget.home.matejkosiarcik.com/.proxy/metrics
@@ -269,12 +276,12 @@ endpoints:
     group: App - Certbot
     url: http://certbot.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Certbot - HTTPS
     group: App - Certbot
     url: https://certbot.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Certbot - Proxy prometheus metrics
     group: App - Certbot
     url: https://proxy-prometheus:${CERTBOT_PROXY_PROMETHEUS_PASSWORD}@certbot.home.matejkosiarcik.com/.proxy/metrics
@@ -301,7 +308,7 @@ endpoints:
     group: App - Changedetection
     url: http://changedetection.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Changedetection - HTTPS
     group: App - Changedetection
     url: https://changedetection.home.matejkosiarcik.com
@@ -310,7 +317,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Changedetection - Proxy prometheus metrics
     group: App - Changedetection
     url: https://proxy-prometheus:${CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD}@changedetection.home.matejkosiarcik.com/.proxy/metrics
@@ -337,7 +344,7 @@ endpoints:
   #   group: App - Desklamp - Left
   #   url: http://desklamp-left.home.matejkosiarcik.com
 
-  # - <<: *default-http
+  # - <<: *default-https
   #   name: Desklamp - Left - HTTPS
   #   group: App - Desklamp - Left
   #   url: https://desklamp-left.home.matejkosiarcik.com
@@ -352,7 +359,7 @@ endpoints:
   #     - "has([BODY].status) == true"
   #     - "[BODY].status == any(on, off)"
 
-  # - <<: *default-http
+  # - <<: *default-https
   #   name: Desklamp - Left - Proxy prometheus metrics
   #   group: App - Desklamp - Left
   #   url: https://proxy-prometheus:${DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD}@desklamp-left.home.matejkosiarcik.com/.proxy/metrics
@@ -381,7 +388,7 @@ endpoints:
   #   group: App - Desklamp - Right
   #   url: http://desklamp-right.home.matejkosiarcik.com
 
-  # - <<: *default-http
+  # - <<: *default-https
   #   name: Desklamp - Right - HTTPS
   #   group: App - Desklamp - Right
   #   url: https://desklamp-right.home.matejkosiarcik.com
@@ -396,7 +403,7 @@ endpoints:
   #     - "has([BODY].status) == true"
   #     - "[BODY].status == any(on, off)"
 
-  # - <<: *default-http
+  # - <<: *default-https
   #   name: Desklamp - Right - Proxy prometheus metrics
   #   group: App - Desklamp - Right
   #   url: https://proxy-prometheus:${DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD}@desklamp-right.home.matejkosiarcik.com/.proxy/metrics
@@ -425,17 +432,17 @@ endpoints:
     group: App - DockerHub proxy
     url: http://dockerhub-cache-proxy.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: DockerHub proxy - HTTPS
     group: App - DockerHub proxy
     url: https://dockerhub-cache-proxy.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: DockerHub proxy - Proxy prometheus metrics
     group: App - DockerHub proxy
     url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@dockerhub-cache-proxy.home.matejkosiarcik.com/.proxy/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: DockerHub proxy Api
     group: App - DockerHub proxy
     url: https://dockerhub-cache-proxy.home.matejkosiarcik.com/v2/_catalog
@@ -469,7 +476,7 @@ endpoints:
     group: App - Dozzle
     url: http://dozzle.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Dozzle - HTTPS
     group: App - Dozzle
     url: https://dozzle.home.matejkosiarcik.com
@@ -478,7 +485,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Dozzle - Proxy prometheus metrics
     group: App - Dozzle
     url: https://proxy-prometheus:${DOZZLE_PROXY_PROMETHEUS_PASSWORD}@dozzle.home.matejkosiarcik.com/.proxy/metrics
@@ -571,7 +578,7 @@ endpoints:
     group: App - Gatus (1)
     url: http://gatus-1.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gatus (1) - HTTPS
     group: App - Gatus (1)
     url: https://gatus-1.home.matejkosiarcik.com
@@ -580,12 +587,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gatus (1) - Prometheus metrics
     group: App - Gatus (1)
     url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus-1.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gatus (1) - Proxy prometheus metrics
     group: App - Gatus (1)
     url: https://proxy-prometheus:${GATUS_1_PROXY_PROMETHEUS_PASSWORD}@gatus-1.home.matejkosiarcik.com/.proxy/metrics
@@ -612,7 +619,7 @@ endpoints:
     group: App - Gatus (2)
     url: http://gatus-2.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gatus (2) - HTTPS
     group: App - Gatus (2)
     url: https://gatus-2.home.matejkosiarcik.com
@@ -621,12 +628,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gatus (2) - Prometheus metrics
     group: App - Gatus (2)
     url: https://prometheus:${GATUS_2_PROMETHEUS_TOKEN}@gatus-2.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gatus (2) - Proxy prometheus metrics
     group: App - Gatus (2)
     url: https://proxy-prometheus:${GATUS_2_PROXY_PROMETHEUS_PASSWORD}@gatus-2.home.matejkosiarcik.com/.proxy/metrics
@@ -657,7 +664,7 @@ endpoints:
     conditions:
       - "[STATUS] == 401"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Odroid H3 - HTTPS
     group: App - Glances
     url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com
@@ -666,12 +673,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Odroid H3 - Prometheus metrics
     group: App - Glances
     url: https://prometheus:${GLANCES_ODROID_H3_PROMETHEUS_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Odroid H3 - Proxy prometheus metrics
     group: App - Glances
     url: https://proxy-prometheus:${GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD}@glances-odroid-h3.home.matejkosiarcik.com/.proxy/metrics
@@ -700,7 +707,7 @@ endpoints:
     conditions:
       - "[STATUS] == 401"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Raspberry Pi 4B 2GB - HTTPS
     group: App - Glances
     url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
@@ -709,12 +716,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Raspberry Pi 4B 2GB - Prometheus metrics
     group: App - Glances
     url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Raspberry Pi 4B 2GB - Proxy prometheus metrics
     group: App - Glances
     url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-2g.home.matejkosiarcik.com/.proxy/metrics
@@ -743,7 +750,7 @@ endpoints:
     conditions:
       - "[STATUS] == 401"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Raspberry Pi 4B 4GB - HTTPS
     group: App - Glances
     url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
@@ -752,12 +759,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Raspberry Pi 4B 4GB - Prometheus metrics
     group: App - Glances
     url: https://prometheus:${GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: Glances - Raspberry Pi 4B 4GB - Proxy prometheus metrics
     group: App - Glances
     url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-4b-4g.home.matejkosiarcik.com/.proxy/metrics
@@ -784,7 +791,7 @@ endpoints:
     group: App - Healthchecks
     url: http://healthchecks.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Healthchecks - HTTPS
     group: App - Healthchecks
     url: https://healthchecks.home.matejkosiarcik.com
@@ -793,7 +800,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Healthchecks - API health
     group: App - Healthchecks
     url: https://healthchecks.home.matejkosiarcik.com/api/v3/status
@@ -801,7 +808,7 @@ endpoints:
       - "[STATUS] == 200"
       - "[BODY] == OK"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Healthchecks - Proxy prometheus metrics
     group: App - Healthchecks
     url: https://proxy-prometheus:${HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD}@healthchecks.home.matejkosiarcik.com/.proxy/metrics
@@ -827,7 +834,7 @@ endpoints:
     group: App - Gotify
     url: http://gotify.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gotify - HTTPS
     group: App - Gotify
     url: https://gotify.home.matejkosiarcik.com
@@ -836,7 +843,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Gotify - Proxy prometheus metrics
     group: App - Gotify
     url: https://proxy-prometheus:${GOTIFY_PROXY_PROMETHEUS_PASSWORD}@gotify.home.matejkosiarcik.com/.proxy/metrics
@@ -863,7 +870,7 @@ endpoints:
     group: App - Home Assistant
     url: http://homeassistant.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Home Assistant - HTTPS
     group: App - Home Assistant
     url: https://homeassistant.home.matejkosiarcik.com
@@ -872,14 +879,14 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Home Assistant - Prometheus metrics
     group: App - Home Assistant
     url: https://homeassistant.home.matejkosiarcik.com/api/prometheus
     headers:
       Authorization: Bearer ${HOMEASSISTANT_PROMETHEUS_TOKEN}
 
-  - <<: *default-http
+  - <<: *default-https
     name: Home Assistant - Proxy prometheus metrics
     group: App - Home Assistant
     url: https://proxy-prometheus:${HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD}@homeassistant.home.matejkosiarcik.com/.proxy/metrics
@@ -908,7 +915,7 @@ endpoints:
     conditions:
       - "[STATUS] == 401"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Homepage - HTTPS
     group: App - Homepage
     url: https://admin:${HOMEPAGE_PASSWORD}@homepage.home.matejkosiarcik.com
@@ -917,7 +924,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Homepage - Proxy prometheus metrics
     group: App - Homepage
     url: https://proxy-prometheus:${HOMEPAGE_PROXY_PROMETHEUS_PASSWORD}@homepage.home.matejkosiarcik.com/.proxy/metrics
@@ -949,7 +956,7 @@ endpoints:
     group: App - Jellyfin
     url: http://jellyfin.home.matejkosiarcik.com:8096
 
-  - <<: *default-http
+  - <<: *default-https
     name: Jellyfin - HTTPS
     group: App - Jellyfin
     url: https://jellyfin.home.matejkosiarcik.com
@@ -958,7 +965,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Jellyfin - API health
     group: App - Jellyfin
     url: https://jellyfin.home.matejkosiarcik.com/health
@@ -966,7 +973,7 @@ endpoints:
       - "[STATUS] == 200"
       - "[BODY] == Healthy"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Jellyfin - Proxy prometheus metrics
     group: App - Jellyfin
     url: https://proxy-prometheus:${JELLYFIN_PROXY_PROMETHEUS_PASSWORD}@jellyfin.home.matejkosiarcik.com/.proxy/metrics
@@ -1000,14 +1007,14 @@ endpoints:
     conditions:
       - "[STATUS] < 500"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Minio API - HTTPS
     group: App - Minio
     url: https://minio.home.matejkosiarcik.com
     conditions:
       - "[STATUS] < 500"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Minio API - API health
     group: App - Minio
     url: https://minio.home.matejkosiarcik.com/minio/health/live
@@ -1016,24 +1023,24 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Minio API - Health cluster write
     group: App - Minio
     url: https://minio.home.matejkosiarcik.com/minio/health/cluster
 
-  - <<: *default-http
+  - <<: *default-https
     name: Minio API - Health cluster read
     group: App - Minio
     url: https://minio.home.matejkosiarcik.com/minio/health/cluster/read
 
-  - <<: *default-http
+  - <<: *default-https
     name: Minio API - Prometheus metrics
     group: App - Minio
     url: https://minio.home.matejkosiarcik.com/minio/v2/metrics/cluster
     headers:
       Authorization: Bearer ${MINIO_PROMETHEUS_TOKEN}
 
-  - <<: *default-http
+  - <<: *default-https
     name: Minio API - Proxy prometheus metrics
     group: App - Minio
     url: https://proxy-prometheus:${MINIO_PROXY_PROMETHEUS_PASSWORD}@minio.home.matejkosiarcik.com/.proxy/metrics
@@ -1058,7 +1065,7 @@ endpoints:
     group: App - Minio
     url: http://minio-console.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Minio Console - HTTPS
     group: App - Minio
     url: https://minio-console.home.matejkosiarcik.com
@@ -1089,7 +1096,7 @@ endpoints:
     group: App - MotionEye (Kitchen)
     url: http://motioneye-kitchen.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: MotionEye (Kitchen) - HTTPS
     group: App - MotionEye (Kitchen)
     url: https://motioneye-kitchen.home.matejkosiarcik.com
@@ -1098,14 +1105,14 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: MotionEye (Kitchen) - HTTPS:9081
     group: App - MotionEye (Kitchen)
     url: https://motioneye-kitchen.home.matejkosiarcik.com:9081
     conditions:
       - "[STATUS] == 401"
 
-  - <<: *default-http
+  - <<: *default-https
     name: MotionEye (Kitchen) - Proxy prometheus metrics
     group: App - MotionEye (Kitchen)
     url: https://proxy-prometheus:${MOTIONEYE_KITCHEN_PROXY_PROMETHEUS_PASSWORD}@motioneye-kitchen.home.matejkosiarcik.com/.proxy/metrics
@@ -1140,7 +1147,7 @@ endpoints:
     url: http://netalertx.home.matejkosiarcik.com
     enabled: false
 
-  - <<: *default-http
+  - <<: *default-https
     name: NetAlertX - HTTPS
     group: App - NetAlertX
     url: https://netalertx.home.matejkosiarcik.com
@@ -1156,13 +1163,13 @@ endpoints:
     url: http://netalertx.home.matejkosiarcik.com:20211
     enabled: false
 
-  - <<: *default-http
+  - <<: *default-https
     name: NetAlertX - Prometheus metrics
     group: App - NetAlertX
     url: https://netalertx.home.matejkosiarcik.com/api/prometheus
     enabled: false
 
-  - <<: *default-http
+  - <<: *default-https
     name: NetAlertX - Proxy prometheus metrics
     group: App - NetAlertX
     url: https://proxy-prometheus:${NETALERTX_PROXY_PROMETHEUS_PASSWORD}@netalertx.home.matejkosiarcik.com/.proxy/metrics
@@ -1198,7 +1205,7 @@ endpoints:
     group: App - Ntfy
     url: http://ntfy.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Ntfy - HTTPS
     group: App - Ntfy
     url: https://ntfy.home.matejkosiarcik.com
@@ -1207,7 +1214,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Ntfy - API Health
     group: App - Ntfy
     url: https://ntfy.home.matejkosiarcik.com/v1/health
@@ -1215,7 +1222,7 @@ endpoints:
       - "[STATUS] == 200"
       - "[BODY].healthy == true"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Ntfy - Proxy prometheus metrics
     group: App - Ntfy
     url: https://proxy-prometheus:${NTFY_PROXY_PROMETHEUS_PASSWORD}@ntfy.home.matejkosiarcik.com/.proxy/metrics
@@ -1247,7 +1254,7 @@ endpoints:
     group: App - Omada Controller
     url: http://omada-controller.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Omada Controller Admin - HTTPS
     group: App - Omada Controller
     url: https://omada-controller.home.matejkosiarcik.com
@@ -1256,7 +1263,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Omada Controller - API Health
     group: App - Omada Controller
     url: https://omada-controller.home.matejkosiarcik.com/api/v2/anon/info
@@ -1269,7 +1276,7 @@ endpoints:
       - "has([BODY].result.controllerVer) == true"
       - "[BODY].result.configured == true"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Omada Controller - Proxy prometheus metrics
     group: App - Omada Controller
     url: https://proxy-prometheus:${OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@omada-controller.home.matejkosiarcik.com/.proxy/metrics
@@ -1340,12 +1347,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: OpenSpeedTest - HTTPS
     group: App - OpenSpeedTest
     url: https://openspeedtest.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: OpenSpeedTest - Proxy prometheus metrics
     group: App - OpenSpeedTest
     url: https://proxy-prometheus:${OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD}@openspeedtest.home.matejkosiarcik.com/.proxy/metrics
@@ -1372,7 +1379,7 @@ endpoints:
     group: App - PiHole 1 Primary
     url: http://pihole-1-primary.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 1 Primary - HTTPS
     group: App - PiHole 1 Primary
     url: https://pihole-1-primary.home.matejkosiarcik.com
@@ -1381,12 +1388,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 1 Primary - Prometheus metrics
     group: App - PiHole 1 Primary
     url: https://prometheus:${PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD}@pihole-1-primary.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 1 Primary - Proxy prometheus metrics
     group: App - PiHole 1 Primary
     url: https://proxy-prometheus:${PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-primary.home.matejkosiarcik.com/.proxy/metrics
@@ -1433,7 +1440,7 @@ endpoints:
     group: App - PiHole 1 Secondary
     url: http://pihole-1-secondary.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 1 Secondary - HTTPS
     group: App - PiHole 1 Secondary
     url: https://pihole-1-secondary.home.matejkosiarcik.com
@@ -1442,12 +1449,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 1 Secondary - Prometheus metrics
     group: App - PiHole 1 Secondary
     url: https://prometheus:${PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 1 Secondary - Proxy prometheus metrics
     group: App - PiHole 1 Secondary
     url: https://proxy-prometheus:${PIHOLE_1_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-1-secondary.home.matejkosiarcik.com/.proxy/metrics
@@ -1494,7 +1501,7 @@ endpoints:
     group: App - PiHole 2 Primary
     url: http://pihole-2-primary.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 2 Primary - HTTPS
     group: App - PiHole 2 Primary
     url: https://pihole-2-primary.home.matejkosiarcik.com
@@ -1503,12 +1510,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 2 Primary - Prometheus metrics
     group: App - PiHole 2 Primary
     url: https://prometheus:${PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD}@pihole-2-primary.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 2 Primary - Proxy prometheus metrics
     group: App - PiHole 2 Primary
     url: https://proxy-prometheus:${PIHOLE_2_PRIMARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-primary.home.matejkosiarcik.com/.proxy/metrics
@@ -1555,7 +1562,7 @@ endpoints:
     group: App - PiHole 2 Secondary
     url: http://pihole-2-secondary.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 2 Secondary - HTTPS
     group: App - PiHole 2 Secondary
     url: https://pihole-2-secondary.home.matejkosiarcik.com
@@ -1564,12 +1571,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 2 Secondary - Prometheus metrics
     group: App - PiHole 2 Secondary
     url: https://prometheus:${PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: PiHole 2 Secondary - Proxy prometheus metrics
     group: App - PiHole 2 Secondary
     url: https://proxy-prometheus:${PIHOLE_2_SECONDARY_PROXY_PROMETHEUS_PASSWORD}@pihole-2-secondary.home.matejkosiarcik.com/.proxy/metrics
@@ -1618,7 +1625,7 @@ endpoints:
     conditions:
       - "[STATUS] == 401"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Prometheus - HTTPS
     group: App - Prometheus
     url: https://prometheus.home.matejkosiarcik.com
@@ -1629,12 +1636,12 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Prometheus - Prometheus metrics
     group: App - Prometheus
     url: https://prometheus:${PROMETHEUS_PROMETHEUS_PASSWORD}@prometheus.home.matejkosiarcik.com/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: Prometheus - Proxy prometheus metrics
     group: App - Prometheus
     url: https://proxy-prometheus:${PROMETHEUS_PROXY_PROMETHEUS_PASSWORD}@prometheus.home.matejkosiarcik.com/.proxy/metrics
@@ -1703,7 +1710,7 @@ endpoints:
     group: App - Smtp4dev
     url: http://smtp4dev.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Smtp4dev - HTTPS
     group: App - Smtp4dev
     url: https://smtp4dev.home.matejkosiarcik.com
@@ -1712,7 +1719,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Smtp4dev - Proxy prometheus metrics
     group: App - Smtp4dev
     url: https://proxy-prometheus:${SMTP4DEV_PROXY_PROMETHEUS_PASSWORD}@smtp4dev.home.matejkosiarcik.com/.proxy/metrics
@@ -1744,7 +1751,7 @@ endpoints:
     group: App - Speedtest Tracker
     url: http://speedtest-tracker.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Speedtest Tracker - HTTPS
     group: App - Speedtest Tracker
     url: https://speedtest-tracker.home.matejkosiarcik.com
@@ -1753,7 +1760,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Speedtest Tracker - API health
     group: App - Speedtest Tracker
     url: https://speedtest-tracker.home.matejkosiarcik.com/api/healthcheck
@@ -1761,7 +1768,7 @@ endpoints:
       - "[STATUS] == 200"
       - "has([BODY].message) == true"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Speedtest Tracker - Proxy prometheus metrics
     group: App - Speedtest Tracker
     url: https://proxy-prometheus:${SPEEDTEST_TRACKER_PROXY_PROMETHEUS_PASSWORD}@speedtest-tracker.home.matejkosiarcik.com/.proxy/metrics
@@ -1793,7 +1800,7 @@ endpoints:
     group: App - Tvheadend
     url: http://tvheadend.home.matejkosiarcik.com:9981
 
-  - <<: *default-http
+  - <<: *default-https
     name: Tvheadend - HTTPS
     group: App - Tvheadend
     url: https://tvheadend.home.matejkosiarcik.com
@@ -1802,7 +1809,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Tvheadend - API health
     group: App - Tvheadend
     url: https://tvheadend.home.matejkosiarcik.com/api/serverinfo
@@ -1813,7 +1820,7 @@ endpoints:
       - "has([BODY].api_version) == true"
       - "has([BODY].name) == true"
 
-  - <<: *default-http
+  - <<: *default-https
     name: Tvheadend - Proxy prometheus metrics
     group: App - Tvheadend
     url: https://proxy-prometheus:${TVHEADEND_PROXY_PROMETHEUS_PASSWORD}@tvheadend.home.matejkosiarcik.com/.proxy/metrics
@@ -1864,7 +1871,7 @@ endpoints:
     group: App - Unbound 1 [default]
     url: http://unbound-1-default.home.matejkosiarcik.com/.proxy
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 1 [default] - HTTPS
     group: App - Unbound 1 [default]
     url: https://unbound-1-default.home.matejkosiarcik.com/.proxy
@@ -1873,7 +1880,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 1 [default] - Proxy prometheus metrics
     group: App - Unbound 1 [default]
     url: https://proxy-prometheus:${UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-1-default.home.matejkosiarcik.com/.proxy/metrics
@@ -1914,7 +1921,7 @@ endpoints:
     group: App - Unbound 1 [open]
     url: http://unbound-1-open.home.matejkosiarcik.com/.proxy
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 1 [open] - HTTPS
     group: App - Unbound 1 [open]
     url: https://unbound-1-open.home.matejkosiarcik.com/.proxy
@@ -1923,7 +1930,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 1 [open] - Proxy prometheus metrics
     group: App - Unbound 1 [open]
     url: https://proxy-prometheus:${UNBOUND_1_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-1-open.home.matejkosiarcik.com/.proxy/metrics
@@ -1964,7 +1971,7 @@ endpoints:
     group: App - Unbound 2 [default]
     url: http://unbound-2-default.home.matejkosiarcik.com/.proxy
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 2 [default] - HTTPS
     group: App - Unbound 2 [default]
     url: https://unbound-2-default.home.matejkosiarcik.com/.proxy
@@ -1973,7 +1980,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 2 [default] - Proxy prometheus metrics
     group: App - Unbound 2 [default]
     url: https://proxy-prometheus:${UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-2-default.home.matejkosiarcik.com/.proxy/metrics
@@ -2014,7 +2021,7 @@ endpoints:
     group: App - Unbound 2 [open]
     url: http://unbound-2-open.home.matejkosiarcik.com/.proxy
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 2 [open] - HTTPS
     group: App - Unbound 2 [open]
     url: https://unbound-2-open.home.matejkosiarcik.com/.proxy
@@ -2023,7 +2030,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Unbound 2 [open] - Proxy prometheus metrics
     group: App - Unbound 2 [open]
     url: https://proxy-prometheus:${UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-2-open.home.matejkosiarcik.com/.proxy/metrics
@@ -2050,7 +2057,7 @@ endpoints:
     group: App - UniFi Controller
     url: http://unifi-controller.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: UniFi Controller Admin - HTTPS
     group: App - UniFi Controller
     url: https://unifi-controller.home.matejkosiarcik.com
@@ -2059,7 +2066,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: UniFi Controller Admin - API Health
     group: App - UniFi Controller
     url: https://unifi-controller.home.matejkosiarcik.com/status
@@ -2068,17 +2075,17 @@ endpoints:
       - "[BODY].meta.rc == ok"
       - "[BODY].meta.up == true"
 
-  - <<: *default-http
+  - <<: *default-https
     name: UniFi Controller Admin - Proxy prometheus metrics
     group: App - UniFi Controller
     url: https://proxy-prometheus:${UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@unifi-controller.home.matejkosiarcik.com/.proxy/metrics
 
-  - <<: *default-http
+  - <<: *default-https
     name: UniFi Controller Admin - HTTP (raw)
     group: App - UniFi Controller
     url: http://unifi-controller.home.matejkosiarcik.com:8080
 
-  - <<: *default-http
+  - <<: *default-https
     name: UniFi Controller Admin - HTTPS (raw)
     group: App - UniFi Controller
     url: https://unifi-controller.home.matejkosiarcik.com:8443
@@ -2140,7 +2147,7 @@ endpoints:
     group: App - Uptime Kuma
     url: http://uptime-kuma.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Uptime Kuma - HTTPS
     group: App - Uptime Kuma
     url: https://uptime-kuma.home.matejkosiarcik.com
@@ -2149,7 +2156,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Uptime Kuma - Proxy prometheus metrics
     group: App - Uptime Kuma
     url: https://proxy-prometheus:${UPTIMEKUMA_PROXY_PROMETHEUS_PASSWORD}@uptime-kuma.home.matejkosiarcik.com/.proxy/metrics
@@ -2176,7 +2183,7 @@ endpoints:
     group: App - Vaultwarden
     url: http://vaultwarden.home.matejkosiarcik.com
 
-  - <<: *default-http
+  - <<: *default-https
     name: Vaultwarden - HTTPS
     group: App - Vaultwarden
     url: https://vaultwarden.home.matejkosiarcik.com
@@ -2185,7 +2192,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-http
+  - <<: *default-https
     name: Vaultwarden - Proxy prometheus metrics
     group: App - Vaultwarden
     url: https://proxy-prometheus:${VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD}@vaultwarden.home.matejkosiarcik.com/.proxy/metrics
@@ -2215,7 +2222,7 @@ endpoints:
     url: http://vikunja.home.matejkosiarcik.com
     enabled: false
 
-  - <<: *default-http
+  - <<: *default-https
     name: Vikunja - HTTPS
     group: App - Vikunja
     url: https://vikunja.home.matejkosiarcik.com
@@ -2225,13 +2232,13 @@ endpoints:
       - type: gotify
     enabled: false
 
-  - <<: *default-http
+  - <<: *default-https
     name: Vikunja - Proxy prometheus metrics
     group: App - Vikunja
     url: https://proxy-prometheus:${VIKUNJA_PROXY_PROMETHEUS_PASSWORD}@vikunja.home.matejkosiarcik.com/.proxy/metrics
     enabled: false
 
-  - <<: *default-http
+  - <<: *default-https
     name: Vikunja - Prometheus metrics
     group: App - Vikunja
     url: https://vikunja.home.matejkosiarcik.com/api/v1/metrics
