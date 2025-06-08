@@ -134,11 +134,11 @@ export const apps = {
             { url: 'https://prometheus.home.matejkosiarcik.com', title: 'Prometheus' },
         ],
     },
-    smb: {
+    samba: {
         title: 'SMB',
         instances: [
-            { url: 'smb://smb-data.home.matejkosiarcik.com', title: 'SMB (data)' },
-            { url: 'smb://smb-snapshots.home.matejkosiarcik.com', title: 'SMB (snapshots)' },
+            { url: 'smb://samba-data.home.matejkosiarcik.com', title: 'SMB (data)' },
+            { url: 'smb://samba-snapshots.home.matejkosiarcik.com', title: 'SMB (snapshots)' },
         ],
     },
     smtp4dev: {

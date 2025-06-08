@@ -63,7 +63,7 @@ jobs:
               - '**/openspeedtest*/**'
             pihole:
               - '**/pihole*/**'
-            smb:
+            samba:
               - '**/samba*/**'
               - '**/smb*/**'
             smtp4dev:
@@ -126,7 +126,7 @@ jobs:
               '"pihole":' \
               '["/servers/odroid-h3/docker-apps/pihole-1-primary", "/servers/odroid-h3/docker-apps/pihole-1-secondary",' \
               '"/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-primary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-secondary"],'
-            printf '%s ' '"smb": [],'
+            printf '%s ' '"samba": ["/servers/macbook-pro-2012/docker-apps/samba-data", "/servers/macbook-pro-2012/docker-apps/samba-snapshots"],'
             printf '%s ' '"smtp4dev": ["/servers/odroid-h3/docker-apps/smtp4dev"],'
             printf '%s ' '"speedtest-tracker": ["/servers/odroid-h3/docker-apps/speedtest-tracker"],'
             printf '%s ' '"tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],'

@@ -660,7 +660,7 @@ case "$full_app_name" in
     printf 'RENOVATE_TOKEN=%s\n' "$renovate_token" >>"$output/app.env"
     printf 'GITHUB_COM_TOKEN=%s\n' "$github_token" >>"$output/app.env"
     ;;
-*smb*)
+*samba*)
     # App
     smb_password="$(load_password "$full_app_name" app admin)"
     printf 'admin,%s\n' "$smb_password" >>"$output/all-credentials.csv"
