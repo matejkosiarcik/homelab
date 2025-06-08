@@ -48,6 +48,7 @@ prometheus
 
 # App Monitoring
 gatus-1
+uptime-kuma
 
 # Non-server apps
 renovatebot
