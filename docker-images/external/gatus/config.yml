@@ -1661,12 +1661,12 @@ endpoints:
   - <<: *default-icmp
     name: SMB (data) - ICMP
     group: App - SMB (data)
-    url: icmp://smb-data.home.matejkosiarcik.com
+    url: icmp://samba-data.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: SMB (data) - TCP:139
     group: App - SMB (data)
-    url: tcp://smb-data.home.matejkosiarcik.com:139
+    url: tcp://samba-data.home.matejkosiarcik.com:139
     alerts:
       - type: email
       - type: ntfy
@@ -1675,19 +1675,19 @@ endpoints:
   - <<: *default-tcp
     name: SMB (data) - TCP:445
     group: App - SMB (data)
-    url: tcp://smb-data.home.matejkosiarcik.com:445
+    url: tcp://samba-data.home.matejkosiarcik.com:445
 
   ### Group: App - SMB (snapshots) ###
 
   - <<: *default-icmp
     name: SMB (snapshots) - ICMP
     group: App - SMB (snapshots)
-    url: icmp://smb-snapshots.home.matejkosiarcik.com
+    url: icmp://samba-snapshots.home.matejkosiarcik.com
 
   - <<: *default-tcp
     name: SMB (snapshots) - TCP:139
     group: App - SMB (snapshots)
-    url: tcp://smb-snapshots.home.matejkosiarcik.com:139
+    url: tcp://samba-snapshots.home.matejkosiarcik.com:139
     alerts:
       - type: email
       - type: ntfy
@@ -1696,7 +1696,7 @@ endpoints:
   - <<: *default-tcp
     name: SMB (snapshots) - TCP:445
     group: App - SMB (snapshots)
-    url: tcp://smb-snapshots.home.matejkosiarcik.com:445
+    url: tcp://samba-snapshots.home.matejkosiarcik.com:445
 
   ### Group: App - Smtp4dev ###
 

@@ -183,15 +183,15 @@
 - Data:
     - SMB (data):
         description: Main data store
-        href: javascript:copyUrl('smb://smb-data.home.matejkosiarcik.com')
-        ping: smb-data.home.matejkosiarcik.com
+        href: javascript:copyUrl('smb://samba-data.home.matejkosiarcik.com')
+        ping: samba-data.home.matejkosiarcik.com
         icon: /icons/samba.png
         target: _self
 
     - SMB (snapshots):
         description: ZFS Snapshots from main data store
-        href: javascript:copyUrl('smb://smb-snapshots.home.matejkosiarcik.com')
-        ping: smb-snapshots.home.matejkosiarcik.com
+        href: javascript:copyUrl('smb://samba-snapshots.home.matejkosiarcik.com')
+        ping: samba-snapshots.home.matejkosiarcik.com
         icon: /icons/samba.png
         target: _self
 

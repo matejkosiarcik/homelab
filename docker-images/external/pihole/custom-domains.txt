@@ -61,8 +61,8 @@
 10.1.16.24 motioneye-kitchen.home.matejkosiarcik.com
 10.1.16.25 glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
-10.1.18.1 smb-data.home.matejkosiarcik.com
-10.1.18.2 smb-snapshots.home.matejkosiarcik.com
+10.1.18.1 samba-data.home.matejkosiarcik.com
+10.1.18.2 samba-snapshots.home.matejkosiarcik.com
 
 # Some UniFi devices require this
 10.1.16.21 unifi
