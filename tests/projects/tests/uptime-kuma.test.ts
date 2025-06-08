@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { faker } from '@faker-js/faker';
 import { getEnv } from '../../utils/utils';
 
@@ -12,6 +12,7 @@ test.describe(apps['uptime-kuma'].title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
+            createPrometheusTests(instance.url, { auth: 'basic' });
 
             const users = [
                 {
