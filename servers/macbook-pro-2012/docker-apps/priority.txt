@@ -1,2 +1,2 @@
-smb-data
-smb-snapshots
+samba-data
+samba-snapshots
