@@ -751,6 +751,19 @@ case "$full_app_name" in
     healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
     write_healthcheck_url certificator "$healthcheck_id"
     ;;
+*uptime-kuma*)
+    # App
+    admin_password="$(load_password "$full_app_name" app admin)"
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$full_app_name"
+
+    # Certificator
+    write_certificator_users
+    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
+    write_healthcheck_url certificator "$healthcheck_id"
+    ;;
 *vaultwarden*)
     # App
     superadmin_password="$(load_password "$full_app_name" app superadmin)"

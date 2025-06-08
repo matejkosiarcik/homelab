@@ -174,6 +174,12 @@ export const apps = {
             { url: 'https://unifi-controller.home.matejkosiarcik.com', title: 'UniFi Controller' },
         ],
     },
+    'uptime-kuma': {
+        title: 'Uptime Kuma',
+        instances: [
+            { url: 'https://uptime-kuma.home.matejkosiarcik.com', title: 'Uptime Kuma' },
+        ],
+    },
     vaultwarden: {
         title: 'Vaultwarden',
         instances: [

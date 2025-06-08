@@ -120,6 +120,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
         exit 1
     fi
+elif [ "$HOMELAB_APP_TYPE" = 'uptime-kuma' ]; then
+    PROXY_UPSTREAM_URL="http://app:3001"
 elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'vikunja' ]; then
