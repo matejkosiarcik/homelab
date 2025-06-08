@@ -266,7 +266,7 @@ deploy)
     docker_build
     docker_stop
     docker network prune -f # Might help with services problems sometimes not being able to bind ports
-    sleep 1 # Should help with container clash problems
+    sleep 1                 # Should help with container clash problems
     docker_start
     printf 'Deployment of %s successful\n\n' "$full_app_name"
     ;;
