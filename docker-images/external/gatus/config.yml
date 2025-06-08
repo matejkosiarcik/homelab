@@ -2069,6 +2069,41 @@ endpoints:
     group: App - UniFi Controller
     url: tcp://unifi-controller.home.matejkosiarcik.com:6789
 
+  ### Group: App - Uptime Kuma ###
+
+  - <<: *default-icmp
+    name: Uptime Kuma - ICMP
+    group: App - Uptime Kuma
+    url: icmp://uptime-kuma.home.matejkosiarcik.com
+
+  - <<: *default-http
+    name: Uptime Kuma - HTTP
+    group: App - Uptime Kuma
+    url: http://uptime-kuma.home.matejkosiarcik.com
+
+  - <<: *default-http
+    name: Uptime Kuma - HTTPS
+    group: App - Uptime Kuma
+    url: https://uptime-kuma.home.matejkosiarcik.com
+    alerts:
+      - type: ntfy
+      - type: email
+
+  - <<: *default-http
+    name: Uptime Kuma - Proxy prometheus metrics
+    group: App - Uptime Kuma
+    url: https://proxy-prometheus:${UPTIMEKUMA_PROXY_PROMETHEUS_PASSWORD}@uptime-kuma.home.matejkosiarcik.com/.proxy/metrics
+
+  - <<: *default-tcp
+    name: Uptime Kuma - TCP:80
+    group: App - Uptime Kuma
+    url: tcp://uptime-kuma.home.matejkosiarcik.com:80
+
+  - <<: *default-tcp
+    name: Uptime Kuma - TCP:443
+    group: App - Uptime Kuma
+    url: tcp://uptime-kuma.home.matejkosiarcik.com:443
+
   ### Group: App - Vaultwarden ###
 
   - <<: *default-icmp
