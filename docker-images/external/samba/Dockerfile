@@ -6,7 +6,7 @@ RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         gnutls-bin samba && \
     rm -rf /var/lib/apt/lists/*
-COPY ./external/samba/smb-default.conf ./external/samba/smb-snapshots.conf /homelab/smb/
+COPY ./external/samba/smb-default.conf ./external/samba/smb-snapshots.conf /homelab/samba/
 COPY ./external/samba/entrypoint.sh ./
 ENV HOMELAB_CONTAINER_NAME=samba \
     HOMELAB_CONTAINER_VARIANT=default \

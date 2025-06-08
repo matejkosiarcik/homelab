@@ -1,6 +1,6 @@
 # SMB
 
-![diagram](../../docs/diagrams/out/apps/smb.png)
+![diagram](../../docs/diagrams/out/apps/samba.png)
 
 ## Docs
 

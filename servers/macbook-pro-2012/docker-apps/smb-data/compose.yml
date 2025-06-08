@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/smb/compose.yml
-    project_directory: .
