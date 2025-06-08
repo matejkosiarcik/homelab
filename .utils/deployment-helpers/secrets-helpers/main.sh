@@ -315,6 +315,7 @@ case "$full_app_name" in
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/app.env"
     printf 'PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app prometheus)" >>"$output/app.env"
+    printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$output/app.env"
     # Proxy prometheus credentials
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget apache prometheus)" >>"$output/app.env"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$output/app.env"
@@ -350,6 +351,7 @@ case "$full_app_name" in
     printf 'UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-default apache prometheus)" >>"$output/app.env"
     printf 'UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-open apache prometheus)" >>"$output/app.env"
     printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unifi-controller apache prometheus)" >>"$output/app.env"
+    printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptime-kuma apache prometheus)" >>"$output/app.env"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vaultwarden apache prometheus)" >>"$output/app.env"
     # printf 'DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-left apache prometheus)" >>"$output/app.env"
     # printf 'DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-right apache prometheus)" >>"$output/app.env"
@@ -601,6 +603,7 @@ case "$full_app_name" in
     printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/app.env"
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$output/app.env"
     printf 'PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$output/app.env"
+    printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$output/app.env"
     # Proxy prometheus credentials
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget apache prometheus)" >>"$output/app.env"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$output/app.env"
@@ -638,6 +641,7 @@ case "$full_app_name" in
     printf 'UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-default apache prometheus)" >>"$output/app.env"
     printf 'UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-open apache prometheus)" >>"$output/app.env"
     printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unifi-controller apache prometheus)" >>"$output/app.env"
+    printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptime-kuma apache prometheus)" >>"$output/app.env"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vaultwarden apache prometheus)" >>"$output/app.env"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vikunja apache prometheus)" >>"$output/app.env"
     # printf 'DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-left apache prometheus)" >>"$output/app.env"

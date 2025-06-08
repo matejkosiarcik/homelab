@@ -35,6 +35,9 @@ apps:
   - url: prometheus.home.matejkosiarcik.com
     auth: basic
     path: /metrics
+  - url: uptime-kuma.home.matejkosiarcik.com
+    auth: basic
+    path: /metrics
 
 proxies:
   - url: actualbudget.home.matejkosiarcik.com
@@ -70,4 +73,5 @@ proxies:
   - url: unbound-2-default.home.matejkosiarcik.com
   - url: unbound-2-open.home.matejkosiarcik.com
   - url: unifi-controller.home.matejkosiarcik.com
+  - url: uptime-kuma.home.matejkosiarcik.com
   - url: vaultwarden.home.matejkosiarcik.com

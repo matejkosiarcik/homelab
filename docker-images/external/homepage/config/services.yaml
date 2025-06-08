@@ -228,7 +228,7 @@
           url: https://healthchecks.home.matejkosiarcik.com
           key: "{{HOMEPAGE_VAR_HEALTHCHECKS_APIKEY}}"
 
-    - Gatus:
+    - Gatus 1:
         description: Uptime monitoring system
         href: https://gatus-1.home.matejkosiarcik.com
         ping: gatus-1.home.matejkosiarcik.com
@@ -249,6 +249,16 @@
           url: https://gatus-2.home.matejkosiarcik.com
           username: admin
           password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
+
+    - Uptime Kuma:
+        description: Uptime monitoring system
+        href: https://uptime-kuma.home.matejkosiarcik.com
+        ping: uptime-kuma.home.matejkosiarcik.com
+        icon: /icons/uptime-kuma.png
+        widget:
+          type: uptimekuma
+          url: https://uptime-kuma.home.matejkosiarcik.com
+          slug: dashboard
 
     - Prometheus:
         description: Prometheus

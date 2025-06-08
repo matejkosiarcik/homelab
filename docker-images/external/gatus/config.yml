@@ -2157,9 +2157,14 @@ endpoints:
       - type: gotify
 
   - <<: *default-https
+    name: Uptime Kuma - Prometheus metrics
+    group: App - Uptime Kuma
+    url: https://proxy-prometheus:${UPTIME_KUMA_PROMETHEUS_PASSWORD}@uptime-kuma.home.matejkosiarcik.com/metrics
+
+  - <<: *default-https
     name: Uptime Kuma - Proxy prometheus metrics
     group: App - Uptime Kuma
-    url: https://proxy-prometheus:${UPTIMEKUMA_PROXY_PROMETHEUS_PASSWORD}@uptime-kuma.home.matejkosiarcik.com/.proxy/metrics
+    url: https://proxy-prometheus:${UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD}@uptime-kuma.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-tcp
     name: Uptime Kuma - TCP:80

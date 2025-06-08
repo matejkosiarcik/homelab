@@ -193,6 +193,11 @@ load_password() {
     printf 'UNIFI_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unifi-controller apache status)"
     printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unifi-controller apache prometheus)"
 
+    printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(load_password uptime-kuma app admin)"
+    printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma app admin)"
+    printf 'UPTIME_KUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache status)"
+    printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache prometheus)"
+
     printf 'VAULTWARDEN_SUPERADMIN_PASSWORD=%s\n' "$(load_password vaultwarden app superadmin)"
     printf 'VAULTWARDEN_ADMIN_PASSWORD=%s\n' "$(load_password vaultwarden app admin)"
     printf 'VAULTWARDEN_HOMELAB_PASSWORD=%s\n' "$(load_password vaultwarden app homelab)"
