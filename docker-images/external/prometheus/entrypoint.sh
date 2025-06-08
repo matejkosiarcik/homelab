@@ -6,7 +6,6 @@ sed "s~\${PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_ADMIN_
 cat <"$tmpfile" >/etc/prometheus/web.yml
 cat </etc/prometheus/prometheus.yml |
     sed "s~\${ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD}~$ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD~g" |
-    sed "s~\${ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD}~$ACTUALBUDGET_PUBLIC_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${CERTBOT_PROXY_PROMETHEUS_PASSWORD}~$CERTBOT_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD}~$CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}~$DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD~g" |
@@ -55,6 +54,11 @@ cat </etc/prometheus/prometheus.yml |
     sed "s~\${VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD}~$VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD~g" >"$tmpfile"
 cat <"$tmpfile" >/etc/prometheus/prometheus.yml
 rm -f "$tmpfile"
+
+if [ "$(wc -l </etc/prometheus/prometheus.yml)" -eq 0 ]; then
+    printf "Error: /etc/prometheus/prometheus.yml is empty" >&2
+    exit 1
+fi
 
 promtool check web-config /etc/prometheus/web.yml
 promtool check config /etc/prometheus/prometheus.yml

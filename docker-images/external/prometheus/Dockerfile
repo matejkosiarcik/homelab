@@ -1,25 +1,49 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
-FROM python:3.13.4-slim AS python
+### Dependencies ###
+
+FROM --platform=$BUILDPLATFORM debian:12.11-slim AS yq
 WORKDIR /homelab
-RUN apt-get update && \
+RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        jq >/dev/null && \
+        jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-ENV PIP_ROOT_USER_ACTION=ignore
-COPY ./external/prometheus/requirements.txt ./
+COPY ./.shared/dependencies/yq/requirements.txt ./
 RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./external/prometheus/data.yml ./external/prometheus/prometheus.yml.j2 ./
-RUN yq . data.yml >data.json && \
-    jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
+
+FROM --platform=$BUILDPLATFORM debian:12.11-slim AS jinja
+WORKDIR /homelab
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        jq python3 python3-pip >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/dependencies/jinja/requirements.txt ./
+RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/homelab/python-vendor/bin:$PATH" \
+    PYTHONPATH=/homelab/python-vendor
+
+### Config ###
+
+FROM yq as config-1
+WORKDIR /homelab
+COPY ./external/prometheus/data.yml ./
+RUN yq . data.yml >data.json
+
+FROM jinja as config-2
+WORKDIR /homelab
+COPY --from=config-1 /homelab/data.json ./
+COPY ./external/prometheus/prometheus.yml.j2 ./
+RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
+
+### Final ###
 
 FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /etc/prometheus/
-COPY --from=python ./homelab/prometheus.yml /etc/prometheus/prometheus.yml
+COPY --from=config-2 ./homelab/prometheus.yml /etc/prometheus/prometheus.yml
 
 FROM prom/prometheus:v3.4.1
 COPY --from=prefinal /etc/prometheus/web.yml /etc/prometheus/prometheus.yml /etc/prometheus/entrypoint.sh /etc/prometheus/
