@@ -9,7 +9,7 @@ test.describe(apps['home-assistant'].title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createPrometheusTests(instance.url, { auth: 'token', path: '/api/prometheus' });
+            createPrometheusTests(instance.url, { auth: 'bearer', path: '/api/prometheus' });
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);

@@ -10,7 +10,7 @@ test.describe(apps.minio.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createPrometheusTests(instance.url, { auth: 'token', path: '/minio/v2/metrics/cluster' });
+            createPrometheusTests(instance.url, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
             createApiRootTest(instance.url, { headers: { 'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString() }});
             createTcpTests(instance.url, [80, 443]);
             createTcpTests(instance.consoleUrl, [80, 443], 'console');

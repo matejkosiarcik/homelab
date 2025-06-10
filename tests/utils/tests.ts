@@ -262,7 +262,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
     return output;
 }
 
-export function createPrometheusTests(url: string, _options: { auth?: 'basic' | 'token' | undefined; path?: string | undefined; username?: string | undefined } = {}) {
+export function createPrometheusTests(url: string, _options: { auth?: 'none' | 'basic' | 'bearer' | undefined; path?: string | undefined; username?: string | undefined } = {}) {
     const options = {
         auth: _options.auth ?? 'basic',
         path: _options.path ?? '/metrics',
@@ -302,12 +302,12 @@ export function createPrometheusTests(url: string, _options: { auth?: 'basic' | 
                     status: 200,
                 },
             ];
-            return prometheusVariants.map((variant) => test(`API: Prometheus metrics (${variant.title})`, async () => {
+            return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Basic auth (${variant.title})`, async () => {
                 const response = await axios.get(`${url}${options.path}`, { auth: variant.auth });
                 expect(response.status, 'Response Status').toStrictEqual(variant.status);
             }));
         }
-        case 'token': {
+        case 'bearer': {
             const prometheusVariants = [
                 {
                     title: 'no credentials',
@@ -325,13 +325,41 @@ export function createPrometheusTests(url: string, _options: { auth?: 'basic' | 
                     status: 200,
                 },
             ];
-            return prometheusVariants.map((variant) => test(`API: Prometheus metrics (${variant.title})`, async () => {
+            return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Bearer auth (${variant.title})`, async () => {
                 const headers: Record<string, string> = {};
                 if (variant.auth) {
                     headers['Authorization'] = `Bearer ${variant.auth}`;
                 }
 
                 const response = await axios.get(`${url}${options.path}`, { headers: headers });
+                expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            }));
+        }
+        case 'none': {
+            const prometheusVariants = [
+                {
+                    title: 'successful',
+                    path: options.path,
+                    status: 200,
+                },
+                {
+                    title: 'wrong path 1',
+                    path: `${options.path}${faker.string.alpha(1)}`,
+                    status: 400,
+                },
+                {
+                    title: 'wrong path 2',
+                    path: `${options.path}/${faker.string.alpha(1)}`,
+                    status: 400,
+                },
+                {
+                    title: 'wrong path 3',
+                    path: `/${faker.string.alpha(1)}/${options.path}`,
+                    status: 400,
+                },
+            ];
+            return prometheusVariants.map((variant) => test(`API: Prometheus metrics with No auth (${variant.title})`, async () => {
+                const response = await axios.get(`${url}${options.path}`);
                 expect(response.status, 'Response Status').toStrictEqual(variant.status);
             }));
         }
