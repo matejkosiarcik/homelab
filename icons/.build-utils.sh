@@ -12,10 +12,26 @@ default_convert_options='magick INPUT_FILE OUTPUT_FILE'
 optimize_image() {
     # $1 - filepath
 
+    tmpdir2="$(mktemp -d)"
+    tmpfile2="$tmpdir2/$(basename "$1")"
+
     if printf '%s' "$(basename "$1")" | grep -E '\.png$' >/dev/null 2>&1; then
-        oxipng --opt max --strip safe "$1"
-        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$1" "$1"
+        cp "$1" "$tmpfile2"
+        oxipng --opt max --strip safe --zopfli --force "$tmpfile2"
+        if [ "$(wc -c <"$tmpdir2/$(basename "$1")")" -lt "$(wc -c <"$1")" ]; then
+            mv "$tmpfile2" "$1"
+        fi
+        rm -f "$tmpfile2"
+
+        cp "$1" "$tmpfile2"
+        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$tmpfile2" "$tmpfile2"
+        if [ "$(wc -c <"$tmpdir2/$(basename "$1")")" -lt "$(wc -c <"$1")" ]; then
+            mv "$tmpfile2" "$1"
+        fi
+        rm -f "$tmpfile2"
     fi
+
+    rm -rf "$tmpdir2"
 }
 
 convert_image_draft() {
