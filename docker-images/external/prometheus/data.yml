@@ -14,11 +14,14 @@ apps:
   - url: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
     auth: basic
     path: /metrics
+  - url: healthchecks.home.matejkosiarcik.com
+    auth: bearer
+    path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
   - url: homeassistant.home.matejkosiarcik.com
-    auth: token
+    auth: bearer
     path: /api/prometheus
   - url: minio.home.matejkosiarcik.com
-    auth: token
+    auth: bearer
     path: /minio/v2/metrics/cluster
   - url: pihole-1-primary.home.matejkosiarcik.com
     auth: basic
