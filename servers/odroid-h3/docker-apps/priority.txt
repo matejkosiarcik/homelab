@@ -19,7 +19,7 @@ homeassistant
 # Notifications
 smtp4dev
 ntfy
-gotify
+# gotify
 
 # Storage services
 minio
