@@ -1,34 +1,7 @@
+# syntax = edrevo/dockerfile-plus
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM python:3.13.4-slim AS supercronic-gitman
-WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        git >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/gitman/requirements.txt ./
-ENV PIP_ROOT_USER_ACTION=ignore
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
-COPY ./.shared/dependencies/supercronic/gitman.yml ./
-RUN gitman install --quiet && \
-    find . -type d -name .git -prune -exec rm -rf {} \;
-
-FROM golang:1.24.4-bookworm AS supercronic-build
-WORKDIR /homelab
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        binutils file >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
-ENV CGO_ENABLED=0
-WORKDIR /homelab/supercronic
-RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
-    strip --strip-all supercronic
-WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh ./
-RUN sh validate-executable.sh ./supercronic/supercronic
+INCLUDE+ ./.shared/build-stages/supercronic/Dockerfile
 
 FROM node:23.11.1-slim AS nodejs-build
 WORKDIR /homelab
@@ -41,6 +14,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
 
 FROM node:23.11.1-slim AS prefinal
 WORKDIR /homelab
+COPY --from=supercronic /homelab/ ./
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 # Cache playwright browsers downloads between versions and rebuilds
@@ -58,9 +32,8 @@ RUN --mount=type=cache,target=/root/.cache/ms-playwright \
     true; done && \
     mkdir -p /backup /log
 COPY --from=nodejs-build /homelab/dist ./dist
-COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./custom/web-automation/main.sh ./
+COPY ./custom/web-automation/main.sh ./
 COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
-COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 
 FROM node:23.11.1-slim
 WORKDIR /homelab
