@@ -17,6 +17,7 @@ services:
   app:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/samba/Dockerfile
@@ -27,7 +28,6 @@ services:
       SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}
     volumes:
       - ./app-logs/samba:/var/log/samba:rw
-    init: true
 
 networks:
   default: # Just disable default network

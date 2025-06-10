@@ -8,6 +8,7 @@ DISABLE:
 
 DISABLE_LINTERS:
   - ANSIBLE_ANSIBLE_LINT # Unable to disable "syntax-check[unknown-module]" errors, even if collections are available
+  - DOCKERFILE_HADOLINT # False positives for "INCLUDE+" instructions
   - GO_GOLANGCI_LINT
   - GO_REVIVE
   - JSON_NPM_PACKAGE_JSON_LINT

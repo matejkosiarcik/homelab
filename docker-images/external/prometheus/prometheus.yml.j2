@@ -10,7 +10,7 @@ scrape_configs:
     basic_auth:
       username: {{ "admin" if app.url.startswith("uptime-kuma") else "prometheus" }}
       password: ${{ "{" }}{{ app.url | replace(".home.matejkosiarcik.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_PASSWORD{{ "}" }}
-    {%- elif app.auth == "token" %}
+    {%- elif app.auth == "bearer" %}
     authorization:
       credentials: ${{ "{" }}{{ app.url | replace(".home.matejkosiarcik.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_TOKEN{{ "}" }}
     {%- endif %}

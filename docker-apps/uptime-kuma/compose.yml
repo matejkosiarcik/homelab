@@ -17,7 +17,7 @@ services:
   app:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    # init: true
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/uptime-kuma/Dockerfile

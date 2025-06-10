@@ -809,6 +809,18 @@ endpoints:
       - "[BODY] == OK"
 
   - <<: *default-https
+    name: Healthchecks - Prometheus metrics
+    group: App - Healthchecks
+    url: https://healthchecks.home.matejkosiarcik.com/projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
+    headers:
+      Authorization: Bearer ${HEALTHCHECKS_PROMETHEUS_TOKEN}
+
+  - <<: *default-https
+    name: Healthchecks - Prometheus metrics [alt]
+    group: App - Healthchecks
+    url: https://healthchecks.home.matejkosiarcik.com/projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS_PROMETHEUS_TOKEN}
+
+  - <<: *default-https
     name: Healthchecks - Proxy prometheus metrics
     group: App - Healthchecks
     url: https://proxy-prometheus:${HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD}@healthchecks.home.matejkosiarcik.com/.proxy/metrics

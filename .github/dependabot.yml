@@ -20,6 +20,11 @@ updates:
   # Docker
   - package-ecosystem: docker
     directories:
+      - /docker-images/.shared/build-stages/imagemagick
+      - /docker-images/.shared/build-stages/oxipng
+      - /docker-images/.shared/build-stages/png2ico
+      - /docker-images/.shared/build-stages/zopflipng
+      - /docker-images/.shared/build-stages/supercronic
       - /docker-images/custom/apache
       - /docker-images/custom/certbot
       - /docker-images/custom/certificator

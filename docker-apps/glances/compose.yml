@@ -17,6 +17,7 @@ services:
   app-ui:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/glances/Dockerfile

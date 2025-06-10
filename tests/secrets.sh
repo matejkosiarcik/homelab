@@ -83,6 +83,8 @@ load_password() {
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify apache prometheus)"
 
     printf 'HEALTHCHECKS_ADMIN_PASSWORD=%s\n' "$(load_password healthchecks app admin)"
+    printf 'HEALTHCHECKS_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password healthchecks app api-key)"
+    printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_password healthchecks app project-id)"
     printf 'HEALTHCHECKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password healthchecks apache status)"
     printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password healthchecks apache prometheus)"
 
