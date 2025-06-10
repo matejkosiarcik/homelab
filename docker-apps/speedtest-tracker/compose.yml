@@ -17,7 +17,7 @@ services:
   app:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    init: true
+    init: false # Can't run with PID other than 1
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/speedtest-tracker/Dockerfile
