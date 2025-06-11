@@ -9,7 +9,7 @@ WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./custom/renovatebot/crontab.cron ./custom/renovatebot/main.sh ./
 
-FROM renovate/renovate:40.48.9-full
+FROM renovate/renovate:40.49.6-full
 # hadolint ignore=DL3002
 USER root
 COPY --from=prefinal /homelab/ /homelab/
