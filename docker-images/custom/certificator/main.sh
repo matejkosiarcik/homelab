@@ -12,7 +12,7 @@ fi
 load_certificate='0'
 certificate_file='/homelab/certs/fullchain.pem'
 if [ -e "$certificate_file" ]; then
-    if [ "$(openssl x509 -noout -subject -in "$certificate_file" | sed -E 's~^.*CN\s*=\s*([a-zA-Z0-9.]+).*$~\1~')" != "$subject_domain" ]; then
+    if [ "$(openssl x509 -noout -subject -in "$certificate_file" | sed -E 's~^.*CN\s*=\s*([a-zA-Z0-9*.]+).*$~\1~')" != "$subject_domain" ]; then
         printf 'Loading certificate (wrong domain)\n' >&2
         load_certificate='1'
     elif ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in "$certificate_file" >/dev/null; then
