@@ -7,7 +7,7 @@ INCLUDE+ ./.shared/build-stages/supercronic/Dockerfile
 FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
-COPY ./custom/renovatebot/crontab.cron ./custom/renovatebot/main.sh ./
+COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
 
 FROM renovate/renovate:40.48.9-full
 # hadolint ignore=DL3002
