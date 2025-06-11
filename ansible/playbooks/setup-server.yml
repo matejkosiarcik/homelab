@@ -98,6 +98,38 @@
           printf 'CHANGED\n'
         fi
 
+    ## General config ##
+
+    - name: Setup Shell environment variables
+      register: shell_setup
+      changed_when: "'CHANGED' in shell_setup.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        if [ ! -e "$HOME/.profile" ]; then
+          touch "$HOME/.profile"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
+          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
+          printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.profile"
+          printf 'CHANGED\n'
+        fi
+        if [ ! -e "$HOME/.bashrc" ]; then
+          touch "$HOME/.bashrc"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
+          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
+          printf 'CHANGED\n'
+        fi
+        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.bashrc" >/dev/null; then
+          printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
+          printf 'CHANGED\n'
+        fi
+
     ## Log2Ram ##
 
     - name: Install log2ram
@@ -151,28 +183,6 @@
         printf 'CHANGED\n'
         node --version
         npm --version
-
-    - name: Ignore NodeJS warnings
-      register: ignore_nodejs_warnings
-      changed_when: "'CHANGED' in ignore_nodejs_warnings.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        if [ ! -e "$HOME/.profile" ]; then
-          touch "$HOME/.profile"
-          printf 'CHANGED\n'
-        fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
-          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
-          printf 'CHANGED\n'
-        fi
-        if [ ! -e "$HOME/.bashrc" ]; then
-          touch "$HOME/.bashrc"
-          printf 'CHANGED\n'
-        fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
-          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
-          printf 'CHANGED\n'
-        fi
 
     - name: Install Bitwarden CLI
       become: true
