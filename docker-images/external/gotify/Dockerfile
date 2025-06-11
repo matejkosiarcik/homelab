@@ -30,21 +30,21 @@ RUN find . -maxdepth 1 -type f -name '*.png' | while read -r file; do \
         oxipng --opt max --strip safe --zopfli "$file" && \
     true; done
 
-# INCLUDE+ ./.shared/build-stages/zopflipng/Dockerfile
+INCLUDE+ ./.shared/build-stages/zopflipng/Dockerfile
 
-# # hadolint ignore=DL3029
-# FROM --platform=linux/amd64 zopflipng AS favicon-4
-# WORKDIR /homelab
-# COPY --from=favicon-3 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
-# RUN find . -maxdepth 1 -type f -name '*.png' | while read -r file; do \
-#         zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$file" "$file" && \
-#     true; done
+# hadolint ignore=DL3029
+FROM --platform=linux/amd64 zopflipng AS favicon-4
+WORKDIR /homelab
+COPY --from=favicon-3 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
+RUN find . -maxdepth 1 -type f -name '*.png' | while read -r file; do \
+        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$file" "$file" && \
+    true; done
 
 INCLUDE+ ./.shared/build-stages/png2ico/Dockerfile
 
 FROM png2ico AS favicon-5
 WORKDIR /homelab
-COPY --from=favicon-3 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
+COPY --from=favicon-4 /homelab/favicon-16x16.png /homelab/favicon-32x32.png ./
 RUN python3 ./png2ico/png2ico.py favicon-16x16.png favicon-32x32.png -o favicon.ico
 
 ### Final ####
