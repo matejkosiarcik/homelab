@@ -26,7 +26,7 @@ services:
     volumes:
       - ./app-data/gotify:/app/data:rw
       - ./app-data/gotify-etc:/etc/gotify:rw
-      - gotify-favicon:/homelab/favicon:rw
+      # - ./app-logs/gotify-favicon:/homelab/favicon:rw
 
   certificator:
     <<: *common-service-options
@@ -53,7 +53,7 @@ services:
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
-      - gotify-favicon:/homelab/www/.proxy/icons/gotify:ro
+      # - ./app-logs/gotify-favicon:/homelab/www/.proxy/icons/gotify:ro
 
   apache-prometheus-exporter:
     <<: *common-service-options
@@ -73,6 +73,3 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
-
-volumes:
-  gotify-favicon: {}
