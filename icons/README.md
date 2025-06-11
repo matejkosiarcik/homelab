@@ -13,6 +13,7 @@ The Icons are obtained from following locations:
 - Individual icons:
     - ActualBudget: <https://github.com/actualbudget>
     - Antenna: <https://www.flaticon.com/free-icon/antenna_1011360>
+    - Antennas: <https://github.com/jfarseneau/antennas>
     - API: <https://www.flaticon.com/free-icon/api_1493169>
     - Apache: <https://techicons.dev/icons/apache>
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
@@ -22,6 +23,7 @@ The Icons are obtained from following locations:
     - IoT: <https://www.flaticon.com/free-icon/iot_10355707>
     - Litestream: <https://litestream.io>
     - Odroid: <https://wiki.odroid.com>
+    - Photos: <https://www.iconfinder.com/icons/1622830/gallery_landskape_mountains_nature_photo_picture_icon>
     - Playwright: <https://playwright.dev>
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (Server down)
     - RenovateBot: <https://docs.renovatebot.com>
