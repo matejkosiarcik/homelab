@@ -1,4 +1,3 @@
-# syntax = edrevo/dockerfile-plus
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 # checkov:skip=CKV_DOCKER_7: False positive for ":latest" tag with included build stages
