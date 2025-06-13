@@ -23,8 +23,8 @@ updates:
       - /docker-images/.shared/build-stages/imagemagick
       - /docker-images/.shared/build-stages/oxipng
       - /docker-images/.shared/build-stages/png2ico
-      - /docker-images/.shared/build-stages/zopflipng
       - /docker-images/.shared/build-stages/supercronic
+      - /docker-images/.shared/build-stages/zopflipng
       - /docker-images/custom/apache
       - /docker-images/custom/certbot
       - /docker-images/custom/certificator
@@ -54,6 +54,7 @@ updates:
       - /docker-images/external/renovatebot
       - /docker-images/external/samba
       - /docker-images/external/smtp4dev
+      - /docker-images/external/socket-proxy
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/tvheadend
       - /docker-images/external/unifi-network-application
