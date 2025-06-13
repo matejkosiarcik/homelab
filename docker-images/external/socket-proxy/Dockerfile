@@ -13,7 +13,7 @@ ENV ALLOW_RESTARTS=0 \
     CONTAINERS=0 \
     DISABLE_IPV6=0 \
     DISTRIBUTION=0 \
-    EVENTS=1 \
+    EVENTS=0 \
     EXEC=0 \
     HOMELAB_CONTAINER_NAME=socket-proxy \
     HOMELAB_CONTAINER_VARIANT=default \
@@ -22,7 +22,7 @@ ENV ALLOW_RESTARTS=0 \
     LOG_LEVEL=info \
     NETWORKS=0 \
     NODES=0 \
-    PING=1 \
+    PING=0 \
     PLUGINS=0 \
     POST=0 \
     SECRETS=0 \
@@ -32,7 +32,7 @@ ENV ALLOW_RESTARTS=0 \
     SYSTEM=0 \
     TASKS=0 \
     TZ=Europe/Bratislava \
-    VERSION=1 \
+    VERSION=0 \
     VOLUMES=0
 VOLUME /var/run/docker.sock
 HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/2375' || exit 1" ]
