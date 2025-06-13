@@ -38,8 +38,7 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      DOCKER_HOST: tcp://socket-proxy:2375
 
   certificator:
     <<: *common-service-options
@@ -78,6 +77,23 @@ services:
       APACHE_HOST: apache
     env_file:
       - ./app-secrets/apache-prometheus-exporter.env
+
+  socket-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    init: true
+    read_only: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/socket-proxy/Dockerfile
+    environment:
+      EXEC: 1
+      CONTAINERS: 1
+      POST: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    tmpfs:
+      - /run
 
 networks:
   default: # Just disable default network
