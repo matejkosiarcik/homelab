@@ -24,7 +24,7 @@ optimize_image() {
         rm -f "$tmpfile2"
 
         cp "$1" "$tmpfile2"
-        zopflipng --iterations=100 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$tmpfile2" "$tmpfile2"
+        zopflipng --iterations=200 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$tmpfile2" "$tmpfile2"
         if [ "$(wc -c <"$tmpdir2/$(basename "$1")")" -lt "$(wc -c <"$1")" ]; then
             mv "$tmpfile2" "$1"
         fi
