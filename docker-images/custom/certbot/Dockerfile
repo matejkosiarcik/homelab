@@ -8,7 +8,7 @@ WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./custom/certbot/crontab.cron ./custom/certbot/main.sh ./custom/certbot/certbot-hook-after.sh ./custom/certbot/certbot-hook-before.sh ./
 
-FROM python:3.13.4-slim
+FROM python:3.13.5-slim
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
