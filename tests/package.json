@@ -22,19 +22,19 @@
     "sharp-ico": "^0.1.5",
     "tar": "^7.4.3",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.566"
+    "user-agents": "^1.1.569"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
     "@types/async": "^3.2.24",
     "@types/lodash": "^4.17.17",
     "@types/lzma-native": "^4.0.4",
-    "@types/node": "^24.0.0",
+    "@types/node": "^24.0.1",
     "@types/user-agents": "^1.0.4",
     "cross-env": "^7.0.3",
     "exitzero": "^1.0.1",
     "mkdirp": "^3.0.1",
     "npm-run-all2": "^8.0.4",
-    "tsx": "^4.20.0"
+    "tsx": "^4.20.3"
   }
 }
