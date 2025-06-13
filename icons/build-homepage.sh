@@ -41,6 +41,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/portainer
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/samba-server.svg" "$output_dir/samba.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vaultwarden-light.svg" "$output_dir/vaultwarden.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vikunja.svg" "$output_dir/vikunja.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.svg" "$output_dir/zabbix.png"
 
 ### Homer icons ###
 

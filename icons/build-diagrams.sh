@@ -67,6 +67,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vaultward
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vikunja.svg" "$output_dir/vikunja.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vultr.svg" "$output_dir/vultr.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/windows-11.png" "$output_dir/windows.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.svg" "$output_dir/zabbix.png"
 
 ### Homer icons ###
 
