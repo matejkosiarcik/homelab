@@ -215,6 +215,12 @@ magick -background none -bordercolor transparent "$input_dir/gitman-repositories
 magick "$tmpdir/apache-tmp.png" "$tmpdir/prometheus-tmp.png" -gravity Center -geometry "$default_image_size+35+75" -composite -resize "$default_image_size" "$tmpdir/apache-prometheus-exporter-final.png"
 convert_image_full "$tmpdir/apache-prometheus-exporter-final.png" "$output_dir/apache-prometheus-exporter.png"
 
+# PiHole prometheus exporter
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" -resize 160x160 -border 32 -density 1200 "$tmpdir/pihole-tmp.png"
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/prometheus-tmp.png"
+magick "$tmpdir/prometheus-tmp.png" "$tmpdir/pihole-tmp.png" -gravity Center -geometry "$default_image_size+85+65" -composite -resize "$default_image_size" "$tmpdir/pihole-prometheus-exporter-final.png"
+convert_image_full "$tmpdir/pihole-prometheus-exporter-final.png" "$output_dir/pihole-prometheus-exporter.png"
+
 ### Cleanup ###
 
 rm -rf "$tmpdir"
