@@ -14,3 +14,6 @@ services:
     <<: *common-service-options
     ports:
       - 127.0.0.1:7007:7007
+
+  socket-proxy:
+    <<: *common-service-options

@@ -17,6 +17,9 @@ services:
     networks:
       external-network:
 
+  socket-proxy:
+    <<: *common-service-options
+
 networks:
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
