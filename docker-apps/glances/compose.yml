@@ -22,11 +22,11 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/glances/Dockerfile
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./app-secrets/glances-password.txt:/root/.config/glances/admin.pwd:ro
     pid: host
     environment:
       GLANCES_OPT: "-w --password -u admin"
+      DOCKER_HOST: tcp://socket-proxy:2375
 
   app-prometheus:
     <<: *common-service-options
@@ -35,11 +35,11 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/glances/Dockerfile
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ../../../../docker-images/external/glances/prometheus/glances.conf:/root/.config/glances/glances.conf:ro
     pid: host
     environment:
       GLANCES_OPT: "--export prometheus --config /homelab/glances.conf"
+      DOCKER_HOST: tcp://socket-proxy:2375
 
   certificator:
     <<: *common-service-options
@@ -79,6 +79,19 @@ services:
       APACHE_HOST: apache
     env_file:
       - ./app-secrets/apache-prometheus-exporter.env
+
+  socket-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    init: true
+    read_only: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/socket-proxy/Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    tmpfs:
+      - /run
 
 networks:
   default: # Just disable default network

@@ -34,6 +34,9 @@ services:
   apache-prometheus-exporter:
     <<: *common-service-options
 
+  socket-proxy:
+    <<: *common-service-options
+
 networks:
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network

@@ -24,14 +24,34 @@ services:
     environment:
       <<: *common-env-variables
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      DOCKER_HOST: tcp://socket-proxy:2375
     secrets:
       - source: cert
         target: /dozzle_cert.pem
       - source: key
         target: /dozzle_key.pem
     command: agent
+    depends_on:
+      socket-proxy:
+        condition: service_started
+
+  socket-proxy:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    init: true
+    read_only: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/socket-proxy/Dockerfile
+    environment:
+      CONTAINERS: 1
+      EVENTS: 1
+      INFO: 1
+      PING: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    tmpfs:
+      - /run
 
 networks:
   default: # Just disable default network
