@@ -20,6 +20,10 @@ apps:
   - url: homeassistant.home.matejkosiarcik.com
     auth: bearer
     path: /api/prometheus
+  # TODO: Enable jellyfin prometheus
+  # - url: jellyfin.home.matejkosiarcik.com
+  #   auth: basic
+  #   path: /metrics
   - url: minio.home.matejkosiarcik.com
     auth: bearer
     path: /minio/v2/metrics/cluster
