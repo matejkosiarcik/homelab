@@ -3,7 +3,7 @@ x-definitions:
     HOMELAB_ENV: dev
     HOMELAB_APP_EXTERNAL_DOMAIN: localhost
     HOMELAB_APP_EXTERNAL_IP: "127.0.0.1"
-    HOMELAB_APP_EXTERNAL_URL: https://localhost
+    HOMELAB_APP_EXTERNAL_URL: https://localhost:8443
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      REGISTRY_HTTP_HOST: https://localhost:8443
+      REGISTRY_HTTP_HOST: ${HOMELAB_APP_EXTERNAL_URL}
 
   certificator:
     <<: *common-service-options

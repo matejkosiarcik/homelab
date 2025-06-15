@@ -3,7 +3,7 @@ x-definitions:
     HOMELAB_ENV: dev
     HOMELAB_APP_EXTERNAL_DOMAIN: localhost
     HOMELAB_APP_EXTERNAL_IP: "127.0.0.1"
-    HOMELAB_APP_EXTERNAL_URL: https://localhost
+    HOMELAB_APP_EXTERNAL_URL: https://localhost:8443
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -19,7 +19,7 @@ services:
       DEFAULT_FROM_EMAIL: system@healthchecks.localhost
       EMAIL_HOST: smtp4dev.home.matejkosiarcik.com
       REGISTRATION_OPEN: "True"
-      SITE_ROOT: https://localhost:8443
+      SITE_ROOT: ${HOMELAB_APP_EXTERNAL_URL}
 
   certificator:
     <<: *common-service-options
