@@ -3,7 +3,7 @@
 
 INCLUDE+ ./.shared/build-stages/supercronic/Dockerfile
 
-FROM node:23.11.1-slim AS nodejs-build
+FROM node:24.2.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json ./
 COPY ./custom/web-automation/src/ ./src/
@@ -12,7 +12,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:23.11.1-slim AS prefinal
+FROM node:24.2.0-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY --from=nodejs-build /homelab/package.json ./
@@ -35,7 +35,7 @@ COPY --from=nodejs-build /homelab/dist ./dist
 COPY ./custom/web-automation/main.sh ./
 COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
 
-FROM node:23.11.1-slim
+FROM node:24.2.0-slim
 WORKDIR /homelab
 COPY --from=prefinal /homelab/node_modules ./node_modules
 RUN apt-get update && \
