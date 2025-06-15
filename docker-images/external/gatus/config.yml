@@ -985,6 +985,13 @@ endpoints:
       - "[STATUS] == 200"
       - "[BODY] == Healthy"
 
+  # TODO: Enable jellyfin prometheus
+  - <<: *default-https
+    name: Jellyfin - Prometheus metrics
+    group: App - Jellyfin
+    url: https://prometheus:${JELLYFIN_PROMETHEUS_PASSWORD}@jellyfin.home.matejkosiarcik.com/metrics
+    enabled: false
+
   - <<: *default-https
     name: Jellyfin - Proxy prometheus metrics
     group: App - Jellyfin
