@@ -311,6 +311,7 @@ case "$full_app_name" in
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key)" >>"$output/app.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app prometheus-api-key)" >>"$output/app.env"
+    printf 'JELLYFIN_PROMETHEUS_TOKEN=%s\n' "$(load_token jellyfin app prometheus)" >>"$output/app.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary app prometheus)" >>"$output/app.env"
     printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/app.env"
@@ -472,6 +473,9 @@ case "$full_app_name" in
 
     # Apache
     write_default_proxy_users "$full_app_name"
+    prometheus_password="$(load_password "$full_app_name" app prometheus)"
+    write_http_auth_user prometheus "$prometheus_password"
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
@@ -602,6 +606,7 @@ case "$full_app_name" in
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key)" >>"$output/app.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app prometheus-api-key)" >>"$output/app.env"
+    printf 'JELLYFIN_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin app prometheus)" >>"$output/app.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary app prometheus)" >>"$output/app.env"
     printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$output/app.env"
