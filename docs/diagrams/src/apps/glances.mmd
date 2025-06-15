@@ -18,9 +18,17 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         glances("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/glances.png' style='min-width:80px;max-width:80px' /></div>Glances")
+        glances_prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/glances.png' style='min-width:80px;max-width:80px' /></div>Glances<br/>prometheus")
+        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
+        docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global")
 
-        network_interface --->|:80,443| apache_proxy --->|:61208| glances
+        network_interface --->|:80,443| apache_proxy
+        apache_proxy --->|:61208| glances
+        apache_proxy --->|/metrics| glances_prometheus
         apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
+
+        glances & glances_prometheus -..->|docker tcp| socket_proxy -..->|docker sock| docker
+
         apache_proxy -..-|fs| certificator
     end
 
@@ -28,5 +36,5 @@ flowchart LR
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
     home_network <---> app_wrapper
-    certificator & glances & app_wrapper ~~~ prometheus -.->|collect stats| glances
+    certificator & glances & app_wrapper ~~~ prometheus -.->|collect stats| glances_prometheus
     certificator -..->|report status| healthchecks

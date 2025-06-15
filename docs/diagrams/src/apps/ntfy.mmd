@@ -21,12 +21,17 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
         ntfy_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
+        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
+        docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global")
 
         network_interface --->|:80,443| apache_proxy --->|:80| ntfy
         apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        network_interface --->|:25| ntfy
-        ntfy ~~~ ntfy_setup -..->|docker-cli| ntfy
         apache_proxy -..-|fs| certificator
+        network_interface --->|:25| ntfy
+        ntfy ~~~ socket_proxy ~~~ ntfy_setup
+        ntfy_setup  -..->|use| ntfy
+        ntfy_setup -..->|docker tcp| socket_proxy
+        socket_proxy -..->|docker sock| docker
     end
 
     personal_devices["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps"]
