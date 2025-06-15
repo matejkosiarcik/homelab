@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM linuxserver/socket-proxy:3.0.10
+FROM linuxserver/socket-proxy:3.2.1
 RUN apk update --no-cache && \
     apk add --no-cache bash
 ENV ALLOW_RESTARTS=0 \
