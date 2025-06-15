@@ -29,6 +29,7 @@ The Icons are obtained from following locations:
     - RenovateBot: <https://docs.renovatebot.com>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
+    - Squid: <https://github.com/squid-cache>
     - TV (old): <https://www.flaticon.com/free-icon/television_550486>
     - UPC: <https://www.upc.sk>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>

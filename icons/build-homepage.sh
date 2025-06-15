@@ -86,6 +86,7 @@ convert_image_full "$input_dir/other/gatus.png" "$output_dir/gatus.png"
 convert_image_full "$input_dir/other/odroid.png" "$output_dir/odroid.png"
 convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberry-pi.png"
 convert_image_full "$input_dir/other/smtp4dev-custom.png" "$output_dir/smtp4dev.png"
+convert_image_full "$input_dir/other/squid.jpg" "$output_dir/squid.jpg"
 convert_image_full "$input_dir/other/upc.svg.bin" "$output_dir/upc.png"
 
 ### Combined icons ###
