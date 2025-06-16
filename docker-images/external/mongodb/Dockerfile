@@ -2,8 +2,8 @@
 
 # TODO: Remove gitman.yml file after MongoDB and UniFi Controller are moved to new server (with AVX instructions)
 FROM mongo:8.0.10
-COPY ./database/mongodb/init-mongo-default.js /docker-entrypoint-initdb.d/init-mongo.js
-COPY ./database/mongodb/healthcheck.sh /homelab/
+COPY ./database/external/init-mongo-default.js /docker-entrypoint-initdb.d/init-mongo.js
+COPY ./database/external/healthcheck.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=mongodb \
     HOMELAB_CONTAINER_VARIANT=default \
     MONGO_DBNAME=database \
