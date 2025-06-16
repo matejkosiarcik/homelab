@@ -61,6 +61,7 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
+      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     <<: *common-service-options

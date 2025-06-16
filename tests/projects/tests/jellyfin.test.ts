@@ -2,13 +2,14 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
 test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createHttpToHttpsRedirectTests(`${instance.url.replace('https://', 'http://')}:8096`);
+            createPrometheusTests(instance.url, { auth: 'basic' });
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443, 8096]);
