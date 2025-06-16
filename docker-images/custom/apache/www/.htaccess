@@ -286,6 +286,15 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect Jellyfin prometheus endpoint
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'jellyfin' && %{REQUEST_URI} =~ m#^/metrics/*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/prometheus.htpasswd
+    Require valid-user
+</If>
+
 # Protect PiHole prometheus endpoint
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'pihole' && %{REQUEST_URI} =~ m#^/metrics/*$#">
     AuthType Basic

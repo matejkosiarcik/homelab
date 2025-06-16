@@ -22,7 +22,19 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/jellyfin/Dockerfile
     volumes:
-      - ./app-data/jellyfin-data:/config
+      - ./app-data/jellyfin-data:/config:rw
+
+  app-setup:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/script-setup/Dockerfile
+      args:
+        SETUP_FILE: ./external/jellyfin/setup.sh
+    volumes:
+      - ./app-data/jellyfin-data:/homelab/data:rw
 
   certificator:
     <<: *common-service-options
@@ -49,6 +61,7 @@ services:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
+      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     <<: *common-service-options
