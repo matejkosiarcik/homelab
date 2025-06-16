@@ -35,6 +35,6 @@ flowchart LR
     prometheus["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus"]
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
-    home_network <---> app_wrapper
+    home_network <---> network_interface
     certificator & glances & app_wrapper ~~~ prometheus -.->|collect stats| glances_prometheus
     certificator -..->|report status| healthchecks

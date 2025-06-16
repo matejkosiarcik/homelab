@@ -35,6 +35,6 @@ flowchart LR
     home_assistant ~~~ script_backup -..->|get backup| home_assistant
 
     smart_home ~~~ app_wrapper
-    home_network <---> app_wrapper
-    smart_home <-..->|control| app_wrapper
+    home_network <---> network_interface
+    smart_home <-..->|control| network_interface
     certificator -..->|report status| healthchecks

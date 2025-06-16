@@ -31,7 +31,7 @@ flowchart LR
     s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
     class s3_database dashed_border
 
-    home_network <---> app_wrapper
-    other_apps -..->|send cron job status| app_wrapper
+    home_network <---> network_interface
+    other_apps -..->|send cron job status| network_interface
     db_sync -.->|send| s3_database
     certificator -..->|report status| healthchecks
