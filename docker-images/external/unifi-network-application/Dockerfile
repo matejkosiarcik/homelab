@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM linuxserver/unifi-network-application:9.1.120
+FROM linuxserver/unifi-network-application:9.2.87
 ARG HOMELAB_BUILD_ENV=dev
 # RUN grep -v -e 'unifi.http.port' -e 'unifi.https.port' -e 'portal.http.port' -e 'portal.https.port' </defaults/system.properties >/defaults/system.properties-2 && \
 #     mv /defaults/system.properties-2 /defaults/system.properties && \
