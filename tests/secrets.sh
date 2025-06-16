@@ -78,7 +78,6 @@ load_password() {
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-4b-4g apache prometheus)"
 
     printf 'GOTIFY_ADMIN_PASSWORD=%s\n' "$(load_password gotify app admin)"
-    printf 'GOTIFY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify app prometheus)"
     printf 'GOTIFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gotify apache status)"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify apache prometheus)"
 
