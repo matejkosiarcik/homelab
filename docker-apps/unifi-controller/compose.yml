@@ -53,7 +53,7 @@ services:
     volumes:
       - ./app-data/mongodb:/data/db:rw
       - ../../../../docker-images/external/unifi-network-application/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ../../../../docker-images/database/mongodb/healthcheck.sh:/homelab/healthcheck.sh:ro
+      - ../../../../docker-images/external/mongodb/healthcheck.sh:/homelab/healthcheck.sh:ro
     healthcheck:
       interval: 5s
       start_period: 60s
