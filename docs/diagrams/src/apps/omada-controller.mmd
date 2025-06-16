@@ -39,7 +39,7 @@ flowchart LR
     minio ~~~ healthchecks
     script_backup ~~~ healthchecks
 
-    home_network <---> app_wrapper
-    tp_link_equipment <-..->|use/control| app_wrapper
+    home_network <---> network_interface
+    tp_link_equipment <-..->|use/control| network_interface
     script_backup -.->|send backup| minio
     certificator -..->|report status| healthchecks

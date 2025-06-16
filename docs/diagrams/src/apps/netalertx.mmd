@@ -29,7 +29,7 @@ flowchart LR
     network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Network")
     class network dashed_border
 
-    home_network <---> app_wrapper
+    home_network <---> network_interface
     certificator --->|report status| healthchecks
     certificator ~~~ network
     netalertx <--->|scan| network

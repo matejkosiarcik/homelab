@@ -27,5 +27,5 @@ flowchart LR
         lamp_controller --->|GPIO 14| gpio_lamp
     end
 
-    home_network <---> app_wrapper
+    home_network <---> network_interface
     home_assistant -..->|control| lamp_controller

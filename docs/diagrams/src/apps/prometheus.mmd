@@ -31,5 +31,5 @@ flowchart LR
     class other_apps dashed_border
 
     prometheus -..->|read metrics| other_apps
-    home_network <---> app_wrapper
+    home_network <---> network_interface
     certificator -..->|report status| healthchecks

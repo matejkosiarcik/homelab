@@ -36,6 +36,6 @@ flowchart LR
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     minio_setup ~~~ healthchecks
 
-    home_network <---> app_wrapper
-    other_apps -..->|use| app_wrapper
+    home_network <---> network_interface
+    other_apps -..->|use| network_interface
     certificator -..->|report status| healthchecks

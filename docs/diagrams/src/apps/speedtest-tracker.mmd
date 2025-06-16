@@ -36,7 +36,7 @@ flowchart LR
     db_sync ~~~ s3_database & cloud_server & healthchecks
     certificator -..->|report status| healthchecks
 
-    home_network <---> app_wrapper
+    home_network <---> network_interface
     db_sync -..->|send| s3_database
     speedtest_tracker -..->|measure speed| cloud_server
     speedtest_tracker -..->|report status| healthchecks
