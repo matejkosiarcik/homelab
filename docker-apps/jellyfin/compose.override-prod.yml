@@ -22,6 +22,9 @@ services:
     networks:
       external-network:
 
+  app-setup:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

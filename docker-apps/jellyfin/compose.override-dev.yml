@@ -16,6 +16,9 @@ services:
       <<: *common-env-variables
       JELLYFIN_PublishedServerUrl: ${HOMELAB_APP_EXTERNAL_URL}
 
+  app-setup:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 
