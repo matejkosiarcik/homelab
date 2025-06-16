@@ -20,12 +20,19 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
+        jellyfin_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Jellyfin<br/>Setup")
         gpu("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/graphics-card.png' style='min-width:80px;max-width:80px' /></div>iGPU")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
         network_interface --->|:80,443,8096| apache_proxy --->|:8096| jellyfin
         apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -..-|fs| certificator
-        jellyfin -.->|transcode| gpu
+        jellyfin -.->|transcode| gpu ~~~ squid_proxy
+        jellyfin_setup -.->|fs| jellyfin
+        jellyfin -..->|connect| squid_proxy
+        certificator -..->|connect| squid_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
     tvheadend["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend"]
@@ -34,9 +41,8 @@ flowchart LR
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
     gpu ~~~ tvheadend & iptv & healthchecks
-
-    home_network <---> app_wrapper
-    personal_devices -..->|view| app_wrapper
-    jellyfin -..->|use| tvheadend
-    jellyfin -..->|use #40;planned#41;| iptv
-    certificator -..->|report status| healthchecks
+    home_network <---> network_interface
+    personal_devices -..->|view| network_interface
+    squid_proxy -..->|use| tvheadend
+    squid_proxy -..->|use #40;planned#41;| iptv
+    squid_proxy -..->|report status| healthchecks
