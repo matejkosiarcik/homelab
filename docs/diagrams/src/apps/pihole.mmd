@@ -22,6 +22,8 @@ flowchart LR
         pihole_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>PiHole<br/>Prometheus<br/>Exporter")
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
         network_interface --->|:80,443| apache_proxy --->|:80| pihole
         apache_proxy --->|/metrics:80| pihole_prometheus_exporter -..->|use| pihole
