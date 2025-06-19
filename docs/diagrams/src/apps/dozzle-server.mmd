@@ -18,10 +18,16 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         dozzle("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
+        outbound_interface_1(" ")
+        outbound_interface_2(" ")
 
         network_interface --->|:80,443| apache_proxy --->|:8080| dozzle
         apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -..-|fs| certificator
+        outbound_interface_1 & outbound_interface_2 -..- squid_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
     dozzle_agents["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dozzle.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-5px;right:0' /></div>Dozzle<br/>agents"]
@@ -29,6 +35,8 @@ flowchart LR
 
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
+    squid_proxy ~~~ dozzle_agents & healthchecks
+
     home_network <---> network_interface
-    dozzle -..->|read| dozzle_agents
-    certificator -..->|report status| healthchecks
+    certificator --> outbound_interface_1 -->|report status| healthchecks
+    dozzle --> outbound_interface_2 -->|read| dozzle_agents

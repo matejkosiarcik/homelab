@@ -21,17 +21,25 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
+        outbound_interface_1(" ")
+        outbound_interface_2(" ")
 
         network_interface --->|:80,443| apache_proxy --->|:8000| healthchecks
         apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -..-|fs| certificator
         healthchecks ~~~ db_sync -..->|fs| healthchecks
+        outbound_interface_1 & outbound_interface_2 -..- squid_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        certificator --> outbound_interface_1 -->|report status| healthchecks
     end
 
     s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
     class s3_database dashed_border
 
+    squid_proxy ~~~ s3_database
+
     home_network <---> network_interface
     other_apps -..->|send cron job status| network_interface
-    db_sync -.->|send| s3_database
-    certificator -..->|report status| healthchecks
+    db_sync --> outbound_interface_2 -->|send| s3_database

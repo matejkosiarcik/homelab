@@ -21,20 +21,25 @@ flowchart LR
         glances_prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/glances.png' style='min-width:80px;max-width:80px' /></div>Glances<br/>prometheus")
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
+        outbound_interface_1(" ")
 
         network_interface --->|:80,443| apache_proxy
         apache_proxy --->|:61208| glances
         apache_proxy --->|/metrics| glances_prometheus
         apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-
         glances & glances_prometheus -..->|docker tcp| socket_proxy -..->|docker sock| docker
-
         apache_proxy -..-|fs| certificator
+        outbound_interface_1 -..- squid_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
     prometheus["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus"]
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
+    squid_proxy & docker & glances & glances_prometheus ~~~ prometheus & healthchecks
+
     home_network <---> network_interface
-    certificator & glances & app_wrapper ~~~ prometheus -.->|collect stats| glances_prometheus
-    certificator -..->|report status| healthchecks
+    prometheus -.->|collect stats| glances_prometheus
+    certificator --> outbound_interface_1 -->|report status| healthchecks

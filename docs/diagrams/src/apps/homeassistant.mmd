@@ -12,29 +12,38 @@ flowchart LR
     home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network"]
     class home_network dashed_border
 
-    smart_home["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1.5em'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div>Smart<br/>Home<br/>Devices"]
-    class smart_home dashed_border
-
     subgraph app_wrapper["Docker"]
         network_interface(" ")
         apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         home_assistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
+        script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
+        outbound_interface_1(" ")
+        outbound_interface_2(" ")
+        outbound_interface_3(" ")
 
         network_interface --->|:80,443| apache_proxy --->|:8123| home_assistant
         apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -..-|fs| certificator
+        outbound_interface_1 & outbound_interface_2 & outbound_interface_3 -..- squid_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
     s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
     healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
-    script_backup -.->|send backup| s3_database
+    smart_home["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1.5em'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div>Smart<br/>Home<br/>Devices"]
+    class smart_home dashed_border
+
+    squid_proxy ~~~ healthchecks & s3_database & smart_home
+
     home_assistant ~~~ script_backup -..->|get backup| home_assistant
 
     smart_home ~~~ app_wrapper
     home_network <---> network_interface
-    smart_home <-..->|control| network_interface
-    certificator -..->|report status| healthchecks
+    home_assistant --> outbound_interface_1 -->|control| smart_home
+    certificator --> outbound_interface_2 -->|report status| healthchecks
+    script_backup --> outbound_interface_3 -->|send_backup| s3_database
