@@ -6,7 +6,8 @@
   ],
   "lockFileMaintenance": {
     "automerge": true,
-    "enabled": true
+    "enabled": true,
+    "rebaseWhen": "auto"
   },
   "packageRules": [
     {
@@ -16,7 +17,8 @@
       "matchUpdateTypes": [
         "minor",
         "patch"
-      ]
+      ],
+      "rebaseWhen": "auto"
     }
   ],
   "prConcurrentLimit": 20,
