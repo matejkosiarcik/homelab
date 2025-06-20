@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/dozzle-server/compose.yml
+    project_directory: .

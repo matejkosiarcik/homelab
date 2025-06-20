@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/ntfy/compose.yml
+    project_directory: .

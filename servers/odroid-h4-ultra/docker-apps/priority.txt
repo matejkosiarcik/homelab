@@ -1,1 +1,54 @@
-# placeholder
+# TLS
+certbot
+
+# DNS
+pihole-1-primary
+
+# Caches
+dockerhub-cache-proxy
+
+# Media
+jellyfin
+
+# Network controllers
+omada-controller
+
+# Home automation
+homeassistant
+
+# Notifications
+smtp4dev
+ntfy
+gotify
+
+# Storage services
+minio
+
+# Misc
+homepage
+vaultwarden
+actualbudget
+openspeedtest
+speedtest-tracker
+# TODO: vikunja
+unbound-1-default
+unbound-1-open
+
+# DNS backup
+pihole-1-secondary
+
+# Misc Monitoring
+dozzle-agent
+dozzle-server
+changedetection
+healthchecks
+# netalertx
+glances
+prometheus
+
+# App Monitoring
+gatus-1
+uptime-kuma
+
+# Non-server apps
+renovatebot

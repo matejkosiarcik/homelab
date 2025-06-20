@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/jellyfin/compose.yml
+    project_directory: .

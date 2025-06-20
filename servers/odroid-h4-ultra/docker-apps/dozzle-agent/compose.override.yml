@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/dozzle-agent/compose.override-dev.yml
+    project_directory: .
