@@ -396,6 +396,12 @@
         ping: glances-odroid-h3.home.matejkosiarcik.com
         icon: /icons/glances.png
 
+    - Glances Odroid H4 Ultra:
+        description: Resource monitoring
+        href: https://glances-odroid-h4-ultra.home.matejkosiarcik.com
+        ping: glances-odroid-h4-ultra.home.matejkosiarcik.com
+        icon: /icons/glances.png
+
     - Glances Raspberry Pi 4B 4GB:
         description: Resource monitoring
         href: https://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com

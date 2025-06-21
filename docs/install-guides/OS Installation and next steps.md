@@ -41,7 +41,7 @@ Copy `homelab` public key to server, disable password authentication, enable key
 TL;DR:
 
 ```sh
-ssh-copy-id -i ~/.ssh/id_homelab.pub homelab@[host]
+ssh-copy-id -i ~/.ssh/id_homelab.pub homelab@10.1.4.[host]
 ```
 
 ```sh

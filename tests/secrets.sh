@@ -62,6 +62,11 @@ load_password() {
     printf 'GLANCES_ODROID_H3_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--odroid-h3 apache status)"
     printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--odroid-h3 apache prometheus)"
 
+    printf 'GLANCES_ODROID_H4_ULTRA_PASSWORD=%s\n' "$(load_password glances--odroid-h4-ultra app admin)"
+    printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--odroid-h4-ultra app prometheus)"
+    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--odroid-h4-ultra apache status)"
+    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--odroid-h4-ultra apache prometheus)"
+
     printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-3b app admin)"
     printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-3b app prometheus)"
     printf 'GLANCES_RASPBERRY_PI_3B_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances--raspberry-pi-3b apache status)"

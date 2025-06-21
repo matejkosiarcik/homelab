@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-apps/prometheus/compose.override-prod.yml
+    project_directory: .
