@@ -377,31 +377,20 @@ case "$full_app_name" in
     ;;
 *glances*)
     # App
-    echo '0'
     admin_password="$(load_password "$full_app_name--$server_name" app admin)"
-    echo '1'
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
-    echo '2'
     sh "$helper_script_dir/glances/main.sh" "$admin_password" "$output/glances-password.txt"
-    echo '3'
 
     # Apache
     write_default_proxy_users "$full_app_name--$server_name"
-    echo '4'
     app_prometheus_password="$(load_password "$full_app_name--$server_name" app prometheus)"
-    echo '5'
     write_http_auth_user prometheus "$app_prometheus_password"
-    echo '6'
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
-    echo '7'
 
     # Certificator
     write_certificator_users
-    echo '8'
     healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificator)"
-    echo '9'
     write_healthcheck_url certificator "$healthcheck_id"
-    echo '10'
     ;;
 *gotify*)
     # App
