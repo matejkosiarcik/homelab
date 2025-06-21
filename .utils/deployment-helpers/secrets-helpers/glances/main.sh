@@ -13,4 +13,4 @@ output_file="$2"
 
 glances_script_file="$(tail -n +2 <"$currdir/entrypoint.sh")"
 docker run --rm --env "PASSWORD=$password" --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file"
-docker run --rm --env "PASSWORD=$password" --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file" | tail -n 1 | sed -E 's~^.+: ~~' >"$output_file"
+docker run --rm --env "PASSWORD=$password" --entrypoint sh nicolargo/glances:latest-full -c "$glances_script_file" | tail -n 1 >"$output_file"
