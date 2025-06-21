@@ -377,10 +377,12 @@ case "$full_app_name" in
     ;;
 *glances*)
     echo 'glances!'
-    # # App
+    echo "$full_app_name, $server_name"
+
+    # App
     # admin_password="$(load_password "$full_app_name--$server_name" app admin)"
     # printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
-    # # sh "$helper_script_dir/glances/main.sh" "$admin_password" "$output/glances-password.txt"
+    # sh "$helper_script_dir/glances/main.sh" "$admin_password" "$output/glances-password.txt"
 
     # # Apache
     # write_default_proxy_users "$full_app_name--$server_name"
