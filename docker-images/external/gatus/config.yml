@@ -693,6 +693,49 @@ endpoints:
     group: App - Glances
     url: tcp://glances-odroid-h3.home.matejkosiarcik.com:443
 
+  # Odroid H4 Ultra
+
+  - <<: *default-icmp
+    name: Glances - Odroid H4 Ultra - ICMP
+    group: App - Glances
+    url: icmp://glances-odroid-h4-ultra.home.matejkosiarcik.com
+
+  - <<: *default-http
+    name: Glances - Odroid H4 Ultra - HTTP
+    group: App - Glances
+    url: http://glances-odroid-h4-ultra.home.matejkosiarcik.com
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-https
+    name: Glances - Odroid H4 Ultra - HTTPS
+    group: App - Glances
+    url: https://admin:${GLANCES_ODROID_H4_ULTRA_PASSWORD}@glances-odroid-h4-ultra.home.matejkosiarcik.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  - <<: *default-https
+    name: Glances - Odroid H4 Ultra - Prometheus metrics
+    group: App - Glances
+    url: https://prometheus:${GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD}@glances-odroid-h4-ultra.home.matejkosiarcik.com/metrics
+
+  - <<: *default-https
+    name: Glances - Odroid H4 Ultra - Proxy prometheus metrics
+    group: App - Glances
+    url: https://proxy-prometheus:${GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD}@glances-odroid-h4-ultra.home.matejkosiarcik.com/.proxy/metrics
+
+  - <<: *default-tcp
+    name: Glances - Odroid H4 Ultra - TCP:80
+    group: App - Glances
+    url: tcp://glances-odroid-h4-ultra.home.matejkosiarcik.com:80
+
+  - <<: *default-tcp
+    name: Glances - Odroid H4 Ultra - TCP:443
+    group: App - Glances
+    url: tcp://glances-odroid-h4-ultra.home.matejkosiarcik.com:443
+
   # Raspberry Pi 4B 2GB
 
   - <<: *default-icmp

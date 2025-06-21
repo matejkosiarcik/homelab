@@ -9,6 +9,7 @@
 10.1.4.3 server-raspberry-pi-4b-2g.home.matejkosiarcik.com
 10.1.4.4 server-raspberry-pi-4b-4g.home.matejkosiarcik.com
 10.1.4.8 server-odroid-h3.home.matejkosiarcik.com
+10.1.4.11 server-odroid-h4-ultra.home.matejkosiarcik.com
 
 ### IoT Devices ###
 

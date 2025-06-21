@@ -8,6 +8,9 @@ apps:
   - url: glances-odroid-h3.home.matejkosiarcik.com
     auth: basic
     path: /metrics
+  - url: glances-odroid-h4-ultra.home.matejkosiarcik.com
+    auth: basic
+    path: /metrics
   - url: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
     auth: basic
     path: /metrics
@@ -54,6 +57,7 @@ proxies:
   - url: gatus-1.home.matejkosiarcik.com
   - url: gatus-2.home.matejkosiarcik.com
   - url: glances-odroid-h3.home.matejkosiarcik.com
+  - url: glances-odroid-h4-ultra.home.matejkosiarcik.com
   - url: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
   - url: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
   - url: gotify.home.matejkosiarcik.com
