@@ -19,6 +19,7 @@
       ansible.builtin.apt:
         pkg:
           - apache2-utils # Maybe remove this in the future
+          - argon2
           - bash
           - btop
           - build-essential
