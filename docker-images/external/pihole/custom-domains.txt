@@ -16,6 +16,10 @@
 10.1.4.201 desklamp-left.home.matejkosiarcik.com
 10.1.4.202 desklamp-right.home.matejkosiarcik.com
 
+### Odroid H3 ###
+
+10.1.10.21 glances-odroid-h3.home.matejkosiarcik.com
+
 ### Raspberry Pi 3B ###
 
 10.1.12.1 tvheadend.home.matejkosiarcik.com
@@ -74,7 +78,7 @@
 10.1.20.41 dozzle-agent-odroid-h3.home.matejkosiarcik.com
 10.1.20.42 netalertx.home.matejkosiarcik.com
 10.1.20.43 vikunja.home.matejkosiarcik.com
-10.1.20.44 glances-odroid-h3.home.matejkosiarcik.com
+10.1.20.44 glances-odroid-h4-ultra.home.matejkosiarcik.com
 10.1.20.45 vaultwarden.home.matejkosiarcik.com
 10.1.20.46 prometheus.home.matejkosiarcik.com
 10.1.20.47 certbot.home.matejkosiarcik.com
