@@ -131,28 +131,26 @@ load_notes() {
     fi
 }
 
-load_healthcheck_id() {
-    # $1 - app name
-    # $2 - container name
-
+load_healthcheck_ping_key() {
     if [ "$mode" = 'prod' ]; then
-        bw list items --search "homelab--$1--$2--healthchecks-id" | jq -er ".[] | select(.name == \"homelab--$1--$2--healthchecks-id\").login.password"
+        bw list items --search 'homelab--healthchecks--app--ping-key' | jq -er ".[] | select(.name == \"homelab--healthchecks--app--ping-key\").login.password"
     else
         printf '\n'
     fi
 }
 
 write_healthcheck_url() {
-    # $1 - container name
-    # $2 - healthchecks id
+    # $1 - app name
+    # $2 - container name
+    # $3 - healthchecks ping key
 
-    if [ "$2" = '' ]; then
+    if [ "$3" = '' ]; then
         healthcheck_url=''
     else
-        healthcheck_url="https://healthchecks.home.matejkosiarcik.com/ping/$2"
+        healthcheck_url="https://healthchecks.home.matejkosiarcik.com/ping/$3/$1-$2"
     fi
-    printf 'HOMELAB_HEALTHCHECK_URL=%s\n' "$healthcheck_url" >>"$output/$1.env"
-    printf 'healthchecks-%s,%s\n' "$1" "$healthcheck_url" >>"$output/all-credentials.csv"
+    printf 'HOMELAB_HEALTHCHECK_URL=%s\n' "$healthcheck_url" >>"$output/$2.env"
+    printf '%s-healthcheck,%s\n' "$2" "$healthcheck_url" >>"$output/all-credentials.csv"
 }
 
 write_http_auth_user() {
@@ -197,8 +195,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *changedetection*)
     # App
@@ -210,8 +208,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *certbot*)
     # App
@@ -226,16 +224,16 @@ case "$full_app_name" in
     printf 'WEBSUPPORT_API_SECRET=%s\n' "$websupport_api_secret" >>"$output/app.env"
     websupport_service_id="$(load_token "$full_app_name" websupport service-id)"
     printf 'WEBSUPPORT_SERVICE_ID=%s\n' "$websupport_service_id" >>"$output/app.env"
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
-    write_healthcheck_url app "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" app "$healthcheck_ping_key"
 
     # Apache
     write_default_proxy_users "$full_app_name"
     ;;
 *docker-build*)
     # App
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
-    write_healthcheck_url app "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" app "$healthcheck_ping_key"
     ;;
 *docker*-proxy*)
     # App
@@ -249,8 +247,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *dozzle-agent*)
     # App
@@ -284,8 +282,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id dozzle certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *gatus*)
     # App
@@ -372,8 +370,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *glances*)
     # App
@@ -389,8 +387,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name--$server_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *gotify*)
     # App
@@ -403,8 +401,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *healthchecks*)
     # App
@@ -423,8 +421,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *homeassistant*)
     # App
@@ -436,8 +434,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *homepage*)
     # App
@@ -467,8 +465,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *jellyfin*)
     # App
@@ -483,8 +481,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *minio*)
     # App
@@ -506,8 +504,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *motioneye*)
     # App
@@ -521,8 +519,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *ntfy*)
     # App
@@ -541,8 +539,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *omada-controller*)
     # App
@@ -560,8 +558,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *openspeedtest*)
     # Apache
@@ -569,8 +567,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *pihole*)
     # App
@@ -589,8 +587,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *prometheus*)
     # App
@@ -667,13 +665,13 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *renovatebot*)
     # App
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" app)"
-    write_healthcheck_url app "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" app "$healthcheck_ping_key"
     renovate_token="$(load_token "$full_app_name" app renovate-token)" # PAT specific for each git host
     github_token="$(load_token "$full_app_name" app github-token)"     # GitHub PAT (even if using other git hosts)
     printf 'RENOVATE_TOKEN=%s\n' "$renovate_token" >>"$output/app.env"
@@ -691,8 +689,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *speedtest-tracker*)
     # App
@@ -717,8 +715,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *tvheadend*)
     # App
@@ -732,8 +730,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *unbound*)
     # Apache
@@ -744,8 +742,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *unifi-controller*)
     # App
@@ -767,8 +765,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *uptime-kuma*)
     # App
@@ -780,8 +778,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *vaultwarden*)
     # App
@@ -809,8 +807,8 @@ case "$full_app_name" in
 
     # Certificator
     write_certificator_users
-    healthcheck_id="$(load_healthcheck_id "$full_app_name" certificator)"
-    write_healthcheck_url certificator "$healthcheck_id"
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
     ;;
 *)
     printf 'Unknown app directory name: %s\n' "$app_dir" >&2
