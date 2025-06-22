@@ -16,7 +16,6 @@ services:
       <<: *common-env-variables
       ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DEFAULT_FROM_EMAIL: system@healthchecks.${DOCKER_COMPOSE_NETWORK_DOMAIN}
-      REGISTRATION_OPEN: "False"
       SITE_ROOT: ${HOMELAB_APP_EXTERNAL_URL}
 
   certificator:
