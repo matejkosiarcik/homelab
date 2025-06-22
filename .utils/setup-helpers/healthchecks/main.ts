@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import fsx from 'node:fs/promises';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import { assert } from 'simple-assert';
