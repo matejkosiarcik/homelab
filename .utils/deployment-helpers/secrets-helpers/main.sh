@@ -457,6 +457,7 @@ case "$full_app_name" in
     printf 'HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app admin)" >>"$output/app.env"
+    printf 'HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY=%s\n' "$(load_token speedtest-tracker app api-key-readonly)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unifi-controller app homepage)" >>"$output/app.env"
     # TODO: Enable Vikunja integration
     # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app homepage-api-key)" "$output/app.env"
