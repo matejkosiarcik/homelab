@@ -78,6 +78,7 @@ updates:
   # NPM
   - package-ecosystem: npm
     directories:
+      - /.utils/setup-helpers/healthchecks
       - /docker-images/.shared/dependencies/zopflipng
       - /docker-images/custom/lamp-wrapper
       - /docker-images/custom/web-automation
