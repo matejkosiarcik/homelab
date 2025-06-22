@@ -15,10 +15,10 @@ flowchart LR
     end
 
     subgraph app_wrapper["App"]
-        network_interface(" ")
+        inbound_interface(" ")
         samba("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba")
 
-        network_interface --->|:139,445| samba
+        inbound_interface --->|:139,445| samba
     end
 
-    home_network <---> network_interface
+    home_network <---> inbound_interface

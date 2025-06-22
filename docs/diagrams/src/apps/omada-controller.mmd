@@ -17,7 +17,7 @@ flowchart LR
     end
 
     subgraph app_wrapper["App"]
-        network_interface(" ")
+        inbound_interface(" ")
         apache_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>default")
         apache_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>portal")
         apache_prometheus_exporter_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
@@ -28,9 +28,9 @@ flowchart LR
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
-        network_interface --->|:80,443| apache_1 --->|:443| omada_controller
-        network_interface --->|:81,444| apache_2 --->|:444| omada_controller
-        network_interface --->|:27001,29810-29816| omada_controller
+        inbound_interface --->|:80,443| apache_1 --->|:443| omada_controller
+        inbound_interface --->|:81,444| apache_2 --->|:444| omada_controller
+        inbound_interface --->|:27001,29810-29816| omada_controller
         apache_1 -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_1
         apache_2 -->|/.apache/metrics| apache_prometheus_exporter_2 -.->|use status| apache_2
         apache_1 & apache_2 -..-|fs| certificator
@@ -45,7 +45,7 @@ flowchart LR
     minio ~~~ healthchecks
     script_backup ~~~ healthchecks
 
-    home_network <---> network_interface
-    tp_link_equipment <-..->|use/control| network_interface
+    home_network <---> inbound_interface
+    tp_link_equipment <-..->|use/control| inbound_interface
     script_backup -.->|send backup| minio
     certificator -..->|report status| healthchecks
