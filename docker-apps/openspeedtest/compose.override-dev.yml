@@ -3,7 +3,7 @@ x-definitions:
     HOMELAB_ENV: dev
     HOMELAB_APP_EXTERNAL_DOMAIN: localhost
     HOMELAB_APP_EXTERNAL_IP: "127.0.0.1"
-    HOMELAB_APP_EXTERNAL_URL: http://localhost:8080
+    HOMELAB_APP_EXTERNAL_URL: https://localhost:8443
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -18,7 +18,6 @@ services:
       USER_EMAIL: admin@openspeedtest.localhost
     ports:
       - 127.0.0.1:8080:3000
-      # 3001 ignored
 
   certificator:
     <<: *common-service-options
