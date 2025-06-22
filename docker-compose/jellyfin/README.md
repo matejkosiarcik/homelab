@@ -32,7 +32,7 @@ LinuxServer (unofficial):
     - Install Tvheadend plugin (location: Settings -> Administration -> Plugins -> Catalog)
     - Restart Jellyfin (location: Settings -> Dashboard)
     - Configure Tvheadend plugin details (location: Settings -> Administration -> Plugins -> My Plugins -> Tvheadend)
-        - Tvheadend address, credentials
+        - Tvheadend address, credentials `user`
         - Enable "Hide Tvheadend Recordings channel"
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
 - \[Prod\] Create extra users (matej, monika)
