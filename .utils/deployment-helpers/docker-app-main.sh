@@ -128,6 +128,7 @@ fi
 
 # Remove values that may stick around from previous runs
 unset DOCKER_COMPOSE_APP_NAME
+unset DOCKER_COMPOSE_ENV
 unset DOCKER_COMPOSE_NETWORK_DOMAIN
 unset DOCKER_COMPOSE_NETWORK_IP
 unset DOCKER_COMPOSE_NETWORK_URL
@@ -151,6 +152,11 @@ fi
 # Get default value for docker compose
 extra_docker_compose_env="$tmpdir/compose.env"
 touch "$extra_docker_compose_env"
+if [ "${DOCKER_COMPOSE_ENV-}" = '' ]; then
+    DOCKER_COMPOSE_ENV="$mode"
+    export DOCKER_COMPOSE_ENV
+    printf 'DOCKER_COMPOSE_ENV=%s\n' "$DOCKER_COMPOSE_ENV" >>"$extra_docker_compose_env"
+fi
 if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
     DOCKER_COMPOSE_APP_NAME="$full_app_name"
     export DOCKER_COMPOSE_APP_NAME
