@@ -178,8 +178,7 @@ if [ "${DOCKER_COMPOSE_NETWORK_IP-}" = '' ]; then
     if [ "$mode" = 'dev' ]; then
         DOCKER_COMPOSE_NETWORK_IP="127.0.0.1"
     elif [ "$mode" = 'prod' ]; then
-        printf 'DOCKER_COMPOSE_NETWORK_IP must be set in production\n' >&2
-        exit 1
+        DOCKER_COMPOSE_NETWORK_IP="256.256.256.256" # Intentionally invalid IP address as placeholder
     else
         printf 'Unknown mode "%s"\n' "$mode" >&2
         exit 1
