@@ -23,5 +23,9 @@ LinuxServer (unofficial):
 ## After initial installation
 
 - Setup speed tresholds
-- Add webhook to healthchecks (always)
-- Add webhook to mail & ntfy (on treshold)
+- Add (always) webhook to healthchecks
+    - `https://healthchecks.home.matejkosiarcik.com/ping/<ping-key>/speedtest-tracker-app`
+- Add (treshold) webhook to ntfy / gotify / smtp notifications
+    - `https://ntfy.home.matejkosiarcik.com`, topic: `speedtest-tracker`, username: `publisher`, password: `<password>`
+    - `https://gotify.home.matejkosiarcik.com/message?token=<token>`
+    - `system@speedtest-tracker.home.matejkosiarcik.com`
