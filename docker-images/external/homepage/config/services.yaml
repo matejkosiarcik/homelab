@@ -283,6 +283,8 @@
         widget:
           type: speedtest
           url: https://speedtest-tracker.home.matejkosiarcik.com
+          key: "{{HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY}}"
+          version: 2
           bitratePrecision: 1
 
     - Changedetection:
