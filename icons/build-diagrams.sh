@@ -168,14 +168,9 @@ convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 
 ### Combined icons ###
 
-# Rounded squid
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/squid-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/squid-background-mask.png"
-magick "$tmpdir/squid-background.png" "$tmpdir/squid-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/squid-background.png"
-magick "$tmpdir/squid-background.png" -define png:color-type=6 "$tmpdir/squid-background.png"
-magick -background none -bordercolor transparent "$input_dir/other/squid.jpg" -resize '224x224' -density 1200 "$tmpdir/squid-tmp.png"
-magick "$tmpdir/squid-background.png" "$tmpdir/squid-tmp.png" -gravity Center -composite "$tmpdir/squid-final.png"
-convert_image_full "$tmpdir/squid-final.png" "$output_dir/squid.png"
+# Rounded Squid
+magick "$input_dir/other/squid.jpg" \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite "$tmpdir/squid.png"
+convert_image_full "$tmpdir/squid.png" "$output_dir/squid.png"
 
 # Smtp4dev with custom background
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/smtp4dev-background.png"
