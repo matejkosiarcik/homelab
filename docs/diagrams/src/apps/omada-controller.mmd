@@ -27,7 +27,7 @@ flowchart LR
         omada_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br/>Controller")
         class omada_controller strong_border;
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
         inbound_interface --->|:80,443| apache_1 --->|:443| omada_controller

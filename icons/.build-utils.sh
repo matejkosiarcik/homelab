@@ -12,6 +12,11 @@ default_convert_options='magick INPUT_FILE OUTPUT_FILE'
 optimize_image() {
     # $1 - filepath
 
+    # Skip optimization in dev mode
+    if [ "${HOMELAB_ENV-x}" = 'dev' ]; then
+        return 0
+    fi
+
     tmpdir2="$(mktemp -d)"
     tmpfile2="$tmpdir2/$(basename "$1")"
 
