@@ -14,7 +14,7 @@ services:
     <<: *common-service-options
     environment:
       <<: *common-env-variables
-      JELLYFIN_PublishedServerUrl: ${HOMELAB_APP_EXTERNAL_URL}
+      JELLYFIN_PublishedServerUrl: ${DOCKER_COMPOSE_NETWORK_URL}
 
   app-setup:
     <<: *common-service-options

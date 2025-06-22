@@ -3,7 +3,7 @@ x-definitions:
     HOMELAB_ENV: prod
     HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
-    HOMELAB_APP_EXTERNAL_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

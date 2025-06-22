@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/openspeedtest/compose.override-dev.yml
-    project_directory: .

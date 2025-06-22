@@ -15,7 +15,7 @@ services:
     environment:
       <<: *common-env-variables
       VAULTWARDEN_DOMAIN: localhost
-      DOMAIN: ${HOMELAB_APP_EXTERNAL_URL}
+      DOMAIN: ${DOCKER_COMPOSE_NETWORK_URL}
       SMTP_FROM: system@vaultwarden.localhost
 
   certificator:

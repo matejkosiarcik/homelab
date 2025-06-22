@@ -182,6 +182,15 @@ endpoints:
       - type: gotify
 
   - <<: *default-icmp
+    name: Odroid H4 Ultra
+    group: Servers
+    url: icmp://10.1.4.11
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  - <<: *default-icmp
     name: Raspberry Pi 3B
     group: Servers
     url: icmp://10.1.4.2
@@ -529,6 +538,22 @@ endpoints:
     name: Dozzle agent - Odroid H3 - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent-odroid-h3.home.matejkosiarcik.com:7007
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # Odroid H4 Ultra
+
+  - <<: *default-icmp
+    name: Dozzle agent - Odroid H4 Ultra - ICMP
+    group: App - Dozzle agents
+    url: icmp://dozzle-agent-odroid-h4-ultra.home.matejkosiarcik.com
+
+  - <<: *default-tcp
+    name: Dozzle agent - Odroid H4 Ultra - TCP:7007
+    group: App - Dozzle agents
+    url: tcp://dozzle-agent-odroid-h4-ultra.home.matejkosiarcik.com:7007
     alerts:
       - type: email
       - type: ntfy

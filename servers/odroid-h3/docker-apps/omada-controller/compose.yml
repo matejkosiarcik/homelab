@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/omada-controller/compose.yml
-    project_directory: .

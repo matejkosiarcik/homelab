@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/minio/compose.override-prod.yml
-    project_directory: .

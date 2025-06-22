@@ -159,6 +159,11 @@ if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
     export DOCKER_COMPOSE_NETWORK_DOMAIN
     printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >>"$extra_docker_compose_env"
 fi
+if [ "${DOCKER_COMPOSE_NETWORK_URL-}" = '' ]; then
+    DOCKER_COMPOSE_NETWORK_URL="https://$DOCKER_COMPOSE_NETWORK_DOMAIN"
+    export DOCKER_COMPOSE_NETWORK_URL
+    printf 'DOCKER_COMPOSE_NETWORK_URL=%s\n' "$DOCKER_COMPOSE_NETWORK_URL" >>"$extra_docker_compose_env"
+fi
 docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
 
 docker_stop() {

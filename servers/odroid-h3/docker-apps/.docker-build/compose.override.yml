@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/docker-build/compose.override-dev.yml
-    project_directory: .
