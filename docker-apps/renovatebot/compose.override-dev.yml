@@ -1,6 +1,5 @@
 x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_ENV: dev
+  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

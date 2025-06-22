@@ -1,6 +1,7 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_APP_TYPE: docker-build
+    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

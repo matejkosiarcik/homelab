@@ -1,6 +1,10 @@
 x-definitions:
   common-env-variables: &common-env-variables
     HOMELAB_APP_TYPE: ntfy
+    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
+    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables

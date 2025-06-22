@@ -1,9 +1,5 @@
 x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_ENV: dev
-    HOMELAB_APP_EXTERNAL_DOMAIN: localhost
-    HOMELAB_APP_EXTERNAL_IP: "127.0.0.1"
-    HOMELAB_APP_EXTERNAL_URL: https://localhost:8443
+  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
