@@ -13,12 +13,8 @@ Below is a general structure for this repository:
 
 - `/ansible/` - Ansible playbooks for easy maintenance for multiple servers
 - `/docs/` - General documentation and installation guides
-- `/docker-images/` - Contains Dockerfiles for all _custom_ and _external_ docker images
-    - Each _docker image_ contains reusable general config
-    - Each _docker image_ can be used in 1 or more docker-apps
-- `/docker-apps/` - Reusable config for individual docker-apps, eg. PiHole
-    - Each _docker app_ contains reusable general config, including auxiliary services (eg. PiHole itself, Apache/Nginx reverse proxy, cron certificator, cron web backups, ...)
-    - Each _docker app_ can be used in 1 or more docker-apps on individual servers
+- `/docker-images/` - Contains Dockerfiles for all individual docker images
+- `/docker-compose/` - Reusable config for entire individual docker-apps
 - `/other-apps/` - Non-Docker apps (eg. for microcontrollers)
 - `/servers/` - Setup for individual physical servers
 

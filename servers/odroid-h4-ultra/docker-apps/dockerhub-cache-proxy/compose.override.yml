@@ -1,3 +1,3 @@
 include:
-  - path: ../../../../docker-apps/docker-cache-proxy/compose.override-dev.yml
+  - path: ../../../../docker-compose/docker-cache-proxy/compose.override-dev.yml
     project_directory: .
