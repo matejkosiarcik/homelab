@@ -8,6 +8,7 @@ flowchart LR
     classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:6px;
 
     subgraph others_1["Others"]
         home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
@@ -17,25 +18,26 @@ flowchart LR
     end
 
     subgraph app_wrapper["App"]
-        inbound_interface_1(" ")
+        inbound_interface(" ")
         apache_proxy_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>(API)")
         apache_proxy_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>(UI)")
-        apache_prometheus_exporter_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         apache_prometheus_exporter_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
+        apache_prometheus_exporter_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
+        class minio strong_border;
         minio_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/api.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
-        outbound_interface_1(" ")
+        outbound_interface(" ")
 
-        inbound_interface_1 --->|:80,443| apache_proxy_1 --->|:9000| minio
-        inbound_interface_1 --->|:80,443| apache_proxy_2 --->|:9001| minio
+        inbound_interface --->|:80,443| apache_proxy_1 --->|:9000| minio
+        inbound_interface --->|:80,443| apache_proxy_2 --->|:9001| minio
         apache_proxy_1 -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_proxy_1
         apache_proxy_2 -->|/.apache/metrics| apache_prometheus_exporter_2 -.->|use status| apache_proxy_2
         apache_proxy_1 & apache_proxy_2 -.-|fs| certificator
         minio ~~~ minio_setup -->|use| minio
-        outbound_interface_1 -.->|connect| squid_proxy
+        outbound_interface -.->|connect| squid_proxy
         apache_proxy_1 -->|/.squid/metrics| squid_prometheus_exporter
         squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
     end
@@ -43,11 +45,11 @@ flowchart LR
     home_network <---> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
+    other_apps -.->|use| inbound_interface
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     end
 
     squid_prometheus_exporter ~~~ others_2
-    other_apps -.->|use| inbound_interface_1
-    certificator --> outbound_interface_1 -->|report status| healthchecks
+    certificator --> outbound_interface -->|report status| healthchecks
