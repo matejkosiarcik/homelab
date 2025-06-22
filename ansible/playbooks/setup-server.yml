@@ -57,6 +57,8 @@
       ansible.builtin.apt:
         pkg:
           - linux-headers-amd64
+          - intel-gpu-tools # contains `intel_gpu_top`
+          - vainfo
 
     - name: Install arm64 APT packages
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian' and ansible_facts['architecture'] == 'aarch64'
