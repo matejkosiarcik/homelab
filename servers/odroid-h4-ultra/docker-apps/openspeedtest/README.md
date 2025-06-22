@@ -1,3 +1,3 @@
 # OpenSpeedTest
 
-For `openspeedtest` docs see [/docker-apps/openspeedtest/README.md](../../../../docker-apps/openspeedtest/README.md)
+For `openspeedtest` docs see [/docker-compose/openspeedtest/README.md](../../../../docker-compose/openspeedtest/README.md)

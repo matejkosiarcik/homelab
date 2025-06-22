@@ -1,3 +1,3 @@
 include:
-  - path: ../../../../docker-apps/renovatebot/compose.yml
+  - path: ../../../../docker-compose/renovatebot/compose.yml
     project_directory: .

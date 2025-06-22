@@ -1,3 +1,3 @@
 include:
-  - path: ../../../../docker-apps/samba/compose.override-prod.yml
+  - path: ../../../../docker-compose/samba/compose.override-prod.yml
     project_directory: .

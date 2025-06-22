@@ -1,3 +1,3 @@
 include:
-  - path: ../../../../docker-apps/motioneye/compose.override-prod.yml
+  - path: ../../../../docker-compose/motioneye/compose.override-prod.yml
     project_directory: .

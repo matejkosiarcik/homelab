@@ -1,3 +1,3 @@
 # Ntfy
 
-For `ntfy` docs see [/docker-apps/ntfy/README.md](../../../../docker-apps/ntfy/README.md)
+For `ntfy` docs see [/docker-compose/ntfy/README.md](../../../../docker-compose/ntfy/README.md)

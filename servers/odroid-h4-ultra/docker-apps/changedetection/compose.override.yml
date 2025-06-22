@@ -1,3 +1,3 @@
 include:
-  - path: ../../../../docker-apps/changedetection/compose.override-dev.yml
+  - path: ../../../../docker-compose/changedetection/compose.override-dev.yml
     project_directory: .

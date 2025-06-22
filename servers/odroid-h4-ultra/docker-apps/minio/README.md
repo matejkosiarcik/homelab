@@ -1,3 +1,3 @@
 # MinIO
 
-For `minio` docs see [/docker-apps/minio/README.md](../../../../docker-apps/minio/README.md)
+For `minio` docs see [/docker-compose/minio/README.md](../../../../docker-compose/minio/README.md)
