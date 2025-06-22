@@ -8,15 +8,20 @@ flowchart LR
     classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:6px;
 
-    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network"]
-    class home_network dashed_border
-
-    subgraph app_wrapper["Docker"]
-        network_interface(" ")
-        samba("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba")
-
-        network_interface --->|:139,445| samba
+    subgraph others_1["Others"]
+        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
     end
 
-    home_network <---> network_interface
+    subgraph app_wrapper["App"]
+        inbound_interface(" ")
+        samba("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba")
+        class samba strong_border;
+
+        inbound_interface --->|:139,445| samba
+    end
+
+    home_network <---> inbound_interface
+    gatus -->|monitor| inbound_interface

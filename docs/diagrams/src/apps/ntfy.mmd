@@ -8,42 +8,49 @@ flowchart LR
     classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:6px;
 
-    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network"]
-    class home_network dashed_border
-    other_apps["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Apps"]
-    class other_apps dashed_border
+    subgraph others_1["Others"]
+        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
+        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        other_apps("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br/>apps")
+    end
 
-    subgraph app_wrapper["Docker"]
-        network_interface(" ")
+    subgraph app_wrapper["App"]
+        inbound_interface(" ")
         apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
+        class ntfy strong_border;
         ntfy_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
-        network_interface --->|:80,443| apache_proxy --->|:80| ntfy
-        apache_proxy -->|/.proxy/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -..-|fs| certificator
-        network_interface --->|:25| ntfy
+        inbound_interface --->|:80,443| apache_proxy --->|:80| ntfy
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
+        apache_proxy -.-|fs| certificator
+        inbound_interface --->|:25| ntfy
         ntfy ~~~ socket_proxy ~~~ ntfy_setup
         ntfy_setup  -..->|use| ntfy
         ntfy_setup -..->|docker tcp| socket_proxy
         socket_proxy -..->|docker sock| docker
     end
 
-    personal_devices["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps"]
-    class personal_devices dashed_border
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
 
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
-    ntfy_setup ~~~ healthchecks
+    subgraph others_2["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        personal_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps")
+    end
 
-    other_apps -..->|new notification| network_interface
-    home_network ---> network_interface
-    ntfy_setup ~~~ personal_devices
+    squid_prometheus_exporter ~~~ others_2
+    other_apps -..->|new notification| inbound_interface
+    home_network ---> inbound_interface
     ntfy -..->|push notification| personal_devices
     certificator -..->|report status| healthchecks

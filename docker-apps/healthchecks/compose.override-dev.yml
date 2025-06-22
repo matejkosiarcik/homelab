@@ -15,9 +15,8 @@ services:
     environment:
       <<: *common-env-variables
       ALLOWED_HOSTS: "*"
-      # DEBUG: "True" # Enable for debugging
+      DEBUG: "True"
       DEFAULT_FROM_EMAIL: system@healthchecks.localhost
-      EMAIL_HOST: smtp4dev.home.matejkosiarcik.com
       REGISTRATION_OPEN: "True"
       SITE_ROOT: ${HOMELAB_APP_EXTERNAL_URL}
 

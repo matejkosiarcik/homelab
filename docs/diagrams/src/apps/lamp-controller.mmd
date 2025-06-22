@@ -8,15 +8,19 @@ flowchart LR
     classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:6px;
 
-    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network"]
-    class home_network dashed_border
-    home_assistant["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant"]
-    class home_assistant dashed_border
+    subgraph others_1["Others"]
+        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
+        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        home_assistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
+    end
 
-    subgraph app_wrapper["Docker"]
-        network_interface(" ")
+    subgraph app_wrapper["App"]
+        inbound_interface(" ")
         lamp_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp controller")
+        class lamp_controller strong_border
 
         gpio_button("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /></div>Button")
         class gpio_button dashed_border
@@ -27,5 +31,7 @@ flowchart LR
         lamp_controller --->|GPIO 14| gpio_lamp
     end
 
-    home_network <---> network_interface
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
     home_assistant -..->|control| lamp_controller
