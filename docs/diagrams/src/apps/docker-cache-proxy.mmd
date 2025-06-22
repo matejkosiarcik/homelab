@@ -34,7 +34,7 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    subgraph others["Others"]
+    subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         dockerhub["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div>Public<br/>container<br/>registry"]
         class dockerhub dashed_border
