@@ -66,17 +66,47 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
 
     const otherHealthchecks = [
         {
-            name: 'Speedtest Tracker - App',
-            cron: '17 */4 * * *',
+            name: 'Certbot - App',
+            cron: '30 00 * * *',
         },
         {
             name: 'Renovatebot - App',
             cron: '00 01 * * *',
         },
+        {
+            name: 'Speedtest Tracker - App',
+            cron: '15 */4 * * *',
+        },
     ];
     for (const healthcheck of otherHealthchecks) {
         const slug = healthcheck.name.toLocaleLowerCase().replaceAll(' ', '-').replaceAll(/\-+/g, '-');
         await addHealthcheck({ slug: slug, schedule: healthcheck.cron, name: healthcheck.name, uuid: '', grace: 0, });
+    }
+
+    const deployHealthchecks = [
+        'Odroid H3',
+        'Odroid H4 Ultra',
+        'Raspberry Pi 3B',
+        'Raspberry Pi 4B 2GB',
+        'Raspberry Pi 4B 4GB',
+    ];
+    for (const _name of deployHealthchecks) {
+        const name = `${_name} - Deploy`;
+        const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+        await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, }); // TODO: Set time
+    }
+
+    const updateHealthchecks = [
+        'Odroid H3',
+        'Odroid H4 Ultra',
+        'Raspberry Pi 3B',
+        'Raspberry Pi 4B 2GB',
+        'Raspberry Pi 4B 4GB',
+    ];
+    for (const _name of updateHealthchecks) {
+        const name = `${_name} - Update`;
+        const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+        await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, }); // TODO: Set time
     }
 
     const certificatorHealthchecks = [
