@@ -19,6 +19,7 @@
 ### Odroid H3 ###
 
 10.1.10.21 glances-odroid-h3.home.matejkosiarcik.com
+10.1.10.22 dozzle-agent-odroid-h3.home.matejkosiarcik.com
 
 ### Raspberry Pi 3B ###
 

@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/openspeedtest/compose.yml
-    project_directory: .

@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/ntfy/compose.override-dev.yml
-    project_directory: .

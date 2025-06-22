@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-apps/uptime-kuma/compose.override-dev.yml
-    project_directory: .
