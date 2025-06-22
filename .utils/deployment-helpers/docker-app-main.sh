@@ -129,6 +129,8 @@ fi
 # Remove values that may stick around from previous runs
 unset DOCKER_COMPOSE_APP_NAME
 unset DOCKER_COMPOSE_NETWORK_DOMAIN
+unset DOCKER_COMPOSE_NETWORK_IP
+unset DOCKER_COMPOSE_NETWORK_URL
 
 # Get env files
 docker_compose_args="$docker_file_args"
@@ -155,12 +157,39 @@ if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
     printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
 fi
 if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
-    DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home.matejkosiarcik.com"
+    if [ "$mode" = 'prod' ]; then
+        DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home.matejkosiarcik.com"
+    elif [ "$mode" = 'dev' ]; then
+        DOCKER_COMPOSE_NETWORK_DOMAIN="localhost"
+    else
+        printf 'Unknown mode "%s"\n' "$mode" >&2
+        exit 1
+    fi
     export DOCKER_COMPOSE_NETWORK_DOMAIN
     printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >>"$extra_docker_compose_env"
 fi
+if [ "${DOCKER_COMPOSE_NETWORK_IP-}" = '' ]; then
+    if [ "$mode" = 'dev' ]; then
+        DOCKER_COMPOSE_NETWORK_IP="127.0.0.1"
+    elif [ "$mode" = 'prod' ]; then
+        printf 'DOCKER_COMPOSE_NETWORK_IP must be set in production\n' >&2
+        exit 1
+    else
+        printf 'Unknown mode "%s"\n' "$mode" >&2
+        exit 1
+    fi
+    export DOCKER_COMPOSE_NETWORK_IP
+    printf 'DOCKER_COMPOSE_NETWORK_IP=%s\n' "$DOCKER_COMPOSE_NETWORK_IP" >>"$extra_docker_compose_env"
+fi
 if [ "${DOCKER_COMPOSE_NETWORK_URL-}" = '' ]; then
-    DOCKER_COMPOSE_NETWORK_URL="https://$DOCKER_COMPOSE_NETWORK_DOMAIN"
+    if [ "$mode" = 'prod' ]; then
+        DOCKER_COMPOSE_NETWORK_URL="https://$DOCKER_COMPOSE_NETWORK_DOMAIN"
+    elif [ "$mode" = 'dev' ]; then
+        DOCKER_COMPOSE_NETWORK_URL="https://localhost:8443"
+    else
+        printf 'Unknown mode "%s"\n' "$mode" >&2
+        exit 1
+    fi
     export DOCKER_COMPOSE_NETWORK_URL
     printf 'DOCKER_COMPOSE_NETWORK_URL=%s\n' "$DOCKER_COMPOSE_NETWORK_URL" >>"$extra_docker_compose_env"
 fi
