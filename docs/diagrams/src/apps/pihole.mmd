@@ -39,12 +39,13 @@ flowchart LR
         apache_proxy -..-|fs| certificator
     end
 
-    public_dns["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dns.png' style='min-width:40px;max-width:40px;position:absolute;bottom:10px;right:0' /></div>Public<br/>DNS"]
-    class public_dns dashed_border
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        public_dns["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dns.png' style='min-width:40px;max-width:40px;position:absolute;bottom:10px;right:0' /></div>Public<br/>DNS"]
+        class public_dns dashed_border
+    end
 
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     pihole_setup ~~~ healthchecks
-
     home_network <---> network_interface
     pihole_setup ~~~ public_dns
     pihole -..->|DNS queries| public_dns

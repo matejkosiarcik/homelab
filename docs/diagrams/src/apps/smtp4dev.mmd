@@ -31,7 +31,9 @@ flowchart LR
         apache_proxy -..-|fs| certificator
     end
 
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    end
 
     home_network <---> network_interface
     other_apps -->|send email| network_interface

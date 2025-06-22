@@ -31,16 +31,15 @@ flowchart LR
         speedtest_tracker ~~~ db_sync -..->|fs| speedtest_tracker
     end
 
-    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
-
-    cloud_server["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /></div>SpeedTest<br/>Servers"]
-    class cloud_server dashed_border
-
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        s3_database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
+        cloud_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /></div>SpeedTest<br/>Servers")
+        class cloud_server dashed_border
+    end
 
     db_sync ~~~ s3_database & cloud_server & healthchecks
     certificator -..->|report status| healthchecks
-
     home_network <---> network_interface
     db_sync -..->|send| s3_database
     speedtest_tracker -..->|measure speed| cloud_server

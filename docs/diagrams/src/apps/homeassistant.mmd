@@ -35,16 +35,14 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
-
-    smart_home["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1.5em'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div>Smart<br/>Home<br/>Devices"]
-    class smart_home dashed_border
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
+        smart_home["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1.5em'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div>Smart<br/>Home<br/>Devices"]
+    end
 
     squid_proxy ~~~ healthchecks & s3_database & smart_home
-
     home_assistant ~~~ script_backup -..->|get backup| home_assistant
-
     smart_home ~~~ app_wrapper
     home_network <---> network_interface
     home_assistant --> outbound_interface_1 -->|control| smart_home

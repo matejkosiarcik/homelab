@@ -38,11 +38,11 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    prometheus["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus"]
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    end
 
     squid_proxy & docker & glances & glances_prometheus ~~~ prometheus & healthchecks
-
     home_network <---> network_interface
     prometheus -.->|collect stats| glances_prometheus
     certificator --> outbound_interface_1 -->|report status| healthchecks

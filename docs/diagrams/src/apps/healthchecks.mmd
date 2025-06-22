@@ -37,11 +37,11 @@ flowchart LR
         certificator --> outbound_interface_1 -->|report status| healthchecks
     end
 
-    s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
-    class s3_database dashed_border
+    subgraph others["Others"]
+        s3_database["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO"]
+    end
 
     squid_proxy ~~~ s3_database
-
     home_network <---> network_interface
     other_apps -..->|send cron job status| network_interface
     db_sync --> outbound_interface_2 -->|send| s3_database

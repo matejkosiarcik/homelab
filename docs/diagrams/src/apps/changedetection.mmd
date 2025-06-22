@@ -33,16 +33,16 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    websites["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/www.png' style='min-width:80px;max-width:80px' /></div>Websites"]
-    class websites dashed_border
-
-    gotify["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify"]
-    ntfy["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy"]
-    smtp["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Email"]
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        gotify["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify"]
+        ntfy["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy"]
+        smtp["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Email"]
+        websites["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/www.png' style='min-width:80px;max-width:80px' /></div>Websites"]
+        class websites dashed_border
+    end
 
     squid_proxy ~~~ gotify & ntfy & smtp & healthchecks & websites
-
     home_network <---> network_interface
     changedetection --> outbound_interface_1 -->|monitor| websites
     outbound_interface_1 -->|notification| gotify & ntfy & smtp

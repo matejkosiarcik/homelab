@@ -33,13 +33,13 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    dozzle_agents["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dozzle.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-5px;right:0' /></div>Dozzle<br/>agents"]
-    class dozzle_agents dashed_border
-
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        dozzle_agents["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dozzle.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-5px;right:0' /></div>Dozzle<br/>agents"]
+        class dozzle_agents dashed_border
+    end
 
     squid_proxy ~~~ dozzle_agents & healthchecks
-
     home_network <---> network_interface
     certificator --> outbound_interface_1 -->|report status| healthchecks
     dozzle --> outbound_interface_2 -->|read| dozzle_agents

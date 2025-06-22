@@ -34,13 +34,13 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    dockerhub["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div>Public<br/>container<br/>registry"]
-    class dockerhub dashed_border
-
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        dockerhub["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div>Public<br/>container<br/>registry"]
+        class dockerhub dashed_border
+    end
 
     squid_proxy ~~~ dockerhub & healthchecks
-
     home_network <---> network_interface
     other_devices -..->|use| network_interface
     docker_registry --> outbound_interface_1 -->|use| dockerhub

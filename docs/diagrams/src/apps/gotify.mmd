@@ -33,10 +33,12 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
-    unknown("???")
-    squid_proxy ~~~ healthchecks & unknown
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        unknown("???")
+    end
 
+    squid_proxy ~~~ healthchecks & unknown
     home_network <---> network_interface
     certificator --> outbound_interface_1 -->|report status| healthchecks
     gotify --> outbound_interface_2 -->|notifications| unknown

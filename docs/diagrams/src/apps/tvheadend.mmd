@@ -34,9 +34,11 @@ flowchart LR
         antenna --->|signal| tvheadend
     end
 
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
-    antenna ~~~ healthchecks
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+    end
 
+    antenna ~~~ healthchecks
     home_network <---> network_interface
     personal_devices -..->|view| network_interface
     certificator -..->|report status| healthchecks

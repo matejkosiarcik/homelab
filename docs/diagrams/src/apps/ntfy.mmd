@@ -38,12 +38,12 @@ flowchart LR
         socket_proxy -..->|docker sock| docker
     end
 
-    personal_devices["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps"]
-    class personal_devices dashed_border
+    subgraph others["Others"]
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        personal_devices["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps"]
+    end
 
-    healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     ntfy_setup ~~~ healthchecks
-
     other_apps -..->|new notification| network_interface
     home_network ---> network_interface
     ntfy_setup ~~~ personal_devices
