@@ -415,8 +415,8 @@ case "$full_app_name" in
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
     printf '%s,%s\n' "$admin_email" "$admin_password" >>"$output/all-credentials.csv"
-    ntfy_token="$(load_password "$full_app_name" app secret-key)"
-    printf 'SECRET_KEY=%s\n' "$ntfy_token" >>"$output/app.env"
+    secret_key="$(load_password "$full_app_name" app secret-key)"
+    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$output/app.env"
 
     # Apache
     write_default_proxy_users "$full_app_name"
