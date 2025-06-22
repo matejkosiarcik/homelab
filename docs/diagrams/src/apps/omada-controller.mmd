@@ -37,15 +37,16 @@ flowchart LR
         omada_controller ~~~ script_backup -..->|use| omada_controller
     end
 
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
+
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
     end
 
-    minio ~~~ healthchecks
-    script_backup ~~~ healthchecks
-
-    home_network <---> inbound_interface
+    squid_prometheus_exporter ~~~ others_2
     tp_link_equipment <-..->|use/control| inbound_interface
     script_backup -.->|send backup| minio
     certificator -..->|report status| healthchecks

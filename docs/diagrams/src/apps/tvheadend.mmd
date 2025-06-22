@@ -29,16 +29,19 @@ flowchart LR
         inbound_interface --->|:80,443,9981| apache_proxy --->|:9981| tvheadend
         inbound_interface --->|:9982| tvheadend
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -..-|fs| certificator
+        apache_proxy -.-|fs| certificator
         tvheadend ~~~ antenna
         antenna --->|signal| tvheadend
     end
+
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     end
 
-    antenna ~~~ healthchecks
-    home_network <---> inbound_interface
+    squid_prometheus_exporter ~~~ others_2
     personal_devices -..->|view| inbound_interface
     certificator -..->|report status| healthchecks

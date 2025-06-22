@@ -29,10 +29,14 @@ flowchart LR
         inbound_interface --->|:80,443| apache_proxy --->|:3000| homepage
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter
-        apache_proxy -..-|fs| certificator
+        apache_proxy -.-|fs| certificator
         squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
         outbound_interface_1 & outbound_interface_2 -..- squid_proxy
     end
+
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
 
     subgraph others_2["Others"]
         other_apps("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Apps")
@@ -40,11 +44,8 @@ flowchart LR
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
     end
 
-    home_network <---> inbound_interface
-    prometheus -->|collect metrics| inbound_interface
-    gatus -->|monitor| inbound_interface
     homepage -..->|navigate| other_apps
     homepage --> outbound_interface_2 -..->|use| other_apps
     certificator --> outbound_interface_1 -..->|report status| healthchecks
     outbound_interface_1 -..->|download certificate| certbot
-    squid_prometheus_exporter ~~~ others
+    squid_prometheus_exporter ~~~ others_2

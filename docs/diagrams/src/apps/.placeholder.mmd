@@ -23,13 +23,14 @@ flowchart LR
         placeholder("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Placeholder")
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.jpg' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
-        outbound_interface_1(" ")
+        outbound_interface(" ")
 
         inbound_interface --->|:80,443| apache_proxy --->|:8080| placeholder
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -..-|fs| certificator
-        outbound_interface_1 -.->|connect| squid_proxy
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_proxy -.-|fs| certificator
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter
+        squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
+        outbound_interface -.-|connect| squid_proxy
     end
 
     home_network <--> inbound_interface
@@ -40,5 +41,5 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     end
 
-    squid_proxy ~~~ others_2
-    certificator --> outbound_interface_1 -->|report status| healthchecks
+    squid_prometheus_exporter ~~~ others_2
+    certificator --> outbound_interface -->|report status| healthchecks

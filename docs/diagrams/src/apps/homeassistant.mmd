@@ -13,6 +13,7 @@ flowchart LR
         home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
         gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        smart_home("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1.5em'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div>Smart<br/>Home<br/>Devices")
     end
 
     subgraph app_wrapper["App"]
@@ -30,21 +31,23 @@ flowchart LR
 
         inbound_interface --->|:80,443| apache_proxy --->|:8123| home_assistant
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -..-|fs| certificator
+        apache_proxy -.-|fs| certificator
         outbound_interface_1 & outbound_interface_2 & outbound_interface_3 -..- squid_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
+    smart_home ~~~ app_wrapper
+
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         s3_database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
-        smart_home("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1.5em'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div>Smart<br/>Home<br/>Devices")
     end
 
-    squid_proxy ~~~ healthchecks & s3_database & smart_home
+    squid_prometheus_exporter ~~~ others_2
     home_assistant ~~~ script_backup -..->|get backup| home_assistant
-    smart_home ~~~ app_wrapper
-    home_network <---> inbound_interface
     home_assistant --> outbound_interface_1 -->|control| smart_home
     certificator --> outbound_interface_2 -->|report status| healthchecks
     script_backup --> outbound_interface_3 -->|send_backup| s3_database

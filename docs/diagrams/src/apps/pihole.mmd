@@ -36,8 +36,12 @@ flowchart LR
         pihole_setup -..->|docker tcp| socket_proxy
         pihole_setup -..->|use| pihole
         socket_proxy -..->|docker sock| docker
-        apache_proxy -..-|fs| certificator
+        apache_proxy -.-|fs| certificator
     end
+
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
@@ -45,8 +49,6 @@ flowchart LR
         class public_dns dashed_border
     end
 
-    pihole_setup ~~~ healthchecks
-    home_network <---> inbound_interface
-    pihole_setup ~~~ public_dns
+    squid_prometheus_exporter ~~~ others_2
     pihole -..->|DNS queries| public_dns
     certificator -..->|report status| healthchecks

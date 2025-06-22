@@ -30,4 +30,6 @@ flowchart LR
     end
 
     home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
     home_assistant -..->|control| lamp_controller

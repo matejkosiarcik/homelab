@@ -28,10 +28,14 @@ flowchart LR
 
         inbound_interface --->|:80,443| apache_proxy --->|:5000| changedetection
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -..-|fs| certificator
+        apache_proxy -.-|fs| certificator
         outbound_interface_1 & outbound_interface_2 -..- squid_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
+
+    home_network <--> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
@@ -42,8 +46,7 @@ flowchart LR
         class websites dashed_border
     end
 
-    squid_proxy ~~~ gotify & ntfy & smtp & healthchecks & websites
-    home_network <---> inbound_interface
+    squid_prometheus_exporter ~~~ others_2
     changedetection --> outbound_interface_1 -->|monitor| websites
     outbound_interface_1 -->|notification| gotify & ntfy & smtp
     certificator --> outbound_interface_2 -->|report status| healthchecks

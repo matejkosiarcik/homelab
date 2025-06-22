@@ -39,13 +39,16 @@ flowchart LR
         unifi_network_application --->|use:27017| database
     end
 
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
+
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         s3_database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
     end
 
-    script_backup ~~~ healthchecks
-    home_network <---> inbound_interface
+    squid_prometheus_exporter ~~~ others_2
     unifi_equipment <-..->|use/control| inbound_interface
     script_backup -.->|send backup| s3_database
     certificator -..->|report status| healthchecks

@@ -40,11 +40,14 @@ flowchart LR
         squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
     end
 
+    home_network <---> inbound_interface
+    prometheus -->|collect metrics| inbound_interface
+    gatus -->|monitor| inbound_interface
+
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
     end
 
-    squid_prometheus_exporter ~~~ healthchecks
-    home_network <--> inbound_interface_1
+    squid_prometheus_exporter ~~~ others_2
     other_apps -.->|use| inbound_interface_1
     certificator --> outbound_interface_1 -->|report status| healthchecks
