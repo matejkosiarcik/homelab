@@ -9,12 +9,14 @@ flowchart LR
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef dashed_border stroke-dasharray:10 6;
 
-    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network"]
-    class home_network dashed_border
-    tp_link_equipment["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /></div>TP Link<br/>Equipment"]
-    class tp_link_equipment dashed_border
+    subgraph others_1["Others"]
+        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
+        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        tp_link_equipment["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /></div>TP Link<br/>Equipment"]
+    end
 
-    subgraph app_wrapper["Docker"]
+    subgraph app_wrapper["App"]
         network_interface(" ")
         apache_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>default")
         apache_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>portal")
@@ -29,8 +31,8 @@ flowchart LR
         network_interface --->|:80,443| apache_1 --->|:443| omada_controller
         network_interface --->|:81,444| apache_2 --->|:444| omada_controller
         network_interface --->|:27001,29810-29816| omada_controller
-        apache_1 -->|/.proxy/metrics| apache_prometheus_exporter_1 -.->|use status| apache_1
-        apache_2 -->|/.proxy/metrics| apache_prometheus_exporter_2 -.->|use status| apache_2
+        apache_1 -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_1
+        apache_2 -->|/.apache/metrics| apache_prometheus_exporter_2 -.->|use status| apache_2
         apache_1 & apache_2 -..-|fs| certificator
         omada_controller ~~~ script_backup -..->|use| omada_controller
     end

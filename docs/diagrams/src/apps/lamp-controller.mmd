@@ -9,12 +9,14 @@ flowchart LR
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef dashed_border stroke-dasharray:10 6;
 
-    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network"]
-    class home_network dashed_border
-    home_assistant["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant"]
-    class home_assistant dashed_border
+    subgraph others_1["Others"]
+        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
+        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        home_assistant["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant"]
+    end
 
-    subgraph app_wrapper["Docker"]
+    subgraph app_wrapper["App"]
         network_interface(" ")
         lamp_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp controller")
 
