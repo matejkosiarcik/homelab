@@ -75,7 +75,7 @@
 # 10.1.20.38 desklamp-left-wrapper.home.matejkosiarcik.com
 # 10.1.20.39 desklamp-right-wrapper.home.matejkosiarcik.com
 10.1.20.40 dozzle.home.matejkosiarcik.com
-10.1.20.41 dozzle-agent-odroid-h3.home.matejkosiarcik.com
+10.1.20.41 dozzle-agent-odroid-h4-ultra.home.matejkosiarcik.com
 10.1.20.42 netalertx.home.matejkosiarcik.com
 10.1.20.43 vikunja.home.matejkosiarcik.com
 10.1.20.44 glances-odroid-h4-ultra.home.matejkosiarcik.com
