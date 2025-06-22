@@ -214,21 +214,21 @@ convert_image_full "$tmpdir/dwservice-final.png" "$output_dir/dwservice.png"
 
 # Apache prometheus exporter
 cp "$input_dir/other/apache.svg.bin" "$tmpdir/apache.svg"
-magick -background none -bordercolor transparent "$tmpdir/apache.svg" -resize 192x192 -border 0 -density 1200 "$tmpdir/apache-tmp.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/prometheus-tmp.png"
-magick "$tmpdir/prometheus-tmp.png" "$tmpdir/apache-tmp.png" -gravity Center -geometry "$default_image_size+90+30" -composite -resize "$default_image_size" "$tmpdir/apache-prometheus-exporter-final.png"
+magick -background none -bordercolor transparent "$tmpdir/apache.svg" -resize "$default_image_size" -border 16 "$tmpdir/apache-tmp.png"
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" "$tmpdir/prometheus-tmp.png"
+magick "$tmpdir/prometheus-tmp.png" "$tmpdir/apache-tmp.png" -gravity Center -geometry "$default_image_size+70+30" -composite -resize "$default_image_size" "$tmpdir/apache-prometheus-exporter-final.png"
 convert_image_full "$tmpdir/apache-prometheus-exporter-final.png" "$output_dir/apache-prometheus-exporter.png"
 
 # PiHole prometheus exporter
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" -resize 160x160 -border 24 -density 1200 "$tmpdir/pihole-tmp.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/prometheus-tmp.png"
-magick "$tmpdir/prometheus-tmp.png" "$tmpdir/pihole-tmp.png" -gravity Center -geometry "$default_image_size+85+55" -composite -resize "$default_image_size" "$tmpdir/pihole-prometheus-exporter-final.png"
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" -resize "$default_image_size" -border 96 "$tmpdir/pihole-tmp.png"
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" "$tmpdir/prometheus-tmp.png"
+magick "$tmpdir/prometheus-tmp.png" "$tmpdir/pihole-tmp.png" -gravity Center -geometry "$default_image_size+75+55" -composite -resize "$default_image_size" "$tmpdir/pihole-prometheus-exporter-final.png"
 convert_image_full "$tmpdir/pihole-prometheus-exporter-final.png" "$output_dir/pihole-prometheus-exporter.png"
 
 # Squid prometheus exporter
-magick -background none -bordercolor transparent "$output_dir/squid.png" -resize "$default_image_size" "$tmpdir/squid-tmp.png" # -border 0 -density 1200
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" -border 128 "$tmpdir/prometheus-tmp.png" #  -density 1200
-magick "$tmpdir/squid-tmp.png" "$tmpdir/prometheus-tmp.png" -gravity Center -geometry "$default_image_size+60+60" -composite -resize "$default_image_size" "$tmpdir/squid-prometheus-exporter-final.png"
+magick -background none -bordercolor transparent "$output_dir/squid.png" -resize "$default_image_size" -border 160 "$tmpdir/squid-tmp.png"
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" "$tmpdir/prometheus-tmp.png"
+magick "$tmpdir/prometheus-tmp.png" "$tmpdir/squid-tmp.png" -gravity Center -geometry "$default_image_size+70+70" -composite -resize "$default_image_size" "$tmpdir/squid-prometheus-exporter-final.png"
 convert_image_full "$tmpdir/squid-prometheus-exporter-final.png" "$output_dir/squid-prometheus-exporter.png"
 
 ### Cleanup ###
