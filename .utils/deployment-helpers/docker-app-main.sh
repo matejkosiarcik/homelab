@@ -293,7 +293,7 @@ create_secrets() {
         create_secrets_args="$create_secrets_args --force"
     fi
     # shellcheck disable=SC2086
-    sh "$git_dir/.utils/deployment-helpers/secrets-helpers/main.sh" $create_secrets_args
+    sh "$git_dir/.utils/secrets-helpers/main.sh" $create_secrets_args
 }
 
 case "$command" in
