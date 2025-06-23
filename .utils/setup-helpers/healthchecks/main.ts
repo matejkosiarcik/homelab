@@ -112,7 +112,6 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
 
     const certificatorHealthchecks = [
         'ActualBudget',
-        'Certbot',
         'ChangeDetection',
         'DockerHub Cache Proxy',
         'Dozzle',
