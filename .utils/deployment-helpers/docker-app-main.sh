@@ -152,16 +152,19 @@ fi
 # Get default value for docker compose
 extra_docker_compose_env="$tmpdir/compose.env"
 touch "$extra_docker_compose_env"
+
 if [ "${DOCKER_COMPOSE_ENV-}" = '' ]; then
     DOCKER_COMPOSE_ENV="$mode"
-    export DOCKER_COMPOSE_ENV
-    printf 'DOCKER_COMPOSE_ENV=%s\n' "$DOCKER_COMPOSE_ENV" >>"$extra_docker_compose_env"
 fi
+export DOCKER_COMPOSE_ENV
+printf 'DOCKER_COMPOSE_ENV=%s\n' "$DOCKER_COMPOSE_ENV" >>"$extra_docker_compose_env"
+
 if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
     DOCKER_COMPOSE_APP_NAME="$full_app_name"
-    export DOCKER_COMPOSE_APP_NAME
-    printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
 fi
+export DOCKER_COMPOSE_APP_NAME
+printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
+
 if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
     if [ "$mode" = 'prod' ]; then
         DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home.matejkosiarcik.com"
@@ -171,9 +174,10 @@ if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
         printf 'Unknown mode "%s"\n' "$mode" >&2
         exit 1
     fi
-    export DOCKER_COMPOSE_NETWORK_DOMAIN
-    printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >>"$extra_docker_compose_env"
 fi
+export DOCKER_COMPOSE_NETWORK_DOMAIN
+printf 'DOCKER_COMPOSE_NETWORK_DOMAIN=%s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" >>"$extra_docker_compose_env"
+
 if [ "${DOCKER_COMPOSE_NETWORK_IP-}" = '' ]; then
     if [ "$mode" = 'dev' ]; then
         DOCKER_COMPOSE_NETWORK_IP="127.0.0.1"
@@ -183,9 +187,10 @@ if [ "${DOCKER_COMPOSE_NETWORK_IP-}" = '' ]; then
         printf 'Unknown mode "%s"\n' "$mode" >&2
         exit 1
     fi
-    export DOCKER_COMPOSE_NETWORK_IP
-    printf 'DOCKER_COMPOSE_NETWORK_IP=%s\n' "$DOCKER_COMPOSE_NETWORK_IP" >>"$extra_docker_compose_env"
 fi
+export DOCKER_COMPOSE_NETWORK_IP
+printf 'DOCKER_COMPOSE_NETWORK_IP=%s\n' "$DOCKER_COMPOSE_NETWORK_IP" >>"$extra_docker_compose_env"
+
 if [ "${DOCKER_COMPOSE_NETWORK_URL-}" = '' ]; then
     if [ "$mode" = 'prod' ]; then
         DOCKER_COMPOSE_NETWORK_URL="https://$DOCKER_COMPOSE_NETWORK_DOMAIN"
@@ -195,9 +200,10 @@ if [ "${DOCKER_COMPOSE_NETWORK_URL-}" = '' ]; then
         printf 'Unknown mode "%s"\n' "$mode" >&2
         exit 1
     fi
-    export DOCKER_COMPOSE_NETWORK_URL
-    printf 'DOCKER_COMPOSE_NETWORK_URL=%s\n' "$DOCKER_COMPOSE_NETWORK_URL" >>"$extra_docker_compose_env"
 fi
+export DOCKER_COMPOSE_NETWORK_URL
+printf 'DOCKER_COMPOSE_NETWORK_URL=%s\n' "$DOCKER_COMPOSE_NETWORK_URL" >>"$extra_docker_compose_env"
+
 docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
 
 docker_stop() {
