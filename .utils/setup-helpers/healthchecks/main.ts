@@ -8,6 +8,7 @@ type Healthcheck = {
     name: string,
     schedule: string,
     slug: string,
+    tz: string,
     uuid: string,
 };
 
@@ -20,11 +21,12 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         name: healthcheck.name,
         schedule: healthcheck.schedule,
         grace: 600, // 10 minutes
+        tz: 'Europe/Bratislava',
     };
 
     const existingHealtheck = existingHealthecks.find((el) => el.slug === newHealthcheck.slug);
     if (existingHealtheck) {
-        if (existingHealtheck.schedule !== newHealthcheck.schedule || existingHealtheck.grace !== newHealthcheck.grace || existingHealtheck.name !== newHealthcheck.name) {
+        if (existingHealtheck.schedule !== newHealthcheck.schedule || existingHealtheck.grace !== newHealthcheck.grace || existingHealtheck.name !== newHealthcheck.name || existingHealtheck.tz !== newHealthcheck.tz) {
             await (async () => {
                 console.log(`Updating healthcheck ${newHealthcheck.slug}`);
                 const response = await axios.post(`/checks/${existingHealtheck.uuid}`, newHealthcheck);
@@ -79,7 +81,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     ];
     for (const healthcheck of otherHealthchecks) {
         const slug = healthcheck.name.toLocaleLowerCase().replaceAll(' ', '-').replaceAll(/\-+/g, '-');
-        await addHealthcheck({ slug: slug, schedule: healthcheck.cron, name: healthcheck.name, uuid: '', grace: 0, });
+        await addHealthcheck({ slug: slug, schedule: healthcheck.cron, name: healthcheck.name, uuid: '', grace: 0, tz: '', });
     }
 
     const deployHealthchecks = [
@@ -92,7 +94,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     for (const _name of deployHealthchecks) {
         const name = `${_name} - Deploy`;
         const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
-        await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, }); // TODO: Set time
+        await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, tz: '', }); // TODO: Set time
     }
 
     const updateHealthchecks = [
@@ -105,12 +107,11 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     for (const _name of updateHealthchecks) {
         const name = `${_name} - Update`;
         const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
-        await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, }); // TODO: Set time
+        await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, tz: '', }); // TODO: Set time
     }
 
     const certificatorHealthchecks = [
         'ActualBudget',
-        'Certbot',
         'ChangeDetection',
         'DockerHub Cache Proxy',
         'Dozzle',
@@ -152,7 +153,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     for (const _name of certificatorHealthchecks) {
         const name = `${_name} - Certificator`;
         const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
-        await addHealthcheck({ slug: slug, schedule: '30 01 * * *', name: name, uuid: '', grace: 0, });
+        await addHealthcheck({ slug: slug, schedule: '30 01 * * *', name: name, uuid: '', grace: 0, tz: '', });
     }
 
     for (const healthcheck of existingHealthecks) {

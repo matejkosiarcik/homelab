@@ -1,6 +1,6 @@
 # Dozzle server
 
-![diagram](../../docs/diagrams/out/apps/dozzle-server.png)
+![diagram](../../docs/diagrams/out/apps/dozzle.png)
 
 ## Docs
 

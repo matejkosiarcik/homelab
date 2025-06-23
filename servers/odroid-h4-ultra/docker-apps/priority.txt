@@ -39,7 +39,7 @@ pihole-1-secondary
 
 # Misc Monitoring
 dozzle-agent
-dozzle-server
+dozzle
 changedetection
 healthchecks
 # netalertx

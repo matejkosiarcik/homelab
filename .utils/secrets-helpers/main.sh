@@ -69,7 +69,7 @@ mkdir "$output"
 printf 'user,password\n' >"$output/all-credentials.csv"
 
 app_dir="$PWD"
-full_app_name="$(basename "$app_dir" | sed -E 's~^\.~~')"
+app_dirname="$(basename "$app_dir" | sed -E 's~^\.~~')"
 server_name="$(basename "$(realpath "$(dirname "$(dirname "$app_dir")")")")"
 tmpdir="$(mktemp -d)"
 
@@ -184,71 +184,71 @@ write_certificator_users() {
     printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$certbot_viewer_password" >>"$output/certificator.env"
 }
 
-case "$full_app_name" in
+case "$app_dirname" in
 *actualbudget*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *changedetection*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *certbot*)
     # App
-    certbot_viewer_password="$(load_password "$full_app_name" apache viewer)"
+    certbot_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache viewer)"
     write_http_auth_user viewer "$certbot_viewer_password"
     printf 'viewer,%s\n' "$certbot_viewer_password" >>"$output/all-credentials.csv"
-    certbot_admin_email="$(load_token "$full_app_name" certbot admin-email)"
+    certbot_admin_email="$(load_token "$DOCKER_COMPOSE_APP_NAME" certbot admin-email)"
     printf 'CERTBOT_ADMIN_EMAIL=%s\n' "$certbot_admin_email" >>"$output/app.env"
-    websupport_api_key="$(load_token "$full_app_name" websupport api-key)"
+    websupport_api_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport api-key)"
     printf 'WEBSUPPORT_API_KEY=%s\n' "$websupport_api_key" >>"$output/app.env"
-    websupport_api_secret="$(load_token "$full_app_name" websupport api-secret)"
+    websupport_api_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport api-secret)"
     printf 'WEBSUPPORT_API_SECRET=%s\n' "$websupport_api_secret" >>"$output/app.env"
-    websupport_service_id="$(load_token "$full_app_name" websupport service-id)"
+    websupport_service_id="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport service-id)"
     printf 'WEBSUPPORT_SERVICE_ID=%s\n' "$websupport_service_id" >>"$output/app.env"
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" app "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" app "$healthcheck_ping_key"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     ;;
 *docker-build*)
     # App
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" app "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" app "$healthcheck_ping_key"
     ;;
 *docker*-proxy*)
     # App
-    http_secret="$(load_password "$full_app_name" app http-secret)"
+    http_secret="$(load_password "$DOCKER_COMPOSE_APP_NAME" app http-secret)"
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$http_secret" >>"$output/app.env"
     printf 'REGISTRY_PROXY_USERNAME=\n' >>"$output/app.env"
     printf 'REGISTRY_PROXY_PASSWORD=\n' >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *dozzle-agent*)
     # App
@@ -261,7 +261,7 @@ case "$full_app_name" in
         sh "$helper_script_dir/dozzle/main.sh" "$output"
     fi
     ;;
-*dozzle-server*)
+*dozzle*)
     # App
     admin_password="$(load_password dozzle app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
@@ -283,11 +283,11 @@ case "$full_app_name" in
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *gatus*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     # Main credentials
     printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_token certbot apache viewer)" >>"$output/app.env"
@@ -363,83 +363,83 @@ case "$full_app_name" in
     # printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vikunja apache prometheus)" >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
-    app_prometheus_password="$(load_password "$full_app_name" app prometheus)"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$app_prometheus_password"
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *glances*)
     # App
-    admin_password="$(load_password "$full_app_name--$server_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME--$server_name" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     sh "$helper_script_dir/glances/main.sh" "$admin_password" "$output/glances-password.txt"
 
     # Apache
-    write_default_proxy_users "$full_app_name--$server_name"
-    app_prometheus_password="$(load_password "$full_app_name--$server_name" app prometheus)"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME--$server_name"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME--$server_name" app prometheus)"
     write_http_auth_user prometheus "$app_prometheus_password"
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *gotify*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'GOTIFY_DEFAULTUSER_PASS=%s\n' "$admin_password" >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *healthchecks*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     if [ "$mode" = 'dev' ]; then
         admin_email='admin@healthchecks.localhost'
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
     printf '%s,%s\n' "$admin_email" "$admin_password" >>"$output/all-credentials.csv"
-    secret_key="$(load_password "$full_app_name" app secret-key)"
+    secret_key="$(load_password "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *homeassistant*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *homepage*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     write_http_auth_user admin "$admin_password"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$(load_token changedetection app api-key)" >>"$output/app.env"
@@ -461,33 +461,33 @@ case "$full_app_name" in
     # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app homepage-api-key)" "$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *jellyfin*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
-    prometheus_password="$(load_password "$full_app_name" app prometheus)"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *minio*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
-    user_password="$(load_password "$full_app_name" app user)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'user,%s\n' "$user_password" >>"$output/all-credentials.csv"
     printf 'MINIO_ROOT_USER=admin\n' >>"$output/app.env"
@@ -500,33 +500,33 @@ case "$full_app_name" in
     printf 'HOMELAB_USER_PASSWORD=%s\n' "$user_password" >>"$output/app-setup.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *motioneye*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
-    user_password="$(load_password "$full_app_name" app user)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'user,%s\n' "$user_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *ntfy*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
-    user_password="$(load_password "$full_app_name" app user)"
-    publisher_password="$(load_password "$full_app_name" app publisher)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
+    publisher_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app publisher)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'user,%s\n' "$user_password" >>"$output/all-credentials.csv"
     printf 'publisher,%s\n' "$publisher_password" >>"$output/all-credentials.csv"
@@ -535,44 +535,44 @@ case "$full_app_name" in
     printf 'NTFY_PASSWORD_PUBLISHER=%s\n' "$publisher_password" >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *omada-controller*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
-    viewer_password="$(load_password "$full_app_name" app viewer)"
-    device_password="$(load_password "$full_app_name" app device)"
-    homepage_password="$(load_password "$full_app_name" app homepage)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)"
+    device_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app device)"
+    homepage_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homepage)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'viewer,%s\n' "$viewer_password" >>"$output/all-credentials.csv"
     printf 'device,%s\n' "$device_password" >>"$output/all-credentials.csv"
     printf 'homepage,%s\n' "$homepage_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *openspeedtest*)
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *pihole*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'FTLCONF_webserver_api_password=%s\n' "$admin_password" >>"$output/pihole.env"
 
@@ -580,20 +580,20 @@ case "$full_app_name" in
     printf 'PIHOLE_PASSWORD=%s\n' "$admin_password" >>"$output/app-prometheus-exporter.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
-    prometheus_password="$(load_password "$full_app_name" app prometheus)"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *prometheus*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
-    prometheus_password="$(load_token "$full_app_name" app prometheus)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    prometheus_password="$(load_token "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     printf 'PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$output/app.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$output/app.env"
@@ -661,46 +661,46 @@ case "$full_app_name" in
     # printf 'DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-right apache prometheus)" >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *renovatebot*)
     # App
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" app "$healthcheck_ping_key"
-    renovate_token="$(load_token "$full_app_name" app renovate-token)" # PAT specific for each git host
-    github_token="$(load_token "$full_app_name" app github-token)"     # GitHub PAT (even if using other git hosts)
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" app "$healthcheck_ping_key"
+    renovate_token="$(load_token "$DOCKER_COMPOSE_APP_NAME" app renovate-token)" # PAT specific for each git host
+    github_token="$(load_token "$DOCKER_COMPOSE_APP_NAME" app github-token)"     # GitHub PAT (even if using other git hosts)
     printf 'RENOVATE_TOKEN=%s\n' "$renovate_token" >>"$output/app.env"
     printf 'GITHUB_COM_TOKEN=%s\n' "$github_token" >>"$output/app.env"
     ;;
 *samba*)
     # App
-    smb_password="$(load_password "$full_app_name" app admin)"
+    smb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$smb_password" >>"$output/all-credentials.csv"
     printf 'SAMBA_PASSWORD=%s\n' "$smb_password" >>"$output/app.env"
     ;;
 *smtp4dev*)
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *speedtest-tracker*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     if [ "$mode" = 'dev' ]; then
         admin_email='admin@speedtest-tracker.localhost'
         app_key="$(printf 'base64:' && openssl rand -base64 32)"
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
-        app_key="$(load_token "$full_app_name" app app-key)"
+        app_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app app-key)"
     fi
     printf '%s,%s\n' "$admin_email" "$admin_password" >>"$output/all-credentials.csv"
     printf 'APP_KEY=%s\n' "$app_key" >>"$output/app.env"
@@ -711,46 +711,46 @@ case "$full_app_name" in
     printf 'MAIL_USERNAME=\n' >>"$output/app.env"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *tvheadend*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
-    user_password="$(load_password "$full_app_name" app user)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'user,%s\n' "$user_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *unbound*)
     # Apache
-    write_default_proxy_users "$full_app_name"
-    prometheus_password="$(load_password "$full_app_name" app prometheus)"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *unifi-controller*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
-    viewer_password="$(load_password "$full_app_name" app viewer)"
-    homepage_password="$(load_password "$full_app_name" app homepage)"
-    mongodb_password="$(load_password "$full_app_name" mongodb admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)"
+    homepage_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homepage)"
+    mongodb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'viewer,%s\n' "$viewer_password" >>"$output/all-credentials.csv"
     printf 'homepage,%s\n' "$homepage_password" >>"$output/all-credentials.csv"
@@ -761,37 +761,37 @@ case "$full_app_name" in
     printf '%s' "$mongodb_password" >>"$output/mongodb-password.txt"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *uptime-kuma*)
     # App
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *vaultwarden*)
     # App
-    superadmin_password="$(load_password "$full_app_name" app superadmin)"
+    superadmin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app superadmin)"
     superadmin_password_hashed="$(printf '%s' "$superadmin_password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4 | sed 's~\$~$$~g')"
-    admin_password="$(load_password "$full_app_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     if [ "$mode" = 'dev' ]; then
         admin_email='admin@vaultwarden.localhost'
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
-    homelab_password="$(load_password "$full_app_name" app homelab)"
+    homelab_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)"
     if [ "$mode" = 'dev' ]; then
         homelab_email='homelab@vaultwarden.localhost'
     else
@@ -803,12 +803,12 @@ case "$full_app_name" in
     printf '%s,%s\n' "$homelab_email" "$homelab_password" >>"$output/all-credentials.csv"
 
     # Apache
-    write_default_proxy_users "$full_app_name"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$full_app_name" certificator "$healthcheck_ping_key"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *)
     printf 'Unknown app directory name: %s\n' "$app_dir" >&2

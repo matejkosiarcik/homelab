@@ -4,7 +4,7 @@
 
 ## Docs
 
-Look for [dozzle-server](../dozzle-server/README.md)
+Look for [dozzle](../dozzle/README.md)
 
 ## Before initial installation
 
