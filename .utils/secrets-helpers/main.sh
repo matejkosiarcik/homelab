@@ -261,7 +261,7 @@ case "$app_dirname" in
         sh "$helper_script_dir/dozzle/main.sh" "$output"
     fi
     ;;
-*dozzle-server*)
+*dozzle*)
     # App
     admin_password="$(load_password dozzle app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
