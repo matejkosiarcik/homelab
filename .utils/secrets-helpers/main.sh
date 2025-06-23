@@ -70,7 +70,6 @@ printf 'user,password\n' >"$output/all-credentials.csv"
 
 app_dir="$PWD"
 app_dirname="$(basename "$app_dir" | sed -E 's~^\.~~')"
-server_name="$(basename "$(realpath "$(dirname "$(dirname "$app_dir")")")")"
 tmpdir="$(mktemp -d)"
 
 # Load custom docker compose overrides if available
@@ -375,13 +374,13 @@ case "$app_dirname" in
     ;;
 *glances*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME--$server_name" app admin)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     sh "$helper_script_dir/glances/main.sh" "$admin_password" "$output/glances-password.txt"
 
     # Apache
-    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME--$server_name"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME--$server_name" app prometheus)"
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$app_prometheus_password"
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
