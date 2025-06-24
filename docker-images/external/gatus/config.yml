@@ -1735,16 +1735,16 @@ endpoints:
   #   group: App - Prometheus
   #   url: tcp://prometheus.home.matejkosiarcik.com:443
 
-  ### Group: App - SMB (data) ###
+  ### Group: App - SMB data ###
 
   # - <<: *default-icmp
-  #   name: SMB (data) - ICMP
-  #   group: App - SMB (data)
+  #   name: SMB data - ICMP
+  #   group: App - SMB data
   #   url: icmp://samba-data.home.matejkosiarcik.com
 
   - <<: *default-tcp
-    name: SMB (data) - TCP:139
-    group: App - SMB (data)
+    name: SMB data - TCP:139
+    group: App - SMB data
     url: tcp://samba-data.home.matejkosiarcik.com:139
     alerts:
       - type: email
@@ -1752,20 +1752,20 @@ endpoints:
       - type: gotify
 
   - <<: *default-tcp
-    name: SMB (data) - TCP:445
-    group: App - SMB (data)
+    name: SMB data - TCP:445
+    group: App - SMB data
     url: tcp://samba-data.home.matejkosiarcik.com:445
 
-  ### Group: App - SMB (snapshots) ###
+  ### Group: App - SMB snapshots ###
 
   # - <<: *default-icmp
-  #   name: SMB (snapshots) - ICMP
-  #   group: App - SMB (snapshots)
+  #   name: SMB snapshots - ICMP
+  #   group: App - SMB snapshots
   #   url: icmp://samba-snapshots.home.matejkosiarcik.com
 
   - <<: *default-tcp
-    name: SMB (snapshots) - TCP:139
-    group: App - SMB (snapshots)
+    name: SMB snapshots - TCP:139
+    group: App - SMB snapshots
     url: tcp://samba-snapshots.home.matejkosiarcik.com:139
     alerts:
       - type: email
@@ -1773,8 +1773,8 @@ endpoints:
       - type: gotify
 
   - <<: *default-tcp
-    name: SMB (snapshots) - TCP:445
-    group: App - SMB (snapshots)
+    name: SMB snapshots - TCP:445
+    group: App - SMB snapshots
     url: tcp://samba-snapshots.home.matejkosiarcik.com:445
 
   ### Group: App - Smtp4dev ###
@@ -1924,16 +1924,16 @@ endpoints:
     group: App - Tvheadend
     url: tcp://tvheadend.home.matejkosiarcik.com:9982
 
-  ### Group: App - Unbound 1 [default] ###
+  ### Group: App - Unbound 1 default ###
 
   # - <<: *default-icmp
-  #   name: Unbound 1 [default] - ICMP
-  #   group: App - Unbound 1 [default]
+  #   name: Unbound 1 default - ICMP
+  #   group: App - Unbound 1 default
   #   url: icmp://unbound-1-default.home.matejkosiarcik.com
 
   - <<: *default-dns-a
-    name: Unbound 1 [default] - DNS A
-    group: App - Unbound 1 [default]
+    name: Unbound 1 default - DNS A
+    group: App - Unbound 1 default
     url: unbound-1-default.home.matejkosiarcik.com
     alerts:
       - type: email
@@ -1941,18 +1941,18 @@ endpoints:
       - type: gotify
 
   - <<: *default-dns-aaaa
-    name: Unbound 1 [default] - DNS AAAA
-    group: App - Unbound 1 [default]
+    name: Unbound 1 default - DNS AAAA
+    group: App - Unbound 1 default
     url: unbound-1-default.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: Unbound 1 [default] - HTTP
-    group: App - Unbound 1 [default]
+    name: Unbound 1 default - HTTP
+    group: App - Unbound 1 default
     url: http://unbound-1-default.home.matejkosiarcik.com/.proxy
 
   - <<: *default-https
-    name: Unbound 1 [default] - HTTPS
-    group: App - Unbound 1 [default]
+    name: Unbound 1 default - HTTPS
+    group: App - Unbound 1 default
     url: https://unbound-1-default.home.matejkosiarcik.com/.proxy
     alerts:
       - type: email
@@ -1960,30 +1960,30 @@ endpoints:
       - type: gotify
 
   # - <<: *default-https
-  #   name: Unbound 1 [default] - Proxy prometheus metrics
-  #   group: App - Unbound 1 [default]
+  #   name: Unbound 1 default - Proxy prometheus metrics
+  #   group: App - Unbound 1 default
   #   url: https://proxy-prometheus:${UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-1-default.home.matejkosiarcik.com/.proxy/metrics
 
   # - <<: *default-tcp
-  #   name: Unbound 1 [default] - TCP:53
-  #   group: App - Unbound 1 [default]
+  #   name: Unbound 1 default - TCP:53
+  #   group: App - Unbound 1 default
   #   url: tcp://unbound-1-default.home.matejkosiarcik.com:53
 
   # - <<: *default-udp
-  #   name: Unbound 1 [default] - UDP:53
-  #   group: App - Unbound 1 [default]
+  #   name: Unbound 1 default - UDP:53
+  #   group: App - Unbound 1 default
   #   url: udp://unbound-1-default.home.matejkosiarcik.com:53
 
-  ### Group: App - Unbound 1 [open] ###
+  ### Group: App - Unbound 1 open ###
 
   # - <<: *default-icmp
-  #   name: Unbound 1 [open] - ICMP
-  #   group: App - Unbound 1 [open]
+  #   name: Unbound 1 open - ICMP
+  #   group: App - Unbound 1 open
   #   url: icmp://unbound-1-open.home.matejkosiarcik.com
 
   - <<: *default-dns-a
-    name: Unbound 1 [open] - DNS A
-    group: App - Unbound 1 [open]
+    name: Unbound 1 open - DNS A
+    group: App - Unbound 1 open
     url: unbound-1-open.home.matejkosiarcik.com
     alerts:
       - type: email
@@ -1991,18 +1991,18 @@ endpoints:
       - type: gotify
 
   - <<: *default-dns-aaaa
-    name: Unbound 1 [open] - DNS AAAA
-    group: App - Unbound 1 [open]
+    name: Unbound 1 open - DNS AAAA
+    group: App - Unbound 1 open
     url: unbound-1-open.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: Unbound 1 [open] - HTTP
-    group: App - Unbound 1 [open]
+    name: Unbound 1 open - HTTP
+    group: App - Unbound 1 open
     url: http://unbound-1-open.home.matejkosiarcik.com/.proxy
 
   - <<: *default-https
-    name: Unbound 1 [open] - HTTPS
-    group: App - Unbound 1 [open]
+    name: Unbound 1 open - HTTPS
+    group: App - Unbound 1 open
     url: https://unbound-1-open.home.matejkosiarcik.com/.proxy
     alerts:
       - type: email
@@ -2010,30 +2010,30 @@ endpoints:
       - type: gotify
 
   # - <<: *default-https
-  #   name: Unbound 1 [open] - Proxy prometheus metrics
-  #   group: App - Unbound 1 [open]
+  #   name: Unbound 1 open - Proxy prometheus metrics
+  #   group: App - Unbound 1 open
   #   url: https://proxy-prometheus:${UNBOUND_1_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-1-open.home.matejkosiarcik.com/.proxy/metrics
 
   # - <<: *default-tcp
-  #   name: Unbound 1 [open] - TCP:53
-  #   group: App - Unbound 1 [open]
+  #   name: Unbound 1 open - TCP:53
+  #   group: App - Unbound 1 open
   #   url: tcp://unbound-1-open.home.matejkosiarcik.com:53
 
   # - <<: *default-udp
-  #   name: Unbound 1 [open] - UDP:53
-  #   group: App - Unbound 1 [open]
+  #   name: Unbound 1 open - UDP:53
+  #   group: App - Unbound 1 open
   #   url: udp://unbound-1-open.home.matejkosiarcik.com:53
 
-  ### Group: App - Unbound 2 [default] ###
+  ### Group: App - Unbound 2 default ###
 
   # - <<: *default-icmp
-  #   name: Unbound 2 [default] - ICMP
-  #   group: App - Unbound 2 [default]
+  #   name: Unbound 2 default - ICMP
+  #   group: App - Unbound 2 default
   #   url: icmp://unbound-2-default.home.matejkosiarcik.com
 
   - <<: *default-dns-a
-    name: Unbound 2 [default] - DNS A
-    group: App - Unbound 2 [default]
+    name: Unbound 2 default - DNS A
+    group: App - Unbound 2 default
     url: unbound-2-default.home.matejkosiarcik.com
     alerts:
       - type: email
@@ -2041,18 +2041,18 @@ endpoints:
       - type: gotify
 
   - <<: *default-dns-aaaa
-    name: Unbound 2 [default] - DNS AAAA
-    group: App - Unbound 2 [default]
+    name: Unbound 2 default - DNS AAAA
+    group: App - Unbound 2 default
     url: unbound-2-default.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: Unbound 2 [default] - HTTP
-    group: App - Unbound 2 [default]
+    name: Unbound 2 default - HTTP
+    group: App - Unbound 2 default
     url: http://unbound-2-default.home.matejkosiarcik.com/.proxy
 
   - <<: *default-https
-    name: Unbound 2 [default] - HTTPS
-    group: App - Unbound 2 [default]
+    name: Unbound 2 default - HTTPS
+    group: App - Unbound 2 default
     url: https://unbound-2-default.home.matejkosiarcik.com/.proxy
     alerts:
       - type: email
@@ -2060,30 +2060,30 @@ endpoints:
       - type: gotify
 
   # - <<: *default-https
-  #   name: Unbound 2 [default] - Proxy prometheus metrics
-  #   group: App - Unbound 2 [default]
+  #   name: Unbound 2 default - Proxy prometheus metrics
+  #   group: App - Unbound 2 default
   #   url: https://proxy-prometheus:${UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD}@unbound-2-default.home.matejkosiarcik.com/.proxy/metrics
 
   # - <<: *default-tcp
-  #   name: Unbound 2 [default] - TCP:53
-  #   group: App - Unbound 2 [default]
+  #   name: Unbound 2 default - TCP:53
+  #   group: App - Unbound 2 default
   #   url: tcp://unbound-2-default.home.matejkosiarcik.com:53
 
   # - <<: *default-udp
-  #   name: Unbound 2 [default] - UDP:53
-  #   group: App - Unbound 2 [default]
+  #   name: Unbound 2 default - UDP:53
+  #   group: App - Unbound 2 default
   #   url: udp://unbound-2-default.home.matejkosiarcik.com:53
 
-  ### Group: App - Unbound 2 [open] ###
+  ### Group: App - Unbound 2 open ###
 
   # - <<: *default-icmp
-  #   name: Unbound 2 [open] - ICMP
-  #   group: App - Unbound 2 [open]
+  #   name: Unbound 2 open - ICMP
+  #   group: App - Unbound 2 open
   #   url: icmp://unbound-2-open.home.matejkosiarcik.com
 
   - <<: *default-dns-a
-    name: Unbound 2 [open] - DNS A
-    group: App - Unbound 2 [open]
+    name: Unbound 2 open - DNS A
+    group: App - Unbound 2 open
     url: unbound-2-open.home.matejkosiarcik.com
     alerts:
       - type: email
@@ -2091,18 +2091,18 @@ endpoints:
       - type: gotify
 
   - <<: *default-dns-aaaa
-    name: Unbound 2 [open] - DNS AAAA
-    group: App - Unbound 2 [open]
+    name: Unbound 2 open - DNS AAAA
+    group: App - Unbound 2 open
     url: unbound-2-open.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: Unbound 2 [open] - HTTP
-    group: App - Unbound 2 [open]
+    name: Unbound 2 open - HTTP
+    group: App - Unbound 2 open
     url: http://unbound-2-open.home.matejkosiarcik.com/.proxy
 
   - <<: *default-https
-    name: Unbound 2 [open] - HTTPS
-    group: App - Unbound 2 [open]
+    name: Unbound 2 open - HTTPS
+    group: App - Unbound 2 open
     url: https://unbound-2-open.home.matejkosiarcik.com/.proxy
     alerts:
       - type: email
@@ -2110,18 +2110,18 @@ endpoints:
       - type: gotify
 
   # - <<: *default-https
-  #   name: Unbound 2 [open] - Proxy prometheus metrics
-  #   group: App - Unbound 2 [open]
+  #   name: Unbound 2 open - Proxy prometheus metrics
+  #   group: App - Unbound 2 open
   #   url: https://proxy-prometheus:${UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD}@unbound-2-open.home.matejkosiarcik.com/.proxy/metrics
 
   # - <<: *default-tcp
-  #   name: Unbound 2 [open] - TCP:53
-  #   group: App - Unbound 2 [open]
+  #   name: Unbound 2 open - TCP:53
+  #   group: App - Unbound 2 open
   #   url: tcp://unbound-2-open.home.matejkosiarcik.com:53
 
   # - <<: *default-udp
-  #   name: Unbound 2 [open] - UDP:53
-  #   group: App - Unbound 2 [open]
+  #   name: Unbound 2 open - UDP:53
+  #   group: App - Unbound 2 open
   #   url: udp://unbound-2-open.home.matejkosiarcik.com:53
 
   ### Group: App - UniFi Controller ###
