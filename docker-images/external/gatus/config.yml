@@ -557,10 +557,6 @@ endpoints:
     name: Dozzle agent - MacBook Pro 2012 - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent-macbook-pro-2012.home.matejkosiarcik.com:7007
-    alerts:
-      - type: email
-      - type: ntfy
-      - type: gotify
 
   # Odroid H3 #
 
@@ -573,10 +569,6 @@ endpoints:
     name: Dozzle agent - Odroid H3 - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent-odroid-h3.home.matejkosiarcik.com:7007
-    alerts:
-      - type: email
-      - type: ntfy
-      - type: gotify
 
   # Odroid H4 Ultra #
 
@@ -589,10 +581,6 @@ endpoints:
     name: Dozzle agent - Odroid H4 Ultra - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent-odroid-h4-ultra.home.matejkosiarcik.com:7007
-    alerts:
-      - type: email
-      - type: ntfy
-      - type: gotify
 
   # Raspberry Pi 4B 2GB #
 
@@ -605,10 +593,6 @@ endpoints:
     name: Dozzle agent - Raspberry Pi 4B 2GB - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com:7007
-    alerts:
-      - type: email
-      - type: ntfy
-      - type: gotify
 
   # Raspberry Pi 4B 4GB #
 
@@ -621,10 +605,6 @@ endpoints:
     name: Dozzle agent - Raspberry Pi 4B 4GB - TCP:7007
     group: App - Dozzle agents
     url: tcp://dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com:7007
-    alerts:
-      - type: email
-      - type: ntfy
-      - type: gotify
 
   ### Group: App - Gatus 1 ###
 
@@ -709,6 +689,49 @@ endpoints:
   #   url: tcp://gatus-2.home.matejkosiarcik.com:443
 
   ### Group: App - Glances ###
+
+  # MacBook Pro 2012 #
+
+  # - <<: *default-icmp
+  #   name: Glances - MacBook Pro 2012 - ICMP
+  #   group: App - Glances
+  #   url: icmp://glances-macbook-pro-2012.home.matejkosiarcik.com
+
+  - <<: *default-http
+    name: Glances - MacBook Pro 2012 - HTTP
+    group: App - Glances
+    url: http://glances-macbook-pro-2012.home.matejkosiarcik.com
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-https
+    name: Glances - MacBook Pro 2012 - HTTPS
+    group: App - Glances
+    url: https://admin:${GLANCES_MACBOOK_PRO_2012_PASSWORD}@glances-macbook-pro-2012.home.matejkosiarcik.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Glances - MacBook Pro 2012 - Prometheus metrics
+  #   group: App - Glances
+  #   url: https://prometheus:${GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD}@glances-macbook-pro-2012.home.matejkosiarcik.com/metrics
+
+  # - <<: *default-https
+  #   name: Glances - MacBook Pro 2012 - Proxy prometheus metrics
+  #   group: App - Glances
+  #   url: https://proxy-prometheus:${GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD}@glances-macbook-pro-2012.home.matejkosiarcik.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Glances - MacBook Pro 2012 - TCP:80
+  #   group: App - Glances
+  #   url: tcp://glances-macbook-pro-2012.home.matejkosiarcik.com:80
+
+  # - <<: *default-tcp
+  #   name: Glances - MacBook Pro 2012 - TCP:443
+  #   group: App - Glances
+  #   url: tcp://glances-macbook-pro-2012.home.matejkosiarcik.com:443
 
   # Odroid H3 #
 

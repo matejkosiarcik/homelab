@@ -303,6 +303,7 @@ case "$app_dirname" in
     # Prometheus credentials
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-1 app prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/app.env"
+    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--macbook-pro-2012 app prometheus)" >>"$output/app.env"
     printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/app.env"
     printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h4-ultra app prometheus)" >>"$output/app.env"
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-4b-2g app prometheus)" >>"$output/app.env"
@@ -615,6 +616,7 @@ case "$app_dirname" in
     # Other apps prometheus credentials
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/app.env"
+    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--macbook-pro-2012 app prometheus)" >>"$output/app.env"
     printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h3 app prometheus)" >>"$output/app.env"
     printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h4-ultra app prometheus)" >>"$output/app.env"
     printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b app prometheus)" >>"$output/app.env"
@@ -638,6 +640,7 @@ case "$app_dirname" in
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$output/app.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$output/app.env"
+    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--macbook-pro-2012 apache prometheus)" >>"$output/app.env"
     printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h3 apache prometheus)" >>"$output/app.env"
     printf 'GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--odroid-h4-ultra apache prometheus)" >>"$output/app.env"
     printf 'GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances--raspberry-pi-3b apache prometheus)" >>"$output/app.env"
