@@ -9,7 +9,7 @@ services:
   app:
     <<: *common-service-options
     volumes:
-      - '/:/host:ro,rslave'
+      - /:/host:ro,rslave
 
   certificator:
     <<: *common-service-options
