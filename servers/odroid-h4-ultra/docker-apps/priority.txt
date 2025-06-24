@@ -12,6 +12,7 @@ jellyfin
 
 # Network controllers
 omada-controller
+unifi-controller
 
 # Home automation
 homeassistant

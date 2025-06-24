@@ -1,7 +1,7 @@
 10.1.0.1 network-router.home.matejkosiarcik.com
 
 # Some UniFi devices require this
-10.1.16.21 unifi
+10.1.20.21 unifi
 
 ### Servers ###
 10.1.4.1 server-macbook-pro-2012.home.matejkosiarcik.com
@@ -37,11 +37,10 @@
 10.1.16.11 pihole-2-primary.home.matejkosiarcik.com
 10.1.16.12 pihole-2-secondary.home.matejkosiarcik.com
 # ...19 Reserved
-10.1.16.21 unifi-controller.home.matejkosiarcik.com
-10.1.16.22 gatus-2.home.matejkosiarcik.com
-10.1.16.23 dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
-10.1.16.24 motioneye-kitchen.home.matejkosiarcik.com
-10.1.16.25 glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
+10.1.16.21 gatus-2.home.matejkosiarcik.com
+10.1.16.22 dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
+10.1.16.23 motioneye-kitchen.home.matejkosiarcik.com
+10.1.16.24 glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
 ### MacBook Pro 2012 ###
 
@@ -56,7 +55,7 @@
 10.1.20.11 pihole-1-primary.home.matejkosiarcik.com
 10.1.20.12 pihole-1-secondary.home.matejkosiarcik.com
 # ...19 Reserved
-# 10.1.20.21 Reserved for unifi-controller.home.matejkosiarcik.com
+10.1.20.21 unifi-controller.home.matejkosiarcik.com
 10.1.20.22 omada-controller.home.matejkosiarcik.com
 10.1.20.23 dockerhub-cache-proxy.home.matejkosiarcik.com
 10.1.20.24 homeassistant.home.matejkosiarcik.com

@@ -2,7 +2,6 @@
 pihole-2-primary
 
 # Other
-# unifi-controller
 dozzle-agent
 motioneye-kitchen
 glances

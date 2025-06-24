@@ -128,7 +128,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Homepage',
         'Jellyfin',
         'Minio',
-        'MotionEye',
+        'MotionEye Kitchen',
         'Netalertx',
         'Ntfy',
         'Omada Controller',

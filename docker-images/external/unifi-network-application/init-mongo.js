@@ -19,6 +19,7 @@ db.getSiblingDB(dbName).createUser({
     pwd: password,
     roles: [
         { role: 'dbOwner', db: dbName },
-        { role: 'dbOwner', db: `${dbName}_stat` }
+        { role: 'dbOwner', db: `${dbName}_stat` },
+        { role: 'dbOwner', db: `${dbName}_audit` }
     ],
 });
