@@ -546,7 +546,7 @@ endpoints:
 
   ### Group: App - Dozzle agents ###
 
-  # MacBook Pro 2012
+  # MacBook Pro 2012 #
 
   # - <<: *default-icmp
   #   name: Dozzle agent - MacBook Pro 2012 - ICMP
@@ -562,7 +562,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  # Odroid H3
+  # Odroid H3 #
 
   # - <<: *default-icmp
   #   name: Dozzle agent - Odroid H3 - ICMP
@@ -578,7 +578,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  # Odroid H4 Ultra
+  # Odroid H4 Ultra #
 
   # - <<: *default-icmp
   #   name: Dozzle agent - Odroid H4 Ultra - ICMP
@@ -594,7 +594,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  # Raspberry Pi 4B 2GB
+  # Raspberry Pi 4B 2GB #
 
   # - <<: *default-icmp
   #   name: Dozzle agent - Raspberry Pi 4B 2GB - ICMP
@@ -610,7 +610,7 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  # Raspberry Pi 4B 4GB
+  # Raspberry Pi 4B 4GB #
 
   # - <<: *default-icmp
   #   name: Dozzle agent - Raspberry Pi 4B 4GB - ICMP
@@ -710,7 +710,7 @@ endpoints:
 
   ### Group: App - Glances ###
 
-  # Odroid H3
+  # Odroid H3 #
 
   # - <<: *default-icmp
   #   name: Glances - Odroid H3 - ICMP
@@ -753,7 +753,7 @@ endpoints:
   #   group: App - Glances
   #   url: tcp://glances-odroid-h3.home.matejkosiarcik.com:443
 
-  # Odroid H4 Ultra
+  # Odroid H4 Ultra #
 
   # - <<: *default-icmp
   #   name: Glances - Odroid H4 Ultra - ICMP
@@ -796,7 +796,7 @@ endpoints:
   #   group: App - Glances
   #   url: tcp://glances-odroid-h4-ultra.home.matejkosiarcik.com:443
 
-  # Raspberry Pi 4B 2GB
+  # Raspberry Pi 4B 2GB #
 
   # - <<: *default-icmp
   #   name: Glances - Raspberry Pi 4B 2GB - ICMP
@@ -839,7 +839,7 @@ endpoints:
   #   group: App - Glances
   #   url: tcp://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com:443
 
-  # Raspberry Pi 4B 4GB
+  # Raspberry Pi 4B 4GB #
 
   # - <<: *default-icmp
   #   name: Glances - Raspberry Pi 4B 4GB - ICMP
