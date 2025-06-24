@@ -626,21 +626,21 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  ### Group: App - Gatus (1) ###
+  ### Group: App - Gatus 1 ###
 
   # - <<: *default-icmp
-  #   name: Gatus (1) - ICMP
-  #   group: App - Gatus (1)
+  #   name: Gatus 1 - ICMP
+  #   group: App - Gatus 1
   #   url: icmp://gatus-1.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: Gatus (1) - HTTP
-    group: App - Gatus (1)
+    name: Gatus 1 - HTTP
+    group: App - Gatus 1
     url: http://gatus-1.home.matejkosiarcik.com
 
   - <<: *default-https
-    name: Gatus (1) - HTTPS
-    group: App - Gatus (1)
+    name: Gatus 1 - HTTPS
+    group: App - Gatus 1
     url: https://gatus-1.home.matejkosiarcik.com
     alerts:
       - type: email
@@ -648,40 +648,40 @@ endpoints:
       - type: gotify
 
   # - <<: *default-https
-  #   name: Gatus (1) - Prometheus metrics
-  #   group: App - Gatus (1)
+  #   name: Gatus 1 - Prometheus metrics
+  #   group: App - Gatus 1
   #   url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus-1.home.matejkosiarcik.com/metrics
 
   # - <<: *default-https
-  #   name: Gatus (1) - Proxy prometheus metrics
-  #   group: App - Gatus (1)
+  #   name: Gatus 1 - Proxy prometheus metrics
+  #   group: App - Gatus 1
   #   url: https://proxy-prometheus:${GATUS_1_PROXY_PROMETHEUS_PASSWORD}@gatus-1.home.matejkosiarcik.com/.proxy/metrics
 
   # - <<: *default-tcp
-  #   name: Gatus (1) - TCP:80
-  #   group: App - Gatus (1)
+  #   name: Gatus 1 - TCP:80
+  #   group: App - Gatus 1
   #   url: tcp://gatus-1.home.matejkosiarcik.com:80
 
   # - <<: *default-tcp
-  #   name: Gatus (1) - TCP:443
-  #   group: App - Gatus (1)
+  #   name: Gatus 1 - TCP:443
+  #   group: App - Gatus 1
   #   url: tcp://gatus-1.home.matejkosiarcik.com:443
 
-  ### Group: App - Gatus (2) ###
+  ### Group: App - Gatus 2 ###
 
   # - <<: *default-icmp
-  #   name: Gatus (2) - ICMP
-  #   group: App - Gatus (2)
+  #   name: Gatus 2 - ICMP
+  #   group: App - Gatus 2
   #   url: icmp://gatus-2.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: Gatus (2) - HTTP
-    group: App - Gatus (2)
+    name: Gatus 2 - HTTP
+    group: App - Gatus 2
     url: http://gatus-2.home.matejkosiarcik.com
 
   - <<: *default-https
-    name: Gatus (2) - HTTPS
-    group: App - Gatus (2)
+    name: Gatus 2 - HTTPS
+    group: App - Gatus 2
     url: https://gatus-2.home.matejkosiarcik.com
     alerts:
       - type: email
@@ -689,23 +689,23 @@ endpoints:
       - type: gotify
 
   # - <<: *default-https
-  #   name: Gatus (2) - Prometheus metrics
-  #   group: App - Gatus (2)
+  #   name: Gatus 2 - Prometheus metrics
+  #   group: App - Gatus 2
   #   url: https://prometheus:${GATUS_2_PROMETHEUS_TOKEN}@gatus-2.home.matejkosiarcik.com/metrics
 
   # - <<: *default-https
-  #   name: Gatus (2) - Proxy prometheus metrics
-  #   group: App - Gatus (2)
+  #   name: Gatus 2 - Proxy prometheus metrics
+  #   group: App - Gatus 2
   #   url: https://proxy-prometheus:${GATUS_2_PROXY_PROMETHEUS_PASSWORD}@gatus-2.home.matejkosiarcik.com/.proxy/metrics
 
   # - <<: *default-tcp
-  #   name: Gatus (2) - TCP:80
-  #   group: App - Gatus (2)
+  #   name: Gatus 2 - TCP:80
+  #   group: App - Gatus 2
   #   url: tcp://gatus-2.home.matejkosiarcik.com:80
 
   # - <<: *default-tcp
-  #   name: Gatus (2) - TCP:443
-  #   group: App - Gatus (2)
+  #   name: Gatus 2 - TCP:443
+  #   group: App - Gatus 2
   #   url: tcp://gatus-2.home.matejkosiarcik.com:443
 
   ### Group: App - Glances ###
