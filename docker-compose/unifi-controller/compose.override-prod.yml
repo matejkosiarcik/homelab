@@ -19,6 +19,8 @@ services:
       - ${DOCKER_COMPOSE_NETWORK_IP}:5514:5514/udp
       - ${DOCKER_COMPOSE_NETWORK_IP}:6789:6789
       - ${DOCKER_COMPOSE_NETWORK_IP}:10001:10001/udp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:8080:8080
+      - ${DOCKER_COMPOSE_NETWORK_IP}:8443:8443
     networks:
       external-network:
 
@@ -38,9 +40,9 @@ services:
 
   apache-admin-raw:
     <<: *common-service-options
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:8080:80
-      - ${DOCKER_COMPOSE_NETWORK_IP}:8443:443
+    # ports:
+    #   - ${DOCKER_COMPOSE_NETWORK_IP}:8080:80
+    #   - ${DOCKER_COMPOSE_NETWORK_IP}:8443:443
     networks:
       external-network:
 
