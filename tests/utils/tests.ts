@@ -353,6 +353,16 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
                     path: options.path,
                     status: 200,
                 },
+                // {
+                //     title: 'unsuccessful 1',
+                //     path: `${options.path.slice(0, -1)}`,
+                //     status: 403,
+                // },
+                // {
+                //     title: 'unsuccessful 2',
+                //     path: `${options.path}${faker.string.alpha(4)}`,
+                //     status: 403,
+                // },
             ];
             return options.path.flatMap((path, index) => {
                 return prometheusVariants.map((variant) => test(`API: Prometheus metrics with No auth (${variant.title})${options.path.length > 1 ? ` path-${index + 1}` : ''}`, async () => {

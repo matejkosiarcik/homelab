@@ -4,32 +4,32 @@ import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-type Healthcheck = {
-    badge_url: string,
-    desc: string,
-    failure_kw: string,
-    filter_body: boolean,
-    filter_subject: boolean,
-    grace: number,
-    last_ping: null | string,
-    manual_resume: boolean,
-    methods: string,
-    n_pings: number,
-    name: string,
-    next_ping: null | string,
-    schedule: string,
-    slug: string,
-    start_kw: string,
-    started: boolean,
-    status: string,
-    subject_fail: string,
-    subject: string,
-    success_kw: string,
-    tags: string,
-    tz: string,
-    unique_key: string,
-    uuid: string,
-};
+// type Healthcheck = {
+//     badge_url: string,
+//     desc: string,
+//     failure_kw: string,
+//     filter_body: boolean,
+//     filter_subject: boolean,
+//     grace: number,
+//     last_ping: null | string,
+//     manual_resume: boolean,
+//     methods: string,
+//     n_pings: number,
+//     name: string,
+//     next_ping: null | string,
+//     schedule: string,
+//     slug: string,
+//     start_kw: string,
+//     started: boolean,
+//     status: string,
+//     subject_fail: string,
+//     subject: string,
+//     success_kw: string,
+//     tags: string,
+//     tz: string,
+//     unique_key: string,
+//     uuid: string,
+// };
 
 test.describe(apps.healthchecks.title, () => {
     for (const instance of apps.healthchecks.instances) {
