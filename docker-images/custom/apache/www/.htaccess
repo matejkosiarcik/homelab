@@ -295,6 +295,24 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect Node Exporter prometheus endpoint
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'node-exporter' && %{REQUEST_URI} =~ m#^/metrics/*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/prometheus.htpasswd
+    Require valid-user
+</If>
+
+# Protect Node Exporter debug endpoints
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'node-exporter' && %{REQUEST_URI} =~ m#^/debug(/.+)?$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/debug.htpasswd
+    Require valid-user
+</If>
+
 # Protect PiHole prometheus endpoint
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'pihole' && %{REQUEST_URI} =~ m#^/metrics/*$#">
     AuthType Basic
