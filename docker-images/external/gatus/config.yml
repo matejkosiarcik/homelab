@@ -487,7 +487,7 @@ endpoints:
   #   url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@dockerhub-cache-proxy.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-https
-    name: DockerHub proxy - API
+    name: DockerHub proxy - API endpoint
     group: App - DockerHub proxy
     url: https://dockerhub-cache-proxy.home.matejkosiarcik.com/v2/_catalog
     conditions:
