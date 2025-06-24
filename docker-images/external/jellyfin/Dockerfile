@@ -6,4 +6,4 @@ ENV HOMELAB_CONTAINER_NAME=jellyfin \
     PUID=1000 \
     PGID=1000 \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:8096 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:8096 || exit 1" ]

@@ -7,7 +7,7 @@ ENV HOMELAB_CONTAINER_NAME=changedetection \
     LOGGER_LEVEL=WARNING \
     TZ=Europe/Bratislava
 
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
 
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
 CMD [ ]
