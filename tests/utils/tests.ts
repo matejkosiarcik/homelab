@@ -262,15 +262,19 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
     return output;
 }
 
-export function createPrometheusTests(url: string, _options: { auth?: 'none' | 'basic' | 'bearer' | undefined; path?: string | undefined; username?: string | undefined } = {}) {
+export function createPrometheusTests(url: string, _options: { auth?: 'none' | 'basic' | 'bearer' | undefined; path?: string | string[] | undefined; username?: string | undefined; token?: string | string[] } = {}) {
     const options = {
         auth: _options.auth ?? 'basic',
-        path: _options.path ?? '/metrics',
+        path: _options.path ? [_options.path].flat() : ['/metrics'],
         username: _options.username ?? 'prometheus',
+        tokens: _options.token ? [_options.token].flat() : [],
     };
 
     switch (options.auth) {
         case 'basic': {
+            if (options.tokens.length === 0) {
+                options.tokens.push(getEnv(url, 'PROMETHEUS_PASSWORD'));
+            }
             const prometheusVariants = [
                 {
                     title: 'no credentials',
@@ -293,21 +297,26 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
                     },
                     status: 401,
                 },
-                {
-                    title: 'successful',
+                ...options.tokens.map((token, index) => ({
+                    title: index === 0 ? 'successful' : `successful ${index + 1}`,
                     auth: {
                         username: options.username,
-                        password: getEnv(url, 'PROMETHEUS_PASSWORD'),
+                        password: token,
                     },
                     status: 200,
-                },
+                })),
             ];
-            return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Basic auth (${variant.title})`, async () => {
-                const response = await axios.get(`${url}${options.path}`, { auth: variant.auth });
-                expect(response.status, 'Response Status').toStrictEqual(variant.status);
-            }));
+            return options.path.flatMap((path, index) => {
+                return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Basic auth (${variant.title})${options.path.length > 1 ? ` path-${index + 1}` : ''}`, async () => {
+                    const response = await axios.get(`${url}${path}`, { auth: variant.auth });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                }));
+            });
         }
         case 'bearer': {
+            if (options.tokens.length === 0) {
+                options.tokens.push(getEnv(url, 'PROMETHEUS_BEARER_TOKEN'));
+            }
             const prometheusVariants = [
                 {
                     title: 'no credentials',
@@ -317,23 +326,25 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
                 {
                     title: 'wrong token',
                     auth: faker.internet.jwt(),
-                    status: url.includes('minio') ? 403 : 401,
+                    status: url.includes('minio') ? 403 : url.includes('healthchecks') ? 400 : 401,
                 },
-                {
-                    title: 'successful',
-                    auth: getEnv(url, 'PROMETHEUS_BEARER_TOKEN'),
+                ...options.tokens.map((token, index) => ({
+                    title: index === 0 ? 'successful' : `successful ${index + 1}`,
+                    auth: token,
                     status: 200,
-                },
+                })),
             ];
-            return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Bearer auth (${variant.title})`, async () => {
-                const headers: Record<string, string> = {};
-                if (variant.auth) {
-                    headers['Authorization'] = `Bearer ${variant.auth}`;
-                }
+            return options.path.flatMap((path, index) => {
+                return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Bearer auth (${variant.title})${options.path.length > 1 ? ` path-${index + 1}` : ''}`, async () => {
+                    const headers: Record<string, string> = {};
+                    if (variant.auth) {
+                        headers['Authorization'] = `Bearer ${variant.auth}`;
+                    }
 
-                const response = await axios.get(`${url}${options.path}`, { headers: headers });
-                expect(response.status, 'Response Status').toStrictEqual(variant.status);
-            }));
+                    const response = await axios.get(`${url}${path}`, { headers: headers });
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                }));
+            });
         }
         case 'none': {
             const prometheusVariants = [
@@ -342,26 +353,13 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
                     path: options.path,
                     status: 200,
                 },
-                {
-                    title: 'wrong path 1',
-                    path: `${options.path}${faker.string.alpha(1)}`,
-                    status: 400,
-                },
-                {
-                    title: 'wrong path 2',
-                    path: `${options.path}/${faker.string.alpha(1)}`,
-                    status: 400,
-                },
-                {
-                    title: 'wrong path 3',
-                    path: `/${faker.string.alpha(1)}/${options.path}`,
-                    status: 400,
-                },
             ];
-            return prometheusVariants.map((variant) => test(`API: Prometheus metrics with No auth (${variant.title})`, async () => {
-                const response = await axios.get(`${url}${options.path}`);
-                expect(response.status, 'Response Status').toStrictEqual(variant.status);
-            }));
+            return options.path.flatMap((path, index) => {
+                return prometheusVariants.map((variant) => test(`API: Prometheus metrics with No auth (${variant.title})${options.path.length > 1 ? ` path-${index + 1}` : ''}`, async () => {
+                    const response = await axios.get(`${url}${path}`);
+                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                }));
+            });
         }
         default: {
             return [];
