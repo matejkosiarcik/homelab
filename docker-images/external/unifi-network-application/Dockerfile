@@ -23,6 +23,10 @@ ARG HOMELAB_BUILD_ENV=dev
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     HOMELAB_CONTAINER_NAME=unifi-controller \
     HOMELAB_CONTAINER_VARIANT=default \
+    MEM_LIMIT=1024 \
+    MEM_STARTUP=1024 \
+    MONGO_TLS= \
+    MONGO_AUTHSOURCE=admin \
     MONGO_DBNAME=unifi \
     MONGO_PORT=27017 \
     MONGO_USER=unifi \
@@ -30,11 +34,5 @@ ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     PUID=1000
 # checkov:skip=CKV_SECRET_6: false positive in timezone
 ENV TZ=Europe/Bratislava
-
-# Following variables are recommended:
-# - MEM_LIMIT=1024 # optional
-# - MEM_STARTUP=1024 # optional
-# - MONGO_TLS= # optional
-# - MONGO_AUTHSOURCE= # optional
 
 HEALTHCHECK --interval=10s --start-period=360s --timeout=2s --retries=1 CMD [ "sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && if [ \"$(curl --insecure https://localhost:$https_port/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]
