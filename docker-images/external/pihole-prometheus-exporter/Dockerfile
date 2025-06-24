@@ -15,4 +15,4 @@ ENV HOMELAB_CONTAINER_NAME=pihole-prometheus-exporter \
 
 # There isn't a way to do a real healthcheck inside this container, see: https://github.com/TwiN/gatus/issues/711
 # So instead we just "fake" it and provide a dummy placeholder healthcheck program
-HEALTHCHECK --interval=5s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/healthcheck" ]
+HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/healthcheck" ]

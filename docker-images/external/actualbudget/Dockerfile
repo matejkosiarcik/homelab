@@ -6,4 +6,4 @@ ENV ERR_ERL_UNEXPECTED_X_FORWARDED_FOR=false \
     HOMELAB_CONTAINER_NAME=actual-budget \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "node /homelab/healthcheck.js || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "node /homelab/healthcheck.js || exit 1" ]

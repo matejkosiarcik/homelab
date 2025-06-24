@@ -9,5 +9,5 @@ ENV HOMELAB_CONTAINER_NAME=mongodb \
     MONGO_USER=mongo \
     PORT=27017 \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "/homelab/healthcheck.sh" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "/homelab/healthcheck.sh" ]
 CMD [ "--auth", "--quiet", "--logpath", "/dev/null" ]

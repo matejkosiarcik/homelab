@@ -35,4 +35,4 @@ ENV ALLOW_RESTARTS=0 \
     VERSION=0 \
     VOLUMES=0
 VOLUME /var/run/docker.sock
-HEALTHCHECK --interval=5s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/2375' || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/2375' || exit 1" ]
