@@ -21,7 +21,6 @@ services:
   app:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/unifi-network-application/Dockerfile
@@ -42,8 +41,8 @@ services:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
     build:
-      context: ${DOCKER_COMPOSE_MONGODB_BUILD_CONTEXT}
-      dockerfile: ${DOCKER_COMPOSE_MONGODB_BUILD_DOCKERFILE}
+      context: ../../../../docker-images/
+      dockerfile: ./external/mongodb/Dockerfile
     environment:
       HOMELAB_CONTAINER_NAME: mongodb
       HOMELAB_CONTAINER_VARIANT: default
@@ -57,7 +56,6 @@ services:
     volumes:
       - ./app-data/mongodb:/data/db:rw
       - ../../../../docker-images/external/unifi-network-application/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ../../../../docker-images/external/mongodb/healthcheck.sh:/homelab/healthcheck.sh:ro
     healthcheck:
       interval: 5s
       start_period: 60s
