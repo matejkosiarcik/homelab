@@ -144,13 +144,6 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  # Disconnected
-  - <<: *default-icmp
-    name: Router - UPC Router
-    group: Network equipment
-    url: icmp://192.168.0.1
-    enabled: false
-
   - <<: *default-icmp
     name: WiFi AP - UniFi U6
     group: Network equipment
