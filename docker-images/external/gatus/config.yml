@@ -114,24 +114,66 @@ default-https: &default-https
 endpoints:
   ### Group: External DNS ###
 
-  - <<: *default-icmp
-    name: External DNS - Google 1
+  # - <<: *default-icmp
+  #   name: External DNS - Google 1
+  #   group: External DNS
+  #   url: icmp://8.8.8.8
+  #   alerts:
+  #     - type: email
+  #     - type: ntfy
+  #     - type: gotify
+
+  - <<: *default-dns-a
+    name: External DNS - Google - DNS A
     group: External DNS
-    url: icmp://8.8.8.8
+    url: 8.8.8.8
     alerts:
       - type: email
       - type: ntfy
       - type: gotify
 
-  - <<: *default-icmp
-    name: External DNS - Google 2
+  - <<: *default-dns-aaaa
+    name: External DNS - Google - DNS AAAA
     group: External DNS
-    url: icmp://8.8.4.4
+    url: 8.8.8.8
 
-  - <<: *default-icmp
-    name: External DNS - Cloudflare
+  # - <<: *default-icmp
+  #   name: External DNS - Google 2
+  #   group: External DNS
+  #   url: icmp://8.8.4.4
+
+  - <<: *default-dns-a
+    name: External DNS - Google 2 - DNS A
     group: External DNS
-    url: icmp://1.1.1.1
+    url: 8.8.4.4
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  - <<: *default-dns-aaaa
+    name: External DNS - Google 2 - DNS AAAA
+    group: External DNS
+    url: 8.8.4.4
+
+  # - <<: *default-icmp
+  #   name: External DNS - Cloudflare
+  #   group: External DNS
+  #   url: icmp://1.1.1.1
+
+  - <<: *default-dns-a
+    name: External DNS - Cloudflare - DNS A
+    group: External DNS
+    url: 1.1.1.1
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  - <<: *default-dns-aaaa
+    name: External DNS - Cloudflare - DNS AAAA
+    group: External DNS
+    url: 1.1.1.1
 
   ### Group: Network equipment ###
 
