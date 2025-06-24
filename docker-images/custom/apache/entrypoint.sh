@@ -70,6 +70,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
         exit 1
     fi
+elif [ "$HOMELAB_APP_TYPE" = 'node-exporter' ]; then
+    PROXY_UPSTREAM_URL="http://app:9100"
 elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
@@ -127,7 +129,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'vikunja' ]; then
     PROXY_UPSTREAM_URL="http://app:3456"
 else
-    printf 'Unknown HOMELAB_APP_TYPE: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}" "${HOMELAB_APP_TYPE}"
+    printf 'Unknown HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}"
     exit 1
 fi
 export PROXY_UPSTREAM_URL

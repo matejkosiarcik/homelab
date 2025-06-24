@@ -83,3 +83,4 @@
 10.1.20.46 prometheus.home.matejkosiarcik.com
 10.1.20.47 certbot.home.matejkosiarcik.com
 10.1.20.48 uptime-kuma.home.matejkosiarcik.com
+10.1.20.49 node-exporter.home.matejkosiarcik.com

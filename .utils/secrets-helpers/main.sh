@@ -521,6 +521,21 @@ case "$app_dirname" in
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
+*node-exporter*)
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$app_prometheus_password"
+    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
+    app_debug_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app debug)"
+    write_http_auth_user debug "$app_debug_password"
+    printf 'app-debug,%s\n' "$app_debug_password" >>"$output/all-credentials.csv"
+
+    # Certificator
+    write_certificator_users
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+    ;;
 *ntfy*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"

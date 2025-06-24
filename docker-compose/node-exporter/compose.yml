@@ -1,0 +1,77 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_TYPE: node-exporter
+    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
+    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    networks:
+      internal-network: {}
+    dns_opt:
+      - single-request
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+
+services:
+  app:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/node-exporter/Dockerfile
+    # cap_add:
+    #   - SYS_TIME
+    pid: host
+
+  certificator:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/certificator/Dockerfile
+    env_file:
+      - ./app-secrets/certificator.env
+    volumes:
+      - ./app-data/certs:/homelab/certs:rw
+      - ./app-logs/certificator:/homelab/logs:rw
+
+  apache:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/apache/Dockerfile
+    volumes:
+      - ./app-data/certs:/homelab/certs:ro
+      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
+      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
+      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
+      - ./app-secrets/debug.htpasswd:/homelab/debug.htpasswd:ro
+      - ./app-logs/apache:/homelab/logs:rw
+
+  apache-prometheus-exporter:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
+    environment:
+      APACHE_HOST: apache
+    env_file:
+      - ./app-secrets/apache-prometheus-exporter.env
+
+networks:
+  default: # Just disable default network
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
