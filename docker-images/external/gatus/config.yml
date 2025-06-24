@@ -124,7 +124,7 @@ endpoints:
   #     - type: gotify
 
   - <<: *default-dns-a
-    name: External DNS - Google - DNS A
+    name: External DNS - Google 1 - DNS A
     group: External DNS
     url: 8.8.8.8
     alerts:
@@ -133,7 +133,7 @@ endpoints:
       - type: gotify
 
   - <<: *default-dns-aaaa
-    name: External DNS - Google - DNS AAAA
+    name: External DNS - Google 1 - DNS AAAA
     group: External DNS
     url: 8.8.8.8
 
