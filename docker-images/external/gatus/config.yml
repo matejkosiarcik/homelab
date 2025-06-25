@@ -1495,6 +1495,9 @@ endpoints:
     name: OpenSpeedTest - HTTPS
     group: App - OpenSpeedTest
     url: https://openspeedtest.home.matejkosiarcik.com
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] == 200"
 
   # - <<: *default-https
   #   name: OpenSpeedTest - Proxy prometheus metrics
@@ -2225,14 +2228,16 @@ endpoints:
   #   url: https://proxy-prometheus:${UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@unifi-controller.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-https
-    name: UniFi Controller Admin - HTTP (raw)
+    name: UniFi Controller Admin - HTTP 2
     group: App - UniFi Controller
     url: http://unifi-controller.home.matejkosiarcik.com:8080
+    insecure: true
 
   - <<: *default-https
-    name: UniFi Controller Admin - HTTPS (raw)
+    name: UniFi Controller Admin - HTTPS 2
     group: App - UniFi Controller
     url: https://unifi-controller.home.matejkosiarcik.com:8443
+    insecure: true
 
   # - <<: *default-tcp
   #   name: UniFi Controller - TCP:80
