@@ -52,6 +52,8 @@ jobs:
               - '**/motioneye*/**'
             netalertx:
               - '**/netalertx*/**'
+            node-exporter:
+              - '**/node-exporter*/**'
             ntfy:
               - '**/ntfy*/**'
             omada-controller:
@@ -74,6 +76,8 @@ jobs:
             unifi-controller:
               - '**/unifi-controller*/**'
               - '**/unifi-network-application*/**'
+            uptime-kuma:
+              - '**/uptime-kuma*/**'
 
   build:
     name: Build - ${{ matrix.component }}
