@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
-FROM node:24.2.0-slim AS nodejs-build
+FROM node:24.3.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./external/homepage/package-lock.json ./external/homepage/package.json ./external/homepage/terser.json ./external/homepage/tsconfig.json ./external/homepage/vite.config.ts ./
 COPY ./external/homepage/src/ ./src/
