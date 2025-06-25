@@ -1495,6 +1495,9 @@ endpoints:
     name: OpenSpeedTest - HTTPS
     group: App - OpenSpeedTest
     url: https://openspeedtest.home.matejkosiarcik.com
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] == 200"
 
   # - <<: *default-https
   #   name: OpenSpeedTest - Proxy prometheus metrics
