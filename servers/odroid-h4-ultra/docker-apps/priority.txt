@@ -5,7 +5,7 @@ certbot
 pihole-1-primary
 
 # Caches
-dockerhub-cache-proxy
+docker-cache-proxy-dockerhub
 
 # Media
 jellyfin

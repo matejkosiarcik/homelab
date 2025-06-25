@@ -469,27 +469,27 @@ endpoints:
   # - <<: *default-icmp
   #   name: DockerHub proxy - ICMP
   #   group: App - DockerHub proxy
-  #   url: icmp://dockerhub-cache-proxy.home.matejkosiarcik.com
+  #   url: icmp://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
 
   - <<: *default-http
     name: DockerHub proxy - HTTP
     group: App - DockerHub proxy
-    url: http://dockerhub-cache-proxy.home.matejkosiarcik.com
+    url: http://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
 
   - <<: *default-https
     name: DockerHub proxy - HTTPS
     group: App - DockerHub proxy
-    url: https://dockerhub-cache-proxy.home.matejkosiarcik.com
+    url: https://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
 
   # - <<: *default-https
   #   name: DockerHub proxy - Proxy prometheus metrics
   #   group: App - DockerHub proxy
-  #   url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@dockerhub-cache-proxy.home.matejkosiarcik.com/.proxy/metrics
+  #   url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@docker-cache-proxy-dockerhub.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-https
     name: DockerHub proxy - API endpoint
     group: App - DockerHub proxy
-    url: https://dockerhub-cache-proxy.home.matejkosiarcik.com/v2/_catalog
+    url: https://docker-cache-proxy-dockerhub.home.matejkosiarcik.com/v2/_catalog
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].repositories) == true"
@@ -501,12 +501,12 @@ endpoints:
   # - <<: *default-tcp
   #   name: DockerHub proxy - TCP:80
   #   group: App - DockerHub proxy
-  #   url: tcp://dockerhub-cache-proxy.home.matejkosiarcik.com:80
+  #   url: tcp://docker-cache-proxy-dockerhub.home.matejkosiarcik.com:80
 
   # - <<: *default-tcp
   #   name: DockerHub proxy - TCP:443
   #   group: App - DockerHub proxy
-  #   url: tcp://dockerhub-cache-proxy.home.matejkosiarcik.com:443
+  #   url: tcp://docker-cache-proxy-dockerhub.home.matejkosiarcik.com:443
 
   ### Group: App - Dozzle ###
 

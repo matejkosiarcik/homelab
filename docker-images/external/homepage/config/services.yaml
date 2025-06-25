@@ -334,8 +334,8 @@
 
     - Dockerhub proxy:
         description: Dockerhub transparent caching proxy
-        href: https://dockerhub-cache-proxy.home.matejkosiarcik.com
-        ping: dockerhub-cache-proxy.home.matejkosiarcik.com
+        href: https://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
+        ping: docker-cache-proxy-dockerhub.home.matejkosiarcik.com
         icon: /icons/docker.png
 
     - Smtp4dev:

@@ -35,8 +35,8 @@ load_password() {
     printf 'CHANGEDETECTION_PROXY_STATUS_PASSWORD=%s\n' "$(load_password changedetection apache status)"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password changedetection apache prometheus)"
 
-    printf 'DOCKERHUB_CACHE_PROXY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dockerhub-cache-proxy apache status)"
-    printf 'DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dockerhub-cache-proxy apache prometheus)"
+    printf 'DOCKERHUB_CACHE_PROXY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-cache-proxy-dockerhub apache status)"
+    printf 'DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-cache-proxy-dockerhub apache prometheus)"
 
     printf 'DOZZLE_ADMIN_PASSWORD=%s\n' "$(load_password dozzle app admin)"
     printf 'DOZZLE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dozzle apache status)"
