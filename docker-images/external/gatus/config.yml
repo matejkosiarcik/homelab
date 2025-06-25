@@ -2231,11 +2231,13 @@ endpoints:
     name: UniFi Controller Admin - HTTP 2
     group: App - UniFi Controller
     url: http://unifi-controller.home.matejkosiarcik.com:8080
+    insecure: true
 
   - <<: *default-https
     name: UniFi Controller Admin - HTTPS 2
     group: App - UniFi Controller
     url: https://unifi-controller.home.matejkosiarcik.com:8443
+    insecure: true
 
   # - <<: *default-tcp
   #   name: UniFi Controller - TCP:80
