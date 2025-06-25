@@ -17,7 +17,7 @@ printf '%s\n%s\n' "$SAMBA_PASSWORD" "$SAMBA_PASSWORD" | smbpasswd -s -a "$SAMBA_
 
 testparm -s || {
     printf '"testparm -s" failed with status %s\n' "$?" >&2
-    exit 1;
+    exit 1
 }
 
 smbd --foreground --no-process-group
