@@ -20,4 +20,6 @@ testparm -s || {
     exit 1
 }
 
+sleep 1
+
 smbd --foreground --no-process-group
