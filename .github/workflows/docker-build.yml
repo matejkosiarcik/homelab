@@ -25,12 +25,9 @@ jobs:
               - '**/actual-budget*/**'
             changedetection:
               - '**/changedetection*/**'
-            docker-proxy:
-              - '**/docker-cache*/**'
-              - '**/docker-mirror*/**'
-              - '**/docker-proxy*/**'
+            docker-cache-proxy:
+              - '**/docker-cache-proxy*/**'
               - '**/docker-registry*/**'
-              - '**/dockerhub-*/**'
             dozzle-agent:
               - '**/dozzle-agent*/**'
               - '**/dozzle*/**'
