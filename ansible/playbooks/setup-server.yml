@@ -367,6 +367,26 @@
           printf 'CHANGED\n'
         fi
 
+    ## Git Config ##
+
+    - name: Git config
+      register: git_config
+      changed_when: "'CHANGED' in git_config.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        new_config='
+        [remote "origin"]
+          prune = true
+        [pull]
+          rebase = true
+        '
+        before_sha="$(shasum "$HOME/.gitconfig" || true)"
+        printf '%s\n' "$new_config" >"$HOME/.gitconfig" >/dev/null
+        after_sha="$(shasum "$HOME/.gitconfig")"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
+
     ## Homelab repository ##
 
     - name: Git clone homelab
