@@ -15,6 +15,9 @@ if ! grep -Eq "^$SAMBA_USERNAME:" /etc/passwd; then
 fi
 printf '%s\n%s\n' "$SAMBA_PASSWORD" "$SAMBA_PASSWORD" | smbpasswd -s -a "$SAMBA_USERNAME"
 
-testparm -s
+testparm -s || {
+    printf '`testparm -s` failed with status %s\n' "$?" >&2
+    exit 1;
+}
 
 smbd --foreground --no-process-group
