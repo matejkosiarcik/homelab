@@ -25,12 +25,9 @@ jobs:
               - '**/actual-budget*/**'
             changedetection:
               - '**/changedetection*/**'
-            docker-proxy:
-              - '**/docker-cache*/**'
-              - '**/docker-mirror*/**'
-              - '**/docker-proxy*/**'
+            docker-cache-proxy:
+              - '**/docker-cache-proxy*/**'
               - '**/docker-registry*/**'
-              - '**/dockerhub-*/**'
             dozzle-agent:
               - '**/dozzle-agent*/**'
               - '**/dozzle*/**'
@@ -55,6 +52,8 @@ jobs:
               - '**/motioneye*/**'
             netalertx:
               - '**/netalertx*/**'
+            node-exporter:
+              - '**/node-exporter*/**'
             ntfy:
               - '**/ntfy*/**'
             omada-controller:
@@ -77,6 +76,8 @@ jobs:
             unifi-controller:
               - '**/unifi-controller*/**'
               - '**/unifi-network-application*/**'
+            uptime-kuma:
+              - '**/uptime-kuma*/**'
 
   build:
     name: Build - ${{ matrix.component }}
@@ -105,7 +106,7 @@ jobs:
             printf '%s ' '{'
             printf '%s ' '"actualbudget": ["/servers/odroid-h4-ultra/docker-apps/actualbudget"],'
             printf '%s ' '"changedetection": ["/servers/odroid-h4-ultra/docker-apps/changedetection"],'
-            printf '%s ' '"docker-proxy": ["/servers/odroid-h4-ultra/docker-apps/dockerhub-cache-proxy"],'
+            printf '%s ' '"docker-cache-proxy": ["/servers/odroid-h4-ultra/docker-apps/docker-cache-proxy-dockerhub"],'
             printf '%s %s %s' \
               '"dozzle-agent":' \
               '["/servers/odroid-h4-ultra/docker-apps/dozzle-agent", "/servers/raspberry-pi-3b/docker-apps/dozzle-agent",' \

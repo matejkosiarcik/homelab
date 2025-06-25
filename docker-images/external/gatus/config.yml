@@ -467,29 +467,29 @@ endpoints:
   ### Group: App - Dockerhub proxy ###
 
   # - <<: *default-icmp
-  #   name: DockerHub proxy - ICMP
-  #   group: App - DockerHub proxy
-  #   url: icmp://dockerhub-cache-proxy.home.matejkosiarcik.com
+  #   name: Docker Cache Proxy - DockerHub - ICMP
+  #   group: App - Docker Cache Proxy - DockerHub
+  #   url: icmp://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
 
   - <<: *default-http
-    name: DockerHub proxy - HTTP
-    group: App - DockerHub proxy
-    url: http://dockerhub-cache-proxy.home.matejkosiarcik.com
+    name: Docker Cache Proxy - DockerHub - HTTP
+    group: App - Docker Cache Proxy - DockerHub
+    url: http://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
 
   - <<: *default-https
-    name: DockerHub proxy - HTTPS
-    group: App - DockerHub proxy
-    url: https://dockerhub-cache-proxy.home.matejkosiarcik.com
+    name: Docker Cache Proxy - DockerHub - HTTPS
+    group: App - Docker Cache Proxy - DockerHub
+    url: https://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
 
   # - <<: *default-https
-  #   name: DockerHub proxy - Proxy prometheus metrics
-  #   group: App - DockerHub proxy
-  #   url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@dockerhub-cache-proxy.home.matejkosiarcik.com/.proxy/metrics
+  #   name: Docker Cache Proxy - DockerHub - Proxy prometheus metrics
+  #   group: App - Docker Cache Proxy - DockerHub
+  #   url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@docker-cache-proxy-dockerhub.home.matejkosiarcik.com/.proxy/metrics
 
   - <<: *default-https
-    name: DockerHub proxy - API endpoint
-    group: App - DockerHub proxy
-    url: https://dockerhub-cache-proxy.home.matejkosiarcik.com/v2/_catalog
+    name: Docker Cache Proxy - DockerHub - API endpoint
+    group: App - Docker Cache Proxy - DockerHub
+    url: https://docker-cache-proxy-dockerhub.home.matejkosiarcik.com/v2/_catalog
     conditions:
       - "[STATUS] == 200"
       - "has([BODY].repositories) == true"
@@ -499,14 +499,14 @@ endpoints:
       - type: gotify
 
   # - <<: *default-tcp
-  #   name: DockerHub proxy - TCP:80
-  #   group: App - DockerHub proxy
-  #   url: tcp://dockerhub-cache-proxy.home.matejkosiarcik.com:80
+  #   name: Docker Cache Proxy - DockerHub - TCP:80
+  #   group: App - Docker Cache Proxy - DockerHub
+  #   url: tcp://docker-cache-proxy-dockerhub.home.matejkosiarcik.com:80
 
   # - <<: *default-tcp
-  #   name: DockerHub proxy - TCP:443
-  #   group: App - DockerHub proxy
-  #   url: tcp://dockerhub-cache-proxy.home.matejkosiarcik.com:443
+  #   name: Docker Cache Proxy - DockerHub - TCP:443
+  #   group: App - Docker Cache Proxy - DockerHub
+  #   url: tcp://docker-cache-proxy-dockerhub.home.matejkosiarcik.com:443
 
   ### Group: App - Dozzle ###
 
@@ -2231,13 +2231,13 @@ endpoints:
     name: UniFi Controller Admin - HTTP 2
     group: App - UniFi Controller
     url: http://unifi-controller.home.matejkosiarcik.com:8080
-    insecure: true
+    insecure: "true"
 
   - <<: *default-https
     name: UniFi Controller Admin - HTTPS 2
     group: App - UniFi Controller
     url: https://unifi-controller.home.matejkosiarcik.com:8443
-    insecure: true
+    insecure: "true"
 
   # - <<: *default-tcp
   #   name: UniFi Controller - TCP:80

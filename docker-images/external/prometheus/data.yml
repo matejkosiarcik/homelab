@@ -52,7 +52,7 @@ proxies:
   - url: actualbudget.home.matejkosiarcik.com
   - url: certbot.home.matejkosiarcik.com
   - url: changedetection.home.matejkosiarcik.com
-  - url: dockerhub-cache-proxy.home.matejkosiarcik.com
+  - url: docker-cache-proxy-dockerhub.home.matejkosiarcik.com
   - url: dozzle.home.matejkosiarcik.com
   - url: gatus-1.home.matejkosiarcik.com
   - url: gatus-2.home.matejkosiarcik.com
