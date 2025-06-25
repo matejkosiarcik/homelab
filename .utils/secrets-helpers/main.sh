@@ -229,11 +229,6 @@ case "$app_dirname" in
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     ;;
-*docker-build*)
-    # App
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
-    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" app "$healthcheck_ping_key"
-    ;;
 *docker-cache-proxy*)
     # App
     http_secret="$(load_password "$DOCKER_COMPOSE_APP_NAME" app http-secret)"
