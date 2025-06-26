@@ -29,6 +29,7 @@
 
 10.1.14.1 dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com
 10.1.14.2 glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+10.1.16.23 node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com
 
 ### Raspberry Pi 4B 4GB ###
 
