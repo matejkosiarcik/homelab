@@ -42,6 +42,7 @@
 10.1.16.22 dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
 10.1.16.23 motioneye-kitchen.home.matejkosiarcik.com
 10.1.16.24 glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
+10.1.16.25 node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
 ### MacBook Pro 2012 ###
 
