@@ -103,7 +103,7 @@
 
     ## General config ##
 
-    - name: Setup Shell environment variables
+    - name: Setup Shell environment
       register: shell_setup
       changed_when: "'CHANGED' in shell_setup.stdout"
       ansible.builtin.shell: |
@@ -112,17 +112,24 @@
 
         before_sha="$(shasum "$HOME/.bashrc" || true)$(shasum "$HOME/.profile" || true)"
 
+        if [ "$(tail -c1 "$HOME/.bashrc")" != '\n' ]; then
+          printf '\n' >>"$HOME/.bashrc"
+        fi
+        if [ "$(tail -c1 "$HOME/.profile")" != '\n' ]; then
+          printf '\n' >>"$HOME/.profile"
+        fi
+
         if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
-          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
+          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
         fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.bashrc" >/dev/null; then
-          printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
+          printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
         fi
         if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
-          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
+          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
         fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
-          printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.profile"
+          printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.profile"
         fi
 
         after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")"
