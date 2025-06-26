@@ -27,8 +27,9 @@
 
 ### Raspberry Pi 4B 2GB ###
 
-10.1.14.1 dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com
-10.1.14.2 glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+10.1.14.21 dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com
+10.1.14.22 glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+10.1.16.23 node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com
 
 ### Raspberry Pi 4B 4GB ###
 
@@ -42,6 +43,7 @@
 10.1.16.22 dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
 10.1.16.23 motioneye-kitchen.home.matejkosiarcik.com
 10.1.16.24 glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
+10.1.16.25 node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com
 
 ### MacBook Pro 2012 ###
 
