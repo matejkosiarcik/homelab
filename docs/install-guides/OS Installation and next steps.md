@@ -67,12 +67,27 @@ TL;DR:
 ansible-playbook --limit [machine-name] playbooks/setup-server.yml
 ```
 
+## Postinstall - Login to vaultwarden
+
+TL;DR
+
+```sh
+bw login homelab@vaultwarden.home.matejkosiarcik.com
+nano ~/.bashrc
+# Paste BW_SESSION=...
+```
+
 ## Postinstall - Deploy homelab
 
 TL;DR:
 
 ```sh
-ansible-playbook --limit [machine-name] playbooks/deploy-homelab.yml
+cd "$HOME/git/homelab/servers/.current"
+sh main.sh install --prod
+sudo reboot
+cd "$HOME/git/homelab/servers/.current"
+sh main.sh secrets --prod
+sh main.sh deploy --prod
 ```
 
 ## Postinstall - Docker memory monitoring
