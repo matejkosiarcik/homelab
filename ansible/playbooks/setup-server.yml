@@ -110,25 +110,23 @@
         set -eufo pipefail
         touch "$HOME/.bashrc" "$HOME/.profile"
 
-        before_sha_1="$(shasum "$HOME/.bashrc" || true)"
-        before_sha_2="$(shasum "$HOME/.profile" || true)"
+        before_sha="$(shasum "$HOME/.bashrc" || true)$(shasum "$HOME/.profile" || true)"
 
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
-          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
-        fi
-        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
-          printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.profile"
-        fi
         if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
           printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
         fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.bashrc" >/dev/null; then
           printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
         fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
+          printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
+        fi
+        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
+          printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.profile"
+        fi
 
-        after_sha_1="$(shasum "$HOME/.bashrc")"
-        after_sha_2="$(shasum "$HOME/.profile")"
-        if [ "$before_sha_1" != "$after_sha_1" ] || [ "$before_sha_2" != "$after_sha_2" ]; then
+        after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")"
+        if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
 
