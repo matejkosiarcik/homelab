@@ -108,28 +108,27 @@
       changed_when: "'CHANGED' in shell_setup.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        if [ ! -e "$HOME/.profile" ]; then
-          touch "$HOME/.profile"
-          printf 'CHANGED\n'
-        fi
+        touch "$HOME/.bashrc" "$HOME/.profile"
+
+        before_sha_1="$(shasum "$HOME/.bashrc" || true)"
+        before_sha_2="$(shasum "$HOME/.profile" || true)"
+
         if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
           printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
-          printf 'CHANGED\n'
         fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
           printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.profile"
-          printf 'CHANGED\n'
-        fi
-        if [ ! -e "$HOME/.bashrc" ]; then
-          touch "$HOME/.bashrc"
-          printf 'CHANGED\n'
         fi
         if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
           printf '\nexport NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
-          printf 'CHANGED\n'
         fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.bashrc" >/dev/null; then
           printf '\nexport COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
+        fi
+
+        after_sha_1="$(shasum "$HOME/.bashrc")"
+        after_sha_2="$(shasum "$HOME/.profile")"
+        if [ "$before_sha_1" != "$after_sha_1" ] || [ "$before_sha_2" != "$after_sha_2" ]; then
           printf 'CHANGED\n'
         fi
 
