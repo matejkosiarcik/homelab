@@ -1,10 +1,4 @@
 - Network:
-    - UPC Router:
-        description: Unknown brand
-        href: http://192.168.0.1
-        ping: "192.168.0.1"
-        icon: /icons/upc.png
-
     - Main Router:
         description: TP-Link ER605
         href: https://10.1.0.1
@@ -51,6 +45,7 @@
           username: homepage
           password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
           site: Home
+          fields: ["activeUser", "alerts"]
 
 - Servers:
     - Odroid H3:
@@ -272,9 +267,10 @@
         href: https://prometheus.home.matejkosiarcik.com
         ping: prometheus.home.matejkosiarcik.com
         icon: /icons/prometheus.png
-        widget:
-          type: prometheus
-          url: "https://admin:{{HOMEPAGE_VAR_PROMETHEUS_PASSWORD}}@prometheus.home.matejkosiarcik.com"
+        # TODO: Enable prometheus widget after basic auth is supported - https://github.com/gethomepage/homepage/discussions/1985
+        # widget:
+        #   type: prometheus
+        #   url: "https://admin:{{HOMEPAGE_VAR_PROMETHEUS_PASSWORD}}@prometheus.home.matejkosiarcik.com"
 
     - Dozzle:
         description: Docker monitoring
