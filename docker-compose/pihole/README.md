@@ -28,5 +28,5 @@ Other notes:
 
 ## After initial installation
 
-- Configure App password (API key) and save it in Vaultwarden
+- Configure API password and save it in Vaultwarden
 - Disable destructive API actions
