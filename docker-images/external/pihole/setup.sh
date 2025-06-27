@@ -101,4 +101,4 @@ sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound
 pihole reloaddns
 
 # Configure max sessions - necessary for homepage
-pihole-FTL --config webserver.api.max_sessions 32
+pihole-FTL --config webserver.api.max_sessions 64
