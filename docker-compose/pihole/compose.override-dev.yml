@@ -16,8 +16,8 @@ services:
   app-setup:
     <<: *common-service-options
 
-  app-prometheus-exporter:
-    <<: *common-service-options
+  # app-prometheus-exporter:
+  #   <<: *common-service-options
 
   certificator:
     <<: *common-service-options
