@@ -28,4 +28,5 @@ Other notes:
 
 ## After initial installation
 
+- Configure API password and save it in Vaultwarden
 - Disable destructive API actions
