@@ -589,6 +589,7 @@ case "$app_dirname" in
 
     # Prometheus exporter
     printf 'PIHOLE_PASSWORD=%s\n' "$admin_password" >>"$output/app-prometheus-exporter.env"
+    # printf 'PIHOLE_PASSWORD=%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" app api-password)" >>"$output/app-prometheus-exporter.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
