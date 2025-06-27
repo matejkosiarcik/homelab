@@ -272,9 +272,10 @@
         href: https://prometheus.home.matejkosiarcik.com
         ping: prometheus.home.matejkosiarcik.com
         icon: /icons/prometheus.png
-        widget:
-          type: prometheus
-          url: "https://admin:{{HOMEPAGE_VAR_PROMETHEUS_PASSWORD}}@prometheus.home.matejkosiarcik.com"
+        # TODO: Enable prometheus widget after basic auth is supported - https://github.com/gethomepage/homepage/discussions/1985
+        # widget:
+        #   type: prometheus
+        #   url: "https://admin:{{HOMEPAGE_VAR_PROMETHEUS_PASSWORD}}@prometheus.home.matejkosiarcik.com"
 
     - Dozzle:
         description: Docker monitoring
