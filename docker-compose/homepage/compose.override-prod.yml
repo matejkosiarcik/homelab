@@ -8,6 +8,9 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
+    environment:
+      <<: *common-env-variables
+      HOMEPAGE_ALLOWED_HOSTS: "*"
 
   certificator:
     <<: *common-service-options
