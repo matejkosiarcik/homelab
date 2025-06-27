@@ -22,3 +22,4 @@
     - Disallow automatic updates
     - Setup notifications (Ntfy, Gotify, SMTP)
     - Modify data persistancy interval
+- Setup status page `dashboard`

@@ -450,6 +450,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app admin)" >>"$output/app.env"
+    printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY=%s\n' "$(load_token speedtest-tracker app api-key-readonly)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unifi-controller app homepage)" >>"$output/app.env"
     # TODO: Enable Vikunja integration
