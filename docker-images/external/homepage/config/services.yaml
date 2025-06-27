@@ -48,6 +48,13 @@
           fields: ["activeUser", "alerts"]
 
 - Servers:
+    - MacBook Pro 2012:
+        description: NAS
+        href: javascript:copyUrl('ssh matej@10.1.4.1')
+        ping: "10.1.4.1"
+        icon: /icons/apple.png
+        target: _self
+
     - Odroid H3:
         description: App server
         href: javascript:copyUrl('ssh matej@10.1.4.8')
@@ -81,13 +88,6 @@
         href: javascript:copyUrl('ssh matej@10.1.4.4')
         ping: "10.1.4.4"
         icon: /icons/raspberry-pi.png
-        target: _self
-
-    - MacBook Pro 2012:
-        description: NAS
-        href: javascript:copyUrl('ssh matej@10.1.4.1')
-        ping: "10.1.4.1"
-        icon: /icons/apple.png
         target: _self
 
     # Disable for indeterminate time
