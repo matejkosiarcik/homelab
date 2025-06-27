@@ -60,6 +60,13 @@
         icon: /icons/odroid.png
         target: _self
 
+    - Odroid H4 Ultra:
+        description: App server
+        href: javascript:copyUrl('ssh matej@10.1.4.11')
+        ping: "10.1.4.11"
+        icon: /icons/odroid.png
+        target: _self
+
     - Raspberry Pi 3B:
         description: App server
         href: javascript:copyUrl('ssh matej@10.1.4.2')
@@ -113,7 +120,7 @@
           type: pihole
           url: https://pihole-1-primary.home.matejkosiarcik.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD}}"
 
     - PiHole 1 Secondary:
         description: DNS server with built-in adblocking
@@ -124,7 +131,7 @@
           type: pihole
           url: https://pihole-1-secondary.home.matejkosiarcik.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD}}"
 
     - PiHole 2 Primary:
         description: DNS server with built-in adblocking
@@ -135,7 +142,7 @@
           type: pihole
           url: https://pihole-2-primary.home.matejkosiarcik.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD}}"
 
     - PiHole 2 Secondary:
         description: DNS server with built-in adblocking
@@ -146,7 +153,7 @@
           type: pihole
           url: https://pihole-2-secondary.home.matejkosiarcik.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD}}"
 
 - Smart Home:
     - Home Assistant:
