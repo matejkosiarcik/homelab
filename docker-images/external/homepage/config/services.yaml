@@ -302,10 +302,10 @@
         href: https://netalertx.home.matejkosiarcik.com
         ping: netalertx.home.matejkosiarcik.com
         icon: /icons/netalertx.png
-        widget:
-          type: netalertx
-          url: https://netalertx.home.matejkosiarcik.com
-          key: "{{HOMEPAGE_VAR_NETALERTX_APIKEY}}"
+        # widget:
+        #   type: netalertx
+        #   url: https://netalertx.home.matejkosiarcik.com
+        #   key: "{{HOMEPAGE_VAR_NETALERTX_APIKEY}}"
 
 - Other Apps:
     - Homepage:
@@ -379,11 +379,11 @@
         href: https://vikunja.home.matejkosiarcik.com
         ping: vikunja.home.matejkosiarcik.com
         icon: /icons/vikunja.png
-        widget:
-          type: vikunja
-          url: https://vikunja.home.matejkosiarcik.com
-          key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
-          enableTaskList: true
+        # widget:
+        #   type: vikunja
+        #   url: https://vikunja.home.matejkosiarcik.com
+        #   key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
+        #   enableTaskList: true
 
 - Resources:
     - Glances MacBook Pro 2012:
