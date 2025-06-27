@@ -5,7 +5,7 @@
 ## Docs
 
 - GitHub: <https://github.com/gethomepage/homepage>
-- DockerHub: <https://hub.docker.com/r/litetex/ghcr.gethomepage.homepage>
+- DockerHub: N/A
 - Docs: <https://gethomepage.dev>
     - Widgets: <https://gethomepage.dev/widgets>
 
