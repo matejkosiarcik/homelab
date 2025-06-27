@@ -60,6 +60,13 @@
         icon: /icons/odroid.png
         target: _self
 
+    - Odroid H4 Ultra:
+        description: App server
+        href: javascript:copyUrl('ssh matej@10.1.4.11')
+        ping: "10.1.4.11"
+        icon: /icons/odroid.png
+        target: _self
+
     - Raspberry Pi 3B:
         description: App server
         href: javascript:copyUrl('ssh matej@10.1.4.2')
