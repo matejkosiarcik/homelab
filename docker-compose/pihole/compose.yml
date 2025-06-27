@@ -34,8 +34,9 @@ services:
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    # cap_add:
-    #   - SYS_NICE
+    cap_add:
+      - SYS_NICE
+      - SYS_TIME
     stop_grace_period: 30s
 
   app-setup:
