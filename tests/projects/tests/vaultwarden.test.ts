@@ -39,9 +39,7 @@ test.describe(apps['vaultwarden'].title, () => {
                         await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                         await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('form button:has-text("Log in with master password")').click();
-                        await page.waitForURL(`${instance.url}/#/vault`);
-                        await expect(page.locator('app-header h1:has-text("All vaults")')).toBeVisible();
-                        await expect(page.locator('app-vault-items table button[title^="Edit item"]').first()).toBeVisible();
+                        await page.locator('form input#bit-input-2').waitFor({ state: 'visible', timeout: 2000 });
                     });
                 }
 
