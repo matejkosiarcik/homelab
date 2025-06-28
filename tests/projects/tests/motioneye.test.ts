@@ -15,7 +15,7 @@ test.describe(apps.motioneye.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-            createTcpTests(instance.url, [80, 443, 9081]);
+            createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
             const users = [
@@ -58,7 +58,7 @@ test.describe(apps.motioneye.title, () => {
                 if (variant.username === 'user') {
                     test(`UI: Successful stream open - User ${variant.username}`, async ({ page }) => {
                         await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username}_PASSWORD`)}`).toString('base64')}` });
-                        await page.goto(`${instance.url}:9081`, { waitUntil: 'commit' });
+                        await page.goto(`${instance.url}/stream`, { waitUntil: 'commit' });
                         await expect(page.locator('body > img')).toBeVisible({ timeout: 5000 });
                     });
                 }
@@ -84,7 +84,7 @@ test.describe(apps.motioneye.title, () => {
                 });
 
                 test(`API: Unsuccessful stream open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}:9081`, {
+                    const response = await axios.get(`${instance.url}/stream`, {
                         auth: {
                             username: variant.username,
                             password: faker.string.alpha(10),
@@ -95,7 +95,7 @@ test.describe(apps.motioneye.title, () => {
             }
 
             test(`API: Unsuccessful stream open - No user`, async () => {
-                const response = await axios.get(`${instance.url}:9081`);
+                const response = await axios.get(`${instance.url}/stream`);
                 expect(response.status, 'Response Status').toStrictEqual(401);
             });
 

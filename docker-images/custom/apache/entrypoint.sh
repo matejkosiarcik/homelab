@@ -53,14 +53,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'homepage' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ]; then
     PROXY_UPSTREAM_URL="http://app:8096"
 elif [ "$HOMELAB_APP_TYPE" = 'motioneye' ]; then
-    if [ "$HOMELAB_CONTAINER_VARIANT" = 'default' ]; then
-        PROXY_UPSTREAM_URL="http://app:8765"
-    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'stream' ]; then
-        PROXY_UPSTREAM_URL="http://app:9081"
-    else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
-        exit 1
-    fi
+    PROXY_UPSTREAM_URL="http://app:8765"
 elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
         PROXY_UPSTREAM_URL="http://app:9000"
@@ -134,6 +127,15 @@ else
 fi
 export PROXY_UPSTREAM_URL
 printf "export PROXY_UPSTREAM_URL='%s'\n" "$PROXY_UPSTREAM_URL" >>/etc/apache2/envvars
+
+# Set PROXY_UPSTREAM_URL_STREAM
+if [ "$HOMELAB_APP_TYPE" = 'motioneye' ]; then
+    PROXY_UPSTREAM_URL_STREAM="http://app:9081"
+else
+    PROXY_UPSTREAM_URL_STREAM=''
+fi
+export PROXY_UPSTREAM_URL_STREAM
+printf "export PROXY_UPSTREAM_URL_STREAM='%s'\n" "$PROXY_UPSTREAM_URL_STREAM" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL_WS
 PROXY_UPSTREAM_URL_WS="$(printf '%s' "$PROXY_UPSTREAM_URL" | sed 's~https:~wss:~;s~http:~ws:~')"
