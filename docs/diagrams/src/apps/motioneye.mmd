@@ -12,10 +12,8 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        apache_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        apache_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        apache_prometheus_exporter_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
-        apache_prometheus_exporter_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
+        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
+        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
         class motioneye strong_border;
@@ -24,13 +22,11 @@ flowchart LR
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
 
-        inbound_interface -->|:80,443| apache_1 -->|:8765| motioneye
-        inbound_interface -->|:9081| apache_2 -->|:9081| motioneye
-        apache_1 -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_1
-        apache_2 -->|/.apache/metrics| apache_prometheus_exporter_2 -.->|use status| apache_2
-        apache_1 & apache_2 -.-|fs| certificator
+        inbound_interface -->|:80,443| apache_proxy -->|:8765,9081| motioneye
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
+        apache_proxy -.-|fs| certificator
         motioneye -.-|device| webcamera
-        apache_1 -->|/.squid/metrics| squid_prometheus_exporter
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter
         squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
         outbound_interface_1 -.-|connect| squid_proxy
         certificator --> outbound_interface_1
