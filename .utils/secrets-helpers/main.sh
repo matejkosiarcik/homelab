@@ -585,8 +585,8 @@ case "$app_dirname" in
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
-    printf 'FTLCONF_webserver_api_password=%s\n' "$admin_password" >>"$output/app.env"
-    # printf 'FTLCONF_webserver_api_password=\n' >>"$output/app.env"
+    # printf 'FTLCONF_webserver_api_password=%s\n' "$admin_password" >>"$output/app.env"
+    printf 'FTLCONF_webserver_api_password=\n' >>"$output/app.env"
 
     # Prometheus exporter
     printf 'PIHOLE_PASSWORD=%s\n' "$admin_password" >>"$output/app-prometheus-exporter.env"
