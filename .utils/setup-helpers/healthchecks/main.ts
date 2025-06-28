@@ -20,7 +20,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         slug: healthcheck.slug,
         name: healthcheck.name,
         schedule: healthcheck.schedule,
-        grace: 600, // 10 minutes
+        grace: 1800, // 30 minutes
         tz: 'Europe/Bratislava',
     };
 
