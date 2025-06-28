@@ -23,8 +23,8 @@ flowchart LR
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global")
 
-        inbound_interface --->|:7007|dozzle_agent
-        dozzle_agent -..->|docker tcp| socket_proxy -..->|docker sock| docker
+        inbound_interface -->|:7007|dozzle_agent
+        dozzle_agent -.->|docker tcp| socket_proxy -.->|docker sock| docker
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface

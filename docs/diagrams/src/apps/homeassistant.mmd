@@ -31,14 +31,14 @@ flowchart LR
         outbound_interface_2(" ")
         outbound_interface_3(" ")
 
-        inbound_interface --->|:80,443| apache_proxy --->|:8123| home_assistant
+        inbound_interface -->|:80,443| apache_proxy -->|:8123| home_assistant
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        outbound_interface_1 & outbound_interface_2 & outbound_interface_3 -..- squid_proxy
+        outbound_interface_1 & outbound_interface_2 & outbound_interface_3 -.- squid_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
     smart_home ~~~ app_wrapper
@@ -49,7 +49,7 @@ flowchart LR
     end
 
     squid_prometheus_exporter ~~~ others_2
-    home_assistant ~~~ script_backup -..->|get backup| home_assistant
+    home_assistant ~~~ script_backup -.->|get backup| home_assistant
     home_assistant --> outbound_interface_1 -->|control| smart_home
     certificator --> outbound_interface_2 -->|report status| healthchecks
     script_backup --> outbound_interface_3 -->|send_backup| s3_database

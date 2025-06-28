@@ -31,8 +31,8 @@ flowchart LR
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface(" ")
 
-        inbound_interface --->|:80,443| apache_proxy_1 --->|:9000| minio
-        inbound_interface --->|:80,443| apache_proxy_2 --->|:9001| minio
+        inbound_interface -->|:80,443| apache_proxy_1 -->|:9000| minio
+        inbound_interface -->|:80,443| apache_proxy_2 -->|:9001| minio
         apache_proxy_1 -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_proxy_1
         apache_proxy_2 -->|/.apache/metrics| apache_prometheus_exporter_2 -.->|use status| apache_proxy_2
         apache_proxy_1 & apache_proxy_2 -.-|fs| certificator
@@ -42,7 +42,7 @@ flowchart LR
         squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
     other_apps -.->|use| inbound_interface

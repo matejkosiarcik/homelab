@@ -27,11 +27,11 @@ flowchart LR
         gpio_lamp("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /></div>Lamp")
         class gpio_lamp dashed_border
 
-        lamp_controller ~~~ gpio_button --->|GPIO 2| lamp_controller
-        lamp_controller --->|GPIO 14| gpio_lamp
+        lamp_controller ~~~ gpio_button -->|GPIO 2| lamp_controller
+        lamp_controller -->|GPIO 14| gpio_lamp
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
-    home_assistant -..->|control| lamp_controller
+    home_assistant -.->|control| lamp_controller

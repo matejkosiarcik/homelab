@@ -27,7 +27,7 @@ flowchart LR
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface(" ")
 
-        inbound_interface --->|:80,443| apache_proxy --->|:9100| node_exporter
+        inbound_interface -->|:80,443| apache_proxy -->|:9100| node_exporter
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter

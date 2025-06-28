@@ -27,13 +27,13 @@ flowchart LR
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
-        inbound_interface --->|:80,443| apache_proxy --->|:443| speedtest_tracker
+        inbound_interface -->|:80,443| apache_proxy -->|:443| speedtest_tracker
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        speedtest_tracker ~~~ db_sync -..->|fs| speedtest_tracker
+        speedtest_tracker ~~~ db_sync -.->|fs| speedtest_tracker
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
 
@@ -45,7 +45,7 @@ flowchart LR
     end
 
     squid_prometheus_exporter ~~~ others_2
-    certificator -..->|report status| healthchecks
-    db_sync -..->|send| s3_database
-    speedtest_tracker -..->|measure speed| cloud_server
-    speedtest_tracker -..->|report status| healthchecks
+    certificator -.->|report status| healthchecks
+    db_sync -.->|send| s3_database
+    speedtest_tracker -.->|measure speed| cloud_server
+    speedtest_tracker -.->|report status| healthchecks

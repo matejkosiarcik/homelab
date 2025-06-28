@@ -23,12 +23,12 @@ flowchart LR
         outbound_interface_1(" ")
         outbound_interface_2(" ")
 
-        inbound_interface --->|:80,443| apache_proxy --->|:3000| homepage
+        inbound_interface -->|:80,443| apache_proxy -->|:3000| homepage
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter
         apache_proxy -.-|fs| certificator
         squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
-        outbound_interface_1 & outbound_interface_2 -..- squid_proxy
+        outbound_interface_1 & outbound_interface_2 -.- squid_proxy
 
         homepage --> outbound_interface_1
         homepage --> homepage_widget_prometheus --> outbound_interface_1
@@ -40,7 +40,7 @@ flowchart LR
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
         gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
 
-        home_network <---> inbound_interface
+        home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
         gatus -->|monitor| inbound_interface
     end
@@ -50,10 +50,10 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
 
-        homepage -..->|navigate| other_apps
-        outbound_interface_1 -..->|widgets| other_apps
-        outbound_interface_2 -..->|report status| healthchecks
-        outbound_interface_2 -..->|download certificate| certbot
+        homepage -.->|navigate| other_apps
+        outbound_interface_1 -.->|widgets| other_apps
+        outbound_interface_2 -.->|report status| healthchecks
+        outbound_interface_2 -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

@@ -28,10 +28,10 @@ flowchart LR
         outbound_interface_1(" ")
         outbound_interface_2(" ")
 
-        inbound_interface --->|:80,443| apache_proxy --->|:8080| gatus
+        inbound_interface -->|:80,443| apache_proxy -->|:8080| gatus
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        outbound_interface_1 & outbound_interface_2 -..- squid_proxy
+        outbound_interface_1 & outbound_interface_2 -.- squid_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 

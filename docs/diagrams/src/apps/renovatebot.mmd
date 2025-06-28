@@ -23,5 +23,5 @@ flowchart LR
         class gitlab dashed_border
     end
 
-    renovatebot -..->|report status| healthchecks
-    renovatebot -..->|update| github & gitlab
+    renovatebot -.->|report status| healthchecks
+    renovatebot -.->|update| github & gitlab

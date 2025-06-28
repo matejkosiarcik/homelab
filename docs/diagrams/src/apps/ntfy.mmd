@@ -30,17 +30,17 @@ flowchart LR
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
-        inbound_interface --->|:80,443| apache_proxy --->|:80| ntfy
+        inbound_interface -->|:80,443| apache_proxy -->|:80| ntfy
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        inbound_interface --->|:25| ntfy
+        inbound_interface -->|:25| ntfy
         ntfy ~~~ socket_proxy ~~~ ntfy_setup
-        ntfy_setup  -..->|use| ntfy
-        ntfy_setup -..->|docker tcp| socket_proxy
-        socket_proxy -..->|docker sock| docker
+        ntfy_setup  -.->|use| ntfy
+        ntfy_setup -.->|docker tcp| socket_proxy
+        socket_proxy -.->|docker sock| docker
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
 
@@ -50,7 +50,7 @@ flowchart LR
     end
 
     squid_prometheus_exporter ~~~ others_2
-    other_apps -..->|new notification| inbound_interface
-    home_network ---> inbound_interface
-    ntfy -..->|push notification| personal_devices
-    certificator -..->|report status| healthchecks
+    other_apps -.->|new notification| inbound_interface
+    home_network --> inbound_interface
+    ntfy -.->|push notification| personal_devices
+    certificator -.->|report status| healthchecks

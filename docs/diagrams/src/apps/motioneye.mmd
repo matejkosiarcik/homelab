@@ -28,14 +28,14 @@ flowchart LR
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
-        inbound_interface --->|:80,443| apache_default --->|:8765| motioneye
-        inbound_interface --->|:9081| apache_stream --->|:9081| motioneye
+        inbound_interface -->|:80,443| apache_default -->|:8765| motioneye
+        inbound_interface -->|:9081| apache_stream -->|:9081| motioneye
         apache_default -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_default & apache_stream -..-|fs| certificator
-        motioneye -..-|device| webcamera
+        apache_default & apache_stream -.-|fs| certificator
+        motioneye -.-|device| webcamera
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
 
@@ -44,4 +44,4 @@ flowchart LR
     end
 
     squid_prometheus_exporter ~~~ others_2
-    certificator -..->|report status| healthchecks
+    certificator -.->|report status| healthchecks

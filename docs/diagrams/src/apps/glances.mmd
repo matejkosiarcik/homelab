@@ -30,13 +30,13 @@ flowchart LR
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
 
-        inbound_interface --->|:80,443| apache_proxy
-        apache_proxy --->|:61208| glances
-        apache_proxy --->|/metrics| glances_prometheus
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|:61208| glances
+        apache_proxy -->|/metrics| glances_prometheus
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        glances & glances_prometheus -..->|docker tcp| socket_proxy -..->|docker sock| docker
+        glances & glances_prometheus -.->|docker tcp| socket_proxy -.->|docker sock| docker
         apache_proxy -.-|fs| certificator
-        outbound_interface_1 -..- squid_proxy
+        outbound_interface_1 -.- squid_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 

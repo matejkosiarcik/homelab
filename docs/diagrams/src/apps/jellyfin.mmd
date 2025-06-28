@@ -29,20 +29,20 @@ flowchart LR
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
 
-        inbound_interface --->|:80,443,8096| apache_proxy --->|:8096| jellyfin
+        inbound_interface -->|:80,443,8096| apache_proxy -->|:8096| jellyfin
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
         jellyfin -.->|transcode| gpu ~~~ squid_proxy
         jellyfin_setup -.->|fs| jellyfin
-        jellyfin -..->|connect| squid_proxy
-        certificator -..->|connect| squid_proxy
+        jellyfin -.->|connect| squid_proxy
+        certificator -.->|connect| squid_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
     end
 
-    home_network <---> inbound_interface
+    home_network <--> inbound_interface
     prometheus -->|collect metrics| inbound_interface
     gatus -->|monitor| inbound_interface
-    personal_devices -..->|view| inbound_interface
+    personal_devices -.->|view| inbound_interface
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
@@ -53,6 +53,6 @@ flowchart LR
 
     squid_prometheus_exporter ~~~ others_2
     gpu ~~~ tvheadend & iptv & healthchecks
-    squid_proxy -..->|use| tvheadend
-    squid_proxy -..->|use #40;planned#41;| iptv
-    squid_proxy -..->|report status| healthchecks
+    squid_proxy -.->|use| tvheadend
+    squid_proxy -.->|use #40;planned#41;| iptv
+    squid_proxy -.->|report status| healthchecks
