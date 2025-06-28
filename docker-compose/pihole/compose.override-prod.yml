@@ -12,8 +12,6 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp
-      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
     networks:
       external-network:
 
@@ -28,11 +26,11 @@ services:
 
   apache:
     <<: *common-service-options
-    # ports:
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    # networks:
-    #   external-network:
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+    networks:
+      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options

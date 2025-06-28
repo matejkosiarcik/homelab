@@ -98,14 +98,14 @@ sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_2_id;"
 
 # Configuration workaround for homepage
-sessions=512
-threads=128
+# sessions=512
+# threads=128
 # if [ "$(uname -m)" = 'x86_64' ]; then
 #     sessions=64
 #     threads=16
 # fi
-pihole-FTL --config webserver.api.max_sessions "$sessions"
-pihole-FTL --config webserver.threads "$threads"
+# pihole-FTL --config webserver.api.max_sessions "$sessions"
+# pihole-FTL --config webserver.threads "$threads"
 
 # Restart DNS
 pihole reloaddns
