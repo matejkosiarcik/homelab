@@ -23,3 +23,6 @@ services:
 
   apache-prometheus-exporter:
     <<: *common-service-options
+
+  widget-prometheus:
+    <<: *common-service-options

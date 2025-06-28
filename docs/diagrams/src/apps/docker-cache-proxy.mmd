@@ -10,43 +10,49 @@ flowchart LR
     classDef dashed_border stroke-dasharray:10 6;
     classDef strong_border stroke-width:6px;
 
-    subgraph others_1["Others"]
-        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
-        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
-        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        other_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Devices")
-    end
-
     subgraph app_wrapper["App"]
         inbound_interface(" ")
         apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
-        docker_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.25em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Registry")
+        docker_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.25em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>registry")
         class docker_registry strong_border;
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
         outbound_interface_2(" ")
 
-        inbound_interface --->|:80,443| apache_proxy --->|:80| docker_registry
+        inbound_interface -->|:80,443| apache_proxy -->|:80| docker_registry
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        outbound_interface_1 & outbound_interface_2 -..- squid_proxy
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter
+        squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
+        outbound_interface_1 & outbound_interface_2 -.-|connect| squid_proxy
+        docker_registry --> outbound_interface_1
+        certificator --> outbound_interface_2
     end
 
-    home_network <--> inbound_interface
-    prometheus -->|collect metrics| inbound_interface
-    gatus -->|monitor| inbound_interface
+    subgraph others_1["Others"]
+        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
+        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        other_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Devices")
+
+        home_network <--> inbound_interface
+        prometheus -->|collect metrics| inbound_interface
+        gatus -->|monitor| inbound_interface
+        other_devices -.->|use| inbound_interface
+    end
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         dockerhub("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div>Public<br/>container<br/>registry")
         class dockerhub dashed_border
+
+        outbound_interface_1 -->|use| dockerhub
+        outbound_interface_2 -->|report status| healthchecks
+        outbound_interface_2 -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2
-    other_devices -..->|use| inbound_interface
-    docker_registry --> outbound_interface_1 -->|use| dockerhub
-    certificator --> outbound_interface_2 -->|report status| healthchecks

@@ -463,6 +463,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Widget-prometheus
+    printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$output/widget-prometheus.env"
     ;;
 *jellyfin*)
     # App
