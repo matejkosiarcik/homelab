@@ -68,6 +68,16 @@ services:
     env_file:
       - ./app-secrets/apache-prometheus-exporter.env
 
+  widget-prometheus:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-widget-prometheus
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./custom/homepage-widget-prometheus/Dockerfile
+    env_file:
+      - ./app-secrets/widget-prometheus.env
+
 networks:
   default: # Just disable default network
     driver: none
