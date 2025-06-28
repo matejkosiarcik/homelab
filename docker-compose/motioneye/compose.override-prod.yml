@@ -23,13 +23,6 @@ services:
     networks:
       external-network:
 
-  # apache-stream:
-  #   <<: *common-service-options
-  #   ports:
-  #     - ${DOCKER_COMPOSE_NETWORK_IP}:9081:443
-  #   networks:
-  #     external-network:
-
   apache-prometheus-exporter:
     <<: *common-service-options
 
