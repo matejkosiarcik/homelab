@@ -11,17 +11,42 @@ flowchart LR
     classDef strong_border stroke-width:6px;
 
     subgraph app_wrapper["App"]
+        inbound_interface(" ")
+        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
+        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
+        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
+        renovatebot_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/api.png' style='min-width:80px;max-width:80px' /></div>RenovateBot<br/>controller<br/>*planned*")
         renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>RenovateBot")
         class renovatebot strong_border;
+        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
+        docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
+        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
+        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
+        outbound_interface_1(" ")
+        outbound_interface_2(" ")
+
+        inbound_interface -->|:80,443| apache_proxy --> |:8080| renovatebot_controller
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
+        apache_proxy -.-|fs| certificator
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter
+        squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
+        renovatebot_controller -.->|docker tcp| socket_proxy -.->|docker sock| docker -.->|control| renovatebot
+        renovatebot --> outbound_interface_1 -.-|connect| squid_proxy
+        certificator --> outbound_interface_2 -.-|connect| squid_proxy
     end
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         github("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/github.png' style='min-width:80px;max-width:80px' /></div>GitHub<br/>repositories")
         class github dashed_border
         gitlab("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gitlab.png' style='min-width:80px;max-width:80px' /></div>GitLab<br/>repositories")
         class gitlab dashed_border
+
+        outbound_interface_1 -.->|report status| healthchecks
+        outbound_interface_1 -.->|update| github & gitlab
+        outbound_interface_2 -->|report status| healthchecks
+        outbound_interface_2 -.->|download certificate| certbot
     end
 
-    renovatebot -.->|report status| healthchecks
-    renovatebot -.->|update| github & gitlab
+    squid_prometheus_exporter ~~~ others_2
