@@ -51,7 +51,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
 
 (async () => {
     if (fs.existsSync('.secrets.env')) {
-        dotenv.config({ path: '.secrets.env' });
+        dotenv.config({ path: '.secrets.env', quiet: true });
     }
 
     axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || '';
