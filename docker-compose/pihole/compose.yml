@@ -26,7 +26,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
     env_file:
-      - ./app-secrets/pihole.env
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/pihole/data:/etc/pihole:rw
     # Hard-coded DNS is necessary because of bootstrapping problem
