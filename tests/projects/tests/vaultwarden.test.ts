@@ -55,7 +55,7 @@ test.describe(apps['vaultwarden'].title, () => {
                         await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                         await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
                         await page.locator('form button:has-text("Log in with master password")').click();
-                        await expect(page.locator('.toast-container:has-text("Username or password is incorrect.")')).toBeVisible();
+                        await expect(page.locator('bit-error:has-text("Invalid master password")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });
                 }
