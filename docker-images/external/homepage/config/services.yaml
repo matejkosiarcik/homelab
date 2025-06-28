@@ -111,44 +111,44 @@
         href: https://pihole-1-primary.home.matejkosiarcik.com
         ping: pihole-1-primary.home.matejkosiarcik.com
         icon: /icons/pihole.png
-        # widget:
-        #   type: pihole
-        #   url: https://pihole-1-primary.home.matejkosiarcik.com
-        #   version: 6
-        #   # key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD}}"
+        widget:
+          type: pihole
+          url: https://pihole-1-primary.home.matejkosiarcik.com
+          version: 6
+          key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD}}"
 
     - PiHole 1 Secondary:
         description: DNS server with built-in adblocking
         href: https://pihole-1-secondary.home.matejkosiarcik.com
         ping: pihole-1-secondary.home.matejkosiarcik.com
         icon: /icons/pihole.png
-        # widget:
-        #   type: pihole
-        #   url: https://pihole-1-secondary.home.matejkosiarcik.com
-        #   version: 6
-        #   # key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD}}"
+        widget:
+          type: pihole
+          url: https://pihole-1-secondary.home.matejkosiarcik.com
+          version: 6
+          key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD}}"
 
     - PiHole 2 Primary:
         description: DNS server with built-in adblocking
         href: https://pihole-2-primary.home.matejkosiarcik.com
         ping: pihole-2-primary.home.matejkosiarcik.com
         icon: /icons/pihole.png
-        # widget:
-        #   type: pihole
-        #   url: https://pihole-2-primary.home.matejkosiarcik.com
-        #   version: 6
-        #   # key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD}}"
+        widget:
+          type: pihole
+          url: https://pihole-2-primary.home.matejkosiarcik.com
+          version: 6
+          key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD}}"
 
     - PiHole 2 Secondary:
         description: DNS server with built-in adblocking
         href: https://pihole-2-secondary.home.matejkosiarcik.com
         ping: pihole-2-secondary.home.matejkosiarcik.com
         icon: /icons/pihole.png
-        # widget:
-        #   type: pihole
-        #   url: https://pihole-2-secondary.home.matejkosiarcik.com
-        #   version: 6
-        #   # key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD}}"
+        widget:
+          type: pihole
+          url: https://pihole-2-secondary.home.matejkosiarcik.com
+          version: 6
+          key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD}}"
 
     - Unbound 1 Default:
         description: Entrypoint DNS server
