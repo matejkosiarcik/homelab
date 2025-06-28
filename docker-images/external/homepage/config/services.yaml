@@ -150,6 +150,30 @@
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD}}"
 
+    - Unbound 1 Default:
+        description: Entrypoint DNS server
+        href: https://unbound-1-default.home.matejkosiarcik.com
+        ping: unbound-1-default.home.matejkosiarcik.com
+        icon: /icons/unbound.png
+
+    - Unbound 1 Open:
+        description: Entrypoint DNS server
+        href: https://unbound-1-open.home.matejkosiarcik.com
+        ping: unbound-1-open.home.matejkosiarcik.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Default:
+        description: Entrypoint DNS server
+        href: https://unbound-2-default.home.matejkosiarcik.com
+        ping: unbound-2-default.home.matejkosiarcik.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Open:
+        description: Entrypoint DNS server
+        href: https://unbound-2-open.home.matejkosiarcik.com
+        ping: unbound-2-open.home.matejkosiarcik.com
+        icon: /icons/unbound.png
+
 - Smart Home:
     - Home Assistant:
         description: Smart Home system

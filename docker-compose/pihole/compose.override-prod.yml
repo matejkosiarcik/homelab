@@ -8,7 +8,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    hostname: ${DOCKER_COMPOSE_NETWORK_DOMAIN} # This fixes random container hostname in dashboard header
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
       - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp

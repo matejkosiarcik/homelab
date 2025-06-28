@@ -1,10 +1,11 @@
 x-definitions:
   common-env-variables: &common-env-variables
-    HOMELAB_APP_TYPE: pihole
-    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
     HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
     HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
+    HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
+    HOMELAB_APP_TYPE: pihole
+    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
@@ -22,11 +23,15 @@ services:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     init: true
+    hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in dashboard header
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
     env_file:
-      - ./app-secrets/pihole.env
+      - ./app-secrets/app.env
+    environment:
+      <<: *common-env-variables
+      FTLCONF_webserver_domain: ${DOCKER_COMPOSE_APP_NAME}
     volumes:
       - ./app-data/pihole/data:/etc/pihole:rw
     # Hard-coded DNS is necessary because of bootstrapping problem
@@ -34,9 +39,6 @@ services:
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    cap_add:
-      - SYS_NICE
-      - SYS_TIME
     stop_grace_period: 30s
 
   app-setup:

@@ -9,7 +9,7 @@ import { randomInt } from 'node:crypto';
 export function preprepare() {
     // Load .env file - Mostly useful for local (non-docker) debugging
     if (fsSync.existsSync('.env')) {
-        dotenv.config({ path: '.env' });
+        dotenv.config({ path: '.env', quiet: true  });
     }
 }
 
