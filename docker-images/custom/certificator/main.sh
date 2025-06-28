@@ -34,7 +34,6 @@ if [ "$HOMELAB_ENV" = 'prod' ]; then
     certificate_archive_file="$tmpdir/certificate.tar.xz"
     timeout 45s sh <<EOF
     while ! curl --fail --silent --show-error --output /dev/null --user "viewer:$CERTBOT_VIEWER_PASSWORD" 'https://certbot.home.matejkosiarcik.com/download/certificate.tar.xz'; do
-        echo "sleeping"
         sleep 5
     done
 EOF
