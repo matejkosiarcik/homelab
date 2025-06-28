@@ -97,22 +97,7 @@ sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbo
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_1_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_2_id;"
 
-# Configuration workaround for homepage
-# sessions=32
-# threads=128
-# if [ "$(uname -m)" = 'x86_64' ]; then
-#     sessions=64
-#     threads=16
-# fi
-pihole-FTL --config webserver.threads 64
-pihole-FTL --config webserver.api.max_sessions 32
 pihole-FTL --config webserver.domain "$HOMELAB_APP_NAME"
-pihole-FTL --config webserver.api.allow_destructive false
-pihole-FTL --config dns.rateLimit.count 10000
-pihole-FTL --config dns.rateLimit.interval 60
-pihole-FTL --config dns.domain ""
-pihole-FTL --config dns.domainNeeded true
-
 
 # Restart DNS
 pihole reloaddns
