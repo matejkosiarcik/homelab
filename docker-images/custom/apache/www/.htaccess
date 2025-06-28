@@ -340,7 +340,7 @@ RewriteRule ^ /index.html [L]
 RewriteCond %{REQUEST_URI} ^/.proxy/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "http://%{ENV:PROXY_PROMETHEUS_EXPORTER_HOSTNAME}:9117/metrics" [P,L]
+RewriteRule ^ "%{ENV:PROXY_PROMETHEUS_EXPORTER_URL}/metrics" [P,L]
 
 # Custom prometheus metrics for Glances
 RewriteCond %{ENV:HOMELAB_APP_TYPE} glances [NC]
@@ -369,6 +369,14 @@ RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{HTTP:Connection} upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL_WS} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_WS}%{REQUEST_URI}" [P,L]
+
+# Proxy motioneye stream requests upstream
+RewriteCond %{ENV:HOMELAB_APP_TYPE} motioneye [NC]
+RewriteCond %{REQUEST_URI} ^/stream$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL_STREAM} !^$ [NC]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_STREAM}/" [P,L]
 
 # Proxy regular requests upstream
 RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]

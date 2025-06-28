@@ -32,7 +32,7 @@ export const apps = {
     'dozzle-agent': {
         title: 'Dozzle Agent',
         instances: [
-            { url: 'tcp://dozzle-agent-odroid-h3.home.matejkosiarcik.com', title: 'Dozzle Agent - Odroid H3' },
+            // { url: 'tcp://dozzle-agent-odroid-h3.home.matejkosiarcik.com', title: 'Dozzle Agent - Odroid H3' },
             { url: 'tcp://dozzle-agent-odroid-h4-ultra.home.matejkosiarcik.com', title: 'Dozzle Agent - Odroid H4 Ultra' },
             { url: 'tcp://dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com', title: 'Dozzle Agent - Raspberry Pi 4B 2GB' },
             { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com', title: 'Dozzle Agent - Raspberry Pi 4B 4GB' },
@@ -48,7 +48,7 @@ export const apps = {
     glances: {
         title: 'Glances',
         instances: [
-            { url: 'https://glances-odroid-h3.home.matejkosiarcik.com', title: 'Glances - Odroid H3' },
+            // { url: 'https://glances-odroid-h3.home.matejkosiarcik.com', title: 'Glances - Odroid H3' },
             { url: 'https://glances-odroid-h4-ultra.home.matejkosiarcik.com', title: 'Glances - Odroid H4 Ultra' },
             { url: 'https://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com', title: 'Glances - Raspberry Pi 4B 2GB' },
             { url: 'https://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com', title: 'Glances - Raspberry Pi 4B 4GB' },

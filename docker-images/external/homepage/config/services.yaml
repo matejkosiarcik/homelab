@@ -195,7 +195,7 @@
         icon: /icons/motioneye.png
         widget:
           type: mjpeg
-          stream: "https://user:{{HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD}}@motioneye-kitchen.home.matejkosiarcik.com:9081"
+          stream: "https://user:{{HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD}}@motioneye-kitchen.home.matejkosiarcik.com/stream"
 
     - Desklamp - left:
         description: Custom smart lamp

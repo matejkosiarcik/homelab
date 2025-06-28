@@ -44,29 +44,13 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificator:/homelab/logs:rw
 
-  apache-default:
+  apache:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-default
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
     init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/apache/Dockerfile
-    volumes:
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
-      - ./app-logs/apache:/homelab/logs:rw
-
-  apache-stream:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-stream
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/apache/Dockerfile
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: stream
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
@@ -81,7 +65,7 @@ services:
       context: ../../../../docker-images/
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
     environment:
-      APACHE_HOST: apache-default
+      APACHE_HOST: apache
     env_file:
       - ./app-secrets/apache-prometheus-exporter.env
 
