@@ -53,19 +53,19 @@ services:
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
       DOCKER_HOST: tcp://socket-proxy:2375
 
-  # app-prometheus-exporter:
-  #   <<: *common-service-options
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
-  #   init: true
-  #   build:
-  #     context: ../../../../docker-images/
-  #     dockerfile: ./external/pihole-prometheus-exporter/Dockerfile
-  #   environment:
-  #     <<: *common-env-variables
-  #     PIHOLE_HOSTNAME: app
-  #     PIHOLE_PORT: 80
-  #   env_file:
-  #     - ./app-secrets/app-prometheus-exporter.env
+  app-prometheus-exporter:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
+    init: true
+    build:
+      context: ../../../../docker-images/
+      dockerfile: ./external/pihole-prometheus-exporter/Dockerfile
+    environment:
+      <<: *common-env-variables
+      PIHOLE_HOSTNAME: app
+      PIHOLE_PORT: 80
+    env_file:
+      - ./app-secrets/app-prometheus-exporter.env
 
   certificator:
     <<: *common-service-options
