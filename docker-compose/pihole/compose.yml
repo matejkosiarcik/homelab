@@ -29,6 +29,9 @@ services:
       dockerfile: ./external/pihole/Dockerfile
     env_file:
       - ./app-secrets/app.env
+    environment:
+      <<: *common-env-variables
+      FTLCONF_webserver_domain: ${DOCKER_COMPOSE_APP_NAME}
     volumes:
       - ./app-data/pihole/data:/etc/pihole:rw
     # Hard-coded DNS is necessary because of bootstrapping problem

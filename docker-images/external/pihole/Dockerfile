@@ -8,6 +8,7 @@ ENV DHCP_ACTIVE=false \
     FTLCONF_dns_ignoreLocalhost=false \
     FTLCONF_dns_listeningMode=all \
     FTLCONF_dns_piholePTR=HOSTNAMEFQDN \
+    FTLCONF_dns_rateLimit_count=9000 \
     FTLCONF_dns_replyWhenBusy=ALLOW \
     FTLCONF_dns_upstreams=1.1.1.1;8.8.8.8 \
     FTLCONF_misc_privacylevel=0 \

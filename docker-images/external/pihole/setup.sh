@@ -97,7 +97,5 @@ sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbo
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_1_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_2_id;"
 
-pihole-FTL --config webserver.domain "$HOMELAB_APP_NAME"
-
 # Restart DNS
 pihole reloaddns
