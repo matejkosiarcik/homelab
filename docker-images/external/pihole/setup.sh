@@ -106,8 +106,13 @@ sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound
 # fi
 pihole-FTL --config webserver.threads 64
 pihole-FTL --config webserver.api.max_sessions 32
-pihole-FTL --config webserver.domain "$HOMELAB_APP_EXTERNAL_DOMAIN"
+pihole-FTL --config webserver.domain "$(printf '%s' "$HOMELAB_APP_EXTERNAL_DOMAIN" | sed -E 's~\..+$~~')"
 pihole-FTL --config webserver.api.allow_destructive false
+pihole-FTL --config dns.rateLimit.count 10000
+pihole-FTL --config dns.rateLimit.interval 60
+pihole-FTL --config dns.domain ""
+pihole-FTL --config dns.domainNeeded true
+
 
 # Restart DNS
 pihole reloaddns
