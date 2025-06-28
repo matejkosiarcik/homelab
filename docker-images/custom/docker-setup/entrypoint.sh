@@ -13,7 +13,7 @@ done
 printf 'Container found\n' >&2
 EOF
 
-sleep 10
+sleep "${HOMELAB_SETUP_DELAY-10}"
 
 printf '%s - Starting setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 docker exec "$HOMELAB_SETUP_TARGET_CONTAINER" sh /homelab/setup.sh
