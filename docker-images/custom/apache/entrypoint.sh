@@ -213,12 +213,12 @@ fi
 export PROXY_UPSTREAM_URL_PROMETHEUS
 printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
 
-# Set PROXY_PROMETHEUS_EXPORTER_HOSTNAME
-if [ "${PROXY_PROMETHEUS_EXPORTER_HOSTNAME-}" = '' ]; then
-    PROXY_PROMETHEUS_EXPORTER_HOSTNAME='apache-prometheus-exporter'
+# Set PROXY_PROMETHEUS_EXPORTER_URL
+if [ "${PROXY_PROMETHEUS_EXPORTER_URL-}" = '' ]; then
+    PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter:9117'
 fi
-export PROXY_PROMETHEUS_EXPORTER_HOSTNAME
-printf "export PROXY_PROMETHEUS_EXPORTER_HOSTNAME='%s'\n" "$PROXY_PROMETHEUS_EXPORTER_HOSTNAME" >>/etc/apache2/envvars
+export PROXY_PROMETHEUS_EXPORTER_URL
+printf "export PROXY_PROMETHEUS_EXPORTER_URL='%s'\n" "$PROXY_PROMETHEUS_EXPORTER_URL" >>/etc/apache2/envvars
 
 # Create placeholder files for certbot
 if [ "$HOMELAB_APP_TYPE" = 'certbot' ]; then
