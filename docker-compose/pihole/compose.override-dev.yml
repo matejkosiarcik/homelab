@@ -8,7 +8,7 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    hostname: pihole.localhost # This fixes random container hostname in dashboard header
+    # hostname: pihole.localhost # This fixes random container hostname in dashboard header
     ports:
       - 127.0.0.1:8053:53/tcp
       - 127.0.0.1:8053:53/udp
