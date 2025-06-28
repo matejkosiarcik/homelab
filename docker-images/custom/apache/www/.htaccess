@@ -376,7 +376,7 @@ RewriteCond %{REQUEST_URI} ^/stream$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL_STREAM} !^$ [NC]
-RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_STREAM}" [P,L]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_STREAM}/" [P,L]
 
 # Proxy regular requests upstream
 RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
