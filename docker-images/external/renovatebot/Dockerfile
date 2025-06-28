@@ -1,4 +1,5 @@
 # checkov:skip=CKV_DOCKER_3: User unnecessary
+# checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM python:3.13.5-slim AS supercronic-gitman
 WORKDIR /homelab
