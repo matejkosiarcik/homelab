@@ -701,6 +701,11 @@ case "$app_dirname" in
     printf 'SAMBA_PASSWORD=%s\n' "$smb_password" >>"$output/app.env"
     ;;
 *smtp4dev*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    printf 'ServerOptions__Users__0__Password=%s\n' "$admin_password" >>"$output/app.env"
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 

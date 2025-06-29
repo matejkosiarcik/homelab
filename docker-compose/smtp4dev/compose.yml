@@ -26,6 +26,8 @@ services:
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/smtp4dev/Dockerfile
+    env_file:
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/smtp4dev:/smtp4dev:rw
     stop_grace_period: 30s
