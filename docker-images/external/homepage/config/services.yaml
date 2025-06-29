@@ -399,13 +399,13 @@
 
     - OpenSpeedTest (HTTP):
         description: LAN speedtest
-        href: https://openspeedtest.matejhome.com
+        href: http://openspeedtest.matejhome.com
         ping: openspeedtest.matejhome.com
         icon: /icons/openspeedtest.png
 
     - OpenSpeedTest (HTTPS):
         description: LAN speedtest
-        href: http://openspeedtest.matejhome.com
+        href: https://openspeedtest.matejhome.com
         ping: openspeedtest.matejhome.com
         icon: /icons/openspeedtest.png
 
