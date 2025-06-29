@@ -25,10 +25,6 @@ sql() {
     done
 }
 
-# Set custom local domains
-custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
-pihole-FTL --config dns.hosts "$custom_domains"
-
 # Wait for database to exist
 db_log='0'
 while [ ! -e '/etc/pihole/gravity.db' ]; do
@@ -64,6 +60,18 @@ sql 'DELETE FROM client;'
 default_group_id='0'
 sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Open', 0, 0, 'The group without adblocking');"
 open_group_id="$(sql "SELECT id FROM [group] WHERE name='Open';")"
+all_groups="$(printf '%s\n%s\n' "$default_group_id" "$open_group_id")"
+
+# Custom allowlists and blocklists
+sql 'DELETE FROM domainlist_by_group;'
+sql 'DELETE FROM domainlist;'
+local_domains="$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~;s~^.+ +~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^.+\.home\.matejkosiarcik\.com$' | sed 's~.home.matejkosiarcik.com~~;s~\.~\\.~g;s~\-~\\-~g' | tr '\n' '|' | sed -E 's~^(.+)\|$~^(\1)\.home\.matejkosiarcik\.com$~')"
+sql "INSERT INTO domainlist (type, domain, enabled, date_added, date_modified, comment) VALUES (2, '$local_domains', 1, 0, 0, '');"
+sql "INSERT INTO domainlist (type, domain, enabled, date_added, date_modified, comment) VALUES (3, '^.*\.home\.matejkosiarcik\.com$', 1, 0, 0, '');"
+printf '%s\n' "$all_groups" | while read -r group; do
+    if [ "$group" = "$default_group_id" ]; then continue; fi
+    sql "INSERT INTO domainlist_by_group (domainlist_id, group_id) SELECT id, $group FROM domainlist;"
+done
 
 # Custom clients
 unbound_default_1_ip='10.1.10.1'
@@ -84,6 +92,10 @@ sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbo
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_2_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_1_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_2_id;"
+
+# Set custom local domains
+custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
+pihole-FTL --config dns.hosts "$custom_domains"
 
 # Restart DNS
 pihole reloaddns
