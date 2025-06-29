@@ -9,7 +9,13 @@ test.describe(apps.homepage.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url, { status: 401 });
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
+            createApiRootTest(instance.url, {
+                title: 'Authenticated',
+                headers: {
+                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                },
+            });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
@@ -25,7 +31,7 @@ test.describe(apps.homepage.title, () => {
             for (const variant of users) {
                 if (!variant.random) {
                     test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
                         await page.goto(instance.url);
                         await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
                     });
@@ -33,7 +39,7 @@ test.describe(apps.homepage.title, () => {
                     test(`API: Successful root - User ${variant.username}`, async () => {
                         const response = await axios.get(instance.url, {
                             headers: {
-                                Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`,
+                                Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
                             },
                         });
                         expect(response.status, 'Response Status').toStrictEqual(200);

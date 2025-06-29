@@ -82,13 +82,15 @@ export function createHttpsToHttpRedirectTests(url: string) {
     ];
 }
 
-export function createFaviconTests(url: string, _options?: { title?: string | undefined } | undefined) {
+export function createFaviconTests(url: string, _options?: { headers?: Record<string, string> | undefined, title?: string | undefined } | undefined) {
     const options = {
+        headers: _options?.headers ?? {},
         title: _options?.title ?? '',
     };
     return [
         test(`API: Get favicon.ico${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url}/favicon.ico`,{
+            const response = await axios.get(`${url}/favicon.ico`, {
+                headers: options.headers,
                 responseType: 'arraybuffer',
             });
             expect(response.status, 'Response Status').toStrictEqual(200);
@@ -106,6 +108,7 @@ export function createFaviconTests(url: string, _options?: { title?: string | un
         }),
         test(`API: Get favicon.png${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url}/favicon.png`, {
+                headers: options.headers,
                 responseType: 'arraybuffer',
             });
             expect(response.status, 'Response Status').toStrictEqual(200);

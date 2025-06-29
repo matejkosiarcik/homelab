@@ -9,9 +9,19 @@ test.describe(apps.smtp4dev.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
+            createApiRootTest(instance.url, {
+                title: 'Authenticated',
+                headers: {
+                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                },
+            });
             createTcpTests(instance.url, [25, 80, 443]);
-            createFaviconTests(instance.url);
+            createFaviconTests(instance.url, {
+                headers: {
+                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                },
+            });
 
             const users = [
                 {
@@ -33,13 +43,21 @@ test.describe(apps.smtp4dev.title, () => {
 
                 test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
-                    await page.goto(instance.url);
+                    try {
+                        await page.goto(instance.url);
+                    } catch {
+                        // Ignore error
+                    }
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
             }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
-                await page.goto(instance.url);
+                try {
+                    await page.goto(instance.url);
+                } catch {
+                    // Ignore error
+                }
                 await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
             });
         });
