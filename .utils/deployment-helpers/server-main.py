@@ -84,13 +84,15 @@ def main(argv: List[str]):
                 print(f'App "{app}" not found', file=sys.stderr)
             elif len(matched_apps) == 0:
                 assert False, f'Ap "{app}" not found'
-            _applist.extend(matched_apps)
+            else:
+                _applist.extend(matched_apps)
         else:
             if args.only and not path.exists(path.join(docker_apps_dir, app)):
                 print(f'App "{app}" not found', file=sys.stderr)
             elif not path.exists(path.join(docker_apps_dir, app)):
                 assert False, f'App "{app}" not found'
-            _applist.append(app)
+            else:
+                _applist.append(app)
     applist = _applist
 
     command = args.subcommand
