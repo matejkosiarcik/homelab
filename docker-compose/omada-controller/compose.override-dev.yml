@@ -22,7 +22,7 @@ services:
   certificator:
     <<: *common-service-options
 
-  apache-admin:
+  apache:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80

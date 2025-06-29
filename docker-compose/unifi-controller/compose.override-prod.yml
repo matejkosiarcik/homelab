@@ -30,19 +30,11 @@ services:
   certificator:
     <<: *common-service-options
 
-  apache-admin:
+  apache:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    networks:
-      external-network:
-
-  apache-admin-raw:
-    <<: *common-service-options
-    # ports:
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:8080:80
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:8443:443
     networks:
       external-network:
 
