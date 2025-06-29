@@ -65,9 +65,9 @@ open_group_id="$(sql "SELECT id FROM [group] WHERE name='Open';")"
 # Custom allowlists and blocklists
 # sql 'DELETE FROM domainlist_by_group;'
 # sql 'DELETE FROM domainlist;'
-# local_domains="$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~;s~^.+ +~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^.+\.home\.matejkosiarcik\.com$' | sed 's~.home.matejkosiarcik.com~~;s~\.~\\.~g;s~\-~\\-~g' | tr '\n' '|' | sed -E 's~^(.+)\|$~^(\1)\.home\.matejkosiarcik\.com$~')"
+# local_domains="$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~;s~^.+ +~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^.+\.matejhome\.com$' | sed 's~.matejhome.com~~;s~\.~\\.~g;s~\-~\\-~g' | tr '\n' '|' | sed -E 's~^(.+)\|$~^(\1)\.matejhome\.com$~')"
 # sql "INSERT INTO domainlist (type, domain, enabled, date_added, date_modified, comment) VALUES (2, '$local_domains', 1, 0, 0, '');"
-# sql "INSERT INTO domainlist (type, domain, enabled, date_added, date_modified, comment) VALUES (3, '^.*\.home\.matejkosiarcik\.com$', 1, 0, 0, '');"
+# sql "INSERT INTO domainlist (type, domain, enabled, date_added, date_modified, comment) VALUES (3, '^.*\.matejhome\.com$', 1, 0, 0, '');"
 # printf '%s\n' "$all_groups" | while read -r group; do
 #     if [ "$group" = "$default_group_id" ]; then continue; fi
 #     sql "INSERT INTO domainlist_by_group (domainlist_id, group_id) SELECT id, $group FROM domainlist;"

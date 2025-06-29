@@ -1,97 +1,97 @@
-10.1.0.1 network-router.home.matejkosiarcik.com
+10.1.0.1 network-router.matejhome.com
 
 # Some UniFi devices require this
 10.1.20.21 unifi
 
 ### Servers ###
-10.1.4.1 server-macbook-pro-2012.home.matejkosiarcik.com
-10.1.4.2 server-raspberry-pi-3b.home.matejkosiarcik.com
-10.1.4.3 server-raspberry-pi-4b-2g.home.matejkosiarcik.com
-10.1.4.4 server-raspberry-pi-4b-4g.home.matejkosiarcik.com
-10.1.4.8 server-odroid-h3.home.matejkosiarcik.com
-10.1.4.11 server-odroid-h4-ultra.home.matejkosiarcik.com
+10.1.4.1 server-macbook-pro-2012.matejhome.com
+10.1.4.2 server-raspberry-pi-3b.matejhome.com
+10.1.4.3 server-raspberry-pi-4b-2g.matejhome.com
+10.1.4.4 server-raspberry-pi-4b-4g.matejhome.com
+10.1.4.8 server-odroid-h3.matejhome.com
+10.1.4.11 server-odroid-h4-ultra.matejhome.com
 
 ### IoT Devices ###
 
-10.1.4.201 desklamp-left.home.matejkosiarcik.com
-10.1.4.202 desklamp-right.home.matejkosiarcik.com
+10.1.4.201 desklamp-left.matejhome.com
+10.1.4.202 desklamp-right.matejhome.com
 
 ### Odroid H3 ###
 
-10.1.10.21 glances-odroid-h3.home.matejkosiarcik.com
-10.1.10.22 dozzle-agent-odroid-h3.home.matejkosiarcik.com
-10.1.10.23 node-exporter-odroid-h3.home.matejkosiarcik.com
+10.1.10.21 glances-odroid-h3.matejhome.com
+10.1.10.22 dozzle-agent-odroid-h3.matejhome.com
+10.1.10.23 node-exporter-odroid-h3.matejhome.com
 
 ### Raspberry Pi 3B ###
 
-10.1.12.1 tvheadend.home.matejkosiarcik.com
-10.1.12.2 glances-raspberry-pi-3b.home.matejkosiarcik.com
-10.1.12.3 dozzle-agent-raspberry-pi-3b.home.matejkosiarcik.com
-10.1.12.4 node-exporter-raspberry-pi-3b.home.matejkosiarcik.com
+10.1.12.1 tvheadend.matejhome.com
+10.1.12.2 glances-raspberry-pi-3b.matejhome.com
+10.1.12.3 dozzle-agent-raspberry-pi-3b.matejhome.com
+10.1.12.4 node-exporter-raspberry-pi-3b.matejhome.com
 
 ### Raspberry Pi 4B 2GB ###
 
-10.1.14.21 dozzle-agent-raspberry-pi-4b-2g.home.matejkosiarcik.com
-10.1.14.22 glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
-10.1.16.23 node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com
+10.1.14.21 dozzle-agent-raspberry-pi-4b-2g.matejhome.com
+10.1.14.22 glances-raspberry-pi-4b-2g.matejhome.com
+10.1.16.23 node-exporter-raspberry-pi-4b-2g.matejhome.com
 
 ### Raspberry Pi 4B 4GB ###
 
-10.1.16.1 unbound-2-default.home.matejkosiarcik.com
-10.1.16.2 unbound-2-open.home.matejkosiarcik.com
+10.1.16.1 unbound-2-default.matejhome.com
+10.1.16.2 unbound-2-open.matejhome.com
 # ...9 Reserved
-10.1.16.11 pihole-2-primary.home.matejkosiarcik.com
-10.1.16.12 pihole-2-secondary.home.matejkosiarcik.com
+10.1.16.11 pihole-2-primary.matejhome.com
+10.1.16.12 pihole-2-secondary.matejhome.com
 # ...19 Reserved
-10.1.16.21 gatus-2.home.matejkosiarcik.com
-10.1.16.22 dozzle-agent-raspberry-pi-4b-4g.home.matejkosiarcik.com
-10.1.16.23 motioneye-kitchen.home.matejkosiarcik.com
-10.1.16.24 glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
-10.1.16.25 node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com
+10.1.16.21 gatus-2.matejhome.com
+10.1.16.22 dozzle-agent-raspberry-pi-4b-4g.matejhome.com
+10.1.16.23 motioneye-kitchen.matejhome.com
+10.1.16.24 glances-raspberry-pi-4b-4g.matejhome.com
+10.1.16.25 node-exporter-raspberry-pi-4b-4g.matejhome.com
 
 ### MacBook Pro 2012 ###
 
-10.1.18.1 samba-data.home.matejkosiarcik.com
-10.1.18.2 samba-snapshots.home.matejkosiarcik.com
-10.1.18.3 dozzle-agent-macbook-pro-2012.home.matejkosiarcik.com
-10.1.18.4 glances-macbook-pro-2012.home.matejkosiarcik.com
-10.1.18.5 node-exporter-macbook-pro-2012.home.matejkosiarcik.com
+10.1.18.1 samba-data.matejhome.com
+10.1.18.2 samba-snapshots.matejhome.com
+10.1.18.3 dozzle-agent-macbook-pro-2012.matejhome.com
+10.1.18.4 glances-macbook-pro-2012.matejhome.com
+10.1.18.5 node-exporter-macbook-pro-2012.matejhome.com
 
 ### Odroid H4 Ultra ###
 
-10.1.20.1 unbound-1-default.home.matejkosiarcik.com
-10.1.20.2 unbound-1-open.home.matejkosiarcik.com
+10.1.20.1 unbound-1-default.matejhome.com
+10.1.20.2 unbound-1-open.matejhome.com
 # ...9 Reserved
-10.1.20.11 pihole-1-primary.home.matejkosiarcik.com
-10.1.20.12 pihole-1-secondary.home.matejkosiarcik.com
+10.1.20.11 pihole-1-primary.matejhome.com
+10.1.20.12 pihole-1-secondary.matejhome.com
 # ...19 Reserved
-10.1.20.21 unifi-controller.home.matejkosiarcik.com
-10.1.20.22 omada-controller.home.matejkosiarcik.com
-10.1.20.23 docker-cache-proxy-dockerhub.home.matejkosiarcik.com
-10.1.20.24 homeassistant.home.matejkosiarcik.com
-10.1.20.25 jellyfin.home.matejkosiarcik.com
-10.1.20.26 minio.home.matejkosiarcik.com
-10.1.20.27 minio-console.home.matejkosiarcik.com
-10.1.20.28 smtp4dev.home.matejkosiarcik.com
-10.1.20.29 healthchecks.home.matejkosiarcik.com
-10.1.20.30 gatus-1.home.matejkosiarcik.com
-10.1.20.31 speedtest-tracker.home.matejkosiarcik.com
-10.1.20.32 homepage.home.matejkosiarcik.com
-10.1.20.33 changedetection.home.matejkosiarcik.com
-10.1.20.34 ntfy.home.matejkosiarcik.com
-10.1.20.35 openspeedtest.home.matejkosiarcik.com
-10.1.20.36 actualbudget.home.matejkosiarcik.com
-10.1.20.37 gotify.home.matejkosiarcik.com
-# 10.1.20.38 desklamp-left-wrapper.home.matejkosiarcik.com
-# 10.1.20.39 desklamp-right-wrapper.home.matejkosiarcik.com
-10.1.20.40 dozzle.home.matejkosiarcik.com
-10.1.20.41 dozzle-agent-odroid-h4-ultra.home.matejkosiarcik.com
-10.1.20.42 netalertx.home.matejkosiarcik.com
-10.1.20.43 vikunja.home.matejkosiarcik.com
-10.1.20.44 glances-odroid-h4-ultra.home.matejkosiarcik.com
-10.1.20.45 vaultwarden.home.matejkosiarcik.com
-10.1.20.46 prometheus.home.matejkosiarcik.com
-10.1.20.47 certbot.home.matejkosiarcik.com
+10.1.20.21 unifi-controller.matejhome.com
+10.1.20.22 omada-controller.matejhome.com
+10.1.20.23 docker-cache-proxy-dockerhub.matejhome.com
+10.1.20.24 homeassistant.matejhome.com
+10.1.20.25 jellyfin.matejhome.com
+10.1.20.26 minio.matejhome.com
+10.1.20.27 minio-console.matejhome.com
+10.1.20.28 smtp4dev.matejhome.com
+10.1.20.29 healthchecks.matejhome.com
+10.1.20.30 gatus-1.matejhome.com
+10.1.20.31 speedtest-tracker.matejhome.com
+10.1.20.32 homepage.matejhome.com
+10.1.20.33 changedetection.matejhome.com
+10.1.20.34 ntfy.matejhome.com
+10.1.20.35 openspeedtest.matejhome.com
+10.1.20.36 actualbudget.matejhome.com
+10.1.20.37 gotify.matejhome.com
+# 10.1.20.38 desklamp-left-wrapper.matejhome.com
+# 10.1.20.39 desklamp-right-wrapper.matejhome.com
+10.1.20.40 dozzle.matejhome.com
+10.1.20.41 dozzle-agent-odroid-h4-ultra.matejhome.com
+10.1.20.42 netalertx.matejhome.com
+10.1.20.43 vikunja.matejhome.com
+10.1.20.44 glances-odroid-h4-ultra.matejhome.com
+10.1.20.45 vaultwarden.matejhome.com
+10.1.20.46 prometheus.matejhome.com
+10.1.20.47 certbot.matejhome.com
 10.1.20.47 certbot.matejhome.com # TODO: Remove entry after migration
-10.1.20.48 uptime-kuma.home.matejkosiarcik.com
-10.1.20.49 node-exporter-odroid-h4-ultra.home.matejkosiarcik.com
+10.1.20.48 uptime-kuma.matejhome.com
+10.1.20.49 node-exporter-odroid-h4-ultra.matejhome.com

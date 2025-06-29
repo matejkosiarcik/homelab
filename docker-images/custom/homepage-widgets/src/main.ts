@@ -41,7 +41,7 @@ type Smtp4devResponse = {
 };
 app.get('/smtp4dev', async (_: Request, response: Response) => {
     try {
-        const axiosResponse = await axios.get('https://smtp4dev.home.matejkosiarcik.com/api/messages?page=1&pageSize=100', {
+        const axiosResponse = await axios.get('https://smtp4dev.matejhome.com/api/messages?page=1&pageSize=100', {
             headers: {
                 authorization: `Basic ${Buffer.from(`admin:${process.env['SMTP4DEV_PASSWORD']}`).toString('base64')}`,
             },
@@ -62,7 +62,7 @@ app.get('/smtp4dev', async (_: Request, response: Response) => {
 // Prometheus
 app.use('/prometheus', async (request: Request, response: Response) => {
     try {
-        const targetUrl = `https://prometheus.home.matejkosiarcik.com${request.path}`;
+        const targetUrl = `https://prometheus.matejhome.com${request.path}`;
         const axiosHeaders = {
             ...request.headers,
             authorization: `Basic ${Buffer.from(`admin:${process.env['PROMETHEUS_PASSWORD']}`).toString('base64')}`,

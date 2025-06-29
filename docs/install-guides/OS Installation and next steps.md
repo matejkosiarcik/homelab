@@ -72,7 +72,7 @@ ansible-playbook --limit [machine-name] playbooks/setup-server.yml
 TL;DR
 
 ```sh
-bw login homelab@vaultwarden.home.matejkosiarcik.com
+bw login homelab@vaultwarden.matejhome.com
 nano ~/.bashrc
 # Paste BW_SESSION=...
 ```

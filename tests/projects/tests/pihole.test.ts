@@ -78,7 +78,7 @@ test.describe(apps.pihole.title, () => {
                         expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
 
                         // Resolved external domain
-                        const ips = await dnsLookup('unused.home.matejkosiarcik.com', transportVariant, ipVariant, piholeDnsIps[0]);
+                        const ips = await dnsLookup('unused.matejhome.com', transportVariant, ipVariant, piholeDnsIps[0]);
                         expect(ips, 'Domain should not be resolved').toHaveLength(0);
                     });
                 }

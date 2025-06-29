@@ -115,7 +115,7 @@ test.describe(apps.certbot.title, () => {
                     const subprocess = await execa('openssl', ['x509', '-noout', '-subject', '-in', certificateFile]);
                     expect(subprocess.exitCode, 'OpenSSL subject exit code').toStrictEqual(0);
                     const domain = subprocess.stdout.trim().replace(/^subject\s*=\s*CN\s*=\s*/, '');
-                    expect(domain, 'OpenSSL exit code').toStrictEqual('*.home.matejkosiarcik.com');
+                    expect(domain, 'OpenSSL exit code').toStrictEqual('*.matejhome.com');
 
                     const subprocess2 = await execa('openssl', ['x509', '-noout', '-checkend', (60 * 60 * 24 * 30).toFixed(0), '-in', certificateFile]);
                     expect(subprocess2.exitCode, 'OpenSSL validity exit code').toStrictEqual(0);

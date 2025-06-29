@@ -103,11 +103,11 @@ test.describe(apps.healthchecks.title, () => {
             const users = [
                 {
                     username: 'admin',
-                    email: 'admin@healthchecks.home.matejkosiarcik.com',
+                    email: 'admin@healthchecks.matejhome.com',
                 },
                 {
                     username: faker.string.alpha(10),
-                    email: `${faker.string.alpha(8)}@healthchecks.home.matejkosiarcik.com`,
+                    email: `${faker.string.alpha(8)}@healthchecks.matejhome.com`,
                     random: true,
                 }
             ];

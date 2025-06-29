@@ -167,7 +167,7 @@ printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docke
 
 if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
     if [ "$mode" = 'prod' ]; then
-        DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.home.matejkosiarcik.com"
+        DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.matejhome.com"
     elif [ "$mode" = 'dev' ]; then
         DOCKER_COMPOSE_NETWORK_DOMAIN="localhost"
     else

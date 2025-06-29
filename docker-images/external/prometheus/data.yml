@@ -1,87 +1,87 @@
 apps:
-  - url: gatus-1.home.matejkosiarcik.com
+  - url: gatus-1.matejhome.com
     auth: basic
     path: /metrics
-  - url: gatus-2.home.matejkosiarcik.com
+  - url: gatus-2.matejhome.com
     auth: basic
     path: /metrics
-  - url: glances-odroid-h3.home.matejkosiarcik.com
+  - url: glances-odroid-h3.matejhome.com
     auth: basic
     path: /metrics
-  - url: glances-odroid-h4-ultra.home.matejkosiarcik.com
+  - url: glances-odroid-h4-ultra.matejhome.com
     auth: basic
     path: /metrics
-  - url: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+  - url: glances-raspberry-pi-4b-2g.matejhome.com
     auth: basic
     path: /metrics
-  - url: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
+  - url: glances-raspberry-pi-4b-4g.matejhome.com
     auth: basic
     path: /metrics
-  - url: healthchecks.home.matejkosiarcik.com
+  - url: healthchecks.matejhome.com
     auth: bearer
     path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
-  - url: homeassistant.home.matejkosiarcik.com
+  - url: homeassistant.matejhome.com
     auth: bearer
     path: /api/prometheus
-  - url: jellyfin.home.matejkosiarcik.com
+  - url: jellyfin.matejhome.com
     auth: basic
     path: /metrics
-  - url: minio.home.matejkosiarcik.com
+  - url: minio.matejhome.com
     auth: bearer
     path: /minio/v2/metrics/cluster
-  - url: pihole-1-primary.home.matejkosiarcik.com
+  - url: pihole-1-primary.matejhome.com
     auth: basic
     path: /metrics
-  - url: pihole-1-secondary.home.matejkosiarcik.com
+  - url: pihole-1-secondary.matejhome.com
     auth: basic
     path: /metrics
-  - url: pihole-2-primary.home.matejkosiarcik.com
+  - url: pihole-2-primary.matejhome.com
     auth: basic
     path: /metrics
-  - url: pihole-2-secondary.home.matejkosiarcik.com
+  - url: pihole-2-secondary.matejhome.com
     auth: basic
     path: /metrics
-  - url: prometheus.home.matejkosiarcik.com
+  - url: prometheus.matejhome.com
     auth: basic
     path: /metrics
-  - url: uptime-kuma.home.matejkosiarcik.com
+  - url: uptime-kuma.matejhome.com
     auth: basic
     path: /metrics
 
 proxies:
-  - url: actualbudget.home.matejkosiarcik.com
-  - url: certbot.home.matejkosiarcik.com
-  - url: changedetection.home.matejkosiarcik.com
-  - url: docker-cache-proxy-dockerhub.home.matejkosiarcik.com
-  - url: dozzle.home.matejkosiarcik.com
-  - url: gatus-1.home.matejkosiarcik.com
-  - url: gatus-2.home.matejkosiarcik.com
-  - url: glances-odroid-h3.home.matejkosiarcik.com
-  - url: glances-odroid-h4-ultra.home.matejkosiarcik.com
-  - url: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
-  - url: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
-  - url: gotify.home.matejkosiarcik.com
-  - url: healthchecks.home.matejkosiarcik.com
-  - url: homeassistant.home.matejkosiarcik.com
-  - url: homepage.home.matejkosiarcik.com
-  - url: jellyfin.home.matejkosiarcik.com
-  - url: minio.home.matejkosiarcik.com
-  - url: minio-console.home.matejkosiarcik.com
-  - url: motioneye-kitchen.home.matejkosiarcik.com
-  - url: ntfy.home.matejkosiarcik.com
-  - url: omada-controller.home.matejkosiarcik.com
-  - url: openspeedtest.home.matejkosiarcik.com
-  - url: pihole-1-primary.home.matejkosiarcik.com
-  - url: pihole-1-secondary.home.matejkosiarcik.com
-  - url: pihole-2-primary.home.matejkosiarcik.com
-  - url: pihole-2-secondary.home.matejkosiarcik.com
-  - url: prometheus.home.matejkosiarcik.com
-  - url: smtp4dev.home.matejkosiarcik.com
-  - url: tvheadend.home.matejkosiarcik.com
-  - url: unbound-1-default.home.matejkosiarcik.com
-  - url: unbound-1-open.home.matejkosiarcik.com
-  - url: unbound-2-default.home.matejkosiarcik.com
-  - url: unbound-2-open.home.matejkosiarcik.com
-  - url: unifi-controller.home.matejkosiarcik.com
-  - url: uptime-kuma.home.matejkosiarcik.com
-  - url: vaultwarden.home.matejkosiarcik.com
+  - url: actualbudget.matejhome.com
+  - url: certbot.matejhome.com
+  - url: changedetection.matejhome.com
+  - url: docker-cache-proxy-dockerhub.matejhome.com
+  - url: dozzle.matejhome.com
+  - url: gatus-1.matejhome.com
+  - url: gatus-2.matejhome.com
+  - url: glances-odroid-h3.matejhome.com
+  - url: glances-odroid-h4-ultra.matejhome.com
+  - url: glances-raspberry-pi-4b-2g.matejhome.com
+  - url: glances-raspberry-pi-4b-4g.matejhome.com
+  - url: gotify.matejhome.com
+  - url: healthchecks.matejhome.com
+  - url: homeassistant.matejhome.com
+  - url: homepage.matejhome.com
+  - url: jellyfin.matejhome.com
+  - url: minio.matejhome.com
+  - url: minio-console.matejhome.com
+  - url: motioneye-kitchen.matejhome.com
+  - url: ntfy.matejhome.com
+  - url: omada-controller.matejhome.com
+  - url: openspeedtest.matejhome.com
+  - url: pihole-1-primary.matejhome.com
+  - url: pihole-1-secondary.matejhome.com
+  - url: pihole-2-primary.matejhome.com
+  - url: pihole-2-secondary.matejhome.com
+  - url: prometheus.matejhome.com
+  - url: smtp4dev.matejhome.com
+  - url: tvheadend.matejhome.com
+  - url: unbound-1-default.matejhome.com
+  - url: unbound-1-open.matejhome.com
+  - url: unbound-2-default.matejhome.com
+  - url: unbound-2-open.matejhome.com
+  - url: unifi-controller.matejhome.com
+  - url: uptime-kuma.matejhome.com
+  - url: vaultwarden.matejhome.com

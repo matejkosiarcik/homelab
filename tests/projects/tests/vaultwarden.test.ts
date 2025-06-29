@@ -16,15 +16,15 @@ test.describe(apps['vaultwarden'].title, () => {
             const users = [
                 {
                     username: 'admin',
-                    email: 'admin@vaultwarden.home.matejkosiarcik.com',
+                    email: 'admin@vaultwarden.matejhome.com',
                 },
                 {
                     username: 'homelab',
-                    email: 'homelab@vaultwarden.home.matejkosiarcik.com',
+                    email: 'homelab@vaultwarden.matejhome.com',
                 },
                 {
                     username: faker.string.alpha(10),
-                    email: `${faker.string.alpha(10)}@vaultwarden.home.matejkosiarcik.com`,
+                    email: `${faker.string.alpha(10)}@vaultwarden.matejhome.com`,
                     random: true,
                 }
             ];
