@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-domain='home.matejkosiarcik.com'
+domain='matejhome.com'
 certificate_file='/homelab/certs/fullchain.pem'
 certificate_archive_file='/homelab/data/certificate.tar.xz'
 
