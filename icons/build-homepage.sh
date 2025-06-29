@@ -62,6 +62,10 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/png/tvheadend.png
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/unifi.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/uptime-kuma.svg" "$output_dir/uptime-kuma.png"
 
+### Kubernetes Icons ###
+
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/placeholder.png"
+
 ### Organizr Icons ###
 
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$output_dir/healthchecks.png"

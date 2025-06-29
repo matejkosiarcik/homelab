@@ -68,15 +68,15 @@ services:
     env_file:
       - ./app-secrets/apache-prometheus-exporter.env
 
-  widget-prometheus:
+  widgets:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-widget-prometheus
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-widgets
     init: true
     build:
       context: ../../../../docker-images/
-      dockerfile: ./custom/homepage-widget-prometheus/Dockerfile
+      dockerfile: ./custom/homepage-widgets/Dockerfile
     env_file:
-      - ./app-secrets/widget-prometheus.env
+      - ./app-secrets/widgets.env
 
 networks:
   default: # Just disable default network
