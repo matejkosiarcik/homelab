@@ -25,10 +25,6 @@ sql() {
     done
 }
 
-# Set custom local domains
-custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
-pihole-FTL --config dns.hosts "$custom_domains"
-
 # Wait for database to exist
 db_log='0'
 while [ ! -e '/etc/pihole/gravity.db' ]; do
@@ -96,6 +92,10 @@ sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbo
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_2_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_1_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_2_id;"
+
+# Set custom local domains
+custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
+pihole-FTL --config dns.hosts "$custom_domains"
 
 # Restart DNS
 pihole reloaddns
