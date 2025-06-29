@@ -445,14 +445,44 @@
         ping: glances-odroid-h4-ultra.home.matejkosiarcik.com
         icon: /icons/glances.png
 
+    - Glances Raspberry Pi 4B 2GB:
+        description: Resource monitoring
+        href: https://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+        ping: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+        icon: /icons/glances.png
+
     - Glances Raspberry Pi 4B 4GB:
         description: Resource monitoring
         href: https://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
         ping: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
         icon: /icons/glances.png
 
-    - Glances Raspberry Pi 4B 2GB:
+    - Node Exporter MacBook Pro 2012:
         description: Resource monitoring
-        href: https://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
-        ping: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
-        icon: /icons/glances.png
+        href: https://node-exporter-macbook-pro-2012.home.matejkosiarcik.com
+        ping: node-exporter-macbook-pro-2012.home.matejkosiarcik.com
+        icon: /icons/placeholder.png
+
+    - Node Exporter Odroid H3:
+        description: Resource monitoring
+        href: https://node-exporter-odroid-h3.home.matejkosiarcik.com
+        ping: node-exporter-odroid-h3.home.matejkosiarcik.com
+        icon: /icons/placeholder.png
+
+    - Node Exporter Odroid H4 Ultra:
+        description: Resource monitoring
+        href: https://node-exporter-odroid-h4-ultra.home.matejkosiarcik.com
+        ping: node-exporter-odroid-h4-ultra.home.matejkosiarcik.com
+        icon: /icons/placeholder.png
+
+    - Node Exporter Raspberry Pi 4B 2GB:
+        description: Resource monitoring
+        href: https://node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com
+        ping: node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com
+        icon: /icons/placeholder.png
+
+    - Node Exporter Raspberry Pi 4B 4GB:
+        description: Resource monitoring
+        href: https://node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com
+        ping: node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com
+        icon: /icons/placeholder.png
