@@ -48,16 +48,13 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificator:/homelab/logs:rw
 
-  apache-admin:
+  apache:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-admin
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
     init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/apache/Dockerfile
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: admin
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro

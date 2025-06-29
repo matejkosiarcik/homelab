@@ -30,13 +30,7 @@ services:
   certificator:
     <<: *common-service-options
 
-  apache-admin:
-    <<: *common-service-options
-    # ports:
-    #   - 127.0.0.1:8080:80
-    #   - 127.0.0.1:8443:443
-
-  apache-admin-raw:
+  apache:
     <<: *common-service-options
 
   apache-prometheus-exporter:

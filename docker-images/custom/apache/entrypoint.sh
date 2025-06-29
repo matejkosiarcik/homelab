@@ -69,23 +69,9 @@ elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
-        if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://app:8443"
-        elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://app:8444"
-        else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
-            exit 1
-        fi
+        PROXY_UPSTREAM_URL="https://app:8443"
     elif [ "$HOMELAB_ENV" = 'prod' ]; then
-        if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ]; then
-            PROXY_UPSTREAM_URL="https://app"
-        elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_UPSTREAM_URL="https://app:444"
-        else
-            printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
-            exit 1
-        fi
+        PROXY_UPSTREAM_URL="https://app"
     else
         printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
         exit 1
@@ -105,16 +91,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
     PROXY_UPSTREAM_URL=''
 elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
-    if [ "$HOMELAB_CONTAINER_VARIANT" = 'admin' ] || [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
-        PROXY_UPSTREAM_URL="https://app:8443"
-    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw-insecure' ]; then
-        PROXY_UPSTREAM_URL="http://app:8080"
-    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-        PROXY_UPSTREAM_URL="https://app:8444"
-    else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
-        exit 1
-    fi
+    PROXY_UPSTREAM_URL="https://app:8443"
 elif [ "$HOMELAB_APP_TYPE" = 'uptime-kuma' ]; then
     PROXY_UPSTREAM_URL="http://app:3001"
 elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then

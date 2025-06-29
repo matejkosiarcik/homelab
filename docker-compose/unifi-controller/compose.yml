@@ -77,37 +77,18 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certificator:/homelab/logs:rw
 
-  apache-admin:
+  apache:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-admin
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
     init: true
     build:
       context: ../../../../docker-images/
       dockerfile: ./custom/apache/Dockerfile
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: admin
     volumes:
       - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache-admin:/homelab/logs:rw
-
-  apache-admin-raw:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-admin-raw
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/apache/Dockerfile
-    environment:
-      <<: *common-env-variables
-      HOMELAB_CONTAINER_VARIANT: admin-raw
-    volumes:
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
-      - ./app-logs/apache-admin-raw:/homelab/logs:rw
 
   apache-prometheus-exporter:
     <<: *common-service-options
