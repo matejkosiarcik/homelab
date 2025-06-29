@@ -46,6 +46,24 @@ test.describe(apps.pihole.title, () => {
                 }
             }
 
+            for (const transportVariant of ['tcp', 'udp'] as const) {
+                // Get domain for DNS server for a given variant
+                const piholeDomain = instance.url.replace(/^https?:\/\//, '');
+
+                test(`DNS: ${transportVariant.toUpperCase()} - Self ${piholeDomain}`, async () => {
+                    // Get IP address
+                    const piholeDnsIps = await nodeDns.resolve(piholeDomain);
+                    expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+
+                    // Resolved external domain
+                    const ips = await dnsLookup(piholeDomain, transportVariant, 'A', piholeDnsIps[0]);
+                    expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                    for (const ip of ips) {
+                        expect(ip, 'Resolved entry should be valid').toMatch(/^10\.1\.[0-9]{1,3}\.[0-9]{1,3}$/);
+                    }
+                });
+            }
+
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
