@@ -31,7 +31,6 @@
           - git
           - htop
           - jq
-          - linux-cpupower
           - lm-sensors
           - locales
           - lshw
@@ -57,8 +56,9 @@
       become: true
       ansible.builtin.apt:
         pkg:
-          - linux-headers-amd64
           - intel-gpu-tools # contains `intel_gpu_top`
+          - linux-cpupower
+          - linux-headers-amd64
           - vainfo
 
     - name: Install arm64 APT packages
