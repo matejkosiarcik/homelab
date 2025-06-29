@@ -1856,11 +1856,13 @@ endpoints:
     name: Smtp4dev - HTTP
     group: App - Smtp4dev
     url: http://smtp4dev.home.matejkosiarcik.com
+    conditions:
+      - "[STATUS] == 401"
 
   - <<: *default-https
     name: Smtp4dev - HTTPS
     group: App - Smtp4dev
-    url: https://smtp4dev.home.matejkosiarcik.com
+    url: https://admin:${SMTP4DEV_PASSWORD}@smtp4dev.home.matejkosiarcik.com
     alerts:
       - type: email
       - type: ntfy

@@ -292,9 +292,10 @@ case "$app_dirname" in
     printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b app admin)" >>"$output/app.env"
     printf 'GLANCES_RASPBERRY_PI_4B_2G_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g app admin)" >>"$output/app.env"
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app admin)" >>"$output/app.env"
+    printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$output/app.env"
     printf 'HOMEPAGE_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$output/app.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$output/app.env"
-    printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$output/app.env"
+    printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$output/app.env"
     # Prometheus credentials
     printf 'GATUS_1_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-1 app prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROMETHEUS_TOKEN=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/app.env"
