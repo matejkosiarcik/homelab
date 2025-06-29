@@ -63,7 +63,6 @@ app.get('/smtp4dev', async (_: Request, response: Response) => {
 app.use('/prometheus', async (request: Request, response: Response) => {
     try {
         const targetUrl = `https://prometheus.home.matejkosiarcik.com${request.path}`;
-        console.log('prometheus target URL:', targetUrl);
         const axiosHeaders = {
             ...request.headers,
             authorization: `Basic ${Buffer.from(`admin:${process.env['PROMETHEUS_PASSWORD']}`).toString('base64')}`,
