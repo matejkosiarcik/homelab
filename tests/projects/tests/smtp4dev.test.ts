@@ -3,6 +3,30 @@ import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
+import axios from 'axios';
+
+// Smtp4dev
+type Smtp4devResponse = {
+    results: [
+        {
+            isRelayed: boolean,
+            deliveredTo: string,
+            id: string,
+            from: string,
+            to: string[],
+            receivedDate: string,
+            subject: string,
+            attachmentCount: number,
+            isUnread: boolean,
+        },
+    ],
+    currentPage: number,
+    pageCount: number,
+    pageSize: number,
+    rowCount: number,
+    firstRowOnPage: number,
+    lastRowOnPage: number,
+};
 
 test.describe(apps.smtp4dev.title, () => {
     for (const instance of apps.smtp4dev.instances) {
@@ -39,6 +63,16 @@ test.describe(apps.smtp4dev.title, () => {
                         await page.goto(instance.url);
                         await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
                     });
+
+                    test(`API: Successful messages - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                        const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                            auth: {
+                                username: variant.username,
+                                password: getEnv(instance.url, 'ADMIN_PASSWORD'),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
+                    });
                 }
 
                 test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
@@ -50,6 +84,17 @@ test.describe(apps.smtp4dev.title, () => {
                     }
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
+
+                test(`API: Unsuccessful messages - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                        auth: {
+                            username: variant.username,
+                            password: faker.string.alpha(10),
+                        },
+                        validateStatus: () => true,
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
             }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
@@ -59,6 +104,27 @@ test.describe(apps.smtp4dev.title, () => {
                     // Ignore error
                 }
                 await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
+            });
+
+            test('API: Successful get messages', async () => {
+                const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                    auth: {
+                        username: 'admin',
+                        password: getEnv(instance.url, 'ADMIN_PASSWORD'),
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const data = response.data as Smtp4devResponse;
+                expect(typeof data.currentPage, 'Data currentPage should be number').toStrictEqual('number');
+                expect(typeof data.firstRowOnPage, 'Data firstRowOnPage should be number').toStrictEqual('number');
+                expect(typeof data.lastRowOnPage, 'Data lastRowOnPage should be number').toStrictEqual('number');
+                expect(typeof data.pageCount, 'Data pageCount should be number').toStrictEqual('number');
+                expect(typeof data.pageSize, 'Data pageSize should be number').toStrictEqual('number');
+                expect(typeof data.rowCount, 'Data rowCount should be number').toStrictEqual('number');
+                expect(data.results, 'Data results should be array').toBeInstanceOf(Array);
+                expect(data.currentPage, 'Data results should be array').toStrictEqual(1);
+                expect(data.lastRowOnPage, 'Data results should be array').toBeGreaterThanOrEqual(data.firstRowOnPage);
+                expect(data.pageSize, 'Data results should be array').toStrictEqual(10);
             });
         });
     }
