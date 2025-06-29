@@ -23,15 +23,12 @@ services:
     <<: *common-service-options
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     init: true
-    hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in dashboard header
+    hostname: placeholder # This fixes random container hostname in dashboard header
     build:
       context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
     env_file:
       - ./app-secrets/app.env
-    environment:
-      <<: *common-env-variables
-      FTLCONF_webserver_domain: ${DOCKER_COMPOSE_APP_NAME}
     volumes:
       - ./app-data/pihole/data:/etc/pihole:rw
     # Hard-coded DNS is necessary because of bootstrapping problem
