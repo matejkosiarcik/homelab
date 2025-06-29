@@ -123,6 +123,30 @@ load_password() {
     printf 'MOTIONEYE_KITCHEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache status)"
     printf 'MOTIONEYE_KITCHEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache prometheus)"
 
+    printf 'NODE_EXPORTER_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-macbook-pro-2012 app prometheus)"
+    printf 'NODE_EXPORTER_MACBOOK_PRO_2012_PROXY_STATUS_PASSWORD=%s\n' "$(load_password node-exporter-macbook-pro-2012 apache status)"
+    printf 'NODE_EXPORTER_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-macbook-pro-2012 apache prometheus)"
+
+    printf 'NODE_EXPORTER_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-odroid-h3 app prometheus)"
+    printf 'NODE_EXPORTER_ODROID_H3_PROXY_STATUS_PASSWORD=%s\n' "$(load_password node-exporter-odroid-h3 apache status)"
+    printf 'NODE_EXPORTER_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-odroid-h3 apache prometheus)"
+
+    printf 'NODE_EXPORTER_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-odroid-h4-ultra app prometheus)"
+    printf 'NODE_EXPORTER_ODROID_H4_ULTRA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password node-exporter-odroid-h4-ultra apache status)"
+    printf 'NODE_EXPORTER_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-odroid-h4-ultra apache prometheus)"
+
+    printf 'NODE_EXPORTER_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-3b app prometheus)"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_3B_PROXY_STATUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-3b apache status)"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-3b apache prometheus)"
+
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-4b-2g app prometheus)"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-4b-2g apache status)"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-4b-2g apache prometheus)"
+
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-4b-4g app prometheus)"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-4b-4g apache status)"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password node-exporter-raspberry-pi-4b-4g apache prometheus)"
+
     printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(load_password ntfy app admin)"
     printf 'NTFY_USER_PASSWORD=%s\n' "$(load_password ntfy app user)"
     printf 'NTFY_PUBLISHER_PASSWORD=%s\n' "$(load_password ntfy app publisher)"

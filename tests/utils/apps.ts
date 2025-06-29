@@ -108,6 +108,15 @@ export const apps = {
             { url: 'https://ntfy.home.matejkosiarcik.com', title: 'Ntfy' },
         ],
     },
+    'node-exporter': {
+        title: 'Node Exporter',
+        instances: [
+            // { url: 'https://node-exporter-odroid-h3.home.matejkosiarcik.com', title: 'Glances - Odroid H3' },
+            { url: 'https://node-exporter-odroid-h4-ultra.home.matejkosiarcik.com', title: 'Glances - Odroid H4 Ultra' },
+            { url: 'https://node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com', title: 'Glances - Raspberry Pi 4B 2GB' },
+            { url: 'https://node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com', title: 'Glances - Raspberry Pi 4B 4GB' },
+        ],
+    },
     'omada-controller': {
         title: 'Omada Controller',
         instances: [
