@@ -5,6 +5,9 @@ COPY ./external/smtp4dev/icons/favicon.ico /app/wwwroot/favicon.ico
 ENV HOMELAB_CONTAINER_NAME=smtp4dev \
     HOMELAB_CONTAINER_VARIANT=default \
     ServerOptions__LockSettings=true \
+    ServerOptions__Users__0__DefaultMailbox=Default \
+    ServerOptions__Users__0__Username=admin \
+    ServerOptions__WebAuthenticationRequired=true \
     TZ=Europe/Bratislava \
     URLS=http://*:5000
 
