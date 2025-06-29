@@ -297,8 +297,7 @@
         # TODO: Eventually enable prometheus widget to use prometheus directly - https://github.com/gethomepage/homepage/discussions/1985
         widget:
           type: prometheus
-          url: http://widget-prometheus:8080
-          # url: "https://admin:{{HOMEPAGE_VAR_PROMETHEUS_PASSWORD}}@prometheus.home.matejkosiarcik.com"
+          url: http://widgets:8080/prometheus
 
     - Dozzle:
         description: Docker monitoring
@@ -374,6 +373,17 @@
         href: https://smtp4dev.home.matejkosiarcik.com
         ping: smtp4dev.home.matejkosiarcik.com
         icon: /icons/smtp4dev.png
+        widget:
+          type: customapi
+          url: http://widgets:8080/smtp4dev
+          refreshInterval: 15000 # 15 seconds
+          mappings:
+            - label: "Total"
+              field: total
+              format: number
+            - label: "Unread"
+              field: unread
+              format: number
 
     - Minio:
         description: S3 compatible storage

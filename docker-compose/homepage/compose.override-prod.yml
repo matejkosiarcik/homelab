@@ -26,7 +26,7 @@ services:
   apache-prometheus-exporter:
     <<: *common-service-options
 
-  widget-prometheus:
+  widgets:
     <<: *common-service-options
 
 networks:

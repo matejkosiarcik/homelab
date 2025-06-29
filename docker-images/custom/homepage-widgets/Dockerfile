@@ -2,8 +2,8 @@
 
 FROM node:24.3.0-slim AS nodejs-build
 WORKDIR /homelab
-COPY ./custom/homepage-widget-prometheus/package-lock.json ./custom/homepage-widget-prometheus/package.json ./custom/homepage-widget-prometheus/tsconfig.json ./
-COPY ./custom/homepage-widget-prometheus/src/ ./src/
+COPY ./custom/homepage-widgets/package-lock.json ./custom/homepage-widgets/package.json ./custom/homepage-widgets/tsconfig.json ./
+COPY ./custom/homepage-widgets/src/ ./src/
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
@@ -18,7 +18,7 @@ FROM node:24.3.0-slim
 WORKDIR /homelab
 COPY --from=prefinal /homelab/node_modules ./node_modules
 COPY --from=prefinal /homelab/ ./
-ENV HOMELAB_CONTAINER_NAME=homepage-widget-prometheus \
+ENV HOMELAB_CONTAINER_NAME=homepage-widgets \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "sh", "-c", "node ./dist/healthcheck.js || exit 1" ]
