@@ -183,6 +183,7 @@ RewriteRule ^ /web/favicon.png [L,R=302]
 
 # Minio favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
+RewriteCond %{ENV:HOMELAB_APP_VARIANT} console [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /favicon-32x32.png [L,R=302]
 
