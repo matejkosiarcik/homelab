@@ -41,7 +41,7 @@ type Smtp4devResponse = {
 };
 app.get('/smtp4dev', async (_: Request, response: Response) => {
     try {
-        const axiosResponse = await axios.get('https://smtp4dev.home.matejkosiarcik.com/api/messages?page=1&pageSize=1000', {
+        const axiosResponse = await axios.get('https://smtp4dev.home.matejkosiarcik.com/api/messages?page=1&pageSize=100', {
             headers: {
                 authorization: `Basic ${Buffer.from(`admin:${process.env['SMTP4DEV_PASSWORD']}`).toString('base64')}`,
             },
