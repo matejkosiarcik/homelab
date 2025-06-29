@@ -33,13 +33,21 @@ test.describe(apps.smtp4dev.title, () => {
 
                 test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
-                    await page.goto(instance.url);
+                    try {
+                        await page.goto(instance.url);
+                    } catch {
+                        // Ignore error
+                    }
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
             }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
-                await page.goto(instance.url);
+                try {
+                    await page.goto(instance.url);
+                } catch {
+                    // Ignore error
+                }
                 await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
             });
         });
