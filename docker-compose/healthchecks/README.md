@@ -18,9 +18,9 @@
 
 - \[Prod\] Temporarily turn on registrations and create admin account
 - \[Prod\] Configure notifications: ntfy / gotify / smtp
-    - `https://ntfy.home.matejkosiarcik.com` + topic + access-token
-    - `https://gotify.home.matejkosiarcik.com` + token
-    - `system@healthchecks.home.matejkosiarcik.com`
+    - `https://ntfy.matejhome.com` + topic + access-token
+    - `https://gotify.matejhome.com` + token
+    - `system@healthchecks.matejhome.com`
 - \[Prod\] Add notifications to _All_ group
 - \[Prod\] Generate api-key / api-key (readonly) / ping-key and save it in Vaultwarden
 - \[Prod\] Run script to create all healthchecks

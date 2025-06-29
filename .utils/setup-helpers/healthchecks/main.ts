@@ -55,7 +55,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     }
 
     axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || '';
-    axios.defaults.baseURL = 'https://healthchecks.home.matejkosiarcik.com/api/v3';
+    axios.defaults.baseURL = 'https://healthchecks.matejhome.com/api/v3';
     axios.defaults.validateStatus = () => true;
 
     await (async () => {

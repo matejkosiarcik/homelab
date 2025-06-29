@@ -15,7 +15,7 @@ export async function delay(timeout: number): Promise<void> {
 }
 
 export function getEnv(instanceUrl: string, name: string): string {
-    const instanceName = URL.parse(instanceUrl)!.hostname.replace(/\.home\.matejkosiarcik\.com$/, '').replaceAll('-', '_');
+    const instanceName = URL.parse(instanceUrl)!.hostname.replace(/\.matejhome\.com$/, '').replaceAll('-', '_');
     const envName = `${instanceName}_${name}`.toUpperCase();
     if (!(envName in process.env) || !process.env[envName]) {
         throw new Error(`Environment variable "${envName}" not set`);

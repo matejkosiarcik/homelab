@@ -25,23 +25,23 @@
 
     - UniFi Controller:
         description: SDN manager
-        href: https://unifi-controller.home.matejkosiarcik.com
-        ping: unifi-controller.home.matejkosiarcik.com
+        href: https://unifi-controller.matejhome.com
+        ping: unifi-controller.matejhome.com
         icon: /icons/unifi.png
         widget:
           type: unifi
-          url: https://unifi-controller.home.matejkosiarcik.com
+          url: https://unifi-controller.matejhome.com
           username: homepage
           password: "{{HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD}}"
 
     - Omada Controller:
         description: SDN manager
-        href: https://omada-controller.home.matejkosiarcik.com
-        ping: omada-controller.home.matejkosiarcik.com
+        href: https://omada-controller.matejhome.com
+        ping: omada-controller.matejhome.com
         icon: /icons/tp-link-omada.png
         widget:
           type: omada
-          url: https://omada-controller.home.matejkosiarcik.com
+          url: https://omada-controller.matejhome.com
           username: homepage
           password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
           site: Home
@@ -108,81 +108,81 @@
 - DNS:
     - PiHole 1 Primary:
         description: DNS server with built-in adblocking
-        href: https://pihole-1-primary.home.matejkosiarcik.com
-        ping: pihole-1-primary.home.matejkosiarcik.com
+        href: https://pihole-1-primary.matejhome.com
+        ping: pihole-1-primary.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-primary.home.matejkosiarcik.com
+          url: https://pihole-1-primary.matejhome.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD}}"
 
     - PiHole 1 Secondary:
         description: DNS server with built-in adblocking
-        href: https://pihole-1-secondary.home.matejkosiarcik.com
-        ping: pihole-1-secondary.home.matejkosiarcik.com
+        href: https://pihole-1-secondary.matejhome.com
+        ping: pihole-1-secondary.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-secondary.home.matejkosiarcik.com
+          url: https://pihole-1-secondary.matejhome.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD}}"
 
     - PiHole 2 Primary:
         description: DNS server with built-in adblocking
-        href: https://pihole-2-primary.home.matejkosiarcik.com
-        ping: pihole-2-primary.home.matejkosiarcik.com
+        href: https://pihole-2-primary.matejhome.com
+        ping: pihole-2-primary.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-primary.home.matejkosiarcik.com
+          url: https://pihole-2-primary.matejhome.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD}}"
 
     - PiHole 2 Secondary:
         description: DNS server with built-in adblocking
-        href: https://pihole-2-secondary.home.matejkosiarcik.com
-        ping: pihole-2-secondary.home.matejkosiarcik.com
+        href: https://pihole-2-secondary.matejhome.com
+        ping: pihole-2-secondary.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-secondary.home.matejkosiarcik.com
+          url: https://pihole-2-secondary.matejhome.com
           version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD}}"
 
     - Unbound 1 Default:
         description: Entrypoint DNS server
-        href: https://unbound-1-default.home.matejkosiarcik.com
-        ping: unbound-1-default.home.matejkosiarcik.com
+        href: https://unbound-1-default.matejhome.com
+        ping: unbound-1-default.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound 1 Open:
         description: Entrypoint DNS server
-        href: https://unbound-1-open.home.matejkosiarcik.com
-        ping: unbound-1-open.home.matejkosiarcik.com
+        href: https://unbound-1-open.matejhome.com
+        ping: unbound-1-open.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound 2 Default:
         description: Entrypoint DNS server
-        href: https://unbound-2-default.home.matejkosiarcik.com
-        ping: unbound-2-default.home.matejkosiarcik.com
+        href: https://unbound-2-default.matejhome.com
+        ping: unbound-2-default.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound 2 Open:
         description: Entrypoint DNS server
-        href: https://unbound-2-open.home.matejkosiarcik.com
-        ping: unbound-2-open.home.matejkosiarcik.com
+        href: https://unbound-2-open.matejhome.com
+        ping: unbound-2-open.matejhome.com
         icon: /icons/unbound.png
 
 - Smart Home:
     - Home Assistant:
         description: Smart Home system
-        href: https://homeassistant.home.matejkosiarcik.com
-        ping: homeassistant.home.matejkosiarcik.com
+        href: https://homeassistant.matejhome.com
+        ping: homeassistant.matejhome.com
         icon: /icons/homeassistant.png
         widget:
           type: homeassistant
-          url: https://homeassistant.home.matejkosiarcik.com
+          url: https://homeassistant.matejhome.com
           key: "{{HOMEPAGE_VAR_HOMEASSISTANT_APIKEY}}"
           custom:
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
@@ -190,49 +190,49 @@
 
     - MotionEye Kitchen:
         description: Camera system
-        href: https://motioneye-kitchen.home.matejkosiarcik.com
-        ping: motioneye-kitchen.home.matejkosiarcik.com
+        href: https://motioneye-kitchen.matejhome.com
+        ping: motioneye-kitchen.matejhome.com
         icon: /icons/motioneye.png
         widget:
           type: mjpeg
-          stream: "https://user:{{HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD}}@motioneye-kitchen.home.matejkosiarcik.com/stream"
+          stream: "https://user:{{HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD}}@motioneye-kitchen.matejhome.com/stream"
 
     - Desklamp - left:
         description: Custom smart lamp
-        href: http://desklamp-left.home.matejkosiarcik.com
-        ping: desklamp-left.home.matejkosiarcik.com
+        href: http://desklamp-left.matejhome.com
+        ping: desklamp-left.matejhome.com
         icon: /icons/lightbulb.png
 
     - Desklamp - right:
         description: Custom smart lamp
-        href: http://desklamp-right.home.matejkosiarcik.com
-        ping: desklamp-right.home.matejkosiarcik.com
+        href: http://desklamp-right.matejhome.com
+        ping: desklamp-right.matejhome.com
         icon: /icons/lightbulb.png
 
 - Data:
     - SMB (data):
         description: Main data store
-        href: javascript:copyUrl('smb://samba-data.home.matejkosiarcik.com')
-        ping: samba-data.home.matejkosiarcik.com
+        href: javascript:copyUrl('smb://samba-data.matejhome.com')
+        ping: samba-data.matejhome.com
         icon: /icons/samba.png
         target: _self
 
     - SMB (snapshots):
         description: ZFS Snapshots from main data store
-        href: javascript:copyUrl('smb://samba-snapshots.home.matejkosiarcik.com')
-        ping: samba-snapshots.home.matejkosiarcik.com
+        href: javascript:copyUrl('smb://samba-snapshots.matejhome.com')
+        ping: samba-snapshots.matejhome.com
         icon: /icons/samba.png
         target: _self
 
 - Media:
     - Jellyfin:
         description: Media server
-        href: https://jellyfin.home.matejkosiarcik.com
-        ping: jellyfin.home.matejkosiarcik.com
+        href: https://jellyfin.matejhome.com
+        ping: jellyfin.matejhome.com
         icon: /icons/jellyfin.png
         widget:
           type: jellyfin
-          url: https://jellyfin.home.matejkosiarcik.com
+          url: https://jellyfin.matejhome.com
           key: "{{HOMEPAGE_VAR_JELLYFIN_PASSWORD}}"
           enableBlocks: false
           enableNowPlaying: true
@@ -242,57 +242,57 @@
 
     - Tvheadend:
         description: Live TV
-        href: https://tvheadend.home.matejkosiarcik.com
-        ping: tvheadend.home.matejkosiarcik.com
+        href: https://tvheadend.matejhome.com
+        ping: tvheadend.matejhome.com
         icon: /icons/tvheadend.png
 
 - Monitoring:
     - Healthchecks:
         description: Cron monitoring system
-        href: https://healthchecks.home.matejkosiarcik.com
-        ping: healthchecks.home.matejkosiarcik.com
+        href: https://healthchecks.matejhome.com
+        ping: healthchecks.matejhome.com
         icon: /icons/healthchecks.png
         widget:
           type: healthchecks
-          url: https://healthchecks.home.matejkosiarcik.com
+          url: https://healthchecks.matejhome.com
           key: "{{HOMEPAGE_VAR_HEALTHCHECKS_APIKEY}}"
 
     - Gatus 1:
         description: Uptime monitoring system
-        href: https://gatus-1.home.matejkosiarcik.com
-        ping: gatus-1.home.matejkosiarcik.com
+        href: https://gatus-1.matejhome.com
+        ping: gatus-1.matejhome.com
         icon: /icons/gatus.png
         widget:
           type: gatus
-          url: https://gatus-1.home.matejkosiarcik.com
+          url: https://gatus-1.matejhome.com
           username: admin
           password: "{{HOMEPAGE_VAR_GATUS_PASSWORD}}"
 
     - Gatus 2:
         description: Uptime monitoring system
-        href: https://gatus-2.home.matejkosiarcik.com
-        ping: gatus-2.home.matejkosiarcik.com
+        href: https://gatus-2.matejhome.com
+        ping: gatus-2.matejhome.com
         icon: /icons/gatus.png
         widget:
           type: gatus
-          url: https://gatus-2.home.matejkosiarcik.com
+          url: https://gatus-2.matejhome.com
           username: admin
           password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
 
     - Uptime Kuma:
         description: Uptime monitoring system
-        href: https://uptime-kuma.home.matejkosiarcik.com
-        ping: uptime-kuma.home.matejkosiarcik.com
+        href: https://uptime-kuma.matejhome.com
+        ping: uptime-kuma.matejhome.com
         icon: /icons/uptime-kuma.png
         widget:
           type: uptimekuma
-          url: https://uptime-kuma.home.matejkosiarcik.com
+          url: https://uptime-kuma.matejhome.com
           slug: dashboard
 
     - Prometheus:
         description: Prometheus
-        href: https://prometheus.home.matejkosiarcik.com
-        ping: prometheus.home.matejkosiarcik.com
+        href: https://prometheus.matejhome.com
+        ping: prometheus.matejhome.com
         icon: /icons/prometheus.png
         # TODO: Eventually enable prometheus widget to use prometheus directly - https://github.com/gethomepage/homepage/discussions/1985
         widget:
@@ -301,77 +301,77 @@
 
     - Dozzle:
         description: Docker monitoring
-        href: https://dozzle.home.matejkosiarcik.com
-        ping: dozzle.home.matejkosiarcik.com
+        href: https://dozzle.matejhome.com
+        ping: dozzle.matejhome.com
         icon: /icons/dozzle.png
 
     - SpeedTest Tracker:
         description: Internet speed monitoring system
-        href: https://speedtest-tracker.home.matejkosiarcik.com
-        ping: speedtest-tracker.home.matejkosiarcik.com
+        href: https://speedtest-tracker.matejhome.com
+        ping: speedtest-tracker.matejhome.com
         icon: /icons/speedtest.png
         widget:
           type: speedtest
-          url: https://speedtest-tracker.home.matejkosiarcik.com
+          url: https://speedtest-tracker.matejhome.com
           key: "{{HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY}}"
           version: 2
           bitratePrecision: 1
 
     - Changedetection:
         description: Website change monitoring system
-        href: https://changedetection.home.matejkosiarcik.com
-        ping: changedetection.home.matejkosiarcik.com
+        href: https://changedetection.matejhome.com
+        ping: changedetection.matejhome.com
         icon: /icons/changedetection.png
         widget:
           type: changedetectionio
-          url: https://changedetection.home.matejkosiarcik.com
+          url: https://changedetection.matejhome.com
           key: "{{HOMEPAGE_VAR_CHANGEDETECTION_APIKEY}}"
 
     - NetAlertX:
         description: Network monitoring
-        href: https://netalertx.home.matejkosiarcik.com
-        ping: netalertx.home.matejkosiarcik.com
+        href: https://netalertx.matejhome.com
+        ping: netalertx.matejhome.com
         icon: /icons/netalertx.png
         # widget:
         #   type: netalertx
-        #   url: https://netalertx.home.matejkosiarcik.com
+        #   url: https://netalertx.matejhome.com
         #   key: "{{HOMEPAGE_VAR_NETALERTX_APIKEY}}"
 
 - Other Apps:
     - Homepage:
         description: Dashboard
-        href: https://homepage.home.matejkosiarcik.com
-        ping: homepage.home.matejkosiarcik.com
+        href: https://homepage.matejhome.com
+        ping: homepage.matejhome.com
         icon: /icons/homepage.png
 
     - Gotify:
         description: Dashboard
-        href: https://gotify.home.matejkosiarcik.com
-        ping: gotify.home.matejkosiarcik.com
+        href: https://gotify.matejhome.com
+        ping: gotify.matejhome.com
         icon: /icons/gotify.png
 
     - ActualBudget:
         description: Finance manager
-        href: https://actualbudget.home.matejkosiarcik.com
-        ping: actualbudget.home.matejkosiarcik.com
+        href: https://actualbudget.matejhome.com
+        ping: actualbudget.matejhome.com
         icon: /icons/actualbudget.png
 
     - Certbot:
         description: Let's Encrypt certificates
-        href: https://certbot.home.matejkosiarcik.com
-        ping: certbot.home.matejkosiarcik.com
+        href: https://certbot.matejhome.com
+        ping: certbot.matejhome.com
         icon: /icons/lets-encrypt.png
 
     - Dockerhub proxy:
         description: Dockerhub transparent caching proxy
-        href: https://docker-cache-proxy-dockerhub.home.matejkosiarcik.com
-        ping: docker-cache-proxy-dockerhub.home.matejkosiarcik.com
+        href: https://docker-cache-proxy-dockerhub.matejhome.com
+        ping: docker-cache-proxy-dockerhub.matejhome.com
         icon: /icons/docker.png
 
     - Smtp4dev:
         description: Simple email server
-        href: https://smtp4dev.home.matejkosiarcik.com
-        ping: smtp4dev.home.matejkosiarcik.com
+        href: https://smtp4dev.matejhome.com
+        ping: smtp4dev.matejhome.com
         icon: /icons/smtp4dev.png
         widget:
           type: customapi
@@ -387,102 +387,102 @@
 
     - Minio:
         description: S3 compatible storage
-        href: https://minio-console.home.matejkosiarcik.com
-        ping: minio-console.home.matejkosiarcik.com
+        href: https://minio-console.matejhome.com
+        ping: minio-console.matejhome.com
         icon: /icons/minio.png
 
     - Ntfy:
         description: Notifications
-        href: https://ntfy.home.matejkosiarcik.com
-        ping: ntfy.home.matejkosiarcik.com
+        href: https://ntfy.matejhome.com
+        ping: ntfy.matejhome.com
         icon: /icons/ntfy.png
 
     - OpenSpeedTest (HTTP):
         description: LAN speedtest
-        href: https://openspeedtest.home.matejkosiarcik.com
-        ping: openspeedtest.home.matejkosiarcik.com
+        href: https://openspeedtest.matejhome.com
+        ping: openspeedtest.matejhome.com
         icon: /icons/openspeedtest.png
 
     - OpenSpeedTest (HTTPS):
         description: LAN speedtest
-        href: http://openspeedtest.home.matejkosiarcik.com
-        ping: openspeedtest.home.matejkosiarcik.com
+        href: http://openspeedtest.matejhome.com
+        ping: openspeedtest.matejhome.com
         icon: /icons/openspeedtest.png
 
     - Vaultwarden:
         description: Password manager
-        href: https://vaultwarden.home.matejkosiarcik.com
-        ping: vaultwarden.home.matejkosiarcik.com
+        href: https://vaultwarden.matejhome.com
+        ping: vaultwarden.matejhome.com
         icon: /icons/vaultwarden.png
 
     - Vikunja:
         description: ToDo app
-        href: https://vikunja.home.matejkosiarcik.com
-        ping: vikunja.home.matejkosiarcik.com
+        href: https://vikunja.matejhome.com
+        ping: vikunja.matejhome.com
         icon: /icons/vikunja.png
         # widget:
         #   type: vikunja
-        #   url: https://vikunja.home.matejkosiarcik.com
+        #   url: https://vikunja.matejhome.com
         #   key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
         #   enableTaskList: true
 
 - Resources:
     - Glances MacBook Pro 2012:
         description: Resource monitoring
-        href: https://glances-macbook-pro-2012.home.matejkosiarcik.com
-        ping: glances-macbook-pro-2012.home.matejkosiarcik.com
+        href: https://glances-macbook-pro-2012.matejhome.com
+        ping: glances-macbook-pro-2012.matejhome.com
         icon: /icons/glances.png
 
     - Glances Odroid H3:
         description: Resource monitoring
-        href: https://glances-odroid-h3.home.matejkosiarcik.com
-        ping: glances-odroid-h3.home.matejkosiarcik.com
+        href: https://glances-odroid-h3.matejhome.com
+        ping: glances-odroid-h3.matejhome.com
         icon: /icons/glances.png
 
     - Glances Odroid H4 Ultra:
         description: Resource monitoring
-        href: https://glances-odroid-h4-ultra.home.matejkosiarcik.com
-        ping: glances-odroid-h4-ultra.home.matejkosiarcik.com
+        href: https://glances-odroid-h4-ultra.matejhome.com
+        ping: glances-odroid-h4-ultra.matejhome.com
         icon: /icons/glances.png
 
     - Glances Raspberry Pi 4B 2GB:
         description: Resource monitoring
-        href: https://glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
-        ping: glances-raspberry-pi-4b-2g.home.matejkosiarcik.com
+        href: https://glances-raspberry-pi-4b-2g.matejhome.com
+        ping: glances-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/glances.png
 
     - Glances Raspberry Pi 4B 4GB:
         description: Resource monitoring
-        href: https://glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
-        ping: glances-raspberry-pi-4b-4g.home.matejkosiarcik.com
+        href: https://glances-raspberry-pi-4b-4g.matejhome.com
+        ping: glances-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/glances.png
 
     - Node Exporter MacBook Pro 2012:
         description: Resource monitoring
-        href: https://node-exporter-macbook-pro-2012.home.matejkosiarcik.com
-        ping: node-exporter-macbook-pro-2012.home.matejkosiarcik.com
+        href: https://node-exporter-macbook-pro-2012.matejhome.com
+        ping: node-exporter-macbook-pro-2012.matejhome.com
         icon: /icons/placeholder.png
 
     - Node Exporter Odroid H3:
         description: Resource monitoring
-        href: https://node-exporter-odroid-h3.home.matejkosiarcik.com
-        ping: node-exporter-odroid-h3.home.matejkosiarcik.com
+        href: https://node-exporter-odroid-h3.matejhome.com
+        ping: node-exporter-odroid-h3.matejhome.com
         icon: /icons/placeholder.png
 
     - Node Exporter Odroid H4 Ultra:
         description: Resource monitoring
-        href: https://node-exporter-odroid-h4-ultra.home.matejkosiarcik.com
-        ping: node-exporter-odroid-h4-ultra.home.matejkosiarcik.com
+        href: https://node-exporter-odroid-h4-ultra.matejhome.com
+        ping: node-exporter-odroid-h4-ultra.matejhome.com
         icon: /icons/placeholder.png
 
     - Node Exporter Raspberry Pi 4B 2GB:
         description: Resource monitoring
-        href: https://node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com
-        ping: node-exporter-raspberry-pi-4b-2g.home.matejkosiarcik.com
+        href: https://node-exporter-raspberry-pi-4b-2g.matejhome.com
+        ping: node-exporter-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/placeholder.png
 
     - Node Exporter Raspberry Pi 4B 4GB:
         description: Resource monitoring
-        href: https://node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com
-        ping: node-exporter-raspberry-pi-4b-4g.home.matejkosiarcik.com
+        href: https://node-exporter-raspberry-pi-4b-4g.matejhome.com
+        ping: node-exporter-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/placeholder.png

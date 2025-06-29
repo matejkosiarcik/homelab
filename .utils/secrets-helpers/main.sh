@@ -146,7 +146,7 @@ write_healthcheck_url() {
     if [ "$3" = '' ]; then
         healthcheck_url=''
     else
-        healthcheck_url="https://healthchecks.home.matejkosiarcik.com/ping/$3/$1-$2"
+        healthcheck_url="https://healthchecks.matejhome.com/ping/$3/$1-$2"
     fi
     printf 'HOMELAB_HEALTHCHECK_URL=%s\n' "$healthcheck_url" >>"$output/$2.env"
     printf '%s-healthcheck,%s\n' "$2" "$healthcheck_url" >>"$output/all-credentials.csv"

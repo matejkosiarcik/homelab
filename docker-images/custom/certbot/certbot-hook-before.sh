@@ -14,10 +14,11 @@ curl -s --fail -X GET \
     -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
     'https://rest.websupport.sk/v2/check' >/dev/null
 
+# This is for 4th degree subdomains "_acme-challenge.$(printf '%s' "$CERTBOT_DOMAIN" | sed -E 's~\..+$~~')"
 printf 'Adding new DNS record\n' >&2
 record_payload="{
     \"type\": \"TXT\",
-    \"name\": \"_acme-challenge.$(printf '%s' "$CERTBOT_DOMAIN" | sed -E 's~\..+$~~')\",
+    \"name\": \"_acme-challenge\",
     \"content\": \"$CERTBOT_VALIDATION\",
     \"ttl\": 1,
     \"priority\": 0,

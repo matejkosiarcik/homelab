@@ -12,7 +12,7 @@ COPY ./external/healthchecks/icons/healthchecks.png /opt/healthchecks/static-col
 ENV DB=sqlite \
     DB_NAME=/homelab/healthchecks/database.db \
     DEBUG=False \
-    EMAIL_HOST=smtp4dev.home.matejkosiarcik.com \
+    EMAIL_HOST=smtp4dev.matejhome.com \
     EMAIL_PORT=25 \
     EMAIL_USE_SSL=False \
     EMAIL_USE_TLS=False \

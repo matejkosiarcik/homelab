@@ -3,27 +3,27 @@ global:
 
 scrape_configs:
 {%- for app in apps %}
-  - job_name: {{ app.url | replace(".home.matejkosiarcik.com", "") }}-app
+  - job_name: {{ app.url | replace(".matejhome.com", "") }}-app
     scheme: https
     metrics_path: {{ app.path }}
     {%- if app.auth == "basic" %}
     basic_auth:
       username: {{ "admin" if app.url.startswith("uptime-kuma") else "prometheus" }}
-      password: ${{ "{" }}{{ app.url | replace(".home.matejkosiarcik.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_PASSWORD{{ "}" }}
+      password: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_PASSWORD{{ "}" }}
     {%- elif app.auth == "bearer" %}
     authorization:
-      credentials: ${{ "{" }}{{ app.url | replace(".home.matejkosiarcik.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_TOKEN{{ "}" }}
+      credentials: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_TOKEN{{ "}" }}
     {%- endif %}
     static_configs:
       - targets: [{{ app.url }}]
 {%- endfor %}
 {%- for proxy in proxies %}
-  - job_name: {{ proxy.url | replace(".home.matejkosiarcik.com", "") }}-proxy
+  - job_name: {{ proxy.url | replace(".matejhome.com", "") }}-proxy
     scheme: https
     metrics_path: /.proxy/metrics
     basic_auth:
       username: proxy-prometheus
-      password: ${{ "{" }}{{ proxy.url | replace(".home.matejkosiarcik.com", "") | replace("-", "_") | upper() }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}
+      password: ${{ "{" }}{{ proxy.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}
     static_configs:
       - targets: [{{ proxy.url }}]
 {%- endfor %}

@@ -215,7 +215,7 @@
       changed_when: "'CHANGED' in config_bitwarden_cli.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        target='https://vaultwarden.home.matejkosiarcik.com'
+        target='https://vaultwarden.matejhome.com'
         if [ "$(bw config server)" = "$target" ]; then
           exit 0
         fi
@@ -292,7 +292,7 @@
             "max-size": "100m"
           },
           "registry-mirrors": [
-            "https://docker-cache-proxy-dockerhub.home.matejkosiarcik.com"
+            "https://docker-cache-proxy-dockerhub.matejhome.com"
           ],
           "default-address-pools": [
             {
