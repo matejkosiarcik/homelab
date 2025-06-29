@@ -64,7 +64,6 @@ sql 'DELETE FROM client;'
 default_group_id='0'
 sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Open', 0, 0, 'The group without adblocking');"
 open_group_id="$(sql "SELECT id FROM [group] WHERE name='Open';")"
-all_groups="$(printf '%s\n%s\n' "$default_group_id" "$open_group_id")"
 
 # Custom clients
 unbound_default_1_ip='10.1.10.1'
