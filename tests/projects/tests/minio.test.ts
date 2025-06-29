@@ -13,8 +13,9 @@ test.describe(apps.minio.title, () => {
             createPrometheusTests(instance.url, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
             createApiRootTest(instance.url, { headers: { 'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString() }});
             createTcpTests(instance.url, [80, 443]);
-            createTcpTests(instance.consoleUrl, [80, 443], 'console');
+            createTcpTests(instance.consoleUrl, [80, 443], { title: 'console' });
             createFaviconTests(instance.url);
+            createFaviconTests(instance.consoleUrl, { title: 'console' });
 
             test('API: Redirect to console', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();

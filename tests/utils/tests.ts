@@ -6,9 +6,12 @@ import sharp from 'sharp';
 import sharpIco from 'sharp-ico';
 import { axios, getEnv } from './utils';
 
-export function createTcpTests(url: string, ports: number | number[], subtitle?: string | undefined) {
-    const _ports = [ports].flat();
-    return _ports.map((port) => test(`TCP: Connect to port ${port}${subtitle ? ` ${subtitle}` : ''}`, async () => {
+export function createTcpTests(url: string, _ports: number | number[], _options?: { title?: string | undefined } | undefined) {
+    const options = {
+        title: _options?.title ?? '',
+    };
+    const ports = [_ports].flat();
+    return ports.map((port) => test(`TCP: Connect to port ${port}${options.title ? ` ${options.title}` : ''}`, async () => {
         const host = url.replace(/^.*?:\/\//, '');
         const socket = new net.Socket();
         const promiseSocket = new PromiseSocket(socket);
@@ -17,7 +20,7 @@ export function createTcpTests(url: string, ports: number | number[], subtitle?:
     }));
 }
 
-export function createApiRootTest(url: string, _options?: { headers?: Record<string, string> | undefined, title?: string | undefined, status?: number | undefined }) {
+export function createApiRootTest(url: string, _options?: { headers?: Record<string, string> | undefined, title?: string | undefined, status?: number | undefined } | undefined) {
     const options = {
         headers: _options?.headers ?? {},
         title: _options?.title ?? '',
@@ -79,9 +82,12 @@ export function createHttpsToHttpRedirectTests(url: string) {
     ];
 }
 
-export function createFaviconTests(url: string) {
+export function createFaviconTests(url: string, _options?: { title?: string | undefined } | undefined) {
+    const options = {
+        title: _options?.title ?? '',
+    };
     return [
-        test('API: Get favicon.ico', async () => {
+        test(`API: Get favicon.ico${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url}/favicon.ico`,{
                 responseType: 'arraybuffer',
             });
@@ -98,7 +104,7 @@ export function createFaviconTests(url: string) {
                 expect(faviconBuffer.length, `Favicon.ico image ${el[0]} decoded size should be nonzero`).toBeGreaterThan(1);
             }
         }),
-        test('API: Get favicon.png', async () => {
+        test(`API: Get favicon.png${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url}/favicon.png`, {
                 responseType: 'arraybuffer',
             });
