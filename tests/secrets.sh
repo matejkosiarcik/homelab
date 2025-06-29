@@ -23,6 +23,7 @@ load_password() {
 
 {
     printf 'ACTUALBUDGET_PASSWORD=%s\n' "$(load_password actualbudget app admin)"
+    printf 'ACTUALBUDGET_ENCRYPTION_PASSWORD=%s\n' "$(load_password actualbudget app encryption)"
     printf 'ACTUALBUDGET_SYNC_ID=%s\n' "$(load_password actualbudget app sync-id)"
     printf 'ACTUALBUDGET_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget apache status)"
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget apache prometheus)"

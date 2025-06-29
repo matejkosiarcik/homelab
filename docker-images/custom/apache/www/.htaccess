@@ -150,6 +150,11 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} docker-cache-proxy [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.ico$
 RewriteRule ^ /.proxy/icons/docker-cache-proxy/favicon.ico [L]
 
+# Gatus favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} gatus [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /favicon-32x32.png [L,R=302]
+
 # Glances favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} glances [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.ico$
@@ -193,6 +198,11 @@ RewriteRule ^ /.proxy/icons/motioneye/favicon.ico [L]
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ntfy [NC]
 RewriteCond %{REQUEST_URI} ^/favicon.png$
 RewriteRule ^ /static/images/apple-touch-icon.png [L,R=302]
+
+# OpenSpeedtest favicon
+RewriteCond %{ENV:HOMELAB_APP_TYPE} openspeedtest [NC]
+RewriteCond %{REQUEST_URI} ^/favicon.png$
+RewriteRule ^ /assets/images/icons/favicon-32x32.png [L,R=302]
 
 # PiHole favicon
 RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
@@ -260,7 +270,7 @@ RewriteRule ^ /.proxy/not-found [L]
 </If>
 
 # Protect entire Homepage
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$# && %{REQUEST_URI} !~ m#^/favicon-32x32.png$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file

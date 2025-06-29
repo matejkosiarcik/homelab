@@ -49,7 +49,7 @@ test.describe(apps.actualbudget.title, () => {
                         serverURL: instance.url,
                         password: getEnv(instance.url, 'PASSWORD'),
                     });
-                    await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'));
+                    await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'), { password: getEnv(instance.url, 'ENCRYPTION_PASSWORD') });
                     await actualbudgetApi.sync();
                     const accounts = await actualbudgetApi.getAccounts();
                     expect(accounts, 'There should be some accounts').not.toHaveLength(0);
