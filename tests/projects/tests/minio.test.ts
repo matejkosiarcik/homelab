@@ -11,7 +11,11 @@ test.describe(apps.minio.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
-            createApiRootTest(instance.url, { headers: { 'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString() }});
+            createApiRootTest(instance.url, {
+                headers: {
+                    'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString()
+                }
+            });
             createTcpTests(instance.url, [80, 443]);
             createTcpTests(instance.consoleUrl, [80, 443], { title: 'console' });
             createFaviconTests(instance.url);
