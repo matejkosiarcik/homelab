@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-compose/glances/compose.override-prod.yml
+    project_directory: .

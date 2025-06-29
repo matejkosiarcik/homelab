@@ -3,7 +3,7 @@
 FROM pihole/pihole:2025.06.2
 COPY ./external/pihole/custom-domains.txt ./external/pihole/setup.sh /homelab/
 ENV DHCP_ACTIVE=false \
-    FTLCONF_dns_domain= \
+    FTLCONF_dns_domain=home.matejkosiarcik.com \
     FTLCONF_dns_domainNeeded=true \
     FTLCONF_dns_ignoreLocalhost=false \
     FTLCONF_dns_listeningMode=all \

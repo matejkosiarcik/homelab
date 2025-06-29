@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-compose/node-exporter/compose.override-prod.yml
+    project_directory: .
