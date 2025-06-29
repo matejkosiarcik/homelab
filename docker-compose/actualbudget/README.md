@@ -16,5 +16,5 @@
 ## After initial installation
 
 - Setup main password
-- Enable E2E Encryption
+- Enable end-to-end encryption
 - Copy SyncID to vaultwarden
