@@ -80,12 +80,20 @@ def main(argv: List[str]):
     for app in applist:
         if "*" in app:
             matched_apps = [x for x in docker_apps_list_all if re.match(app.replace("*", ".*").replace("-", "\\-"), x)]
+            if len(matched_apps) == 0:
+                if args.only:
+                    print(f"App \"{app}\" not found", file=sys.stderr)
+                else:
+                    assert False, f"App \"{app}\" not found"
             _applist.extend(matched_apps)
         else:
+            if not path.exists(path.join(docker_apps_dir, app)):
+                if args.only:
+                    print(f"App \"{app}\" not found", file=sys.stderr)
+                else:
+                    assert False, f"App \"{app}\" not found"
             _applist.append(app)
     applist = _applist
-    for app in applist:
-        assert path.exists(path.join(docker_apps_dir, app)), f'App "{app}" not found'
 
     command = args.subcommand
     force = args.force
