@@ -461,7 +461,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_token motioneye-kitchen app user)" >>"$output/app.env"
     # TODO: Enable NetAlertX integration
     # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app automation-api-key)" "$output/app.env"
-    printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$(load_token omada-controller app homepage)" >>"$output/app.env"
+    printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$(load_token omada-controller app viewer)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-1-primary app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app admin)" >>"$output/app.env"
@@ -469,7 +469,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY=%s\n' "$(load_token speedtest-tracker app api-key-readonly)" >>"$output/app.env"
-    printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unifi-controller app homepage)" >>"$output/app.env"
+    printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unifi-controller app viewer)" >>"$output/app.env"
     # TODO: Enable Vikunja integration
     # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app automation-api-key)" "$output/app.env"
 
