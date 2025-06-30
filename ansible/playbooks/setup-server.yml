@@ -204,6 +204,12 @@
         name: semver
         global: true
 
+    - name: Install Task runner
+      become: true
+      community.general.npm:
+        name: "@go-task/cli"
+        global: true
+
     - name: Update NPM packages
       become: true
       community.general.npm:
