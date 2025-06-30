@@ -50,13 +50,7 @@ test.describe(apps['home-assistant'].title, () => {
 
             const users = [
                 {
-                    username: 'admin',
-                },
-                {
-                    username: 'homepage',
-                },
-                {
-                    username: 'monika',
+                    username: 'test',
                 },
                 {
                     username: faker.string.alpha(10),

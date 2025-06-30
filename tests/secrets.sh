@@ -95,9 +95,7 @@ load_password() {
     printf 'HEALTHCHECKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password healthchecks apache status)"
     printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password healthchecks apache prometheus)"
 
-    printf 'HOMEASSISTANT_ADMIN_PASSWORD=%s\n' "$(load_password homeassistant app admin)"
-    printf 'HOMEASSISTANT_HOMEPAGE_PASSWORD=%s\n' "$(load_password homeassistant app homepage)"
-    printf 'HOMEASSISTANT_MONIKA_PASSWORD=%s\n' "$(load_password homeassistant app monika)"
+    printf 'HOMEASSISTANT_TEST_PASSWORD=%s\n' "$(load_password homeassistant app test)"
     printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app prometheus-api-key)"
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant apache status)"
     printf 'HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homeassistant apache prometheus)"
