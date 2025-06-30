@@ -25,7 +25,8 @@ Note: LinuxServer unused
 
 - \[Prod\] Finish initial setup and create `admin` user
 - \[Prod\] Configure basic settings
-- \[Prod\] Create non-admin users: `automation`, `matej`, `monika`, `test`
+- \[Prod\] Create admin users: `automation`
+- \[Prod\] Create non-admin users: `matej`, `monika`, `test`
 - \[Prod\] Setup access token for `automation`
 - \[Prod\] Optional: Setup 2FA - <https://www.home-assistant.io/docs/authentication/multi-factor-auth>
 - \[Prod\] Connect smart devices
