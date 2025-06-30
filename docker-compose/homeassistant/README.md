@@ -11,7 +11,7 @@
 
 ---
 
-Note: LinuxServer Unused
+Note: LinuxServer unused
 
 - LinuxServer docs: <https://docs.linuxserver.io/images/docker-homeassistant>
 - LinuxServer GitHub: <https://github.com/linuxserver/docker-homeassistant>
@@ -25,6 +25,7 @@ Note: LinuxServer Unused
 
 - \[Prod\] Finish initial setup and create `admin` user
 - \[Prod\] Configure basic settings
-- \[Prod\] Create non-admin users: `homepage`, `matej`, `monika`, `test`
+- \[Prod\] Create non-admin users: `automation`, `matej`, `monika`, `test`
+- \[Prod\] Setup access token for `automation`
 - \[Prod\] Optional: Setup 2FA - <https://www.home-assistant.io/docs/authentication/multi-factor-auth>
 - \[Prod\] Connect smart devices
