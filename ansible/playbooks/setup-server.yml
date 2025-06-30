@@ -120,17 +120,23 @@
           printf '\n' >>"$HOME/.profile"
         fi
 
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
-          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
-        fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.bashrc" >/dev/null; then
           printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
         fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
-          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
+        if ! grep 'export HOMELAB_ENV=prod' <"$HOME/.bashrc" >/dev/null; then
+          printf 'export HOMELAB_ENV=prod\n' >>"$HOME/.bashrc"
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
+          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
         fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
           printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.profile"
+        fi
+        if ! grep 'export HOMELAB_ENV=prod' <"$HOME/.profile" >/dev/null; then
+          printf 'export HOMELAB_ENV=prod\n' >>"$HOME/.profile"
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
+          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
         fi
 
         after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")"
