@@ -124,7 +124,7 @@ test.describe(apps.healthchecks.title, () => {
                     });
                 }
 
-                // NOTE: Only single negative test because of rate limits
+                // NOTE: Only negative test for non-users because of rate limits
                 if (variant.random) {
                     test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
                         await page.goto(instance.url);
