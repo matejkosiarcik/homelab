@@ -240,7 +240,7 @@
           showEpisodeNumber: false
           expandOneStreamToTwoRows: false
 
-    - Tvheadend:
+    - TVHeadend:
         description: Live TV
         href: https://tvheadend.matejhome.com
         ping: tvheadend.matejhome.com
