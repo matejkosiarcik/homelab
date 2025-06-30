@@ -443,10 +443,10 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_HOMEASSISTANT_APIKEY=%s\n' "$(load_token homeassistant app automation-api-key)" >>"$output/app.env"
-    printf 'HOMEPAGE_VAR_JELLYFIN_PASSWORD=%s\n' "$(load_token jellyfin app homepage-api-key)" >>"$output/app.env"
+    printf 'HOMEPAGE_VAR_JELLYFIN_PASSWORD=%s\n' "$(load_token jellyfin app automation-api-key)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_token motioneye-kitchen app user)" >>"$output/app.env"
     # TODO: Enable NetAlertX integration
-    # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app homepage-api-key)" "$output/app.env"
+    # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app automation-api-key)" "$output/app.env"
     printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$(load_token omada-controller app homepage)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-1-primary app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app admin)" >>"$output/app.env"
@@ -457,7 +457,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY=%s\n' "$(load_token speedtest-tracker app api-key-readonly)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unifi-controller app homepage)" >>"$output/app.env"
     # TODO: Enable Vikunja integration
-    # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app homepage-api-key)" "$output/app.env"
+    # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app automation-api-key)" "$output/app.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
