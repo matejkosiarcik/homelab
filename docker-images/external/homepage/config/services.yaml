@@ -233,7 +233,7 @@
         widget:
           type: jellyfin
           url: https://jellyfin.matejhome.com
-          key: "{{HOMEPAGE_VAR_JELLYFIN_PASSWORD}}"
+          key: "{{HOMEPAGE_VAR_JELLYFIN_APIKEY}}"
           enableBlocks: false
           enableNowPlaying: true
           enableUser: false

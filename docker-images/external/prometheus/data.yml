@@ -5,6 +5,9 @@ apps:
   - url: gatus-2.matejhome.com
     auth: basic
     path: /metrics
+  - url: glances-macbook-pro-2012.matejhome.com
+    auth: basic
+    path: /metrics
   - url: glances-odroid-h3.matejhome.com
     auth: basic
     path: /metrics
@@ -29,6 +32,21 @@ apps:
   - url: minio.matejhome.com
     auth: bearer
     path: /minio/v2/metrics/cluster
+  - url: node-exporter-macbook-pro-2012.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: node-exporter-odroid-h3.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: node-exporter-odroid-h4-ultra.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: node-exporter-raspberry-pi-4b-2g.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: node-exporter-raspberry-pi-4b-4g.matejhome.com
+    auth: basic
+    path: /metrics
   - url: pihole-1-primary.matejhome.com
     auth: basic
     path: /metrics
@@ -56,6 +74,7 @@ proxies:
   - url: dozzle.matejhome.com
   - url: gatus-1.matejhome.com
   - url: gatus-2.matejhome.com
+  - url: glances-macbook-pro-2012.matejhome.com
   - url: glances-odroid-h3.matejhome.com
   - url: glances-odroid-h4-ultra.matejhome.com
   - url: glances-raspberry-pi-4b-2g.matejhome.com
@@ -68,6 +87,11 @@ proxies:
   - url: minio.matejhome.com
   - url: minio-console.matejhome.com
   - url: motioneye-kitchen.matejhome.com
+  - url: node-exporter-macbook-pro-2012.matejhome.com
+  - url: node-exporter-odroid-h3.matejhome.com
+  - url: node-exporter-odroid-h4-ultra.matejhome.com
+  - url: node-exporter-raspberry-pi-4b-2g.matejhome.com
+  - url: node-exporter-raspberry-pi-4b-4g.matejhome.com
   - url: ntfy.matejhome.com
   - url: omada-controller.matejhome.com
   - url: openspeedtest.matejhome.com
