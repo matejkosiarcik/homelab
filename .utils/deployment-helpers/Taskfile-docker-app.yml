@@ -1,0 +1,28 @@
+version: "3"
+silent: true
+
+tasks:
+  build:
+    desc: Build current app
+    cmds:
+      - sh docker-app-main.sh build {{.CLI_ARGS}}
+
+  deploy:
+    desc: Deploy current app (build+stop+start)
+    cmds:
+      - sh docker-app-main.sh deploy {{.CLI_ARGS}}
+
+  secrets:
+    desc: Create new secrets for current app
+    cmds:
+      - sh docker-app-main.sh secrets {{.CLI_ARGS}}
+
+  start:
+    desc: Start current app
+    cmds:
+      - sh docker-app-main.sh start {{.CLI_ARGS}}
+
+  stop:
+    desc: Stop current app
+    cmds:
+      - sh docker-app-main.sh stop {{.CLI_ARGS}}

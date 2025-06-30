@@ -1,0 +1,33 @@
+version: "3"
+silent: true
+
+tasks:
+  build:
+    desc: Build all apps
+    cmds:
+      - sh server-main.py build {{.CLI_ARGS}}
+
+  deploy:
+    desc: Deploy all apps (build+stop+start)
+    cmds:
+      - sh server-main.py deploy {{.CLI_ARGS}}
+
+  install:
+    desc: Global install
+    cmds:
+      - sh server-main.py install {{.CLI_ARGS}}
+
+  secrets:
+    desc: Create new secrets for all apps
+    cmds:
+      - sh server-main.py secrets {{.CLI_ARGS}}
+
+  start:
+    desc: Start all apps
+    cmds:
+      - sh server-main.py start {{.CLI_ARGS}}
+
+  stop:
+    desc: Stop all apps
+    cmds:
+      - sh server-main.py stop {{.CLI_ARGS}}
