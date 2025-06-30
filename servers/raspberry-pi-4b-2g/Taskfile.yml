@@ -3,5 +3,5 @@ silent: true
 
 includes:
   shared:
-    taskfile: ../../../.utils/deployment-helpers/Taskfile-server.yml
+    taskfile: ../../.utils/deployment-helpers/Taskfile-server.yml
     flatten: true
