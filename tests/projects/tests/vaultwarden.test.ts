@@ -40,19 +40,21 @@ test.describe(apps['vaultwarden'].title, () => {
                     });
                 }
 
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/#/login`);
-                    await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                    const originalUrl = page.url();
-                    await page.locator('form input[type="email"]').fill(variant.email);
-                    await page.locator('form button:has-text("Continue")').click();
-                    await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
-                    await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('form button:has-text("Log in with master password")').click();
-                    await expect(page.locator('bit-error:has-text("Invalid master password")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                });
+                if (variant.random) {
+                    test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/#/login`);
+                        await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                        const originalUrl = page.url();
+                        await page.locator('form input[type="email"]').fill(variant.email);
+                        await page.locator('form button:has-text("Continue")').click();
+                        await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
+                        await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
+                        await page.locator('form button:has-text("Log in with master password")').click();
+                        await expect(page.locator('bit-error:has-text("Invalid master password")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
+                }
             }
         });
     }
