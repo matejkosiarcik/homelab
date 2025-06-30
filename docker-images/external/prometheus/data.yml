@@ -14,6 +14,9 @@ apps:
   - url: glances-odroid-h4-ultra.matejhome.com
     auth: basic
     path: /metrics
+  - url: glances-raspberry-pi-3b.matejhome.com
+    auth: basic
+    path: /metrics
   - url: glances-raspberry-pi-4b-2g.matejhome.com
     auth: basic
     path: /metrics
@@ -39,6 +42,9 @@ apps:
     auth: basic
     path: /metrics
   - url: node-exporter-odroid-h4-ultra.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: node-exporter-raspberry-pi-3b.matejhome.com
     auth: basic
     path: /metrics
   - url: node-exporter-raspberry-pi-4b-2g.matejhome.com
@@ -77,6 +83,7 @@ proxies:
   - url: glances-macbook-pro-2012.matejhome.com
   - url: glances-odroid-h3.matejhome.com
   - url: glances-odroid-h4-ultra.matejhome.com
+  - url: glances-raspberry-pi-3b.matejhome.com
   - url: glances-raspberry-pi-4b-2g.matejhome.com
   - url: glances-raspberry-pi-4b-4g.matejhome.com
   - url: gotify.matejhome.com
@@ -90,6 +97,7 @@ proxies:
   - url: node-exporter-macbook-pro-2012.matejhome.com
   - url: node-exporter-odroid-h3.matejhome.com
   - url: node-exporter-odroid-h4-ultra.matejhome.com
+  - url: node-exporter-raspberry-pi-3b.matejhome.com
   - url: node-exporter-raspberry-pi-4b-2g.matejhome.com
   - url: node-exporter-raspberry-pi-4b-4g.matejhome.com
   - url: ntfy.matejhome.com
