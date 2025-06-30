@@ -21,44 +21,29 @@ test.describe(apps.jellyfin.title, () => {
                 expect(response.data, 'Response body').toStrictEqual('Healthy');
             });
 
-            const users = [
-                {
-                    username: 'test',
-                },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
-            ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await page.goto(instance.url);
-                        await page.waitForURL(/\/login\.html(?:\?.*)?$/);
-                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                        await page.locator('input#txtManualName').fill(variant.username);
-                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await page.locator('button[type="submit"]').click();
-                        await page.waitForURL(`${instance.url}/web/#/home.html`);
-                        await expect(page.locator('#indexPage.homePage')).toBeVisible();
-                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
-                    });
-                }
+            test(`UI: Successful login - User test`, async ({ page }) => {
+                await page.goto(instance.url);
+                await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
+                await page.locator('input#txtManualName').fill('test');
+                await page.locator('input#txtManualPassword').fill(getEnv(instance.url, 'TEST_PASSWORD'));
+                await page.locator('button[type="submit"]').click();
+                await page.waitForURL(`${instance.url}/web/#/home.html`);
+                await expect(page.locator('#indexPage.homePage')).toBeVisible();
+                await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+            });
 
-                if (variant.random) {
-                    test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                        await page.goto(instance.url);
-                        await page.waitForURL(/\/login\.html(?:\?.*)?$/);
-                        const originalUrl = page.url();
-                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                        await page.locator('input#txtManualName').fill(variant.username);
-                        await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
-                        await page.locator('button[type="submit"]').click();
-                        await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
-                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                    });
-                }
-            }
+            test('UI: Unsuccessful login - Random user', async ({ page }) => {
+                await page.goto(instance.url);
+                await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                const originalUrl = page.url();
+                await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
+                await page.locator('input#txtManualName').fill(faker.string.alpha(10));
+                await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
+                await page.locator('button[type="submit"]').click();
+                await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
+                await expect(page, 'URL should not change').toHaveURL(originalUrl);
+            });
         });
     }
 });
