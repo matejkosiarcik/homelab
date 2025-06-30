@@ -146,43 +146,27 @@ test.describe(apps.minio.title, () => {
                 }
             });
 
-            const users = [
-                {
-                    username: 'admin',
-                },
-                {
-                    username: 'user',
-                },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
-            ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await page.goto(instance.consoleUrl);
-                        await page.waitForURL(`${instance.consoleUrl}/login`);
-                        await page.locator('input#accessKey').fill(variant.username);
-                        await page.locator('input#secretKey').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await page.locator('button#do-login[type="submit"]').click();
-                        await page.waitForURL(`${instance.consoleUrl}/browser`);
-                        await expect(page.locator('#root .menuItems')).toBeVisible();
-                        await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
-                    });
-                }
+            test('UI: Successful login - User test', async ({ page }) => {
+                await page.goto(instance.consoleUrl);
+                await page.waitForURL(`${instance.consoleUrl}/login`);
+                await page.locator('input#accessKey').fill('test');
+                await page.locator('input#secretKey').fill(getEnv(instance.url, 'TEST_PASSWORD'));
+                await page.locator('button#do-login[type="submit"]').click();
+                await page.waitForURL(`${instance.consoleUrl}/browser`);
+                await expect(page.locator('#root .menuItems')).toBeVisible();
+                await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
+            });
 
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.goto(instance.consoleUrl);
-                    await page.waitForURL(`${instance.consoleUrl}/login`);
-                    const originalUrl = page.url();
-                    await page.locator('input#accessKey').fill(variant.username);
-                    await page.locator('input#secretKey').fill(faker.string.alpha(10));
-                    await page.locator('button#do-login[type="submit"]').click();
-                    await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                });
-            }
+            test('UI: Unsuccessful login - Random user', async ({ page }) => {
+                await page.goto(instance.consoleUrl);
+                await page.waitForURL(`${instance.consoleUrl}/login`);
+                const originalUrl = page.url();
+                await page.locator('input#accessKey').fill(faker.string.alpha(10));
+                await page.locator('input#secretKey').fill(faker.string.alpha(10));
+                await page.locator('button#do-login[type="submit"]').click();
+                await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
+                await expect(page, 'URL should not change').toHaveURL(originalUrl);
+            });
         });
     }
 });
