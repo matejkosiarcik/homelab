@@ -23,10 +23,7 @@ test.describe(apps.jellyfin.title, () => {
 
             const users = [
                 {
-                    username: 'admin',
-                },
-                {
-                    username: 'monika',
+                    username: 'test',
                 },
                 {
                     username: faker.string.alpha(10),
