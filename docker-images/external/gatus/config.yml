@@ -484,7 +484,7 @@ endpoints:
   # - <<: *default-https
   #   name: Docker Cache Proxy - DockerHub - Proxy prometheus metrics
   #   group: App - Docker Cache Proxy - DockerHub
-  #   url: https://proxy-prometheus:${DOCKERHUB_CACHE_PROXY_PROXY_PROMETHEUS_PASSWORD}@docker-cache-proxy-dockerhub.matejhome.com/.proxy/metrics
+  #   url: https://proxy-prometheus:${DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_PROMETHEUS_PASSWORD}@docker-cache-proxy-dockerhub.matejhome.com/.proxy/metrics
 
   - <<: *default-https
     name: Docker Cache Proxy - DockerHub - API endpoint
