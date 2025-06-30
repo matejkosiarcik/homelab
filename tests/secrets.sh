@@ -233,9 +233,7 @@ load_password() {
     printf 'UPTIME_KUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache status)"
     printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache prometheus)"
 
-    printf 'VAULTWARDEN_SUPERADMIN_PASSWORD=%s\n' "$(load_password vaultwarden app superadmin)"
-    printf 'VAULTWARDEN_ADMIN_PASSWORD=%s\n' "$(load_password vaultwarden app admin)"
-    printf 'VAULTWARDEN_HOMELAB_PASSWORD=%s\n' "$(load_password vaultwarden app homelab)"
+    printf 'VAULTWARDEN_TEST_PASSWORD=%s\n' "$(load_password vaultwarden app test)"
     printf 'VAULTWARDEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vaultwarden apache status)"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden apache prometheus)"
 } >>'.secrets.env'

@@ -15,12 +15,8 @@ test.describe(apps['vaultwarden'].title, () => {
 
             const users = [
                 {
-                    username: 'admin',
-                    email: 'admin@vaultwarden.matejhome.com',
-                },
-                {
-                    username: 'homelab',
-                    email: 'homelab@vaultwarden.matejhome.com',
+                    username: 'test',
+                    email: 'test@vaultwarden.matejhome.com',
                 },
                 {
                     username: faker.string.alpha(10),
@@ -39,29 +35,25 @@ test.describe(apps['vaultwarden'].title, () => {
                         await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                         await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
                         await page.locator('form button:has-text("Log in with master password")').click();
-                        await page.locator('form input#bit-input-2').waitFor({ state: 'visible', timeout: 2000 });
+                        await page.waitForURL(`${instance.url}/#/vault`);
+                        await page.locator('app-vault').waitFor();
                     });
                 }
 
-                // NOTE: Only single negative test because of rate limits
-                if (variant.random) {
-                    test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                        await page.goto(instance.url);
-                        await page.waitForURL(`${instance.url}/#/login`);
-                        await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                        const originalUrl = page.url();
-                        await page.locator('form input[type="email"]').fill(variant.email);
-                        await page.locator('form button:has-text("Continue")').click();
-                        await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
-                        await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
-                        await page.locator('form button:has-text("Log in with master password")').click();
-                        await expect(page.locator('bit-error:has-text("Invalid master password")')).toBeVisible();
-                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                    });
-                }
+                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/#/login`);
+                    await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                    const originalUrl = page.url();
+                    await page.locator('form input[type="email"]').fill(variant.email);
+                    await page.locator('form button:has-text("Continue")').click();
+                    await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
+                    await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
+                    await page.locator('form button:has-text("Log in with master password")').click();
+                    await expect(page.locator('bit-error:has-text("Invalid master password")')).toBeVisible();
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                });
             }
-
-            // NOTE: Unsuccessful Superadmin login skipped because of application throttling bad attempts and locking the account temporarily
         });
     }
 });
