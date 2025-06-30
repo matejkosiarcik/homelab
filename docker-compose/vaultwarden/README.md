@@ -18,4 +18,7 @@ Bitwarden:
 
 ## After initial installation
 
-- \[Prod\] Setup folders for all homelab services, and in each folder setup all secrets for each service
+- \[Prod\] Create `admin` account
+- \[Prod\] Create `Homelab collection/organization`
+- \[Prod\] Create `homelab` and `test` accounts
+- \[Prod\] Import passwords

@@ -22,7 +22,8 @@ LinuxServer (unofficial):
 ## After initial installation
 
 - \[Prod\] Complete initial setup wizard
-    - Create "admin" user
+    - Create `admin` users
+    - Create `monika` and `test` users
     - Disable remote connections
 - \[Prod\] Customize settings (eg. ) (location: Settings -> Administration -> General)
     - Disable "Quick Connect"

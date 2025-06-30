@@ -100,45 +100,27 @@ test.describe(apps.healthchecks.title, () => {
                 });
             }
 
-            const users = [
-                {
-                    username: 'admin',
-                    email: 'admin@healthchecks.matejhome.com',
-                },
-                {
-                    username: faker.string.alpha(10),
-                    email: `${faker.string.alpha(8)}@healthchecks.matejhome.com`,
-                    random: true,
-                }
-            ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await page.goto(instance.url);
-                        await page.waitForURL(/\/accounts\/login\/?$/);
-                        await page.locator('input[name="email"]').fill(variant.email);
-                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
-                        await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
-                        await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
-                    });
-                }
+            test(`UI: Successful login - User admin`, async ({ page }) => {
+                await page.goto(instance.url);
+                await page.waitForURL(/\/accounts\/login\/?$/);
+                await page.locator('input[name="email"]').fill('admin@healthchecks.matejhome.com');
+                await page.locator('input[name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
+                await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
+            });
 
-                // NOTE: Only single negative test because of rate limits
-                if (variant.random) {
-                    test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                        await page.goto(instance.url);
-                        await page.waitForURL(/\/accounts\/login\/?$/);
-                        const originalUrl = page.url();
-                        await page.locator('input[name="email"]').fill(variant.email);
-                        await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
-                        await page.waitForURL(/\/accounts\/login\/?$/);
-                        await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
-                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                    });
-                }
-            }
+            test('UI: Unsuccessful login - Random user', async ({ page }) => {
+                await page.goto(instance.url);
+                await page.waitForURL(/\/accounts\/login\/?$/);
+                const originalUrl = page.url();
+                await page.locator('input[name="email"]').fill(`${faker.string.alpha(8)}@healthchecks.matejhome.com`);
+                await page.locator('input[name="password"]').fill(faker.string.alpha(10));
+                await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                await page.waitForURL(/\/accounts\/login\/?$/);
+                await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
+                await expect(page, 'URL should not change').toHaveURL(originalUrl);
+            });
         });
     }
 });

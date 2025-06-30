@@ -95,10 +95,8 @@ load_password() {
     printf 'HEALTHCHECKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password healthchecks apache status)"
     printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password healthchecks apache prometheus)"
 
-    printf 'HOMEASSISTANT_ADMIN_PASSWORD=%s\n' "$(load_password homeassistant app admin)"
-    printf 'HOMEASSISTANT_HOMEPAGE_PASSWORD=%s\n' "$(load_password homeassistant app homepage)"
-    printf 'HOMEASSISTANT_MONIKA_PASSWORD=%s\n' "$(load_password homeassistant app monika)"
-    printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app prometheus-api-key)"
+    printf 'HOMEASSISTANT_TEST_PASSWORD=%s\n' "$(load_password homeassistant app test)"
+    printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app automation-api-key)"
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant apache status)"
     printf 'HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homeassistant apache prometheus)"
 
@@ -106,8 +104,7 @@ load_password() {
     printf 'HOMEPAGE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homepage apache status)"
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homepage apache prometheus)"
 
-    printf 'JELLYFIN_ADMIN_PASSWORD=%s\n' "$(load_password jellyfin app admin)"
-    printf 'JELLYFIN_MONIKA_PASSWORD=%s\n' "$(load_password jellyfin app monika)"
+    printf 'JELLYFIN_TEST_PASSWORD=%s\n' "$(load_password jellyfin app test)"
     printf 'JELLYFIN_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin app prometheus)"
     printf 'JELLYFIN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin apache status)"
     printf 'JELLYFIN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin apache prometheus)"
@@ -233,9 +230,7 @@ load_password() {
     printf 'UPTIME_KUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache status)"
     printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache prometheus)"
 
-    printf 'VAULTWARDEN_SUPERADMIN_PASSWORD=%s\n' "$(load_password vaultwarden app superadmin)"
-    printf 'VAULTWARDEN_ADMIN_PASSWORD=%s\n' "$(load_password vaultwarden app admin)"
-    printf 'VAULTWARDEN_HOMELAB_PASSWORD=%s\n' "$(load_password vaultwarden app homelab)"
+    printf 'VAULTWARDEN_TEST_PASSWORD=%s\n' "$(load_password vaultwarden app test)"
     printf 'VAULTWARDEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vaultwarden apache status)"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden apache prometheus)"
 } >>'.secrets.env'
