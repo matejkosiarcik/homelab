@@ -120,6 +120,12 @@
           printf '\n' >>"$HOME/.profile"
         fi
 
+        # Bash specific
+        if ! grep 'eval "$(task --completion bash)"' <"$HOME/.bashrc" >/dev/null; then
+          printf 'eval "$(task --completion bash)"\n' >>"$HOME/.bashrc"
+        fi
+
+        # All shells
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.bashrc" >/dev/null; then
           printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
         fi

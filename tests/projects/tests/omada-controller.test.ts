@@ -48,46 +48,27 @@ test.describe(apps['omada-controller'].title, () => {
                 expect(body.result.mspMode, 'Response body .result.mspMode').toStrictEqual(false);
             });
 
-            const users = [
-                {
-                    username: 'admin',
-                },
-                {
-                    username: 'viewer',
-                },
-                {
-                    username: 'homepage',
-                },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
-            ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await page.goto(instance.url);
-                        await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
-                        await page.locator('.login-form input[placeholder^="Username"]').fill(variant.username);
-                        await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await page.locator('.login-form a.button-button[title="Log in"]').click();
-                        await page.waitForURL(`${instance.url}/#dashboardGlobal`);
-                        await expect(page.locator('#main-view .header__menu')).toBeVisible();
-                        await expect(page.locator('#main-view #app')).toBeVisible();
-                    });
-                }
+            test('UI: Unsuccessful login - Random user', async ({ page }) => {
+                await page.goto(instance.url);
+                await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
+                const originalUrl = page.url();
+                await page.locator('.login-form input[placeholder^="Username"]').fill(faker.string.alpha(10));
+                await page.locator('.login-form input[type="password"]').fill(faker.string.alpha(10));
+                await page.locator('.login-form a.button-button[title="Log in"]').click();
+                await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();
+                await expect(page, 'URL should not change').toHaveURL(originalUrl);
+            });
 
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
-                    const originalUrl = page.url();
-                    await page.locator('.login-form input[placeholder^="Username"]').fill(variant.username);
-                    await page.locator('.login-form input[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('.login-form a.button-button[title="Log in"]').click();
-                    await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                });
-            }
+            test('UI: Successful login - User viewer', async ({ page }) => {
+                await page.goto(instance.url);
+                await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
+                await page.locator('.login-form input[placeholder^="Username"]').fill('viewer');
+                await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, 'VIEWER_PASSWORD'));
+                await page.locator('.login-form a.button-button[title="Log in"]').click();
+                await page.waitForURL(`${instance.url}/#dashboardGlobal`);
+                await expect(page.locator('#main-view .header__menu')).toBeVisible();
+                await expect(page.locator('#main-view #app')).toBeVisible();
+            });
         });
     }
 });

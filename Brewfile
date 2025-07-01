@@ -1,6 +1,7 @@
 cask "docker"
 brew "node"
-brew "python"
+brew "python@3.13"
 brew "python-setuptools"
 brew "imagemagick"
 cask "raspberry-pi-imager"
+brew "minio-mc"

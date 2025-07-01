@@ -294,6 +294,7 @@ case "$app_dirname" in
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app admin)" >>"$output/app.env"
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$output/app.env"
     printf 'HOMEPAGE_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$output/app.env"
+    printf 'MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_token motioneye-kitchen app user)" >>"$output/app.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$output/app.env"
     printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$output/app.env"
     # Prometheus credentials
@@ -505,16 +506,16 @@ case "$app_dirname" in
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
+    test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'user,%s\n' "$user_password" >>"$output/all-credentials.csv"
-    printf 'MINIO_ROOT_USER=admin\n' >>"$output/app.env"
+    printf 'test,%s\n' "$test_password" >>"$output/all-credentials.csv"
     printf 'MINIO_ROOT_PASSWORD=%s\n' "$admin_password" >>"$output/app.env"
 
     # Setup
-    printf 'HOMELAB_ADMIN_USERNAME=admin\n' >>"$output/app-setup.env"
-    printf 'HOMELAB_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/app-setup.env"
-    printf 'HOMELAB_USER_USERNAME=user\n' >>"$output/app-setup.env"
-    printf 'HOMELAB_USER_PASSWORD=%s\n' "$user_password" >>"$output/app-setup.env"
+    printf 'MINIO_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/app-setup.env"
+    printf 'MINIO_USER_PASSWORD=%s\n' "$user_password" >>"$output/app-setup.env"
+    printf 'MINIO_TEST_PASSWORD=%s\n' "$test_password" >>"$output/app-setup.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
