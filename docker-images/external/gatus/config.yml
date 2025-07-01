@@ -1249,12 +1249,10 @@ endpoints:
       - type: ntfy
       - type: gotify
 
-  - <<: *default-https
-    name: MotionEye (Kitchen) - HTTPS:9081
-    group: App - MotionEye (Kitchen)
-    url: https://motioneye-kitchen.matejhome.com:9081
-    conditions:
-      - "[STATUS] == 401"
+  # - <<: *default-https
+  #   name: MotionEye (Kitchen) - HTTPS stream
+  #   group: App - MotionEye (Kitchen)
+  #   url: https://user:${MOTIONEYE_KITCHEN_USER_PASSWORD}@motioneye-kitchen.matejhome.com/stream
 
   # - <<: *default-https
   #   name: MotionEye (Kitchen) - Proxy prometheus metrics
