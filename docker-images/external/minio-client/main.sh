@@ -27,12 +27,17 @@ export MC_QUIET
 MC_INSECURE='1'
 export MC_INSECURE
 
-mc alias set minio "$minio_url" "$HOMELAB_ADMIN_USERNAME" "$HOMELAB_ADMIN_PASSWORD"
+mc alias set minio "$minio_url" admin "$MINIO_ADMIN_PASSWORD"
 mc ping minio --exit
 
-if ! mc admin user list minio | grep "$HOMELAB_USER_USERNAME" >/dev/null; then
-    mc admin user add minio "$HOMELAB_USER_USERNAME" "$HOMELAB_USER_PASSWORD"
-    mc admin policy attach minio readwrite --user "$HOMELAB_USER_USERNAME"
+if ! mc admin user list minio | grep 'user' >/dev/null; then
+    mc admin user add minio user "$MINIO_USER_PASSWORD"
+    mc admin policy attach minio readwrite --user user
+fi
+
+if ! mc admin user list minio | grep 'test' >/dev/null; then
+    mc admin user add minio test "$MINIO_TEST_PASSWORD"
+    mc admin policy attach minio readonly --user test
 fi
 
 # Create new buckets
