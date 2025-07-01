@@ -579,11 +579,9 @@ case "$app_dirname" in
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)"
     device_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app device)"
-    homepage_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homepage)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'viewer,%s\n' "$viewer_password" >>"$output/all-credentials.csv"
     printf 'device,%s\n' "$device_password" >>"$output/all-credentials.csv"
-    printf 'homepage,%s\n' "$homepage_password" >>"$output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -800,11 +798,9 @@ case "$app_dirname" in
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)"
-    homepage_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homepage)"
     mongodb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'viewer,%s\n' "$viewer_password" >>"$output/all-credentials.csv"
-    printf 'homepage,%s\n' "$homepage_password" >>"$output/all-credentials.csv"
     printf 'mongodb,%s\n' "$mongodb_password" >>"$output/all-credentials.csv"
 
     # Database
