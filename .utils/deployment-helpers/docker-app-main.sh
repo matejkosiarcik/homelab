@@ -204,7 +204,7 @@ fi
 export DOCKER_COMPOSE_NETWORK_URL
 printf 'DOCKER_COMPOSE_NETWORK_URL=%s\n' "$DOCKER_COMPOSE_NETWORK_URL" >>"$extra_docker_compose_env"
 
-docker_compose_args="$docker_compose_args --env-file $extra_docker_compose_env"
+docker_compose_args="$docker_compose_args --project-name $DOCKER_COMPOSE_APP_NAME --env-file $extra_docker_compose_env"
 
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_app_name" | tee "$log_file" >&2
