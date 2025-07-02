@@ -5,13 +5,13 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@actual-app/api": "^25.6.1",
-    "@faker-js/faker": "^9.8.0",
+    "@actual-app/api": "^25.7.0",
+    "@faker-js/faker": "^9.9.0",
     "@playwright/test": "^1.53.2",
     "async": "^3.2.6",
     "axios": "^1.10.0",
     "date-fns": "^4.1.0",
-    "dotenv": "^17.0.0",
+    "dotenv": "^17.0.1",
     "execa": "^9.6.0",
     "lodash": "^4.17.21",
     "lzma-native": "^8.0.6",
@@ -22,14 +22,14 @@
     "sharp-ico": "^0.1.5",
     "tar": "^7.4.3",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.586"
+    "user-agents": "^1.1.588"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
     "@types/async": "^3.2.24",
-    "@types/lodash": "^4.17.19",
+    "@types/lodash": "^4.17.20",
     "@types/lzma-native": "^4.0.4",
-    "@types/node": "^24.0.7",
+    "@types/node": "^24.0.10",
     "@types/user-agents": "^1.0.4",
     "cross-env": "^7.0.3",
     "exitzero": "^1.0.1",

@@ -19,6 +19,12 @@
         "patch"
       ],
       "rebaseWhen": "auto"
+    },
+    {
+      "matchFileNames": [
+        "minio*/Dockerfile"
+      ],
+      "versioning": "loose"
     }
   ],
   "prConcurrentLimit": 20,
