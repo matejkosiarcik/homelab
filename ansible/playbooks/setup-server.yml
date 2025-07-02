@@ -210,6 +210,7 @@
         name: "@bitwarden/cli"
         global: true
 
+    # TODO: Remove this package after problems are resolved upstream
     - name: Install Semver (Bitwarden CLI dependency)
       become: true
       community.general.npm:
