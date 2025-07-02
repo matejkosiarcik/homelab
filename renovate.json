@@ -21,7 +21,9 @@
       "rebaseWhen": "auto"
     },
     {
-      "matchPackageFileNames": ["minio*/Dockerfile"],
+      "matchPackageFileNames": [
+        "minio*/Dockerfile"
+      ],
       "versioning": "loose"
     }
   ],
