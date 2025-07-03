@@ -439,7 +439,7 @@
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
-        if [ ! -e "$HOME/git/homelab/servers/.current/main.sh" ]; then
+        if [ ! -e "$HOME/git/homelab/servers/.current/Taskfile.yml" ]; then
           exit 1
         fi
 
