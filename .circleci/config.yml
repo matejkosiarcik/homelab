@@ -76,7 +76,7 @@ jobs:
             set -euf
             apk update --no-cache
             apk add --no-cache apache2-utils bash git moreutils nodejs npm python3
-            npm install -g @go-task/clit
+            npm install -g @go-task/cli
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:
