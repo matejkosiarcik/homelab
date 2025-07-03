@@ -71,7 +71,7 @@ def main(argv: List[str]):
         group = subcommand.add_mutually_exclusive_group(required=True)
         group.add_argument("-d", "--dev", action="store_true", help="Dev mode")
         group.add_argument("-p", "--prod", action="store_true", help="Production mode")
-    args = parser.parse_args(argv[1:])
+    args = parser.parse_args(argv)
 
     applist = str(args.only).split(",") if args.only is not None else read_priority_apps_list()
     applist = [x.strip() for x in applist]
