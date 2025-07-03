@@ -1,0 +1,71 @@
+x-definitions:
+  common-env-variables: &common-env-variables
+    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
+    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
+    HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
+    HOMELAB_APP_TYPE: homepage
+    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
+  common-service-options: &common-service-options
+    environment:
+      <<: *common-env-variables
+    networks:
+      internal-network: {}
+    dns_opt:
+      - single-request
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+    init: true
+
+services:
+  template:
+    <<: *common-service-options
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-TEMPLATE
+    build:
+      context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
+      dockerfile: ./external/TEMPLATE/Dockerfile
+
+  app:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    # env_file:
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+
+  certificator:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
+    build:
+      dockerfile: ./custom/certificator/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator:/homelab/logs:rw
+
+  apache:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
+    build:
+      dockerfile: ./custom/apache/Dockerfile
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
+
+  apache-prometheus-exporter:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
+    build:
+      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
+    environment:
+      <<: *common-env-variables
+      APACHE_HOST: apache
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
