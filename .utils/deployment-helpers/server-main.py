@@ -121,6 +121,7 @@ def server_docker_action(action: str):
         docker_args.append("--online" if is_online else "--offline")
 
     for app in applist:
+        print(f"cwd: {path.join(server_dir, "docker-apps", app)}")
         subprocess.check_call(["task", action, "--"] + docker_args, cwd=path.join(server_dir, "docker-apps", app))
 
     end_datetime = datetime.now()
