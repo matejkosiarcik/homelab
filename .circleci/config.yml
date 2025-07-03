@@ -76,15 +76,16 @@ jobs:
             set -euf
             apk update --no-cache
             apk add --no-cache apache2-utils bash git moreutils nodejs npm python3
-            npm install -g @go-task/cli
-            echo 'task:'
-            which task
+            npm install -g @go-task/clit
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
             set -euf
+            pwd
+            task -h
+            task -l
             task secrets -- --dev --offline
       # - run:
       #     name: Build apps on << parameters.server >>
