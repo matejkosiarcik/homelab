@@ -165,6 +165,18 @@ fi
 export DOCKER_COMPOSE_APP_NAME
 printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
 
+if [ "${DOCKER_COMPOSE_APP_PATH-}" = '' ]; then
+    DOCKER_COMPOSE_APP_PATH="$app_dir"
+fi
+export DOCKER_COMPOSE_APP_PATH
+printf 'DOCKER_COMPOSE_APP_PATH=%s\n' "$DOCKER_COMPOSE_APP_PATH" >>"$extra_docker_compose_env"
+
+if [ "${DOCKER_COMPOSE_REPOROOT_PATH-}" = '' ]; then
+    DOCKER_COMPOSE_REPOROOT_PATH="$(git rev-parse --show-toplevel)"
+fi
+export DOCKER_COMPOSE_REPOROOT_PATH
+printf 'DOCKER_COMPOSE_REPOROOT_PATH=%s\n' "$DOCKER_COMPOSE_REPOROOT_PATH" >>"$extra_docker_compose_env"
+
 if [ "${DOCKER_COMPOSE_NETWORK_DOMAIN-}" = '' ]; then
     if [ "$mode" = 'prod' ]; then
         DOCKER_COMPOSE_NETWORK_DOMAIN="$DOCKER_COMPOSE_APP_NAME.matejhome.com"
