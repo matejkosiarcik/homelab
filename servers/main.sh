@@ -69,8 +69,10 @@ create_all_secrets() {
     fi
 
     find . -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r server; do
+        cd "$server"
         # shellcheck disable=SC2086
-        sh "$server/main.sh" secrets $create_secrets_args
+        task secrets -- $create_secrets_args
+        cd -
     done
 }
 

@@ -83,11 +83,11 @@ TL;DR:
 
 ```sh
 cd "$HOME/git/homelab/servers/.current"
-sh main.sh install --prod
+task install -- --prod
 sudo reboot
 cd "$HOME/git/homelab/servers/.current"
-sh main.sh secrets --prod
-sh main.sh deploy --prod
+task secrets -- --prod
+task deploy -- --prod
 ```
 
 ## Postinstall - Docker memory monitoring

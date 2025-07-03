@@ -75,28 +75,25 @@ jobs:
           command: |
             set -euf
             apk update --no-cache
-            apk add --no-cache apache2-utils bash git moreutils python3
-            if find './servers/<< parameters.server >>/docker-apps/' -maxdepth 1 | grep 'speedtest-tracker' >/dev/null 2>&1; then
-              apk add --no-cache nodejs npm
-            fi
-            echo "docker is at:"
-            which docker
-            docker run debian:latest which which
-            docker run --rm --entrypoint sh nicolargo/glances:latest-full -c 'echo placeholder'
+            apk add --no-cache apache2-utils bash git moreutils nodejs npm python3
+            npm install -g @go-task/cli
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
             set -euf
-            sh './servers/<< parameters.server >>/main.sh' secrets --dev --offline
+            cd './servers/<< parameters.server >>'
+            task secrets -- --dev --offline
       # - run:
       #     name: Build apps on << parameters.server >>
       #     command: |
       #       set -euf
-      #       sh './servers/<< parameters.server >>/main.sh' build --dev
+      #       cd './servers/<< parameters.server >>'
+      #       task build -- --dev
       - run:
           name: Run dry-run deployment on << parameters.server >>
           command: |
             set -euf
-            sh './servers/<< parameters.server >>/main.sh' start --dev --dry-run
+            cd './servers/<< parameters.server >>'
+            task start -- --dev --dry-run
