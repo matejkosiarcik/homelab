@@ -84,7 +84,7 @@ jobs:
           command: |
             set -euf
             pwd
-            task -h
+            ls -lah
             task -l
             task secrets -- --dev --offline
       # - run:
