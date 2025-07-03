@@ -83,17 +83,17 @@ jobs:
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
             set -euf
-            pwd
-            ls -lah
-            task -l
+            cd './servers/<< parameters.server >>'
             task secrets -- --dev --offline
       # - run:
       #     name: Build apps on << parameters.server >>
       #     command: |
       #       set -euf
+      #       cd './servers/<< parameters.server >>'
       #       task build -- --dev
       - run:
           name: Run dry-run deployment on << parameters.server >>
           command: |
             set -euf
+            cd './servers/<< parameters.server >>'
             task start -- --dev --dry-run
