@@ -95,8 +95,6 @@ def main(argv: List[str]):
                 _applist.append(app)
     applist = _applist
 
-    print(f"Apps: {applist}")
-
     command = args.subcommand
     force = args.force
     dryrun = args.dry_run
