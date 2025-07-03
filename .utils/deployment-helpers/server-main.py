@@ -121,7 +121,7 @@ def server_docker_action(action: str):
         docker_args.append("--online" if is_online else "--offline")
 
     for app in applist:
-        subprocess.check_call(["sh", path.join(server_dir, "docker-apps", app, "main.sh"), action] + docker_args)
+        subprocess.check_call(["task", action, '--'] + docker_args, cwd=path.join(server_dir, "docker-apps", app))
 
     end_datetime = datetime.now()
     log.info("%s docker apps - SUCCESS on %s (%s)", action_log, end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime))))
