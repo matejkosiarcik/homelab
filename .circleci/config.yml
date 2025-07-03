@@ -83,20 +83,21 @@ jobs:
             which docker
             docker run debian:latest which which
             docker run --rm --entrypoint sh nicolargo/glances:latest-full -c 'echo placeholder'
+            npm install -g @go-task/cli
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
             set -euf
-            sh './servers/<< parameters.server >>/main.sh' secrets --dev --offline
+            task secrets -- --dev --offline
       # - run:
       #     name: Build apps on << parameters.server >>
       #     command: |
       #       set -euf
-      #       sh './servers/<< parameters.server >>/main.sh' build --dev
+      #       task build -- --dev
       - run:
           name: Run dry-run deployment on << parameters.server >>
           command: |
             set -euf
-            sh './servers/<< parameters.server >>/main.sh' start --dev --dry-run
+            task start -- --dev --dry-run
