@@ -128,6 +128,7 @@ fi
 
 # Remove values that may stick around from previous runs
 unset DOCKER_COMPOSE_APP_NAME
+unset DOCKER_COMPOSE_APP_TYPE
 unset DOCKER_COMPOSE_ENV
 unset DOCKER_COMPOSE_NETWORK_DOMAIN
 unset DOCKER_COMPOSE_NETWORK_IP
@@ -165,6 +166,12 @@ if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
 fi
 export DOCKER_COMPOSE_APP_NAME
 printf 'DOCKER_COMPOSE_APP_NAME=%s\n' "$DOCKER_COMPOSE_APP_NAME" >>"$extra_docker_compose_env"
+
+if [ "${DOCKER_COMPOSE_APP_TYPE-}" = '' ]; then
+    DOCKER_COMPOSE_APP_TYPE="$(basename "$app_dir")"
+fi
+export DOCKER_COMPOSE_APP_TYPE
+printf 'DOCKER_COMPOSE_APP_TYPE=%s\n' "$DOCKER_COMPOSE_APP_TYPE" >>"$extra_docker_compose_env"
 
 if [ "${DOCKER_COMPOSE_APP_PATH-}" = '' ]; then
     DOCKER_COMPOSE_APP_PATH="$app_dir"
