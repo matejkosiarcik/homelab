@@ -33,7 +33,7 @@ services:
       - ./app-data/ntfy-lib:/var/lib/ntfy:rw
       # - ./app-data/ntfy-etc:/etc/ntfy:rw
     networks:
-      external-network:
+      external-network: {}
 
   app-setup:
     <<: *common-service-options
@@ -73,7 +73,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

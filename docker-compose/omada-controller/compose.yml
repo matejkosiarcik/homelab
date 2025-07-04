@@ -35,7 +35,7 @@ services:
       - ./app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
     stop_grace_period: 60s
     networks:
-      external-network:
+      external-network: {}
 
   certificator:
     <<: *common-service-options
@@ -63,7 +63,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache-admin:/homelab/logs:rw
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

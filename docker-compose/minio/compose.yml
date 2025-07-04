@@ -71,7 +71,7 @@ services:
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
     networks:
-      external-network:
+      external-network: {}
 
   apache-console:
     <<: *common-service-options
@@ -89,7 +89,7 @@ services:
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

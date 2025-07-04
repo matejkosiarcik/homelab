@@ -58,7 +58,7 @@ services:
       - ./app-secrets/debug.htpasswd:/homelab/debug.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

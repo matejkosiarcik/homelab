@@ -60,7 +60,7 @@ services:
       - ./app-logs/apache:/homelab/logs:rw
       # - ./app-logs/gotify-favicon:/homelab/www/.proxy/icons/gotify:ro
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

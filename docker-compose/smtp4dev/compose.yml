@@ -32,7 +32,7 @@ services:
       - ./app-data/smtp4dev:/smtp4dev:rw
     stop_grace_period: 30s
     networks:
-      external-network:
+      external-network: {}
 
   certificator:
     <<: *common-service-options
@@ -60,7 +60,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

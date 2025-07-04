@@ -29,7 +29,7 @@ services:
     volumes:
       - ./app-data/jellyfin-data:/config:rw
     networks:
-      external-network:
+      external-network: {}
 
   app-setup:
     <<: *common-service-options
@@ -70,7 +70,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

@@ -34,7 +34,7 @@ services:
     volumes:
       - ./app-logs/samba:/var/log/samba:rw
     networks:
-      external-network:
+      external-network: {}
 
 networks:
   default: # Just disable default network

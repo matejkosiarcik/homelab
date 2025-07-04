@@ -32,7 +32,7 @@ services:
       PUID: "1000"
       PGID: "1000"
     networks:
-      external-network:
+      external-network: {}
 
   certificator:
     <<: *common-service-options
@@ -63,7 +63,7 @@ services:
       <<: *common-env-variables
       HOMELAB_FORCE_PROTOCOL: HTTP
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

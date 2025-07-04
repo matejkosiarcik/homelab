@@ -30,7 +30,7 @@ services:
       - ./app-data/tvheadend-data:/config
       # - ./app-data/tvheadend-recordings:/recordings
     networks:
-      external-network:
+      external-network: {}
 
   certificator:
     <<: *common-service-options
@@ -58,7 +58,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

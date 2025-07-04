@@ -38,7 +38,7 @@ services:
       - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
     stop_grace_period: 30s
     networks:
-      external-network:
+      external-network: {}
 
   mongodb:
     <<: *common-service-options
@@ -92,7 +92,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache-admin:/homelab/logs:rw
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options

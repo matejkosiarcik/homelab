@@ -40,7 +40,7 @@ services:
       socket-proxy:
         condition: service_started
     networks:
-      external-network:
+      external-network: {}
 
   socket-proxy:
     <<: *common-service-options
