@@ -57,6 +57,8 @@ services:
       - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
       - ./app-secrets/debug.htpasswd:/homelab/debug.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
+    networks:
+      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options
@@ -76,3 +78,7 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

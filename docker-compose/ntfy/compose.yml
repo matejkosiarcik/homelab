@@ -32,6 +32,8 @@ services:
       - ./app-data/ntfy-cache:/var/cache/ntfy:rw
       - ./app-data/ntfy-lib:/var/lib/ntfy:rw
       # - ./app-data/ntfy-etc:/etc/ntfy:rw
+    networks:
+      external-network:
 
   app-setup:
     <<: *common-service-options
@@ -70,6 +72,8 @@ services:
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
+    networks:
+      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options
@@ -107,3 +111,7 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

@@ -1,26 +1,14 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: unless-stopped
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
       - ${DOCKER_COMPOSE_SAMBA_PATH}:/data:rw
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:139:139
       - ${DOCKER_COMPOSE_NETWORK_IP}:445:445
-    networks:
-      external-network:
-
-networks:
-  external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-    driver: bridge
-    internal: false

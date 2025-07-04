@@ -1,8 +1,5 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: unless-stopped
 
 services:
@@ -10,14 +7,6 @@ services:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:7007:7007
-    networks:
-      external-network:
 
   socket-proxy:
     <<: *common-service-options
-
-networks:
-  external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-    driver: bridge
-    internal: false

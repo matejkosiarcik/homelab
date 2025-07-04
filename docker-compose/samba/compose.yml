@@ -33,6 +33,8 @@ services:
       SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}
     volumes:
       - ./app-logs/samba:/var/log/samba:rw
+    networks:
+      external-network:
 
 networks:
   default: # Just disable default network
@@ -40,3 +42,7 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

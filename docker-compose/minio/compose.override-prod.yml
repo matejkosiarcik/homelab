@@ -1,15 +1,11 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: unless-stopped
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
 
   app-setup:
@@ -18,7 +14,6 @@ services:
   certificator:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN},${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
       HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP},${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}
 
@@ -27,22 +22,12 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    networks:
-      external-network:
 
   apache-console:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:443:443
-    networks:
-      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options
-
-networks:
-  external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-    driver: bridge
-    internal: false

@@ -31,6 +31,8 @@ services:
       ENABLE_LETSENCRYPT: "False"
       PUID: "1000"
       PGID: "1000"
+    networks:
+      external-network:
 
   certificator:
     <<: *common-service-options
@@ -60,6 +62,8 @@ services:
     environment:
       <<: *common-env-variables
       HOMELAB_FORCE_PROTOCOL: HTTP
+    networks:
+      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options
@@ -79,3 +83,7 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

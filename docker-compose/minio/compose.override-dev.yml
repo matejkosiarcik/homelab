@@ -1,15 +1,11 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: "no"
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       MINIO_BROWSER_REDIRECT_URL: https://localhost:8444
 
   app-setup:

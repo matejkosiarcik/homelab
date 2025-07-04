@@ -1,15 +1,11 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: unless-stopped
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DEFAULT_FROM_EMAIL: system@healthchecks.${DOCKER_COMPOSE_NETWORK_DOMAIN}
       SITE_ROOT: ${DOCKER_COMPOSE_NETWORK_URL}
@@ -22,14 +18,6 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    networks:
-      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options
-
-networks:
-  external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-    driver: bridge
-    internal: false
