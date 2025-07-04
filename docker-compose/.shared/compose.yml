@@ -9,8 +9,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    networks:
-      internal-network: {}
     dns_opt:
       - single-request
     security_opt:
@@ -31,8 +29,6 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    # env_file:
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
 
   certificator:
     extends:
@@ -45,6 +41,8 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator:/homelab/logs:rw
+    networks:
+      external-network: {} # TODO: Connect to external world via squid instead
 
   apache:
     extends:
@@ -57,6 +55,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
+    networks:
+      external-network: {} # TODO: Connect to external world via socat instead
 
   apache-prometheus-exporter:
     extends:

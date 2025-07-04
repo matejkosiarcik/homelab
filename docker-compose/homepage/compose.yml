@@ -8,14 +8,12 @@ services:
     env_file:
       - ./app-secrets/app.env
     networks:
-      external-network: # TODO: Connect to external world via squid instead
+      external-network: {} # TODO: Connect to external world via squid instead
 
   certificator:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: certificator
-    networks:
-      external-network: # TODO: Connect to external world via squid instead
 
   apache:
     extends:
@@ -23,8 +21,6 @@ services:
       service: apache
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/admin.htpasswd:/homelab/admin.htpasswd:ro
-    networks:
-      external-network: # TODO: Connect to external world via socat instead
 
   apache-prometheus-exporter:
     extends:
@@ -41,13 +37,10 @@ services:
     env_file:
       - ./app-secrets/widgets.env
     networks:
-      external-network: # TODO: Connect to external world via squid instead
+      external-network: {} # TODO: Connect to external world via squid instead
 
 networks:
-  default: # Just disable default network
-    driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+  default:
     internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
