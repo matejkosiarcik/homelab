@@ -6,8 +6,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    networks:
-      internal-network: {}
     dns_opt:
       - single-request
     security_opt:
