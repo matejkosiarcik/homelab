@@ -12,11 +12,3 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:139:139
       - ${DOCKER_COMPOSE_NETWORK_IP}:445:445
-    networks:
-      external-network:
-
-networks:
-  external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-    driver: bridge
-    internal: false

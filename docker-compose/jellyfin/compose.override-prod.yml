@@ -11,8 +11,6 @@ services:
       - /dev/dri:/dev/dri
       - /dev/dri/card0:/dev/dri/card0
       - /dev/dri/renderD128:/dev/dri/renderD128
-    networks:
-      external-network:
 
   app-setup:
     <<: *common-service-options
@@ -26,14 +24,6 @@ services:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:8096:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-    networks:
-      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options
-
-networks:
-  external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
-    driver: bridge
-    internal: false

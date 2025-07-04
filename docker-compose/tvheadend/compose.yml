@@ -29,6 +29,8 @@ services:
     volumes:
       - ./app-data/tvheadend-data:/config
       # - ./app-data/tvheadend-recordings:/recordings
+    networks:
+      external-network:
 
   certificator:
     <<: *common-service-options
@@ -55,6 +57,8 @@ services:
       - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache:/homelab/logs:rw
+    networks:
+      external-network:
 
   apache-prometheus-exporter:
     <<: *common-service-options
@@ -74,3 +78,7 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

@@ -39,6 +39,8 @@ services:
     depends_on:
       socket-proxy:
         condition: service_started
+    networks:
+      external-network:
 
   socket-proxy:
     <<: *common-service-options
@@ -64,6 +66,10 @@ networks:
   internal-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
     internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false
 
 secrets:
   cert:
