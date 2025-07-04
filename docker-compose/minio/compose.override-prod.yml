@@ -1,15 +1,11 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: unless-stopped
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
 
   app-setup:
@@ -18,7 +14,6 @@ services:
   certificator:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN},${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
       HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP},${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}
 

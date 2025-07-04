@@ -1,15 +1,11 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: "no"
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       MANAGE_HTTP_PORT: 8080
       MANAGE_HTTPS_PORT: 8443
       PORTAL_HTTP_PORT: 8081

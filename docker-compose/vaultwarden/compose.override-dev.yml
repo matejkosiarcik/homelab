@@ -1,15 +1,11 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: "no"
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       VAULTWARDEN_DOMAIN: localhost
       DOMAIN: ${DOCKER_COMPOSE_NETWORK_URL}
       SMTP_FROM: system@vaultwarden.localhost

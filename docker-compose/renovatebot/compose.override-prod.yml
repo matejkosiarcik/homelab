@@ -1,13 +1,9 @@
 x-definitions:
-  common-env-variables: &common-env-variables {}
   common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
     restart: unless-stopped
 
 services:
   app:
     <<: *common-service-options
     environment:
-      <<: *common-env-variables
       HOMELAB_CRON_SKIP_INITIAL: "1"
