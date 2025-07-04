@@ -64,11 +64,8 @@ services:
       - ./app-secrets/apache-prometheus-exporter.env
 
 networks:
-  default: # Just disable default network
-    driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  default:
+    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
