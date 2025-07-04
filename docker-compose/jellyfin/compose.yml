@@ -9,8 +9,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    networks:
-      internal-network: {}
     dns_opt:
       - single-request
     security_opt:
@@ -29,7 +27,7 @@ services:
     volumes:
       - ./app-data/jellyfin-data:/config:rw
     networks:
-      external-network:
+      external-network: {}
 
   app-setup:
     <<: *common-service-options
@@ -70,7 +68,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options
@@ -85,11 +83,8 @@ services:
       - ./app-secrets/apache-prometheus-exporter.env
 
 networks:
-  default: # Just disable default network
-    driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  default:
+    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge

@@ -9,8 +9,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    networks:
-      internal-network: {}
     dns_opt:
       - single-request
     security_opt:
@@ -35,7 +33,7 @@ services:
       - ./app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
     stop_grace_period: 60s
     networks:
-      external-network:
+      external-network: {}
 
   certificator:
     <<: *common-service-options
@@ -63,7 +61,7 @@ services:
       - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
       - ./app-logs/apache-admin:/homelab/logs:rw
     networks:
-      external-network:
+      external-network: {}
 
   apache-prometheus-exporter:
     <<: *common-service-options
@@ -98,11 +96,8 @@ services:
   #     - ./app-logs/web-backup:/homelab/logs:rw
 
 networks:
-  default: # Just disable default network
-    driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  default:
+    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge

@@ -9,8 +9,6 @@ x-definitions:
   common-service-options: &common-service-options
     environment:
       <<: *common-env-variables
-    networks:
-      internal-network: {}
     dns_opt:
       - single-request
     security_opt:
@@ -40,7 +38,7 @@ services:
       socket-proxy:
         condition: service_started
     networks:
-      external-network:
+      external-network: {}
 
   socket-proxy:
     <<: *common-service-options
@@ -61,11 +59,8 @@ services:
       - /run
 
 networks:
-  default: # Just disable default network
-    driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    internal: false # Allow external connectivity, because some containers need access to internet or other internal apps
+  default:
+    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge

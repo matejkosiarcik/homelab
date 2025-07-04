@@ -30,10 +30,7 @@ services:
       service: apache-prometheus-exporter
 
 networks:
-  default: # Just disable default network
-    driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+  default:
     internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
