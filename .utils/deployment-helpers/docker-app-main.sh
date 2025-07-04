@@ -132,6 +132,7 @@ unset DOCKER_COMPOSE_ENV
 unset DOCKER_COMPOSE_NETWORK_DOMAIN
 unset DOCKER_COMPOSE_NETWORK_IP
 unset DOCKER_COMPOSE_NETWORK_URL
+unset DOCKER_COMPOSE_REPOROOT_PATH
 
 # Get env files
 docker_compose_args="$docker_file_args"
