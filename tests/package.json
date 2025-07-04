@@ -5,7 +5,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@actual-app/api": "^25.7.0",
+    "@actual-app/api": "^25.7.1",
     "@faker-js/faker": "^9.9.0",
     "@playwright/test": "^1.53.2",
     "async": "^3.2.6",
@@ -22,7 +22,7 @@
     "sharp-ico": "^0.1.5",
     "tar": "^7.4.3",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.588"
+    "user-agents": "^1.1.590"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
