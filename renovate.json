@@ -21,10 +21,16 @@
       "rebaseWhen": "auto"
     },
     {
-      "matchFileNames": [
-        "*/minio-server/Dockerfile"
+      "matchDatasources": [
+        "docker"
       ],
-      "versioning": "regex:^RELEASE\\.(?<major>\\d{4})-(?<minor>\\d{2})-(?<patch>\\d{2})"
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchPackageNames": [
+        "minio/minio"
+      ],
+      "versioning": "regex:^RELEASE\\.(?<major>\\d{4})-(?<minor>\\d{2})-(?<patch>\\d{2})T(?:.+)$"
     }
   ],
   "prConcurrentLimit": 20,
