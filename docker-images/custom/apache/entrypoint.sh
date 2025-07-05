@@ -191,7 +191,7 @@ export PROXY_UPSTREAM_URL_PROMETHEUS
 printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
 
 # Set PROXY_PROMETHEUS_EXPORTER_URL
-if [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
         PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-api:9117'
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
