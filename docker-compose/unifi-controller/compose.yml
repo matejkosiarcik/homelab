@@ -5,8 +5,6 @@ services:
       service: app
     build:
       dockerfile: ./external/unifi-network-application/Dockerfile
-      args:
-        HOMELAB_BUILD_ENV: N/A
     depends_on:
       mongodb:
         condition: service_healthy
