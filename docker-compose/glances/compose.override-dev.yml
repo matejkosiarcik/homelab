@@ -3,7 +3,7 @@ x-definitions:
     restart: "no"
 
 services:
-  app-ui:
+  app:
     <<: *common-service-options
 
   app-prometheus:
