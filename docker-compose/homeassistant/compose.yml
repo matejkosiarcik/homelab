@@ -8,8 +8,8 @@ services:
       dockerfile: ./external/homeassistant/Dockerfile
     volumes:
       - ./app-data/homeassistant:/config:rw
+      - /etc/localtime:/etc/localtime:ro
       - ../../../../docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
-      # - /etc/localtime:/etc/localtime:ro
     # cap_add:
     #   - NET_ADMIN
     #   - NET_RAW

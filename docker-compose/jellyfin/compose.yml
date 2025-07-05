@@ -16,12 +16,9 @@ services:
   app-setup:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template
-    build:
-      dockerfile: ./custom/script-setup/Dockerfile
-      args:
-        SETUP_FILE: ./external/jellyfin/setup.sh
+      service: script-app-setup
     volumes:
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
       - ./app-data/jellyfin-data:/homelab/data:rw
 
   certificator:
