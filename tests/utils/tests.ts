@@ -35,22 +35,25 @@ export function createApiRootTest(url: string, _options?: { headers?: Record<str
     ];
 }
 
-export function createHttpToHttpsRedirectTests(url: string) {
+export function createHttpToHttpsRedirectTests(url: string, _options?: { title?: string | undefined } | undefined) {
+    const options = {
+        title: _options?.title ?? '',
+    };
     const port = url.match(/:(\d+)$/)?.[0] ?? '';
     return [
-        test(`API: Redirect HTTP${port} to HTTPS (root)`, async () => {
+        test(`API: Redirect HTTP${port} to HTTPS (root)${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
             expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
         }),
 
-        test(`API: Redirect HTTP${port} to HTTPS (root slash)`, async () => {
+        test(`API: Redirect HTTP${port} to HTTPS (root slash)${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
             expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
         }),
 
-        test(`API: Redirect HTTP${port} to HTTPS (random subpage)`, async () => {
+        test(`API: Redirect HTTP${port} to HTTPS (random subpage)${options.title ? ` - ${options.title}` : ''}`, async () => {
             const subpage = `/${faker.string.alpha(10)}`;
             const response = await axios.get(`${url.replace('https://', 'http://')}${subpage}`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
@@ -118,13 +121,14 @@ export function createFaviconTests(url: string, _options?: { headers?: Record<st
     ];
 }
 
-export function createProxyTests(url: string, _options?: { redirect?: boolean | undefined } | undefined) {
+export function createProxyTests(url: string, _options?: { redirect?: boolean | undefined; title?: string | undefined } | undefined) {
     const options = {
         redirect: _options?.redirect ?? true,
+        title: _options?.title ?? '',
     };
 
     const output = [
-        test('API: Proxy root', async () => {
+        test(`API: Proxy root${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url}/.proxy`);
             expect(response.status, 'Response Status').toStrictEqual(200);
         }),
@@ -132,7 +136,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
 
     if (options.redirect) {
         output.push(
-            test('API: Proxy redirect to HTTPS', async () => {
+            test(`API: Proxy redirect to HTTPS${options.title ? ` - ${options.title}` : ''}`, async () => {
                 const response = await axios.get(`${url.replace('https://', 'http://')}/.proxy`, { maxRedirects: 0 });
                 expect(response.status, 'Response Status').toStrictEqual(302);
                 expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}/.proxy`);
