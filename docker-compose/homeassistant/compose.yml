@@ -15,6 +15,7 @@ services:
     #   - NET_RAW
     # privileged: true
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
     stop_grace_period: 30s
 
@@ -52,10 +53,15 @@ services:
   #     - ./app-logs/web-backup-errors:/homelab/errors:rw
   #     - ./app-logs/web-backup:/homelab/logs:rw
   #   networks:
+  #     internal-network: {}
   #     external-network: {} # TODO: Connect to external world via squid instead
 
 networks:
   default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
     internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network

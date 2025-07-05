@@ -13,6 +13,7 @@ services:
       - ./app-logs/certbot:/homelab/logs:rw
       - ./app-logs/letsencrypt:/var/log/letsencrypt:rw
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
 
   apache:
@@ -30,6 +31,10 @@ services:
 
 networks:
   default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
     internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network

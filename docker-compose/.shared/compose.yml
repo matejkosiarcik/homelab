@@ -7,6 +7,7 @@ x-definitions:
     HOMELAB_APP_TYPE: ${DOCKER_COMPOSE_APP_TYPE}
     HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
   common-service-options: &common-service-options
+    init: true
     environment:
       <<: *common-env-variables
     dns_opt:
@@ -15,7 +16,8 @@ x-definitions:
       - no-new-privileges:true
     sysctls:
       net.ipv6.conf.all.disable_ipv6: 1
-    init: true
+    networks:
+      internal-network: {}
 
 services:
   template:
@@ -42,6 +44,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator:/homelab/logs:rw
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
 
   apache:
@@ -56,6 +59,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via socat instead
 
   apache-prometheus-exporter:
