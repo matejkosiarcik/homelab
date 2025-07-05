@@ -16,6 +16,7 @@ services:
       - ./app-data/unifi-network-application:/config:rw
       - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
     stop_grace_period: 30s
 
@@ -82,6 +83,10 @@ services:
 
 networks:
   default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
     internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network

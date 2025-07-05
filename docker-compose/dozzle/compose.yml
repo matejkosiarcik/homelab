@@ -17,6 +17,7 @@ services:
       - source: key
         target: /dozzle_key.pem
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
 
   certificator:
@@ -36,6 +37,10 @@ services:
 
 networks:
   default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
     internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network

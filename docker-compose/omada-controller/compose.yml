@@ -13,6 +13,7 @@ services:
       - ./app-data/omada-controller:/opt/tplink/EAPController/data:rw
       - ./app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
     stop_grace_period: 60s
 
@@ -52,6 +53,10 @@ services:
 
 networks:
   default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
     internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
