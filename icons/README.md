@@ -22,10 +22,10 @@ The Icons are obtained from following locations:
     - Graphics card: <https://www.flaticon.com/free-icon/graphic-card_4617578>
     - IoT: <https://www.flaticon.com/free-icon/iot_10355707>
     - Litestream: <https://litestream.io>
-    - Odroid: <https://wiki.odroid.com>
+    - Odroid: `https://wiki.odroid.com` (server down)
     - Photos: <https://www.iconfinder.com/icons/1622830/gallery_landskape_mountains_nature_photo_picture_icon>
     - Playwright: <https://playwright.dev>
-    - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (Server down)
+    - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (server down)
     - RenovateBot: <https://docs.renovatebot.com>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
