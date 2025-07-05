@@ -47,20 +47,12 @@ services:
   socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    build:
-      dockerfile: ./external/socket-proxy/Dockerfile
-    read_only: true
+      service: socket-proxy
     environment:
-      EXEC: 1
       CONTAINERS: 1
+      EXEC: 1
       PING: 1
       POST: 1
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    tmpfs:
-      - /run
 
   certificator:
     extends:
