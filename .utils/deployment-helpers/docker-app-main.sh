@@ -225,7 +225,7 @@ export DOCKER_COMPOSE_NETWORK_URL
 printf 'DOCKER_COMPOSE_NETWORK_URL=%s\n' "$DOCKER_COMPOSE_NETWORK_URL" >>"$extra_docker_compose_env"
 
 # Ensure app_type is valid
-app_count="$(find "$DOCKER_COMPOSE_REPOROOT_PATH/docker-compose" -type d -maxdepth 1 -mindepth 1 -name "$DOCKER_COMPOSE_APP_TYPE" | wc -l)"
+app_count="$(find "$DOCKER_COMPOSE_REPOROOT_PATH/docker-compose" -maxdepth 1 -mindepth 1 -type d -name "$DOCKER_COMPOSE_APP_TYPE" | wc -l)"
 if [ "$app_count" -ne 1 ]; then
     printf 'App %s not found\n' "$DOCKER_COMPOSE_APP_TYPE" >&2
     exit 1
