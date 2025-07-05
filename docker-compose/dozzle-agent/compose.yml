@@ -7,7 +7,6 @@ services:
       dockerfile: ./external/dozzle/Dockerfile
     command: agent
     environment:
-      <<: *common-env-variables
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
       DOCKER_HOST: tcp://socket-proxy:2375
     secrets:

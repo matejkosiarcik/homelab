@@ -22,7 +22,6 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     environment:
-      <<: *common-env-variables
       HOMELAB_FORCE_PROTOCOL: HTTP
 
   apache-prometheus-exporter:
