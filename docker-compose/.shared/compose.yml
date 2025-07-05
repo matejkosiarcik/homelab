@@ -85,3 +85,20 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     tmpfs:
       - /run
+
+  docker-app-setup:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    build:
+      dockerfile: ./custom/docker-setup/Dockerfile
+    environment:
+      DOCKER_HOST: tcp://socket-proxy:2375
+      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
+
+  script-app-setup:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    build:
+      dockerfile: ./custom/script-setup/Dockerfile

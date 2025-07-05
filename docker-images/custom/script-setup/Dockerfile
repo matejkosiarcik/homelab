@@ -7,8 +7,6 @@ RUN apt-get update -qq && \
         moreutils && \
     rm -rf /var/lib/apt/lists/*
 COPY ./custom/script-setup/entrypoint.sh /homelab/
-ARG SETUP_FILE
-COPY ${SETUP_FILE} /homelab/setup.sh
 ENV HOMELAB_CONTAINER_NAME=script-setup \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
