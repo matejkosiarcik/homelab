@@ -1,65 +1,32 @@
-x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
-    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-    HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
-    HOMELAB_APP_TYPE: certbot
-    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-  common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
-    dns_opt:
-      - single-request
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
-
 services:
   app:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    init: true
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
     build:
-      context: ../../../../docker-images/
       dockerfile: ./custom/certbot/Dockerfile
+    env_file:
+      - ./app-secrets/app.env
     volumes:
       - ./app-data/certbot:/homelab/data:rw
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certbot:/homelab/logs:rw
       - ./app-logs/letsencrypt:/var/log/letsencrypt:rw
-    env_file:
-      - ./app-secrets/app.env
+    networks:
+      external-network: {} # TODO: Connect to external world via squid instead
 
   apache:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/apache/Dockerfile
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
     volumes:
       - ./app-data/certbot:/homelab/www/download:rw
-      - ./app-data/certs:/homelab/certs:ro
       - ./app-secrets/viewer.htpasswd:/homelab/viewer.htpasswd:ro
-      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
-      - ./app-logs/apache:/homelab/logs:rw
-    networks:
-      external-network: {}
 
   apache-prometheus-exporter:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
-    environment:
-      APACHE_HOST: apache
-    env_file:
-      - ./app-secrets/apache-prometheus-exporter.env
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
 
 networks:
   default:

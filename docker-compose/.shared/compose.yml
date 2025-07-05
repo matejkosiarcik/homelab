@@ -20,10 +20,10 @@ x-definitions:
 services:
   template:
     <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-TEMPLATE
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER
     build:
       context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
-      dockerfile: ./external/TEMPLATE/Dockerfile
+      dockerfile: ./external/PLACEHOLDER/Dockerfile
 
   app:
     extends:

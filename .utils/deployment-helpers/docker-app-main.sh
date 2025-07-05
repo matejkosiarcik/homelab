@@ -220,6 +220,10 @@ if [ "${DOCKER_COMPOSE_NETWORK_URL-}" = '' ]; then
         printf 'Unknown mode "%s"\n' "$mode" >&2
         exit 1
     fi
+
+    if [ "$DOCKER_COMPOSE_APP_TYPE" = 'samba' ]; then
+        DOCKER_COMPOSE_NETWORK_URL="$(printf '%s' "$DOCKER_COMPOSE_NETWORK_URL" | sed -E 's~^https?://~smb://~;s~:[0-9]+$~~')"
+    fi
 fi
 export DOCKER_COMPOSE_NETWORK_URL
 printf 'DOCKER_COMPOSE_NETWORK_URL=%s\n' "$DOCKER_COMPOSE_NETWORK_URL" >>"$extra_docker_compose_env"

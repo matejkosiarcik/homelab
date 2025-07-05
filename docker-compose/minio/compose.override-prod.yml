@@ -29,5 +29,8 @@ services:
       - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:443:443
 
-  apache-prometheus-exporter:
+  apache-prometheus-exporter-api:
+    <<: *common-service-options
+
+  apache-prometheus-exporter-console:
     <<: *common-service-options

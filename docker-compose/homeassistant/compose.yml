@@ -14,9 +14,9 @@ services:
     #   - NET_ADMIN
     #   - NET_RAW
     # privileged: true
-    stop_grace_period: 30s
     networks:
       external-network: {} # TODO: Connect to external world via squid instead
+    stop_grace_period: 30s
 
   certificator:
     extends:

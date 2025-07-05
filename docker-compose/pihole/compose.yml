@@ -1,30 +1,11 @@
-x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
-    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-    HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
-    HOMELAB_APP_TYPE: pihole
-    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-  common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
-    dns_opt:
-      - single-request
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
-
 services:
   app:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    init: true
-    hostname: pihole-placeholder # This fixes random container hostname in dashboard header
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/pihole/Dockerfile
+    hostname: pihole-placeholder # This fixes random container hostname in dashboard header
     env_file:
       - ./app-secrets/app.env
     volumes:
@@ -34,85 +15,42 @@ services:
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    stop_grace_period: 30s
     networks:
-      external-network: {}
+      external-network: {} # TODO: Connect to external world via squid instead
+    stop_grace_period: 30s
 
   app-setup:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
-    init: true
     build:
-      context: ../../../../docker-images/
       dockerfile: ./custom/docker-setup/Dockerfile
     environment:
-      <<: *common-env-variables
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
       DOCKER_HOST: tcp://socket-proxy:2375
 
   app-prometheus-exporter:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
-    init: true
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/pihole-prometheus-exporter/Dockerfile
     environment:
-      <<: *common-env-variables
       PIHOLE_HOSTNAME: app
       PIHOLE_PORT: 80
     env_file:
       - ./app-secrets/app-prometheus-exporter.env
 
-  certificator:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/certificator/Dockerfile
-    env_file:
-      - ./app-secrets/certificator.env
-    volumes:
-      - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificator:/homelab/logs:rw
-
-  apache:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/apache/Dockerfile
-    volumes:
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
-      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
-      - ./app-logs/apache:/homelab/logs:rw
-    networks:
-      external-network: {}
-
-  apache-prometheus-exporter:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
-    environment:
-      APACHE_HOST: apache
-    env_file:
-      - ./app-secrets/apache-prometheus-exporter.env
-
   socket-proxy:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    init: true
-    read_only: true
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/socket-proxy/Dockerfile
+    read_only: true
     environment:
       EXEC: 1
       CONTAINERS: 1
@@ -122,6 +60,23 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     tmpfs:
       - /run
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    volumes:
+      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
 
 networks:
   default:

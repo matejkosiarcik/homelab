@@ -26,5 +26,8 @@ services:
       - 127.0.0.1:8081:80
       - 127.0.0.1:8444:443
 
-  apache-prometheus-exporter:
+  apache-prometheus-exporter-api:
+    <<: *common-service-options
+
+  apache-prometheus-exporter-console:
     <<: *common-service-options
