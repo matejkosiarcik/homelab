@@ -864,7 +864,8 @@ case "$app_dirname" in
     ;;
 esac
 
-find "$output" -type f -exec chmod 0400 {} \;
+# TODO: Switch to 0400 permissions eventually after unifying container users
+find "$output" -type f -exec chmod 0444 {} \;
 
 # Cleanup
 rm -rf "$tmpdir"

@@ -2227,17 +2227,20 @@ endpoints:
   #   group: App - UniFi Controller
   #   url: https://proxy-prometheus:${UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD}@unifi-controller.matejhome.com/.proxy/metrics
 
-  - <<: *default-https
+  - <<: *default-http
     name: UniFi Controller Admin - HTTP 2
     group: App - UniFi Controller
     url: http://unifi-controller.matejhome.com:8080
-    insecure: "true"
+    insecure: true
 
   - <<: *default-https
     name: UniFi Controller Admin - HTTPS 2
     group: App - UniFi Controller
     url: https://unifi-controller.matejhome.com:8443
-    insecure: "true"
+    insecure: true
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] == 200"
 
   # - <<: *default-tcp
   #   name: UniFi Controller - TCP:80
