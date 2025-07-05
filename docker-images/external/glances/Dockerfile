@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM nicolargo/glances:4.3.1-full
+FROM nicolargo/glances:4.3.2-full
 RUN mkdir /homelab
 COPY ./external/glances/glances.conf /homelab/glances.conf
 ENV HOMELAB_CONTAINER_NAME=glances \
