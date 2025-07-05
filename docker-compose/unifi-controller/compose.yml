@@ -5,6 +5,7 @@ services:
       service: app
     build:
       dockerfile: ./external/unifi-network-application/Dockerfile
+    init: false
     depends_on:
       mongodb:
         condition: service_healthy
