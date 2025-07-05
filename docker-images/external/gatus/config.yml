@@ -1335,6 +1335,213 @@ endpoints:
   #   url: tcp://netalertx.matejhome.com:20211
   #   enabled: false
 
+  ### Group: App - Node Exporter ###
+
+  # MacBook Pro 2012 #
+
+  # - <<: *default-icmp
+  #   name: Node Exporter - MacBook Pro 2012 - ICMP
+  #   group: App - Node Exporter
+  #   url: icmp://node-exporter-macbook-pro-2012.matejhome.com
+
+  - <<: *default-http
+    name: Node Exporter - MacBook Pro 2012 - HTTP
+    group: App - Node Exporter
+    url: http://node-exporter-macbook-pro-2012.matejhome.com
+
+  - <<: *default-https
+    name: Node Exporter - MacBook Pro 2012 - HTTPS
+    group: App - Node Exporter
+    url: https://node-exporter-macbook-pro-2012.matejhome.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Node Exporter - MacBook Pro 2012 - Prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://prometheus:${NODE_EXPORTER_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD}@node-exporter-macbook-pro-2012.matejhome.com/metrics
+
+  # - <<: *default-https
+  #   name: Node Exporter - MacBook Pro 2012 - Proxy prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://proxy-prometheus:${NODE_EXPORTER_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD}@node-exporter-macbook-pro-2012.matejhome.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - MacBook Pro 2012 - TCP:80
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-macbook-pro-2012.matejhome.com:80
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - MacBook Pro 2012 - TCP:443
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-macbook-pro-2012.matejhome.com:443
+
+  # Odroid H3 #
+
+  # - <<: *default-icmp
+  #   name: Node Exporter - Odroid H3 - ICMP
+  #   group: App - Node Exporter
+  #   url: icmp://node-exporter-odroid-h3.matejhome.com
+
+  - <<: *default-http
+    name: Node Exporter - Odroid H3 - HTTP
+    group: App - Node Exporter
+    url: http://node-exporter-odroid-h3.matejhome.com
+
+  - <<: *default-https
+    name: Node Exporter - Odroid H3 - HTTPS
+    group: App - Node Exporter
+    url: https://node-exporter-odroid-h3.matejhome.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Node Exporter - Odroid H3 - Prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://prometheus:${NODE_EXPORTER_ODROID_H3_PROMETHEUS_PASSWORD}@node-exporter-odroid-h3.matejhome.com/metrics
+
+  # - <<: *default-https
+  #   name: Node Exporter - Odroid H3 - Proxy prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://proxy-prometheus:${NODE_EXPORTER_ODROID_H3_PROXY_PROMETHEUS_PASSWORD}@node-exporter-odroid-h3.matejhome.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Odroid H3 - TCP:80
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-odroid-h3.matejhome.com:80
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Odroid H3 - TCP:443
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-odroid-h3.matejhome.com:443
+
+  # Odroid H4 Ultra #
+
+  # - <<: *default-icmp
+  #   name: Node Exporter - Odroid H4 Ultra - ICMP
+  #   group: App - Node Exporter
+  #   url: icmp://node-exporter-odroid-h4-ultra.matejhome.com
+
+  - <<: *default-http
+    name: Node Exporter - Odroid H4 Ultra - HTTP
+    group: App - Node Exporter
+    url: http://node-exporter-odroid-h4-ultra.matejhome.com
+
+  - <<: *default-https
+    name: Node Exporter - Odroid H4 Ultra - HTTPS
+    group: App - Node Exporter
+    url: https://node-exporter-odroid-h4-ultra.matejhome.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Node Exporter - Odroid H4 Ultra - Prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://prometheus:${NODE_EXPORTER_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD}@node-exporter-odroid-h4-ultra.matejhome.com/metrics
+
+  # - <<: *default-https
+  #   name: Node Exporter - Odroid H4 Ultra - Proxy prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://proxy-prometheus:${NODE_EXPORTER_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD}@node-exporter-odroid-h4-ultra.matejhome.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Odroid H4 Ultra - TCP:80
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-odroid-h4-ultra.matejhome.com:80
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Odroid H4 Ultra - TCP:443
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-odroid-h4-ultra.matejhome.com:443
+
+  # Raspberry Pi 4B 2GB #
+
+  # - <<: *default-icmp
+  #   name: Node Exporter - Raspberry Pi 4B 2GB - ICMP
+  #   group: App - Node Exporter
+  #   url: icmp://node-exporter-raspberry-pi-4b-2g.matejhome.com
+
+  - <<: *default-http
+    name: Node Exporter - Raspberry Pi 4B 2GB - HTTP
+    group: App - Node Exporter
+    url: http://node-exporter-raspberry-pi-4b-2g.matejhome.com
+
+  - <<: *default-https
+    name: Node Exporter - Raspberry Pi 4B 2GB - HTTPS
+    group: App - Node Exporter
+    url: https://node-exporter-raspberry-pi-4b-2g.matejhome.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Node Exporter - Raspberry Pi 4B 2GB - Prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://prometheus:${NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD}@node-exporter-raspberry-pi-4b-2g.matejhome.com/metrics
+
+  # - <<: *default-https
+  #   name: Node Exporter - Raspberry Pi 4B 2GB - Proxy prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://proxy-prometheus:${NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD}@node-exporter-raspberry-pi-4b-2g.matejhome.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Raspberry Pi 4B 2GB - TCP:80
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-raspberry-pi-4b-2g.matejhome.com:80
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Raspberry Pi 4B 2GB - TCP:443
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-raspberry-pi-4b-2g.matejhome.com:443
+
+  # Raspberry Pi 4B 4GB #
+
+  # - <<: *default-icmp
+  #   name: Node Exporter - Raspberry Pi 4B 4GB - ICMP
+  #   group: App - Node Exporter
+  #   url: icmp://node-exporter-raspberry-pi-4b-4g.matejhome.com
+
+  - <<: *default-http
+    name: Node Exporter - Raspberry Pi 4B 4GB - HTTP
+    group: App - Node Exporter
+    url: http://node-exporter-raspberry-pi-4b-4g.matejhome.com
+
+  - <<: *default-https
+    name: Node Exporter - Raspberry Pi 4B 4GB - HTTPS
+    group: App - Node Exporter
+    url: https://node-exporter-raspberry-pi-4b-4g.matejhome.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Node Exporter - Raspberry Pi 4B 4GB - Prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://prometheus:${NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD}@node-exporter-raspberry-pi-4b-4g.matejhome.com/metrics
+
+  # - <<: *default-https
+  #   name: Node Exporter - Raspberry Pi 4B 4GB - Proxy prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://proxy-prometheus:${NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD}@node-exporter-raspberry-pi-4b-4g.matejhome.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Glances - Raspberry Pi 4B 4GB - TCP:80
+  #   group: App - Glances
+  #   url: tcp://node-exporter-raspberry-pi-4b-4g.matejhome.com:80
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Raspberry Pi 4B 4GB - TCP:443
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-raspberry-pi-4b-4g.matejhome.com:443
+
   ### Group: App - Ntfy ###
 
   # - <<: *default-icmp
