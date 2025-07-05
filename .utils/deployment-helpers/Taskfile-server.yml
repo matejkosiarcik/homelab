@@ -8,12 +8,12 @@ tasks:
       - python3 ../../.utils/deployment-helpers/server-main.py build {{.CLI_ARGS}}
 
   deploy:
-    desc: Deploy all apps (build+stop+start)
+    desc: Deploy all apps | build + stop + start
     cmds:
       - python3 ../../.utils/deployment-helpers/server-main.py deploy {{.CLI_ARGS}}
 
   install:
-    desc: Global install
+    desc: Global server install
     cmds:
       - python3 ../../.utils/deployment-helpers/server-main.py install {{.CLI_ARGS}}
 
