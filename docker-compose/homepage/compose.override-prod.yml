@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: "${DOCKER_COMPOSE_NETWORK_DOMAIN}"
+      HOMEPAGE_ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   certificator:
     <<: *common-service-options

@@ -47,7 +47,7 @@ import { Diagram, DiagramCircle, DiagramEdge, DiagramItem, DiagramSection } from
     // Sections
 
     const sectionPadding = 50;
-    new DiagramSection('Odroid H3', { x: unbound1Default.coordinates.minX - sectionPadding, y: unbound1Default.coordinates.minY - sectionPadding }, { x: pihole1Primary.coordinates.maxX + sectionPadding, y: pihole1Secondary.coordinates.maxY + sectionPadding });
+    new DiagramSection('Odroid H4 Ultra', { x: unbound1Default.coordinates.minX - sectionPadding, y: unbound1Default.coordinates.minY - sectionPadding }, { x: pihole1Primary.coordinates.maxX + sectionPadding, y: pihole1Secondary.coordinates.maxY + sectionPadding });
     new DiagramSection('Raspberry Pi 4B 4GB', { x: unbound2Default.coordinates.minX - sectionPadding, y: unbound2Default.coordinates.minY - sectionPadding }, { x: pihole2Primary.coordinates.maxX + sectionPadding, y: pihole2Secondary.coordinates.maxY + sectionPadding  });
 
     // Final
