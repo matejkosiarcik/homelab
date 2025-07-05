@@ -1393,7 +1393,7 @@ endpoints:
   - <<: *default-https
     name: Node Exporter - Odroid H3 - HTTPS
     group: App - Node Exporter
-    url: https://@node-exporter-odroid-h3.matejhome.com
+    url: https://node-exporter-odroid-h3.matejhome.com
     alerts:
       - type: email
       - type: ntfy
