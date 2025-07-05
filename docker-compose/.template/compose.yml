@@ -12,7 +12,7 @@ services:
     # environment:
     #   PLACEHOLDER: PLACEHOLDER
     # volumes:
-    #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:rw
+    #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:ro
     # networks:
     #   internal-network: {}
     #   external-network: {} # TODO: Connect to external world via squid instead
