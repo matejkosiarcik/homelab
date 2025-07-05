@@ -5,24 +5,27 @@ services:
       service: app
     build:
       dockerfile: ./external/homepage/Dockerfile
-    env_file:
-      - ./app-secrets/app.env
-    networks:
-      external-network: # TODO: Connect to external world via squid instead
+    # Below are optional settings, only apply when necessary:
+    # init: false
+    # env_file:
+    #   - ./app-secrets/app.env
+    # environment:
+    #   TEMPLATE: PLACEHOLDER
+    # volumes:
+    #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:rw
+    # networks:
+    #   external-network: {} # TODO: Connect to external world via squid instead
+    # stop_grace_period: 30s
 
   certificator:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: certificator
-    networks:
-      external-network: # TODO: Connect to external world via squid instead
 
   apache:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
-    networks:
-      external-network: # TODO: Connect to external world via socat instead
 
   apache-prometheus-exporter:
     extends:
