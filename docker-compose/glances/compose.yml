@@ -1,28 +1,10 @@
-x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
-    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-    HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
-    HOMELAB_APP_TYPE: glances
-    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-  common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
-    dns_opt:
-      - single-request
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
-
 services:
-  app-ui:
-    <<: *common-service-options
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    init: true
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/glances/Dockerfile
     volumes:
       - ./app-secrets/glances-password.txt:/root/.config/glances/admin.pwd:ro
@@ -32,10 +14,11 @@ services:
       DOCKER_HOST: tcp://socket-proxy:2375
 
   app-prometheus:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/glances/Dockerfile
     volumes:
       - ../../../../docker-images/external/glances/prometheus/glances.conf:/root/.config/glances/glances.conf:ro
@@ -44,59 +27,35 @@ services:
       GLANCES_OPT: "--export prometheus --config /homelab/glances.conf"
       DOCKER_HOST: tcp://socket-proxy:2375
 
-  certificator:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/certificator/Dockerfile
-    env_file:
-      - ./app-secrets/certificator.env
-    volumes:
-      - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificator:/homelab/logs:rw
-
-  apache:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/apache/Dockerfile
-    volumes:
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
-      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
-      - ./app-logs/apache:/homelab/logs:rw
-    networks:
-      external-network: {}
-
-  apache-prometheus-exporter:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
-    environment:
-      APACHE_HOST: apache
-    env_file:
-      - ./app-secrets/apache-prometheus-exporter.env
-
   socket-proxy:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    init: true
     read_only: true
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/socket-proxy/Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     tmpfs:
       - /run
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    volumes:
+      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
 
 networks:
   default:

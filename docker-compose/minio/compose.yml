@@ -1,28 +1,9 @@
-x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
-    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-    HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
-    HOMELAB_APP_TYPE: minio
-    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-  common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
-    dns_opt:
-      - single-request
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
-
 services:
   app:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    init: true
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/minio-server/Dockerfile
     env_file:
       - ./app-secrets/app.env
@@ -31,75 +12,55 @@ services:
     command: server /data --address ":9000" --console-address ":9001"
 
   app-setup:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
-    init: true
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/minio-client/Dockerfile
     env_file:
       - ./app-secrets/app-setup.env
 
   certificator:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/certificator/Dockerfile
-    env_file:
-      - ./app-secrets/certificator.env
-    volumes:
-      - ./app-data/certs:/homelab/certs:rw
-      - ./app-logs/certificator:/homelab/logs:rw
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
 
   apache-api:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-api
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/apache/Dockerfile
     environment:
-      <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: api
-    volumes:
-      - ./app-logs/apache-api:/homelab/logs:rw
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
-    networks:
-      external-network: {}
 
   apache-console:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-console
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./custom/apache/Dockerfile
     environment:
-      <<: *common-env-variables
       HOMELAB_CONTAINER_VARIANT: console
-    volumes:
-      - ./app-logs/apache-console:/homelab/logs:rw
-      - ./app-data/certs:/homelab/certs:ro
-      - ./app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ./app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
-    networks:
-      external-network: {}
 
-  apache-prometheus-exporter:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
-    init: true
-    build:
-      context: ../../../../docker-images/
-      dockerfile: ./external/apache-prometheus-exporter/Dockerfile
+  apache-prometheus-exporter-api:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api
     environment:
       APACHE_HOST: apache-api
-    env_file:
-      - ./app-secrets/apache-prometheus-exporter.env
+    volumes:
+      - ./app-logs/apache-api:/homelab/logs:rw
+
+  apache-prometheus-exporter-console:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console
+    environment:
+      APACHE_HOST: apache-console
+    volumes:
+      - ./app-logs/apache-api:/homelab/logs:rw
 
 networks:
   default:

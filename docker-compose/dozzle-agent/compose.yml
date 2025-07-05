@@ -1,29 +1,11 @@
-x-definitions:
-  common-env-variables: &common-env-variables
-    HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
-    HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-    HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
-    HOMELAB_APP_TYPE: dozzle-agent
-    HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-  common-service-options: &common-service-options
-    environment:
-      <<: *common-env-variables
-    dns_opt:
-      - single-request
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
-
 services:
   app:
-    <<: *common-service-options
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    init: true
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/dozzle/Dockerfile
+    command: agent
     environment:
       <<: *common-env-variables
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
@@ -33,7 +15,6 @@ services:
         target: /dozzle_cert.pem
       - source: key
         target: /dozzle_key.pem
-    command: agent
     depends_on:
       socket-proxy:
         condition: service_started
@@ -41,12 +22,12 @@ services:
       external-network: {}
 
   socket-proxy:
-    <<: *common-service-options
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    init: true
     read_only: true
     build:
-      context: ../../../../docker-images/
       dockerfile: ./external/socket-proxy/Dockerfile
     environment:
       CONTAINERS: 1
