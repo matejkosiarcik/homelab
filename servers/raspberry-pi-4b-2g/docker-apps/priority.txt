@@ -1,2 +1,3 @@
 dozzle-agent
 glances
+node-exporter
