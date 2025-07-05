@@ -60,7 +60,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
         PROXY_UPSTREAM_URL="http://app:9001"
     else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "${HOMELAB_APP_TYPE}"
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'node-exporter' ]; then
@@ -73,7 +73,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
     elif [ "$HOMELAB_ENV" = 'prod' ]; then
         PROXY_UPSTREAM_URL="https://app"
     else
-        printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
+        printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
@@ -125,7 +125,7 @@ if [ "$HOMELAB_ENV" = 'prod' ]; then
 elif [ "$HOMELAB_ENV" = 'dev' ]; then
     PROXY_HTTP_PORT='8080'
 else
-    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
+    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
     exit 1
 fi
 export PROXY_HTTP_PORT
@@ -147,7 +147,7 @@ elif [ "$HOMELAB_ENV" = 'dev' ]; then
         fi
     fi
 else
-    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
+    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
     exit 1
 fi
 export PROXY_HTTPS_PORT
@@ -191,7 +191,16 @@ export PROXY_UPSTREAM_URL_PROMETHEUS
 printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
 
 # Set PROXY_PROMETHEUS_EXPORTER_URL
-if [ "${PROXY_PROMETHEUS_EXPORTER_URL-}" = '' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
+        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-api:9117'
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
+        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-console:9117'
+    else
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
+        exit 1
+    fi
+else
     PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter:9117'
 fi
 export PROXY_PROMETHEUS_EXPORTER_URL
