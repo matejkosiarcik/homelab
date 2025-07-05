@@ -1352,7 +1352,7 @@ endpoints:
   - <<: *default-https
     name: Node Exporter - MacBook Pro 2012 - HTTPS
     group: App - Node Exporter
-    url: https://admin:${NODE_EXPORTER_MACBOOK_PRO_2012_PASSWORD}@node-exporter-macbook-pro-2012.matejhome.com
+    url: https://node-exporter-macbook-pro-2012.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -1393,7 +1393,7 @@ endpoints:
   - <<: *default-https
     name: Node Exporter - Odroid H3 - HTTPS
     group: App - Node Exporter
-    url: https://admin:${NODE_EXPORTER_ODROID_H3_PASSWORD}@node-exporter-odroid-h3.matejhome.com
+    url: https://@node-exporter-odroid-h3.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -1434,7 +1434,7 @@ endpoints:
   - <<: *default-https
     name: Node Exporter - Odroid H4 Ultra - HTTPS
     group: App - Node Exporter
-    url: https://admin:${NODE_EXPORTER_ODROID_H4_ULTRA_PASSWORD}@node-exporter-odroid-h4-ultra.matejhome.com
+    url: https://node-exporter-odroid-h4-ultra.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -1475,7 +1475,7 @@ endpoints:
   - <<: *default-https
     name: Node Exporter - Raspberry Pi 4B 2GB - HTTPS
     group: App - Node Exporter
-    url: https://admin:${NODE_EXPORTER_RASPBERRY_PI_4B_2G_PASSWORD}@node-exporter-raspberry-pi-4b-2g.matejhome.com
+    url: https://node-exporter-raspberry-pi-4b-2g.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -1516,7 +1516,7 @@ endpoints:
   - <<: *default-https
     name: Node Exporter - Raspberry Pi 4B 4GB - HTTPS
     group: App - Node Exporter
-    url: https://admin:${NODE_EXPORTER_RASPBERRY_PI_4B_4G_PASSWORD}@node-exporter-raspberry-pi-4b-4g.matejhome.com
+    url: https://node-exporter-raspberry-pi-4b-4g.matejhome.com
     alerts:
       - type: email
       - type: ntfy
