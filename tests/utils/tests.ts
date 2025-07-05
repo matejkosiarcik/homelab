@@ -184,7 +184,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
         },
     ];
     output.push(...proxyStatusVariants.map((variant) => {
-        return test(`API: Proxy status (${variant.title})`, async () => {
+        return test(`API: Proxy status (${variant.title})${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url}/.proxy/status`, { auth: variant.auth });
             expect(response.status, 'Response Status').toStrictEqual(variant.status);
         });
@@ -230,14 +230,14 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
         },
     ];
     output.push(...proxyPrometheusVariants.map((variant) => {
-        return test(`API: Proxy prometheus metrics (${variant.title})`, async () => {
+        return test(`API: Proxy prometheus metrics (${variant.title})${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url}/.proxy/metrics`, { auth: variant.auth });
             expect(response.status, 'Response Status').toStrictEqual(variant.status);
         });
     }));
 
     output.push(
-        test('API: Proxy prometheus metrics content', async () => {
+        test(`API: Proxy prometheus metrics content${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url}/.proxy/metrics`, {
                 auth: {
                     username: 'proxy-prometheus',
