@@ -22,3 +22,4 @@ load_password() {
 }
 
 printf 'HEALTHCHECKS_API_KEY=%s\n' "$(load_password healthchecks app api-key-readwrite)" >>'.secrets.env'
+chmod 0400 '.secrets.env'

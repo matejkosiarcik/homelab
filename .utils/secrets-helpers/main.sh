@@ -864,5 +864,7 @@ case "$app_dirname" in
     ;;
 esac
 
+find "$output" -type f -exec chmod 0400 {} \;
+
 # Cleanup
 rm -rf "$tmpdir"

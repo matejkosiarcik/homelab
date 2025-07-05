@@ -233,3 +233,5 @@ load_password() {
     printf 'VAULTWARDEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vaultwarden apache status)"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden apache prometheus)"
 } >>'.secrets.env'
+
+chmod 0400 '.secrets.env'
