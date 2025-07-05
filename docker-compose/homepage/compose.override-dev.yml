@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: "*"
+      HOMEPAGE_ALLOWED_HOSTS: localhost:8443
 
   certificator:
     <<: *common-service-options
