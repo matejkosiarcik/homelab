@@ -4,13 +4,13 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/homepage/Dockerfile
+      dockerfile: ./external/PLACEHOLDER/Dockerfile
     # Below are optional settings, only apply when necessary:
     # init: false
     # env_file:
     #   - ./app-secrets/app.env
     # environment:
-    #   TEMPLATE: PLACEHOLDER
+    #   PLACEHOLDER: PLACEHOLDER
     # volumes:
     #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:rw
     # networks:
