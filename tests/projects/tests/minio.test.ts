@@ -10,6 +10,7 @@ test.describe(apps.minio.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
+            createProxyTests(instance.consoleUrl, { title: 'console' });
             createPrometheusTests(instance.url, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
             createApiRootTest(instance.url, {
                 headers: {
