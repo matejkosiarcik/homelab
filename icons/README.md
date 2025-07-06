@@ -14,8 +14,9 @@ The Icons are obtained from following locations:
     - ActualBudget: <https://github.com/actualbudget>
     - Antenna: <https://www.flaticon.com/free-icon/antenna_1011360>
     - Antennas: <https://github.com/jfarseneau/antennas>
-    - API: <https://www.flaticon.com/free-icon/api_1493169>
     - Apache: <https://techicons.dev/icons/apache>
+    - API: <https://www.flaticon.com/free-icon/api_1493169>
+    - Automatic1111 <https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/2901>
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
     - DW Service: <https://www.dwservice.net/en/home.html>
     - Gatus: <https://github.com/TwiN/gatus>

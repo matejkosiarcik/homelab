@@ -87,6 +87,7 @@ convert_image_full "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networ
 
 convert_image_full "$input_dir/other/actualbudget.png" "$output_dir/actualbudget.png"
 convert_image_full "$input_dir/other/antennas.png" "$output_dir/antennas.png"
+convert_image_full "$input_dir/other/automatic1111.png" "$output_dir/automatic1111.png"
 convert_image_full "$input_dir/other/gatus.png" "$output_dir/gatus.png"
 convert_image_full "$input_dir/other/odroid.png" "$output_dir/odroid.png"
 convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberry-pi.png"
