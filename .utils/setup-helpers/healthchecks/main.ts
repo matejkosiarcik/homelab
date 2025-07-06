@@ -124,7 +124,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Glances Raspberry Pi 4B 4GB',
         'Gotify',
         'Healthchecks',
-        'Homeassistant',
+        'Home Assistant',
         'Homepage',
         'Jellyfin',
         'Minio',

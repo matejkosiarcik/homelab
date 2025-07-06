@@ -1042,17 +1042,17 @@ endpoints:
   # - <<: *default-icmp
   #   name: Home Assistant - ICMP
   #   group: App - Home Assistant
-  #   url: icmp://homeassistant.matejhome.com
+  #   url: icmp://home-assistant.matejhome.com
 
   - <<: *default-http
     name: Home Assistant - HTTP
     group: App - Home Assistant
-    url: http://homeassistant.matejhome.com
+    url: http://home-assistant.matejhome.com
 
   - <<: *default-https
     name: Home Assistant - HTTPS
     group: App - Home Assistant
-    url: https://homeassistant.matejhome.com
+    url: https://home-assistant.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -1061,24 +1061,24 @@ endpoints:
   # - <<: *default-https
   #   name: Home Assistant - Prometheus metrics
   #   group: App - Home Assistant
-  #   url: https://homeassistant.matejhome.com/api/prometheus
+  #   url: https://home-assistant.matejhome.com/api/prometheus
   #   headers:
-  #     Authorization: Bearer ${HOMEASSISTANT_PROMETHEUS_TOKEN}
+  #     Authorization: Bearer ${HOME_ASSISTANT_PROMETHEUS_TOKEN}
 
   # - <<: *default-https
   #   name: Home Assistant - Proxy prometheus metrics
   #   group: App - Home Assistant
-  #   url: https://proxy-prometheus:${HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD}@homeassistant.matejhome.com/.proxy/metrics
+  #   url: https://proxy-prometheus:${HOME_ASSISTANT_PROXY_PROMETHEUS_PASSWORD}@home-assistant.matejhome.com/.proxy/metrics
 
   # - <<: *default-tcp
   #   name: Home Assistant - TCP:80
   #   group: App - Home Assistant
-  #   url: tcp://homeassistant.matejhome.com:80
+  #   url: tcp://home-assistant.matejhome.com:80
 
   # - <<: *default-tcp
   #   name: Home Assistant - TCP:443
   #   group: App - Home Assistant
-  #   url: tcp://homeassistant.matejhome.com:443
+  #   url: tcp://home-assistant.matejhome.com:443
 
   ### Group: App - Homepage ###
 

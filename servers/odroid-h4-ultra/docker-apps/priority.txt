@@ -15,7 +15,7 @@ omada-controller
 unifi-controller
 
 # Home automation
-homeassistant
+home-assistant
 
 # Notifications
 smtp4dev

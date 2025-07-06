@@ -28,8 +28,8 @@ export function getTargetUrl(): string {
 
     if (fsSync.existsSync('/.dockerenv')) {
         switch (getAppName()) {
-            case 'homeassistant': {
-                return 'http://homeassistant:8123';
+            case 'home-assistant': {
+                return 'http://home-assistant:8123';
             }
             case 'omada-controller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'https://omada-controller:8443' : 'https://omada-controller';

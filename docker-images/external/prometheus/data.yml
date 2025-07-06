@@ -26,7 +26,7 @@ apps:
   - url: healthchecks.matejhome.com
     auth: bearer
     path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
-  - url: homeassistant.matejhome.com
+  - url: home-assistant.matejhome.com
     auth: bearer
     path: /api/prometheus
   - url: jellyfin.matejhome.com
@@ -88,7 +88,7 @@ proxies:
   - url: glances-raspberry-pi-4b-4g.matejhome.com
   - url: gotify.matejhome.com
   - url: healthchecks.matejhome.com
-  - url: homeassistant.matejhome.com
+  - url: home-assistant.matejhome.com
   - url: homepage.matejhome.com
   - url: jellyfin.matejhome.com
   - url: minio.matejhome.com
