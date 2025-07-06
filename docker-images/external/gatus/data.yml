@@ -273,6 +273,9 @@ apps:
     endpoints:
       - path: /v1/health
 
+  - name: Ollama
+    domain: ollama.matejhome.com
+
   - name: Omada Controller
     domain: omada-controller.matejhome.com
     additional_ports:

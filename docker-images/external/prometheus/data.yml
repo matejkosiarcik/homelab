@@ -101,6 +101,7 @@ proxies:
   - url: node-exporter-raspberry-pi-4b-2g.matejhome.com
   - url: node-exporter-raspberry-pi-4b-4g.matejhome.com
   - url: ntfy.matejhome.com
+  - url: ollama.matejhome.com
   - url: omada-controller.matejhome.com
   - url: openspeedtest.matejhome.com
   - url: pihole-1-primary.matejhome.com
