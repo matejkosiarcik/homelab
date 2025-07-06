@@ -18,10 +18,7 @@
 - \[Dev\]:
     - Go to `ollama` app directory
     - Download basic models: `docker run --rm --interactive --tty --volume "$PWD/app-data/ollama:/root/.ollama:rw" ollama pull deepseek-r1:1.5b`
-- \[Prod\] Download basic models:
-    - `docker run --rm --interactive --tty --volume "$HOME/git/homelab/servers/.current/docker-apps/ollama/app-data/ollama:/root/.ollama:rw" ollama pull deepseek-r1:1.5b`
-- \[Prod\] Download any other models:
-    - `docker run --rm --interactive --tty --volume "$HOME/git/homelab/servers/.current/docker-apps/ollama/app-data/ollama:/root/.ollama:rw" ollama pull <model>`
+- \[Prod\] Download basic models
 
 ```sh
 docker run --rm --interactive --tty --entrypoint bash \
