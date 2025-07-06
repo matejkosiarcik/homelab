@@ -24,6 +24,7 @@ The Icons are obtained from following locations:
     - Litestream: <https://litestream.io>
     - Odroid: `https://wiki.odroid.com` (server down)
     - Open WebUI: <https://openwebui.com>
+    - OpenRouter: <https://custom.typingmind.com/tools/model-icons/openrouterai>
     - Photos: <https://www.iconfinder.com/icons/1622830/gallery_landskape_mountains_nature_photo_picture_icon>
     - Playwright: <https://playwright.dev>
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (server down)
@@ -31,6 +32,7 @@ The Icons are obtained from following locations:
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - Squid: <https://github.com/squid-cache>
+    - Stable Diffusion: <https://custom.typingmind.com/tools/model-icons/stable-diffusion>
     - TV (old): <https://www.flaticon.com/free-icon/television_550486>
     - UPC: <https://www.upc.sk>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>
