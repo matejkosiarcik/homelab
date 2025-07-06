@@ -426,6 +426,25 @@
         #   key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
         #   enableTaskList: true
 
+- AI:
+    - Ollama:
+        description: LLM backend
+        href: https://ollama.matejhome.com
+        ping: ollama.matejhome.com
+        icon: /icons/ollama.png
+
+    - Open WebUI:
+        description: LLM frontend
+        href: https://open-webui.matejhome.com
+        ping: open-webui.matejhome.com
+        icon: /icons/open-webui.png
+
+    - Stable diffusion:
+        description: LLM frontend
+        href: https://stable-diffusion.matejhome.com
+        ping: stable-diffusion.matejhome.com
+        icon: /icons/stable-diffusion.png
+
 - Resources:
     - Glances MacBook Pro 2012:
         description: Resource monitoring

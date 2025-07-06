@@ -1,0 +1,36 @@
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    build:
+      dockerfile: ./external/ollama/Dockerfile
+    volumes:
+      - ./app-data/ollama:/root/.ollama:rw
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false
