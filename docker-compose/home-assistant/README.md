@@ -1,6 +1,6 @@
 # Home Assistant
 
-![diagram](../../docs/diagrams/out/apps/homeassistant.png)
+![diagram](../../docs/diagrams/out/apps/home-assistant.png)
 
 ## Docs
 

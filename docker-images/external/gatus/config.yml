@@ -707,7 +707,7 @@ endpoints:
   - <<: *default-https
     name: Glances - MacBook Pro 2012 - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_MACBOOK_PRO_2012_PASSWORD}@glances-macbook-pro-2012.matejhome.com
+    url: https://admin:${GLANCES_MACBOOK_PRO_2012_ADMIN_PASSWORD}@glances-macbook-pro-2012.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -750,7 +750,7 @@ endpoints:
   - <<: *default-https
     name: Glances - Odroid H3 - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_ODROID_H3_PASSWORD}@glances-odroid-h3.matejhome.com
+    url: https://admin:${GLANCES_ODROID_H3_ADMIN_PASSWORD}@glances-odroid-h3.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -793,7 +793,7 @@ endpoints:
   - <<: *default-https
     name: Glances - Odroid H4 Ultra - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_ODROID_H4_ULTRA_PASSWORD}@glances-odroid-h4-ultra.matejhome.com
+    url: https://admin:${GLANCES_ODROID_H4_ULTRA_ADMIN_PASSWORD}@glances-odroid-h4-ultra.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -819,6 +819,49 @@ endpoints:
   #   group: App - Glances
   #   url: tcp://glances-odroid-h4-ultra.matejhome.com:443
 
+  # Raspberry Pi 3B #
+
+  # - <<: *default-icmp
+  #   name: Glances - Raspberry Pi 3B - ICMP
+  #   group: App - Glances
+  #   url: icmp://glances-raspberry-pi-4b-2g.matejhome.com
+
+  - <<: *default-http
+    name: Glances - Raspberry Pi 3B - HTTP
+    group: App - Glances
+    url: http://glances-raspberry-pi-3b.matejhome.com
+    conditions:
+      - "[STATUS] == 401"
+
+  - <<: *default-https
+    name: Glances - Raspberry Pi 3B - HTTPS
+    group: App - Glances
+    url: https://admin:${GLANCES_RASPBERRY_PI_3B_ADMIN_PASSWORD}@glances-raspberry-pi-3b.matejhome.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Glances - Raspberry Pi 3B - Prometheus metrics
+  #   group: App - Glances
+  #   url: https://prometheus:${GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD}@glances-raspberry-pi-3b.matejhome.com/metrics
+
+  # - <<: *default-https
+  #   name: Glances - Raspberry Pi 3B - Proxy prometheus metrics
+  #   group: App - Glances
+  #   url: https://proxy-prometheus:${GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD}@glances-raspberry-pi-3b.matejhome.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Glances - Raspberry Pi 3B - TCP:80
+  #   group: App - Glances
+  #   url: tcp://glances-raspberry-pi-3b.matejhome.com:80
+
+  # - <<: *default-tcp
+  #   name: Glances - Raspberry Pi 3B - TCP:443
+  #   group: App - Glances
+  #   url: tcp://glances-raspberry-pi-3b.matejhome.com:443
+
   # Raspberry Pi 4B 2GB #
 
   # - <<: *default-icmp
@@ -836,7 +879,7 @@ endpoints:
   - <<: *default-https
     name: Glances - Raspberry Pi 4B 2GB - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_PASSWORD}@glances-raspberry-pi-4b-2g.matejhome.com
+    url: https://admin:${GLANCES_RASPBERRY_PI_4B_2G_ADMIN_PASSWORD}@glances-raspberry-pi-4b-2g.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -879,7 +922,7 @@ endpoints:
   - <<: *default-https
     name: Glances - Raspberry Pi 4B 4GB - HTTPS
     group: App - Glances
-    url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_PASSWORD}@glances-raspberry-pi-4b-4g.matejhome.com
+    url: https://admin:${GLANCES_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD}@glances-raspberry-pi-4b-4g.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -999,17 +1042,17 @@ endpoints:
   # - <<: *default-icmp
   #   name: Home Assistant - ICMP
   #   group: App - Home Assistant
-  #   url: icmp://homeassistant.matejhome.com
+  #   url: icmp://home-assistant.matejhome.com
 
   - <<: *default-http
     name: Home Assistant - HTTP
     group: App - Home Assistant
-    url: http://homeassistant.matejhome.com
+    url: http://home-assistant.matejhome.com
 
   - <<: *default-https
     name: Home Assistant - HTTPS
     group: App - Home Assistant
-    url: https://homeassistant.matejhome.com
+    url: https://home-assistant.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -1018,24 +1061,24 @@ endpoints:
   # - <<: *default-https
   #   name: Home Assistant - Prometheus metrics
   #   group: App - Home Assistant
-  #   url: https://homeassistant.matejhome.com/api/prometheus
+  #   url: https://home-assistant.matejhome.com/api/prometheus
   #   headers:
-  #     Authorization: Bearer ${HOMEASSISTANT_PROMETHEUS_TOKEN}
+  #     Authorization: Bearer ${HOME_ASSISTANT_PROMETHEUS_TOKEN}
 
   # - <<: *default-https
   #   name: Home Assistant - Proxy prometheus metrics
   #   group: App - Home Assistant
-  #   url: https://proxy-prometheus:${HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD}@homeassistant.matejhome.com/.proxy/metrics
+  #   url: https://proxy-prometheus:${HOME_ASSISTANT_PROXY_PROMETHEUS_PASSWORD}@home-assistant.matejhome.com/.proxy/metrics
 
   # - <<: *default-tcp
   #   name: Home Assistant - TCP:80
   #   group: App - Home Assistant
-  #   url: tcp://homeassistant.matejhome.com:80
+  #   url: tcp://home-assistant.matejhome.com:80
 
   # - <<: *default-tcp
   #   name: Home Assistant - TCP:443
   #   group: App - Home Assistant
-  #   url: tcp://homeassistant.matejhome.com:443
+  #   url: tcp://home-assistant.matejhome.com:443
 
   ### Group: App - Homepage ###
 
@@ -1054,7 +1097,7 @@ endpoints:
   - <<: *default-https
     name: Homepage - HTTPS
     group: App - Homepage
-    url: https://admin:${HOMEPAGE_PASSWORD}@homepage.matejhome.com
+    url: https://admin:${HOMEPAGE_ADMIN_PASSWORD}@homepage.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -1456,6 +1499,47 @@ endpoints:
   #   name: Node Exporter - Odroid H4 Ultra - TCP:443
   #   group: App - Node Exporter
   #   url: tcp://node-exporter-odroid-h4-ultra.matejhome.com:443
+
+  # Raspberry Pi 3B #
+
+  # - <<: *default-icmp
+  #   name: Node Exporter - Raspberry Pi 3B - ICMP
+  #   group: App - Node Exporter
+  #   url: icmp://node-exporter-raspberry-pi-3b.matejhome.com
+
+  - <<: *default-http
+    name: Node Exporter - Raspberry Pi 3B - HTTP
+    group: App - Node Exporter
+    url: http://node-exporter-raspberry-pi-3b.matejhome.com
+
+  - <<: *default-https
+    name: Node Exporter - Raspberry Pi 3B - HTTPS
+    group: App - Node Exporter
+    url: https://node-exporter-raspberry-pi-3b.matejhome.com
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+
+  # - <<: *default-https
+  #   name: Node Exporter - Raspberry Pi 3B - Prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://prometheus:${NODE_EXPORTER_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD}@node-exporter-raspberry-pi-3b.matejhome.com/metrics
+
+  # - <<: *default-https
+  #   name: Node Exporter - Raspberry Pi 3B - Proxy prometheus metrics
+  #   group: App - Node Exporter
+  #   url: https://proxy-prometheus:${NODE_EXPORTER_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD}@node-exporter-raspberry-pi-3b.matejhome.com/.proxy/metrics
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Raspberry Pi 3B - TCP:80
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-raspberry-pi-3b.matejhome.com:80
+
+  # - <<: *default-tcp
+  #   name: Node Exporter - Raspberry Pi 3B - TCP:443
+  #   group: App - Node Exporter
+  #   url: tcp://node-exporter-raspberry-pi-3b.matejhome.com:443
 
   # Raspberry Pi 4B 2GB #
 
@@ -2064,7 +2148,7 @@ endpoints:
   - <<: *default-https
     name: Smtp4dev - HTTPS
     group: App - Smtp4dev
-    url: https://admin:${SMTP4DEV_PASSWORD}@smtp4dev.matejhome.com
+    url: https://admin:${SMTP4DEV_ADMIN_PASSWORD}@smtp4dev.matejhome.com
     alerts:
       - type: email
       - type: ntfy
@@ -2515,7 +2599,7 @@ endpoints:
   # - <<: *default-https
   #   name: Uptime Kuma - Prometheus metrics
   #   group: App - Uptime Kuma
-  #   url: https://admin:${UPTIME_KUMA_PROMETHEUS_PASSWORD}@uptime-kuma.matejhome.com/metrics
+  #   url: https://admin:${UPTIME_KUMA_ADMIN_PASSWORD}@uptime-kuma.matejhome.com/metrics
 
   # - <<: *default-https
   #   name: Uptime Kuma - Proxy prometheus metrics

@@ -40,7 +40,7 @@ updates:
       - /docker-images/external/glances
       - /docker-images/external/gotify
       - /docker-images/external/healthchecks
-      - /docker-images/external/homeassistant
+      - /docker-images/external/home-assistant
       - /docker-images/external/homepage
       - /docker-images/external/jellyfin
       - /docker-images/external/minio-client
@@ -109,7 +109,7 @@ updates:
       - /docker-images/.shared/dependencies/gitman
       - /docker-images/.shared/dependencies/jinja
       - /docker-images/.shared/dependencies/yq
-      - /docker-images/external/homeassistant
+      - /docker-images/external/home-assistant
       - /icons
     schedule:
       interval: daily

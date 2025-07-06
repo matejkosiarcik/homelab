@@ -38,7 +38,7 @@ jobs:
               - '**/gatus*/**'
             healthchecks:
               - '**/healthchecks*/**'
-            homeassistant:
+            home-assistant:
               - '**/homeassistant*/**'
               - '**/home-assistant*/**'
             homepage:
@@ -114,7 +114,7 @@ jobs:
             printf '%s ' '"dozzle-server": ["/servers/odroid-h4-ultra/docker-apps/dozzle"],'
             printf '%s ' '"gatus": ["/servers/odroid-h4-ultra/docker-apps/gatus-1", "/servers/raspberry-pi-4b-4g/docker-apps/gatus-2"],'
             printf '%s ' '"healthchecks": ["/servers/odroid-h4-ultra/docker-apps/healthchecks"],'
-            printf '%s ' '"homeassistant": ["/servers/odroid-h4-ultra/docker-apps/homeassistant"],'
+            printf '%s ' '"home-assistant": ["/servers/odroid-h4-ultra/docker-apps/home-assistant"],'
             printf '%s ' '"homepage": ["/servers/odroid-h4-ultra/docker-apps/homepage"],'
             printf '%s ' '"jellyfin": ["/servers/odroid-h4-ultra/docker-apps/jellyfin"],'
             printf '%s ' '"minio": ["/servers/odroid-h4-ultra/docker-apps/minio"],'

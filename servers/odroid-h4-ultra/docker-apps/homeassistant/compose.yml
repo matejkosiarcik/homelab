@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/homeassistant/compose.yml
-    project_directory: .
