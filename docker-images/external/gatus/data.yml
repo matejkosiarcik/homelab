@@ -279,7 +279,7 @@ apps:
   - name: Omada Controller
     domain: omada-controller.matejhome.com
     additional_ports:
-      other: [29811,29812,29813,29814,29815,29816]
+      other: [29811, 29812, 29813, 29814, 29815, 29816]
     endpoints:
       - path: /api/v2/anon/info
         conditions:
