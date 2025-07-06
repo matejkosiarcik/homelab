@@ -17,4 +17,6 @@ interact
 sleep 10
 "
 
-sed 's~Do you want to save the password? [Yes/No]: ~~' <'/root/.config/glances/glances.pwd'
+sleep 5
+
+sed 's~Do you want to save the password? [Yes/No]: ~~g' <'/root/.config/glances/glances.pwd'
