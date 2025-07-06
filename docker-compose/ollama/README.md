@@ -17,8 +17,14 @@
 
 - \[Dev\]:
     - Go to `ollama` app directory
-    - Download basic models: `docker run --rm --incremental --tty --volume "$PWD/app-data/ollama:/root/.ollama:rw" ollama pull deepseek-r1:1.5b`
+    - Download basic models: `docker run --rm --interactive --tty --volume "$PWD/app-data/ollama:/root/.ollama:rw" ollama pull deepseek-r1:1.5b`
 - \[Prod\] Download basic models:
-    - `docker run --rm --incremental --tty --volume "$HOME/git/homelab/servers/.current/docker-apps/ollama/app-data/ollama:/root/.ollama:rw" ollama pull deepseek-r1:1.5b`
+    - `docker run --rm --interactive --tty --volume "$HOME/git/homelab/servers/.current/docker-apps/ollama/app-data/ollama:/root/.ollama:rw" ollama pull deepseek-r1:1.5b`
 - \[Prod\] Download any other models:
-    - `docker run --rm --incremental --tty --volume "$HOME/git/homelab/servers/.current/docker-apps/ollama/app-data/ollama:/root/.ollama:rw" ollama pull <model>`
+    - `docker run --rm --interactive --tty --volume "$HOME/git/homelab/servers/.current/docker-apps/ollama/app-data/ollama:/root/.ollama:rw" ollama pull <model>`
+
+```sh
+docker run --rm --interactive --tty --entrypoint bash \
+  --volume "$HOME/git/homelab/servers/.current/docker-apps/ollama/app-data/ollama:/root/.ollama:rw" \
+  ollama/ollama -c 'ollama serve& && sleep 10 && ollama pull deepseek-r1:1.5b'
+```
