@@ -177,7 +177,8 @@ apps:
   - name: Jellyfin
     domain: jellyfin.matejhome.com
     additional_ports:
-      http: [8096]
+      http:
+        - 8096
     endpoints:
       - path: /health
         body:
@@ -214,7 +215,8 @@ apps:
     domain: netalertx.matejhome.com
     enabled: false
     additional_ports:
-      http: [20211]
+      http:
+        - 20211
     endpoints:
       - path: /api/prometheus
         authentication:
@@ -267,9 +269,12 @@ apps:
 
   - name: Ntfy
     domain: ntfy.matejhome.com
-    type: [smtp, http]
+    type:
+      - smtp
+      - http
     additional_ports:
-      other: [25]
+      other:
+        - 25
     endpoints:
       - path: /v1/health
 
@@ -279,7 +284,13 @@ apps:
   - name: Omada Controller
     domain: omada-controller.matejhome.com
     additional_ports:
-      other: [29811, 29812, 29813, 29814, 29815, 29816]
+      other:
+        - 29811
+        - 29812
+        - 29813
+        - 29814
+        - 29815
+        - 29816
     endpoints:
       - path: /api/v2/anon/info
         conditions:
@@ -310,7 +321,9 @@ apps:
 
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -318,7 +331,9 @@ apps:
 
   - name: PiHole 1 Secondary
     domain: pihole-1-secondary.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -326,7 +341,9 @@ apps:
 
   - name: PiHole 2 Primary
     domain: pihole-2-primary.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -334,7 +351,9 @@ apps:
 
   - name: PiHole 2 Secondary
     domain: pihole-2-secondary.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -353,13 +372,17 @@ apps:
     domain: samba-data.matejhome.com
     type: [smb]
     additional_ports:
-      other: [139, 445]
+      other:
+        - 139
+        - 445
 
   - name: Samba Snapshots
     domain: samba-snapshots.matejhome.com
     type: [smb]
     additional_ports:
-      other: [139, 445]
+      other:
+        - 139
+        - 445
 
   - name: Smtp4dev
     domain: smtp4dev.matejhome.com
@@ -367,7 +390,8 @@ apps:
     authentication:
       basic: admin
     additional_ports:
-      other: [25]
+      other:
+        - 25
 
   - name: Speedtest Tracker
     domain: speedtest-tracker.matejhome.com
@@ -381,8 +405,10 @@ apps:
   - name: TVHeadend
     domain: tvheadend.matejhome.com
     additional_ports:
-      http: [9981]
-      other: [9982]
+      http:
+        - 9981
+      other:
+        - 9982
     endpoints:
       - path: /api/serverinfo
         conditions:
@@ -395,7 +421,9 @@ apps:
 
   - name: Unbound 1 Default
     domain: unbound-1-default.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -403,7 +431,9 @@ apps:
 
   - name: Unbound 1 Open
     domain: unbound-1-open.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -411,7 +441,9 @@ apps:
 
   - name: Unbound 2 Default
     domain: unbound-2-default.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -419,7 +451,9 @@ apps:
 
   - name: Unbound 2 Open
     domain: unbound-2-open.matejhome.com
-    type: [dns, http]
+    type:
+      - dns
+      - http
     endpoints:
       - path: /metrics
         authentication:
@@ -428,7 +462,8 @@ apps:
   - name: Unifi Controller
     domain: unifi-controller.matejhome.com
     additional_ports:
-      other: [6789]
+      other:
+        - 6789
     endpoints:
       - path: /status
       - path: :8080
