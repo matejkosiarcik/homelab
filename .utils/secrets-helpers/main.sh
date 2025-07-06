@@ -353,6 +353,7 @@ case "$app_dirname" in
     printf 'NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-2g apache prometheus)" >>"$output/app.env"
     printf 'NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-4g apache prometheus)" >>"$output/app.env"
     printf 'NTFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ntfy apache prometheus)" >>"$output/app.env"
+    printf 'OLLAMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama apache prometheus)" >>"$output/app.env"
     printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omada-controller apache prometheus)" >>"$output/app.env"
     printf 'OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary apache prometheus)" >>"$output/app.env"
@@ -578,6 +579,11 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
 *ollama*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$admin_password"
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
@@ -695,6 +701,7 @@ case "$app_dirname" in
     printf 'NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-2g apache prometheus)" >>"$output/app.env"
     printf 'NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-4g apache prometheus)" >>"$output/app.env"
     printf 'NTFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ntfy apache prometheus)" >>"$output/app.env"
+    printf 'OLLAMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama apache prometheus)" >>"$output/app.env"
     printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omada-controller apache prometheus)" >>"$output/app.env"
     printf 'OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary apache prometheus)" >>"$output/app.env"
