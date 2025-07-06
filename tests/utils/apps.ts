@@ -69,7 +69,7 @@ export const apps = {
     'home-assistant': {
         title: 'Home Assistant',
         instances: [
-            { url: 'https://home-assistant.matejhome.com', title: 'Home assistant' },
+            { url: 'https://home-assistant.matejhome.com', title: 'Home Assistant' },
         ],
     },
     homepage: {
