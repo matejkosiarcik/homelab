@@ -9,6 +9,7 @@ services:
       - ./app-secrets/app.env
     environment:
       SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}
+      SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
       - ./app-logs/samba:/var/log/samba:rw
     networks:

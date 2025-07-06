@@ -5,8 +5,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    environment:
-      SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
       - ${DOCKER_COMPOSE_SAMBA_PATH}:/data:rw
     ports:
