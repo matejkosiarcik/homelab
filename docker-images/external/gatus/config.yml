@@ -630,7 +630,7 @@ endpoints:
   # - <<: *default-https
   #   name: Gatus 1 - Prometheus metrics
   #   group: App - Gatus 1
-  #   url: https://prometheus:${GATUS_1_PROMETHEUS_TOKEN}@gatus-1.matejhome.com/metrics
+  #   url: https://prometheus:${GATUS_1_PROMETHEUS_PASSWORD}@gatus-1.matejhome.com/metrics
 
   # - <<: *default-https
   #   name: Gatus 1 - Proxy prometheus metrics
@@ -671,7 +671,7 @@ endpoints:
   # - <<: *default-https
   #   name: Gatus 2 - Prometheus metrics
   #   group: App - Gatus 2
-  #   url: https://prometheus:${GATUS_2_PROMETHEUS_TOKEN}@gatus-2.matejhome.com/metrics
+  #   url: https://prometheus:${GATUS_2_PROMETHEUS_PASSWORD}@gatus-2.matejhome.com/metrics
 
   # - <<: *default-https
   #   name: Gatus 2 - Proxy prometheus metrics
@@ -1308,11 +1308,6 @@ endpoints:
   #   name: MotionEye (Kitchen) - TCP:443
   #   group: App - MotionEye (Kitchen)
   #   url: tcp://motioneye-kitchen.matejhome.com:443
-
-  # - <<: *default-tcp
-  #   name: MotionEye (Kitchen) - TCP:9081
-  #   group: App - MotionEye (Kitchen)
-  #   url: tcp://motioneye-kitchen.matejhome.com:9081
 
   ### Group: App - NetAlertX ###
   # TODO: Enable NetAlertX
