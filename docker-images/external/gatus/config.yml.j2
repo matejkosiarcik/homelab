@@ -1,0 +1,402 @@
+storage:
+  type: sqlite
+  path: /data/gatus.db
+
+security:
+  basic:
+    username: admin
+    password-bcrypt-base64: ${GATUS_PASSWORD_ENCRYPTED}
+
+# Enable prometheus metrics endpoint
+metrics: true
+
+default-alert-settings: &default-alert-settings
+  enabled: true
+  failure-threshold: 2
+  success-threshold: 1
+  send-on-resolved: true
+alerting:
+  email:
+    from: system@${HOMELAB_APP_EXTERNAL_DOMAIN}
+    host: smtp4dev.matejhome.com
+    port: 25
+    to: notifications@${HOMELAB_APP_EXTERNAL_DOMAIN}
+    client:
+      insecure: true
+    default-alert:
+      <<: *default-alert-settings
+  ntfy:
+    url: https://ntfy.matejhome.com
+    topic: gatus
+    priority: 1
+    token: ${NTFY_TOKEN}
+    default-alert:
+      <<: *default-alert-settings
+  gotify:
+    server-url: https://gotify.matejhome.com
+    token: ${GOTIFY_TOKEN}
+    priority: 1
+    title: Gatus monitor failed
+    default-alert:
+      <<: *default-alert-settings
+
+# connectivity:
+#   checker:
+#     target: 10.1.0.1
+#     interval: 15s
+
+{#
+{%- macro all_alerts() -%}
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+{%- endmacro -%}
+#}
+
+{%- macro conditions_http_401(item) -%}
+  {%- if item.authentication is defined %}
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] == any(401,403)"
+  {%- endif %}
+{%- endmacro -%}
+
+{%- macro conditions_https_401(item) -%}
+  {%- if item.authentication is defined %}
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] == any(401,403)"
+      - "[CERTIFICATE_EXPIRATION] > 600h" # 25 days
+  {%- endif %}
+{%- endmacro -%}
+
+{%- macro is_enabled(item) -%}
+  {%- if item.enabled is defined and not item.enabled %}
+    enabled: false
+  {%- endif %}
+{%- endmacro -%}
+
+default-icmp: &default-icmp
+  alerts: []
+  interval: 15m
+  conditions:
+    - "[CONNECTED] == true"
+
+default-tcp: &default-tcp
+  alerts: []
+  interval: 15m
+  conditions:
+    - "[CONNECTED] == true"
+
+default-udp: &default-udp
+  alerts: []
+  interval: 15m
+  conditions:
+    - "[CONNECTED] == true"
+
+default-dns-a: &default-dns-a
+  alerts: []
+  interval: 30m
+  dns:
+    query-name: "example.com"
+    query-type: "A"
+  conditions:
+    - "[CONNECTED] == true"
+    - "[BODY] != 0.0.0.0"
+    - "[BODY] != 127.0.0.1"
+    - "[DNS_RCODE] == NOERROR"
+
+default-dns-aaaa: &default-dns-aaaa
+  alerts: []
+  interval: 30m
+  dns:
+    query-name: "example.com"
+    query-type: "AAAA"
+  conditions:
+    - "[CONNECTED] == true"
+    - "[BODY] != ::1"
+    - "[DNS_RCODE] == NOERROR"
+
+default-http: &default-http
+  alerts: []
+  interval: 15m
+  conditions:
+    - "[CONNECTED] == true"
+    - "[STATUS] == 200"
+
+default-http-infrequent: &default-http-infrequent
+  <<: *default-http
+  interval: 120m
+
+default-https: &default-https
+  alerts: []
+  interval: 15m
+  conditions:
+    - "[CONNECTED] == true"
+    - "[STATUS] == 200"
+    - "[CERTIFICATE_EXPIRATION] > 600h" # 25 days
+
+default-https-infrequent: &default-https-infrequent
+  <<: *default-https
+  interval: 120m
+
+endpoints:
+  ### DNS ###
+
+  {%- for item in dns %}
+
+  - <<: *default-icmp
+    name: External DNS - {{ item.name }} - ICMP
+    group: External DNS
+    url: icmp://{{ item.ip }}
+    {%- if item.enabled is defined and not item.enabled %}
+    enabled: false
+    {%- endif %}
+
+  - <<: *default-dns-a
+    name: External DNS - {{ item.name }} - DNS A
+    group: External DNS
+    url: "{{ item.ip }}"
+    {%- if item.enabled is defined and not item.enabled %}
+    enabled: false
+    {%- endif %}
+
+  - <<: *default-dns-aaaa
+    name: External DNS - {{ item.name }} - DNS AAAA
+    group: External DNS
+    url: "{{ item.ip }}"
+    {%- if item.enabled is defined and not item.enabled %}
+    enabled: false
+    {%- endif %}
+  {%- endfor %}
+
+  ### Network equipment ###
+
+  {%- for item in network %}
+
+  - <<: *default-icmp
+    name: {{ item.name }}
+    group: Network equipment
+    url: icmp://{{ item.ip }}
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+    {%- if item.enabled is defined and not item.enabled %}
+    enabled: false
+    {%- endif %}
+  {%- endfor %}
+
+  ### Servers ###
+
+  {%- for item in servers %}
+
+  - <<: *default-icmp
+    name: {{ item.name }}
+    group: Servers
+    url: icmp://{{ item.ip }}
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+    {%- if item.enabled is defined and not item.enabled %}
+    enabled: false
+    {%- endif %}
+  {%- endfor %}
+
+  ### Apps ###
+
+  {%- for item in apps %}
+
+  ## App - {{ item.name }}
+
+  {%- if item.type is not defined or "http" in item.type %}
+
+  - <<: *default-http-infrequent
+    name: {{ item.name }} - HTTP{% if item.authentication is defined %} (noauth){% endif %}
+    group: App - {{ item.name }}
+    url: http://{{ item.domain }}
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {%- if item.conditions is defined %}
+    conditions:
+      {%- for condition in item.conditions %}
+      - "{{ condition }}"
+      {%- endfor -%}
+    {% else %}
+    {{- conditions_https_401(item) -}}
+    {% endif %}
+    {{- is_enabled(item) }}
+
+  {%- if item.authentication is defined %}
+
+  - <<: *default-https-infrequent
+  {%- else %}
+
+  - <<: *default-https
+  {%- endif %}
+    name: {{ item.name }} - HTTPS{% if item.authentication is defined %} (noauth){% endif %}
+    group: App - {{ item.name }}
+    url: https://{{ item.domain }}
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {%- if item.authentication is not defined %}
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+    {%- endif %}
+    {%- if item.conditions is defined %}
+    conditions:
+      {%- for condition in item.conditions %}
+      - "{{ condition }}"
+      {%- endfor -%}
+    {% else %}
+    {{- conditions_https_401(item) -}}
+    {% endif %}
+    {{- is_enabled(item) }}
+
+  {%- if item.authentication is defined %}
+
+  - <<: *default-https
+    name: {{ item.name }} - HTTPS
+    group: App - {{ item.name }}
+    {%- if item.authentication.basic is defined %}
+    url: https://{{ item.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ item.authentication.basic | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}
+    {%- elif item.authentication.bearer is defined %}
+    url: https://{{ item.domain }}
+    headers:
+      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ item.authentication.bearer }}{{ "}" }}
+    {%- else %}
+    url: https://{{ item.domain }}
+    {%- endif %}
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {%- if item.conditions is defined %}
+    conditions:
+      {%- for condition in item.conditions %}
+      - "{{ condition }}"
+      {%- endfor -%}
+    {% endif %}
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+    {{- is_enabled(item) }}
+  {%- endif %}
+
+  - <<: *default-https-infrequent
+    name: {{ item.name }} - HTTPS Proxy /metrics (noauth)
+    group: App - {{ item.name }}
+    url: https://{{ item.domain }}/.proxy/metrics
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] == any(401,403)"
+      - "[CERTIFICATE_EXPIRATION] > 600h" # 25 days
+    {{- is_enabled(item) }}
+
+  - <<: *default-https-infrequent
+    name: {{ item.name }} - HTTPS Proxy /metrics
+    group: App - {{ item.name }}
+    url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.proxy/metrics
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {{- is_enabled(item) }}
+
+  {%- if item.endpoints is defined %}
+  {%- for endpoint in item.endpoints %}
+
+  - <<: *default-https-infrequent
+    name: {{ item.name }} - {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %}
+    group: App - {{ item.name }}
+    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
+    {% if endpoint.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {%- if endpoint.conditions is defined %}
+    conditions:
+      {%- for condition in endpoint.conditions %}
+      - "{{ condition }}"
+      {%- endfor -%}
+    {% else %}
+    {{- conditions_http_401(endpoint) -}}
+    {%- endif %}
+    {{- is_enabled(item) }}
+
+  {%- if endpoint.authentication is defined %}
+
+  - <<: *default-https-infrequent
+    name: {{ item.name }} - {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}
+    group: App - {{ item.name }}
+    {%- if endpoint.authentication.basic is defined %}
+    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ endpoint.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ endpoint.authentication.basic | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}{{ endpoint.path }}
+    {%- elif endpoint.authentication.bearer is defined %}
+    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
+    headers:
+      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ endpoint.authentication.bearer }}{{ "}" }}
+    {%- else %}
+    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
+    {%- endif %}
+    {% if endpoint.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {%- if endpoint.conditions is defined %}
+    conditions:
+      {%- for condition in endpoint.conditions %}
+      - "{{ condition }}"
+      {%- endfor %}
+    {%- endif %}
+    {{- is_enabled(item) }}
+  {%- endif %}
+
+  {%- endfor %}
+  {%- endif %}
+  {%- endif %}
+
+  {%- if item.type is defined and "dns" in item.type %}
+
+  - <<: *default-dns-a
+    name: {{ item.name }} - DNS A
+    group: App - {{ item.name }}
+    url: {{ item.domain }}
+    alerts:
+      - type: email
+      - type: ntfy
+      - type: gotify
+    {{- is_enabled(item) }}
+
+  - <<: *default-dns-aaaa
+    name: {{ item.name }} - DNS AAAA
+    group: App - {{ item.name }}
+    url: {{ item.domain }}
+    {{- is_enabled(item) }}
+  {%- endif %}
+
+  {%- if item.additional_ports is defined %}
+  {%- for port in item.additional_ports.http %}
+
+  - <<: *default-http
+    name: {{ item.name }} - HTTP:{{ port }}{% if item.authentication is defined %} (noauth){% endif %}
+    group: App - {{ item.name }}
+    url: http://{{ item.domain }}:{{ port }}
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {{- conditions_http_401(item) -}}
+    {{- is_enabled(item) }}
+  {%- endfor %}
+
+  {%- for port in item.additional_ports.https %}
+
+  - <<: *default-https
+    name: {{ item.name }} - HTTPS:{{ port }}{% if item.authentication is defined %} (noauth){% endif %}
+    group: App - {{ item.name }}
+    url: https://{{ item.domain }}:{{ port }}
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {{- conditions_https_401(item) -}}
+    {{- is_enabled(item) }}
+  {%- endfor %}
+
+  {%- for port in item.additional_ports.other %}
+
+  - <<: *default-tcp
+    name: {{ item.name }} - TCP:{{ port }}
+    group: App - {{ item.name }}
+    url: tcp://{{ item.domain }}:{{ port }}
+    {{- is_enabled(item) }}
+  {%- endfor %}
+  {%- endif %}
+
+  {%- endfor %}
