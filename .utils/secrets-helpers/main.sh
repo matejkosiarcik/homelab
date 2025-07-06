@@ -575,6 +575,15 @@ case "$app_dirname" in
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
     ;;
+*ollama*)
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+    ;;
 *omada-controller*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
