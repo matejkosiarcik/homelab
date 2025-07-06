@@ -930,9 +930,6 @@ endpoints:
     name: Healthchecks - API health
     group: App - Healthchecks
     url: https://healthchecks.matejhome.com/api/v3/status
-    conditions:
-      - "[STATUS] == 200"
-      - "[BODY] == OK"
 
   # - <<: *default-https
   #   name: Healthchecks - Prometheus metrics
