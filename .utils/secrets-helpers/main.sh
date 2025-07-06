@@ -310,7 +310,7 @@ case "$app_dirname" in
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$output/app.env"
     printf 'HOME_ASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token home-assistant app automation-api-key)" >>"$output/app.env"
-    printf 'JELLYFIN_PROMETHEUS_TOKEN=%s\n' "$(load_token jellyfin app prometheus)" >>"$output/app.env"
+    printf 'JELLYFIN_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin app prometheus)" >>"$output/app.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$output/app.env"
     printf 'NODE_EXPORTER_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-macbook-pro-2012 app prometheus)" >>"$output/app.env"
     printf 'NODE_EXPORTER_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-odroid-h3 app prometheus)" >>"$output/app.env"

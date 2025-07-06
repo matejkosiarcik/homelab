@@ -15,8 +15,6 @@ expect -- \"Do you want to save the password?\"
 send -- \"yes\n\"
 interact
 sleep 10
-"
+" >/dev/null
 
-sleep 5
-
-sed 's~Do you want to save the password? [Yes/No]: ~~g' <'/root/.config/glances/glances.pwd'
+sed -E 's~Do you want to save the password\? \[Yes/No\]: ~~g' <'/root/.config/glances/glances.pwd'
