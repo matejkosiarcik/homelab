@@ -14,8 +14,9 @@ The Icons are obtained from following locations:
     - ActualBudget: <https://github.com/actualbudget>
     - Antenna: <https://www.flaticon.com/free-icon/antenna_1011360>
     - Antennas: <https://github.com/jfarseneau/antennas>
-    - API: <https://www.flaticon.com/free-icon/api_1493169>
     - Apache: <https://techicons.dev/icons/apache>
+    - API: <https://www.flaticon.com/free-icon/api_1493169>
+    - Automatic1111 <https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/2901>
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
     - DW Service: <https://www.dwservice.net/en/home.html>
     - Gatus: <https://github.com/TwiN/gatus>
@@ -23,6 +24,8 @@ The Icons are obtained from following locations:
     - IoT: <https://www.flaticon.com/free-icon/iot_10355707>
     - Litestream: <https://litestream.io>
     - Odroid: `https://wiki.odroid.com` (server down)
+    - Open WebUI: <https://openwebui.com>
+    - OpenRouter: <https://custom.typingmind.com/tools/model-icons/openrouterai>
     - Photos: <https://www.iconfinder.com/icons/1622830/gallery_landskape_mountains_nature_photo_picture_icon>
     - Playwright: <https://playwright.dev>
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (server down)
@@ -30,6 +33,7 @@ The Icons are obtained from following locations:
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - Squid: <https://github.com/squid-cache>
+    - Stable Diffusion: <https://custom.typingmind.com/tools/model-icons/stable-diffusion>
     - TV (old): <https://www.flaticon.com/free-icon/television_550486>
     - UPC: <https://www.upc.sk>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>

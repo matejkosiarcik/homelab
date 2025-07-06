@@ -1,0 +1,495 @@
+dns:
+  - name: Google
+    ip: 8.8.8.8
+  - name: Google Alt
+    ip: 8.8.4.4
+  - name: Cloudflare
+    ip: 1.1.1.1
+
+network:
+  - name: Router - TP-Link ER605
+    ip: 10.1.0.1
+  - name: WiFi AP - UniFi U6
+    ip: 10.1.0.2
+  - name: Smart switch - TP-Link SG108E
+    ip: 10.1.0.3
+  - name: Smart switch - TP-Link SG105E
+    ip: 10.1.0.4
+
+servers:
+  - name: Odroid H3
+    ip: 10.1.4.8
+    enabled: false # TODO: Reenable
+  - name: Odroid H4 Ultra
+    ip: 10.1.4.11
+  - name: Raspberry Pi 3B
+    ip: 10.1.4.2
+  - name: Raspberry Pi 4B 2GB
+    ip: 10.1.4.3
+  - name: Raspberry Pi 4B 4GB
+    ip: 10.1.4.4
+  - name: Raspberry Pi Zero 2W 1
+    ip: 10.1.4.6
+    enabled: false # TODO: Reenable
+  - name: Raspberry Pi Zero 2W 2
+    ip: 10.1.4.7
+    enabled: false # TODO: Reenable
+
+apps:
+  - name: ActualBudget
+    domain: actualbudget.matejhome.com
+
+  - name: Certbot
+    domain: certbot.matejhome.com
+
+  - name: ChangeDetection
+    domain: changedetection.matejhome.com
+
+  - name: Desklamp Left
+    domain: desklamp-left.matejhome.com
+    endpoints:
+      - path: /api/status
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+          - "has([BODY].status) == true"
+          - "[BODY].status == any(on, off)"
+    enabled: false
+
+  - name: Desklamp Right
+    domain: desklamp-right.matejhome.com
+    endpoints:
+      - path: /api/status
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+          - "has([BODY].status) == true"
+          - "[BODY].status == any(on, off)"
+    enabled: false
+
+  - name: Docker Cache Proxy - DockerHub
+    domain: docker-cache-proxy-dockerhub.matejhome.com
+    endpoints:
+      - path: /v2/_catalog
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+          - "has([BODY].repositories) == true"
+
+  - name: Dozzle
+    domain: dozzle.matejhome.com
+
+  - name: Gatus 1
+    domain: gatus-1.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Gatus 2
+    domain: gatus-2.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Glances MacBook Pro 2012
+    domain: glances-macbook-pro-2012.matejhome.com
+    authentication:
+      basic: admin
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+    enabled: false
+
+  - name: Glances Odroid H3
+    domain: glances-odroid-h3.matejhome.com
+    authentication:
+      basic: admin
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+    enabled: false
+
+  - name: Glances Odroid H4 Ultra
+    domain: glances-odroid-h4-ultra.matejhome.com
+    authentication:
+      basic: admin
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Glances Raspberry Pi 3B
+    domain: glances-raspberry-pi-3b.matejhome.com
+    authentication:
+      basic: admin
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+    enabled: false
+
+  - name: Glances Raspberry Pi 4B 2GB
+    domain: glances-raspberry-pi-4b-2g.matejhome.com
+    authentication:
+      basic: admin
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Glances Raspberry Pi 4B 4GB
+    domain: glances-raspberry-pi-4b-4g.matejhome.com
+    authentication:
+      basic: admin
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Gotify
+    domain: gotify.matejhome.com
+
+  - name: Healthchecks
+    domain: healthchecks.matejhome.com
+    endpoints:
+      - path: /api/v3/status
+      - path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
+        authentication:
+          bearer: PROMETHEUS_TOKEN
+      - path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS_PROMETHEUS_TOKEN}
+
+  - name: Home Assistant
+    domain: home-assistant.matejhome.com
+    endpoints:
+      - path: /api/prometheus
+        authentication:
+          bearer: PROMETHEUS_TOKEN
+
+  - name: Homepage
+    domain: homepage.matejhome.com
+    authentication:
+      basic: admin
+
+  - name: Jellyfin
+    domain: jellyfin.matejhome.com
+    additional_ports:
+      http:
+        - 8096
+    endpoints:
+      - path: /health
+        body:
+          - "[BODY] == Healthy"
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: MinIO API
+    domain: minio.matejhome.com
+    authentication: True
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] < 500"
+    endpoints:
+      - path: /minio/health/cluster
+      - path: /minio/health/cluster/read
+      - path: /minio/health/live
+      - path: /minio/v2/metrics/cluster
+        authentication:
+          bearer: PROMETHEUS_TOKEN
+
+  - name: MinIO Console
+    domain: minio-console.matejhome.com
+
+  - name: MotionEye Kitchen
+    domain: motioneye-kitchen.matejhome.com
+    endpoints:
+      - path: /stream
+        authentication:
+          basic: user
+
+  - name: NetAlertX
+    domain: netalertx.matejhome.com
+    enabled: false
+    additional_ports:
+      http:
+        - 20211
+    endpoints:
+      - path: /api/prometheus
+        authentication:
+          basic: PROMETHEUS_PASSWORD
+
+  - name: Node Exporter - MacBook Pro 2012
+    domain: node-exporter-macbook-pro-2012.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+    enabled: false
+
+  - name: Node Exporter - Odroid H3
+    domain: node-exporter-odroid-h3.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+    enabled: false
+
+  - name: Node Exporter - Odroid H4 Ultra
+    domain: node-exporter-odroid-h4-ultra.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Node Exporter - Raspberry Pi 3B
+    domain: node-exporter-raspberry-pi-3b.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+    enabled: false
+
+  - name: Node Exporter - Raspberry Pi 4B 2GB
+    domain: node-exporter-raspberry-pi-4b-2g.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Node Exporter - Raspberry Pi 4B 4GB
+    domain: node-exporter-raspberry-pi-4b-4g.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Ntfy
+    domain: ntfy.matejhome.com
+    type:
+      - smtp
+      - http
+    additional_ports:
+      other:
+        - 25
+    endpoints:
+      - path: /v1/health
+
+  - name: Ollama
+    domain: ollama.matejhome.com
+
+  - name: Omada Controller
+    domain: omada-controller.matejhome.com
+    additional_ports:
+      other:
+        - 29811
+        - 29812
+        - 29813
+        - 29814
+        - 29815
+        - 29816
+    endpoints:
+      - path: /api/v2/anon/info
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+          - "[BODY].errorCode == 0"
+          - "has([BODY].msg) == true"
+          - "has([BODY].result) == true"
+          - "has([BODY].result.apiVer) == true"
+          - "has([BODY].result.controllerVer) == true"
+          - "[BODY].result.configured == true"
+      - path: :8080
+        insecure: true
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+      - path: :8443
+        insecure: true
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+
+  - name: OpenSpeedtest
+    domain: openspeedtest.matejhome.com
+    conditions:
+      - "[CONNECTED] == true"
+      - "[STATUS] == 200"
+
+  - name: PiHole 1 Primary
+    domain: pihole-1-primary.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: PiHole 1 Secondary
+    domain: pihole-1-secondary.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: PiHole 2 Primary
+    domain: pihole-2-primary.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: PiHole 2 Secondary
+    domain: pihole-2-secondary.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Prometheus
+    domain: prometheus.matejhome.com
+    authentication:
+      basic: admin
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Samba Data
+    domain: samba-data.matejhome.com
+    type: [smb]
+    additional_ports:
+      other:
+        - 139
+        - 445
+
+  - name: Samba Snapshots
+    domain: samba-snapshots.matejhome.com
+    type: [smb]
+    additional_ports:
+      other:
+        - 139
+        - 445
+
+  - name: Smtp4dev
+    domain: smtp4dev.matejhome.com
+    type: [smtp, http]
+    authentication:
+      basic: admin
+    additional_ports:
+      other:
+        - 25
+
+  - name: Speedtest Tracker
+    domain: speedtest-tracker.matejhome.com
+    endpoints:
+      - path: /api/healthcheck
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+          - "has([BODY].message) == true"
+
+  - name: TVHeadend
+    domain: tvheadend.matejhome.com
+    additional_ports:
+      http:
+        - 9981
+      other:
+        - 9982
+    endpoints:
+      - path: /api/serverinfo
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+          - "has([BODY].capabilities) == true"
+          - "has([BODY].sw_version) == true"
+          - "has([BODY].api_version) == true"
+          - "has([BODY].name) == true"
+
+  - name: Unbound 1 Default
+    domain: unbound-1-default.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 Open
+    domain: unbound-1-open.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Default
+    domain: unbound-2-default.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Open
+    domain: unbound-2-open.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unifi Controller
+    domain: unifi-controller.matejhome.com
+    additional_ports:
+      other:
+        - 6789
+    endpoints:
+      - path: /status
+      - path: :8080
+        protocol: http
+        insecure: true
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+      - path: :8443
+        insecure: true
+        conditions:
+          - "[CONNECTED] == true"
+          - "[STATUS] == 200"
+
+  - name: Uptime Kuma
+    domain: uptime-kuma.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: admin
+
+  - name: Vaultwarden
+    domain: vaultwarden.matejhome.com
+
+  - name: Vikunja
+    domain: vikunja.matejhome.com
+    endpoints:
+      - path: /api/v1/metrics
+    enabled: false # TODO: Enable

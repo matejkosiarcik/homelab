@@ -324,6 +324,15 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect entire Ollama
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'ollama' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/admin.htpasswd
+    Require valid-user
+</If>
+
 # Protect PiHole prometheus endpoint
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'pihole' && %{REQUEST_URI} =~ m#^/metrics/*$#">
     AuthType Basic
