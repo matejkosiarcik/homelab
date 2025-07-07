@@ -622,7 +622,7 @@ case "$app_dirname" in
 *open-webui*)
     # App
     ollama_admin_password="$(load_token ollama app admin)"
-    printf 'OLLAMA_BASE_URL=%s\n' https://admin:$ollama_admin_password@ollama.matejhome.com >>"$output/app.env"
+    printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_admin_password@ollama.matejhome.com" >>"$output/app.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
