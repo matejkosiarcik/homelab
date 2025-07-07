@@ -1,0 +1,19 @@
+x-definitions:
+  common-service-options: &common-service-options
+    restart: unless-stopped
+
+services:
+  app:
+    <<: *common-service-options
+
+  certificator:
+    <<: *common-service-options
+
+  apache:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+
+  apache-prometheus-exporter:
+    <<: *common-service-options

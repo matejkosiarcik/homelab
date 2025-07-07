@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-compose/open-webui/compose.yml
+    project_directory: .

@@ -5,15 +5,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    environment:
-      MANAGE_HTTP_PORT: 8080
-      MANAGE_HTTPS_PORT: 8443
-      PORTAL_HTTP_PORT: 8081
-      PORTAL_HTTPS_PORT: 8444
-    ports:
-      - 127.0.0.1:27001:27001/udp
-      - 127.0.0.1:29810:29810/udp
-      - 127.0.0.1:29811-29816:29811-29816
 
   certificator:
     <<: *common-service-options
