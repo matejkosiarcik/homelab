@@ -66,6 +66,11 @@ services:
     volumes:
       - ./app-logs/apache-api:/homelab/logs:rw
 
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
 networks:
   default:
     driver: none
