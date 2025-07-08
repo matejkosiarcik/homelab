@@ -196,6 +196,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *changedetection*)
     # App
@@ -209,6 +212,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *certbot*)
     # App
@@ -228,6 +234,9 @@ case "$app_dirname" in
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *docker-cache-proxy*)
     # App
@@ -243,6 +252,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *dozzle-agent*)
     # App
@@ -278,6 +290,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *gatus*)
     # App
@@ -407,6 +422,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *gotify*)
     # App
@@ -421,6 +439,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *healthchecks*)
     # App
@@ -441,6 +462,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *home-assistant*)
     # App
@@ -454,6 +478,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *homepage*)
     # App
@@ -489,6 +516,9 @@ case "$app_dirname" in
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
+    # Favicons
+    touch "$output/favicons.env"
+
     # Widgets
     printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$output/widgets.env"
     printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$output/widgets.env"
@@ -508,6 +538,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *minio*)
     # App
@@ -531,6 +564,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *motioneye*)
     # App
@@ -546,6 +582,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *node-exporter*)
     # Apache
@@ -561,6 +600,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *ntfy*)
     # App
@@ -581,6 +623,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *ollama*)
     # App
@@ -595,6 +640,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *omada-controller*)
     # App
@@ -612,6 +660,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *openspeedtest*)
     # Apache
@@ -621,6 +672,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *open-webui*)
     # App
@@ -634,6 +688,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *pihole*)
     # App
@@ -654,6 +711,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *prometheus*)
     # App
@@ -748,6 +808,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *renovatebot*)
     # App
@@ -777,6 +840,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *speedtest-tracker*)
     # App
@@ -803,6 +869,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *tvheadend*)
     # App
@@ -818,6 +887,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *unbound*)
     # Apache
@@ -830,6 +902,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *unifi-controller*)
     # App
@@ -851,6 +926,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *uptime-kuma*)
     # App
@@ -864,6 +942,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *vaultwarden*)
     # App
@@ -893,6 +974,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *)
     printf 'Unknown app directory name: %s\n' "$app_dir" >&2

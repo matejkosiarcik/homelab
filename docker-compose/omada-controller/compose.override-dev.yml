@@ -26,3 +26,6 @@ services:
 
   apache-prometheus-exporter:
     <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options

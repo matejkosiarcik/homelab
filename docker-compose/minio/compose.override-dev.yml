@@ -31,3 +31,6 @@ services:
 
   apache-prometheus-exporter-console:
     <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options
