@@ -124,127 +124,127 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
-# ActualBudget favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} actualbudget [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /favicon-32x32.png [L,R=302]
+# # ActualBudget favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} actualbudget [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /favicon-32x32.png [L,R=302]
 
-# Certbot favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /.proxy/icons/certbot/favicon.png [L]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /.proxy/icons/certbot/favicon.ico [L]
+# # Certbot favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /.proxy/icons/certbot/favicon.png [L]
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /.proxy/icons/certbot/favicon.ico [L]
 
-# Changedetection favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} changedetection [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /static/favicons/favicon-32x32.png [L,R=302]
+# # Changedetection favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} changedetection [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /static/favicons/favicon-32x32.png [L,R=302]
 
-# Docker Cache Proxy favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} docker-cache-proxy [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /.proxy/icons/docker-cache-proxy/favicon.png [L]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} docker-cache-proxy [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /.proxy/icons/docker-cache-proxy/favicon.ico [L]
+# # Docker Cache Proxy favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} docker-cache-proxy [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /.proxy/icons/docker-cache-proxy/favicon.png [L]
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} docker-cache-proxy [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /.proxy/icons/docker-cache-proxy/favicon.ico [L]
 
-# Gatus favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} gatus [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /favicon-32x32.png [L,R=302]
+# # Gatus favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} gatus [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /favicon-32x32.png [L,R=302]
 
-# Glances favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} glances [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /static/favicon.ico [L,R=302]
+# # Glances favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} glances [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /static/favicon.ico [L,R=302]
 
-# Homepage favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} homepage [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /favicon-32x32.png [L,R=302]
+# # Homepage favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} homepage [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /favicon-32x32.png [L,R=302]
 
-# Gotify favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} gotify [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /static/favicon-32x32.png [L,R=302]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} gotify [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /.proxy/icons/gotify/favicon.ico [L]
+# # Gotify favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} gotify [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /static/favicon-32x32.png [L,R=302]
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} gotify [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /.proxy/icons/gotify/favicon.ico [L]
 
-# Jellyfin favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} jellyfin [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /web/favicon.ico [L,R=302]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} jellyfin [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /web/favicon.png [L,R=302]
+# # Jellyfin favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} jellyfin [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /web/favicon.ico [L,R=302]
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} jellyfin [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /web/favicon.png [L,R=302]
 
-# Minio favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
-RewriteCond %{ENV:HOMELAB_APP_VARIANT} console [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /favicon-32x32.png [L,R=302]
+# # Minio favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
+# RewriteCond %{ENV:HOMELAB_APP_VARIANT} console [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /favicon-32x32.png [L,R=302]
 
-# MotionEye favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} motioneye [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /.proxy/icons/motioneye/favicon.png [L]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} motioneye [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /.proxy/icons/motioneye/favicon.ico [L]
+# # MotionEye favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} motioneye [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /.proxy/icons/motioneye/favicon.png [L]
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} motioneye [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /.proxy/icons/motioneye/favicon.ico [L]
 
-# Ntfy favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ntfy [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /static/images/apple-touch-icon.png [L,R=302]
+# # Ntfy favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} ntfy [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /static/images/apple-touch-icon.png [L,R=302]
 
-# OpenSpeedtest favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} openspeedtest [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /assets/images/icons/favicon-32x32.png [L,R=302]
+# # OpenSpeedtest favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} openspeedtest [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /assets/images/icons/favicon-32x32.png [L,R=302]
 
-# PiHole favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /admin/img/favicons/favicon-32x32.png [L,R=302]
+# # PiHole favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /admin/img/favicons/favicon-32x32.png [L,R=302]
 
-# Prometheus favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} prometheus [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /.proxy/icons/prometheus/favicon.ico [L]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} prometheus [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /.proxy/icons/prometheus/favicon.png [L]
+# # Prometheus favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} prometheus [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /.proxy/icons/prometheus/favicon.ico [L]
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} prometheus [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /.proxy/icons/prometheus/favicon.png [L]
 
-# Smtp4Dev favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} smtp4dev [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /logo.png [L,R=302]
+# # Smtp4Dev favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} smtp4dev [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /logo.png [L,R=302]
 
-# TVHeadend favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} tvheadend [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /static/img/logo.png [L,R=302]
+# # TVHeadend favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} tvheadend [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /static/img/logo.png [L,R=302]
 
-# Unbound favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.ico$
-RewriteRule ^ /.proxy/icons/unbound/favicon.ico [L]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /.proxy/icons/unbound/favicon.png [L]
+# # Unbound favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.ico$
+# RewriteRule ^ /.proxy/icons/unbound/favicon.ico [L]
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /.proxy/icons/unbound/favicon.png [L]
 
-# Unifi Controller favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
-RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
-RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
+# # Unifi Controller favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} unifi-controller [NC]
+# RewriteCond %{REQUEST_URI} ^/setup/favicon.png$
+# RewriteRule ^ /.proxy/icons/unifi-controller/favicon.png [L]
 
-# Vaultwarden favicon
-RewriteCond %{ENV:HOMELAB_APP_TYPE} vaultwarden [NC]
-RewriteCond %{REQUEST_URI} ^/favicon.png$
-RewriteRule ^ /images/favicon-32x32.png [L,R=302]
+# # Vaultwarden favicon
+# RewriteCond %{ENV:HOMELAB_APP_TYPE} vaultwarden [NC]
+# RewriteCond %{REQUEST_URI} ^/favicon.png$
+# RewriteRule ^ /images/favicon-32x32.png [L,R=302]
 
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
@@ -271,7 +271,7 @@ RewriteRule ^ /.proxy/not-found [L]
 </If>
 
 # Protect entire Homepage
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$# && %{REQUEST_URI} !~ m#^/favicon-32x32.png$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -362,26 +362,18 @@ RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_PROMETHEUS_EXPORTER_URL}/metrics" [P,L]
 
-# Custom prometheus metrics for Glances
-RewriteCond %{ENV:HOMELAB_APP_TYPE} glances [NC]
-RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
-RewriteCond %{HTTP:Upgrade} !websocket [NC]
-RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}/" [P,L]
-
-# Custom prometheus metrics for PiHole
-RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+# Custom prometheus metrics
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:glances|pihole|unbound)$ [NC]
 RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
-# Custom prometheus metrics for Unbound
-RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
-RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
+# Custom favicons
+RewriteCond %{REQUEST_URI} ^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_FAVICONS}%{REQUEST_URI}" [P,L]
 
 # Proxy websockets upstream
 RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]

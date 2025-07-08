@@ -387,6 +387,9 @@ case "$app_dirname" in
     write_certificator_users
     healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
     ;;
 *glances*)
     # App
