@@ -96,14 +96,14 @@ services:
       DOCKER_HOST: tcp://socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
 
-  favicon:
+  favicons:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-favicon
     build:
-      dockerfile: ./custom/favicon/Dockerfile
+      dockerfile: ./custom/favicons/Dockerfile
     env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicon.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
 
   script-app-setup:
     extends:
