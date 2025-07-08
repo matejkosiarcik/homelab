@@ -33,12 +33,12 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### Config ###
 
-FROM yq as config-1
+FROM yq AS config-1
 WORKDIR /homelab
 COPY ./external/gatus/data.yml ./
 RUN yq . data.yml >data.json
 
-FROM jinja as config-2
+FROM jinja AS config-2
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json ./
 COPY ./external/gatus/config.yml.j2 ./
