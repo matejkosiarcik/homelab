@@ -31,6 +31,7 @@ updates:
       - /docker-images/custom/certificator
       - /docker-images/custom/docker-build
       - /docker-images/custom/docker-setup
+      - /docker-images/custom/favicons
       - /docker-images/custom/web-automation
       - /docker-images/external/actualbudget
       - /docker-images/external/changedetection
