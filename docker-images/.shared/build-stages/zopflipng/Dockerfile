@@ -3,7 +3,7 @@
 
 # Must hardcode x86_64, because zoplipng is only built for this architecture
 # hadolint ignore=DL3029
-FROM --platform=linux/amd64 node:24.3.0-slim AS zopflipng
+FROM --platform=linux/amd64 node:24.4.0-slim AS zopflipng
 WORKDIR /homelab
 COPY ./.shared/dependencies/zopflipng/package.json ./.shared/dependencies/zopflipng/package-lock.json ./
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
