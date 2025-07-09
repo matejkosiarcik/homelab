@@ -517,7 +517,7 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    touch "$output/favicons.env"
+    printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/favicons.env"
 
     # Widgets
     printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$output/widgets.env"
