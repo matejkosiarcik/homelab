@@ -2,7 +2,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
-FROM golang:1.24.4-alpine AS healthcheck-builder
+FROM golang:1.24.5-alpine AS healthcheck-builder
 WORKDIR /homelab
 COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
