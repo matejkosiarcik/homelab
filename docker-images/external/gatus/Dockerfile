@@ -51,7 +51,7 @@ WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/config.yml
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 
-FROM twinproduction/gatus:v5.19.0
+FROM twinproduction/gatus:v5.20.0
 COPY --from=prefinal /homelab/healthcheck /homelab/healthcheck
 COPY --from=prefinal /homelab/config.yml /config/config.yaml
 ENV GATUS_DELAY_START_SECONDS=0 \
