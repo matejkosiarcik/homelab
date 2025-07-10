@@ -220,10 +220,10 @@ app.get('/.health', (_: Request, response: Response) => {
     response.sendStatus(200);
 });
 
-app.get('/favicon-new.ico', async (_: Request, response: Response) => {
+app.get('/favicon.ico', async (_: Request, response: Response) => {
     try {
         const faviconPath = getFaviconPath('ico');
-        const originalFavicon = await downloadFavicon(faviconPath);
+        const originalFavicon = await loadFavicon(faviconPath);
         const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'ico');
         response.status(200);
         response.setHeader('Content-Type', 'image/x-icon');
@@ -234,10 +234,10 @@ app.get('/favicon-new.ico', async (_: Request, response: Response) => {
     }
 });
 
-app.get('/favicon-new.png', async (_: Request, response: Response) => {
+app.get('/favicon.png', async (_: Request, response: Response) => {
     try {
         const faviconPath = getFaviconPath('png');
-        const originalFavicon = await downloadFavicon(faviconPath);
+        const originalFavicon = await loadFavicon(faviconPath);
         const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'png');
         response.status(200);
         response.setHeader('Content-Type', 'image/png');
@@ -248,7 +248,7 @@ app.get('/favicon-new.png', async (_: Request, response: Response) => {
     }
 });
 
-async function downloadFavicon(iconPath: string): Promise<Buffer> {
+async function loadFavicon(iconPath: string): Promise<Buffer> {
     if (iconPath.startsWith('@')) {
         return await fsx.readFile(iconPath.replace(/^@/, ''));
     }

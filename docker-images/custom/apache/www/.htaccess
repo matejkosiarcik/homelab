@@ -370,7 +370,7 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
 # Custom favicons
-RewriteCond %{REQUEST_URI} ^/favicon\-new\.(?:ico|png)$ [NC]
+RewriteCond %{REQUEST_URI} ^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_FAVICONS}%{REQUEST_URI}" [P,L]
