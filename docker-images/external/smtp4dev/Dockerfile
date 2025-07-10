@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM rnwood/smtp4dev:3.8.6
-COPY ./external/smtp4dev/icons/favicon.ico /app/wwwroot/favicon.ico
+COPY ./external/smtp4dev/icons/favicon.ico ./external/smtp4dev/icons/favicon.png /app/wwwroot/
 ENV HOMELAB_CONTAINER_NAME=smtp4dev \
     HOMELAB_CONTAINER_VARIANT=default \
     ServerOptions__LockSettings=true \

@@ -13,6 +13,7 @@ WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
+COPY ./custom/favicons/icons ./icons
 
 FROM node:24.4.0-slim
 WORKDIR /homelab

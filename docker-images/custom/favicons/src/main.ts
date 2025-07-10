@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import fsx from 'node:fs/promises';
+import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
 import express, { Request, Response } from 'express';
@@ -13,6 +14,7 @@ if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
 
+const envMode = `${process.env['HOMELAB_ENV']}` as 'dev' | 'prod';
 const appType = (() => {
     if (!process.env['HOMELAB_APP_TYPE']) {
         console.error('HOMELAB_APP_TYPE is unset');
@@ -23,10 +25,10 @@ const appType = (() => {
 
 const appAddress = (() => {
     switch (appType) {
-        case 'actualbudget': return 'http://app:5000';
+        case 'actualbudget': return 'http://app:5006';
         case 'certbot': return 'http://app:8080';
         case 'changedetection': return 'http://app:5000';
-        case 'docker-cache-proxy': return 'http://app:5000';
+        case 'docker-cache-proxy': return 'http://app';
         case 'gatus': return 'http://app:8080';
         case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
@@ -36,60 +38,68 @@ const appAddress = (() => {
         case 'motioneye': return 'http://app:8765';
         case 'ntfy': return 'http://app:80';
         case 'ollama': return 'http://app:11434';
-        case 'omada-controller': return 'http://app:8043';
+        case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
         case 'open-webui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
-        case 'smtp4dev': return 'http://app:80';
+        case 'smtp4dev': return 'http://app:5000';
         case 'tvheadend': return 'http://app:9981';
         case 'unbound': return 'http://app:8080';
-        case 'unifi-controller': return 'http://app:8443';
+        case 'unifi-controller': return 'https://app:8443';
         case 'uptime-kuma': return 'http://app:3001';
         case 'vaultwarden': return 'http://app:80';
         default: throw new Error(`Unknown app type ${appType}`);
     }
 })();
 
-function getFaviconPath(type: 'ico' | 'png'): string {
+function getFaviconPath(imageType: 'ico' | 'png'): string {
     switch (appType) {
-        case 'actualbudget':
-        case 'changedetection':
-        case 'homepage':
-        case 'minio':
-        case 'ollama':
-        case 'omada-controller':
-        case 'open-webui':
-        case 'uptime-kuma':
-            return type === 'ico' ? '/favicon.ico' : '/favicon-32x32.png';
+        case 'actualbudget': // Done
+            return imageType === 'ico' ? '/favicon.ico' : '	/apple-touch-icon.png';
+        case 'changedetection': // Done
+            return '/static/favicons/apple-touch-icon.png'
+        case 'gatus':  // Done
+            return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
+        case 'glances': // Done
+            return '/static/favicon.ico';
+        case 'gotify': // Done
+            return '/static/favicon-196x196.png';
+        case 'homepage': // Done?
+            return '/apple-touch-icon.png';
+        case 'jellyfin': // Done
+            return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
+        case 'minio': // Done
+            return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
+        case 'motioneye': // Done
+            return '/static/img/motioneye-logo.svg';
+        case 'ntfy': // Done
+            return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
+        case 'omada-controller': // Done
+            return '/favicon.ico';
+        case 'openspeedtest': // Done
+            return '/assets/images/icons/apple-touch-icon.png';
+        case 'open-webui': // Done
+            return '/static/favicon.svg';
+        case 'pihole': // Done
+            return '/admin/img/favicons/apple-touch-icon.png';
+        case 'prometheus': // Done
+            return '/favicon.svg';
+        case 'smtp4dev': // Done
+            return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
+        case 'tvheadend': // Done
+            return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
+        case 'unifi-controller': // Done
+            return '/manage/angular/gc477706b0/images/favicons/favicon-192.png';
+        case 'uptime-kuma': // Done
+            return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
+        case 'vaultwarden': // Done
+            return '/images/apple-touch-icon.png';
         case 'certbot':
         case 'docker-cache-proxy':
-        case 'motioneye':
-        case 'prometheus':
-        case 'gatus':
-            return '/apple-touch-icon.png';
+        case 'ollama':
         case 'unbound':
-            return type === 'ico' ? `@/homelab/icons/${appType}/favicon.ico` : `@/homelab/icons/${appType}/favicon.png`;
-        case 'glances':
-            return type === 'ico' ? '/static/favicon.ico' : (() => { /* TODO: Check glances favicon.png */ throw new Error('PLACEHOLDER') })();
-        case 'gotify':
-            return type === 'ico' ? (() => { /* TODO: Check gotify favicon.ico */ throw new Error('PLACEHOLDER') })() : '/static/favicon-32x32.png';
-        case 'jellyfin':
-            return type === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
-        case 'ntfy':
-            return type === 'ico' ? '/favicon.ico' : '/static/images/apple-touch-icon.png';
-        case 'openspeedtest':
-            return type === 'ico' ? '/favicon.ico' : '/assets/images/icons/favicon-32x32.png';
-        case 'pihole':
-            return type === 'ico' ? '/favicon.ico' : '/admin/img/favicons/favicon-32x32.png';
-        case 'smtp4dev':
-            return type === 'ico' ? '/favicon.ico' : '/logo.png';
-        case 'tvheadend':
-            return type === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
-        case 'unifi-controller':
-            return type === 'ico' ? '/favicon.ico' : '/.proxy/icons/unifi-controller/favicon.png';
-        case 'vaultwarden':
-            return type === 'ico' ? '/favicon.ico' : '/images/favicon-32x32.png';
+            return `@/homelab/icons/${appType}/favicon.png`;
         default:
             throw new Error(`Unknown app type: ${appType}`);
     }
@@ -126,21 +136,18 @@ async function convertIcoToPng(icoImage: Buffer): Promise<Buffer> {
         const tmpIco = path.join(tmpDir, 'favicon.ico');
         await fsx.writeFile(tmpIco, icoImage);
 
-        await execa('convert', [tmpIco, path.join(tmpDir, 'favicon-%wx%h.png')]);
+        await execa('convert', [tmpIco, path.join(tmpDir, 'favicon.png')]);
 
         // Find the biggest PNG
-        const files = await fsx.readdir(tmpDir, { withFileTypes: true });
-        const convertedPngs = files.filter(el => el.isFile() && el.name.startsWith('favicon-') && el.name.endsWith('.png'));
+        const files = await fsx.readdir(tmpDir, { withFileTypes: true, recursive: false });
+        const convertedPngs = files.filter(el => el.isFile() && el.name.endsWith('.png'));
         let maxSize = 0;
         let biggestPngFile = '';
         for (const file of convertedPngs) {
-            const match = file.name.match(/^favicon\-(\d+)x(\d+)\.png$/);
-            if (!match) {
-                continue;
-            }
-            const size = parseInt(match[1]) * parseInt(match[2]);
-            if (size > maxSize) {
-                maxSize = size;
+            const buffer = await fsx.readFile(path.join(tmpDir, file.name));
+            const meta = await sharp(buffer).metadata();
+            if (meta.width * meta.height > maxSize) {
+                maxSize = meta.width * meta.height;
                 biggestPngFile = file.name;
             }
         }
@@ -157,8 +164,7 @@ async function convertIcoToPng(icoImage: Buffer): Promise<Buffer> {
 }
 
 async function convertPngToIco(pngImage: Buffer): Promise<Buffer> {
-    // Convert PNG to predefined sizes
-    const sizes = [48, 16];
+    const sizes = [32, 16];
     const pngs: Buffer[] = [];
     const image = sharp(pngImage);
     const metadata = await image.metadata();
@@ -214,10 +220,10 @@ app.get('/.health', (_: Request, response: Response) => {
     response.sendStatus(200);
 });
 
-app.get('/favicon-new.ico', async (_: Request, response: Response) => {
+app.get('/favicon.ico', async (_: Request, response: Response) => {
     try {
         const faviconPath = getFaviconPath('ico');
-        const originalFavicon = await downloadFavicon(faviconPath);
+        const originalFavicon = await loadFavicon(faviconPath);
         const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'ico');
         response.status(200);
         response.setHeader('Content-Type', 'image/x-icon');
@@ -228,10 +234,10 @@ app.get('/favicon-new.ico', async (_: Request, response: Response) => {
     }
 });
 
-app.get('/favicon-new.png', async (_: Request, response: Response) => {
+app.get('/favicon.png', async (_: Request, response: Response) => {
     try {
         const faviconPath = getFaviconPath('png');
-        const originalFavicon = await downloadFavicon(faviconPath);
+        const originalFavicon = await loadFavicon(faviconPath);
         const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'png');
         response.status(200);
         response.setHeader('Content-Type', 'image/png');
@@ -242,10 +248,15 @@ app.get('/favicon-new.png', async (_: Request, response: Response) => {
     }
 });
 
-async function downloadFavicon(path: string): Promise<Buffer> {
+async function loadFavicon(iconPath: string): Promise<Buffer> {
+    if (iconPath.startsWith('@')) {
+        return await fsx.readFile(iconPath.replace(/^@/, ''));
+    }
+
     const headers: Record<string, string> = {};
     switch (appType) {
         case 'homepage':
+        case 'prometheus':
         case 'smtp4dev': {
             headers['Authorization'] = `Basic ${Buffer.from(`admin:${process.env['ADMIN_PASSWORD']}`).toString('base64')}`;
             break;
@@ -254,12 +265,15 @@ async function downloadFavicon(path: string): Promise<Buffer> {
             break;
         }
     }
-    const axiosResponse = await axios.get(`${appAddress}${path}`, {
+    const axiosResponse = await axios.get(`${appAddress}${iconPath}`, {
         headers: headers,
         maxRedirects: 99,
         responseType: 'arraybuffer',
         timeout: 1000,
         validateStatus: () => true,
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        }),
     });
 
     if (axiosResponse.status === 0) {
