@@ -248,7 +248,8 @@ RewriteRule ^ /admin [L,R=307]
 
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
-RewriteCond %{REQUEST_URI} !^/metrics/*$ [NC]
+RewriteCond %{REQUEST_URI} !^/favicon\.(?:ico|png)$ [NC]
+RewriteCond %{REQUEST_URI} !^/metrics$ [NC]
 RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
 RewriteRule ^ /.proxy/not-found [L]
 
