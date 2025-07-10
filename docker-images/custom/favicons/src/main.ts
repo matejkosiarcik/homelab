@@ -95,11 +95,11 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
             return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': // Done
             return '/images/apple-touch-icon.png';
-        case 'certbot': // TODO: Copy icon here!
-        case 'docker-cache-proxy': // TODO: Copy icon here!
-        case 'ollama': // TODO: Copy icon here!
-        case 'unbound': // TODO: Copy icon here!
-            return imageType === 'ico' ? `@/homelab/icons/${appType}/favicon.ico` : `@/homelab/icons/${appType}/favicon.png`;
+        case 'certbot':
+        case 'docker-cache-proxy':
+        case 'ollama':
+        case 'unbound':
+            return `@/homelab/icons/${appType}/favicon.png`;
         default:
             throw new Error(`Unknown app type: ${appType}`);
     }
@@ -248,7 +248,11 @@ app.get('/favicon-new.png', async (_: Request, response: Response) => {
     }
 });
 
-async function downloadFavicon(path: string): Promise<Buffer> {
+async function downloadFavicon(iconPath: string): Promise<Buffer> {
+    if (iconPath.startsWith('@')) {
+        return await fsx.readFile(iconPath.replace(/^@/, ''));
+    }
+
     const headers: Record<string, string> = {};
     switch (appType) {
         case 'homepage':
@@ -261,7 +265,7 @@ async function downloadFavicon(path: string): Promise<Buffer> {
             break;
         }
     }
-    const axiosResponse = await axios.get(`${appAddress}${path}`, {
+    const axiosResponse = await axios.get(`${appAddress}${iconPath}`, {
         headers: headers,
         maxRedirects: 99,
         responseType: 'arraybuffer',

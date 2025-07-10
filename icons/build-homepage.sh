@@ -107,15 +107,6 @@ magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-tmp.png" -gra
 convert_image_full "$tmpdir/lets-encrypt-final.png" "$output_dir/lets-encrypt.png"
 
 # Ollama with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/open-webui-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/open-webui-background-mask.png"
-magick "$tmpdir/open-webui-background.png" "$tmpdir/open-webui-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/open-webui-background.png"
-magick "$tmpdir/open-webui-background.png" -define png:color-type=6 "$tmpdir/open-webui-background.png"
-magick -background none -bordercolor transparent "$input_dir/other/open-webui.png" -resize '112x112' -density 1200 "$tmpdir/open-webui-tmp.png"
-magick "$tmpdir/open-webui-background.png" "$tmpdir/open-webui-tmp.png" -gravity Center -composite "$tmpdir/open-webui-final.png"
-convert_image_full "$tmpdir/open-webui-final.png" "$output_dir/open-webui.png"
-
-# Open WebUI with custom background
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/ollama-background.png"
 magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/ollama-background-mask.png"
 magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/ollama-background.png"
@@ -123,6 +114,15 @@ magick "$tmpdir/ollama-background.png" -define png:color-type=6 "$tmpdir/ollama-
 magick -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ollama.svg" -resize '112x112' -density 1200 "$tmpdir/ollama-tmp.png"
 magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-tmp.png" -gravity Center -composite "$tmpdir/ollama-final.png"
 convert_image_full "$tmpdir/ollama-final.png" "$output_dir/ollama.png"
+
+# Open WebUI with custom background
+magick -size "$default_image_size" xc:#ffffffef "$tmpdir/open-webui-background.png"
+magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/open-webui-background-mask.png"
+magick "$tmpdir/open-webui-background.png" "$tmpdir/open-webui-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/open-webui-background.png"
+magick "$tmpdir/open-webui-background.png" -define png:color-type=6 "$tmpdir/open-webui-background.png"
+magick -background none -bordercolor transparent "$input_dir/other/open-webui.png" -resize '112x112' -density 1200 "$tmpdir/open-webui-tmp.png"
+magick "$tmpdir/open-webui-background.png" "$tmpdir/open-webui-tmp.png" -gravity Center -composite "$tmpdir/open-webui-final.png"
+convert_image_full "$tmpdir/open-webui-final.png" "$output_dir/open-webui.png"
 
 ### Cleanup ###
 
