@@ -99,7 +99,7 @@ services:
   favicons:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-favicon
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
     build:
       dockerfile: ./custom/favicons/Dockerfile
     env_file:
