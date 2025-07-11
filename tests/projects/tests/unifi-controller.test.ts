@@ -20,6 +20,7 @@ test.describe(apps['unifi-controller'].title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
+            createApiRootTest(`${instance.url}:8443`, { title: 'portal' });
             createTcpTests(instance.url, [80, 443, 8080, 8443]); // port 6789 skipped
             createFaviconTests(instance.url);
 
