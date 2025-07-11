@@ -117,6 +117,12 @@ export const apps = {
             { url: 'https://node-exporter-raspberry-pi-4b-4g.matejhome.com', title: 'Glances - Raspberry Pi 4B 4GB' },
         ],
     },
+    ollama: {
+        title: 'Ollama',
+        instances: [
+            { url: 'https://ollama.matejhome.com', title: 'Ollama' },
+        ],
+    },
     'omada-controller': {
         title: 'Omada Controller',
         instances: [
@@ -128,6 +134,12 @@ export const apps = {
         forceHttps: false,
         instances: [
             { url: 'https://openspeedtest.matejhome.com', title: 'Openspeedtest' },
+        ],
+    },
+    'open-webui': {
+        title: 'Open WebUI',
+        instances: [
+            { url: 'https://open-webui.matejhome.com', title: 'Open WebUI' },
         ],
     },
     pihole: {
