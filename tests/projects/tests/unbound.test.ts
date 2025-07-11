@@ -1,4 +1,6 @@
+import fsx from 'node:fs/promises';
 import nodeDns from 'node:dns/promises';
+import path from 'node:path';
 import _ from 'lodash';
 import { expect, test } from '@playwright/test';
 import { axios, dnsLookup, getEnv } from '../../utils/utils';
@@ -8,6 +10,9 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
         test.describe(instance.title, () => {
+            // Get domain for DNS server for a given variant
+            const instanceDomain = instance.url.replace(/^https?:\/\//, '');
+
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
@@ -18,15 +23,12 @@ test.describe(apps.unbound.title, () => {
             for (const transportVariant of ['tcp', 'udp'] as const) {
                 for (const ipVariant of ['A', 'AAAA'] as const) {
                     test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
-                        // Get domain for DNS server for a given variant
-                        const unboundDnsDomain = instance.url.replace(/^https?:\/\//, '');
-
                         // Get IP address
-                        const unboundDnsIps = await nodeDns.resolve(unboundDnsDomain);
-                        expect(unboundDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+                        const instancesIps = await nodeDns.resolve(instanceDomain);
+                        expect(instancesIps, 'Unbound DNS address resolution').toHaveLength(1);
 
                         // Resolve external domain
-                        const ips = await dnsLookup('example.com', transportVariant, ipVariant, unboundDnsIps[0]);
+                        const ips = await dnsLookup('example.com', transportVariant, ipVariant, instancesIps[0]);
                         expect(ips, 'Domain should be resolved').not.toHaveLength(0);
                         expect(ips[0], `Resolved domain should be IPv${ipVariant === 'A' ? '4' : '6'}`).toMatch(ipVariant === 'A' ? /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ : /([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
                     });
@@ -92,6 +94,32 @@ test.describe(apps.unbound.title, () => {
                 ];
                 for (const metric of metrics) {
                     expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
+            });
+
+            test('DNS: Local domains lookup', async () => {
+                const instanceIp = await (async () => {
+                    const instanceIps = await nodeDns.resolve(instanceDomain);
+                    expect(instanceIps, 'Pihole DNS address resolution').toHaveLength(1);
+                    return instanceIps[0];
+                })();
+
+                const customDomainsPath = path.join('..', 'docker-images', 'external', 'pihole', 'custom-domains.txt');
+                const domains: { ip: string, domain: string }[] = (await fsx.readFile(customDomainsPath, 'utf-8'))
+                    .split('\n')
+                    .map((line: string) => line.replace(/#.*$/, '').trim())
+                    .filter((line: string) => line !== '')
+                    .map((line: string) => ({ ip: line.split(/\s+/)[0], domain: line.split(/\s+/)[1] }));
+
+                for (const entry of domains) {
+                    for (const transportVariant of ['tcp', 'udp'] as const) {
+                        await test.step(`Check domain ${entry.domain} via ${transportVariant.toUpperCase()}`, async () => {
+                            const ipType = entry.ip.includes('.') ? 'A' : 'AAAA';
+                            const ips = await dnsLookup(entry.domain, transportVariant, ipType, instanceIp);
+                            expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                            expect(ips, `Domain ${entry.ip} should be resolved to IP address`).toContain(entry.ip);
+                        });
+                    }
                 }
             });
         });

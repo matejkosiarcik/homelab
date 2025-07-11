@@ -1,4 +1,6 @@
+import fsx from 'node:fs/promises';
 import nodeDns from 'node:dns/promises';
+import path from 'node:path';
 import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
@@ -10,7 +12,7 @@ test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
         test.describe(instance.title, () => {
             // Get domain for DNS server for a given variant
-            const piholeDomain = instance.url.replace(/^https?:\/\//, '');
+            const instanceDomain = instance.url.replace(/^https?:\/\//, '');
 
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
@@ -23,11 +25,11 @@ test.describe(apps.pihole.title, () => {
                 for (const ipVariant of ['A', 'AAAA'] as const) {
                     test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant} - example.com`, async () => {
                         // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDomain);
-                        expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+                        const instanceIps = await nodeDns.resolve(instanceDomain);
+                        expect(instanceIps, 'Pihole DNS address resolution').toHaveLength(1);
 
                         // Resolved external domain
-                        const ips = await dnsLookup('example.com', transportVariant, ipVariant, piholeDnsIps[0]);
+                        const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIps[0]);
                         expect(ips, 'Domain should be resolved').not.toHaveLength(0);
                         for (const ip of ips) {
                             switch (ipVariant) {
@@ -52,11 +54,11 @@ test.describe(apps.pihole.title, () => {
 
                     test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant} - self`, async () => {
                         // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDomain);
+                        const piholeDnsIps = await nodeDns.resolve(instanceDomain);
                         expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
 
                         // Resolved external domain
-                        const ips = await dnsLookup(piholeDomain, transportVariant, ipVariant, piholeDnsIps[0]);
+                        const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, piholeDnsIps[0]);
                         switch (ipVariant) {
                             case 'A': {
                                 expect(ips, 'Domain should be resolved').not.toHaveLength(0);
@@ -74,7 +76,7 @@ test.describe(apps.pihole.title, () => {
 
                     test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant} - local unused domain`, async () => {
                         // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDomain);
+                        const piholeDnsIps = await nodeDns.resolve(instanceDomain);
                         expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
 
                         // Resolved external domain
@@ -138,6 +140,32 @@ test.describe(apps.pihole.title, () => {
                 await page.locator('form#loginform button[type="submit"]').click();
                 await page.waitForSelector('#error-message:has-text("Wrong password!")', { timeout: 10_000 });
                 await expect(page, 'URL should not change').toHaveURL(originalUrl);
+            });
+
+            test('DNS: Local domains lookup', async () => {
+                const instanceIp = await (async () => {
+                    const instanceIps = await nodeDns.resolve(instanceDomain);
+                    expect(instanceIps, 'Pihole DNS address resolution').toHaveLength(1);
+                    return instanceIps[0];
+                })();
+
+                const customDomainsPath = path.join('..', 'docker-images', 'external', 'pihole', 'custom-domains.txt');
+                const domains: { ip: string, domain: string }[] = (await fsx.readFile(customDomainsPath, 'utf-8'))
+                    .split('\n')
+                    .map((line: string) => line.replace(/#.*$/, '').trim())
+                    .filter((line: string) => line !== '')
+                    .map((line: string) => ({ ip: line.split(/\s+/)[0], domain: line.split(/\s+/)[1] }));
+
+                for (const entry of domains) {
+                    for (const transportVariant of ['tcp', 'udp'] as const) {
+                        await test.step(`Check domain ${entry.domain} via ${transportVariant.toUpperCase()}`, async () => {
+                            const ipType = entry.ip.includes('.') ? 'A' : 'AAAA';
+                            const ips = await dnsLookup(entry.domain, transportVariant, ipType, instanceIp);
+                            expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                            expect(ips, `Domain ${entry.ip} should be resolved to IP address`).toContain(entry.ip);
+                        });
+                    }
+                }
             });
         });
     }
