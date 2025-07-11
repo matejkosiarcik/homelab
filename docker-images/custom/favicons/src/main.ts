@@ -33,6 +33,7 @@ const appAddress = (() => {
         case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
         case 'homepage': return 'http://app:3000';
+        case 'home-assistant': return 'http://app:8123';
         case 'jellyfin': return 'http://app:8096';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
@@ -55,45 +56,47 @@ const appAddress = (() => {
 
 function getFaviconPath(imageType: 'ico' | 'png'): string {
     switch (appType) {
-        case 'actualbudget': // Done
+        case 'actualbudget':
             return imageType === 'ico' ? '/favicon.ico' : '	/apple-touch-icon.png';
-        case 'changedetection': // Done
+        case 'changedetection':
             return '/static/favicons/apple-touch-icon.png'
-        case 'gatus':  // Done
+        case 'gatus':
             return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
-        case 'glances': // Done
+        case 'glances':
             return '/static/favicon.ico';
-        case 'gotify': // Done
+        case 'gotify':
             return '/static/favicon-196x196.png';
-        case 'homepage': // Done?
+        case 'homepage':
             return '/apple-touch-icon.png';
-        case 'jellyfin': // Done
+        case 'home-assistant':
+            return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
+        case 'jellyfin':
             return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
-        case 'minio': // Done
+        case 'minio':
             return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
-        case 'motioneye': // Done
+        case 'motioneye':
             return '/static/img/motioneye-logo.svg';
-        case 'ntfy': // Done
+        case 'ntfy':
             return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
-        case 'omada-controller': // Done
+        case 'omada-controller':
             return '/favicon.ico';
-        case 'openspeedtest': // Done
+        case 'openspeedtest':
             return '/assets/images/icons/apple-touch-icon.png';
-        case 'open-webui': // Done
+        case 'open-webui':
             return '/static/favicon.svg';
-        case 'pihole': // Done
+        case 'pihole':
             return '/admin/img/favicons/apple-touch-icon.png';
-        case 'prometheus': // Done
+        case 'prometheus':
             return '/favicon.svg';
-        case 'smtp4dev': // Done
+        case 'smtp4dev':
             return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
-        case 'tvheadend': // Done
+        case 'tvheadend':
             return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
-        case 'unifi-controller': // Done
+        case 'unifi-controller':
             return '/manage/angular/gc477706b0/images/favicons/favicon-192.png';
-        case 'uptime-kuma': // Done
+        case 'uptime-kuma':
             return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
-        case 'vaultwarden': // Done
+        case 'vaultwarden':
             return '/images/apple-touch-icon.png';
         case 'certbot':
         case 'docker-cache-proxy':
