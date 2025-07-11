@@ -24,6 +24,8 @@ magick -background none -bordercolor transparent "$input_dir/gitman-repositories
 magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-tmp.png" -gravity Center -composite "$tmpdir/lets-encrypt-final.png"
 convert_image_full "$tmpdir/lets-encrypt-final.png" "$output_dir/certbot/favicon.png"
 
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/node-exporter/favicon.png"
+
 # Ollama with custom background
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/ollama-background.png"
 magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/ollama-background-mask.png"

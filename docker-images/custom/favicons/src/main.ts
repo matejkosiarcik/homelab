@@ -37,6 +37,7 @@ const appAddress = (() => {
         case 'jellyfin': return 'http://app:8096';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
+        case 'node-exporter': return 'http://app:9100';
         case 'ntfy': return 'http://app:80';
         case 'ollama': return 'http://app:11434';
         case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
@@ -45,6 +46,7 @@ const appAddress = (() => {
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
         case 'smtp4dev': return 'http://app:5000';
+        case 'speedtest-tracker': return 'https://app';
         case 'tvheadend': return 'http://app:9981';
         case 'unbound': return 'http://app:8080';
         case 'unifi-controller': return 'https://app:8443';
@@ -90,6 +92,8 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
             return '/favicon.svg';
         case 'smtp4dev':
             return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
+        case 'speedtest-tracker':
+            return '/favicon.ico';
         case 'tvheadend':
             return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
         case 'unifi-controller':
@@ -100,6 +104,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
             return '/images/apple-touch-icon.png';
         case 'certbot':
         case 'docker-cache-proxy':
+        case 'node-exporter':
         case 'ollama':
         case 'unbound':
             return `@/homelab/icons/${appType}/favicon.png`;
