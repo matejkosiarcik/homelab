@@ -87,6 +87,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     const deployHealthchecks = [
         'Odroid H3',
         'Odroid H4 Ultra',
+        'MacBook Pro 2012',
         'Raspberry Pi 3B',
         'Raspberry Pi 4B 2GB',
         'Raspberry Pi 4B 4GB',
@@ -100,6 +101,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     const updateHealthchecks = [
         'Odroid H3',
         'Odroid H4 Ultra',
+        'MacBook Pro 2012',
         'Raspberry Pi 3B',
         'Raspberry Pi 4B 2GB',
         'Raspberry Pi 4B 4GB',
@@ -131,8 +133,10 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'MotionEye Kitchen',
         'Netalertx',
         'Ntfy',
+        'Ollama',
         'Omada Controller',
         'Openspeedtest',
+        'Open WebUI',
         'PiHole [1 Primary]',
         'PiHole [1 Secondary]',
         'PiHole [2 Primary]',

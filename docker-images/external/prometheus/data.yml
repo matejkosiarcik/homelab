@@ -104,6 +104,7 @@ proxies:
   - url: ollama.matejhome.com
   - url: omada-controller.matejhome.com
   - url: openspeedtest.matejhome.com
+  - url: open-webui.matejhome.com
   - url: pihole-1-primary.matejhome.com
   - url: pihole-1-secondary.matejhome.com
   - url: pihole-2-primary.matejhome.com

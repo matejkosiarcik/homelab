@@ -319,6 +319,9 @@ apps:
       - "[CONNECTED] == true"
       - "[STATUS] == 200"
 
+  - name: Open WebUI
+    domain: open-webui.matejhome.com
+
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
     type:

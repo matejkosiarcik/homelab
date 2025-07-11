@@ -13,6 +13,7 @@ test.describe(apps['open-webui'].title, () => {
             createFaviconTests(instance.url);
 
             // TODO: Add tests for API endpoints
+            // TODO: Add tests for UI
         });
     }
 });
