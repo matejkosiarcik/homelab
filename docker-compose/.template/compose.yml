@@ -36,7 +36,7 @@ services:
   favicons:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: favicon
+      service: favicons
 
 networks:
   default:
