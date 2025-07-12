@@ -13,9 +13,9 @@ alias drawio='/Applications/draw.io.app/Contents/MacOS/draw.io'
 
 build_diagram() {
     # $1 - diagram name
-    mkdir -p "$(dirname "$diagrams_dir/out/$1")"
     extension="$(printf '%s' "$1" | sed -E 's~^.+\.~~')"
     output_file="$(printf '%s' "$1" | sed -E 's~src/~~;s~\.[^.]+$~.png~')"
+    mkdir -p "$(dirname "$diagrams_dir/out/$output_file")"
 
     if [ "$extension" = 'mmd' ]; then
         mmdc --scale 2 --input "$diagrams_dir/$1" --output "$diagrams_dir/out/$output_file" --cssFile "$diagrams_dir/style.css"
