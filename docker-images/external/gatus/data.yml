@@ -153,6 +153,9 @@ apps:
   - name: Gotify
     domain: gotify.matejhome.com
 
+  - name: Grafana
+    domain: grafana.matejhome.com
+
   - name: Healthchecks
     domain: healthchecks.matejhome.com
     endpoints:
@@ -321,6 +324,9 @@ apps:
 
   - name: Open WebUI
     domain: open-webui.matejhome.com
+
+  - name: Owntracks
+    domain: owntracks.matejhome.com
 
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com

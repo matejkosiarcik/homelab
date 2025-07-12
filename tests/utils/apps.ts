@@ -60,6 +60,12 @@ export const apps = {
             { url: 'https://gotify.matejhome.com', title: 'Gotify' },
         ],
     },
+    grafana: {
+        title: 'Grafana',
+        instances: [
+            { url: 'https://grafana.matejhome.com', title: 'Grafana' },
+        ]
+    },
     healthchecks: {
         title: 'Healthchecks',
         instances: [
@@ -140,6 +146,12 @@ export const apps = {
         title: 'Open WebUI',
         instances: [
             { url: 'https://open-webui.matejhome.com', title: 'Open WebUI' },
+        ],
+    },
+    owntracks: {
+        title: 'Owntracks',
+        instances: [
+            { url: 'https://owntracks.matejhome.com', title: 'Owntracks' },
         ],
     },
     pihole: {

@@ -443,6 +443,23 @@ case "$app_dirname" in
     # Favicons
     touch "$output/favicons.env"
     ;;
+*grafana*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+    printf 'GF_SECURITY_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/app.env"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
+    ;;
 *healthchecks*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
@@ -681,6 +698,18 @@ case "$app_dirname" in
     ollama_admin_password="$(load_token ollama app admin)"
     printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_admin_password@ollama.matejhome.com" >>"$output/app.env"
 
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
+    ;;
+*owntracks*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
