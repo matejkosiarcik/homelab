@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-compose/owntracks/compose.yml
+    project_directory: .
