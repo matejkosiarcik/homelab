@@ -5,11 +5,11 @@
 ## Docs
 
 - DockerHub: <https://hub.docker.com/u/owntracks>
-  - Frontend: <https://hub.docker.com/r/owntracks/frontend>
-  - Backend: <https://hub.docker.com/r/owntracks/recorder>
+    - Frontend: <https://hub.docker.com/r/owntracks/frontend>
+    - Backend: <https://hub.docker.com/r/owntracks/recorder>
 - GitHub: <https://github.com/owntracks>
-  - Frontend: <https://github.com/owntracks/frontend>
-  - Backend: <https://github.com/owntracks/recorder>
+    - Frontend: <https://github.com/owntracks/frontend>
+    - Backend: <https://github.com/owntracks/recorder>
 
 ## Before initial installation
 
