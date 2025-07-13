@@ -114,7 +114,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'node-exporter':
         case 'ollama':
         case 'unbound':
-            return `@/homelab/icons/${appType}/favicon.png`;
+            return `@/homelab/icons/${appType}.png`;
         default:
             throw new Error(`Unknown app type: ${appType}`);
     }
