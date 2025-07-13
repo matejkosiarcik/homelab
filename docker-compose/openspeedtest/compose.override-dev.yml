@@ -8,8 +8,6 @@ services:
     environment:
       DOMAIN_NAME: localhost
       USER_EMAIL: admin@openspeedtest.localhost
-    ports:
-      - 127.0.0.1:8080:3000
 
   certificator:
     <<: *common-service-options
@@ -17,6 +15,7 @@ services:
   apache:
     <<: *common-service-options
     ports:
+      - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
 
   apache-prometheus-exporter:

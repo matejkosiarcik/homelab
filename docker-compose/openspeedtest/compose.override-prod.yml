@@ -8,9 +8,6 @@ services:
     environment:
       DOMAIN_NAME: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       USER_EMAIL: admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:80:3000
-      # 3001 ignored
 
   certificator:
     <<: *common-service-options
@@ -18,6 +15,7 @@ services:
   apache:
     <<: *common-service-options
     ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
 
   apache-prometheus-exporter:

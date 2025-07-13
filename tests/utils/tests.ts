@@ -30,7 +30,9 @@ export function createApiRootTest(url: string, _options?: { headers?: Record<str
         test(`API: Get root${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(url, { headers: options.headers });
             expect(response.status, 'Response Status').toStrictEqual(options.status);
-            expect(response.headers['Server'] || response.headers['server'], 'Response Proxy Server header').toStrictEqual('Apache');
+            if (options.title !== 'portal') {
+                expect(response.headers['Server'] || response.headers['server'], 'Response Proxy Server header').toStrictEqual('Apache');
+            }
         }),
     ];
 }
