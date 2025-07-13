@@ -34,7 +34,7 @@ speedtest-tracker
 # TODO: vikunja
 unbound-1-default
 unbound-1-open
-# owntracks
+owntracks
 
 # AI
 ollama
@@ -51,7 +51,7 @@ healthchecks
 glances
 node-exporter
 prometheus
-# grafana
+grafana
 
 # App Monitoring
 gatus-1
