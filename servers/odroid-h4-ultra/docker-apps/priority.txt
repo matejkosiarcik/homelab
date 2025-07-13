@@ -39,6 +39,8 @@ owntracks
 
 # AI
 ollama
+# open-webui
+# stable-diffusion
 
 # DNS backup
 pihole-1-secondary
