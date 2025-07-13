@@ -5,15 +5,8 @@ services:
       service: app
     build:
       dockerfile: ./external/kiwix/Dockerfile
-    # Below are optional settings, only apply when necessary:
-    # init: false
-    # env_file:
-    #   - ./app-secrets/app.env
-    # environment:
-    #   PLACEHOLDER: PLACEHOLDER
     volumes:
       - ./app-data/kiwix:/data:ro
-    # stop_grace_period: 30s
 
   certificator:
     extends:
