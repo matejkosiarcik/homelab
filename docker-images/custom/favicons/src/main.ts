@@ -32,6 +32,7 @@ const appAddress = (() => {
         case 'gatus': return 'http://app:8080';
         case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
+        case 'grafana': return 'http://app:3000';
         case 'homepage': return 'http://app:3000';
         case 'home-assistant': return 'http://app:8123';
         case 'jellyfin': return 'http://app:8096';
@@ -43,6 +44,7 @@ const appAddress = (() => {
         case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
         case 'open-webui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
+        case 'owntracks': return 'http://app-frontend';
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
         case 'smtp4dev': return 'http://app:5000';
@@ -68,6 +70,8 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
             return '/static/favicon.ico';
         case 'gotify':
             return '/static/favicon-196x196.png';
+        case 'grafana':
+            return '???';
         case 'homepage':
             return '/apple-touch-icon.png';
         case 'home-assistant':
@@ -86,6 +90,9 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
             return '/assets/images/icons/apple-touch-icon.png';
         case 'open-webui':
             return '/static/favicon.svg';
+        case 'owntracks':
+            return '/static/recorder.png'; // Backend
+            // return '/favicon.ico'; // Frontend
         case 'pihole':
             return '/admin/img/favicons/apple-touch-icon.png';
         case 'prometheus':

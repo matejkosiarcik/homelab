@@ -15,6 +15,7 @@ flowchart LR
         apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
+        favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
         class ollama strong_border;
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
@@ -24,8 +25,9 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|:11434| ollama
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter
-        squid_proxy ~~~ squid_prometheus_exporter -.->|use| squid_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_proxy -->|/favicon.ico| favicons
+        squid_proxy ~~~ squid_prometheus_exporter
         outbound_interface -.-|connect| squid_proxy
         certificator --> outbound_interface
     end

@@ -1,4 +1,6 @@
+import fsx from 'node:fs/promises';
 import nodeDns from 'node:dns/promises';
+import path from 'node:path';
 import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
@@ -10,7 +12,7 @@ test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
         test.describe(instance.title, () => {
             // Get domain for DNS server for a given variant
-            const piholeDomain = instance.url.replace(/^https?:\/\//, '');
+            const instanceDomain = instance.url.replace(/^https?:\/\//, '');
 
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
@@ -19,50 +21,57 @@ test.describe(apps.pihole.title, () => {
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
 
-            for (const transportVariant of ['tcp', 'udp'] as const) {
-                for (const ipVariant of ['A', 'AAAA'] as const) {
-                    test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant} - example.com`, async () => {
-                        // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDomain);
-                        expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+            test('DNS: example.com lookup', async () => {
+                const instanceIp = await (async () => {
+                    const instancesIps = await nodeDns.resolve(instanceDomain);
+                    expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
+                    return instancesIps[0];
+                })();
 
-                        // Resolved external domain
-                        const ips = await dnsLookup('example.com', transportVariant, ipVariant, piholeDnsIps[0]);
-                        expect(ips, 'Domain should be resolved').not.toHaveLength(0);
-                        for (const ip of ips) {
-                            switch (ipVariant) {
-                                case 'A': {
-                                    expect(ip, `Resolved entry should be valid IPv4`).toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
-                                    expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
-                                    expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
-                                    expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
-                                    expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(1[6-9]|2[0-9]|3[0-1])\./);
-                                    expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
-                                    break;
-                                }
-                                case 'AAAA': {
-                                    expect(ip, `Resolved entry should be valid IPv6`).toMatch(/([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
-                                    expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
-                                    expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
-                                    break;
+                for (const transportVariant of ['tcp', 'udp'] as const) {
+                    for (const ipVariant of ['A', 'AAAA'] as const) {
+                        await test.step(`Check example.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                            const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
+                            expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                            for (const ip of ips) {
+                                switch (ipVariant) {
+                                    case 'A': {
+                                        expect(ip, 'Resolved entry should be valid IPv4').toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+                                        expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
+                                        expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(1[6-9]|2[0-9]|3[0-1])\./);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
+                                        break;
+                                    }
+                                    case 'AAAA': {
+                                        expect(ip, 'Resolved entry should be valid IPv6').toMatch(/([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                                        expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
+                }
+            });
 
-                    test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant} - self`, async () => {
-                        // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDomain);
-                        expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
+            test('DNS: self domain', async () => {
+                const instanceIp = await (async () => {
+                    const instancesIps = await nodeDns.resolve(instanceDomain);
+                    expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
+                    return instancesIps[0];
+                })();
 
-                        // Resolved external domain
-                        const ips = await dnsLookup(piholeDomain, transportVariant, ipVariant, piholeDnsIps[0]);
-                        switch (ipVariant) {
+                for (const transportVariant of ['tcp', 'udp'] as const) {
+                    for (const ipVariant of ['A', 'AAAA'] as const) {
+                        await test.step(`Check self via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                            const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
+                            switch (ipVariant) {
                             case 'A': {
                                 expect(ips, 'Domain should be resolved').not.toHaveLength(0);
-                                for (const ip of ips) {
-                                    expect(ip, 'Resolved entry should be valid internal IP').toMatch(/^10\.1\.[0-9]{1,3}\.[0-9]{1,3}$/);
-                                }
+                                expect(ips, 'Domain should be resolved exactly').toContain(instanceIp);
                                 break;
                             }
                             case 'AAAA': {
@@ -70,19 +79,53 @@ test.describe(apps.pihole.title, () => {
                                 break;
                             }
                         }
-                    });
-
-                    test(`DNS: ${transportVariant.toUpperCase()} ${ipVariant} - local unused domain`, async () => {
-                        // Get IP address
-                        const piholeDnsIps = await nodeDns.resolve(piholeDomain);
-                        expect(piholeDnsIps, 'Pihole DNS address resolution').toHaveLength(1);
-
-                        // Resolved external domain
-                        const ips = await dnsLookup('unused.matejhome.com', transportVariant, ipVariant, piholeDnsIps[0]);
-                        expect(ips, 'Domain should not be resolved').toHaveLength(0);
-                    });
+                        });
+                    }
                 }
-            }
+            });
+
+            test('DNS: local unused domain', async () => {
+                const instanceIp = await (async () => {
+                    const instancesIps = await nodeDns.resolve(instanceDomain);
+                    expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
+                    return instancesIps[0];
+                })();
+
+                for (const transportVariant of ['tcp', 'udp'] as const) {
+                    for (const ipVariant of ['A', 'AAAA'] as const) {
+                        await test.step(`Check <random>.matejhome.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                            const ips = await dnsLookup(`${faker.string.alpha(10)}.matejhome.com`, transportVariant, ipVariant, instanceIp);
+                            expect(ips, 'Domain should not be resolved').toHaveLength(0);
+                        });
+                    }
+                }
+            });
+
+            test('DNS: Local domains lookup', async () => {
+                const instanceIp = await (async () => {
+                    const instanceIps = await nodeDns.resolve(instanceDomain);
+                    expect(instanceIps, 'PiHole DNS address resolution').toHaveLength(1);
+                    return instanceIps[0];
+                })();
+
+                const customDomainsPath = path.join('..', 'docker-images', 'external', 'pihole', 'custom-domains.txt');
+                const domains: { ip: string, domain: string }[] = (await fsx.readFile(customDomainsPath, 'utf-8'))
+                    .split('\n')
+                    .map((line: string) => line.replace(/#.*$/, '').trim())
+                    .filter((line: string) => line !== '')
+                    .map((line: string) => ({ ip: line.split(/\s+/)[0], domain: line.split(/\s+/)[1] }));
+
+                for (const entry of domains) {
+                    for (const transportVariant of ['tcp', 'udp'] as const) {
+                        await test.step(`Check domain ${entry.domain} via ${transportVariant.toUpperCase()}`, async () => {
+                            const ipType = entry.ip.includes('.') ? 'A' : 'AAAA';
+                            const ips = await dnsLookup(entry.domain, transportVariant, ipType, instanceIp);
+                            expect(ips, 'Domain should be resolved').not.toHaveLength(0);
+                            expect(ips, `Domain ${entry.ip} should be resolved to IP address`).toContain(entry.ip);
+                        });
+                    }
+                }
+            });
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {

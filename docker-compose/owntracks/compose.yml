@@ -1,0 +1,53 @@
+services:
+  app-backend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
+    build:
+      dockerfile: ./external/owntracks-backend/Dockerfile
+    volumes:
+      - ./app-data/owntracks:/store:rw
+    environment:
+      OTR_PORT: "0" # disables MQTT
+      # OTR_HOST: mqtt_broker
+
+  app-frontend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
+    build:
+      dockerfile: ./external/owntracks-frontend/Dockerfile
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false
