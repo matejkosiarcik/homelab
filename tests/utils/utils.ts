@@ -29,7 +29,7 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
         const req = dns.Request({
             question: dns.Question({ name: domain, type: type, }),
             server: { address: dnsServer, port: 53, type: transport },
-            timeout: 2500,
+            timeout: 4000,
         });
 
         req.on('timeout', () => {
