@@ -660,7 +660,7 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    touch "$output/favicons.env"
+    printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$output/favicons.env"
     ;;
 *omada-controller*)
     # App
