@@ -507,6 +507,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$(load_token changedetection app api-key)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_GATUS_PASSWORD=%s\n' "$(load_token gatus-1 app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app admin)" >>"$output/app.env"
+    printf 'HOMEPAGE_VAR_GRAFANA_PASSWORD=%s\n' "$(load_token grafana app admin)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY=%s\n' "$(load_token home-assistant app automation-api-key)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app automation-api-key)" >>"$output/app.env"
