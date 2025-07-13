@@ -9,7 +9,7 @@ services:
     volumes:
       - ./app-data/owntracks:/store:rw
     environment:
-      OTR_PORT: '0'  # disables MQTT
+      OTR_PORT: "0" # disables MQTT
       # OTR_HOST: mqtt_broker
 
   app-frontend:
