@@ -6,7 +6,7 @@ Websupport:
 
 - API Docs: <https://rest.websupport.sk/v2/docs/intro>
 - API Swagger: <https://rest.websupport.sk/v2/docs>
-- API keys: <https://www.websupport.sk/podpora/kb/api-keys/>
+- API keys: <https://www.websupport.sk/podpora/kb/api-keys>
 
 ## Before initial installation
 

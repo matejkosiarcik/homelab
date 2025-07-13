@@ -12,7 +12,7 @@ Speedtest Tracker (official):
 
 LinuxServer (unofficial):
 
-- LinuxServer docs: <https://docs.linuxserver.io/images/docker-speedtest-tracker/>
+- LinuxServer docs: <https://docs.linuxserver.io/images/docker-speedtest-tracker>
 - LinuxServer GitHub: <https://github.com/linuxserver/docker-speedtest-tracker>
 - LinuxServer DockerHub: <https://hub.docker.com/r/linuxserver/speedtest-tracker>
 
