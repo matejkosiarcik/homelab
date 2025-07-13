@@ -161,6 +161,12 @@ fi
 export DOCKER_COMPOSE_ENV
 printf 'DOCKER_COMPOSE_ENV=%s\n' "$DOCKER_COMPOSE_ENV" >>"$extra_docker_compose_env"
 
+if [ "${DOCKER_COMPOSE_CURRENT_USER-}" = '' ]; then
+    DOCKER_COMPOSE_CURRENT_USER="$(id -u)"
+fi
+export DOCKER_COMPOSE_CURRENT_USER
+printf 'DOCKER_COMPOSE_CURRENT_USER=%s\n' "$DOCKER_COMPOSE_CURRENT_USER" >>"$extra_docker_compose_env"
+
 if [ "${DOCKER_COMPOSE_APP_NAME-}" = '' ]; then
     DOCKER_COMPOSE_APP_NAME="$full_app_name"
 fi
