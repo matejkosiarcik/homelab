@@ -337,6 +337,17 @@
         #   url: https://netalertx.matejhome.com
         #   key: "{{HOMEPAGE_VAR_NETALERTX_APIKEY}}"
 
+    - Grafana:
+        description: Metrics and Log monitoring
+        href: https://grafana.matejhome.com
+        ping: grafana.matejhome.com
+        icon: /icons/grafana.png
+        # widget:
+        #   type: grafana
+        #   url: https://grafana.matejhome.com
+        #   username: admin
+        #   password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
+
 - Other Apps:
     - Homepage:
         description: Dashboard
@@ -425,6 +436,12 @@
         #   url: https://vikunja.matejhome.com
         #   key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
         #   enableTaskList: true
+
+    - Owntracks:
+        description: Location tracking
+        href: https://owntracks.matejhome.com
+        ping: owntracks.matejhome.com
+        icon: /icons/owntracks.png
 
 - AI:
     - Ollama:

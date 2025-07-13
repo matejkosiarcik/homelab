@@ -10,7 +10,7 @@ UniFi (official):
 
 LinuxServer (unofficial):
 
-- LinuxServer docs: <https://docs.linuxserver.io/images/docker-unifi-network-application/>
+- LinuxServer docs: <https://docs.linuxserver.io/images/docker-unifi-network-application>
 - LinuxServer GitHub: <https://github.com/linuxserver/docker-unifi-network-application>
 - LinuxServer DockerHub: <https://hub.docker.com/r/linuxserver/unifi-network-application>
 

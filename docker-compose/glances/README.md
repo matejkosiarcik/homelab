@@ -5,7 +5,7 @@
 ## Docs
 
 - GitHub: <https://github.com/nicolargo/glances>
-- Homepage: <https://nicolargo.github.io/glances/>
+- Homepage: <https://nicolargo.github.io/glances>
 - Dockerhub: <https://hub.docker.com/r/nicolargo/glances>
 - Docs: <https://glances.readthedocs.io/en/latest/index.html>
     - Docker guide: <https://glances.readthedocs.io/en/latest/docker.html>

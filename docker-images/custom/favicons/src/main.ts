@@ -29,6 +29,7 @@ const appAddress = (() => {
         case 'certbot': return 'http://app:8080';
         case 'changedetection': return 'http://app:5000';
         case 'docker-cache-proxy': return 'http://app';
+        case 'dozzle': return 'http://app:8080';
         case 'gatus': return 'http://app:8080';
         case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
@@ -63,7 +64,9 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'actualbudget':
             return imageType === 'ico' ? '/favicon.ico' : '	/apple-touch-icon.png';
         case 'changedetection':
-            return '/static/favicons/apple-touch-icon.png'
+            return '/static/favicons/apple-touch-icon.png';
+        case 'dozzle':
+            return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'gatus':
             return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
         case 'glances':
