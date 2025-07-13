@@ -12,13 +12,13 @@ services:
       OTR_PORT: "0" # disables MQTT
       # OTR_HOST: mqtt_broker
 
-  # app-frontend:
-  #   extends:
-  #     file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-  #     service: app
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
-  #   build:
-  #     dockerfile: ./external/owntracks-frontend/Dockerfile
+  app-frontend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
+    build:
+      dockerfile: ./external/owntracks-frontend/Dockerfile
 
   certificator:
     extends:

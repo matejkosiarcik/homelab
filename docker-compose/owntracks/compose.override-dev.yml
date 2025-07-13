@@ -6,8 +6,8 @@ services:
   app-backend:
     <<: *common-service-options
 
-  # app-frontend:
-  #   <<: *common-service-options
+  app-frontend:
+    <<: *common-service-options
 
   certificator:
     <<: *common-service-options
