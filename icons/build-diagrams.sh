@@ -160,7 +160,7 @@ convert_image_full "$input_dir/other/litestream-custom.svg.bin" "$output_dir/lit
 convert_image_full "$input_dir/other/odroid.png" "$output_dir/odroid.png"
 convert_image_full "$input_dir/other/old-tv.png" "$output_dir/old-tv.png"
 convert_image_full "$input_dir/other/open-router.png" "$output_dir/open-router.png"
-convert_image_full "$input_dir/other/photos.svg.bin" "$output_dir/photos.png"
+convert_image_full "$input_dir/other/photos.png" "$output_dir/photos.png"
 convert_image_full "$input_dir/other/picture.png" "$output_dir/picture.png"
 convert_image_full "$input_dir/other/playwright.svg.bin" "$output_dir/playwright.png"
 convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberry-pi.png"
