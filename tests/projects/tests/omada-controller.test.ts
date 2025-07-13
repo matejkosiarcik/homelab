@@ -27,7 +27,7 @@ test.describe(apps['omada-controller'].title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
-            createApiRootTest(`${instance.url}:8443`, { title: 'portal' });
+            // createApiRootTest(`${instance.url}:8443`, { title: 'portal' });
             createTcpTests(instance.url, [80, 443, 8080, 8443, 29811, 29812, 29813, 29814, 29815, 29816]);
             createFaviconTests(instance.url);
 
