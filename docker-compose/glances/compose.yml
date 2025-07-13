@@ -9,6 +9,7 @@ services:
     volumes:
       - ./app-secrets/glances-password.txt:/root/.config/glances/admin.pwd:ro
     pid: host
+    # userns_mode: host
     environment:
       GLANCES_OPT: "-w --password -u admin"
       DOCKER_HOST: tcp://socket-proxy:2375
