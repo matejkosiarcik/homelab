@@ -10,6 +10,8 @@
 - GitHub: <https://github.com/owntracks>
     - Frontend: <https://github.com/owntracks/frontend>
     - Backend: <https://github.com/owntracks/recorder>
+- Docs: <https://owntracks.org/booklet>
+- Setup guide: <https://bhdouglass.com/blog/self-hosted-device-tracking-with-owntracks>
 
 ## Before initial installation
 
