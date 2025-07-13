@@ -87,6 +87,10 @@ load_password() {
     printf 'GOTIFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gotify apache status)"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify apache prometheus)"
 
+    printf 'GRAFANA_ADMIN_PASSWORD=%s\n' "$(load_password grafana app admin)"
+    printf 'GRAFANA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password grafana apache status)"
+    printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password grafana apache prometheus)"
+
     printf 'HEALTHCHECKS_ADMIN_PASSWORD=%s\n' "$(load_password healthchecks app admin)"
     printf 'HEALTHCHECKS_API_KEY_READONLY=%s\n' "$(load_password healthchecks app api-key-readonly)"
     printf 'HEALTHCHECKS_API_KEY_READWRITE=%s\n' "$(load_password healthchecks app api-key-readwrite)"
@@ -167,6 +171,10 @@ load_password() {
     printf 'OPENSPEEDTEST_PROXY_STATUS_PASSWORD=%s\n' "$(load_password openspeedtest apache status)"
     printf 'OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password openspeedtest apache prometheus)"
 
+    printf 'OWNTRACKS_ADMIN_PASSWORD=%s\n' "$(load_password owntracks app admin)"
+    printf 'OWNTRACKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password owntracks apache status)"
+    printf 'OWNTRACKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password owntracks apache prometheus)"
+
     printf 'PIHOLE_1_PRIMARY_PASSWORD=%s\n' "$(load_password pihole-1-primary app admin)"
     printf 'PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-primary app prometheus)"
     printf 'PIHOLE_1_PRIMARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-primary apache status)"
@@ -234,6 +242,12 @@ load_password() {
     printf 'VAULTWARDEN_TEST_PASSWORD=%s\n' "$(load_password vaultwarden app test)"
     printf 'VAULTWARDEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vaultwarden apache status)"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden apache prometheus)"
+
+    printf 'VIKUNJA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vikunja apache status)"
+    printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja apache prometheus)"
+
+    printf 'WIKIPEDIA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password wikipedia apache status)"
+    printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password wikipedia apache prometheus)"
 } >>'.secrets.env'
 
 chmod 0400 '.secrets.env'
