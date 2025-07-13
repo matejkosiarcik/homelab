@@ -12,17 +12,6 @@ services:
       OTR_PORT: '0'  # disables MQTT
       # OTR_HOST: mqtt_broker
 
-    # Below are optional settings, only apply when necessary:
-    # init: false
-    # env_file:
-    #   - ./app-secrets/app.env
-    # volumes:
-    #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:ro
-    # networks:
-    #   internal-network: {}
-    #   external-network: {} # TODO: Connect to external world via squid instead
-    # stop_grace_period: 30s
-
   app-frontend:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
@@ -30,17 +19,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     build:
       dockerfile: ./external/owntracks-frontend/Dockerfile
-
-    # Below are optional settings, only apply when necessary:
-    # init: false
-    # env_file:
-    #   - ./app-secrets/app.env
-    # volumes:
-    #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:ro
-    # networks:
-    #   internal-network: {}
-    #   external-network: {} # TODO: Connect to external world via squid instead
-    # stop_grace_period: 30s
 
   certificator:
     extends:
