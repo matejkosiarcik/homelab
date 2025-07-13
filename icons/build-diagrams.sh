@@ -66,7 +66,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.s
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vaultwarden-light.svg" "$output_dir/vaultwarden.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vikunja.svg" "$output_dir/vikunja.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vultr.svg" "$output_dir/vultr.png"
-convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/wikipedia.svg" "$output_dir/wikipedia.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "$output_dir/wikipedia.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/windows-11.png" "$output_dir/windows.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.svg" "$output_dir/zabbix.png"
 
