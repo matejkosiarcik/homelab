@@ -65,7 +65,9 @@ const appAddress = (() => {
 function getFaviconPath(imageType: 'ico' | 'png'): string {
     switch (appType) {
         case 'actualbudget': return imageType === 'ico' ? '/favicon.ico' : '	/apple-touch-icon.png';
+        case 'certbot': return `@/homelab/icons/${appType}.png`;
         case 'changedetection': return '/static/favicons/apple-touch-icon.png';
+        case 'docker-cache-proxy': return `@/homelab/icons/${appType}.png`;
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
         case 'glances': return '/static/favicon.ico';
@@ -77,7 +79,9 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'jellyfin': return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
+        case 'node-exporter': return `@/homelab/icons/${appType}.png`;
         case 'ntfy': return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
+        case 'ollama': return `@/homelab/icons/${appType}.png`;
         case 'omada-controller': return '/favicon.ico';
         case 'open-webui': return '/static/favicon.svg';
         case 'openspeedtest': return '/assets/images/icons/apple-touch-icon.png';
@@ -87,16 +91,11 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'smtp4dev': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'speedtest-tracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
+        case 'unbound': return `@/homelab/icons/${appType}.png`;
         case 'unifi-controller': return '/manage/angular/gc477706b0/images/favicons/favicon-192.png';
         case 'uptime-kuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
         case 'wikipedia': return '/skin/favicon/apple-touch-icon.png';
-        case 'certbot':
-        case 'docker-cache-proxy':
-        case 'node-exporter':
-        case 'ollama':
-        case 'unbound':
-            return `@/homelab/icons/${appType}.png`;
         default:
             throw new Error(`Unknown app type: ${appType}`);
     }
