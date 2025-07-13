@@ -40,22 +40,22 @@ flowchart LR
         home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
         gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        tp_link_equipment("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /></div>TP Link<br/>Equipment")
 
         home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
         gatus -->|monitor| inbound_interface
-        tp_link_equipment <-.->|control| inbound_interface
     end
 
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
+        tp_link_equipment("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /></div>TP Link<br/>Equipment")
 
         outbound_interface_1 -->|report status| healthchecks
         outbound_interface_1 -.->|download certificate| certbot
         outbound_interface_2 -.->|send backup| minio
+        omada_controller -.->|control| tp_link_equipment
     end
 
     squid_prometheus_exporter ~~~ others_2
