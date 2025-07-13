@@ -27,6 +27,7 @@ The Icons are obtained from following locations:
     - Open WebUI: <https://openwebui.com>
     - OpenRouter: <https://custom.typingmind.com/tools/model-icons/openrouterai>
     - Photos: <https://www.iconfinder.com/icons/1622830/gallery_landskape_mountains_nature_photo_picture_icon>
+    - Picture (generic): <https://www.iconfinder.com/icons/9004736/image_photo_picture_gallery_icon>
     - Playwright: <https://playwright.dev>
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (server down)
     - RenovateBot: <https://docs.renovatebot.com>
