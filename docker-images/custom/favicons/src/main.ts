@@ -44,7 +44,7 @@ const appAddress = (() => {
         case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
         case 'open-webui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
-        case 'owntracks': return 'http://app-frontend';
+        case 'owntracks': return 'http://app-backend';
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
         case 'smtp4dev': return 'http://app:5000';
