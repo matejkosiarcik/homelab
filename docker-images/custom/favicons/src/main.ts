@@ -34,9 +34,9 @@ const appAddress = (() => {
         case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
         case 'grafana': return 'http://app:3000';
-        case 'homepage': return 'http://app:3000';
         case 'healthchecks': return 'http://app:8000';
         case 'home-assistant': return 'http://app:8123';
+        case 'homepage': return 'http://app:3000';
         case 'jellyfin': return 'http://app:8096';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
@@ -94,10 +94,10 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
             return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
         case 'omada-controller':
             return '/favicon.ico';
-        case 'openspeedtest':
-            return '/assets/images/icons/apple-touch-icon.png';
         case 'open-webui':
             return '/static/favicon.svg';
+        case 'openspeedtest':
+            return '/assets/images/icons/apple-touch-icon.png';
         case 'owntracks':
             return '/static/recorder.png'; // Backend
             // return '/favicon.ico'; // Frontend
