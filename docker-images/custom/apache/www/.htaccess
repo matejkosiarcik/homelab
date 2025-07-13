@@ -326,7 +326,7 @@ RewriteRule ^ /.proxy/not-found [L]
 </If>
 
 # Protect entire Ollama
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'ollama' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'ollama' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
