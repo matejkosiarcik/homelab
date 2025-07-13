@@ -228,4 +228,10 @@ export const apps = {
     //         { url: 'https://vikunja.matejhome.com', title: 'Vikunja' },
     //     ],
     // },
+    wikipedia: {
+        title: 'Wikipedia',
+        instances: [
+            { url: 'https://wikipedia.matejhome.com', title: 'Wikipedia' },
+        ],
+    },
 };

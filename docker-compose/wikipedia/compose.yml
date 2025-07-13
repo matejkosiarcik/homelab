@@ -1,0 +1,48 @@
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    build:
+      dockerfile: ./external/kiwix/Dockerfile
+    # Below are optional settings, only apply when necessary:
+    # init: false
+    # env_file:
+    #   - ./app-secrets/app.env
+    # environment:
+    #   PLACEHOLDER: PLACEHOLDER
+    volumes:
+      - ./app-data/kiwix:/data:ro
+    # stop_grace_period: 30s
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

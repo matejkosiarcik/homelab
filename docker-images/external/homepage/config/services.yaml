@@ -443,6 +443,12 @@
         ping: owntracks.matejhome.com
         icon: /icons/owntracks.png
 
+    - Wikipedia:
+        description: Encyclopedia
+        href: https://wikipedia.matejhome.com
+        ping: wikipedia.matejhome.com
+        icon: /icons/wikipedia.png
+
 - AI:
     - Ollama:
         description: LLM backend
