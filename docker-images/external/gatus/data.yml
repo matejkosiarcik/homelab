@@ -502,3 +502,6 @@ apps:
     endpoints:
       - path: /api/v1/metrics
     enabled: false # TODO: Enable
+
+  - name: Wikipedia
+    domain: wikipedia.matejhome.com

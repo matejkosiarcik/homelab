@@ -99,3 +99,4 @@
 10.1.20.52 stable-diffusion.matejhome.com
 10.1.20.53 grafana.matejhome.com
 10.1.20.54 owntracks.matejhome.com
+10.1.20.55 wikipedia.matejhome.com

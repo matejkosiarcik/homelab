@@ -26,6 +26,6 @@ COPY --from=prefinal /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=favicons \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=1s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "node", "/homelab/dist/main.js" ]

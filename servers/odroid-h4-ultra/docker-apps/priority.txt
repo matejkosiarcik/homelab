@@ -35,6 +35,7 @@ speedtest-tracker
 unbound-1-default
 unbound-1-open
 owntracks
+# wikipedia
 
 # AI
 ollama

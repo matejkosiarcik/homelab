@@ -107,6 +107,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'vikunja' ]; then
     PROXY_UPSTREAM_URL="http://app:3456"
+elif [ "$HOMELAB_APP_TYPE" = 'wikipedia' ]; then
+    PROXY_UPSTREAM_URL="http://app:8080"
 else
     printf 'Unknown HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}"
     exit 1

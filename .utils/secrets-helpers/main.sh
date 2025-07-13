@@ -1008,6 +1008,18 @@ case "$app_dirname" in
     # Favicons
     touch "$output/favicons.env"
     ;;
+*wikipedia*)
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
+    ;;
 *)
     printf 'Unknown app directory name: %s\n' "$app_dir" >&2
     exit 1

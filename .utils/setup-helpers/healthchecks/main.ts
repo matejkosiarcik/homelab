@@ -155,6 +155,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Uptime Kuma',
         'Vaultwarden',
         'Vikunja',
+        'Wikipedia',
     ];
     for (const _name of certificatorHealthchecks) {
         const name = `${_name} - Certificator`;

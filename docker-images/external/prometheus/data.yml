@@ -121,3 +121,4 @@ proxies:
   - url: unifi-controller.matejhome.com
   - url: uptime-kuma.matejhome.com
   - url: vaultwarden.matejhome.com
+  - url: wikipedia.matejhome.com

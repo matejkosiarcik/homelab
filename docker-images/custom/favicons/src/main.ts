@@ -56,6 +56,8 @@ const appAddress = (() => {
         case 'unifi-controller': return 'https://app:8443';
         case 'uptime-kuma': return 'http://app:3001';
         case 'vaultwarden': return 'http://app:80';
+        case 'vikunja': return 'http://app:???';
+        case 'wikipedia': return 'http://app:8080';
         default: throw new Error(`Unknown app type ${appType}`);
     }
 })();
@@ -115,6 +117,8 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
             return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden':
             return '/images/apple-touch-icon.png';
+        case 'wikipedia':
+            return '/skin/favicon/apple-touch-icon.png';
         case 'certbot':
         case 'docker-cache-proxy':
         case 'node-exporter':
