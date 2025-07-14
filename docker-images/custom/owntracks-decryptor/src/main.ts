@@ -31,10 +31,16 @@ async function decryptPayload(input: string): Promise<string> {
     const nonce = Buffer.from(unsanitizedText, 'base64').slice(0, sodium.crypto_secretbox_NONCEBYTES);
     const cipher = Buffer.from(unsanitizedText, 'base64').slice(sodium.crypto_secretbox_NONCEBYTES);
 
+    const keyRaw = Buffer.from('password', 'utf8');
+    const key = Buffer.alloc(32);
+    for (let i = 0; i < keyRaw.length; i++) {
+        key[i] = keyRaw[i];
+    }
+
     const decryptedText = sodium.crypto_secretbox_open_easy(
         cipher,
         nonce,
-        Buffer.from('password', 'utf8'),
+        key,
         'base64'
     );
 
