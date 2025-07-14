@@ -12,9 +12,10 @@ RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         apache2 curl inotify-tools && \
     rm -rf /var/lib/apt/lists/* && \
-    a2enmod auth_basic dump_io env log_forensic headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
+    a2enmod auth_basic env headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     a2dismod -f alias && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
+# For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
 COPY ./custom/apache/apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY --from=prefinal /homelab/ ./
