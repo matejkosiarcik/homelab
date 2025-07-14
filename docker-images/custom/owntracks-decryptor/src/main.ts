@@ -58,12 +58,12 @@ app.post('/pub', async (request: Request, response: Response) => {
         const upstreamData = JSON.parse(decryptedText);
         console.log('Decrypted:', upstreamData);
 
-        const url = `http://app-backend:8083${request.path}?${request.query}`;
+        const url = `http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`;
         console.log('URL:', url);
-        await axios.post(url, upstreamData);
+        const axiosResponse = await axios.post(url, upstreamData);
 
         response.status(200);
-        response.send({});
+        response.send(axiosResponse.data);
     } catch (error) {
         console.error('Server error:', error);
         response.sendStatus(500);
