@@ -8,8 +8,10 @@ services:
       dockerfile: ./external/owntracks-backend/Dockerfile
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./app-data/owntracks-config:/config:rw
+      # - ./app-data/owntracks-config:/config:rw
       - ./app-data/owntracks-store:/store:rw
+    env_file:
+      - ./app-secrets/app.env
     environment:
       OTR_PORT: "0" # disables MQTT
       # OTR_HOST: mqtt_broker
@@ -31,6 +33,8 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    volumes:
+      - ./app-secrets/admin.htpasswd:/homelab/admin.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

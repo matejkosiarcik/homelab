@@ -334,6 +334,15 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect entire Owntracks
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'owntracks' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/admin.htpasswd
+    Require valid-user
+</If>
+
 # Protect PiHole prometheus endpoint
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'pihole' && %{REQUEST_URI} =~ m#^/metrics/*$#">
     AuthType Basic
