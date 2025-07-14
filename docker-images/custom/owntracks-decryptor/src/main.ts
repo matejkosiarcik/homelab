@@ -25,15 +25,16 @@ async function decryptPayload(input: string): Promise<string> {
     await sodium.ready;
     console.log('Nonce length:', sodium.crypto_secretbox_NONCEBYTES);
     const unsanitizedText = input.replaceAll('\\/', '\\');
+    console.log('Unsanitized text:', unsanitizedText);
     console.log('Text decoded:', Buffer.from(unsanitizedText, 'base64').length);
-    const decodedText = sodium.from_base64(unsanitizedText);
-    const nonce = decodedText.slice(0, sodium.crypto_secretbox_NONCEBYTES);
-    const cipher = decodedText.slice(sodium.crypto_secretbox_NONCEBYTES);
+    // const decodedText = sodium.from_base64(unsanitizedText);
+    const nonce = Buffer.from(unsanitizedText.slice(0, sodium.crypto_secretbox_NONCEBYTES), 'base64');
+    const cipher = Buffer.from(unsanitizedText.slice(sodium.crypto_secretbox_NONCEBYTES), 'base64');
 
     const decryptedText = sodium.crypto_secretbox_open_easy(
         cipher,
         nonce,
-        Buffer.from('password'),
+        Buffer.from('password', 'utf8'),
     );
 
     return Buffer.from(decryptedText).toString('utf8');
