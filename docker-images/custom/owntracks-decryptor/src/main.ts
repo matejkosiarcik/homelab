@@ -29,9 +29,8 @@ async function decryptPayload(input: string): Promise<string> {
 
     // Private key - padded to 32 bytes
     const keyRawBuffer = Buffer.from('password', 'utf8');
-    const keyPaddedBuffer = Buffer.alloc(32);
-    keyRawBuffer.copy(keyPaddedBuffer, 0, 0, Math.min(keyRawBuffer.length, 32));
-    const key = Uint8Array.from(keyPaddedBuffer);
+    const key = Buffer.alloc(32);
+    keyRawBuffer.copy(key, 0, 0, Math.min(keyRawBuffer.length, 32));
 
     const decryptedText = sodium.crypto_secretbox_open_easy(
         cipher,
