@@ -44,6 +44,8 @@ async function decryptPayload(input: string): Promise<string> {
 
 app.post('/pub', async (request: Request, response: Response) => {
     try {
+        console.log(`Request headers: ${request.headers}`);
+
         const body = request.body as EncryptedPayload;
         if (body._type !== 'encrypted') {
             throw new Error(`Unknown request type: ${body._type}`);
