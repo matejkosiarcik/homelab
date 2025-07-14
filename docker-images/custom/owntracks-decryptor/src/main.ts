@@ -49,18 +49,15 @@ app.post('/pub', async (request: Request, response: Response) => {
             throw new Error(`Unknown request type: ${body._type}`);
         }
 
-        console.log('Request');
         const headers: Record<string, string> = {};
-        for (const header of Object.keys(request.headers).filter((el) => typeof request.headers[el] === 'string' && request.headers[el].toLowerCase().startsWith('x-'))) {
-            headers[header] = `${request.headers[header]}`;
+        for (const [key, value] of Object.entries(request.headers).filter(([_, value]) => `${value}`.toLowerCase().startsWith('x-'))) {
+            headers[key] = `${value}`;
         }
         console.log('Sending headers:', JSON.stringify(headers, null, 2));
 
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);
         const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
-
-        console.log('Decrypted');
 
         response.status(axiosResponse.status);
         response.send(axiosResponse.data);
