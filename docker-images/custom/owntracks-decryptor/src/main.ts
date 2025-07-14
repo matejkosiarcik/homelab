@@ -24,6 +24,17 @@ app.get('/pub', async (request: Request, response: Response) => {
     }
 });
 
+app.use('/', async (request: Request, response: Response) => {
+    try {
+        console.log('Received general:', request);
+        response.status(200);
+        response.send({});
+    } catch (error) {
+        console.error('Favicon error:', error);
+        response.sendStatus(500);
+    }
+});
+
 app.listen(8080, () => {
     console.log('Server started.');
 });
