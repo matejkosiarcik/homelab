@@ -23,18 +23,18 @@ type EncryptedPayload = {
 
 async function decryptPayload(input: string): Promise<string> {
     await sodium.ready;
-    console.log('Nonce length:', sodium.crypto_secretbox_NONCEBYTES);
     const unsanitizedText = input.replaceAll('\\/', '\\');
-    console.log('Unsanitized text:', unsanitizedText);
-    console.log('Text decoded:', Buffer.from(unsanitizedText, 'base64').length);
-    const nonce = Buffer.from(unsanitizedText, 'base64').slice(0, sodium.crypto_secretbox_NONCEBYTES);
-    const cipher = Buffer.from(unsanitizedText, 'base64').slice(sodium.crypto_secretbox_NONCEBYTES);
+    const nonce = Uint8Array.from(Buffer.from(unsanitizedText, 'base64')).slice(0, sodium.crypto_secretbox_NONCEBYTES);
+    const cipher = Uint8Array.from(Buffer.from(unsanitizedText, 'base64')).slice(sodium.crypto_secretbox_NONCEBYTES);
 
-    const keyRaw = Buffer.from('password', 'utf8');
-    const key = Buffer.alloc(32);
-    for (let i = 0; i < keyRaw.length; i++) {
-        key[i] = keyRaw[i];
-    }
+    // Private key - padded to 32 bytes
+    const keyRawBuffer = Buffer.from('password', 'utf8');
+    const keyPaddedBuffer = Buffer.alloc(32);
+    keyRawBuffer.copy(keyPaddedBuffer);
+    // for (let i = 0; i < keyRawBuffer.length; i++) {
+    //     keyPaddedBuffer[i] = keyRawBuffer[i];
+    // }
+    const key = Uint8Array.from(keyPaddedBuffer);
 
     const decryptedText = sodium.crypto_secretbox_open_easy(
         cipher,
@@ -55,12 +55,12 @@ app.post('/pub', async (request: Request, response: Response) => {
 
         console.log('Data:', body)
         const decryptedText = await decryptPayload(body.data);
-        const upstreamData = JSON.parse(decryptedText);
-        console.log('Decrypted:', upstreamData);
+        const decryptedData = JSON.parse(decryptedText);
 
         const url = `http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`;
+        console.log('Query:', request.query)
         console.log('URL:', url);
-        const axiosResponse = await axios.post(url, upstreamData);
+        const axiosResponse = await axios.post(url, decryptedData);
 
         response.status(200);
         response.send(axiosResponse.data);
