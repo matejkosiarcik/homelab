@@ -7,15 +7,22 @@ if (fs.existsSync('.env')) {
 }
 
 const app = express();
+app.use(express.json())
 
 // Healthcheck
 app.get('/.health', (_: Request, response: Response) => {
     response.sendStatus(200);
 });
 
+type Payload = {
+    _type: 'encrypted',
+    data: string,
+};
+
 app.post('/pub', async (request: Request, response: Response) => {
     try {
-        console.log('Received:', request.body);
+        const data = request.body as Payload;
+        console.log('Data:', data)
         response.status(200);
         response.send({});
     } catch (error) {
