@@ -49,19 +49,14 @@ app.post('/pub', async (request: Request, response: Response) => {
             throw new Error(`Unknown request type: ${body._type}`);
         }
 
-        console.log('Original headers:', JSON.stringify(request.headers, null, 2));
         const headers: Record<string, string> = {};
         for (const [key, value] of Object.entries(request.headers)) {
-            console.log('Original header:', key, value, typeof value, `${value}`.toLowerCase());
             if (typeof value !== 'string') {
-                console.log('Here1');
                 continue
             }
-            if (!value.toLowerCase().startsWith('x-')) {
-                console.log('Here2');
-                continue
+            if (key.toLowerCase().startsWith('x-') || key.toLowerCase() === 'user-agent') {
+                headers[key] = `${value}`;
             }
-            headers[key] = `${value}`;
         }
         console.log('Sending headers:', JSON.stringify(headers, null, 2));
 
