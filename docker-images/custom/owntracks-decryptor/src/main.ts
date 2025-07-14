@@ -24,7 +24,7 @@ type Payload = {
 async function decryptPayload(base64Data: string) {
     await sodium.ready;
     const unsanitizedText = base64Data.replace(/\\\//g, '/');
-    const decodedText = sodium.from_base64(unsanitizedText);
+    const decodedText = sodium.from_string(unsanitizedText);
     const nonce = decodedText.slice(0, sodium.crypto_secretbox_NONCEBYTES);
     const cipher = decodedText.slice(sodium.crypto_secretbox_NONCEBYTES);
 
@@ -60,7 +60,7 @@ app.post('/pub', async (request: Request, response: Response) => {
         response.status(200);
         response.send({});
     } catch (error) {
-        console.error('Favicon error:', error);
+        console.error('Server error:', error);
         response.sendStatus(500);
     }
 });
