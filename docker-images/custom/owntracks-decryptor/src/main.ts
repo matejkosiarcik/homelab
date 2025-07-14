@@ -21,11 +21,13 @@ type Payload = {
     data: string,
 };
 
-async function decryptPayload(base64Data: string) {
+async function decryptPayload(input: string): string {
     await sodium.ready;
     console.log('Nonce length:', sodium.crypto_secretbox_NONCEBYTES);
-    // const unsanitizedText = base64Data.replace(/\\\//g, '/');
-    const decodedText = sodium.from_base64(base64Data);
+    const unsanitizedText = input.replaceAll('\\\\', '\\');
+    console.log('Text decoded:', Buffer.from(unsanitizedText, 'base64'));
+    // const base64Text = Buffer.from(input, 'base64').toString('base64');
+    const decodedText = sodium.from_base64(unsanitizedText);
     const nonce = decodedText.slice(0, sodium.crypto_secretbox_NONCEBYTES);
     const cipher = decodedText.slice(sodium.crypto_secretbox_NONCEBYTES);
 
@@ -35,7 +37,7 @@ async function decryptPayload(base64Data: string) {
         Buffer.from('password'),
     );
 
-    return decryptedText;
+    return Buffer.from(decryptedText).toString('utf8');
 }
 
 app.post('/pub', async (request: Request, response: Response) => {
