@@ -51,9 +51,10 @@ app.post('/pub', async (request: Request, response: Response) => {
 
         console.log('Request');
         const headers: Record<string, string> = {};
-        // for (const header of Object.keys(request.headers).filter((el) => typeof request.headers[el] === 'string' && typeof request.headers[el].toLowerCase().startsWith('x-'))) {
-        //     headers[header] = request.headers[header] as string;
-        // }
+        for (const header of Object.keys(request.headers).filter((el) => typeof request.headers[el] === 'string' && typeof request.headers[el].toLowerCase().startsWith('x-'))) {
+            headers[header] = request.headers[header] as string;
+        }
+        console.log('Sending headers:', JSON.stringify(headers, null, 2));
 
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);
