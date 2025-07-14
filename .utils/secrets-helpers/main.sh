@@ -162,7 +162,9 @@ write_http_auth_user_to_file() {
     # $1 - username
     # $2 - password
     # $3 - file
-    printf '%s' "$2" | chronic htpasswd -c -B -i "$output/$3.htpasswd" "$1"
+    tmpdir_htpasswd="$(mktemp -d)"
+    printf '%s' "$2" | chronic htpasswd -c -B -i "$tmpdir_htpasswd/file.htpasswd" "$1"
+    cat "$tmpdir_htpasswd/file.htpasswd" >>"$output/$3.htpasswd"
 }
 
 hash_password_bcrypt() {
