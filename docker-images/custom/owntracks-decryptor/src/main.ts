@@ -51,8 +51,10 @@ app.post('/pub', async (request: Request, response: Response) => {
 
         console.log('Original headers:', JSON.stringify(request.headers, null, 2));
         const headers: Record<string, string> = {};
-        for (const [key, value] of Object.entries(request.headers).filter(([_, value]) => `${value}`.toLowerCase().startsWith('x-'))) {
-            headers[key] = `${value}`;
+        for (const [key, value] of Object.entries(request.headers)) {
+            // .filter(([_, value]) => `${value}`.toLowerCase().startsWith('x-'))
+            // headers[key] = `${value}`;
+            console.log('Original header:', key, value, typeof value);
         }
         console.log('Sending headers:', JSON.stringify(headers, null, 2));
 
