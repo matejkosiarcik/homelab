@@ -25,6 +25,14 @@ services:
     build:
       dockerfile: ./external/owntracks-frontend/Dockerfile
 
+  decryptor:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-decryptor
+    build:
+      dockerfile: ./custom/owntracks-decryptor/Dockerfile
+
   certificator:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml

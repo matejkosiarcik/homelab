@@ -379,6 +379,13 @@ RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
+# Custom owntracks decryptor
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^owntracks$ [NC]
+RewriteCond %{REQUEST_URI} ^/pub [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_OWNTRACKS_DECRYPTOR}%{REQUEST_URI}" [P,L]
+
 # Custom favicons
 RewriteCond %{REQUEST_URI} ^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
