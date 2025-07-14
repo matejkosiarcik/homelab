@@ -25,7 +25,7 @@ async function decryptPayload(input: string): Promise<string> {
     await sodium.ready;
     console.log('Nonce length:', sodium.crypto_secretbox_NONCEBYTES);
     const unsanitizedText = input.replaceAll('\\\\', '\\');
-    console.log('Text decoded:', Buffer.from(unsanitizedText, 'base64'));
+    console.log('Text decoded:', Buffer.from(unsanitizedText, 'base64').length);
     // const base64Text = Buffer.from(input, 'base64').toString('base64');
     const decodedText = sodium.from_base64(unsanitizedText);
     const nonce = decodedText.slice(0, sodium.crypto_secretbox_NONCEBYTES);
