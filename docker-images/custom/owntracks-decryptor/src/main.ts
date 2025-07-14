@@ -15,7 +15,7 @@ app.get('/.health', (_: Request, response: Response) => {
 
 app.post('/pub', async (request: Request, response: Response) => {
     try {
-        console.log('Received:', request);
+        console.log('Received:', request.body);
         response.status(200);
         response.send({});
     } catch (error) {

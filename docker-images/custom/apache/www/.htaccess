@@ -384,13 +384,13 @@ RewriteCond %{ENV:HOMELAB_APP_TYPE} ^owntracks$ [NC]
 RewriteCond %{REQUEST_URI} ^/pub [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_OWNTRACKS_DECRYPTOR}%{REQUEST_URI}" [P,L]
+RewriteRule ^ "http://decryptor:8080%{REQUEST_URI}" [P,L]
 
 # Custom favicons
 RewriteCond %{REQUEST_URI} ^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_FAVICONS}%{REQUEST_URI}" [P,L]
+RewriteRule ^ "http://favicons:8080%{REQUEST_URI}" [P,L]
 
 # Proxy websockets upstream
 RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
