@@ -62,7 +62,10 @@ app.post('/pub', async (request: Request, response: Response) => {
         console.log('URL:', url);
         const axiosResponse = await axios.post(url, decryptedData);
 
-        response.status(200);
+        console.log('Return status:', axiosResponse.status);
+        console.log('Return data:', axiosResponse.data);
+
+        response.status(axiosResponse.status);
         response.send(axiosResponse.data);
     } catch (error) {
         console.error('Server error:', error);
