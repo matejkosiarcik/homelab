@@ -44,7 +44,7 @@ async function decryptPayload(input: string): Promise<string> {
 
 app.post('/pub', async (request: Request, response: Response) => {
     try {
-        console.log(`Request headers: ${request.headers}`);
+        console.log(`Request headers: ${JSON.stringify(request.headers, null, 2)}`);
 
         const body = request.body as EncryptedPayload;
         if (body._type !== 'encrypted') {
