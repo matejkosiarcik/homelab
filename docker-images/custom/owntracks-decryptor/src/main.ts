@@ -50,17 +50,9 @@ app.post('/pub', async (request: Request, response: Response) => {
             throw new Error(`Unknown request type: ${body._type}`);
         }
 
-        console.log('Data:', body)
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);
-
-        const url = `http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`;
-        console.log('Query:', request.query)
-        console.log('URL:', url);
-        const axiosResponse = await axios.post(url, decryptedData);
-
-        console.log('Return status:', axiosResponse.status);
-        console.log('Return data:', axiosResponse.data);
+        const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData);
 
         response.status(axiosResponse.status);
         response.send(axiosResponse.data);
