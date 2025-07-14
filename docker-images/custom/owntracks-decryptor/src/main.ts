@@ -23,8 +23,9 @@ type Payload = {
 
 async function decryptPayload(base64Data: string) {
     await sodium.ready;
-    const unsanitizedText = base64Data.replace(/\\\//g, '/');
-    const decodedText = sodium.from_string(unsanitizedText);
+    console.log('Nonce length:', sodium.crypto_secretbox_NONCEBYTES);
+    // const unsanitizedText = base64Data.replace(/\\\//g, '/');
+    const decodedText = sodium.from_string(base64Data);
     const nonce = decodedText.slice(0, sodium.crypto_secretbox_NONCEBYTES);
     const cipher = decodedText.slice(sodium.crypto_secretbox_NONCEBYTES);
 
