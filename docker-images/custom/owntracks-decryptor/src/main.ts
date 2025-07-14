@@ -49,6 +49,7 @@ app.post('/pub', async (request: Request, response: Response) => {
             throw new Error(`Unknown request type: ${body._type}`);
         }
 
+        console.log('Original headers:', JSON.stringify(request.headers, null, 2));
         const headers: Record<string, string> = {};
         for (const [key, value] of Object.entries(request.headers).filter(([_, value]) => `${value}`.toLowerCase().startsWith('x-'))) {
             headers[key] = `${value}`;
