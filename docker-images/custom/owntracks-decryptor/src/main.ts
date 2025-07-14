@@ -44,16 +44,21 @@ async function decryptPayload(input: string): Promise<string> {
 
 app.post('/pub', async (request: Request, response: Response) => {
     try {
-        console.log(`Request headers: ${JSON.stringify(request.headers, null, 2)}`);
+        // console.log(`Request headers: ${JSON.stringify(request.headers, null, 2)}`);
 
         const body = request.body as EncryptedPayload;
         if (body._type !== 'encrypted') {
             throw new Error(`Unknown request type: ${body._type}`);
         }
 
+        const headers: Record<string, string> = {};
+        for (const header of Object.keys(request.headers).filter((el) => typeof request.headers[el] === 'string' && typeof request.headers[el].toLowerCase().startsWith('x-'))) {
+            headers[header] = request.headers[header] as string;
+        }
+
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);
-        const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData);
+        const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
 
         response.status(axiosResponse.status);
         response.send(axiosResponse.data);
