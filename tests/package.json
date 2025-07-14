@@ -7,7 +7,7 @@
   "dependencies": {
     "@actual-app/api": "^25.7.1",
     "@faker-js/faker": "^9.9.0",
-    "@playwright/test": "^1.54.0",
+    "@playwright/test": "^1.54.1",
     "async": "^3.2.6",
     "axios": "^1.10.0",
     "date-fns": "^4.1.0",
@@ -22,7 +22,7 @@
     "sharp-ico": "^0.1.5",
     "tar": "^7.4.3",
     "tslib": "^2.8.1",
-    "user-agents": "^1.1.596"
+    "user-agents": "^1.1.600"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
