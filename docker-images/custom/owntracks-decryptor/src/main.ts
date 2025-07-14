@@ -16,7 +16,7 @@ app.get('/.health', (_: Request, response: Response) => {
     response.sendStatus(200);
 });
 
-type Payload = {
+type EncryptedPayload = {
     _type: 'encrypted',
     data: string,
 };
@@ -27,7 +27,6 @@ async function decryptPayload(input: string): Promise<string> {
     const unsanitizedText = input.replaceAll('\\/', '\\');
     console.log('Unsanitized text:', unsanitizedText);
     console.log('Text decoded:', Buffer.from(unsanitizedText, 'base64').length);
-    // const decodedText = sodium.from_base64(unsanitizedText);
     const nonce = Buffer.from(unsanitizedText, 'base64').slice(0, sodium.crypto_secretbox_NONCEBYTES);
     const cipher = Buffer.from(unsanitizedText, 'base64').slice(sodium.crypto_secretbox_NONCEBYTES);
 
@@ -49,23 +48,19 @@ async function decryptPayload(input: string): Promise<string> {
 
 app.post('/pub', async (request: Request, response: Response) => {
     try {
-        const body = request.body as Payload;
+        const body = request.body as EncryptedPayload;
         if (body._type !== 'encrypted') {
             throw new Error(`Unknown request type: ${body._type}`);
         }
 
         console.log('Data:', body)
-        const decryptedData = await decryptPayload(body.data);
-        console.log('Decrypted:', decryptedData);
-
-        const newPayload = {
-            _type: 'encrypted',
-            data: decryptedData,
-        };
+        const decryptedText = await decryptPayload(body.data);
+        const upstreamData = JSON.parse(decryptedText);
+        console.log('Decrypted:', upstreamData);
 
         const url = `http://app-backend:8083${request.path}?${request.query}`;
         console.log('URL:', url);
-        await axios.post(url, newPayload);
+        await axios.post(url, upstreamData);
 
         response.status(200);
         response.send({});
