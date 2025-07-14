@@ -21,7 +21,7 @@ type Payload = {
     data: string,
 };
 
-async function decryptPayload(input: string): string {
+async function decryptPayload(input: string): Promise<string> {
     await sodium.ready;
     console.log('Nonce length:', sodium.crypto_secretbox_NONCEBYTES);
     const unsanitizedText = input.replaceAll('\\\\', '\\');
