@@ -158,6 +158,13 @@ write_http_auth_user() {
     printf '%s' "$2" | chronic htpasswd -c -B -i "$output/$1.htpasswd" "$1"
 }
 
+write_http_auth_user_to_file() {
+    # $1 - username
+    # $2 - password
+    # $3 - file
+    printf '%s' "$2" | chronic htpasswd -c -B -i "$output/$3.htpasswd" "$1"
+}
+
 hash_password_bcrypt() {
     # $1 - password
     # returns password on stdout
@@ -713,7 +720,8 @@ case "$app_dirname" in
 *owntracks*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password"
+    write_http_auth_user_to_file admin "$admin_password" users
+    write_http_auth_user_to_file matej "$admin_password" users
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$output/app.env"
