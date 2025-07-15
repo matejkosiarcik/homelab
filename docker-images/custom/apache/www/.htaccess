@@ -361,6 +361,15 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect entire Wikipedia
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'wikipedia' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/users.htpasswd
+    Require valid-user
+</If>
+
 # Redirect certbot download index.html
 RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
 RewriteCond %{REQUEST_URI} ^/download/*$ [NC]

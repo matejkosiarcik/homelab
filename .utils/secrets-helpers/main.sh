@@ -1030,6 +1030,12 @@ case "$app_dirname" in
 *wikipedia*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$admin_password" users
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+    monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
+    write_http_auth_user monika "$monika_password" users
+    printf 'monika,%s\n' "$monika_password" >>"$output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
