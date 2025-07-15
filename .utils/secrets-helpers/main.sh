@@ -155,12 +155,6 @@ write_healthcheck_url() {
 write_http_auth_user() {
     # $1 - username
     # $2 - password
-    printf '%s' "$2" | chronic htpasswd -c -B -i "$output/$1.htpasswd" "$1"
-}
-
-write_http_auth_user_to_file() {
-    # $1 - username
-    # $2 - password
     # $3 - file
     tmpdir_htpasswd="$(mktemp -d)"
     printf '%s' "$2" | chronic htpasswd -c -B -i "$tmpdir_htpasswd/file.htpasswd" "$1"
@@ -178,11 +172,11 @@ hash_password_bcrypt() {
 write_default_proxy_users() {
     # $1 - app name
     proxy_status_password="$(load_password "$1" apache status)"
-    write_http_auth_user proxy-status "$proxy_status_password"
+    write_http_auth_user proxy-status "$proxy_status_password" proxy-status
     printf 'PROXY_STATUS_PASSWORD=%s\n' "$proxy_status_password" >>"$output/apache-prometheus-exporter.env"
     printf 'proxy-status,%s\n' "$proxy_status_password" >>"$output/all-credentials.csv"
     proxy_prometheus_password="$(load_password "$1" apache prometheus)"
-    write_http_auth_user proxy-prometheus "$proxy_prometheus_password"
+    write_http_auth_user proxy-prometheus "$proxy_prometheus_password" proxy-prometheus
     printf 'proxy-prometheus,%s\n' "$proxy_prometheus_password" >>"$output/all-credentials.csv"
 }
 
@@ -228,7 +222,7 @@ case "$app_dirname" in
 *certbot*)
     # App
     certbot_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache viewer)"
-    write_http_auth_user viewer "$certbot_viewer_password"
+    write_http_auth_user viewer "$certbot_viewer_password" users
     printf 'viewer,%s\n' "$certbot_viewer_password" >>"$output/all-credentials.csv"
     certbot_admin_email="$(load_token "$DOCKER_COMPOSE_APP_NAME" certbot admin-email)"
     printf 'CERTBOT_ADMIN_EMAIL=%s\n' "$certbot_admin_email" >>"$output/app.env"
@@ -406,7 +400,7 @@ case "$app_dirname" in
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password"
+    write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
@@ -426,7 +420,7 @@ case "$app_dirname" in
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password"
+    write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
@@ -513,7 +507,7 @@ case "$app_dirname" in
 *homepage*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password"
+    write_http_auth_user admin "$admin_password" users
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$(load_token changedetection app api-key)" >>"$output/app.env"
     printf 'HOMEPAGE_VAR_GATUS_PASSWORD=%s\n' "$(load_token gatus-1 app admin)" >>"$output/app.env"
@@ -560,7 +554,7 @@ case "$app_dirname" in
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$prometheus_password"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
@@ -619,10 +613,10 @@ case "$app_dirname" in
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password"
+    write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$output/all-credentials.csv"
     app_debug_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app debug)"
-    write_http_auth_user debug "$app_debug_password"
+    write_http_auth_user debug "$app_debug_password" debug
     printf 'app-debug,%s\n' "$app_debug_password" >>"$output/all-credentials.csv"
 
     # Certificator
@@ -659,7 +653,7 @@ case "$app_dirname" in
 *ollama*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password"
+    write_http_auth_user admin "$admin_password" users
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # Apache
@@ -724,8 +718,8 @@ case "$app_dirname" in
 *owntracks*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user_to_file admin "$admin_password" users
-    write_http_auth_user_to_file matej "$admin_password" users
+    write_http_auth_user admin "$admin_password" users
+    write_http_auth_user matej "$admin_password" users
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
 
     # Decryptor
@@ -756,7 +750,7 @@ case "$app_dirname" in
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$prometheus_password"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
@@ -950,7 +944,7 @@ case "$app_dirname" in
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$prometheus_password"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$output/all-credentials.csv"
 
     # Certificator
