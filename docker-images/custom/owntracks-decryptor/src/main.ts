@@ -12,6 +12,7 @@ const keyEnv = process.env['SECRET_KEY']!;
 if (!keyEnv) {
     throw new Error('SECRET_KEY unset');
 }
+console.log(`Key: ${keyEnv}`);
 
 const app = express();
 app.use(express.json())
