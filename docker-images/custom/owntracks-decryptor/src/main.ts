@@ -8,6 +8,11 @@ if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
 
+const keyEnv = process.env['SECRET_KEY']!;
+if (!keyEnv) {
+    throw new Error('SECRET_KEY unset');
+}
+
 const app = express();
 app.use(express.json())
 
@@ -28,7 +33,7 @@ async function decryptPayload(input: string): Promise<string> {
     const cipher = Uint8Array.from(Buffer.from(unsanitizedText, 'base64')).slice(sodium.crypto_secretbox_NONCEBYTES);
 
     // Private key - padded to 32 bytes
-    const keyRawBuffer = Buffer.from('password', 'utf8');
+    const keyRawBuffer = Buffer.from(keyEnv, 'utf8');
     const key = Buffer.alloc(32);
     keyRawBuffer.copy(key, 0, 0, Math.min(keyRawBuffer.length, 32));
 

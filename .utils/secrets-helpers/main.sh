@@ -727,12 +727,11 @@ case "$app_dirname" in
     write_http_auth_user_to_file admin "$admin_password" users
     write_http_auth_user_to_file matej "$admin_password" users
     printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+
+    # Decryptor
     secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
-    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$output/app.env"
+    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$output/decryptor.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$output/all-credentials.csv"
-    phone_id="$(load_token "$DOCKER_COMPOSE_APP_NAME" app phone)"
-    printf 'PHONE_ID=%s\n' "$phone_id" >>"$output/app.env"
-    printf 'phone-id,%s\n' "$phone_id" >>"$output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
