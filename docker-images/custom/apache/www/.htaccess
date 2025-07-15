@@ -267,7 +267,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/viewer.htpasswd
+    AuthUserFile /homelab/users.htpasswd
     Require valid-user
 </If>
 
@@ -276,7 +276,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/admin.htpasswd
+    AuthUserFile /homelab/users.htpasswd
     Require valid-user
 </If>
 
@@ -330,7 +330,7 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/admin.htpasswd
+    AuthUserFile /homelab/users.htpasswd
     Require valid-user
 </If>
 
