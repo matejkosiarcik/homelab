@@ -16,7 +16,7 @@ COPY ./external/homepage/config/ ./config/
 COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
 COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
 
-FROM ghcr.io/gethomepage/homepage:v1.3.2
+FROM ghcr.io/gethomepage/homepage:v1.4.0
 COPY --from=prefinal /homelab/config/ /app/config/
 COPY ./external/homepage/icons/ /app/public/icons/
 ENV HOMELAB_CONTAINER_NAME=homepage \
