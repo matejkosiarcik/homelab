@@ -507,3 +507,5 @@ apps:
 
   - name: Wikipedia
     domain: wikipedia.matejhome.com
+    authentication:
+      basic: admin

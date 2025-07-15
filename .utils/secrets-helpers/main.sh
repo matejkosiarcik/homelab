@@ -318,6 +318,7 @@ case "$app_dirname" in
     printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$output/app.env"
     printf 'SMTP4DEV_ADMIN_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$output/app.env"
     printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$output/app.env"
+    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token wikipedia app admin)" >>"$output/app.env"
     # Prometheus credentials
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/app.env"
