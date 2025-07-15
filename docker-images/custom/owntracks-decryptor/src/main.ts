@@ -12,7 +12,6 @@ const keyEnv = process.env['SECRET_KEY']!;
 if (!keyEnv) {
     throw new Error('SECRET_KEY unset');
 }
-console.log(`Key: ${keyEnv}`);
 
 const app = express();
 app.use(express.json())
@@ -66,7 +65,6 @@ app.post('/pub', async (request: Request, response: Response) => {
         }
 
         const decryptedText = await decryptPayload(body.data);
-        console.log(`Successfully decrypted payload`);
         const decryptedData = JSON.parse(decryptedText);
         const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
 
