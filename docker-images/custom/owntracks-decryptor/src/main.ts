@@ -33,7 +33,7 @@ async function decryptPayload(input: string): Promise<string> {
     const cipher = Uint8Array.from(Buffer.from(unsanitizedText, 'base64')).slice(sodium.crypto_secretbox_NONCEBYTES);
 
     // Private key - padded to 32 bytes
-    const keyRawBuffer = Buffer.from(keyEnv, 'utf8');
+    const keyRawBuffer = Buffer.from(keyEnv, 'ascii');
     const key = Buffer.alloc(32);
     keyRawBuffer.copy(key, 0, 0, Math.min(keyRawBuffer.length, 32));
 
