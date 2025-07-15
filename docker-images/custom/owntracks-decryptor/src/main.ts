@@ -66,6 +66,7 @@ app.post('/pub', async (request: Request, response: Response) => {
         }
 
         const decryptedText = await decryptPayload(body.data);
+        console.log(`Successfully decrypted payload`);
         const decryptedData = JSON.parse(decryptedText);
         const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
 
