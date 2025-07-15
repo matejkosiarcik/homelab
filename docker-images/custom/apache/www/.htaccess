@@ -334,6 +334,15 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect entire Owntracks
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'owntracks' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/users.htpasswd
+    Require valid-user
+</If>
+
 # Protect PiHole prometheus endpoint
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'pihole' && %{REQUEST_URI} =~ m#^/metrics/*$#">
     AuthType Basic
@@ -370,11 +379,18 @@ RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
+# Custom owntracks decryptor
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^owntracks$ [NC]
+RewriteCond %{REQUEST_URI} ^/pub [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "http://decryptor:8080%{REQUEST_URI}" [P,L]
+
 # Custom favicons
 RewriteCond %{REQUEST_URI} ^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_FAVICONS}%{REQUEST_URI}" [P,L]
+RewriteRule ^ "http://favicons:8080%{REQUEST_URI}" [P,L]
 
 # Proxy websockets upstream
 RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]

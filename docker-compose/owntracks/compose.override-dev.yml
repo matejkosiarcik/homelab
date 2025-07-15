@@ -9,6 +9,9 @@ services:
   app-frontend:
     <<: *common-service-options
 
+  decryptor:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

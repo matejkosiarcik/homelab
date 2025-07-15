@@ -158,6 +158,15 @@ write_http_auth_user() {
     printf '%s' "$2" | chronic htpasswd -c -B -i "$output/$1.htpasswd" "$1"
 }
 
+write_http_auth_user_to_file() {
+    # $1 - username
+    # $2 - password
+    # $3 - file
+    tmpdir_htpasswd="$(mktemp -d)"
+    printf '%s' "$2" | chronic htpasswd -c -B -i "$tmpdir_htpasswd/file.htpasswd" "$1"
+    cat "$tmpdir_htpasswd/file.htpasswd" >>"$output/$3.htpasswd"
+}
+
 hash_password_bcrypt() {
     # $1 - password
     # returns password on stdout
@@ -311,6 +320,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$output/app.env"
     printf 'MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_token motioneye-kitchen app user)" >>"$output/app.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$output/app.env"
+    printf 'OWNTRACKS_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$output/app.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$output/app.env"
     printf 'SMTP4DEV_ADMIN_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$output/app.env"
     printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$output/app.env"
@@ -372,6 +382,7 @@ case "$app_dirname" in
     printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omada-controller apache prometheus)" >>"$output/app.env"
     printf 'OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$output/app.env"
     printf 'OPEN_WEBUI_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$output/app.env"
+    printf 'OWNTRACKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary apache prometheus)" >>"$output/app.env"
     printf 'PIHOLE_1_SECONDARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary apache prometheus)" >>"$output/app.env"
     printf 'PIHOLE_2_PRIMARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary apache prometheus)" >>"$output/app.env"
@@ -711,6 +722,17 @@ case "$app_dirname" in
     touch "$output/favicons.env"
     ;;
 *owntracks*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user_to_file admin "$admin_password" users
+    write_http_auth_user_to_file matej "$admin_password" users
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+
+    # Decryptor
+    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$output/decryptor.env"
+    printf 'secret-key,%s\n' "$secret_key" >>"$output/all-credentials.csv"
+
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 

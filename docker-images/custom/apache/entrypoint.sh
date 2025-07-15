@@ -85,8 +85,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'open-webui' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
     PROXY_UPSTREAM_URL="http://app:3000" # HTTPS endpoint is also available, but plain HTTP results in better performance
 elif [ "$HOMELAB_APP_TYPE" = 'owntracks' ]; then
-    PROXY_UPSTREAM_URL="http://app-backend:8083"
-    # PROXY_UPSTREAM_URL="http://app-frontend"
+    PROXY_UPSTREAM_URL="http://app-frontend"
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'prometheus' ]; then
@@ -200,11 +199,6 @@ else
 fi
 export PROXY_UPSTREAM_URL_PROMETHEUS
 printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
-
-# Set PROXY_UPSTREAM_URL_FAVICONS
-PROXY_UPSTREAM_URL_FAVICONS='http://favicons:8080'
-export PROXY_UPSTREAM_URL_FAVICONS
-printf "export PROXY_UPSTREAM_URL_FAVICONS='%s'\n" "$PROXY_UPSTREAM_URL_FAVICONS" >>/etc/apache2/envvars
 
 # Set PROXY_PROMETHEUS_EXPORTER_URL
 if [ "$HOMELAB_APP_TYPE" = 'minio' ]; then

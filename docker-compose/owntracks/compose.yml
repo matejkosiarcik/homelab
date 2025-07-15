@@ -8,10 +8,11 @@ services:
       dockerfile: ./external/owntracks-backend/Dockerfile
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./app-data/owntracks-config:/config:rw
+      # - ./app-data/owntracks-config:/config:rw
       - ./app-data/owntracks-store:/store:rw
     environment:
       OTR_PORT: "0" # disables MQTT
+      OTR_STORAGEDIR: /store
       # OTR_HOST: mqtt_broker
 
   app-frontend:
@@ -22,6 +23,16 @@ services:
     build:
       dockerfile: ./external/owntracks-frontend/Dockerfile
 
+  decryptor:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-decryptor
+    build:
+      dockerfile: ./custom/owntracks-decryptor/Dockerfile
+    env_file:
+      - ./app-secrets/decryptor.env
+
   certificator:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
@@ -31,6 +42,8 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    volumes:
+      - ./app-secrets/users.htpasswd:/homelab/users.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:
