@@ -85,7 +85,6 @@ elif [ "$HOMELAB_APP_TYPE" = 'open-webui' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
     PROXY_UPSTREAM_URL="http://app:3000" # HTTPS endpoint is also available, but plain HTTP results in better performance
 elif [ "$HOMELAB_APP_TYPE" = 'owntracks' ]; then
-    # PROXY_UPSTREAM_URL="http://app-backend:8083"
     PROXY_UPSTREAM_URL="http://app-frontend"
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_UPSTREAM_URL="http://app"
