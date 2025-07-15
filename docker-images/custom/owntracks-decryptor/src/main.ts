@@ -58,7 +58,6 @@ app.post('/pub', async (request: Request, response: Response) => {
                 headers[key] = `${value}`;
             }
         }
-        console.log('Sending headers:', JSON.stringify(headers, null, 2));
 
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);

@@ -327,6 +327,8 @@ apps:
 
   - name: Owntracks
     domain: owntracks.matejhome.com
+    authentication:
+      basic: admin
 
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
