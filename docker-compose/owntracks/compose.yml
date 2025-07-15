@@ -10,8 +10,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       # - ./app-data/owntracks-config:/config:rw
       - ./app-data/owntracks-store:/store:rw
-    env_file:
-      - ./app-secrets/app.env
     environment:
       OTR_PORT: "0" # disables MQTT
       OTR_STORAGEDIR: /store
