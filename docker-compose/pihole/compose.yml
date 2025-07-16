@@ -13,8 +13,9 @@ services:
     # Hard-coded DNS is necessary because of bootstrapping problem
     # Basically PiHole needs functional DNS in order to start (eg. to update adlists before start - which it can't do until it itself started, when it's the only DNS server on network)
     dns:
-      - 8.8.8.8
       - 1.1.1.1
+      - 8.8.8.8
+      - 9.9.9.9
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead

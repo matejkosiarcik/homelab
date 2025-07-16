@@ -18,8 +18,9 @@ import { Diagram, DiagramCircle, DiagramEdge, DiagramItem, DiagramSection } from
     const pihole2Primary = new DiagramItem('pihole.png', 'PiHole\n2 Primary', { x: pihole1Primary.coordinates.minX, y: unbound2Default.coordinates.minY });
     const pihole2Secondary = new DiagramItem('pihole.png', 'PiHole\n2 Secondary', { x: pihole1Primary.coordinates.minX, y: unbound2Open.coordinates.minY });
 
-    const dns1 = new DiagramItem('cloud.png', 'Google\nDNS\n8.8.8.8', { x: pihole1Primary.coordinates.minX + 250, y: personalDevices.coordinates.minY });
-    const dns2 = new DiagramItem('cloud.png', 'Cloudflare\nDNS\n1.1.1.1', { x: dns1.coordinates.minX, y: monikaDevices.coordinates.minY });
+    const dns1 = new DiagramItem('cloud.png', 'Cloudflare\nDNS\n1.1.1.1', { x: pihole1Primary.coordinates.minX + 250, y: personalDevices.coordinates.minY - 50 });
+    const dns2 = new DiagramItem('cloud.png', 'Google\nDNS\n8.8.8.8', { x: dns1.coordinates.minX, y: dns1.coordinates.maxY + 50 });
+    const dns3 = new DiagramItem('cloud.png', 'Quad9\nDNS\n9.9.9.9', { x: dns1.coordinates.minX, y: dns2.coordinates.maxY + 50 });
 
     const edgeIntersection1 = new DiagramCircle({ x: _.mean([unbound1Default.coordinates.maxX, pihole1Primary.coordinates.minX]) - 10, y: 500 - 10 }, { width: 20, height: 20 });
     const edgeIntersection2 = new DiagramCircle({ x: _.mean([pihole1Primary.coordinates.maxX, dns1.coordinates.minX]) + 10, y: 500 - 10 }, { width: 20, height: 20 });
@@ -40,7 +41,7 @@ import { Diagram, DiagramCircle, DiagramEdge, DiagramItem, DiagramSection } from
         new DiagramEdge({ node: edgeIntersection1, location: 'right', offset: { x: defaultEdgeOffset, y: 0 } }, { node: pihole, location: 'left', offset: { x: -defaultEdgeOffset, y: 0 } });
         new DiagramEdge({ node: pihole, location: 'right', offset: { x: defaultEdgeOffset, y: 0 } }, { node: edgeIntersection2, location: 'left', connector: 'none', offset: { x: -defaultEdgeOffset, y: 0 } });
     }
-    for (const dns of [dns1, dns2]) {
+    for (const dns of [dns1, dns2, dns3]) {
         new DiagramEdge({ node: edgeIntersection2, location: 'right', offset: { x: 20, y: 0 } }, { node: dns, location: 'left', offset: { x: -20, y: 0 } });
     }
 
