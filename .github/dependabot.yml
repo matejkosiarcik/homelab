@@ -89,7 +89,6 @@ updates:
       - /docker-images/custom/owntracks-decryptor
       - /docker-images/custom/web-automation
       - /docker-images/external/homepage
-      - /docker-images/external/sockpuppetbrowser
       - /docs/diagrams
       - /icons
       - /tests
