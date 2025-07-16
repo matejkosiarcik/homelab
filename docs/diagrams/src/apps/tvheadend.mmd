@@ -25,12 +25,12 @@ flowchart LR
 
         inbound_interface -->|:80,443,9981| apache_proxy -->|:9981| tvheadend
         inbound_interface -->|:9982| tvheadend
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        tvheadend ~~~ antenna
-        antenna ---|signal| tvheadend
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| tvheadend
+        tvheadend ~~~ antenna
+        antenna ---|signal| tvheadend
         squid_proxy ~~~ squid_prometheus_exporter
         certificator --> outbound_interface_1 -.-|connect| squid_proxy
     end

@@ -27,15 +27,15 @@ flowchart LR
         outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:80| ntfy
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
+        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_proxy -->|/favicon.ico| favicons -.->|use| ntfy
         inbound_interface -->|:25| ntfy
         ntfy ~~~ socket_proxy ~~~ ntfy_setup
         ntfy_setup  -.->|use| ntfy
         ntfy_setup -.->|docker tcp| socket_proxy
         socket_proxy -.->|docker sock| docker
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
-        apache_proxy -->|/favicon.ico| favicons -.->|use| ntfy
         squid_proxy ~~~ squid_prometheus_exporter
         outbound_interface_1 & outbound_interface_2 -.-|connect| squid_proxy
         ntfy --> outbound_interface_1

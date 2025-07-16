@@ -75,6 +75,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.sv
 
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/cadvisor.png" "$output_dir/cadvisor.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/changedetection.png" "$output_dir/changedetection.png"
+convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/chrome.svg" "$output_dir/chrome.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/chromium.png" "$output_dir/chromium.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$output_dir/docker.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/dozzle.png" "$output_dir/dozzle.png"
