@@ -18,14 +18,14 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
         class changedetection strong_border;
-        chrome("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chrome.png' style='min-width:80px;max-width:80px' /></div>Chrome<br/>driver")
+        sockpuppetbrowser("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chrome.png' style='min-width:80px;max-width:80px' /></div>SockPuppteBrowser<br/>(Playwright)")
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
         outbound_interface_2(" ")
         outbound_interface_3(" ")
 
-        inbound_interface -->|:80,443| apache_proxy -->|:5000| changedetection -->|use| chrome
+        inbound_interface -->|:80,443| apache_proxy -->|:5000| changedetection -->|use| sockpuppetbrowser
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
@@ -34,7 +34,7 @@ flowchart LR
         outbound_interface_1 & outbound_interface_2 & outbound_interface_3 -.-|connect| squid_proxy
         changedetection --> outbound_interface_1
         certificator --> outbound_interface_2
-        chrome --> outbound_interface_3
+        sockpuppetbrowser --> outbound_interface_3
     end
 
     subgraph others_1["Others"]
