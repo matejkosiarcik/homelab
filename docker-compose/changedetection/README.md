@@ -4,9 +4,16 @@
 
 ## Docs
 
+Changedetection:
+
 - GitHub: <https://github.com/dgtlmoon/changedetection.io>
 - DockerHub: <https://hub.docker.com/r/dgtlmoon/changedetection.io>
 - Homepage: <https://changedetection.io>
+
+SockPuppetBrowser (used for opening websites):
+
+- GitHub: <https://github.com/dgtlmoon/sockpuppetbrowser>
+- DockerHub: <https://hub.docker.com/r/dgtlmoon/sockpuppetbrowser>
 
 ## Before initial installation
 

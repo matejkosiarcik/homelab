@@ -1,13 +1,10 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM dgtlmoon/changedetection.io:0.50.7
-COPY ./external/changedetection/entrypoint.sh ./external/changedetection/healthcheck.py /homelab/
+COPY ./external/changedetection/healthcheck.py /homelab/
 ENV HOMELAB_CONTAINER_NAME=changedetection \
     HOMELAB_CONTAINER_VARIANT=default \
     LOGGER_LEVEL=WARNING \
-    TZ=Europe/Bratislava
-
+    TZ=Europe/Bratislava \
+    PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
-
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
-CMD [ ]
