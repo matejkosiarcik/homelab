@@ -26,9 +26,9 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|:8765,9081| motioneye
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
-        motioneye -.-|device| webcamera
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| motioneye
+        motioneye -.-|device| webcamera
         squid_proxy ~~~ squid_prometheus_exporter
         outbound_interface_1 -.-|connect| squid_proxy
         certificator --> outbound_interface_1

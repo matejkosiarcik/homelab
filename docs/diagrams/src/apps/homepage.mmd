@@ -25,10 +25,10 @@ flowchart LR
         outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:3000| homepage
+        apache_proxy -.-|fs| certificator
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| homepage
-        apache_proxy -.-|fs| certificator
         squid_proxy ~~~ squid_prometheus_exporter
         outbound_interface_1 & outbound_interface_2 -.- squid_proxy
 

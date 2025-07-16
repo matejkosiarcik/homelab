@@ -23,8 +23,8 @@ flowchart LR
         outbound_interface(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8080| kiwix
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| kiwix
         squid_proxy ~~~ squid_prometheus_exporter

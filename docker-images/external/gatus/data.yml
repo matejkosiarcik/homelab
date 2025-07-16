@@ -1,10 +1,12 @@
 dns:
+  - name: Cloudflare
+    ip: 1.1.1.1
   - name: Google
     ip: 8.8.8.8
   - name: Google Alt
     ip: 8.8.4.4
-  - name: Cloudflare
-    ip: 1.1.1.1
+  - name: Quad9
+    ip: 9.9.9.9
 
 network:
   - name: Router - TP-Link ER605

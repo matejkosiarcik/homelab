@@ -58,6 +58,7 @@ updates:
       - /docker-images/external/samba
       - /docker-images/external/smtp4dev
       - /docker-images/external/socket-proxy
+      - /docker-images/external/sockpuppetbrowser
       - /docker-images/external/speedtest-tracker
       - /docker-images/external/tvheadend
       - /docker-images/external/unifi-network-application
@@ -83,11 +84,14 @@ updates:
     directories:
       - /.utils/setup-helpers/healthchecks
       - /docker-images/.shared/dependencies/zopflipng
-      - /docker-images/custom/lamp-wrapper
+      - /docker-images/custom/favicons
+      - /docker-images/custom/homepage-widgets
+      - /docker-images/custom/owntracks-decryptor
       - /docker-images/custom/web-automation
       - /docker-images/external/homepage
       - /docs/diagrams
       - /icons
+      - /tests
     versioning-strategy: increase
     schedule:
       interval: daily

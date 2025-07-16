@@ -6,6 +6,9 @@ services:
   app:
     <<: *common-service-options
 
+  sockpuppetbrowser:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

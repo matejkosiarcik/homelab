@@ -29,9 +29,9 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy_2 --->|:9001| minio
         apache_proxy_1 -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_proxy_1
         apache_proxy_2 -->|/.apache/metrics| apache_prometheus_exporter_2 -.->|use status| apache_proxy_2
+        apache_proxy_1 & apache_proxy_2 -.-|fs| certificator
         apache_proxy_1 & apache_proxy_2 -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy_1 & apache_proxy_2 -->|/favicon.ico| favicons -.->|use| minio
-        apache_proxy_1 & apache_proxy_2 -.-|fs| certificator
         minio ~~~ minio_setup -->|use| minio
         squid_proxy ~~~ squid_prometheus_exporter
         outbound_interface_1 -.-|connect| squid_proxy
