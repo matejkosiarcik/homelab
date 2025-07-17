@@ -2,8 +2,8 @@ import { test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe.skip(apps.wikipedia.title, () => {
-    for (const instance of apps.wikipedia.instances) {
+test.describe.skip(apps.kiwix.title, () => {
+    for (const instance of apps.kiwix.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/wikipedia/compose.override-prod.yml
-    project_directory: .

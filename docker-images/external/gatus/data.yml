@@ -556,3 +556,8 @@ apps:
     domain: wikipedia.matejhome.com
     authentication:
       basic: admin
+
+  - name: Wiktionary
+    domain: wiktionary.matejhome.com
+    authentication:
+      basic: admin

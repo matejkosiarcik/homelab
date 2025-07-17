@@ -90,6 +90,13 @@ export const apps = {
             { url: 'https://jellyfin.matejhome.com', title: 'Jellyfin' },
         ],
     },
+    kiwix: {
+        title: 'Kiwix',
+        instances: [
+            { url: 'https://wikipedia.matejhome.com', title: 'Wikipedia' },
+            { url: 'https://wiktionary.matejhome.com', title: 'Wiktionary' },
+        ],
+    },
     minio: {
         title: 'Minio',
         instances: [
@@ -228,10 +235,4 @@ export const apps = {
     //         { url: 'https://vikunja.matejhome.com', title: 'Vikunja' },
     //     ],
     // },
-    wikipedia: {
-        title: 'Wikipedia',
-        instances: [
-            { url: 'https://wikipedia.matejhome.com', title: 'Wikipedia' },
-        ],
-    },
 };
