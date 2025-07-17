@@ -444,7 +444,7 @@
         icon: /icons/owntracks.png
 
     - Wikipedia:
-        description: Encyclopedia
+        description: The Free Encyclopedia
         href: https://wikipedia.matejhome.com
         ping: wikipedia.matejhome.com
         icon: /icons/wikipedia.png
