@@ -469,62 +469,92 @@
         icon: /icons/stable-diffusion.png
 
 - Resources:
-    - Glances MacBook Pro 2012:
+    - Glances - MacBook Pro 2012:
         description: Resource monitoring
         href: https://glances-macbook-pro-2012.matejhome.com
         ping: glances-macbook-pro-2012.matejhome.com
         icon: /icons/glances.png
 
-    - Glances Odroid H3:
+    - Glances - Odroid H3:
         description: Resource monitoring
         href: https://glances-odroid-h3.matejhome.com
         ping: glances-odroid-h3.matejhome.com
         icon: /icons/glances.png
 
-    - Glances Odroid H4 Ultra:
+    - Glances - Odroid H4 Ultra:
         description: Resource monitoring
         href: https://glances-odroid-h4-ultra.matejhome.com
         ping: glances-odroid-h4-ultra.matejhome.com
         icon: /icons/glances.png
 
-    - Glances Raspberry Pi 4B 2GB:
+    - Glances - Raspberry Pi 4B 2GB:
         description: Resource monitoring
         href: https://glances-raspberry-pi-4b-2g.matejhome.com
         ping: glances-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/glances.png
 
-    - Glances Raspberry Pi 4B 4GB:
+    - Glances - Raspberry Pi 4B 4GB:
         description: Resource monitoring
         href: https://glances-raspberry-pi-4b-4g.matejhome.com
         ping: glances-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/glances.png
 
-    - Node Exporter MacBook Pro 2012:
+    - Node Exporter - MacBook Pro 2012:
         description: Resource monitoring
         href: https://node-exporter-macbook-pro-2012.matejhome.com
         ping: node-exporter-macbook-pro-2012.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter Odroid H3:
+    - Node Exporter - Odroid H3:
         description: Resource monitoring
         href: https://node-exporter-odroid-h3.matejhome.com
         ping: node-exporter-odroid-h3.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter Odroid H4 Ultra:
+    - Node Exporter - Odroid H4 Ultra:
         description: Resource monitoring
         href: https://node-exporter-odroid-h4-ultra.matejhome.com
         ping: node-exporter-odroid-h4-ultra.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter Raspberry Pi 4B 2GB:
+    - Node Exporter - Raspberry Pi 4B 2GB:
         description: Resource monitoring
         href: https://node-exporter-raspberry-pi-4b-2g.matejhome.com
         ping: node-exporter-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter Raspberry Pi 4B 4GB:
+    - Node Exporter - Raspberry Pi 4B 4GB:
         description: Resource monitoring
         href: https://node-exporter-raspberry-pi-4b-4g.matejhome.com
         ping: node-exporter-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/placeholder.png
+
+    - Docker Stats - MacBook Pro 2012:
+        description: Docker usage monitoring
+        href: https://docker-stats-macbook-pro-2012.matejhome.com
+        ping: docker-stats-macbook-pro-2012.matejhome.com
+        icon: /icons/docker.png
+
+    - Docker Stats - Odroid H3:
+        description: Docker usage monitoring
+        href: https://docker-stats-odroid-h3.matejhome.com
+        ping: docker-stats-odroid-h3.matejhome.com
+        icon: /icons/docker.png
+
+    - Docker Stats - Odroid H4 Ultra:
+        description: Docker usage monitoring
+        href: https://docker-stats-odroid-h4-ultra.matejhome.com
+        ping: docker-stats-odroid-h4-ultra.matejhome.com
+        icon: /icons/docker.png
+
+    - Docker Stats - Raspberry Pi 4B 2GB:
+        description: Docker usage monitoring
+        href: https://docker-stats-raspberry-pi-4b-2g.matejhome.com
+        ping: docker-stats-raspberry-pi-4b-2g.matejhome.com
+        icon: /icons/docker.png
+
+    - Docker Stats - Raspberry Pi 4B 4GB:
+        description: Docker usage monitoring
+        href: https://docker-stats-raspberry-pi-4b-4g.matejhome.com
+        ping: docker-stats-raspberry-pi-4b-4g.matejhome.com
+        icon: /icons/docker.png

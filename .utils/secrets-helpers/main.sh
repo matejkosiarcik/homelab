@@ -72,6 +72,12 @@ app_dir="$PWD"
 app_dirname="$(basename "$app_dir" | sed -E 's~^\.~~')"
 tmpdir="$(mktemp -d)"
 
+if [ "$mode" = 'prod' ]; then
+    healthcheck_ping_key="$(bw list items --search 'homelab--healthchecks--app--ping-key' | jq -er '.[] | select(.name == "homelab--healthchecks--app--ping-key").login.password')"
+else
+    healthcheck_ping_key=''
+fi
+
 # Load custom docker compose overrides if available
 if [ -f "$PWD/config/compose.env" ]; then
     # shellcheck source=/dev/null
@@ -125,14 +131,6 @@ load_notes() {
 
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").notes"
-    else
-        printf '\n'
-    fi
-}
-
-load_healthcheck_ping_key() {
-    if [ "$mode" = 'prod' ]; then
-        bw list items --search 'homelab--healthchecks--app--ping-key' | jq -er ".[] | select(.name == \"homelab--healthchecks--app--ping-key\").login.password"
     else
         printf '\n'
     fi
@@ -197,7 +195,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -213,7 +210,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -232,7 +228,6 @@ case "$app_dirname" in
     printf 'WEBSUPPORT_API_SECRET=%s\n' "$websupport_api_secret" >>"$output/app.env"
     websupport_service_id="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport service-id)"
     printf 'WEBSUPPORT_SERVICE_ID=%s\n' "$websupport_service_id" >>"$output/app.env"
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" app "$healthcheck_ping_key"
 
     # Apache
@@ -253,7 +248,22 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
+    ;;
+*docker-stats*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$admin_password" users
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -291,7 +301,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -321,6 +330,12 @@ case "$app_dirname" in
     printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$output/app.env"
     printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token wikipedia app admin)" >>"$output/app.env"
     # Prometheus credentials
+    printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-3b app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app prometheus)" >>"$output/app.env"
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/app.env"
     printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app prometheus)" >>"$output/app.env"
@@ -350,6 +365,12 @@ case "$app_dirname" in
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$output/app.env"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token changedetection apache prometheus)" >>"$output/app.env"
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-proxy-dockerhub apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-3b apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g apache prometheus)" >>"$output/app.env"
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$output/app.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$output/app.env"
@@ -407,7 +428,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -427,7 +447,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -444,7 +463,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -461,7 +479,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -484,7 +501,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -500,7 +516,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -538,7 +553,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -561,7 +575,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -587,7 +600,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -605,7 +617,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -623,7 +634,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -646,7 +656,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -663,7 +672,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -683,7 +691,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -695,7 +702,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -711,7 +717,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -734,7 +739,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -757,7 +761,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -772,6 +775,12 @@ case "$app_dirname" in
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$output/app.env"
     # Other apps prometheus credentials
+    printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-3b app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g app prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app prometheus)" >>"$output/app.env"
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$output/app.env"
     printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app prometheus)" >>"$output/app.env"
@@ -801,6 +810,12 @@ case "$app_dirname" in
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$output/app.env"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token changedetection apache prometheus)" >>"$output/app.env"
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-proxy-dockerhub apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-3b apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g apache prometheus)" >>"$output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g apache prometheus)" >>"$output/app.env"
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$output/app.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$output/app.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$output/app.env"
@@ -857,7 +872,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -865,7 +879,6 @@ case "$app_dirname" in
     ;;
 *renovatebot*)
     # App
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" app "$healthcheck_ping_key"
     renovate_token="$(load_token "$DOCKER_COMPOSE_APP_NAME" app renovate-token)" # PAT specific for each git host
     github_token="$(load_token "$DOCKER_COMPOSE_APP_NAME" app github-token)"     # GitHub PAT (even if using other git hosts)
@@ -889,7 +902,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -918,7 +930,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -936,7 +947,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -951,7 +961,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -975,7 +984,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -991,7 +999,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -1023,7 +1030,21 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$output/favicons.env"
+    ;;
+*vikunja*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    printf 'admin,%s\n' "$admin_password" >>"$output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
@@ -1041,7 +1062,6 @@ case "$app_dirname" in
 
     # Certificator
     write_certificator_users
-    healthcheck_ping_key="$(load_healthcheck_ping_key)"
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons

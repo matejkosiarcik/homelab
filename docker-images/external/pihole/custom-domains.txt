@@ -21,6 +21,7 @@
 10.1.10.21 glances-odroid-h3.matejhome.com
 10.1.10.22 dozzle-agent-odroid-h3.matejhome.com
 10.1.10.23 node-exporter-odroid-h3.matejhome.com
+10.1.10.24 docker-stats-odroid-h3.matejhome.com
 
 ### Raspberry Pi 3B ###
 
@@ -28,12 +29,14 @@
 10.1.12.2 glances-raspberry-pi-3b.matejhome.com
 10.1.12.3 dozzle-agent-raspberry-pi-3b.matejhome.com
 10.1.12.4 node-exporter-raspberry-pi-3b.matejhome.com
+10.1.12.5 docker-stats-raspberry-pi-3b.matejhome.com
 
 ### Raspberry Pi 4B 2GB ###
 
 10.1.14.21 dozzle-agent-raspberry-pi-4b-2g.matejhome.com
 10.1.14.22 glances-raspberry-pi-4b-2g.matejhome.com
 10.1.14.23 node-exporter-raspberry-pi-4b-2g.matejhome.com
+10.1.14.24 docker-stats-raspberry-pi-4b-2g.matejhome.com
 
 ### Raspberry Pi 4B 4GB ###
 
@@ -48,6 +51,7 @@
 10.1.16.23 motioneye-kitchen.matejhome.com
 10.1.16.24 glances-raspberry-pi-4b-4g.matejhome.com
 10.1.16.25 node-exporter-raspberry-pi-4b-4g.matejhome.com
+10.1.16.26 docker-stats-raspberry-pi-4b-4g.matejhome.com
 
 ### MacBook Pro 2012 ###
 
@@ -56,6 +60,7 @@
 10.1.18.3 dozzle-agent-macbook-pro-2012.matejhome.com
 10.1.18.4 glances-macbook-pro-2012.matejhome.com
 10.1.18.5 node-exporter-macbook-pro-2012.matejhome.com
+10.1.18.6 docker-stats-macbook-pro-2012.matejhome.com
 
 ### Odroid H4 Ultra ###
 
@@ -100,3 +105,4 @@
 10.1.20.53 grafana.matejhome.com
 10.1.20.54 owntracks.matejhome.com
 10.1.20.55 wikipedia.matejhome.com
+10.1.20.56 docker-stats-odroid-h4-ultra.matejhome.com
