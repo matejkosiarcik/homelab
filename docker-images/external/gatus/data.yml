@@ -307,16 +307,16 @@ apps:
           - "has([BODY].result.apiVer) == true"
           - "has([BODY].result.controllerVer) == true"
           - "[BODY].result.configured == true"
-      - path: :8080
-        insecure: true
-        conditions:
-          - "[CONNECTED] == true"
-          - "[STATUS] == 200"
-      - path: :8443
-        insecure: true
-        conditions:
-          - "[CONNECTED] == true"
-          - "[STATUS] == 200"
+      # - path: :8080
+      #   insecure: true
+      #   conditions:
+      #     - "[CONNECTED] == true"
+      #     - "[STATUS] == 200"
+      # - path: :8443
+      #   insecure: true
+      #   conditions:
+      #     - "[CONNECTED] == true"
+      #     - "[STATUS] == 200"
 
   - name: OpenSpeedtest
     domain: openspeedtest.matejhome.com
