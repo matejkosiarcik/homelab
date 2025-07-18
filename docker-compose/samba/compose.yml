@@ -16,6 +16,28 @@ services:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
 
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    volumes:
+      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
 networks:
   default:
     driver: none

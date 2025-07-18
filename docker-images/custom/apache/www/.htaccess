@@ -262,6 +262,15 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
+# Protect prometheus /metrics endpoint
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:glances|gatus|jellyfin|node-exporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/*$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    AuthUserFile /homelab/prometheus.htpasswd
+    Require valid-user
+</If>
+
 # Protect Certbot endpoints
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download(/.*)?$#">
     AuthType Basic
@@ -277,42 +286,6 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthName Protected
     AuthBasicProvider file
     AuthUserFile /homelab/users.htpasswd
-    Require valid-user
-</If>
-
-# Protect Glances prometheus endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'glances' && %{REQUEST_URI} =~ m#^/metrics/*$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/prometheus.htpasswd
-    Require valid-user
-</If>
-
-# Protect Gatus prometheus endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'gatus' && %{REQUEST_URI} =~ m#^/metrics/*$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/prometheus.htpasswd
-    Require valid-user
-</If>
-
-# Protect Jellyfin prometheus endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'jellyfin' && %{REQUEST_URI} =~ m#^/metrics/*$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/prometheus.htpasswd
-    Require valid-user
-</If>
-
-# Protect Node Exporter prometheus endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'node-exporter' && %{REQUEST_URI} =~ m#^/metrics/*$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/prometheus.htpasswd
     Require valid-user
 </If>
 
@@ -343,24 +316,6 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
-# Protect PiHole prometheus endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'pihole' && %{REQUEST_URI} =~ m#^/metrics/*$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/prometheus.htpasswd
-    Require valid-user
-</If>
-
-# Protect Unbound prometheus endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'unbound' && %{REQUEST_URI} =~ m#^/metrics/*$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/prometheus.htpasswd
-    Require valid-user
-</If>
-
 # Protect entire Wikipedia
 <If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'wikipedia' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
     AuthType Basic
@@ -382,7 +337,7 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_PROMETHEUS_EXPORTER_URL}/metrics" [P,L]
 
 # Custom prometheus metrics
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:glances|pihole|unbound)$ [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:glances|pihole|samba|unbound)$ [NC]
 RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]

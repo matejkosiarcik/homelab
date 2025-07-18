@@ -28,8 +28,8 @@ const appAddress = (() => {
         case 'actualbudget': return 'http://app:5006';
         case 'certbot': return 'http://app:8080';
         case 'changedetection': return 'http://app:5000';
-        case 'docker-cache-proxy': return 'http://app';
-        case 'docker-stats': return 'http://app:9487';
+        case 'docker-cache-proxy': return ''; // http://app
+        case 'docker-stats': return ''; // http://app:9487
         case 'dozzle': return 'http://app:8080';
         case 'gatus': return 'http://app:8080';
         case 'glances': return 'http://app:61208';
@@ -41,19 +41,20 @@ const appAddress = (() => {
         case 'jellyfin': return 'http://app:8096';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
-        case 'node-exporter': return 'http://app:9100';
+        case 'node-exporter': return ''; // http://app:9100
         case 'ntfy': return 'http://app:80';
-        case 'ollama': return 'http://app:11434';
+        case 'ollama': return ''; // http://app:11434
         case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
         case 'open-webui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'owntracks': return 'http://app-backend:8083';
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
+        case 'samba': return '';
         case 'smtp4dev': return 'http://app:5000';
         case 'speedtest-tracker': return 'https://app';
         case 'tvheadend': return 'http://app:9981';
-        case 'unbound': return 'http://app:8080';
+        case 'unbound': return ''; // http://app:8080
         case 'unifi-controller': return 'https://app:8443';
         case 'uptime-kuma': return 'http://app:3001';
         case 'vaultwarden': return 'http://app:80';
@@ -90,6 +91,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'owntracks': return '/static/recorder.png'; // <- Backend, '/favicon.ico' <- Frontend
         case 'pihole': return '/admin/img/favicons/apple-touch-icon.png';
         case 'prometheus': return '/favicon.svg';
+        case 'samba': return `@/homelab/icons/${appType}.png`;
         case 'smtp4dev': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'speedtest-tracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
