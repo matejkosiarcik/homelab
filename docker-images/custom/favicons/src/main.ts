@@ -100,8 +100,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'unifi-controller': return '/manage/angular/gc477706b0/images/favicons/favicon-192.png';
         case 'uptime-kuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
-        default:
-            throw new Error(`Unknown app type: ${appType}`);
+        default: throw new Error(`Unknown app type: ${appType}`);
     }
 }
 
