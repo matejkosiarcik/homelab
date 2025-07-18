@@ -65,7 +65,7 @@ test.describe(apps.kiwix.title, () => {
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
                 await page.goto(instance.url);
-                await expect(page.locator('ul.services-list li.service').first()).not.toBeVisible();
+                await expect(page.locator('.book__list .book').first()).not.toBeVisible();
             });
         });
     }
