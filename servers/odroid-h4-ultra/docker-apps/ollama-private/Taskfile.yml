@@ -1,0 +1,6 @@
+version: "3"
+silent: true
+includes:
+  shared:
+    taskfile: ../../../../.utils/deployment-helpers/Taskfile-docker-app.yml
+    flatten: true

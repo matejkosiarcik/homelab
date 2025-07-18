@@ -134,6 +134,7 @@ export const apps = {
         title: 'Ollama',
         instances: [
             { url: 'https://ollama.matejhome.com', title: 'Ollama' },
+            { url: 'https://ollama-private.matejhome.com', title: 'Ollama - Private' },
         ],
     },
     'omada-controller': {
@@ -153,6 +154,7 @@ export const apps = {
         title: 'Open WebUI',
         instances: [
             { url: 'https://open-webui.matejhome.com', title: 'Open WebUI' },
+            { url: 'https://open-webui-private.matejhome.com', title: 'Open WebUI - Private' },
         ],
     },
     owntracks: {
