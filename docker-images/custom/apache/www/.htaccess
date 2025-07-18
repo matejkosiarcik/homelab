@@ -271,8 +271,8 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
-# Protect Certbot endpoints
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download(/.*)?$#">
+# Protect entire apps
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:homepage|kiwix|ollama|owntracks)$# && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -280,8 +280,8 @@ RewriteRule ^ /.proxy/not-found [L]
     Require valid-user
 </If>
 
-# Protect entire Homepage
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'homepage' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
+# Protect Certbot sensitive endpoints
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download(/.*)?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -295,33 +295,6 @@ RewriteRule ^ /.proxy/not-found [L]
     AuthName Protected
     AuthBasicProvider file
     AuthUserFile /homelab/debug.htpasswd
-    Require valid-user
-</If>
-
-# Protect entire Ollama
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'ollama' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/users.htpasswd
-    Require valid-user
-</If>
-
-# Protect entire Owntracks
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'owntracks' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/users.htpasswd
-    Require valid-user
-</If>
-
-# Protect entire Wikipedia
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'wikipedia' && %{REQUEST_URI} !~ m#^/\.proxy(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.ico$# && %{REQUEST_URI} !~ m#^/favicon.png$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/users.htpasswd
     Require valid-user
 </If>
 

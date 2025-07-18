@@ -39,6 +39,7 @@ const appAddress = (() => {
         case 'home-assistant': return 'http://app:8123';
         case 'homepage': return 'http://app:3000';
         case 'jellyfin': return 'http://app:8096';
+        case 'kiwix': return 'http://app:8080';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
         case 'node-exporter': return ''; // http://app:9100
@@ -59,7 +60,6 @@ const appAddress = (() => {
         case 'uptime-kuma': return 'http://app:3001';
         case 'vaultwarden': return 'http://app:80';
         case 'vikunja': return 'http://app:???';
-        case 'wikipedia': return 'http://app:8080';
         default: throw new Error(`Unknown app type ${appType}`);
     }
 })();
@@ -80,6 +80,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'home-assistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
         case 'homepage': return '/apple-touch-icon.png';
         case 'jellyfin': return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
+        case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
         case 'node-exporter': return `@/homelab/icons/${appType}.png`;
@@ -99,7 +100,6 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'unifi-controller': return '/manage/angular/gc477706b0/images/favicons/favicon-192.png';
         case 'uptime-kuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
-        case 'wikipedia': return '/skin/favicon/apple-touch-icon.png';
         default:
             throw new Error(`Unknown app type: ${appType}`);
     }

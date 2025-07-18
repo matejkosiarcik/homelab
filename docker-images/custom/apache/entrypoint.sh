@@ -56,6 +56,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'homepage' ]; then
     PROXY_UPSTREAM_URL="http://app:3000"
 elif [ "$HOMELAB_APP_TYPE" = 'jellyfin' ]; then
     PROXY_UPSTREAM_URL="http://app:8096"
+elif [ "$HOMELAB_APP_TYPE" = 'kiwix' ]; then
+    PROXY_UPSTREAM_URL="http://app:8080"
 elif [ "$HOMELAB_APP_TYPE" = 'motioneye' ]; then
     PROXY_UPSTREAM_URL="http://app:8765"
 elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
@@ -110,8 +112,6 @@ elif [ "$HOMELAB_APP_TYPE" = 'vaultwarden' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'vikunja' ]; then
     PROXY_UPSTREAM_URL="http://app:3456"
-elif [ "$HOMELAB_APP_TYPE" = 'wikipedia' ]; then
-    PROXY_UPSTREAM_URL="http://app:8080"
 else
     printf 'Unknown HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE-N/A}"
     exit 1
