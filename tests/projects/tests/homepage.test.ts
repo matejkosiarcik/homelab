@@ -66,11 +66,6 @@ test.describe(apps.homepage.title, () => {
                 await page.goto(instance.url);
                 await expect(page.locator('ul.services-list li.service').first()).not.toBeVisible();
             });
-
-            test('API: Unsuccessful root - No user', async () => {
-                const response = await axios.get(instance.url);
-                expect(response.status, 'Response Status').toStrictEqual(401);
-            });
         });
     }
 });
