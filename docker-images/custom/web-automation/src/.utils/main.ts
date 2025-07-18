@@ -2,9 +2,9 @@ import fs from 'node:fs/promises';
 import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
-import { chromium, type Page } from 'playwright';
-import { expect } from 'chai';
 import axios from 'axios';
+import { expect } from 'chai';
+import { chromium, type Page } from 'playwright';
 import { getAppName, getBrowserPath, getErrorAttachmentDir, getIsHeadless, getTargetUrl, retry } from './utils.ts';
 
 export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _options: { date: string, skipInitial?: boolean | undefined }): Promise<T | undefined> {

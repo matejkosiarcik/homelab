@@ -3,12 +3,12 @@ import fsx from 'node:fs/promises';
 import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
-import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotevn from 'dotenv';
-import sharp from 'sharp';
 import { execa } from 'execa';
+import express, { Request, Response } from 'express';
 import png2ico from 'png-to-ico';
+import sharp from 'sharp';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });

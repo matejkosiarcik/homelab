@@ -1,6 +1,6 @@
 import fs from 'node:fs';
-import dotenv from 'dotenv';
 import axios from 'axios';
+import dotenv from 'dotenv';
 import { assert } from 'simple-assert';
 
 type Healthcheck = {
