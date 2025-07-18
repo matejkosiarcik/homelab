@@ -75,11 +75,10 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-if [ "$mode" = '' ]; then
-    printf 'Mode is unset. Either "dev" or "prod" must be specified.\n' >&2
-    print_help
-    exit 1
-elif [ "$mode" != 'dev' ] && [ "$mode" != 'prod' ]; then
+if [ "$mode" = '' ] && [ "${HOMELAB_ENV-}" != '' ]; then
+    mode="$HOMELAB_ENV"
+fi
+if [ "$mode" != 'dev' ] && [ "$mode" != 'prod' ]; then
     printf 'Unknown mode "%s"\n' "$mode" >&2
     print_help
     exit 1
