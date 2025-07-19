@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM minio/minio:RELEASE.2025-06-13T11-33-47Z
+FROM minio/minio:RELEASE.2025-07-18T21-56-31Z
 ENV HOMELAB_CONTAINER_NAME=minio-server \
     HOMELAB_CONTAINER_VARIANT=default \
     MINIO_ROOT_USER=admin \
