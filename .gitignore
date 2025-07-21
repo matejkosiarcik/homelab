@@ -1,16 +1,17 @@
 # For testing services
+.backup/
 .env
-app-data/
-app-data-*/
-app-logs/
-app-logs-*/
-app-secrets/
-app-secrets-*/
 .errors/
 .export/
-.backup/
-tmp/
+.logs/
+app-data-*/
+app-data/
+app-logs-*/
+app-logs/
+app-secrets-*/
+app-secrets/
 test-report/
+tmp/
 
 # For deployment
 /servers/.current
