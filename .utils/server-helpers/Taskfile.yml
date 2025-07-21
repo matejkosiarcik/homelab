@@ -1,0 +1,33 @@
+version: "3"
+silent: true
+
+tasks:
+  build:
+    desc: Build all apps
+    cmds:
+      - python3 ../../.utils/server-helpers/main.py build {{.CLI_ARGS}}
+
+  deploy:
+    desc: Deploy all apps | build + stop + start
+    cmds:
+      - python3 ../../.utils/server-helpers/main.py deploy {{.CLI_ARGS}}
+
+  install:
+    desc: Global server install
+    cmds:
+      - python3 ../../.utils/server-helpers/main.py install {{.CLI_ARGS}}
+
+  secrets:
+    desc: Create new secrets for all apps
+    cmds:
+      - python3 ../../.utils/server-helpers/main.py secrets {{.CLI_ARGS}}
+
+  start:
+    desc: Start all apps
+    cmds:
+      - python3 ../../.utils/server-helpers/main.py start {{.CLI_ARGS}}
+
+  stop:
+    desc: Stop all apps
+    cmds:
+      - python3 ../../.utils/server-helpers/main.py stop {{.CLI_ARGS}}
