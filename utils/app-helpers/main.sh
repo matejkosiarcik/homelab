@@ -13,12 +13,15 @@ print_help() {
     printf ' secrets - Create app secrets\n'
     printf '\n'
     printf 'Arguments:\n'
-    printf ' -d, --dev     - Dev mode\n'
-    printf ' -f, --force   - Force\n'
-    printf ' -h, --help    - Print help message\n'
-    printf ' -n, --dry-run - Dry run\n'
-    printf ' --offline     - [for secrets] Only generate local secrets - Do not access vaultwarden\n'
-    printf ' -p, --prod    - Production mode\n'
+    printf ' -d, --dev         - Dev mode\n'
+    printf ' -p, --prod        - Production mode\n'
+    printf ' -f, --force       - Force\n'
+    printf ' -h, --help        - Print help message\n'
+    printf ' -n, --dry-run     - Dry run\n'
+    printf ' --online          - (default) Access vaultwarden to get latest secrets\n'
+    printf ' --offline         - Only generate local secrets, do not access vaultwarden\n'
+    printf ' --deploy-always   - (default) Always deploy app\n'
+    printf ' --deploy-onchange - Only deploy app if it changed\n'
 }
 
 if [ "$#" -lt 1 ]; then
@@ -38,6 +41,7 @@ if [ "$command" = '-h' ] || [ "$command" = '--help' ]; then
 fi
 
 online_mode='online'
+deploy_mode='always'
 dry_run='0'
 force='0'
 mode=''
@@ -65,6 +69,14 @@ while [ "$#" -gt 0 ]; do
         ;;
     --offline)
         online_mode='offline'
+        shift
+        ;;
+    --deploy-onchange)
+        deploy_mode='onchange'
+        shift
+        ;;
+    --deploy-always)
+        deploy_mode='always'
         shift
         ;;
     *)
@@ -242,6 +254,19 @@ fi
 
 docker_compose_args="$docker_compose_args --project-name $DOCKER_COMPOSE_APP_NAME --env-file $extra_docker_compose_env"
 
+get_docker_compose_images() {
+    docker compose $docker_compose_args config |
+        yq -r '.services[].container_name' |
+        sort |
+        xargs -n1 sh -c 'printf "%s " "$1" && ( docker image inspect "$1" --format json 2>/dev/null || true ) | jq -r "(.[0].RootFS.Layers // [\"N/A\"])[]" | shasum | sed -E "s~ .+~~"' -
+        >"$tmpdir/docker-images.txt"
+}
+
+get_docker_compose_images
+mv "$tmpdir/docker-images.txt" "$tmpdir/docker-images-before.txt"
+printf 'Before:\n' >&2
+cat "$tmpdir/docker-images-before.txt" >&2
+
 docker_stop() {
     printf 'Stop docker containers in %s\n' "$full_app_name" | tee "$log_file" >&2
 
@@ -340,15 +365,24 @@ create_secrets() {
 
 case "$command" in
 build)
-    docker_pull
+    # docker_pull
     docker_build
     ;;
 deploy)
     docker_build
-    docker_stop
-    docker network prune -f # Might help with services problems sometimes not being able to bind ports
-    sleep 1                 # Should help with container clash problems
-    docker_start
+
+    get_docker_compose_images
+    mv "$tmpdir/docker-images.txt" "$tmpdir/docker-images-after.txt"
+    printf 'After:\n' >&2
+    cat "$tmpdir/docker-images-after.txt" >&2
+
+    if [ "$deploy_mode" = 'always' ] || ( [ "$deploy_mode" = 'onchange' ] && [ "$(shasum "$tmpdir/docker-images-before.txt")" != "$(shasum "$tmpdir/docker-images-after.txt")" ] ); then
+        printf 'Change!!!\n'
+        docker_stop
+        # docker network prune -f # Might help with services problems sometimes not being able to bind ports
+        # sleep 1                 # Should help with container clash problems
+        docker_start
+    fi
     printf 'Deployment of %s successful\n\n' "$full_app_name"
     ;;
 pull)
