@@ -5,24 +5,24 @@ tasks:
   build:
     desc: Build current app
     cmds:
-      - bash ../../../../utils/app-helpers/main.py build {{.CLI_ARGS}}
+      - python3 ../../../../utils/app-helpers/main.py build {{.CLI_ARGS}}
 
   deploy:
     desc: Deploy current app (build+stop+start)
     cmds:
-      - bash ../../../../utils/app-helpers/main.py deploy {{.CLI_ARGS}}
+      - python3 ../../../../utils/app-helpers/main.py deploy {{.CLI_ARGS}}
 
   secrets:
     desc: Create new secrets for current app
     cmds:
-      - bash ../../../../utils/app-helpers/main.py secrets {{.CLI_ARGS}}
+      - python3 ../../../../utils/app-helpers/main.py secrets {{.CLI_ARGS}}
 
   start:
     desc: Start current app
     cmds:
-      - bash ../../../../utils/app-helpers/main.py start {{.CLI_ARGS}}
+      - python3 ../../../../utils/app-helpers/main.py start {{.CLI_ARGS}}
 
   stop:
     desc: Stop current app
     cmds:
-      - bash ../../../../utils/app-helpers/main.py stop {{.CLI_ARGS}}
+      - python3 ../../../../utils/app-helpers/main.py stop {{.CLI_ARGS}}
