@@ -172,7 +172,7 @@ def main(argv):
         commands = ["sh", f"{git_dir}/utils/secrets-helpers/main.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
         run(commands)
 
-    # Command dispatch
+    # Execute commands
     if command == "build":
         docker_build()
     elif command == "deploy":
@@ -195,7 +195,7 @@ def main(argv):
     end_datetime = datetime.now()
     time_delta = (end_datetime - start_datetime).total_seconds()
     print()
-    print(f"{command.capitalize()} of {full_app_name} successful in {int(time_delta) // 60:02d}:{int(time_delta) % 60:02d}.{int(time_delta * 100):02d}s")
+    print(f"{command.capitalize()} of {full_app_name} successful in {int(time_delta) // 60:02d}:{int(time_delta) % 60:02d}.{int((time_delta % 1) * 10):d}s")
 
 
 if __name__ == "__main__":
