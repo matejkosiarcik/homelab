@@ -11,8 +11,8 @@ command="$1"
 shift
 
 find . -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort | while read -r server; do
-    cd "$server"
+    cd "$server" >/dev/null
     # shellcheck disable=SC2086
     task "$command" $@
-    cd -
+    cd - >/dev/null
 done
