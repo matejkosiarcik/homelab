@@ -99,6 +99,20 @@ def main(argv):
 
     run_command(command)
 
+
+def docker_images_shasums(docker_compose_args: List[str]) -> str:
+    config_output = subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
+    config_obj = json.loads(config_output)
+    image_names = sorted([config_obj["services"][service]["container_name"] for service in config_obj["services"]])
+    output = []
+    for image in image_names:
+        inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"]).decode()
+        layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode()
+        sha = hashlib.sha1(layers_output.encode()).hexdigest()
+        output.append(f"{image} {sha}")
+    return "\n".join(output)
+
+
 def run_command(command: str):
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml"]
     docker_command_args = []
@@ -144,18 +158,6 @@ def run_command(command: str):
 
     docker_compose_args.extend(["--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]])
 
-    def docker_images_shasums() -> str:
-        config_output = subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
-        config_obj = json.loads(config_output)
-        image_names = sorted([config_obj["services"][service]["container_name"] for service in config_obj["services"]])
-        output = []
-        for image in image_names:
-            inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"]).decode()
-            layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode()
-            sha = hashlib.sha1(layers_output.encode()).hexdigest()
-            output.append(f"{image} {sha}")
-        return "\n".join(output)
-
     def run(commands: List[str]):
         subprocess.check_call(commands)
 
@@ -179,9 +181,9 @@ def run_command(command: str):
     if command == "build":
         docker_build()
     elif command == "deploy":
-        shasum_before = docker_images_shasums()
+        shasum_before = docker_images_shasums(docker_compose_args)
         docker_build()
-        shasum_after = docker_images_shasums()
+        shasum_after = docker_images_shasums(docker_compose_args)
         if when_mode == "always" or (when_mode == "onchange" and shasum_before != shasum_after):
             docker_stop()
             docker_start()
