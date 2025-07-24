@@ -88,10 +88,10 @@ def main(argv: List[str]):
         # TODO: Maybe multiarg --only and --skip???
         subcommand.add_argument("--only", type=str, help=f"{subcommand_name.capitalize()} only these apps")
         subcommand.add_argument("--skip", type=str, help=f"{subcommand_name.capitalize()} all apps except these")
-        subcommand.add_argument("--jobs", type=int, default=1, help=f"A number of simultaneous actions to perform")
+        subcommand.add_argument("--jobs", type=int, default=1, help="A number of simultaneous actions to perform")
         if subcommand_name == "deploy":
             subcommand.add_argument("--when", type=str, choices=["always", "onchange"], default="always", help="Deploy all apps always, or only when they changed")
-        if subcommand_name == "deploy" or subcommand_name == "build":
+        if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
         if subcommand_name == "secrets":
             online_group = subcommand.add_mutually_exclusive_group()

@@ -38,7 +38,7 @@ def load_env_file(env_path):
     """
     Loads environment variables from a .env file into current environment
     """
-    with open(env_path, "r") as file:
+    with open(env_path, "r", encoding="utf-8") as file:
         for line in file:
             line = re.sub(r"#.*$", "", line).strip()
             if line == "":
@@ -66,7 +66,7 @@ def main(argv):
         subcommand.add_argument("--dry-run", action="store_true", help="Dry run")
         if subcommand_name == "deploy":
             subcommand.add_argument("--when", type=str, choices=["always", "onchange"], default="always", help="Deploy app always, or only when it changed")
-        if subcommand_name == "deploy" or subcommand_name == "build":
+        if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
         if subcommand_name == "secrets":
             online_group = subcommand.add_mutually_exclusive_group()
