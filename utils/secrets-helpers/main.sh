@@ -314,7 +314,8 @@ case "$app_dirname" in
     printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
     printf 'SMTP4DEV_ADMIN_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$initial_output/app.env"
     printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$initial_output/app.env"
-    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token wikipedia app admin)" >>"$initial_output/app.env"
+    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wikipedia app admin)" >>"$initial_output/app.env"
+    printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wiktionary app admin)" >>"$initial_output/app.env"
     # Prometheus credentials
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app prometheus)" >>"$initial_output/app.env"
@@ -401,6 +402,8 @@ case "$app_dirname" in
     printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unifi-controller apache prometheus)" >>"$initial_output/app.env"
     printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptime-kuma apache prometheus)" >>"$initial_output/app.env"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vaultwarden apache prometheus)" >>"$initial_output/app.env"
+    printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token kiwix-wikipedia apache prometheus)" >>"$initial_output/app.env"
+    printf 'WIKTIONARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token kiwix-wiktionary apache prometheus)" >>"$initial_output/app.env"
     # printf 'DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-left apache prometheus)" >>"$initial_output/app.env"
     # printf 'DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-right apache prometheus)" >>"$initial_output/app.env"
     # printf 'NETALERTX_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token netalertx apache prometheus)" >>"$initial_output/app.env"
@@ -558,6 +561,23 @@ case "$app_dirname" in
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
+*kiwix*)
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$admin_password" users
+    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
+    write_http_auth_user monika "$monika_password" users
+    printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
@@ -849,7 +869,8 @@ case "$app_dirname" in
     printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptime-kuma apache prometheus)" >>"$initial_output/app.env"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vaultwarden apache prometheus)" >>"$initial_output/app.env"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vikunja apache prometheus)" >>"$initial_output/app.env"
-    printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token wikipedia apache prometheus)" >>"$initial_output/app.env"
+    printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token kiwix-wikipedia apache prometheus)" >>"$initial_output/app.env"
+    printf 'WIKTIONARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token kiwix-wiktionary apache prometheus)" >>"$initial_output/app.env"
     # printf 'DESKLAMP_LEFT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-left apache prometheus)" >>"$initial_output/app.env"
     # printf 'DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-right apache prometheus)" >>"$initial_output/app.env"
 
@@ -1041,23 +1062,6 @@ case "$app_dirname" in
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-
-    # Certificator
-    write_certificator_users
-    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
-
-    # Favicons
-    touch "$initial_output/favicons.env"
-    ;;
-*wikipedia*)
-    # Apache
-    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password" users
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
-    write_http_auth_user monika "$monika_password" users
-    printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
