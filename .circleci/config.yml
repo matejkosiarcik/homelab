@@ -90,10 +90,10 @@ jobs:
       #     command: |
       #       set -euf
       #       cd './servers/<< parameters.server >>'
-      #       task build -- --dev
+      #       task build -- --mode dev
       - run:
           name: Run dry-run deployment on << parameters.server >>
           command: |
             set -euf
             cd './servers/<< parameters.server >>'
-            task start -- --dev --dry-run
+            task start -- --mode dev --dry-run
