@@ -97,6 +97,9 @@ def main(argv):
         print(f"Unrecognized command: {command}")
         sys.exit(1)
 
+    run_command(command)
+
+def run_command(command: str):
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml"]
     docker_command_args = []
 
@@ -117,7 +120,7 @@ def main(argv):
     if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
         default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
 
-    # Remove old OS environment
+    # Remove old environment values
     for key in default_env_values:
         if os.environ.get(key) is not None:
             os.environ.popitem(key)
