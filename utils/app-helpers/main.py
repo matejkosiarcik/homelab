@@ -43,9 +43,9 @@ def load_env_file(env_path):
             line = re.sub(r"#.*$", "", line).strip()
             if line == "":
                 continue
+            key, value = line.split("=", 1)
             if os.environ.get(key) is not None:
                 continue
-            key, value = line.split("=", 1)
             os.environ[key] = value
 
 
