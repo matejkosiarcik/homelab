@@ -46,7 +46,7 @@ def get_apps_list(only: str | None, skip: str | None) -> List[str]:
     output_apps_list = priority_apps_list
 
     if len(all_apps_list) != len(output_apps_list):
-        extra_apps = ", ".join([x for x in all_apps_list if not x in output_apps_list])
+        extra_apps = ", ".join([x for x in all_apps_list if x not in output_apps_list])
         print(f"You have undeclared apps in priority.txt: {extra_apps}", file=sys.stderr)
 
     if only is not None and len(only) > 0:
@@ -110,7 +110,7 @@ def main(argv: List[str]):
     if command == "deploy":
         when_mode = args.when
 
-    is_pull = (hasattr(args, "pull") and args.pull is True)
+    is_pull = hasattr(args, "pull") and args.pull is True
 
     env_mode = args.mode
     if env_mode is None:

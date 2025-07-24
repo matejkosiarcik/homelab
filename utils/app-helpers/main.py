@@ -82,7 +82,7 @@ def main(argv):
         when_mode = args.when
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
-    is_pull = (hasattr(args, "pull") and args.pull is True)
+    is_pull = hasattr(args, "pull") and args.pull is True
 
     env_mode = args.mode
     if env_mode is None:
@@ -112,13 +112,13 @@ def main(argv):
         "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
         "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
-        "DOCKER_COMPOSE_NETWORK_URL": f"https://{full_app_name}.matejhome.com" if env_mode == "prod" else "https://localhost:8443"
+        "DOCKER_COMPOSE_NETWORK_URL": f"https://{full_app_name}.matejhome.com" if env_mode == "prod" else "https://localhost:8443",
     }
     if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
         default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
 
     # Remove old OS environment
-    for key in default_env_values.keys():
+    for key in default_env_values:
         if os.environ.get(key) is not None:
             os.environ.popitem(key)
 
@@ -139,7 +139,7 @@ def main(argv):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
 
-    docker_compose_args.extend(["--project-name", os.environ['DOCKER_COMPOSE_APP_NAME']])
+    docker_compose_args.extend(["--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]])
 
     def docker_images_shasums() -> str:
         config_output = subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
@@ -148,7 +148,7 @@ def main(argv):
         output = []
         for image in image_names:
             inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"]).decode()
-            layers_output = subprocess.check_output(["jq", "-r", "(.[0].RootFS.Layers // [\"N/A\"])[]"], input=inspect_output.encode()).decode()
+            layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode()
             sha = hashlib.sha1(layers_output.encode()).hexdigest()
             output.append(f"{image} {sha}")
         return "\n".join(output)
