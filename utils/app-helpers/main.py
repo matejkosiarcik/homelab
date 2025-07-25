@@ -26,6 +26,9 @@ is_pull = True
 env_mode = ""
 when_mode = ""
 
+docker_compose_args = []
+docker_command_args = []
+
 os.makedirs(path.dirname(log_file), exist_ok=True)
 
 log = logging.getLogger()
@@ -97,7 +100,7 @@ def main(argv):
         print(f"Unrecognized command: {command}")
         sys.exit(1)
 
-    run_command(command)
+    run_main_command(command)
 
 
 def docker_images_shasums(docker_compose_args: List[str]) -> str:
@@ -113,7 +116,32 @@ def docker_images_shasums(docker_compose_args: List[str]) -> str:
     return "\n".join(output)
 
 
-def run_command(command: str):
+def run_raw_command(commands: List[str]):
+    subprocess.check_call(commands)
+
+
+def docker_build():
+    commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
+    run_raw_command(commands)
+
+
+def docker_stop():
+    commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
+    run_raw_command(commands)
+
+
+def docker_start():
+    commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
+    run_raw_command(commands)
+
+
+def create_secrets():
+    commands = ["sh", f"{git_dir}/utils/secrets-helpers/main.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
+    run_raw_command(commands)
+
+
+def run_main_command(command: str):
+    global docker_compose_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml"]
     docker_command_args = []
 
@@ -157,25 +185,6 @@ def run_command(command: str):
         sys.exit(1)
 
     docker_compose_args.extend(["--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]])
-
-    def run(commands: List[str]):
-        subprocess.check_call(commands)
-
-    def docker_build():
-        commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
-        run(commands)
-
-    def docker_stop():
-        commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
-        run(commands)
-
-    def docker_start():
-        commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
-        run(commands)
-
-    def create_secrets():
-        commands = ["sh", f"{git_dir}/utils/secrets-helpers/main.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-        run(commands)
 
     # Execute commands
     if command == "build":
