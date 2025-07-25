@@ -52,57 +52,6 @@ def load_env_file(env_path):
             os.environ[key] = value
 
 
-def main(argv):
-    global env_mode, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
-    parser = argparse.ArgumentParser(prog="task")
-    subparsers = parser.add_subparsers(dest="subcommand")
-    subcommands = [
-        subparsers.add_parser("build", help="Build this app"),
-        subparsers.add_parser("secrets", help="Create secrets for this app"),
-        subparsers.add_parser("deploy", help="Deploy app"),
-        subparsers.add_parser("start", help="Start app"),
-        subparsers.add_parser("stop", help="Stop app"),
-    ]
-    for subcommand in subcommands:
-        subcommand_name = subcommand.prog.split(" ")[-1]
-        subcommand.add_argument("--mode", type=str, choices=["dev", "prod"], help=f"Mode for {subcommand_name.capitalize()}. By default takes env variable HOMELAB_ENV")
-        subcommand.add_argument("--dry-run", action="store_true", help="Dry run")
-        if subcommand_name == "deploy":
-            subcommand.add_argument("--when", type=str, choices=["always", "onchange"], default="always", help="Deploy app always, or only when it changed")
-        if subcommand_name in ["deploy", "build"]:
-            subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
-        if subcommand_name == "secrets":
-            online_group = subcommand.add_mutually_exclusive_group()
-            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for secrets")
-            online_group.add_argument("--offline", action="store_true", help="Only generate secrets locally, do not access vaultwarden")
-
-    args = parser.parse_args(argv)
-
-    command = args.subcommand
-    is_dryrun = args.dry_run
-
-    if command == "deploy":
-        when_mode = args.when
-    if command == "secrets":
-        is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
-    is_pull = hasattr(args, "pull") and args.pull is True
-
-    env_mode = args.mode
-    if env_mode is None:
-        env_mode = os.environ["HOMELAB_ENV"]
-    if env_mode is None:
-        print("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
-    if env_mode not in ["dev", "prod"]:
-        print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
-        sys.exit(1)
-
-    if command not in ["build", "deploy", "start", "stop", "secrets"]:
-        print(f"Unrecognized command: {command}")
-        sys.exit(1)
-
-    run_main_command(command)
-
-
 def docker_images_shasums() -> str:
     config_output = subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
     config_obj = json.loads(config_output)
@@ -176,8 +125,8 @@ def run_main_command(command: str):
             os.environ[key] = default_value
 
     # Check if docker-compose stack exists
-    app_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
-    if not path.isdir(app_path):
+    compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
+    if not path.isdir(compose_path):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
 
@@ -207,6 +156,57 @@ def run_main_command(command: str):
     time_delta = (end_datetime - start_datetime).total_seconds()
     print()
     print(f"{command.capitalize()} of {full_app_name} successful in {int(time_delta) // 60:02d}:{int(time_delta) % 60:02d}.{int((time_delta % 1) * 10):d}s")
+
+
+def main(argv):
+    global env_mode, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
+    parser = argparse.ArgumentParser(prog="task")
+    subparsers = parser.add_subparsers(dest="subcommand")
+    subcommands = [
+        subparsers.add_parser("build", help="Build this app"),
+        subparsers.add_parser("secrets", help="Create secrets for this app"),
+        subparsers.add_parser("deploy", help="Deploy app"),
+        subparsers.add_parser("start", help="Start app"),
+        subparsers.add_parser("stop", help="Stop app"),
+    ]
+    for subcommand in subcommands:
+        subcommand_name = subcommand.prog.split(" ")[-1]
+        subcommand.add_argument("--mode", type=str, choices=["dev", "prod"], help=f"Mode for {subcommand_name.capitalize()}. By default takes env variable HOMELAB_ENV")
+        subcommand.add_argument("--dry-run", action="store_true", help="Dry run")
+        if subcommand_name == "deploy":
+            subcommand.add_argument("--when", type=str, choices=["always", "onchange"], default="always", help="Deploy app always, or only when it changed")
+        if subcommand_name in ["deploy", "build"]:
+            subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
+        if subcommand_name == "secrets":
+            online_group = subcommand.add_mutually_exclusive_group()
+            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for secrets")
+            online_group.add_argument("--offline", action="store_true", help="Only generate secrets locally, do not access vaultwarden")
+
+    args = parser.parse_args(argv)
+
+    command = args.subcommand
+    is_dryrun = args.dry_run
+
+    if command == "deploy":
+        when_mode = args.when
+    if command == "secrets":
+        is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
+    is_pull = hasattr(args, "pull") and args.pull is True
+
+    env_mode = args.mode
+    if env_mode is None:
+        env_mode = os.environ["HOMELAB_ENV"]
+    if env_mode is None:
+        print("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
+    if env_mode not in ["dev", "prod"]:
+        print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
+        sys.exit(1)
+
+    if command not in ["build", "deploy", "start", "stop", "secrets"]:
+        print(f"Unrecognized command: {command}")
+        sys.exit(1)
+
+    run_main_command(command)
 
 
 if __name__ == "__main__":
