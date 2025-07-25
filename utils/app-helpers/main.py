@@ -143,7 +143,7 @@ def create_secrets():
 def run_main_command(command: str):
     global docker_compose_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml"]
-    docker_command_args = [].extend(["--dry-run"] if is_dryrun else [])
+    docker_command_args = ["--dry-run"] if is_dryrun else []
 
     default_env_values = {
         "DOCKER_COMPOSE_APP_NAME": full_app_name,
