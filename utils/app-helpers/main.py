@@ -121,15 +121,15 @@ def run_command(command: str):
         docker_command_args.append("--dry-run")
 
     default_env_values = {
-        "DOCKER_COMPOSE_ENV": env_mode,
-        "DOCKER_COMPOSE_CURRENT_USER": str(os.getuid()),
         "DOCKER_COMPOSE_APP_NAME": full_app_name,
-        "DOCKER_COMPOSE_APP_TYPE": full_app_name,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
-        "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
+        "DOCKER_COMPOSE_APP_TYPE": full_app_name,
+        "DOCKER_COMPOSE_CURRENT_USER": str(os.getuid()),
+        "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
         "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
         "DOCKER_COMPOSE_NETWORK_URL": f"https://{full_app_name}.matejhome.com" if env_mode == "prod" else "https://localhost:8443",
+        "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
     }
     if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
         default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
