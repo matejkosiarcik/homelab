@@ -187,9 +187,9 @@ def run_main_command(command: str):
     if command == "build":
         docker_build()
     elif command == "deploy":
-        shasum_before = docker_images_shasums(docker_compose_args)
+        shasum_before = docker_images_shasums()
         docker_build()
-        shasum_after = docker_images_shasums(docker_compose_args)
+        shasum_after = docker_images_shasums()
         if when_mode == "always" or (when_mode == "onchange" and shasum_before != shasum_after):
             docker_stop()
             docker_start()
