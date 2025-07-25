@@ -103,7 +103,7 @@ def main(argv):
     run_main_command(command)
 
 
-def docker_images_shasums(docker_compose_args: List[str]) -> str:
+def docker_images_shasums() -> str:
     config_output = subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
     config_obj = json.loads(config_output)
     image_names = sorted([config_obj["services"][service]["container_name"] for service in config_obj["services"]])
@@ -143,10 +143,7 @@ def create_secrets():
 def run_main_command(command: str):
     global docker_compose_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml"]
-    docker_command_args = []
-
-    if is_dryrun:
-        docker_command_args.append("--dry-run")
+    docker_command_args = [].extend(["--dry-run"] if is_dryrun else [])
 
     default_env_values = {
         "DOCKER_COMPOSE_APP_NAME": full_app_name,
