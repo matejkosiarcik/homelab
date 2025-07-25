@@ -3,12 +3,12 @@ import fsx from 'node:fs/promises';
 import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
-import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotevn from 'dotenv';
-import sharp from 'sharp';
 import { execa } from 'execa';
+import express, { Request, Response } from 'express';
 import png2ico from 'png-to-ico';
+import sharp from 'sharp';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -28,7 +28,8 @@ const appAddress = (() => {
         case 'actualbudget': return 'http://app:5006';
         case 'certbot': return 'http://app:8080';
         case 'changedetection': return 'http://app:5000';
-        case 'docker-cache-proxy': return 'http://app';
+        case 'docker-cache-proxy': return ''; // http://app
+        case 'docker-stats': return ''; // http://app:9487
         case 'dozzle': return 'http://app:8080';
         case 'gatus': return 'http://app:8080';
         case 'glances': return 'http://app:61208';
@@ -38,26 +39,27 @@ const appAddress = (() => {
         case 'home-assistant': return 'http://app:8123';
         case 'homepage': return 'http://app:3000';
         case 'jellyfin': return 'http://app:8096';
+        case 'kiwix': return 'http://app:8080';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
-        case 'node-exporter': return 'http://app:9100';
+        case 'node-exporter': return ''; // http://app:9100
         case 'ntfy': return 'http://app:80';
-        case 'ollama': return 'http://app:11434';
+        case 'ollama': return ''; // http://app:11434
         case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
         case 'open-webui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'owntracks': return 'http://app-backend:8083';
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
+        case 'samba': return '';
         case 'smtp4dev': return 'http://app:5000';
         case 'speedtest-tracker': return 'https://app';
         case 'tvheadend': return 'http://app:9981';
-        case 'unbound': return 'http://app:8080';
+        case 'unbound': return ''; // http://app:8080
         case 'unifi-controller': return 'https://app:8443';
         case 'uptime-kuma': return 'http://app:3001';
         case 'vaultwarden': return 'http://app:80';
         case 'vikunja': return 'http://app:???';
-        case 'wikipedia': return 'http://app:8080';
         default: throw new Error(`Unknown app type ${appType}`);
     }
 })();
@@ -68,6 +70,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'certbot': return `@/homelab/icons/${appType}.png`;
         case 'changedetection': return '/static/favicons/apple-touch-icon.png';
         case 'docker-cache-proxy': return `@/homelab/icons/${appType}.png`;
+        case 'docker-stats': return `@/homelab/icons/${appType}.png`;
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
         case 'glances': return '/static/favicon.ico';
@@ -77,6 +80,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'home-assistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
         case 'homepage': return '/apple-touch-icon.png';
         case 'jellyfin': return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
+        case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
         case 'node-exporter': return `@/homelab/icons/${appType}.png`;
@@ -88,6 +92,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'owntracks': return '/static/recorder.png'; // <- Backend, '/favicon.ico' <- Frontend
         case 'pihole': return '/admin/img/favicons/apple-touch-icon.png';
         case 'prometheus': return '/favicon.svg';
+        case 'samba': return `@/homelab/icons/${appType}.png`;
         case 'smtp4dev': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'speedtest-tracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
@@ -95,9 +100,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'unifi-controller': return '/manage/angular/gc477706b0/images/favicons/favicon-192.png';
         case 'uptime-kuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
-        case 'wikipedia': return '/skin/favicon/apple-touch-icon.png';
-        default:
-            throw new Error(`Unknown app type: ${appType}`);
+        default: throw new Error(`Unknown app type: ${appType}`);
     }
 }
 

@@ -1,8 +1,8 @@
 import fs from 'node:fs';
-import express, { Request, Response } from 'express';
-import dotevn from 'dotenv';
-import sodium from 'libsodium-wrappers';
 import axios from 'axios';
+import dotevn from 'dotenv';
+import express, { Request, Response } from 'express';
+import sodium from 'libsodium-wrappers';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });

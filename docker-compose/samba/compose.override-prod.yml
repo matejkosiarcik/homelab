@@ -10,3 +10,18 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:139:139
       - ${DOCKER_COMPOSE_NETWORK_IP}:445:445
+
+  certificator:
+    <<: *common-service-options
+
+  apache:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+
+  apache-prometheus-exporter:
+    <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options

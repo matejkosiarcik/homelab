@@ -22,4 +22,6 @@ testparm -s || {
 
 sleep 1
 
+nohup /homelab/bin/samba_statusd &
+nohup /homelab/bin/samba_exporter &
 smbd --foreground --no-process-group

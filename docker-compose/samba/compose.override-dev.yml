@@ -10,3 +10,18 @@ services:
     ports:
       - 127.0.0.1:8139:139
       - 127.0.0.1:8445:445
+
+  certificator:
+    <<: *common-service-options
+
+  apache:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:8080:80
+      - 127.0.0.1:8443:443
+
+  apache-prometheus-exporter:
+    <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options

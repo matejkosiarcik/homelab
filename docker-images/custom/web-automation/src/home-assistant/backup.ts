@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { expect } from 'chai';
-import { getDir, getIsoDate, getCredentials, preprepare, retry } from '../.utils/utils.ts';
 import { runAutomation } from '../.utils/main.ts';
+import { getDir, getIsoDate, getCredentials, preprepare, retry } from '../.utils/utils.ts';
 
 (async () => {
     preprepare();

@@ -1,4 +1,22 @@
 apps:
+  - url: docker-stats-macbook-pro-2012.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: docker-stats-odroid-h3.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: docker-stats-odroid-h4-ultra.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: docker-stats-raspberry-pi-3b.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: docker-stats-raspberry-pi-4b-2g.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: docker-stats-raspberry-pi-4b-4g.matejhome.com
+    auth: basic
+    path: /metrics
   - url: gatus-1.matejhome.com
     auth: basic
     path: /metrics
@@ -77,6 +95,12 @@ proxies:
   - url: certbot.matejhome.com
   - url: changedetection.matejhome.com
   - url: docker-cache-proxy-dockerhub.matejhome.com
+  - url: docker-stats-macbook-pro-2012.matejhome.com
+  - url: docker-stats-odroid-h3.matejhome.com
+  - url: docker-stats-odroid-h4-ultra.matejhome.com
+  - url: docker-stats-raspberry-pi-3b.matejhome.com
+  - url: docker-stats-raspberry-pi-4b-2g.matejhome.com
+  - url: docker-stats-raspberry-pi-4b-4g.matejhome.com
   - url: dozzle.matejhome.com
   - url: gatus-1.matejhome.com
   - url: gatus-2.matejhome.com
@@ -122,3 +146,4 @@ proxies:
   - url: uptime-kuma.matejhome.com
   - url: vaultwarden.matejhome.com
   - url: wikipedia.matejhome.com
+  - url: wiktionary.matejhome.com
