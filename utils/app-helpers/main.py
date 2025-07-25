@@ -70,7 +70,7 @@ def load_full_env():
     # Remove old environment values
     for key in default_env_values:
         if os.environ.get(key) is not None:
-            os.environ.popitem(key)
+            os.environ.pop(key)
 
     # Load env files
     if path.exists(path.join("config", "compose.env")):
