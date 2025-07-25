@@ -52,6 +52,38 @@ def load_env_file(env_path):
             os.environ[key] = value
 
 
+def load_full_env():
+    default_env_values = {
+        "DOCKER_COMPOSE_APP_NAME": full_app_name,
+        "DOCKER_COMPOSE_APP_PATH": app_dir,
+        "DOCKER_COMPOSE_APP_TYPE": full_app_name,
+        "DOCKER_COMPOSE_CURRENT_USER": str(os.getuid()),
+        "DOCKER_COMPOSE_ENV": env_mode,
+        "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
+        "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
+        "DOCKER_COMPOSE_NETWORK_URL": f"https://{full_app_name}.matejhome.com" if env_mode == "prod" else "https://localhost:8443",
+        "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
+    }
+    if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
+        default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
+
+    # Remove old environment values
+    for key in default_env_values:
+        if os.environ.get(key) is not None:
+            os.environ.popitem(key)
+
+    # Load env files
+    if path.exists(path.join("config", "compose.env")):
+        load_env_file(path.join("config", "compose.env"))
+    if path.exists(path.join("config", f"compose-{env_mode}.env")):
+        load_env_file(path.join("config", f"compose-{env_mode}.env"))
+
+    # Fill in default values
+    for key, default_value in default_env_values.items():
+        if os.environ.get(key) is None:
+            os.environ[key] = default_value
+
+
 def docker_images_shasums() -> str:
     config_output = subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
     config_obj = json.loads(config_output)
@@ -91,46 +123,14 @@ def create_secrets():
 
 def run_main_command(command: str):
     global docker_compose_args, docker_command_args  # pylint: disable=global-statement
-    docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml"]
+    docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml", "--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]]
     docker_command_args = ["--dry-run"] if is_dryrun else []
-
-    default_env_values = {
-        "DOCKER_COMPOSE_APP_NAME": full_app_name,
-        "DOCKER_COMPOSE_APP_PATH": app_dir,
-        "DOCKER_COMPOSE_APP_TYPE": full_app_name,
-        "DOCKER_COMPOSE_CURRENT_USER": str(os.getuid()),
-        "DOCKER_COMPOSE_ENV": env_mode,
-        "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
-        "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
-        "DOCKER_COMPOSE_NETWORK_URL": f"https://{full_app_name}.matejhome.com" if env_mode == "prod" else "https://localhost:8443",
-        "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
-    }
-    if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
-        default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
-
-    # Remove old environment values
-    for key in default_env_values:
-        if os.environ.get(key) is not None:
-            os.environ.popitem(key)
-
-    # Load env files
-    if path.exists(path.join("config", "compose.env")):
-        load_env_file(path.join("config", "compose.env"))
-    if path.exists(path.join("config", f"compose-{env_mode}.env")):
-        load_env_file(path.join("config", f"compose-{env_mode}.env"))
-
-    # Fill in default values
-    for key, default_value in default_env_values.items():
-        if os.environ.get(key) is None:
-            os.environ[key] = default_value
 
     # Check if docker-compose stack exists
     compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
     if not path.isdir(compose_path):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
-
-    docker_compose_args.extend(["--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]])
 
     # Execute commands
     if command == "build":
@@ -206,6 +206,7 @@ def main(argv):
         print(f"Unrecognized command: {command}")
         sys.exit(1)
 
+    load_full_env()
     run_main_command(command)
 
 
