@@ -162,7 +162,7 @@ def run_command(command: str):
         subprocess.check_call(commands)
 
     def docker_build():
-        commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies"] + docker_command_args + (["--dry-run"] if is_dryrun else []) + (["--pull"] if is_pull else [])
+        commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
         run(commands)
 
     def docker_stop():
