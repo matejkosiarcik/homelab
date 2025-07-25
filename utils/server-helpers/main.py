@@ -41,7 +41,8 @@ def get_apps_list(only: str | None, skip: str | None) -> List[str]:
         priority_apps_list = [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
 
     def app_regex(appname: str) -> str:
-        return f".*{appname.replace('?', '.').replace('*', '.*').replace('-', '\\-')}.*"
+        partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
+        return f".*{partial_regex}.*"
 
     output_apps_list = priority_apps_list
 
