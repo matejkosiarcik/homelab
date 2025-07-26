@@ -102,7 +102,7 @@ def run_raw_command(commands: List[str]):
 
 
 def docker_build():
-    commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
+    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", "1", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
     run_raw_command(commands)
 
 
