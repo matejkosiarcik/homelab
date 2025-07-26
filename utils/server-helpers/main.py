@@ -146,7 +146,7 @@ def server_action(action: str):
     if action == "secrets":
         cli_args.append("--online" if is_online else "--offline")
     if action == "deploy":
-        cli_args.extend(["--deploy", when_mode])
+        cli_args.extend(["--when", when_mode])
 
     for app in applist:
         subprocess.check_call(["task", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
