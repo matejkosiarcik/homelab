@@ -93,7 +93,7 @@ def docker_images_shasums() -> str:
         try:
             inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"]).decode()
             layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode().replace("\n", " ").strip()
-        except:
+        except subprocess.CalledProcessError:
             layers_output = "N/A"
         sha = hashlib.sha1(layers_output.encode()).hexdigest()
         output.append(f"{image} {sha}")
