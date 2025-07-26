@@ -90,8 +90,11 @@ def docker_images_shasums() -> str:
     image_names = sorted([config_obj["services"][service]["container_name"] for service in config_obj["services"]])
     output = []
     for image in image_names:
-        inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"]).decode()
-        layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode()
+        try:
+            inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"]).decode()
+            layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode().replace("\n", " ").strip()
+        except:
+            layers_output = "N/A"
         sha = hashlib.sha1(layers_output.encode()).hexdigest()
         output.append(f"{image} {sha}")
     return "\n".join(output)
