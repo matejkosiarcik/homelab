@@ -4,13 +4,13 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/open-webui/Dockerfile
+      dockerfile: ./external/openwebui/Dockerfile
     env_file:
       - ./app-secrets/app.env
     environment:
       CORS_ALLOW_ORIGIN: "${DOCKER_COMPOSE_NETWORK_URL}"
     volumes:
-      - ./app-data/open-webui:/app/backend/data:rw
+      - ./app-data/openwebui:/app/backend/data:rw
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead

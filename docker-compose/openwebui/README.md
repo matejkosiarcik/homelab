@@ -1,6 +1,6 @@
 # Template
 
-![diagram](../../docs/diagrams/out/apps/open-webui.png)
+![diagram](../../docs/diagrams/out/apps/openwebui.png)
 
 ## Docs
 

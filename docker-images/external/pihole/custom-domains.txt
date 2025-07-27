@@ -100,7 +100,7 @@
 10.1.20.48 uptime-kuma.matejhome.com
 10.1.20.49 node-exporter-odroid-h4-ultra.matejhome.com
 10.1.20.50 ollama.matejhome.com
-10.1.20.51 open-webui.matejhome.com
+10.1.20.51 openwebui.matejhome.com
 10.1.20.52 stable-diffusion.matejhome.com
 10.1.20.53 grafana.matejhome.com
 10.1.20.54 owntracks.matejhome.com
@@ -108,4 +108,4 @@
 10.1.20.56 wiktionary.matejhome.com
 10.1.20.57 docker-stats-odroid-h4-ultra.matejhome.com
 10.1.20.58 ollama-private.matejhome.com
-10.1.20.59 open-webui-private.matejhome.com
+10.1.20.59 openwebui-private.matejhome.com

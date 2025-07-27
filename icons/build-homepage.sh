@@ -117,13 +117,13 @@ magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-tmp.png" -gravity Center 
 convert_image_full "$tmpdir/ollama-final.png" "$output_dir/ollama.png"
 
 # Open WebUI with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/open-webui-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/open-webui-background-mask.png"
-magick "$tmpdir/open-webui-background.png" "$tmpdir/open-webui-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/open-webui-background.png"
-magick "$tmpdir/open-webui-background.png" -define png:color-type=6 "$tmpdir/open-webui-background.png"
-magick -background none -bordercolor transparent "$input_dir/other/open-webui.png" -resize '112x112' -density 1200 "$tmpdir/open-webui-tmp.png"
-magick "$tmpdir/open-webui-background.png" "$tmpdir/open-webui-tmp.png" -gravity Center -composite "$tmpdir/open-webui-final.png"
-convert_image_full "$tmpdir/open-webui-final.png" "$output_dir/open-webui.png"
+magick -size "$default_image_size" xc:#ffffffef "$tmpdir/openwebui-background.png"
+magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/openwebui-background-mask.png"
+magick "$tmpdir/openwebui-background.png" "$tmpdir/openwebui-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/openwebui-background.png"
+magick "$tmpdir/openwebui-background.png" -define png:color-type=6 "$tmpdir/openwebui-background.png"
+magick -background none -bordercolor transparent "$input_dir/other/openwebui.png" -resize '112x112' -density 1200 "$tmpdir/openwebui-tmp.png"
+magick "$tmpdir/openwebui-background.png" "$tmpdir/openwebui-tmp.png" -gravity Center -composite "$tmpdir/openwebui-final.png"
+convert_image_full "$tmpdir/openwebui-final.png" "$output_dir/openwebui.png"
 
 ### Cleanup ###
 

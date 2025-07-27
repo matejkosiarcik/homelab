@@ -40,7 +40,9 @@ kiwix-wiktionary
 
 # AI
 ollama
-# open-webui
+# openwebui
+# ollama-private
+# openwebui-private
 # stable-diffusion
 
 # DNS backup

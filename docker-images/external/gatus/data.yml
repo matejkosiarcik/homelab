@@ -331,6 +331,9 @@ apps:
   - name: Ollama
     domain: ollama.matejhome.com
 
+  - name: Ollama [private]
+    domain: ollama-private.matejhome.com
+
   - name: Omada Controller
     domain: omada-controller.matejhome.com
     additional_ports:
@@ -370,7 +373,10 @@ apps:
       - "[STATUS] == 200"
 
   - name: Open WebUI
-    domain: open-webui.matejhome.com
+    domain: openwebui.matejhome.com
+
+  - name: Open WebUI [private]
+    domain: openwebui-private.matejhome.com
 
   - name: Owntracks
     domain: owntracks.matejhome.com

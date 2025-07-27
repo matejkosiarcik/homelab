@@ -385,7 +385,7 @@ case "$app_dirname" in
     printf 'OLLAMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama apache prometheus)" >>"$initial_output/app.env"
     printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omada-controller apache prometheus)" >>"$initial_output/app.env"
     printf 'OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$initial_output/app.env"
-    printf 'OPEN_WEBUI_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token open-webui apache prometheus)" >>"$initial_output/app.env"
+    printf 'OPENWEBUI_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui apache prometheus)" >>"$initial_output/app.env"
     printf 'OWNTRACKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token owntracks apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_SECONDARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary apache prometheus)" >>"$initial_output/app.env"
@@ -713,7 +713,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*open-webui*)
+*openwebui*)
     # App
     ollama_admin_password="$(load_token ollama app admin)"
     printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_admin_password@${DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN}" >>"$initial_output/app.env"

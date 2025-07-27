@@ -46,7 +46,7 @@ const appAddress = (() => {
         case 'ntfy': return 'http://app:80';
         case 'ollama': return ''; // http://app:11434
         case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
-        case 'open-webui': return 'http://app:8080';
+        case 'openwebui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'owntracks': return 'http://app-backend:8083';
         case 'pihole': return 'http://app:80';
@@ -87,7 +87,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'ntfy': return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
         case 'ollama': return `@/homelab/icons/${appType}.png`;
         case 'omada-controller': return '/favicon.ico';
-        case 'open-webui': return '/static/favicon.svg';
+        case 'openwebui': return '/static/favicon.svg';
         case 'openspeedtest': return '/assets/images/icons/apple-touch-icon.png';
         case 'owntracks': return '/static/recorder.png'; // <- Backend, '/favicon.ico' <- Frontend
         case 'pihole': return '/admin/img/favicons/apple-touch-icon.png';

@@ -84,7 +84,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
         printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
         exit 1
     fi
-elif [ "$HOMELAB_APP_TYPE" = 'open-webui' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'openwebui' ]; then
     PROXY_UPSTREAM_URL="http://app:8080"
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
     PROXY_UPSTREAM_URL="http://app:3000" # HTTPS endpoint is also available, but plain HTTP results in better performance

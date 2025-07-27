@@ -2,8 +2,8 @@ import { test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe(apps['open-webui'].title, () => {
-    for (const instance of apps['open-webui'].instances) {
+test.describe(apps['openwebui'].title, () => {
+    for (const instance of apps['openwebui'].instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             // TODO: createPrometheusTests(instance.url, { auth: 'basic' });
