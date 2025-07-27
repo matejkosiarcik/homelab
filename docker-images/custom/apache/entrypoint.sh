@@ -222,11 +222,6 @@ fi
 export PROXY_PROMETHEUS_EXPORTER_URL
 printf "export PROXY_PROMETHEUS_EXPORTER_URL='%s'\n" "$PROXY_PROMETHEUS_EXPORTER_URL" >>/etc/apache2/envvars
 
-# Create placeholder files for certbot
-if [ "$HOMELAB_APP_TYPE" = 'certbot' ]; then
-    cp /homelab/www/.apache/index.html /homelab/www/index.html
-fi
-
 # Wait for certificates to exist before starting
 timeout 60s sh <<EOF
 if [ -e '/homelab/certs/fullchain.pem' ]; then
