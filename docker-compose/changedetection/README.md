@@ -25,3 +25,7 @@ SockPuppetBrowser (used for opening \[web\] sites):
 - \[Prod\] Setup notifications (ntfy, mail):
     - ntfy: see [ntfy/README.md](../ntfy/README.md)
     - mail: `smtp4dev.matejhome.com`
+- \[Prod\] Tweak settings:
+    - Scrape interval (6 hours)
+    - Use `sockpuppetbrowser` for fetching
+    - Do not open "History" in new tabs

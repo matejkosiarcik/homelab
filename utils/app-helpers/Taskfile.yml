@@ -12,6 +12,11 @@ tasks:
     cmds:
       - python3 ../../../../utils/app-helpers/main.py deploy {{.CLI_ARGS}}
 
+  restart:
+    desc: Restart current app
+    cmds:
+      - python3 ../../../../utils/app-helpers/main.py restart {{.CLI_ARGS}}
+
   secrets:
     desc: Create new secrets for current app
     cmds:

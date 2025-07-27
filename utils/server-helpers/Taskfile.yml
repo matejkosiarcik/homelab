@@ -17,6 +17,11 @@ tasks:
     cmds:
       - python3 ../../utils/server-helpers/main.py install {{.CLI_ARGS}}
 
+  restart:
+    desc: Restart all apps
+    cmds:
+      - python3 ../../utils/server-helpers/main.py restart {{.CLI_ARGS}}
+
   secrets:
     desc: Create new secrets for all apps
     cmds:
