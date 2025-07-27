@@ -157,7 +157,7 @@ def server_action(action: str):
 
 def server_install():
     log.info("Installing global server config")
-    subprocess.check_call(["sh", path.join(git_dir, "utils", "servers-helpers", "install.sh")])
+    subprocess.check_call(["sh", path.join(git_dir, "utils", "server-helpers", "install.sh")])
     end_datetime = datetime.now()
     log.info("Installing global scripts - SUCCESS on %s (%s)", end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime))))
 
