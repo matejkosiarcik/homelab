@@ -9,7 +9,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       # - ./app-data/owntracks-config:/config:rw
-      - ./app-data/owntracks-store:/store:rw
+      - ./app-data/owntracks:/store:rw
     environment:
       OTR_PORT: "0" # disables MQTT
       OTR_STORAGEDIR: /store
