@@ -135,6 +135,8 @@ def run_main_command(command: str):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
 
+    print(f"Starting {command} of {full_app_name}")
+
     # Execute commands
     if command == "build":
         docker_build()
@@ -157,7 +159,6 @@ def run_main_command(command: str):
 
     end_datetime = datetime.now()
     time_delta = (end_datetime - start_datetime).total_seconds()
-    print()
     print(f"{command.capitalize()} of {full_app_name} successful in {int(time_delta) // 60:02d}:{int(time_delta) % 60:02d}.{int((time_delta % 1) * 10):d}s")
 
 
