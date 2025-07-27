@@ -2,7 +2,7 @@
 set -euf
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
-output_dir="$(git rev-parse --show-toplevel)/docker-images/custom/apache/www/.proxy/icons"
+output_dir="$(git rev-parse --show-toplevel)/docker-images/custom/apache/www/.apache/icons"
 rm -rf "$output_dir"
 mkdir -p "$output_dir"
 

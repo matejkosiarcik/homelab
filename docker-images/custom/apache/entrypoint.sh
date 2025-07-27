@@ -224,7 +224,7 @@ printf "export PROXY_PROMETHEUS_EXPORTER_URL='%s'\n" "$PROXY_PROMETHEUS_EXPORTER
 
 # Create placeholder files for certbot
 if [ "$HOMELAB_APP_TYPE" = 'certbot' ]; then
-    cp /homelab/www/.proxy/index.html /homelab/www/index.html
+    cp /homelab/www/.apache/index.html /homelab/www/index.html
 fi
 
 # Wait for certificates to exist before starting
