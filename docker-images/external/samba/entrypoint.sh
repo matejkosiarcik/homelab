@@ -2,7 +2,7 @@
 set -euf
 
 SAMBA_GROUP="$SAMBA_USERNAME-group"
-samba_file="/homelab/samba/smb-$SAMBA_CONFIG.conf"
+samba_file="/homelab/config/$SAMBA_CONFIG.conf"
 
 sed "s~#smb-title#~$SAMBA_TITLE~;s~#smb-user#~$SAMBA_USERNAME~;s~#smb-group#~$SAMBA_GROUP~" <"$samba_file" >/etc/samba/smb.conf
 

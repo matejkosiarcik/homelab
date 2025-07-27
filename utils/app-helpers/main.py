@@ -10,7 +10,6 @@ import subprocess
 import sys
 from datetime import datetime
 from os import path
-from typing import List
 
 start_datetime = datetime.now()
 start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
@@ -100,28 +99,27 @@ def docker_images_shasums() -> str:
     return "\n".join(output)
 
 
-def run_raw_command(commands: List[str]):
-    subprocess.check_call(commands)
-
-
 def docker_build():
     commands = ["docker", "compose"] + docker_compose_args + ["--parallel", "1", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
-    run_raw_command(commands)
+    subprocess.check_call(commands)
 
 
 def docker_stop():
     commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
-    run_raw_command(commands)
+    subprocess.check_call(commands)
 
 
 def docker_start():
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
-    run_raw_command(commands)
+    subprocess.check_call(commands)
 
 
 def create_secrets():
+    if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
+        precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
+        subprocess.check_call(precommands)
     commands = ["sh", f"{git_dir}/utils/secrets-helpers/main.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-    run_raw_command(commands)
+    subprocess.check_call(commands)
 
 
 def run_main_command(command: str):

@@ -32,7 +32,7 @@ RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
 
 FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
-COPY ./external/samba/smb-default.conf ./external/samba/smb-snapshots.conf /homelab/samba/
+COPY ./external/samba/config ./config
 COPY ./external/samba/entrypoint.sh ./
 COPY --from=samba-exporter-build /homelab/samba_exporter/bin ./bin
 
