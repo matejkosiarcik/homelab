@@ -82,7 +82,7 @@ updates:
   # NPM
   - package-ecosystem: npm
     directories:
-      - /.utils/setup-helpers/healthchecks
+      - /utils/setup-helpers/healthchecks
       - /docker-images/.shared/dependencies/zopflipng
       - /docker-images/custom/favicons
       - /docker-images/custom/homepage-widgets
