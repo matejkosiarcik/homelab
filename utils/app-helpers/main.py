@@ -145,6 +145,9 @@ def run_main_command(command: str):
         if when_mode == "always" or (when_mode == "onchange" and shasum_before != shasum_after):
             docker_stop()
             docker_start()
+    elif command == "restart":
+        docker_stop()
+        docker_start()
     elif command == "start":
         docker_start()
     elif command == "stop":
@@ -166,8 +169,9 @@ def main(argv):
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
         subparsers.add_parser("build", help="Build this app"),
+        subparsers.add_parser("deploy", help="Deploy app (build + stop + start)"),
+        subparsers.add_parser("restart", help="Restart app (stop + start)"),
         subparsers.add_parser("secrets", help="Create secrets for this app"),
-        subparsers.add_parser("deploy", help="Deploy app"),
         subparsers.add_parser("start", help="Start app"),
         subparsers.add_parser("stop", help="Stop app"),
     ]
@@ -204,7 +208,7 @@ def main(argv):
         print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
         sys.exit(1)
 
-    if command not in ["build", "deploy", "start", "stop", "secrets"]:
+    if command not in ["build", "deploy", "restart", "secrets", "start", "stop"]:
         print(f"Unrecognized command: {command}")
         sys.exit(1)
 
