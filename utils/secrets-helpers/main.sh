@@ -39,18 +39,6 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-    if [ "${BW_SESSION-}" = '' ]; then
-        echo 'You must set BW_SESSION env variable before calling this script.' >&2
-        exit 1
-    fi
-fi
-
-if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-    bw sync                  # Sync latest changes
-    bw list items >/dev/null # Verify we can access Vaultwarden
-fi
-
 initial_output="$(mktemp -d)"
 printf 'user,password\n' >"$initial_output/all-credentials.csv"
 

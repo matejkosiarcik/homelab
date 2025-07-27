@@ -120,6 +120,9 @@ def docker_start():
 
 
 def create_secrets():
+    if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
+        precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
+        run_raw_command(precommands)
     commands = ["sh", f"{git_dir}/utils/secrets-helpers/main.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
     run_raw_command(commands)
 
