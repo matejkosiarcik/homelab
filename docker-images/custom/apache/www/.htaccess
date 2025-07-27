@@ -20,9 +20,7 @@ RewriteRule ^ - [E=_ALLOW_HTTPS:false,NE]
 
 # Set _FORCE_HTTPS depending on current path
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
-RewriteCond %{REQUEST_URI} ^/.proxy$ [NC]
-RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
-RewriteCond %{REQUEST_URI} ^/.proxy/+ [NC]
+RewriteCond %{REQUEST_URI} ^/.proxy(/.*)?$ [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
 
 # Set target protocol
@@ -109,7 +107,7 @@ RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{REQUEST_URI}" [L,R=3
 # Return index.html for directories
 RewriteCond %{ENV:_REDIRECT} false [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC,OR]
-RewriteCond %{REQUEST_URI} ^/.proxy(/*.*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/.proxy(/.*)?$ [NC]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_FILENAME}/index.html -f
 RewriteRule ^ "%{REQUEST_URI}/index.html" [L]
@@ -128,11 +126,11 @@ RewriteRule ^ /admin [L,R=307]
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
 RewriteCond %{REQUEST_URI} !^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{REQUEST_URI} !^/metrics$ [NC]
-RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteRule ^ /.proxy/not-found [L]
 
 # Protect Apache proxy prometheus endpoint
-<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/.proxy/metrics/*$#">
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/.proxy/metrics/?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -141,7 +139,7 @@ RewriteRule ^ /.proxy/not-found [L]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:glances|gatus|jellyfin|node-exporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/*$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:glances|gatus|jellyfin|node-exporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -178,18 +176,18 @@ RewriteRule ^ /.proxy/not-found [L]
 
 # Redirect certbot download index.html
 RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
-RewriteCond %{REQUEST_URI} ^/download/*$ [NC]
+RewriteCond %{REQUEST_URI} ^/download/?$ [NC]
 RewriteRule ^ /index.html [L]
 
 # Custom prometheus metrics for apache itself
-RewriteCond %{REQUEST_URI} ^/.proxy/metrics/*$ [NC]
+RewriteCond %{REQUEST_URI} ^/.proxy/metrics/?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_PROMETHEUS_EXPORTER_URL}/metrics" [P,L]
 
 # Custom prometheus metrics
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:glances|pihole|samba|unbound)$ [NC]
-RewriteCond %{REQUEST_URI} ^/metrics/*$ [NC]
+RewriteCond %{REQUEST_URI} ^/metrics/?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
@@ -208,7 +206,7 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "http://favicons:8080%{REQUEST_URI}" [P,L]
 
 # Proxy websockets upstream
-RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{HTTP:Connection} upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL_WS} !^$ [NC]
@@ -223,7 +221,7 @@ RewriteCond %{ENV:PROXY_UPSTREAM_URL_STREAM} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_STREAM}/" [P,L]
 
 # Proxy regular requests upstream
-RewriteCond %{REQUEST_URI} !^/.proxy(/*.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/.proxy(/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
