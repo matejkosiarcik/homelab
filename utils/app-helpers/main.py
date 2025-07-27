@@ -10,7 +10,6 @@ import subprocess
 import sys
 from datetime import datetime
 from os import path
-from typing import List
 
 start_datetime = datetime.now()
 start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
