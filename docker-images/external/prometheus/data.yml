@@ -89,6 +89,18 @@ apps:
   - url: uptime-kuma.matejhome.com
     auth: basic
     path: /metrics
+  - url: unbound-1-default.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: unbound-1-open.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: unbound-2-default.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: unbound-2-open.matejhome.com
+    auth: basic
+    path: /metrics
 
 proxies:
   - url: actualbudget.matejhome.com
