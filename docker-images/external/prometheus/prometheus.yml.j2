@@ -20,7 +20,7 @@ scrape_configs:
 {%- for proxy in proxies %}
   - job_name: {{ proxy.url | replace(".matejhome.com", "") }}-proxy
     scheme: https
-    metrics_path: /.proxy/metrics
+    metrics_path: /.apache/metrics
     basic_auth:
       username: proxy-prometheus
       password: ${{ "{" }}{{ proxy.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}

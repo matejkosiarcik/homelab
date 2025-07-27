@@ -1,6 +1,6 @@
 # Wikipedia
 
-![diagram](../../docs/diagrams/out/apps/wikipedia.png)
+![diagram](../../docs/diagrams/out/apps/kiwix.png)
 
 ## Docs
 

@@ -1,5 +1,5 @@
 ---
-title: Wikipedia
+title: Kiwix
 config:
     theme: dark
 ---
@@ -18,6 +18,7 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         kiwix("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix")
         class kiwix strong_border;
+        kiwix_archives("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/files.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>archives")
         squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
         squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface(" ")
@@ -30,6 +31,7 @@ flowchart LR
         squid_proxy ~~~ squid_prometheus_exporter
         outbound_interface -.-|connect| squid_proxy
         certificator --> outbound_interface
+        kiwix -.-|fs| kiwix_archives
     end
 
     subgraph others_1["Others"]

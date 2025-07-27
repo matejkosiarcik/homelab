@@ -286,7 +286,7 @@ endpoints:
   - <<: *default-https-infrequent
     name: {{ item.name }} - HTTPS Proxy /metrics (noauth)
     group: App - {{ item.name }}
-    url: https://{{ item.domain }}/.proxy/metrics
+    url: https://{{ item.domain }}/.apache/metrics
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     conditions:
       - "[CONNECTED] == true"
@@ -297,7 +297,7 @@ endpoints:
   - <<: *default-https-infrequent
     name: {{ item.name }} - HTTPS Proxy /metrics
     group: App - {{ item.name }}
-    url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.proxy/metrics
+    url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
