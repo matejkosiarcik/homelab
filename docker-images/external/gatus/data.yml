@@ -432,7 +432,7 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Samba Data
+  - name: Samba [data]
     domain: samba-data.matejhome.com
     type: [smb]
     additional_ports:
@@ -440,7 +440,7 @@ apps:
         - 139
         - 445
 
-  - name: Samba Snapshots
+  - name: Samba [snapshots]
     domain: samba-snapshots.matejhome.com
     type: [smb]
     additional_ports:

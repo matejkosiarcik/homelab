@@ -456,10 +456,22 @@
         ping: ollama.matejhome.com
         icon: /icons/ollama.png
 
+    - Ollama [private]:
+        description: LLM backend
+        href: https://ollama-private.matejhome.com
+        ping: ollama-private.matejhome.com
+        icon: /icons/ollama.png
+
     - Open WebUI:
         description: LLM frontend
         href: https://openwebui.matejhome.com
         ping: openwebui.matejhome.com
+        icon: /icons/openwebui.png
+
+    - Open WebUI [private]:
+        description: LLM frontend
+        href: https://openwebui-private.matejhome.com
+        ping: openwebui-private.matejhome.com
         icon: /icons/openwebui.png
 
     - Stable diffusion:
