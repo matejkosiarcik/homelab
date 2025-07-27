@@ -135,6 +135,8 @@ def run_main_command(command: str):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
 
+    print(f"Starting {command} of {full_app_name}")
+
     # Execute commands
     if command == "build":
         docker_build()
