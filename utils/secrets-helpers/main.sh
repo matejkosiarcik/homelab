@@ -1026,16 +1026,16 @@ case "$app_dirname" in
     else
         admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
-    homelab_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)"
+    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)"
     if [ "$mode" = 'dev' ]; then
-        homelab_email='homelab@vaultwarden.localhost'
+        user_email='user@vaultwarden.localhost'
     else
-        homelab_email="homelab@$DOCKER_COMPOSE_NETWORK_DOMAIN"
+        user_email="user@$DOCKER_COMPOSE_NETWORK_DOMAIN"
     fi
     printf 'ADMIN_TOKEN=%s\n' "$superadmin_password_hashed" >>"$initial_output/app.env"
     printf 'superadmin,%s\n' "$superadmin_password" >>"$initial_output/all-credentials.csv"
     printf '%s,%s\n' "$admin_email" "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf '%s,%s\n' "$homelab_email" "$homelab_password" >>"$initial_output/all-credentials.csv"
+    printf '%s,%s\n' "$user_email" "$user_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
