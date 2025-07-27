@@ -91,7 +91,7 @@ def docker_images_shasums() -> str:
     output = []
     for image in image_names:
         try:
-            inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"]).decode()
+            inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"], stderr=subprocess.DEVNULL).decode()
             layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode().replace("\n", " ").strip()
         except subprocess.CalledProcessError:
             layers_output = "N/A"

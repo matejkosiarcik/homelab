@@ -458,9 +458,9 @@
 
     - Open WebUI:
         description: LLM frontend
-        href: https://open-webui.matejhome.com
-        ping: open-webui.matejhome.com
-        icon: /icons/open-webui.png
+        href: https://openwebui.matejhome.com
+        ping: openwebui.matejhome.com
+        icon: /icons/openwebui.png
 
     - Stable diffusion:
         description: LLM frontend

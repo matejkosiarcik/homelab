@@ -128,7 +128,7 @@ proxies:
   - url: ntfy.matejhome.com
   - url: ollama.matejhome.com
   - url: omada-controller.matejhome.com
-  - url: open-webui.matejhome.com
+  - url: openwebui.matejhome.com
   - url: openspeedtest.matejhome.com
   - url: owntracks.matejhome.com
   - url: pihole-1-primary.matejhome.com

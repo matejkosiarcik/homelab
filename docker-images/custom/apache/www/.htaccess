@@ -122,6 +122,11 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
+# Specific redirect for Unbound: "/" -> "/.proxy/index.html"
+RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /.proxy/index.html [L]
+
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
 RewriteCond %{REQUEST_URI} !^/favicon\.(?:ico|png)$ [NC]

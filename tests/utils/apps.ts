@@ -150,11 +150,11 @@ export const apps = {
             { url: 'https://openspeedtest.matejhome.com', title: 'Openspeedtest' },
         ],
     },
-    'open-webui': {
+    openwebui: {
         title: 'Open WebUI',
         instances: [
-            { url: 'https://open-webui.matejhome.com', title: 'Open WebUI' },
-            { url: 'https://open-webui-private.matejhome.com', title: 'Open WebUI - Private' },
+            { url: 'https://openwebui.matejhome.com', title: 'Open WebUI' },
+            { url: 'https://openwebui-private.matejhome.com', title: 'Open WebUI - Private' },
         ],
     },
     owntracks: {

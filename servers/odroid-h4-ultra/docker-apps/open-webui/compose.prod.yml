@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/open-webui/compose.override-prod.yml
-    project_directory: .
