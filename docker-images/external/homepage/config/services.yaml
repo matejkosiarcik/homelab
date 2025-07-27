@@ -444,10 +444,16 @@
         icon: /icons/owntracks.png
 
     - Wikipedia:
-        description: The Free Encyclopedia
+        description: Free Encyclopedia
         href: https://wikipedia.matejhome.com
         ping: wikipedia.matejhome.com
         icon: /icons/wikipedia.png
+
+    - Wiktionary:
+        description: Free dictionary
+        href: https://wiktionary.matejhome.com
+        ping: wiktionary.matejhome.com
+        icon: /icons/wiktionary.png
 
 - AI:
     - Ollama:
