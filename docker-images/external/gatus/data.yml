@@ -330,9 +330,13 @@ apps:
 
   - name: Ollama
     domain: ollama.matejhome.com
+    authentication:
+      basic: admin
 
   - name: Ollama [private]
     domain: ollama-private.matejhome.com
+    authentication:
+      basic: admin
 
   - name: Omada Controller
     domain: omada-controller.matejhome.com

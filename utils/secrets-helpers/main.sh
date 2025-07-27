@@ -330,6 +330,8 @@ case "$app_dirname" in
     printf 'NODE_EXPORTER_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-3b app prometheus)" >>"$initial_output/app.env"
     printf 'NODE_EXPORTER_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-2g app prometheus)" >>"$initial_output/app.env"
     printf 'NODE_EXPORTER_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
+    printf 'OLLAMA_PRIVATE_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private app admin)" >>"$initial_output/app.env"
+    printf 'OLLAMA_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama app admin)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$initial_output/app.env"
