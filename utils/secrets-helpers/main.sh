@@ -337,6 +337,10 @@ case "$app_dirname" in
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$initial_output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-default app prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-open app prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-default app prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-open app prometheus)" >>"$initial_output/app.env"
     # Proxy prometheus credentials
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget apache prometheus)" >>"$initial_output/app.env"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$initial_output/app.env"
@@ -803,6 +807,10 @@ case "$app_dirname" in
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$initial_output/app.env"
     printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-default app prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-open app prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-default app prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-open app prometheus)" >>"$initial_output/app.env"
     # Proxy prometheus credentials
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget apache prometheus)" >>"$initial_output/app.env"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$initial_output/app.env"
