@@ -137,6 +137,8 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Home Assistant',
         'Homepage',
         'Jellyfin',
+        'Kiwix - Wikipedia',
+        'Kiwix - Wiktionary',
         'Minio',
         'MotionEye - Kitchen',
         'Netalertx',
@@ -170,8 +172,6 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Uptime Kuma',
         'Vaultwarden',
         'Vikunja',
-        'Wikipedia',
-        'Wiktionary',
     ];
     for (const _name of certificatorHealthchecks) {
         const name = `${_name} - Certificator`;
