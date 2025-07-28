@@ -81,6 +81,6 @@ ENV HOMELAB_CONTAINER_NAME=web-automation \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.internal/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.status/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
