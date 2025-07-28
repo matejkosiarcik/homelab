@@ -1,15 +1,12 @@
 #!/bin/sh
 set -euf
 
-printf '\n' >>/etc/apache2/envvars
-
 # Set HOMELAB_ENV
 if [ "${HOMELAB_ENV-x}" = 'x' ]; then
     printf 'HOMELAB_ENV unset\n' >&2
     exit 1
 fi
 export HOMELAB_ENV
-printf "export HOMELAB_ENV='%s'\n" "$HOMELAB_ENV" >>/etc/apache2/envvars
 
 # Set HOMELAB_APP_TYPE
 if [ "${HOMELAB_APP_TYPE-x}" = 'x' ]; then
@@ -17,7 +14,6 @@ if [ "${HOMELAB_APP_TYPE-x}" = 'x' ]; then
     exit 1
 fi
 export HOMELAB_APP_TYPE
-printf "export HOMELAB_APP_TYPE='%s'\n" "$HOMELAB_APP_TYPE" >>/etc/apache2/envvars
 
 # Set HOMELAB_APP_EXTERNAL_DOMAIN
 if [ "${HOMELAB_APP_EXTERNAL_DOMAIN-x}" = 'x' ]; then
@@ -25,7 +21,6 @@ if [ "${HOMELAB_APP_EXTERNAL_DOMAIN-x}" = 'x' ]; then
     exit 1
 fi
 export HOMELAB_APP_EXTERNAL_DOMAIN
-printf "export HOMELAB_APP_EXTERNAL_DOMAIN='%s'\n" "$HOMELAB_APP_EXTERNAL_DOMAIN" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL
 if [ "$HOMELAB_APP_TYPE" = 'actualbudget' ]; then
@@ -117,7 +112,6 @@ else
     exit 1
 fi
 export PROXY_UPSTREAM_URL
-printf "export PROXY_UPSTREAM_URL='%s'\n" "$PROXY_UPSTREAM_URL" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL_STREAM
 if [ "$HOMELAB_APP_TYPE" = 'motioneye' ]; then
@@ -126,12 +120,10 @@ else
     PROXY_UPSTREAM_URL_STREAM=''
 fi
 export PROXY_UPSTREAM_URL_STREAM
-printf "export PROXY_UPSTREAM_URL_STREAM='%s'\n" "$PROXY_UPSTREAM_URL_STREAM" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL_WS
 PROXY_UPSTREAM_URL_WS="$(printf '%s' "$PROXY_UPSTREAM_URL" | sed 's~https:~wss:~;s~http:~ws:~')"
 export PROXY_UPSTREAM_URL_WS
-printf "export PROXY_UPSTREAM_URL_WS='%s'\n" "$PROXY_UPSTREAM_URL_WS" >>/etc/apache2/envvars
 
 # Set PROXY_HTTP_PORT
 if [ "$HOMELAB_ENV" = 'prod' ]; then
@@ -143,7 +135,6 @@ else
     exit 1
 fi
 export PROXY_HTTP_PORT
-printf "export PROXY_HTTP_PORT='%s'\n" "$PROXY_HTTP_PORT" >>/etc/apache2/envvars
 
 # Set PROXY_HTTPS_PORT
 if [ "$HOMELAB_ENV" = 'prod' ]; then
@@ -165,7 +156,6 @@ else
     exit 1
 fi
 export PROXY_HTTPS_PORT
-printf "export PROXY_HTTPS_PORT='%s'\n" "$PROXY_HTTPS_PORT" >>/etc/apache2/envvars
 
 # Set PROXY_FORCE_HTTPS
 if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
@@ -178,7 +168,6 @@ else
     PROXY_FORCE_HTTPS='true'
 fi
 export PROXY_FORCE_HTTPS
-printf "export PROXY_FORCE_HTTPS='%s'\n" "$PROXY_FORCE_HTTPS" >>/etc/apache2/envvars
 
 # Set PROXY_REDIRECT_TO_HTTP_OR_HTTPS
 if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
@@ -189,7 +178,6 @@ else
     PROXY_REDIRECT_TO_HTTP_OR_HTTPS=''
 fi
 export PROXY_REDIRECT_TO_HTTP_OR_HTTPS
-printf "export PROXY_REDIRECT_TO_HTTP_OR_HTTPS='%s'\n" "$PROXY_REDIRECT_TO_HTTP_OR_HTTPS" >>/etc/apache2/envvars
 
 # Set PROXY_UPSTREAM_URL_PROMETHEUS
 if [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
@@ -204,7 +192,6 @@ else
     PROXY_UPSTREAM_URL_PROMETHEUS=''
 fi
 export PROXY_UPSTREAM_URL_PROMETHEUS
-printf "export PROXY_UPSTREAM_URL_PROMETHEUS='%s'\n" "$PROXY_UPSTREAM_URL_PROMETHEUS" >>/etc/apache2/envvars
 
 # Set PROXY_PROMETHEUS_EXPORTER_URL
 if [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
@@ -220,7 +207,6 @@ else
     PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter:9117'
 fi
 export PROXY_PROMETHEUS_EXPORTER_URL
-printf "export PROXY_PROMETHEUS_EXPORTER_URL='%s'\n" "$PROXY_PROMETHEUS_EXPORTER_URL" >>/etc/apache2/envvars
 
 # Wait for certificates to exist before starting
 timeout 60s sh <<EOF
