@@ -46,6 +46,9 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
+    read_only: true # TODO: Apply to all containers
+    tmpfs:
+      - /homelab/.status
 
   apache:
     extends:
