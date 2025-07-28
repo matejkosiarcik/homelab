@@ -1,7 +1,6 @@
 #!/bin/sh
 set -euf
 
-mkdir -p /homelab/.status
 printf 'starting\n' >/homelab/.status/status.txt
 
 # Setup Environment variables

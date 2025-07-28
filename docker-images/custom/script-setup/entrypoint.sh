@@ -1,7 +1,6 @@
 #!/bin/sh
 set -euf
 
-mkdir -p /homelab/.status
 printf 'starting\n' >/homelab/.status/status.txt
 
 printf '%s - Starting setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"

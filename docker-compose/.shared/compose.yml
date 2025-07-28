@@ -101,6 +101,9 @@ services:
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
+    read_only: true # TODO: Apply to all containers
+    tmpfs:
+      - /homelab/.status
 
   favicons:
     extends:
@@ -118,3 +121,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     build:
       dockerfile: ./custom/script-setup/Dockerfile
+    read_only: true # TODO: Apply to all containers
+    tmpfs:
+      - /homelab/.status
