@@ -42,16 +42,16 @@ RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 
 FROM debian:12.11-slim AS prefinal
 WORKDIR /homelab
-COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /etc/prometheus/
-COPY --from=config-2 ./homelab/prometheus.yml /etc/prometheus/prometheus.yml
+COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
+COPY --from=config-2 ./homelab/prometheus.yml /homelab/prometheus.yml
 
 FROM prom/prometheus:v3.5.0
-COPY --from=prefinal /etc/prometheus/web.yml /etc/prometheus/prometheus.yml /etc/prometheus/entrypoint.sh /etc/prometheus/
+COPY --from=prefinal /homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://admin:$PROMETHEUS_ADMIN_PASSWORD@localhost:9090 || exit 1" ]
 # hadolint ignore=DL3002
 USER root
-ENTRYPOINT [ "sh", "/etc/prometheus/entrypoint.sh" ]
+ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
 CMD []

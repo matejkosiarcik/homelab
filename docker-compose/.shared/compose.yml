@@ -26,6 +26,7 @@ services:
     build:
       context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
       dockerfile: ./external/PLACEHOLDER/Dockerfile
+    read_only: true
 
   app:
     extends:
@@ -46,7 +47,6 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
-    read_only: true # TODO: Apply to all containers
     tmpfs:
       - /homelab/.status
 
@@ -64,7 +64,6 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via socat instead
-    read_only: true # TODO: Apply to all containers
     tmpfs:
       - /var/lock
       - /var/log/apache2
@@ -81,7 +80,6 @@ services:
       APACHE_HOST: apache
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
-    read_only: true # TODO: Apply to all containers
 
   socket-proxy:
     extends:
@@ -104,7 +102,6 @@ services:
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
-    read_only: true # TODO: Apply to all containers
     tmpfs:
       - /homelab/.status
 
@@ -116,7 +113,6 @@ services:
       dockerfile: ./custom/favicons/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
-    read_only: true # TODO: Apply to all containers
 
   script-app-setup:
     extends:
@@ -124,6 +120,5 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     build:
       dockerfile: ./custom/script-setup/Dockerfile
-    read_only: true # TODO: Apply to all containers
     tmpfs:
       - /homelab/.status

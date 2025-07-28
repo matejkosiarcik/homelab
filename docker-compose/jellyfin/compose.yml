@@ -12,6 +12,8 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
+    tmpfs:
+      - /run:exec
 
   app-setup:
     extends:
@@ -20,6 +22,8 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
       - ./app-data/jellyfin-data:/homelab/data:rw
+    tmpfs:
+      - /tmp
 
   certificator:
     extends:

@@ -5,5 +5,3 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    environment:
-      HOMELAB_CRON_SKIP_INITIAL: "0"

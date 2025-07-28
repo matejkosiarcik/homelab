@@ -2,9 +2,13 @@
 set -euf
 
 tmpfile="$(mktemp)"
-sed "s~\${PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED" | base64 -d)~g;s~\${PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED" | base64 -d)~g" </etc/prometheus/web.yml >"$tmpfile"
-cat <"$tmpfile" >/etc/prometheus/web.yml
-cat </etc/prometheus/prometheus.yml |
+
+# web.yml
+sed "s~\${PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED" | base64 -d)~g;s~\${PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED" | base64 -d)~g" </homelab/web.yml >"$tmpfile"
+cat <"$tmpfile" >/homelab/config/web.yml
+
+# prometheus.yml
+cat </homelab/prometheus.yml |
     sed "s~\${ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD}~$ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${CERTBOT_PROXY_PROMETHEUS_PASSWORD}~$CERTBOT_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD}~$CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD~g" |
@@ -78,19 +82,19 @@ cat </etc/prometheus/prometheus.yml |
     sed "s~\${WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD}~$WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${WIKTIONARY_PROXY_PROMETHEUS_PASSWORD}~$WIKTIONARY_PROXY_PROMETHEUS_PASSWORD~g" |
     cat >"$tmpfile"
-cat <"$tmpfile" >/etc/prometheus/prometheus.yml
+cat <"$tmpfile" >/homelab/config/prometheus.yml
 rm -f "$tmpfile"
 
-if [ "$(wc -l </etc/prometheus/prometheus.yml)" -eq 0 ]; then
-    printf "Error: /etc/prometheus/prometheus.yml is empty" >&2
+if [ "$(wc -l </homelab/config/prometheus.yml)" -eq 0 ]; then
+    printf "Error: /homelab/config/prometheus.yml is empty" >&2
     exit 1
 fi
 
-promtool check web-config /etc/prometheus/web.yml
-promtool check config /etc/prometheus/prometheus.yml
+promtool check web-config /homelab/config/web.yml
+promtool check config /homelab/config/prometheus.yml
 
 prometheus \
-    --config.file=/etc/prometheus/prometheus.yml \
+    --config.file=/homelab/config/prometheus.yml \
     --storage.tsdb.path=/prometheus \
     --storage.tsdb.retention.time=30d \
-    --web.config.file=/etc/prometheus/web.yml
+    --web.config.file=/homelab/config/web.yml
