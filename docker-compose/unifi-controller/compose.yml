@@ -21,9 +21,9 @@ services:
     read_only: false # TODO: Report problem upstream
     tmpfs:
       - /run:exec
-      # - /usr/lib/unifi/data
-      # - /usr/lib/unifi/logs
+      - /tmp
       # - /usr/lib/unifi/run
+      # - /usr/lib/unifi/logs
 
   mongodb:
     extends:
