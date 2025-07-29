@@ -9,6 +9,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./app-data/motioneye-etc:/etc/motioneye:rw
       - ./app-data/motioneye-lib:/var/lib/motioneye:rw
+    tmpfs:
+      - /run
+      - /tmp
+      - /var/log/motioneye
 
   certificator:
     extends:
