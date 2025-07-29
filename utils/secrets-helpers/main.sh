@@ -713,6 +713,9 @@ case "$app_dirname" in
     # App
     ollama_admin_password="$(load_token ollama app admin)"
     printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_admin_password@${DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN}" >>"$initial_output/app.env"
+    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
+    printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

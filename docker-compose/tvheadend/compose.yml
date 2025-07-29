@@ -11,6 +11,8 @@ services:
       # - ./app-data/tvheadend-recordings:/recordings
     networks:
       external-network: {} # TODO: Connect to external world via squid instead
+    tmpfs:
+      - /run:exec
 
   certificator:
     extends:

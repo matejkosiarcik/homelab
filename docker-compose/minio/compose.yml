@@ -20,6 +20,9 @@ services:
       dockerfile: ./external/minio-client/Dockerfile
     env_file:
       - ./app-secrets/app-setup.env
+    tmpfs:
+      - /homelab/.status
+      - /root/.mc
 
   certificator:
     extends:
