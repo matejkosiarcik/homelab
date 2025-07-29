@@ -18,12 +18,9 @@ services:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
     stop_grace_period: 30s
-    read_only: false # TODO: Report problem upstream
     tmpfs:
       - /run:exec
-      # - /usr/lib/unifi/data
-      # - /usr/lib/unifi/logs
-      # - /usr/lib/unifi/run
+      - /tmp
 
   mongodb:
     extends:
