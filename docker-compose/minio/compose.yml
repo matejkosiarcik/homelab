@@ -37,7 +37,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-api:/homelab/logs:rw
+      - ./app-logs/apache-api:/homelab/logs:rw
 
   apache-console:
     extends:
@@ -47,7 +47,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: console
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-console:/homelab/logs:rw
+      - ./app-logs/apache-console:/homelab/logs:rw
 
   apache-prometheus-exporter-api:
     extends:
@@ -57,7 +57,7 @@ services:
     environment:
       APACHE_HOST: apache-api
     volumes:
-      - ./app-logs/apache-api:/homelab/logs:rw
+      - ./app-logs/apache-prometheus-exporter-api:/homelab/logs:rw
 
   apache-prometheus-exporter-console:
     extends:
@@ -67,7 +67,7 @@ services:
     environment:
       APACHE_HOST: apache-console
     volumes:
-      - ./app-logs/apache-api:/homelab/logs:rw
+      - ./app-logs/apache-prometheus-exporter-console:/homelab/logs:rw
 
   favicons:
     extends:

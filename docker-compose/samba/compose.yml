@@ -15,6 +15,13 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
+    # read_only: false # Solve issues
+    tmpfs:
+      - /homelab/config/out
+      - /run
+      - /var/cache/samba
+      - /var/lib/samba
+      - /var/lib/samba/private
 
   certificator:
     extends:

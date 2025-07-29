@@ -103,9 +103,11 @@
 10.1.20.51 openwebui.matejhome.com
 10.1.20.52 stable-diffusion.matejhome.com
 10.1.20.53 grafana.matejhome.com
-10.1.20.54 owntracks.matejhome.com
+# 10.1.20.54
 10.1.20.55 wikipedia.matejhome.com
 10.1.20.56 wiktionary.matejhome.com
 10.1.20.57 docker-stats-odroid-h4-ultra.matejhome.com
 10.1.20.58 ollama-private.matejhome.com
 10.1.20.59 openwebui-private.matejhome.com
+10.1.20.60 owntracks.matejhome.com
+10.1.20.61 owntracks-backend.matejhome.com

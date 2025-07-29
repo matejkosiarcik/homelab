@@ -87,7 +87,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
     build:
       dockerfile: ./external/socket-proxy/Dockerfile
-    read_only: true # TODO: Apply to all containers
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     tmpfs:
