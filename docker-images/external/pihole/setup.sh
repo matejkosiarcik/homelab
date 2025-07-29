@@ -74,10 +74,10 @@ open_group_id="$(sql "SELECT id FROM [group] WHERE name='Open';")"
 # done
 
 # Custom clients
-unbound_default_1_ip='10.1.10.1'
+unbound_default_1_ip='10.1.20.1'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_1_ip', 0, 0, 'Unbound 1 default');"
 unbound_default_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_1_ip';")"
-unbound_open_1_ip='10.1.10.2'
+unbound_open_1_ip='10.1.20.2'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_open_1_ip', 0, 0, 'Unbound 1 open');"
 unbound_open_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_open_1_ip';")"
 unbound_default_2_ip='10.1.16.1'
