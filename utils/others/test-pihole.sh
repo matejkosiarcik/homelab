@@ -8,7 +8,7 @@ tail -n +2 <"$HOME/Downloads/majestic_million.csv" | while read -r entry; do
         continue
     fi
 
-    ip="$(dig '@10.1.10.1' '+short' "$domain" || (
+    ip="$(dig '@10.1.20.1' '+short' "$domain" || (
         printf 'Not resolved %s %s\n' "$i" "$domain" >&2 && exit 1
     ))"
     # ip="$(dig '@127.0.0.1' -p '8053' '+short' "$domain" || (
