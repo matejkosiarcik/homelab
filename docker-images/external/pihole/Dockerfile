@@ -3,6 +3,7 @@
 FROM pihole/pihole:2025.07.1
 COPY ./external/pihole/custom-domains.txt ./external/pihole/setup.sh /homelab/
 ENV DHCP_ACTIVE=false \
+    DNSMASQ_USER=root \
     FTLCONF_dns_domain=matejhome.com \
     FTLCONF_dns_domainNeeded=true \
     FTLCONF_dns_ignoreLocalhost=false \
@@ -18,4 +19,5 @@ ENV DHCP_ACTIVE=false \
     HOMELAB_CONTAINER_NAME=pihole \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
+# TODO: Remove DNSMASQ_USER=root override above
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/admin || exit 1" ]
