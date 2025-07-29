@@ -13,14 +13,15 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
-    tmpfs:
-      - /app/www/bootstrap/cache
-      - /app/www/database
-      - /app/www/storage/app
-      - /app/www/storage/framework
-      - /app/www/storage/logs
-      - /run:exec
-      - /tmp
+    read_only: false # TODO: Find a way to run in readonly mode
+    # tmpfs:
+    #   - /app/www/bootstrap/cache
+    #   - /app/www/database
+    #   - /app/www/storage/app
+    #   - /app/www/storage/framework
+    #   - /app/www/storage/logs
+    #   - /run:exec
+    #   - /tmp
 
   certificator:
     extends:
