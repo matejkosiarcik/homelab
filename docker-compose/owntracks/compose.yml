@@ -23,6 +23,9 @@ services:
     build:
       dockerfile: ./external/owntracks-frontend/Dockerfile
     read_only: false # TODO: Find a way to enable readonly mode
+    tmpfs:
+      - /run
+      - /var/cache/nginx
 
   decryptor:
     extends:
