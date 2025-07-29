@@ -1,6 +1,9 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM linuxserver/unifi-network-application:9.2.87
+RUN ln -s /config/data /usr/lib/unifi/data && \
+    ln -s /config/logs /usr/lib/unifi/logs && \
+    ln -s /run/unifi /usr/lib/unifi/run
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     HOMELAB_CONTAINER_NAME=unifi-controller \
     HOMELAB_CONTAINER_VARIANT=default \
