@@ -39,17 +39,47 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: certificator
 
-  apache:
+  apache-frontend:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend
+    environment:
+      HOMELAB_CONTAINER_VARIANT: frontend
     volumes:
+      - ./app-logs/apache-frontend:/homelab/logs:rw
       - ./app-secrets/users.htpasswd:/homelab/users.htpasswd:ro
 
-  apache-prometheus-exporter:
+  apache-backend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-backend
+    environment:
+      HOMELAB_CONTAINER_VARIANT: backend
+    volumes:
+      - ./app-logs/apache-backend:/homelab/logs:rw
+      - ./app-secrets/users.htpasswd:/homelab/users.htpasswd:ro
+
+  apache-prometheus-exporter-frontend:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend
+    environment:
+      APACHE_HOST: apache-frontend
+    volumes:
+      - ./app-logs/apache-frontend:/homelab/logs:rw
+
+  apache-prometheus-exporter-backend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend
+    environment:
+      APACHE_HOST: apache-backend
+    volumes:
+      - ./app-logs/apache-backend:/homelab/logs:rw
 
   favicons:
     extends:

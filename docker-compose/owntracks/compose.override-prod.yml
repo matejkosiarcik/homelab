@@ -15,13 +15,22 @@ services:
   certificator:
     <<: *common-service-options
 
-  apache:
+  apache-frontend:
     <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+      - ${DOCKER_COMPOSE_NETWORK_IP_FRONTEND}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP_FRONTEND}:443:443
 
-  apache-prometheus-exporter:
+  apache-backend:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP_BACKEND}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP_BACKEND}:443:443
+
+  apache-prometheus-exporter-frontend:
+    <<: *common-service-options
+
+  apache-prometheus-exporter-backend:
     <<: *common-service-options
 
   favicons:
