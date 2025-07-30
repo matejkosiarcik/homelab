@@ -18,7 +18,6 @@ services:
       - /data
       - /defaults
       - /run:exec
-      - /tmp
       - /transcode
 
   app-setup:
@@ -28,8 +27,6 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
       - ./app-data/jellyfin-data:/homelab/data:rw
-    tmpfs:
-      - /tmp
 
   certificator:
     extends:

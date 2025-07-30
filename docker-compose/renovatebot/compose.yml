@@ -14,7 +14,6 @@ services:
       external-network: {} # TODO: Connect to external world via squid instead
     tmpfs:
       - /homelab/.status
-      - /tmp
 
 networks:
   default:

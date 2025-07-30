@@ -10,7 +10,6 @@ services:
       PUID: "1000"
       PGID: "1000"
     tmpfs:
-      - /tmp
       - /var/cache/nginx/client_temp
       - /var/cache/nginx/fastcgi_temp
       - /var/cache/nginx/proxy_temp
