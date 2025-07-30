@@ -443,6 +443,12 @@
         ping: owntracks.matejhome.com
         icon: /icons/owntracks.png
 
+    - Owntracks [backend]:
+        description: Location tracking
+        href: https://owntracks-backend.matejhome.com
+        ping: owntracks-backend.matejhome.com
+        icon: /icons/owntracks.png
+
     - Wikipedia:
         description: Free Encyclopedia
         href: https://wikipedia.matejhome.com
