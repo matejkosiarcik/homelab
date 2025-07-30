@@ -387,6 +387,11 @@ apps:
     authentication:
       basic: admin
 
+  - name: Owntracks [backend]
+    domain: owntracks-backend.matejhome.com
+    authentication:
+      basic: admin
+
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
     type:
