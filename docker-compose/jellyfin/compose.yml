@@ -12,8 +12,13 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
+    read_only: false # TODO: Find a way to run in readonly mode
     tmpfs:
+      - /app
+      - /data
+      - /defaults
       - /run:exec
+      - /transcode
 
   app-setup:
     extends:
@@ -22,8 +27,6 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
       - ./app-data/jellyfin-data:/homelab/data:rw
-    tmpfs:
-      - /tmp
 
   certificator:
     extends:

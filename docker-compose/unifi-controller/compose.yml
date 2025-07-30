@@ -20,7 +20,6 @@ services:
     stop_grace_period: 30s
     tmpfs:
       - /run:exec
-      - /tmp
 
   mongodb:
     extends:
@@ -37,8 +36,6 @@ services:
     volumes:
       - ./app-data/mongodb:/data/db:rw
       - ../../../../docker-images/external/unifi-network-application/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-    tmpfs:
-      - /tmp
 
   certificator:
     extends:

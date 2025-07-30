@@ -19,8 +19,6 @@ services:
         condition: service_started
     networks:
       external-network: {}
-    tmpfs:
-      - /tmp
 
   socket-proxy:
     extends:

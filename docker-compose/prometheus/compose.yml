@@ -13,7 +13,6 @@ services:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
     tmpfs:
-      - /tmp
       - /homelab/config
 
   certificator:

@@ -13,8 +13,6 @@ services:
     environment:
       GLANCES_OPT: "-w --password -u admin"
       DOCKER_HOST: tcp://socket-proxy:2375
-    tmpfs:
-      - /tmp
 
   app-prometheus:
     extends:
@@ -30,7 +28,6 @@ services:
       GLANCES_OPT: "--export prometheus --config /homelab/glances.conf"
       DOCKER_HOST: tcp://socket-proxy:2375
     tmpfs:
-      - /tmp
       - /root/.cache
 
   socket-proxy:

@@ -21,6 +21,8 @@ services:
     networks:
       internal-network: {}
     read_only: true
+    tmpfs:
+      - /tmp
 
   app:
     extends:

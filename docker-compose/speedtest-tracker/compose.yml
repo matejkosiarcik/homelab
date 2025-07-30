@@ -24,7 +24,6 @@ services:
       - /app/www/storage/framework/views
       - /app/www/storage/logs
       - /run:exec
-      - /tmp
       - /var/log/nginx
 
   certificator:

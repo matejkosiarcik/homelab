@@ -17,7 +17,6 @@ services:
       external-network: {} # TODO: Connect to external world via squid instead
     stop_grace_period: 60s
     tmpfs:
-      - /tmp
       - /opt/tplink/EAPController/properties
 
   certificator:
