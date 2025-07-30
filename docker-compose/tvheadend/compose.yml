@@ -10,7 +10,9 @@ services:
       - ./app-data/tvheadend-data:/config
       # - ./app-data/tvheadend-recordings:/recordings
     networks:
+      internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
+    read_only: false # TODO: Find a way to run in readonly mode
     tmpfs:
       - /run:exec
 
