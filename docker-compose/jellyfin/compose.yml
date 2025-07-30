@@ -14,7 +14,9 @@ services:
       external-network: {} # TODO: Connect to external world via squid instead
     read_only: false # TODO: Find a way to run in readonly mode
     tmpfs:
+      - /app
       - /data
+      - /defaults
       - /run:exec
       - /tmp
       - /transcode
