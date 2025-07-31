@@ -10,6 +10,7 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
+    read_only: false # TODO: Reenable readonly mode
 
   certificator:
     extends:
