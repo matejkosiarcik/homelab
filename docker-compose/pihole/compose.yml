@@ -21,10 +21,10 @@ services:
       external-network: {} # TODO: Connect to external world via squid instead
     stop_grace_period: 30s
     read_only: false # TODO: Fix readonly mode
-    tmpfs:
-      - /var/log/pihole
-      - /var/spool
-      - /run:exec
+    # tmpfs:
+    #   - /var/log/pihole
+    #   - /var/spool
+    #   - /run:exec
 
   app-setup:
     extends:
