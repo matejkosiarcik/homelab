@@ -68,7 +68,7 @@ app.post('/pub', async (request: Request, response: Response) => {
         const decryptedData = JSON.parse(decryptedText);
         const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
 
-        console.log(`Forwarding value: ${JSON.stringify(decryptedData)}`);
+        console.log(`${new Date().toISOString()} Forwarding value: ${JSON.stringify(decryptedData)}`);
 
         response.status(axiosResponse.status);
         response.send(axiosResponse.data);
