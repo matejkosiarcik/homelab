@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM vaultwarden/server:1.34.2
+FROM vaultwarden/server:1.34.3
 ENV EXTENDED_LOGGING=true \
     HOMELAB_CONTAINER_NAME=vaultwarden \
     HOMELAB_CONTAINER_VARIANT=default \
