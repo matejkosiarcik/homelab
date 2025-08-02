@@ -2,7 +2,8 @@
 
 FROM dgtlmoon/changedetection.io:0.50.7
 COPY ./external/changedetection/healthcheck.py /homelab/
-ENV HOMELAB_CONTAINER_NAME=changedetection \
+ENV FETCH_WORKERS=2 \
+    HOMELAB_CONTAINER_NAME=changedetection \
     HOMELAB_CONTAINER_VARIANT=default \
     LOGGER_LEVEL=WARNING \
     TZ=Europe/Bratislava \
