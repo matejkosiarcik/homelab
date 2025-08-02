@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM ollama/ollama:0.9.6
+FROM ollama/ollama:0.10.1
 COPY ./external/ollama/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=ollama \
     HOMELAB_CONTAINER_VARIANT=default \
