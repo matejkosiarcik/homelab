@@ -4,6 +4,7 @@
 # hadolint ignore=DL3007
 FROM dgtlmoon/sockpuppetbrowser:latest
 ENV ALLOW_CDP_LOG=no \
+    CHROME_HEADFUL=true \
     HOMELAB_CONTAINER_NAME=socket-proxy \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
