@@ -171,6 +171,7 @@ convert_image_full "$input_dir/other/stable-diffusion.png" "$output_dir/stable-d
 convert_image_full "$input_dir/other/renovatebot.png" "$output_dir/renovatebot.png"
 convert_image_full "$input_dir/other/webcamera.png" "$output_dir/webcamera.png"
 convert_image_full "$input_dir/other/websupport.png" "$output_dir/websupport.png"
+convert_image_full "$input_dir/other/wiktionary.svg.bin" "$output_dir/wiktionary.png"
 convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 
 ### Combined icons ###

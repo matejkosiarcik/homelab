@@ -38,4 +38,5 @@ The Icons are obtained from following locations:
     - TV (old): <https://www.flaticon.com/free-icon/television_550486>
     - UPC: <https://www.upc.sk>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>
+    - Wiktionary: <https://en.wiktionary.org/wiki/Wiktionary:Main_Page>
     - WWW: <https://www.flaticon.com/free-icon/www_4357944>

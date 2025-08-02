@@ -95,6 +95,7 @@ convert_image_full "$input_dir/other/raspberry-pi.svg.bin" "$output_dir/raspberr
 convert_image_full "$input_dir/other/smtp4dev-custom.png" "$output_dir/smtp4dev.png"
 convert_image_full "$input_dir/other/squid.jpg" "$output_dir/squid.jpg"
 convert_image_full "$input_dir/other/upc.svg.bin" "$output_dir/upc.png"
+convert_image_full "$input_dir/other/wiktionary.svg.bin" "$output_dir/wiktionary.png"
 
 ### Combined icons ###
 
