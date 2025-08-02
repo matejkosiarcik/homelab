@@ -12,6 +12,8 @@ services:
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
+    volumes:
+      - ./app-logs/renovatebot:/homelab/logs:rw
     tmpfs:
       - /homelab/.status
 
