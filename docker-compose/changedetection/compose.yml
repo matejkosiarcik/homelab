@@ -23,8 +23,8 @@ services:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via squid instead
     tmpfs:
-      - /homelab/chrome-user-data
       - /home/chrome
+      - /homelab/chrome-user-data
 
   certificator:
     extends:
