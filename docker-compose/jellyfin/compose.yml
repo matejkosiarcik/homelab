@@ -15,7 +15,8 @@ services:
     read_only: false # TODO: Fix
     tmpfs:
       - /app
-      - /config/cache/transcodes
+      - /cache
+      # - /config/cache/transcodes
       - /data
       - /defaults
       - /run:exec
