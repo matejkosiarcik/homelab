@@ -18,15 +18,11 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         dozzle("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle")
         class dozzle strong_border;
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8080| dozzle
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| dozzle
-        dozzle --> outbound_interface_1
-        certificator --> outbound_interface_2
     end
 
     subgraph others_1["Others"]
@@ -45,9 +41,9 @@ flowchart LR
         dozzle_agents("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dozzle.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-5px;right:0' /></div>Dozzle<br/>agents")
         class dozzle_agents dashed_border
 
-        outbound_interface_1 -->|read| dozzle_agents
+        dozzle -->|read| dozzle_agents
         certificator -->|report status| healthchecks
-        outbound_interface_2 -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

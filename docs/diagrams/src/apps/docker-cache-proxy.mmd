@@ -18,15 +18,11 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         docker_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.25em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>registry")
         class docker_registry strong_border;
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:80| docker_registry
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons
-        docker_registry --> outbound_interface_1
-        certificator --> outbound_interface_2
     end
 
     subgraph others_1["Others"]
@@ -47,9 +43,9 @@ flowchart LR
         dockerhub("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div>Public<br/>container<br/>registry")
         class dockerhub dashed_border
 
-        outbound_interface_1 -->|use| dockerhub
+        docker_registry -->|use| dockerhub
         certificator -->|report status| healthchecks
-        outbound_interface_2 -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

@@ -20,8 +20,6 @@ flowchart LR
         class jellyfin strong_border;
         jellyfin_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Jellyfin<br/>Setup")
         gpu("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/graphics-card.png' style='min-width:80px;max-width:80px' /></div>iGPU")
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443,8096| apache_proxy -->|:8096| jellyfin
         apache_proxy -.-|fs| certificator
@@ -29,8 +27,6 @@ flowchart LR
         apache_proxy -->|/favicon.ico| favicons -.->|use| jellyfin
         jellyfin -.->|encode| gpu
         jellyfin_setup -.->|fs| jellyfin
-        jellyfin --> outbound_interface_1
-        certificator --> outbound_interface_2
     end
 
     subgraph others_1["Others"]
@@ -53,10 +49,10 @@ flowchart LR
         class iptv dashed_border
 
         gpu ~~~ tvheadend & iptv & healthchecks
-        outbound_interface_1 -.->|use| tvheadend
-        outbound_interface_1 -.->|use| iptv
-        outbound_interface_2 -.->|report status| healthchecks
-        outbound_interface_2 -.->|download certificate| certbot
+        jellyfin -.->|use| tvheadend
+        jellyfin -.->|use| iptv
+        certificator -.->|report status| healthchecks
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

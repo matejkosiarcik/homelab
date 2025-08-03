@@ -19,17 +19,11 @@ flowchart LR
         changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
         class changedetection strong_border;
         sockpuppetbrowser("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chrome.png' style='min-width:80px;max-width:80px' /></div>SockPuppteBrowser<br/>(Playwright)")
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
-        outbound_interface_3(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:5000| changedetection -->|use| sockpuppetbrowser
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| changedetection
-        changedetection --> outbound_interface_1
-        certificator --> outbound_interface_2
-        sockpuppetbrowser --> outbound_interface_3
     end
 
     subgraph others_1["Others"]
@@ -51,10 +45,10 @@ flowchart LR
         websites("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/www.png' style='min-width:80px;max-width:80px' /></div>External<br/>Websites")
         class websites dashed_border
 
-        outbound_interface_1 -->|notification| gotify & ntfy & smtp
+        changedetection -->|notification| gotify & ntfy & smtp
         certificator -->|report status| healthchecks
-        outbound_interface_2 -.->|download certificate| certbot
-        outbound_interface_3 -->|monitor| websites
+        certificator -.->|download certificate| certbot
+        sockpuppetbrowser -->|fetch| websites
     end
 
     squid_prometheus_exporter ~~~ others_2

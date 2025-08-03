@@ -21,7 +21,6 @@ flowchart LR
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         class minio strong_border;
         minio_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/api.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
-        outbound_interface_1(" ")
 
         inbound_interface -->|:80,443| apache_proxy_1 --->|:9000| minio
         inbound_interface -->|:80,443| apache_proxy_2 --->|:9001| minio
@@ -30,7 +29,6 @@ flowchart LR
         apache_proxy_1 & apache_proxy_2 -.-|fs| certificator
         apache_proxy_1 & apache_proxy_2 -->|/favicon.ico| favicons -.->|use| minio
         minio ~~~ minio_setup -->|use| minio
-        certificator --> outbound_interface_1
     end
 
     subgraph others_1["Others"]
@@ -49,8 +47,8 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
 
-        outbound_interface_1 -.->|report status| healthchecks
-        outbound_interface_1 -.->|download certificate| certbot
+        certificator -.->|report status| healthchecks
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

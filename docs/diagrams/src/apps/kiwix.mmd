@@ -19,13 +19,11 @@ flowchart LR
         kiwix("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix")
         class kiwix strong_border;
         kiwix_archives("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/files.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>archives")
-        outbound_interface(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8080| kiwix
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| kiwix
-        certificator --> outbound_interface
         kiwix -.-|fs| kiwix_archives
     end
 
@@ -44,7 +42,7 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
         certificator -->|report status| healthchecks
-        outbound_interface -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

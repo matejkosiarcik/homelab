@@ -21,14 +21,12 @@ flowchart LR
         owntracks_backend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/owntracks.png' style='min-width:80px;max-width:80px' /></div>Owntracks<br/>Backend")
         class owntracks_frontend strong_border;
         class owntracks_backend strong_border;
-        outbound_interface(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:80| owntracks_frontend -->|:8083| owntracks_backend
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/favicon.ico| favicons -.->|use| owntracks_frontend
         apache_proxy -->|/pub| decryptor -.->|send| owntracks_backend
-        certificator --> outbound_interface
     end
 
     subgraph others_1["Others"]
@@ -48,7 +46,7 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
         certificator -->|report status| healthchecks
-        outbound_interface -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

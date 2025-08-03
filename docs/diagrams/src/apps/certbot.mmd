@@ -17,15 +17,11 @@ flowchart LR
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         class certbot strong_border;
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy
         apache_proxy -.-|fs| certbot
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons
-        certbot --> outbound_interface_1
-        certbot --> outbound_interface_2
     end
 
     subgraph others_1["Others"]
@@ -46,7 +42,7 @@ flowchart LR
         lets_encrypt("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Let's Encrypt")
 
         certificator -->|report status| healthchecks
-        outbound_interface_2 -->|use| websupport & lets_encrypt
+        certbot -->|use| websupport & lets_encrypt
     end
 
     squid_prometheus_exporter ~~~ others_2

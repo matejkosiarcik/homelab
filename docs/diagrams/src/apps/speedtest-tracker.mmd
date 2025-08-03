@@ -19,14 +19,12 @@ flowchart LR
         speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
         class speedtest_tracker strong_border;
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
-        outbound_interface_1(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:443| speedtest_tracker
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| speedtest_tracker
         speedtest_tracker ~~~ db_sync -.->|fs| speedtest_tracker
-        certificator --> outbound_interface_1
     end
 
     subgraph others_1["Others"]
@@ -47,7 +45,7 @@ flowchart LR
         class internet dashed_border
 
         certificator -->|report status| healthchecks
-        outbound_interface_1 -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
         db_sync -.->|send| s3_database
         speedtest_tracker -.->|measure speed| internet
         speedtest_tracker -.->|report status| healthchecks

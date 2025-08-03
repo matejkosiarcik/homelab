@@ -19,16 +19,12 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         class healthchecks strong_border;
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8000| healthchecks
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         healthchecks ~~~ db_sync -.->|fs| healthchecks
         apache_proxy -->|/favicon.ico| favicons -.->|use| healthchecks
-        healthchecks --> outbound_interface_1
-        certificator --> outbound_interface_2
     end
 
     subgraph others_1["Others"]
@@ -47,8 +43,8 @@ flowchart LR
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         s3_database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
 
-        outbound_interface_1 -->|send| s3_database
-        outbound_interface_2 -.->|download certificate| certbot
+        healthchecks -->|send| s3_database
+        certificator -.->|download certificate| certbot
         certificator -->|report status| healthchecks
     end
 

@@ -18,15 +18,11 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         openwebui("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/openwebui.png' style='min-width:80px;max-width:80px' /></div>Open WebUI")
         class openwebui strong_border;
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8080| openwebui
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| openwebui
-        certificator --> outbound_interface_1
-        openwebui --> outbound_interface_2
     end
 
     subgraph others_1["Others"]
@@ -45,8 +41,8 @@ flowchart LR
         ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
 
         certificator -->|report status| healthchecks
-        outbound_interface_1 -.->|download certificate| certbot
-        outbound_interface_2 -.->|use| ollama
+        certificator -.->|download certificate| certbot
+        openwebui -.->|use| ollama
     end
 
     squid_prometheus_exporter ~~~ others_2

@@ -21,8 +21,6 @@ flowchart LR
         ntfy_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:80| ntfy
         apache_proxy -.-|fs| certificator
@@ -33,8 +31,6 @@ flowchart LR
         ntfy_setup  -.->|use| ntfy
         ntfy_setup -.->|docker tcp| socket_proxy
         socket_proxy -.->|docker sock| docker
-        ntfy --> outbound_interface_1
-        certificator --> outbound_interface_2
     end
 
     subgraph others_1["Others"]
@@ -54,9 +50,9 @@ flowchart LR
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         personal_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps")
 
-        outbound_interface_1 -.->|push notifications| personal_devices
+        ntfy -.->|push notifications| personal_devices
         certificator -->|report status| healthchecks
-        outbound_interface_2 -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

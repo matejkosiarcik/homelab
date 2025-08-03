@@ -18,13 +18,11 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
         class ollama strong_border;
-        outbound_interface(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:11434| ollama
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons
-        certificator --> outbound_interface
     end
 
     subgraph others_1["Others"]
@@ -43,7 +41,7 @@ flowchart LR
         ollama_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /></div>Ollama registry")
 
         certificator -->|report status| healthchecks
-        outbound_interface -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
     end
 
     ollama_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama<br/>Setup")

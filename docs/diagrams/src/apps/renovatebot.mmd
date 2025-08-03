@@ -21,16 +21,12 @@ flowchart LR
         class renovatebot strong_border;
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy --> |:8080| renovatebot_controller
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| renovatebot
         renovatebot_controller -.->|docker tcp| socket_proxy -.->|docker sock| docker -.->|control| renovatebot
-        renovatebot --> outbound_interface_1
-        certificator --> outbound_interface_2
     end
 
     subgraph others_2["Others"]
@@ -41,10 +37,10 @@ flowchart LR
         gitlab("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gitlab.png' style='min-width:80px;max-width:80px' /></div>GitLab<br/>repositories")
         class gitlab dashed_border
 
-        outbound_interface_1 -.->|report status| healthchecks
-        outbound_interface_1 -.->|update| github & gitlab
+        certificator -.->|report status| healthchecks
+        renovatebot -.->|update| github & gitlab
         certificator -->|report status| healthchecks
-        outbound_interface_2 -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
     end
 
     squid_prometheus_exporter ~~~ others_2

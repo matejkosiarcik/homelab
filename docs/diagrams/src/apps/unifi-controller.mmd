@@ -20,7 +20,6 @@ flowchart LR
         class unifi_network_application strong_border;
         database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /></div>MongoDB")
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
-        outbound_interface_1(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8443| unifi_network_application
         inbound_interface -->|:8080,8443| unifi_network_application
@@ -30,7 +29,6 @@ flowchart LR
         apache_proxy -->|/favicon.ico| favicons -.->|use| unifi_network_application
         unifi_network_application ~~~ script_backup -.->|use| unifi_network_application
         unifi_network_application -->|use| database
-        certificator --> outbound_interface_1
     end
 
     subgraph others_1["Others"]
@@ -50,7 +48,7 @@ flowchart LR
         unifi_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Devices")
 
         certificator -->|report status| healthchecks
-        outbound_interface_1 -.->|download certificate| certbot
+        certificator -.->|download certificate| certbot
         script_backup -.->|send backup| s3_database
         certificator -.->|report status| healthchecks
         unifi_network_application -.->|control| unifi_devices
