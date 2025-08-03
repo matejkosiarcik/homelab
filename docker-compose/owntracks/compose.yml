@@ -8,12 +8,10 @@ services:
       dockerfile: ./external/owntracks-backend/Dockerfile
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      # - ./app-data/owntracks-config:/config:rw
       - ./app-data/owntracks:/store:rw
     environment:
       OTR_PORT: "0" # disables MQTT
       OTR_STORAGEDIR: /store
-      # OTR_HOST: mqtt_broker
 
   app-frontend:
     extends:
