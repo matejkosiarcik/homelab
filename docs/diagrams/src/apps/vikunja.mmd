@@ -19,7 +19,7 @@ flowchart LR
         vikunja("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/vikunja.png' style='min-width:80px;max-width:80px' /></div>Vikunja")
         class vikunja strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|:3456| vikunja
+        inbound_interface -->|:80,443| apache_proxy -->|/*:3456| vikunja
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| vikunja
