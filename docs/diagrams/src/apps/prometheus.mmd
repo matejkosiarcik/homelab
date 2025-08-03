@@ -48,7 +48,7 @@ flowchart LR
         other_apps("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Apps")
 
         outbound_interface_1 -.->|read metrics| other_apps
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -.->|download certificate| certbot
     end
 

@@ -49,7 +49,7 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
 
-        outbound_interface_1 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_1 -.->|download certificate| certbot
         outbound_interface_2 -.->|use| ollama
     end

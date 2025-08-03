@@ -57,7 +57,7 @@ flowchart LR
         class websites dashed_border
 
         outbound_interface_1 -->|notification| gotify & ntfy & smtp
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -.->|download certificate| certbot
         outbound_interface_3 -->|monitor| websites
     end

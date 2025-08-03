@@ -55,7 +55,7 @@ flowchart LR
 
         outbound_interface_1 -->|check| other_apps
         outbound_interface_1 -->|notification| gotify & ntfy & smtp
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -.->|download certificate| certbot
     end
 

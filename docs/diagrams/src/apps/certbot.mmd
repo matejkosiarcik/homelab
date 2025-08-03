@@ -50,7 +50,7 @@ flowchart LR
         websupport("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/websupport.png' style='min-width:80px;max-width:80px' /></div>Websupport API")
         lets_encrypt("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Let's Encrypt")
 
-        outbound_interface_1 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -->|use| websupport & lets_encrypt
     end
 

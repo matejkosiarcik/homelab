@@ -50,7 +50,7 @@ flowchart LR
         internet("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /></div>Internet")
         class internet dashed_border
 
-        outbound_interface_1 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_1 -.->|download certificate| certbot
         db_sync -.->|send| s3_database
         speedtest_tracker -.->|measure speed| internet

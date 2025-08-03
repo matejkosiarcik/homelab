@@ -52,7 +52,7 @@ flowchart LR
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         tp_link_equipment("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /></div>TP Link<br/>Equipment")
 
-        outbound_interface_1 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_1 -.->|download certificate| certbot
         outbound_interface_2 -.->|send backup| minio
         omada_controller -.->|control| tp_link_equipment

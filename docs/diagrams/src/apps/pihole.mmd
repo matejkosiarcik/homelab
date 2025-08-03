@@ -58,7 +58,7 @@ flowchart LR
         class public_dns dashed_border
 
         pihole -.->|DNS queries| public_dns
-        outbound_interface_1 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_1 -.->|download certificate| certbot
     end
 

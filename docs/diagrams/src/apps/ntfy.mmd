@@ -60,7 +60,7 @@ flowchart LR
         personal_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps")
 
         outbound_interface_1 -.->|push notifications| personal_devices
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -.->|download certificate| certbot
     end
 

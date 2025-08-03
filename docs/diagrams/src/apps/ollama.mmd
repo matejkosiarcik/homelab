@@ -47,7 +47,7 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         ollama_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /></div>Ollama registry")
 
-        outbound_interface -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface -.->|download certificate| certbot
     end
 

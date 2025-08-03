@@ -47,7 +47,7 @@ flowchart LR
 
         outbound_interface_1 -.->|report status| healthchecks
         outbound_interface_1 -.->|update| github & gitlab
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -.->|download certificate| certbot
     end
 

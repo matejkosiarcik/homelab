@@ -55,7 +55,7 @@ flowchart LR
 
         home_assistant ~~~ script_backup -.->|get backup| home_assistant
         outbound_interface_1 -->|control| smart_home
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -->|download certificate| certbot
         outbound_interface_3 -->|send_backup| s3_database
     end

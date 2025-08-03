@@ -50,7 +50,7 @@ flowchart LR
         unknown("???")
 
         outbound_interface_1 -->|notifications| unknown
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -.->|download certificate| certbot
     end
 

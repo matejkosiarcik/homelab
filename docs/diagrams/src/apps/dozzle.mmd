@@ -51,7 +51,7 @@ flowchart LR
         class dozzle_agents dashed_border
 
         outbound_interface_1 -->|read| dozzle_agents
-        outbound_interface_2 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_2 -.->|download certificate| certbot
     end
 

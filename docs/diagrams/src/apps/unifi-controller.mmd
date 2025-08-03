@@ -53,7 +53,7 @@ flowchart LR
         s3_database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         unifi_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Devices")
 
-        outbound_interface_1 -->|report status| healthchecks
+        certificator -->|report status| healthchecks
         outbound_interface_1 -.->|download certificate| certbot
         script_backup -.->|send backup| s3_database
         certificator -.->|report status| healthchecks
