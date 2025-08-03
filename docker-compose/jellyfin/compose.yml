@@ -8,15 +8,14 @@ services:
     init: false
     hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
     volumes:
-      - ./app-data/jellyfin-data:/config:rw
+      - ./app-data/jellyfin:/config:rw
+      - ./app-logs/jellyfin:/logs:rw
     networks:
       internal-network: {}
       external-network: {}
-    # read_only: false # TODO: Fix
     tmpfs:
       - /app
       - /cache
-      # - /config/cache
       - /data
       - /defaults
       - /run:exec
