@@ -37,7 +37,6 @@ flowchart LR
         ntfy_setup -.->|docker tcp| socket_proxy
         socket_proxy -.->|docker sock| docker
         squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 & outbound_interface_2 -.-|connect| squid_proxy
         ntfy --> outbound_interface_1
         certificator --> outbound_interface_2
     end

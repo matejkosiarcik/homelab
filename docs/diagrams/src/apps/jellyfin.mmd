@@ -33,7 +33,6 @@ flowchart LR
         jellyfin -.->|encode| gpu ~~~ squid_proxy
         jellyfin_setup -.->|fs| jellyfin
         squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 & outbound_interface_2 -.-|connect| squid_proxy
         jellyfin --> outbound_interface_1
         certificator --> outbound_interface_2
     end

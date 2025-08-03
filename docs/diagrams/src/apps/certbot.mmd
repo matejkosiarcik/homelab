@@ -28,7 +28,6 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons
         squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 & outbound_interface_2 -.-|connect| squid_proxy
         certbot --> outbound_interface_1
         certbot --> outbound_interface_2
     end
