@@ -12,7 +12,7 @@ services:
     networks:
       internal-network: {}
       external-network: {}
-    read_only: false # TODO: Find a way to run in readonly mode
+    # read_only: false # TODO: Find a way to run in readonly mode
     tmpfs:
       - /app
       - /data
