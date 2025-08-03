@@ -12,11 +12,10 @@ services:
     networks:
       internal-network: {}
       external-network: {}
-    read_only: false # TODO: Fix
+    # read_only: false # TODO: Fix
     tmpfs:
       - /app
       - /cache
-      # - /config/cache/transcodes
       - /data
       - /defaults
       - /run:exec
