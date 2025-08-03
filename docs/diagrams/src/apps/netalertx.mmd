@@ -29,7 +29,6 @@ flowchart LR
         apache_proxy -->|/favicon.ico| favicons -.->|use| netalertx
         inbound_interface -->|:20211| netalertx
         squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 -.-|connect| squid_proxy
         certificator --> outbound_interface_1
     end
 

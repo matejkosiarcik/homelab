@@ -38,7 +38,7 @@ flowchart LR
         pihole_setup -.->|use| pihole
         socket_proxy -.->|docker sock| docker
         squid_proxy ~~~ squid_prometheus_exporter
-        certificator --> outbound_interface_1 -.-|connect| squid_proxy
+        certificator --> outbound_interface_1
     end
 
     subgraph others_1["Others"]

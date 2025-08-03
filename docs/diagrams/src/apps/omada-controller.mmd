@@ -32,8 +32,8 @@ flowchart LR
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| omada_controller
         squid_proxy ~~~ squid_prometheus_exporter
-        certificator --> outbound_interface_1 -.-|connect| squid_proxy
-        script_backup --> outbound_interface_2 -.-|connect| squid_proxy
+        certificator --> outbound_interface_1
+        script_backup --> outbound_interface_2
     end
 
     subgraph others_1["Others"]

@@ -30,7 +30,6 @@ flowchart LR
         apache_proxy -->|/favicon.ico| favicons -.->|use| motioneye
         motioneye -.-|device| webcamera
         squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 -.-|connect| squid_proxy
         certificator --> outbound_interface_1
     end
 

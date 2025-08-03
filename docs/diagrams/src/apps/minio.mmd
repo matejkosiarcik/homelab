@@ -34,7 +34,6 @@ flowchart LR
         apache_proxy_1 & apache_proxy_2 -->|/favicon.ico| favicons -.->|use| minio
         minio ~~~ minio_setup -->|use| minio
         squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 -.-|connect| squid_proxy
         certificator --> outbound_interface_1
     end
 

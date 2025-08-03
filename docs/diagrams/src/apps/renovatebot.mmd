@@ -33,8 +33,8 @@ flowchart LR
         apache_proxy -->|/favicon.ico| favicons -.->|use| renovatebot
         squid_proxy ~~~ squid_prometheus_exporter
         renovatebot_controller -.->|docker tcp| socket_proxy -.->|docker sock| docker -.->|control| renovatebot
-        renovatebot --> outbound_interface_1 -.-|connect| squid_proxy
-        certificator --> outbound_interface_2 -.-|connect| squid_proxy
+        renovatebot --> outbound_interface_1
+        certificator --> outbound_interface_2
     end
 
     subgraph others_2["Others"]
