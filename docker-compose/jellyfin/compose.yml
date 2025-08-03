@@ -12,6 +12,7 @@ services:
     networks:
       internal-network: {}
       external-network: {}
+    read_only: false # TODO: Fix
     tmpfs:
       - /app
       - /config/cache/transcodes
