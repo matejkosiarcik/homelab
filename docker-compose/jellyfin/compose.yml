@@ -27,7 +27,7 @@ services:
       service: script-app-setup
     volumes:
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
-      - ./app-data/jellyfin-data:/homelab/data:rw
+      - ./app-data/jellyfin:/homelab/data:rw
 
   certificator:
     extends:
