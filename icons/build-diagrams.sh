@@ -27,6 +27,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/azure.svg
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/caddy.svg" "$output_dir/caddy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/cloudflare.svg" "$output_dir/cloudflare.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/datadog.svg" "$output_dir/datadog.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dawarich.svg" "$output_dir/dawarich.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" "$output_dir/debian.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/digital-ocean.svg" "$output_dir/digitalocean.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/fedora.svg" "$output_dir/fedora.png"
@@ -60,7 +61,9 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/pagerduty
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/podman.svg" "$output_dir/podman.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/portainer.svg" "$output_dir/portainer.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/postgres.svg" "$output_dir/postgres.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/redhat-linux.svg" "$output_dir/redhat.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/redis.svg" "$output_dir/redis.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/samba-server.svg" "$output_dir/samba.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ubuntu-linux.svg" "$output_dir/ubuntu.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound.png"
@@ -70,6 +73,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vultr.svg
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "$output_dir/wikipedia.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/windows-11.png" "$output_dir/windows.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.svg" "$output_dir/zabbix.png"
+
 
 ### Homer icons ###
 
