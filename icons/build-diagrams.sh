@@ -74,7 +74,6 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/wikipedia
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/windows-11.png" "$output_dir/windows.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.svg" "$output_dir/zabbix.png"
 
-
 ### Homer icons ###
 
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/cadvisor.png" "$output_dir/cadvisor.png"
