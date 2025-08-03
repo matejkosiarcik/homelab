@@ -3,6 +3,8 @@
 FROM linuxserver/jellyfin:10.10.7
 ENV HOMELAB_CONTAINER_NAME=jellyfin \
     HOMELAB_CONTAINER_VARIANT=default \
+    JELLYFIN_CACHE_DIR=/cache \
+    JELLYFIN_LOG_DIR=/logs \
     PUID=1000 \
     PGID=1000 \
     TZ=Europe/Bratislava

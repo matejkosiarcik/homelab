@@ -8,12 +8,15 @@ services:
     init: false
     hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
     volumes:
-      - ./app-data/jellyfin-data:/config:rw
+      - ./app-data/jellyfin:/config:rw
+      - ./app-logs/jellyfin:/logs:rw
     networks:
       internal-network: {}
       external-network: {}
+    read_only: false # TODO: Fix
     tmpfs:
       - /app
+      - /cache
       - /data
       - /defaults
       - /run:exec
@@ -25,7 +28,7 @@ services:
       service: script-app-setup
     volumes:
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
-      - ./app-data/jellyfin-data:/homelab/data:rw
+      - ./app-data/jellyfin:/homelab/data:rw
 
   certificator:
     extends:
