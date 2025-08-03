@@ -19,19 +19,15 @@ flowchart LR
         tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
         class tvheadend strong_border;
         antenna("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/antenna.png' style='min-width:80px;max-width:80px' /></div>Antenna")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
 
         inbound_interface -->|:80,443,9981| apache_proxy -->|:9981| tvheadend
         inbound_interface -->|:9982| tvheadend
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| tvheadend
         tvheadend ~~~ antenna
         antenna ---|signal| tvheadend
-        squid_proxy ~~~ squid_prometheus_exporter
         certificator --> outbound_interface_1
     end
 

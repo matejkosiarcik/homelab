@@ -20,19 +20,15 @@ flowchart LR
         class jellyfin strong_border;
         jellyfin_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Jellyfin<br/>Setup")
         gpu("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/graphics-card.png' style='min-width:80px;max-width:80px' /></div>iGPU")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
         outbound_interface_2(" ")
 
         inbound_interface -->|:80,443,8096| apache_proxy -->|:8096| jellyfin
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| jellyfin
-        jellyfin -.->|encode| gpu ~~~ squid_proxy
+        jellyfin -.->|encode| gpu
         jellyfin_setup -.->|fs| jellyfin
-        squid_proxy ~~~ squid_prometheus_exporter
         jellyfin --> outbound_interface_1
         certificator --> outbound_interface_2
     end

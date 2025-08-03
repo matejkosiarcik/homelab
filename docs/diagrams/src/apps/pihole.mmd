@@ -22,22 +22,18 @@ flowchart LR
         pihole_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>PiHole<br/>Prometheus<br/>Exporter")
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:80| pihole
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/metrics| pihole_prometheus_exporter -.->|use| pihole
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| pihole
         inbound_interface -->|:53| pihole
         pihole ~~~ socket_proxy ~~~ pihole_setup
         pihole_setup -.->|docker tcp| socket_proxy
         pihole_setup -.->|use| pihole
         socket_proxy -.->|docker sock| docker
-        squid_proxy ~~~ squid_prometheus_exporter
         certificator --> outbound_interface_1
     end
 

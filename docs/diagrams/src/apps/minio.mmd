@@ -21,8 +21,6 @@ flowchart LR
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         class minio strong_border;
         minio_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/api.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         outbound_interface_1(" ")
 
         inbound_interface -->|:80,443| apache_proxy_1 --->|:9000| minio
@@ -30,10 +28,8 @@ flowchart LR
         apache_proxy_1 -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_proxy_1
         apache_proxy_2 -->|/.apache/metrics| apache_prometheus_exporter_2 -.->|use status| apache_proxy_2
         apache_proxy_1 & apache_proxy_2 -.-|fs| certificator
-        apache_proxy_1 & apache_proxy_2 -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy_1 & apache_proxy_2 -->|/favicon.ico| favicons -.->|use| minio
         minio ~~~ minio_setup -->|use| minio
-        squid_proxy ~~~ squid_prometheus_exporter
         certificator --> outbound_interface_1
     end
 
