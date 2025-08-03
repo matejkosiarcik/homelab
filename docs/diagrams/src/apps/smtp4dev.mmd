@@ -19,7 +19,7 @@ flowchart LR
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         class smtp4dev strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|:80| smtp4dev
+        inbound_interface -->|:80,443| apache_proxy -->|/*:80| smtp4dev
         inbound_interface -->|:25| smtp4dev
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter

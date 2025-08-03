@@ -23,7 +23,7 @@ flowchart LR
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|:61208| glances
+        apache_proxy -->|/*:61208| glances
         apache_proxy -->|/metrics| glances_prometheus
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter

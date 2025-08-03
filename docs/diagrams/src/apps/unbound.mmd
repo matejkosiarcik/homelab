@@ -20,7 +20,7 @@ flowchart LR
         class unbound strong_border;
         unbound_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Unbound<br/>Prometheus<br/>Exporter")
 
-        inbound_interface -->|:80,443| apache_proxy -->|:80| unbound_prometheus_exporter
+        inbound_interface -->|:80,443| apache_proxy -->|/*:80| unbound_prometheus_exporter
         inbound_interface -->|:53| unbound
         unbound_prometheus_exporter -.->|use| unbound
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter

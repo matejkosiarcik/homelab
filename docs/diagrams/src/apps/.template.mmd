@@ -20,7 +20,7 @@ flowchart LR
         class placeholder strong_border;
         outbound_interface(" ")
 
-        inbound_interface -->|:80,443| apache_proxy -->|:8080| placeholder
+        inbound_interface -->|:80,443| apache_proxy -->|/*:8080| placeholder
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| placeholder

@@ -20,7 +20,7 @@ flowchart LR
         class homepage strong_border;
         homepage_widgets("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Custom<br/>widgets")
 
-        inbound_interface -->|:80,443| apache_proxy -->|:3000| homepage
+        inbound_interface -->|:80,443| apache_proxy -->|/*:3000| homepage
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
 

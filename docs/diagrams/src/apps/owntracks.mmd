@@ -22,7 +22,7 @@ flowchart LR
         class owntracks_frontend strong_border;
         class owntracks_backend strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|:80| owntracks_frontend -->|:8083| owntracks_backend
+        inbound_interface -->|:80,443| apache_proxy -->|/*:80| owntracks_frontend -->|:8083| owntracks_backend
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/favicon.ico| favicons -.->|use| owntracks_frontend
