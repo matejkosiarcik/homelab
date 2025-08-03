@@ -16,6 +16,7 @@ services:
     tmpfs:
       - /app
       - /cache
+      - /config/cache
       - /data
       - /defaults
       - /run:exec
