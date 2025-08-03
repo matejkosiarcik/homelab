@@ -50,8 +50,8 @@ flowchart LR
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
         script_backup -.->|send backup| s3_database
-        certificator -.->|report status| healthchecks
+        script_backup -.->|report status| healthchecks
         unifi_network_application -.->|control| unifi_devices
     end
 
-    certificator ~~~ others_2
+    certificator & script_backup ~~~ others_2

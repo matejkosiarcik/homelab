@@ -23,7 +23,6 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|:8765,9081| motioneye
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
-
         apache_proxy -->|/favicon.ico| favicons -.->|use| motioneye
         motioneye -.-|device| webcamera
     end
@@ -49,4 +48,4 @@ flowchart LR
         certificator -.->|download certificate| certbot
     end
 
-    certificator ~~~ others_2
+    certificator & webcamera ~~~ others_2

@@ -39,8 +39,8 @@ flowchart LR
 
         certificator -.->|report status| healthchecks
         renovatebot -.->|update| github & gitlab
-        certificator -->|report status| healthchecks
+        renovatebot -->|report status| healthchecks
         certificator -.->|download certificate| certbot
     end
 
-    certificator ~~~ others_2
+    certificator & renovatebot ~~~ others_2

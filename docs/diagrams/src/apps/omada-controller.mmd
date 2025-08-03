@@ -50,4 +50,4 @@ flowchart LR
         script_backup -.->|send backup| minio
     end
 
-    certificator ~~~ others_2
+    certificator & script_backup ~~~ others_2
