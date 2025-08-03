@@ -28,7 +28,7 @@ flowchart LR
         inbound_interface -->|:8080,8443| unifi_network_application
         inbound_interface -->|:1900,3478,5514,6789,10001| unifi_network_application
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
+        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| unifi_network_application
         unifi_network_application ~~~ script_backup -.->|use| unifi_network_application

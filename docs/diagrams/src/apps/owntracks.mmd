@@ -26,7 +26,7 @@ flowchart LR
         outbound_interface(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:80| owntracks_frontend -->|:8083| owntracks_backend
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
+        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| owntracks_frontend
