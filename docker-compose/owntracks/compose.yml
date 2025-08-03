@@ -8,12 +8,10 @@ services:
       dockerfile: ./external/owntracks-backend/Dockerfile
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      # - ./app-data/owntracks-config:/config:rw
       - ./app-data/owntracks:/store:rw
     environment:
       OTR_PORT: "0" # disables MQTT
       OTR_STORAGEDIR: /store
-      # OTR_HOST: mqtt_broker
 
   app-frontend:
     extends:
@@ -24,7 +22,7 @@ services:
       dockerfile: ./external/owntracks-frontend/Dockerfile
     read_only: false # TODO: Find a way to enable readonly mode
     tmpfs:
-      - /run
+      - /run:exec
       - /var/cache/nginx
 
   decryptor:

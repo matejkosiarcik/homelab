@@ -21,9 +21,9 @@ services:
       external-network: {}
     stop_grace_period: 30s
     tmpfs:
+      - /run:exec
       - /var/log/pihole
       - /var/spool
-      - /run:exec
 
   app-setup:
     extends:
