@@ -14,7 +14,7 @@ services:
       - ./app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
     stop_grace_period: 60s
     tmpfs:
       - /opt/tplink/EAPController/properties

@@ -16,7 +16,7 @@ services:
     # privileged: true
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
     stop_grace_period: 30s
     tmpfs:
       - /run:exec
@@ -61,7 +61,7 @@ services:
   #     - ./app-logs/web-backup:/homelab/logs:rw
   #   networks:
   #     internal-network: {}
-  #     external-network: {} # TODO: Connect to external world via squid instead
+  #     external-network: {}
 
 networks:
   default:

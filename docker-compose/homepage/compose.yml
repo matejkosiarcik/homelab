@@ -9,7 +9,7 @@ services:
       - ./app-secrets/app.env
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
     read_only: false # TODO: Reenable readonly mode
 
   certificator:
@@ -45,7 +45,7 @@ services:
       - ./app-secrets/widgets.env
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
 
 networks:
   default:

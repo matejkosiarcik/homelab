@@ -9,7 +9,7 @@ services:
       - ./app-data/changedetection:/datastore:rw
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
 
   sockpuppetbrowser:
     extends:
@@ -21,7 +21,7 @@ services:
       dockerfile: ./external/sockpuppetbrowser/Dockerfile
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
     tmpfs:
       - /home/chrome
       - /homelab/chrome-user-data

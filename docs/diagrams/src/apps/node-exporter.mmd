@@ -18,18 +18,11 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         node_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
         class node_exporter strong_border;
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
-        outbound_interface_1(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:9100| node_exporter
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons
-        squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 -.-|connect| squid_proxy
-        certificator --> outbound_interface_1
     end
 
     subgraph others_1["Others"]
@@ -46,8 +39,8 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
 
-        outbound_interface_1 -->|report status| healthchecks
-        outbound_interface_1 -.->|download certificate| certbot
+        certificator -->|report status| healthchecks
+        certificator -.->|download certificate| certbot
     end
 
-    squid_prometheus_exporter ~~~ others_2
+    certificator & node_exporter ~~~ others_2

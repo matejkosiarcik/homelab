@@ -20,21 +20,15 @@ flowchart LR
         class unifi_network_application strong_border;
         database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /></div>MongoDB")
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
-        outbound_interface_1(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8443| unifi_network_application
         inbound_interface -->|:8080,8443| unifi_network_application
         inbound_interface -->|:1900,3478,5514,6789,10001| unifi_network_application
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| unifi_network_application
         unifi_network_application ~~~ script_backup -.->|use| unifi_network_application
         unifi_network_application -->|use| database
-        squid_proxy ~~~ squid_prometheus_exporter
-        certificator --> outbound_interface_1 -.-|connect| squid_proxy
     end
 
     subgraph others_1["Others"]
@@ -53,11 +47,11 @@ flowchart LR
         s3_database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         unifi_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Devices")
 
-        outbound_interface_1 -->|report status| healthchecks
-        outbound_interface_1 -.->|download certificate| certbot
+        certificator -->|report status| healthchecks
+        certificator -.->|download certificate| certbot
         script_backup -.->|send backup| s3_database
-        certificator -.->|report status| healthchecks
+        script_backup -.->|report status| healthchecks
         unifi_network_application -.->|control| unifi_devices
     end
 
-    squid_prometheus_exporter ~~~ others_2
+    certificator & script_backup ~~~ others_2

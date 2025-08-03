@@ -18,18 +18,11 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
         class ollama strong_border;
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
-        outbound_interface(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:11434| ollama
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons
-        squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface -.-|connect| squid_proxy
-        certificator --> outbound_interface
     end
 
     subgraph others_1["Others"]
@@ -47,11 +40,11 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         ollama_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /></div>Ollama registry")
 
-        outbound_interface -->|report status| healthchecks
-        outbound_interface -.->|download certificate| certbot
+        certificator -->|report status| healthchecks
+        certificator -.->|download certificate| certbot
     end
 
     ollama_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama<br/>Setup")
     ollama ---|fs| ollama_setup -->|pull models| ollama_registry
 
-    squid_prometheus_exporter ~~~ others_2
+    certificator & ollama ~~~ others_2

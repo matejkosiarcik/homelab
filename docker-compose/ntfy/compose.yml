@@ -13,7 +13,7 @@ services:
       # - ./app-data/ntfy-etc:/etc/ntfy:rw
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
 
   app-setup:
     extends:

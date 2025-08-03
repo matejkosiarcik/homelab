@@ -19,21 +19,13 @@ flowchart LR
         omada_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br/>Controller")
         class omada_controller strong_border;
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:443| omada_controller
         inbound_interface -->|:8080,8443,27001,29810-29816| omada_controller
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_proxy
         apache_proxy -.-|fs| certificator
         omada_controller ~~~ script_backup -.->|use| omada_controller
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
         apache_proxy -->|/favicon.ico| favicons -.->|use| omada_controller
-        squid_proxy ~~~ squid_prometheus_exporter
-        certificator --> outbound_interface_1 -.-|connect| squid_proxy
-        script_backup --> outbound_interface_2 -.-|connect| squid_proxy
     end
 
     subgraph others_1["Others"]
@@ -52,10 +44,10 @@ flowchart LR
         minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
         tp_link_equipment("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link.png' style='min-width:80px;max-width:80px' /></div>TP Link<br/>Equipment")
 
-        outbound_interface_1 -->|report status| healthchecks
-        outbound_interface_1 -.->|download certificate| certbot
-        outbound_interface_2 -.->|send backup| minio
         omada_controller -.->|control| tp_link_equipment
+        certificator -->|report status| healthchecks
+        certificator -.->|download certificate| certbot
+        script_backup -.->|send backup| minio
     end
 
-    squid_prometheus_exporter ~~~ others_2
+    certificator & script_backup ~~~ others_2

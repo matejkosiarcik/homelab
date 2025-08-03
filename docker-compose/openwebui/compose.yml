@@ -13,7 +13,7 @@ services:
       - ./app-data/openwebui:/app/backend/data:rw
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
 
   certificator:
     extends:

@@ -18,23 +18,12 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         home_assistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
         class home_assistant strong_border;
-        squid_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>proxy")
-        squid_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/squid-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Squid<br/>prometheus<br/>exporter")
         script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
-        outbound_interface_1(" ")
-        outbound_interface_2(" ")
-        outbound_interface_3(" ")
 
         inbound_interface -->|:80,443| apache_proxy -->|:8123| home_assistant
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use status| apache_proxy
-        apache_proxy -->|/.squid/metrics| squid_prometheus_exporter -.->|use| squid_proxy
+        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| home_assistant
-        squid_proxy ~~~ squid_prometheus_exporter
-        outbound_interface_1 & outbound_interface_2 & outbound_interface_3 -.-|connect| squid_proxy
-        home_assistant --> outbound_interface_1
-        certificator --> outbound_interface_2
-        script_backup --> outbound_interface_3
     end
 
     subgraph others_1["Others"]
@@ -54,10 +43,10 @@ flowchart LR
         smart_home("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1.5em'><img src='../../../../icons/home.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/iot.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-15px;right:0' /></div>Smart<br/>Home<br/>Devices")
 
         home_assistant ~~~ script_backup -.->|get backup| home_assistant
-        outbound_interface_1 -->|control| smart_home
-        outbound_interface_2 -->|report status| healthchecks
-        outbound_interface_2 -->|download certificate| certbot
-        outbound_interface_3 -->|send_backup| s3_database
+        home_assistant -->|control| smart_home
+        certificator -->|report status| healthchecks
+        certificator -->|download certificate| certbot
+        script_backup -->|send_backup| s3_database
     end
 
-    squid_prometheus_exporter ~~~ others_2
+    certificator & script_backup ~~~ others_2
