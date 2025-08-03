@@ -14,6 +14,7 @@ services:
       external-network: {}
     tmpfs:
       - /app
+      - /config/cache/transcodes
       - /data
       - /defaults
       - /run:exec
