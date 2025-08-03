@@ -66,6 +66,17 @@ test.describe(apps.homepage.title, () => {
                 await page.goto(instance.url);
                 await expect(page.locator('ul.services-list li.service').first()).not.toBeVisible();
             });
+
+
+            test('API: Get healthcheck', async () => {
+                const response = await axios.get(`${instance.url}/api/healthcheck`, {
+                    headers: {
+                        Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`,
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                expect(response.data, 'Response Content').toStrictEqual('up');
+            });
         });
     }
 });
