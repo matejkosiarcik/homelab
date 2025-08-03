@@ -15,7 +15,7 @@ services:
     #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:ro
     # networks:
     #   internal-network: {}
-    #   external-network: {} # TODO: Connect to external world via squid instead
+    #   external-network: {}
     # stop_grace_period: 30s
 
   certificator:

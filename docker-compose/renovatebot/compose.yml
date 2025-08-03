@@ -11,7 +11,7 @@ services:
       HOMELAB_CRON_SKIP_INITIAL: "1"
     networks:
       internal-network: {}
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
     volumes:
       - ./app-logs/renovatebot:/homelab/logs:rw
     tmpfs:

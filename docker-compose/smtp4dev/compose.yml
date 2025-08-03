@@ -10,7 +10,7 @@ services:
     volumes:
       - ./app-data/smtp4dev:/smtp4dev:rw
     networks:
-      external-network: {} # TODO: Connect to external world via squid instead
+      external-network: {}
     stop_grace_period: 30s
 
   certificator:
