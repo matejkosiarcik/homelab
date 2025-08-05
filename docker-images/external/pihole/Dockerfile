@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM pihole/pihole:2025.07.1
+FROM pihole/pihole:2025.08.0
 COPY ./external/pihole/custom-domains.txt ./external/pihole/setup.sh /homelab/
 ENV DHCP_ACTIVE=false \
     DNSMASQ_USER=root \
