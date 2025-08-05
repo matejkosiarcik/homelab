@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM node:24.4.1-slim AS nodejs-build
+FROM node:24.5.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/homepage-widgets/package-lock.json ./custom/homepage-widgets/package.json ./custom/homepage-widgets/tsconfig.json ./
 COPY ./custom/homepage-widgets/src/ ./src/
@@ -8,13 +8,13 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:24.4.1-slim AS prefinal
+FROM node:24.5.0-slim AS prefinal
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
 
-FROM node:24.4.1-slim
+FROM node:24.5.0-slim
 WORKDIR /homelab
 COPY --from=prefinal /homelab/node_modules ./node_modules
 COPY --from=prefinal /homelab/ ./
