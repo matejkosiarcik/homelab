@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-if [ ! -f /homelab/sock/unbound.sock ]; then
+if [ ! -e /homelab/sock/unbound.sock ]; then
     touch /homelab/sock/unbound.sock
 fi
 
