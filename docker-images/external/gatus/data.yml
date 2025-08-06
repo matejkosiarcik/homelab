@@ -392,6 +392,9 @@ apps:
     authentication:
       basic: admin
 
+  - name: Dawarich
+    domain: dawarich.matejhome.com
+
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
     type:

@@ -449,6 +449,12 @@
         ping: owntracks-backend.matejhome.com
         icon: /icons/owntracks.png
 
+    - Dawarich:
+        description: Location tracking
+        href: https://dawarich.matejhome.com
+        ping: dawarich.matejhome.com
+        icon: /icons/dawarich.png
+
     - Wikipedia:
         description: Free Encyclopedia
         href: https://wikipedia.matejhome.com

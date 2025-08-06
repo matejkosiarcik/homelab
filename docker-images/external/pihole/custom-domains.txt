@@ -103,7 +103,7 @@
 10.1.20.51 openwebui.matejhome.com
 10.1.20.52 stable-diffusion.matejhome.com
 10.1.20.53 grafana.matejhome.com
-# 10.1.20.54
+10.1.20.54 dawarich.matejhome.com
 10.1.20.55 wikipedia.matejhome.com
 10.1.20.56 wiktionary.matejhome.com
 10.1.20.57 docker-stats-odroid-h4-ultra.matejhome.com

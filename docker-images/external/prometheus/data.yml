@@ -106,6 +106,7 @@ proxies:
   - url: actualbudget.matejhome.com
   - url: certbot.matejhome.com
   - url: changedetection.matejhome.com
+  - url: dawarich.matejhome.com
   - url: docker-cache-proxy-dockerhub.matejhome.com
   - url: docker-stats-macbook-pro-2012.matejhome.com
   - url: docker-stats-odroid-h3.matejhome.com
