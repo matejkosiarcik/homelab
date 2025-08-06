@@ -1,0 +1,20 @@
+#!/bin/sh
+set -euf
+
+if [ ! -e /homelab/sock/unbound.sock ]; then
+    touch /homelab/sock/unbound.sock
+fi
+
+configfile='/homelab/config'
+if [ "$HOMELAB_ENV" = dev ]; then
+    configfile="$configfile/unbound-dev.conf"
+else
+    configfile="$configfile/$HOMELAB_APP_NAME.conf"
+fi
+
+if [ ! -e "$configfile" ]; then
+    printf 'Config file %s not found\n' "$configfile" >&2
+    exit 1
+fi
+
+unbound -d -c "$configfile"
