@@ -40,7 +40,7 @@ services:
     env_file:
       - ./app-secrets/app.env
     healthcheck:
-      test: [ "CMD-SHELL", "pgrep -f sidekiq" ]
+      test: ["CMD-SHELL", "pgrep -f sidekiq"]
       interval: 10s
       retries: 1
       start_period: 60s
