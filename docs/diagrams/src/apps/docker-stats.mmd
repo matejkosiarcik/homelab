@@ -22,7 +22,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|/*:9487| docker_stats
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| docker_stats
+        apache_proxy -->|/favicon.ico| favicons
     end
 
     subgraph others_1["Others"]

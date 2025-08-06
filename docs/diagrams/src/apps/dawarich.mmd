@@ -25,7 +25,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|/*:3000| dawarich
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/favicon.ico| favicons -.->|use| dawarich
+        apache_proxy -->|/favicon.ico| favicons
         dawarich -.->|use| redis & postgis & sidekiq
     end
 

@@ -210,6 +210,27 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
+*dawarich*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+
+    # Database
+    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    printf 'DATABASE_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
+    printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
 *docker-cache-proxy*)
     # App
     http_secret="$(load_password "$DOCKER_COMPOSE_APP_NAME" app http-secret)"

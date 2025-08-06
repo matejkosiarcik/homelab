@@ -1,0 +1,109 @@
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    build:
+      dockerfile: ./external/dawarich/Dockerfile
+    volumes:
+      - ./app-data/dawarich-public:/var/app/public:rw
+      - ./app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
+      - ./app-data/dawarich-storage:/var/app/storage:rw
+      - ./app-data/dawarich-database:/dawarich_db_data:rw
+    environment:
+      MODE: app
+      PROMETHEUS_EXPORTER_ENABLED: "false"
+      PROMETHEUS_EXPORTER_HOST: 0.0.0.0
+      PROMETHEUS_EXPORTER_PORT: 9394
+    env_file:
+      - ./app-secrets/app.env
+    tmpfs:
+      - /var/app/db
+      - /var/app/tmp
+
+  sidekiq:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-sidekiq
+    build:
+      dockerfile: ./external/dawarich/Dockerfile
+    volumes:
+      - ./app-data/dawarich-public:/var/app/public:rw
+      - ./app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
+      - ./app-data/dawarich-storage:/var/app/storage:rw
+    environment:
+      MODE: sidekiq
+      PROMETHEUS_EXPORTER_ENABLED: "false"
+      PROMETHEUS_EXPORTER_HOST: app
+      PROMETHEUS_EXPORTER_PORT: 9394
+    env_file:
+      - ./app-secrets/app.env
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f sidekiq"]
+      interval: 10s
+      retries: 1
+      start_period: 60s
+      timeout: 5s
+    tmpfs:
+      - /var/app/tmp
+
+  redis:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
+    build:
+      dockerfile: ./external/redis/Dockerfile
+    volumes:
+      - ./app-data/dawarich-shared:/data:rw
+
+  postgis:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgis
+    build:
+      dockerfile: ./external/postgis/Dockerfile
+    shm_size: 1G
+    volumes:
+      - ./app-data/dawarich-database:/var/lib/postgresql/data:rw
+      - ./app-data/dawarich-shared:/var/shared:rw
+    environment:
+      POSTGRES_DB: dawarich
+    env_file:
+      - ./app-secrets/postgis.env
+    tmpfs:
+      - /var/run
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false
