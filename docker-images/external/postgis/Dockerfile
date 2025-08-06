@@ -1,5 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
+# hadolint ignore=DL3029
 FROM --platform=linux/amd64 postgis/postgis:17-3.5-alpine
 ENV POSTGRES_DB=database \
     POSTGRES_USER=postgres \
