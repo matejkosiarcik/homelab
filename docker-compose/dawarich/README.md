@@ -14,4 +14,4 @@
 
 ## After initial installation
 
-Empty
+- Change credentials - defaults: `demo@dawarich.app:password`
