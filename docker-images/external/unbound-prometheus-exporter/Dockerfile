@@ -48,5 +48,3 @@ ENV HOMELAB_CONTAINER_NAME=unbound-prometheus-exporter \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:9167/metrics || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
-# ENTRYPOINT [ "unbound_exporter" ]
-# CMD [ "-unbound.host", "unix:///homelab/unbound.sock" ]
