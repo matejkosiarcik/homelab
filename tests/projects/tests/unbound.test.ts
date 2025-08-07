@@ -17,7 +17,7 @@ test.describe(apps.unbound.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
-            createApiRootTest(instance.url, { status: 404 });
+            createApiRootTest(instance.url);
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
 

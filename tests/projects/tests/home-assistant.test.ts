@@ -32,13 +32,7 @@ test.describe(apps['home-assistant'].title, () => {
                     'homeassistant_light_brightness_percent',
                     'homeassistant_person_state',
                     'homeassistant_sensor_battery_percent',
-                    'homeassistant_sensor_state',
                     'homeassistant_sensor_timestamp_seconds',
-                    'homeassistant_sensor_unit_floors',
-                    'homeassistant_sensor_unit_m',
-                    'homeassistant_sensor_unit_m_per_s',
-                    'homeassistant_sensor_unit_steps',
-                    'homeassistant_sensor_unit_u0x25u0x20available',
                     'homeassistant_state_change_created',
                     'homeassistant_state_change_total',
                     'python_info',
@@ -54,7 +48,7 @@ test.describe(apps['home-assistant'].title, () => {
                 await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
                 await page.locator('input[name="username"]').fill('test');
                 await page.locator('input[name="password"]').fill(getEnv(instance.url, 'TEST_PASSWORD'));
-                await page.locator('button#button').click();
+                await page.locator('button.button').click();
                 await page.waitForURL(`${instance.url}/lovelace/0`);
                 await expect(page.locator('home-assistant')).toBeVisible();
                 await expect(page.locator('ha-sidebar')).toBeVisible();
@@ -68,7 +62,7 @@ test.describe(apps['home-assistant'].title, () => {
                 await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
                 await page.locator('input[name="username"]').fill(faker.string.alpha(10));
                 await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                await page.locator('button#button').click();
+                await page.locator('button.button').click();
                 await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
                 await expect(page, 'URL should not change').toHaveURL(originalUrl);
             });

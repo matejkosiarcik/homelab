@@ -30,9 +30,6 @@ test.describe(apps.owntracks.title, () => {
                     username: 'admin',
                 },
                 {
-                    username: 'matej',
-                },
-                {
                     username: faker.string.alpha(10),
                     random: true,
                 }

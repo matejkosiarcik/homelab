@@ -54,7 +54,7 @@ test.describe(apps.prometheus.title, () => {
                         await expect(page.locator('#root header:has-text("Prometheus")')).toBeVisible({ timeout: 10_000 });
                         await expect(page.locator('#root header a:has-text("Query")')).toBeVisible();
                         await expect(page.locator('#root header a:has-text("Alerts")')).toBeVisible();
-                        await expect(page.locator('#root header a:has-text("Status")')).toBeVisible();
+                        await expect(page.locator('#root header button:has-text("Status")')).toBeVisible();
                     });
                 }
 
