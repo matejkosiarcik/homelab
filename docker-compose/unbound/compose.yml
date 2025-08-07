@@ -57,3 +57,5 @@ networks:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+    driver_opts:
+      com.docker.network.host_ipv4: ${DOCKER_COMPOSE_NETWORK_IP}
