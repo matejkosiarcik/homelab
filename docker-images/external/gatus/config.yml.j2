@@ -276,10 +276,6 @@ endpoints:
       - "{{ condition }}"
       {%- endfor -%}
     {% endif %}
-    alerts:
-      - type: email
-      - type: ntfy
-      - type: gotify
     {{- is_enabled(item) }}
   {%- endif %}
 
