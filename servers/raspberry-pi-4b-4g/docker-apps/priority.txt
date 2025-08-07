@@ -1,13 +1,13 @@
 # DNS first
 pihole-2-primary
+unbound-2-default
+unbound-2-open
 
 # Other
 dozzle-agent
 motioneye-kitchen
 glances
 node-exporter
-unbound-2-default
-unbound-2-open
 
 # DNS last
 pihole-2-secondary

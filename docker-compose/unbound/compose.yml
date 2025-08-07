@@ -1,5 +1,16 @@
 services:
-  # NOTE: unbound app is not here, because it's running natively without docker
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template_no_network
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    build:
+      dockerfile: ./external/unbound/Dockerfile
+    volumes:
+      - ./app-data/unbound-sock:/homelab/sock:rw
+      - ./app-logs/unbound:/homelab/logs:rw
+    tmpfs:
+      - /run
 
   app-prometheus-exporter:
     extends:
@@ -8,6 +19,8 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
     build:
       dockerfile: ./external/unbound-prometheus-exporter/Dockerfile
+    volumes:
+      - ./app-data/unbound-sock:/homelab/sock:rw
 
   certificator:
     extends:

@@ -3,6 +3,8 @@ certbot
 
 # DNS
 pihole-1-primary
+unbound-1-default
+unbound-1-open
 
 # Caches
 docker-cache-proxy-dockerhub
@@ -32,8 +34,6 @@ actualbudget
 openspeedtest
 speedtest-tracker
 # TODO: vikunja
-unbound-1-default
-unbound-1-open
 owntracks
 dawarich
 kiwix-wikipedia

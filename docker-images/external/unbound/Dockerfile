@@ -11,5 +11,5 @@ COPY ./external/unbound/config ./config
 ENV HOMELAB_CONTAINER_NAME=unbound \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "dig @127.0.0.1 +short placeholder.matejhome.com || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "dig @$UNBOUND_HOST +short placeholder.matejhome.com || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

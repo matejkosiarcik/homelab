@@ -5,6 +5,11 @@ if [ ! -e /homelab/sock/unbound.sock ]; then
     touch /homelab/sock/unbound.sock
 fi
 
+if [ ! -e /homelab/logs/unbound.log ]; then
+    touch /homelab/logs/unbound.log
+    chmod 0666 /homelab/logs/unbound.log
+fi
+
 configfile='/homelab/config'
 if [ "$HOMELAB_ENV" = dev ]; then
     configfile="$configfile/unbound-dev.conf"
@@ -17,4 +22,4 @@ if [ ! -e "$configfile" ]; then
     exit 1
 fi
 
-unbound -d -c "$configfile"
+unbound -v -d -c "$configfile"
