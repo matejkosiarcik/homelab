@@ -21,4 +21,5 @@ sudo touch "$socket_file"
 sudo chown root:root "$socket_file" # TODO: Remove permissions after homelab user is created
 sudo chmod a+rwx "$socket_file"     # TODO: Remove permissions after homelab user is created
 
-sudo unbound -v -c "/homelab/config/unbound/$(basename "$config_file")" &
+# TODO: Remove all config related to direct unbound
+# sudo unbound -v -c "/homelab/config/unbound/$(basename "$config_file")" &
