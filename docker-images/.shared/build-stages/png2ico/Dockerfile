@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: User unnecessary
 # checkov:skip=CKV_DOCKER_2: Healthcheck unnecessary
 
-FROM python:3.13.5-slim AS png2ico-gitman
+FROM python:3.13.6-slim AS png2ico-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -16,7 +16,7 @@ COPY ./.shared/dependencies/png2ico/gitman.yml ./
 RUN gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM python:3.13.5-slim AS png2ico
+FROM python:3.13.6-slim AS png2ico
 WORKDIR /homelab
 COPY ./.shared/dependencies/image-tools/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION=ignore
