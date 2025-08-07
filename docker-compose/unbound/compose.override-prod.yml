@@ -6,8 +6,8 @@ services:
   app:
     <<: *common-service-options
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:53/tcp
-      - ${DOCKER_COMPOSE_NETWORK_IP}:53/udp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp
 
   app-prometheus-exporter:
     <<: *common-service-options
