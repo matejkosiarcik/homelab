@@ -99,7 +99,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'speedtest-tracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
         case 'unbound': return `@/homelab/icons/${appType}.png`;
-        case 'unifi-controller': return '/manage/angular/gc477706b0/images/favicons/favicon-192.png';
+        case 'unifi-controller': return '/manage/angular/g0da6a4ab3/images/favicons/favicon-192.png';
         case 'uptime-kuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
         default: throw new Error(`Unknown app type: ${appType}`);
