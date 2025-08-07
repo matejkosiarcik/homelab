@@ -262,11 +262,11 @@ load_password() {
     printf 'VIKUNJA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vikunja apache status)"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja apache prometheus)"
 
-    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wikipedia apache status)"
+    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wikipedia app admin)"
     printf 'WIKIPEDIA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia apache status)"
     printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia apache prometheus)"
 
-    printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wiktionary apache status)"
+    printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wiktionary app admin)"
     printf 'WIKTIONARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary apache status)"
     printf 'WIKTIONARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary apache prometheus)"
 } >>'.secrets.env'
