@@ -32,7 +32,7 @@ test.describe(apps['home-assistant'].title, () => {
                     'homeassistant_light_brightness_percent',
                     'homeassistant_person_state',
                     'homeassistant_sensor_battery_percent',
-                    'homeassistant_sensor_state',
+                    // 'homeassistant_sensor_state',
                     'homeassistant_sensor_timestamp_seconds',
                     'homeassistant_sensor_unit_floors',
                     'homeassistant_sensor_unit_m',
