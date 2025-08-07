@@ -7,6 +7,8 @@ services:
     build:
       dockerfile: ./external/unbound/Dockerfile
     network_mode: host
+    environment:
+      UNBOUND_HOST: ${DOCKER_COMPOSE_NETWORK_IP}
     volumes:
       - ./app-data/unbound-sock:/homelab/sock:rw
       - ./app-logs/unbound:/homelab/logs:rw
