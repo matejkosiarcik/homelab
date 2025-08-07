@@ -2,12 +2,11 @@ services:
   app:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template_no_network
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     build:
       dockerfile: ./external/unbound/Dockerfile
-    networks:
-      internal-network: {}
-      external-network: {}
+    network_mode: host
     volumes:
       - ./app-data/unbound-sock:/homelab/sock:rw
       - ./app-logs/unbound:/homelab/logs:rw
@@ -57,5 +56,3 @@ networks:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
-    driver_opts:
-      com.docker.network.host_ipv4: ${DOCKER_COMPOSE_NETWORK_IP}
