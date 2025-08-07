@@ -122,6 +122,14 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
+# Custom redirects to prevent 404 root errors
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot|unbound)$ [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /.apache/index.html [L]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} certbot [NC]
+RewriteCond %{REQUEST_URI} ^/download/?$ [NC]
+RewriteRule ^ /index.html [L]
+
 # Route all invalid unbound requests to 404
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
 RewriteCond %{REQUEST_URI} !^/favicon\.(?:ico|png)$ [NC]
