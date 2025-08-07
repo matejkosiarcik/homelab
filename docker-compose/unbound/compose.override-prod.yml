@@ -3,10 +3,16 @@ x-definitions:
     restart: unless-stopped
 
 services:
+  app:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:53:53/tcp
+      - 127.0.0.1:53:53/udp
+
   app-prometheus-exporter:
     <<: *common-service-options
-    volumes:
-      - /homelab/config/unbound/${DOCKER_COMPOSE_UNBOUND_NAME}.sock:/homelab/sock/unbound.sock:rw
+    # volumes:
+    #   - /homelab/config/unbound/${DOCKER_COMPOSE_UNBOUND_NAME}.sock:/homelab/sock/unbound.sock:rw
 
   certificator:
     <<: *common-service-options
