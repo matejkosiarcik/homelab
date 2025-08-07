@@ -10,6 +10,8 @@ services:
       external-network: {}
     volumes:
       - ./app-data/unbound-sock:/homelab/sock:rw
+    tmpfs:
+      - /run
 
   app-prometheus-exporter:
     extends:
