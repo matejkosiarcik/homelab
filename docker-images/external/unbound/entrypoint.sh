@@ -7,6 +7,7 @@ fi
 
 if [ ! -e /homelab/logs/unbound.log ]; then
     touch /homelab/logs/unbound.log
+    chmod a+rw /homelab/logs/unbound.log
 fi
 
 configfile='/homelab/config'
