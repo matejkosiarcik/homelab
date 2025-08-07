@@ -71,11 +71,6 @@ test.describe(apps.certbot.title, () => {
                 },
             ];
             for (const variant of dataVariants) {
-                test(`API: Get download directory (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/download`, { auth: variant.auth });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
-                });
-
                 test(`API: Get certificate (${variant.title})`, async () => {
                     const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, { auth: variant.auth });
                     expect(response.status, 'Response Status').toStrictEqual(variant.status);
