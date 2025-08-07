@@ -16,6 +16,7 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
+        decryptor("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Decryptor")
         dawarich("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/dawarich.png' style='min-width:80px;max-width:80px' /></div>Dawarich")
         class dawarich strong_border;
         redis("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/redis.png' style='min-width:80px;max-width:80px' /></div>Redis")
@@ -27,6 +28,7 @@ flowchart LR
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/favicon.ico| favicons
         dawarich -.->|use| redis & postgis & sidekiq
+        apache_proxy -->|/pub| decryptor -.->|send| dawarich
     end
 
     subgraph others_1["Others"]

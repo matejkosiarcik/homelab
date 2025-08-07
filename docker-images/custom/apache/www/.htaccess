@@ -198,7 +198,7 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
 # Custom owntracks decryptor
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^owntracks$ [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:dawarich|owntracks)$ [NC]
 RewriteCond %{REQUEST_URI} ^/pub [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]

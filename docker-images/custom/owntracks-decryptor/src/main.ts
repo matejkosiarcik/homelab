@@ -66,7 +66,14 @@ app.post('/pub', async (request: Request, response: Response) => {
 
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);
-        const axiosResponse = await axios.post(`http://app-backend:8083${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
+        const host = (() => {
+            switch (process.env['HOMELAB_APP_NAME']) {
+                case 'dawarich': return 'app:3000';
+                case 'owntracks': return 'app-backend:8083';
+                default: throw new Error(`Unknown app ${process.env['HOMELAB_APP_NAME']}`);
+            }
+        })();
+        const axiosResponse = await axios.post(`http://${host}${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
 
         console.log(`${new Date().toISOString()} Forwarding value: ${JSON.stringify(decryptedData)}`);
 

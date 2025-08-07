@@ -221,6 +221,11 @@ case "$app_dirname" in
     printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
     printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
 
+    # Decryptor
+    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/decryptor.env"
+    printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
+
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
