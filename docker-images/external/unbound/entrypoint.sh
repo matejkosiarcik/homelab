@@ -22,4 +22,4 @@ if [ ! -e "$configfile" ]; then
     exit 1
 fi
 
-unbound -d -c "$configfile"
+unbound -v -d -c "$configfile"
