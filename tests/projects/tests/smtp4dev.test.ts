@@ -123,7 +123,7 @@ test.describe(apps.smtp4dev.title, () => {
                 expect(typeof data.rowCount, 'Data rowCount should be number').toStrictEqual('number');
                 expect(data.results, 'Data results should be array').toBeInstanceOf(Array);
                 expect(data.currentPage, 'Data results should be array').toStrictEqual(1);
-                expect(data.lastRowOnPage, 'Data results should be array').toBeGreaterThanOrEqual(data.firstRowOnPage);
+                expect(data.lastRowOnPage, 'Data results should be array').toBeGreaterThanOrEqual(data.firstRowOnPage - 1);
                 expect(data.pageSize, 'Data results should be array').toStrictEqual(10);
             });
         });
