@@ -229,6 +229,15 @@ done
 sleep 1
 EOF
 
+# Add custom index files to prevent 404 errors
+if [ "$HOMELAB_APP_TYPE" = 'certbot' ] || [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
+    cp /homelab/www/.apache/index.html /homelab/www/index.html
+fi
+if [ "$HOMELAB_APP_TYPE" = 'certbot' ]; then
+    mkdir /homelab/www/download
+    cp /homelab/www/.apache/index.html /homelab/www/download/index.html
+fi
+
 # Watch certificates in background
 inotifywait --monitor --event modify --format '%w%f' --include 'fullchain\.pem' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
 
