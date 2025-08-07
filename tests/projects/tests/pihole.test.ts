@@ -57,7 +57,7 @@ test.describe(apps.pihole.title, () => {
                 }
             });
 
-            test('DNS: self domain', async () => {
+            test('DNS: self lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
