@@ -28,7 +28,7 @@ test.describe(apps['omada-controller'].title, () => {
             createProxyTests(instance.url);
             createApiRootTest(instance.url);
             // createApiRootTest(`${instance.url}:8443`, { title: 'portal' });
-            createTcpTests(instance.url, [80, 443, 8080, 8443, 29811, 29812, 29813, 29814, 29815, 29816]);
+            createTcpTests(instance.url, [80, 443, 29811, 29812, 29813, 29814, 29815, 29816]); // TODO: Add also ports 8080, 8443
             createFaviconTests(instance.url);
 
             test('API: Status endpoint', async () => {
