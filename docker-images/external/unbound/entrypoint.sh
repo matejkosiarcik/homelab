@@ -5,6 +5,10 @@ if [ ! -e /homelab/sock/unbound.sock ]; then
     touch /homelab/sock/unbound.sock
 fi
 
+if [ ! -e /homelab/logs/unbound.log ]; then
+    touch /homelab/logs/unbound.log
+fi
+
 configfile='/homelab/config'
 if [ "$HOMELAB_ENV" = dev ]; then
     configfile="$configfile/unbound-dev.conf"
