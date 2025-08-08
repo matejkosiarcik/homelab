@@ -47,7 +47,7 @@ async function decryptPayload(input: string): Promise<string> {
     return Buffer.from(decryptedText, 'base64').toString('utf8');
 }
 
-app.post('/pub', async (request: Request, response: Response) => {
+app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response: Response) => {
     try {
         const body = request.body as EncryptedPayload;
         if (body._type !== 'encrypted') {
