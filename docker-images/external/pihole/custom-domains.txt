@@ -68,7 +68,10 @@
 ### Odroid H4 Ultra ###
 
 10.1.20.1 unbound-1-default.matejhome.com
-10.1.20.2 unbound-1-open.matejhome.com
+10.1.20.2 unbound-1-matej.matejhome.com
+10.1.20.3 unbound-1-monika.matejhome.com
+10.1.20.4 unbound-1-iot.matejhome.com
+10.1.20.5 unbound-1-guests.matejhome.com
 # ...9 Reserved
 10.1.20.11 pihole-1-primary.matejhome.com
 10.1.20.12 pihole-1-secondary.matejhome.com
