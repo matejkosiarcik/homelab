@@ -333,6 +333,7 @@ case "$app_dirname" in
     printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wikipedia app admin)" >>"$initial_output/app.env"
     printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wiktionary app admin)" >>"$initial_output/app.env"
     # Prometheus credentials
+    printf 'DAWARICH_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
@@ -373,6 +374,7 @@ case "$app_dirname" in
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget apache prometheus)" >>"$initial_output/app.env"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$initial_output/app.env"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token changedetection apache prometheus)" >>"$initial_output/app.env"
+    printf 'DAWARICH_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-proxy-dockerhub apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
@@ -809,6 +811,7 @@ case "$app_dirname" in
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$initial_output/app.env"
     # Other apps prometheus credentials
+    printf 'DAWARICH_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
@@ -847,6 +850,7 @@ case "$app_dirname" in
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token actualbudget apache prometheus)" >>"$initial_output/app.env"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$initial_output/app.env"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token changedetection apache prometheus)" >>"$initial_output/app.env"
+    printf 'DAWARICH_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-proxy-dockerhub apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
