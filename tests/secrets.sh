@@ -238,17 +238,41 @@ load_password() {
     printf 'UNBOUND_1_DEFAULT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-default apache status)"
     printf 'UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-default apache prometheus)"
 
-    printf 'UNBOUND_1_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-open app prometheus)"
-    printf 'UNBOUND_1_OPEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-open apache status)"
-    printf 'UNBOUND_1_OPEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-open apache prometheus)"
+    printf 'UNBOUND_1_MATEJ_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-matej app prometheus)"
+    printf 'UNBOUND_1_MATEJ_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-matej apache status)"
+    printf 'UNBOUND_1_MATEJ_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-matej apache prometheus)"
+
+    printf 'UNBOUND_1_MONIKA_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-monika app prometheus)"
+    printf 'UNBOUND_1_MONIKA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-monika apache status)"
+    printf 'UNBOUND_1_MONIKA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-monika apache prometheus)"
+
+    printf 'UNBOUND_1_IOT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-iot app prometheus)"
+    printf 'UNBOUND_1_IOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-iot apache status)"
+    printf 'UNBOUND_1_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-iot apache prometheus)"
+
+    printf 'UNBOUND_1_GUESTS_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-guests app prometheus)"
+    printf 'UNBOUND_1_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-guests apache status)"
+    printf 'UNBOUND_1_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-guests apache prometheus)"
 
     printf 'UNBOUND_2_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-default app prometheus)"
     printf 'UNBOUND_2_DEFAULT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-default apache status)"
     printf 'UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-default apache prometheus)"
 
-    printf 'UNBOUND_2_OPEN_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-open app prometheus)"
-    printf 'UNBOUND_2_OPEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-open apache status)"
-    printf 'UNBOUND_2_OPEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-open apache prometheus)"
+    printf 'UNBOUND_2_MATEJ_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-matej app prometheus)"
+    printf 'UNBOUND_2_MATEJ_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-matej apache status)"
+    printf 'UNBOUND_2_MATEJ_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-matej apache prometheus)"
+
+    printf 'UNBOUND_2_MONIKA_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-monika app prometheus)"
+    printf 'UNBOUND_2_MONIKA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-monika apache status)"
+    printf 'UNBOUND_2_MONIKA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-monika apache prometheus)"
+
+    printf 'UNBOUND_2_IOT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-iot app prometheus)"
+    printf 'UNBOUND_2_IOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-iot apache status)"
+    printf 'UNBOUND_2_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-iot apache prometheus)"
+
+    printf 'UNBOUND_2_GUESTS_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests app prometheus)"
+    printf 'UNBOUND_2_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache status)"
+    printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache prometheus)"
 
     printf 'UNIFI_CONTROLLER_ADMIN_PASSWORD=%s\n' "$(load_password unifi-controller app admin)"
     printf 'UNIFI_CONTROLLER_VIEWER_PASSWORD=%s\n' "$(load_password unifi-controller app viewer)"
