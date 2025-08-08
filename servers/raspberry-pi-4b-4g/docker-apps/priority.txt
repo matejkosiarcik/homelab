@@ -5,15 +5,13 @@ unbound-2-matej
 unbound-2-monika
 unbound-2-iot
 unbound-2-guests
+pihole-2-secondary
 
 # Other
 dozzle-agent
 motioneye-kitchen
 glances
 node-exporter
-
-# DNS last
-pihole-2-secondary
 
 # App Monitoring
 gatus-2
