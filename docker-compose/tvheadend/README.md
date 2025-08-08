@@ -4,7 +4,7 @@
 
 ## Docs
 
-TVHeadend (official):
+Tvheadend (official):
 
 - Official docs: <https://docs.tvheadend.org/documentation>
 - Official repository: <https://github.com/tvheadend/tvheadend>

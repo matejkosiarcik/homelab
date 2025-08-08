@@ -163,7 +163,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Prometheus',
         'Smtp4dev',
         'Speedtest Tracker',
-        'TVHeadend',
+        'Tvheadend',
         'Unbound - 1 Default',
         'Unbound - 1 Open',
         'Unbound - 2 Default',
