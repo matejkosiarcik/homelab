@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import dotevn from 'dotenv';
 import express, { Request, Response } from 'express';
 import sodium from 'libsodium-wrappers';
@@ -75,8 +75,10 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
         })();
         console.log('Host:', host);
         const url = `http://${host}${request.url.replace(/^https?:\/\/.+?\//, '')}`;
-        console.log('URL:', host);
-        const axiosResponse = await axios.post(url, decryptedData, { headers: headers, validateStatus: () => true, responseType: 'arraybuffer' });
+        console.log('URL:', url);
+
+        const axiosResponse = await axios.post(url, decryptedData, { headers: headers, responseType: 'arraybuffer' });
+
         const responseData = Buffer.from(axiosResponse.data).toString('utf8');
 
         if (axiosResponse.status !== 200) {
@@ -88,7 +90,11 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
         response.status(axiosResponse.status);
         response.send(axiosResponse.data);
     } catch (error) {
-        console.error('Server error:', error);
+        let errorDescription = 'Server error: ' + (error instanceof Error ? error.name : `${error}`);
+        if (error instanceof AxiosError) {
+            errorDescription += `\nStatus: ${error.status ?? 0}\n${JSON.stringify(error.config ?? {}, null, 2)}`;
+        }
+        console.error(errorDescription);
         response.sendStatus(500);
     }
 });
