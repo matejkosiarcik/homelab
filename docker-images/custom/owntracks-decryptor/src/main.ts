@@ -73,7 +73,10 @@ app.post('/pub', async (request: Request, response: Response) => {
                 default: throw new Error(`Unknown app ${process.env['HOMELAB_APP_TYPE']}`);
             }
         })();
-        const axiosResponse = await axios.post(`http://${host}${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers, validateStatus: () => true, responseType: 'arraybuffer' });
+        console.log('Host:', host);
+        const url = `http://${host}${request.url.replace(/^https?:\/\/.+?\//, '')}`;
+        console.log('URL:', host);
+        const axiosResponse = await axios.post(url, decryptedData, { headers: headers, validateStatus: () => true, responseType: 'arraybuffer' });
         const responseData = Buffer.from(axiosResponse.data).toString('utf8');
 
         if (axiosResponse.status !== 200) {
