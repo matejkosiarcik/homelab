@@ -77,21 +77,39 @@ open_group_id="$(sql "SELECT id FROM [group] WHERE name='Open';")"
 unbound_default_1_ip='10.1.20.1'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_1_ip', 0, 0, 'Unbound 1 default');"
 unbound_default_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_1_ip';")"
+
 unbound_open_1_ip='10.1.20.2'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_open_1_ip', 0, 0, 'Unbound 1 open');"
 unbound_open_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_open_1_ip';")"
+
 unbound_default_2_ip='10.1.16.1'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 default');"
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 Default');"
 unbound_default_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_2_ip';")"
-unbound_open_2_ip='10.1.16.2'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_open_2_ip', 0, 0, 'Unbound 2 open');"
-unbound_open_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_open_2_ip';")"
+
+unbound_matej_2_ip='10.1.16.2'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_matej_2_ip', 0, 0, 'Unbound 2 Matej');"
+unbound_matej_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_matej_2_ip';")"
+
+unbound_monika_2_ip='10.1.16.3'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_monika_2_ip', 0, 0, 'Unbound 2 Monika');"
+unbound_monika_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_monika_2_ip';")"
+
+unbound_iot_2_ip='10.1.16.4'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_iot_2_ip', 0, 0, 'Unbound 2 IoT');"
+unbound_iot_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_iot_2_ip';")"
+
+unbound_guests_2_ip='10.1.16.5'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_2_ip', 0, 0, 'Unbound 2 Guests');"
+unbound_guests_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_2_ip';")"
 
 # Assign clients to groups
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_matej_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_iot_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_guests_2_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_1_id;"
-sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_2_id;"
+sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_monika_2_id;"
 
 # Set custom local domains
 custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
