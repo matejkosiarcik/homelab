@@ -6,12 +6,12 @@ services:
   app:
     <<: *common-service-options
     environment:
-      APPLICATION_HOSTS: localhost
+      APPLICATION_HOSTS: app,localhost
 
   sidekiq:
     <<: *common-service-options
     environment:
-      APPLICATION_HOSTS: localhost
+      APPLICATION_HOSTS: app,localhost
 
   redis:
     <<: *common-service-options

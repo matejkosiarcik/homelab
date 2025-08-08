@@ -192,9 +192,16 @@ RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
-# Custom owntracks decryptor
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:dawarich|owntracks)$ [NC]
+# Custom owntracks/dawarich decryptor
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^owntracks$ [NC]
+RewriteCond %{REQUEST_METHOD} POST [NC]
 RewriteCond %{REQUEST_URI} ^/pub [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "http://decryptor:8080%{REQUEST_URI}" [P,L]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^dawarich$ [NC]
+RewriteCond %{REQUEST_METHOD} POST [NC]
+RewriteCond %{REQUEST_URI} ^/api/v1/owntracks/points [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "http://decryptor:8080%{REQUEST_URI}" [P,L]

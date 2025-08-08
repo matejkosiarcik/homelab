@@ -214,6 +214,7 @@ case "$app_dirname" in
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'api-key,%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" app api-key)" >>"$initial_output/all-credentials.csv"
 
     # Database
     database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"

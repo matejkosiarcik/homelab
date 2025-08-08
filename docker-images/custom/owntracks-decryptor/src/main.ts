@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import dotevn from 'dotenv';
 import express, { Request, Response } from 'express';
 import sodium from 'libsodium-wrappers';
@@ -47,7 +47,7 @@ async function decryptPayload(input: string): Promise<string> {
     return Buffer.from(decryptedText, 'base64').toString('utf8');
 }
 
-app.post('/pub', async (request: Request, response: Response) => {
+app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response: Response) => {
     try {
         const body = request.body as EncryptedPayload;
         if (body._type !== 'encrypted') {
@@ -63,6 +63,7 @@ app.post('/pub', async (request: Request, response: Response) => {
                 headers[key] = `${value}`;
             }
         }
+        headers['host'] = 'dawarich.matejhome.com';
 
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);
@@ -73,14 +74,26 @@ app.post('/pub', async (request: Request, response: Response) => {
                 default: throw new Error(`Unknown app ${process.env['HOMELAB_APP_TYPE']}`);
             }
         })();
-        const axiosResponse = await axios.post(`http://${host}${request.url.replace(/^https?:\/\/.+?\//, '')}`, decryptedData, { headers: headers });
+        const url = `http://${host}${request.url.replace(/^https?:\/\/.+?\//, '')}`;
+
+        const axiosResponse = await axios.post(url, decryptedData, { headers: headers, responseType: 'arraybuffer' });
+
+        const responseData = Buffer.from(axiosResponse.data).toString('utf8');
+
+        if (axiosResponse.status !== 200) {
+            console.error(`Error ${axiosResponse.status} from ${axiosResponse.config.method} ${axiosResponse.config.url}: ${responseData}`);
+        }
 
         console.log(`${new Date().toISOString()} Forwarding value: ${JSON.stringify(decryptedData)}`);
 
         response.status(axiosResponse.status);
         response.send(axiosResponse.data);
     } catch (error) {
-        console.error('Server error:', error);
+        let errorDescription = 'Server error: ' + (error instanceof Error ? error.name : `${error}`);
+        if (error instanceof AxiosError) {
+            errorDescription += `\nStatus: ${error.status ?? 0}\n${JSON.stringify(error.config ?? {}, null, 2)}`;
+        }
+        console.error(errorDescription);
         response.sendStatus(500);
     }
 });
