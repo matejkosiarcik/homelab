@@ -63,6 +63,7 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
                 headers[key] = `${value}`;
             }
         }
+        headers['host'] = 'dawarich.matejhome.com';
 
         const decryptedText = await decryptPayload(body.data);
         const decryptedData = JSON.parse(decryptedText);
@@ -73,9 +74,7 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
                 default: throw new Error(`Unknown app ${process.env['HOMELAB_APP_TYPE']}`);
             }
         })();
-        console.log('Host:', host);
         const url = `http://${host}${request.url.replace(/^https?:\/\/.+?\//, '')}`;
-        console.log('URL:', url);
 
         const axiosResponse = await axios.post(url, decryptedData, { headers: headers, responseType: 'arraybuffer' });
 
