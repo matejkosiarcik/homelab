@@ -215,7 +215,10 @@ export const apps = {
             { url: 'https://unbound-1-default.matejhome.com', title: 'Unbound 1 Default' },
             { url: 'https://unbound-1-open.matejhome.com', title: 'Unbound 1 Open' },
             { url: 'https://unbound-2-default.matejhome.com', title: 'Unbound 2 Default' },
-            { url: 'https://unbound-2-open.matejhome.com', title: 'Unbound 2 Open' },
+            { url: 'https://unbound-2-matej.matejhome.com', title: 'Unbound 2 Matej' },
+            { url: 'https://unbound-2-monika.matejhome.com', title: 'Unbound 2 Monika' },
+            { url: 'https://unbound-2-iot.matejhome.com', title: 'Unbound 2 IoT' },
+            { url: 'https://unbound-2-guests.matejhome.com', title: 'Unbound 2 Guests' },
         ]
     },
     'unifi-controller': {
