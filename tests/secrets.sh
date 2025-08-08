@@ -32,7 +32,7 @@ load_password() {
     printf 'CERTBOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password certbot apache status)"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password certbot apache prometheus)"
 
-    printf 'CHANGEDETECTION_PASSWORD=%s\n' "$(load_password changedetection app admin)"
+    printf 'CHANGEDETECTION_ADMIN_PASSWORD=%s\n' "$(load_password changedetection app admin)"
     printf 'CHANGEDETECTION_PROXY_STATUS_PASSWORD=%s\n' "$(load_password changedetection apache status)"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password changedetection apache prometheus)"
 

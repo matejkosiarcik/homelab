@@ -16,7 +16,7 @@ test.describe(apps.changedetection.title, () => {
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login?next=/`);
-                await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'PASSWORD'));
+                await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
                 await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
                 await page.waitForURL(instance.url);
                 await expect(page.locator('#new-watch-form')).toBeVisible();
