@@ -4,7 +4,10 @@ certbot
 # DNS
 pihole-1-primary
 unbound-1-default
-unbound-1-open
+unbound-1-matej
+unbound-1-monika
+unbound-1-iot
+unbound-1-guests
 
 # Caches
 docker-cache-proxy-dockerhub
