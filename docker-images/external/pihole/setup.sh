@@ -75,12 +75,24 @@ open_group_id="$(sql "SELECT id FROM [group] WHERE name='Open';")"
 
 # Custom clients
 unbound_default_1_ip='10.1.20.1'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_1_ip', 0, 0, 'Unbound 1 default');"
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_1_ip', 0, 0, 'Unbound 1 Default');"
 unbound_default_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_1_ip';")"
 
-unbound_open_1_ip='10.1.20.2'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_open_1_ip', 0, 0, 'Unbound 1 open');"
-unbound_open_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_open_1_ip';")"
+unbound_matej_1_ip='10.1.20.2'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_matej_1_ip', 0, 0, 'Unbound 1 Matej');"
+unbound_matej_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_matej_1_ip';")"
+
+unbound_monika_1_ip='10.1.20.3'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_monika_1_ip', 0, 0, 'Unbound 1 Monika');"
+unbound_monika_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_monika_1_ip';")"
+
+unbound_iot_1_ip='10.1.20.4'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_iot_1_ip', 0, 0, 'Unbound 1 IoT');"
+unbound_iot_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_iot_1_ip';")"
+
+unbound_guests_1_ip='10.1.20.5'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_1_ip', 0, 0, 'Unbound 1 Guests');"
+unbound_guests_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_1_ip';")"
 
 unbound_default_2_ip='10.1.16.1'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 Default');"
@@ -105,10 +117,13 @@ unbound_guests_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_2_ip
 # Assign clients to groups
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_matej_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_matej_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_iot_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_iot_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_guests_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_guests_2_id;"
-sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_open_1_id;"
+sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_monika_1_id;"
 sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_monika_2_id;"
 
 # Set custom local domains
