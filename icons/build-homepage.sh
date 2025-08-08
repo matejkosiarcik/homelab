@@ -2,6 +2,28 @@
 set -euf
 # shellcheck disable=SC2248
 
+mode=''
+if [ "${HOMELAB_ENV-}" != '' ]; then
+    mode="$HOMELAB_ENV"
+fi
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+    -d | --dev)
+        mode='dev'
+        shift
+        ;;
+    -p | --prod)
+        mode='prod'
+        shift
+        ;;
+    *)
+        printf 'Unknown argument %s\n' "$1"
+        exit 1
+        ;;
+    esac
+done
+HOMELAB_ENV="$mode"
+
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/external/homepage/icons"
 rm -rf "$output_dir"
