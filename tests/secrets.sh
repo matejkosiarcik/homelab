@@ -36,6 +36,11 @@ load_password() {
     printf 'CHANGEDETECTION_PROXY_STATUS_PASSWORD=%s\n' "$(load_password changedetection apache status)"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password changedetection apache prometheus)"
 
+    printf 'DAWARICH_ADMIN_PASSWORD=%s\n' "$(load_password dawarich app admin)"
+    printf 'DAWARICH_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dawarich apache status)"
+    printf 'DAWARICH_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dawarich apache prometheus)"
+    printf 'DAWARICH_PROMETHEUS_PASSWORD=%s\n' "$(load_password dawarich app prometheus)"
+
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-cache-proxy-dockerhub apache status)"
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-cache-proxy-dockerhub apache prometheus)"
 

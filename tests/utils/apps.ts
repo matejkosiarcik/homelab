@@ -17,6 +17,12 @@ export const apps = {
             { url: 'https://changedetection.matejhome.com', title: 'Changedetection' },
         ]
     },
+    dawarich: {
+        title: 'Dawarich',
+        instances: [
+            { url: 'https://dawarich.matejhome.com', title: 'Dawarich' },
+        ]
+    },
     'docker-proxy': {
         title: 'Docker Proxy',
         instances: [
