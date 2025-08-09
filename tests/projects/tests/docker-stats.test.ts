@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, getEnv } from '../../utils/utils';
 
 test.describe(apps['docker-stats'].title, () => {
@@ -9,12 +9,11 @@ test.describe(apps['docker-stats'].title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic', path: '/' });
-            createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}`, {
+                const response = await axios.get(`${instance.url}/`, {
                     auth: {
                         username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),

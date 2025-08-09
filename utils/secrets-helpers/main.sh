@@ -260,7 +260,7 @@ case "$app_dirname" in
     write_http_auth_user admin "$admin_password" users
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user admin "$prometheus_password" users
+    write_http_auth_user prometheus "$prometheus_password" users
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
