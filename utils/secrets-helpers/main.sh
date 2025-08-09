@@ -194,6 +194,9 @@ case "$app_dirname" in
     certbot_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache viewer)"
     write_http_auth_user viewer "$certbot_viewer_password" users
     printf 'viewer,%s\n' "$certbot_viewer_password" >>"$initial_output/all-credentials.csv"
+    certbot_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache viewer)"
+    write_http_auth_user admin "$certbot_admin_password" users
+    printf 'admin,%s\n' "$certbot_admin_password" >>"$initial_output/all-credentials.csv"
     certbot_admin_email="$(load_token "$DOCKER_COMPOSE_APP_NAME" certbot admin-email)"
     printf 'CERTBOT_ADMIN_EMAIL=%s\n' "$certbot_admin_email" >>"$initial_output/app.env"
     websupport_api_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport api-key)"
