@@ -83,9 +83,12 @@ def load_full_env():
             os.environ[key] = default_value
 
 
-def docker_images_shasums() -> str:
-    config_output = subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
-    config_obj = json.loads(config_output)
+def get_docker_compose_config() -> str:
+    return subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
+
+
+def get_docker_images_shasum(config: str) -> str:
+    config_obj = json.loads(config)
     image_names = sorted([config_obj["services"][service]["container_name"] for service in config_obj["services"]])
     output = []
     for image in image_names:
@@ -139,9 +142,10 @@ def run_main_command(command: str):
     if command == "build":
         docker_build()
     elif command == "deploy":
-        shasum_before = docker_images_shasums()
+        config = get_docker_compose_config()
+        shasum_before = get_docker_images_shasum(config)
         docker_build()
-        shasum_after = docker_images_shasums()
+        shasum_after = get_docker_images_shasum(config)
         if when_mode == "always" or (when_mode == "onchange" and shasum_before != shasum_after):
             docker_stop()
             docker_start()

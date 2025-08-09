@@ -156,10 +156,28 @@
         ping: unbound-1-default.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 1 Open:
+    - Unbound 1 Matej:
         description: Entrypoint DNS server
-        href: https://unbound-1-open.matejhome.com
-        ping: unbound-1-open.matejhome.com
+        href: https://unbound-1-matej.matejhome.com
+        ping: unbound-1-matej.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 1 Monika:
+        description: Entrypoint DNS server
+        href: https://unbound-1-monika.matejhome.com
+        ping: unbound-1-monika.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 1 IoT:
+        description: Entrypoint DNS server
+        href: https://unbound-1-iot.matejhome.com
+        ping: unbound-1-iot.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 1 Guests:
+        description: Entrypoint DNS server
+        href: https://unbound-1-guests.matejhome.com
+        ping: unbound-1-guests.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound 2 Default:
@@ -168,10 +186,28 @@
         ping: unbound-2-default.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 2 Open:
+    - Unbound 2 Matej:
         description: Entrypoint DNS server
-        href: https://unbound-2-open.matejhome.com
-        ping: unbound-2-open.matejhome.com
+        href: https://unbound-2-matej.matejhome.com
+        ping: unbound-2-matej.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Monika:
+        description: Entrypoint DNS server
+        href: https://unbound-2-monika.matejhome.com
+        ping: unbound-2-monika.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 IoT:
+        description: Entrypoint DNS server
+        href: https://unbound-2-iot.matejhome.com
+        ping: unbound-2-iot.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Guests:
+        description: Entrypoint DNS server
+        href: https://unbound-2-guests.matejhome.com
+        ping: unbound-2-guests.matejhome.com
         icon: /icons/unbound.png
 
 - Smart Home:
