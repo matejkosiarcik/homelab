@@ -8,7 +8,7 @@ test.describe.skip(apps['docker-stats'].title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createPrometheusTests(instance.url, { auth: 'basic', path: '' });
+            createPrometheusTests(instance.url, { auth: 'basic', path: '/' });
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
