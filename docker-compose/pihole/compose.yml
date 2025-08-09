@@ -10,6 +10,8 @@ services:
       - ./app-secrets/app.env
     volumes:
       - ./app-data/pihole/data:/etc/pihole:rw
+    cap_add:
+      - SYS_NICE
     # Hard-coded DNS is necessary because of bootstrapping problem
     # Basically PiHole needs functional DNS in order to start (eg. to update adlists before start - which it can't do until it itself started, when it's the only DNS server on network)
     dns:
