@@ -38,7 +38,7 @@ test.describe(apps.certbot.title, () => {
                     status: 401,
                 },
                 {
-                    title: 'empty password (viewer)',
+                    title: 'empty password [viewer]',
                     auth: {
                         username: 'viewer',
                         password: '',
@@ -46,7 +46,7 @@ test.describe(apps.certbot.title, () => {
                     status: 401,
                 },
                 {
-                    title: 'empty password (admin)',
+                    title: 'empty password [admin]',
                     auth: {
                         username: 'admin',
                         password: '',
@@ -54,7 +54,7 @@ test.describe(apps.certbot.title, () => {
                     status: 401,
                 },
                 {
-                    title: 'wrong password (viewer)',
+                    title: 'wrong password [viewer]',
                     auth: {
                         username: 'viewer',
                         password: faker.string.alphanumeric(10),
@@ -62,7 +62,7 @@ test.describe(apps.certbot.title, () => {
                     status: 401,
                 },
                 {
-                    title: 'wrong password (admin)',
+                    title: 'wrong password [admin]',
                     auth: {
                         username: 'admin',
                         password: faker.string.alphanumeric(10),
@@ -78,7 +78,7 @@ test.describe(apps.certbot.title, () => {
                     status: 401,
                 },
                 {
-                    title: 'successful (viewer)',
+                    title: 'successful [viewer]',
                     auth: {
                         username: 'viewer',
                         password: getEnv(instance.url, 'VIEWER_PASSWORD'),
@@ -86,7 +86,7 @@ test.describe(apps.certbot.title, () => {
                     status: 200,
                 },
                 {
-                    title: 'successful (admin)',
+                    title: 'successful [admin]',
                     auth: {
                         username: 'admin',
                         password: getEnv(instance.url, 'ADMIN_PASSWORD'),
