@@ -3,7 +3,7 @@ import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, getEnv } from '../../utils/utils';
 
-test.describe.skip(apps['docker-stats'].title, () => {
+test.describe(apps['docker-stats'].title, () => {
     for (const instance of apps['docker-stats'].instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
