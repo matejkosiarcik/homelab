@@ -58,6 +58,7 @@ healthchecks
 # netalertx
 glances
 node-exporter
+docker-stats
 prometheus
 # grafana
 
