@@ -49,10 +49,10 @@ load_password() {
     # printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 apache status)"
     # printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 apache prometheus)"
 
-    # printf 'DOCKER_STATS_ODROID_H3_ADMIN_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app admin)"
-    # printf 'DOCKER_STATS_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app prometheus)"
-    # printf 'DOCKER_STATS_ODROID_H3_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 apache status)"
-    # printf 'DOCKER_STATS_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 apache prometheus)"
+    printf 'DOCKER_STATS_ODROID_H3_ADMIN_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app admin)"
+    printf 'DOCKER_STATS_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app prometheus)"
+    printf 'DOCKER_STATS_ODROID_H3_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 apache status)"
+    printf 'DOCKER_STATS_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 apache prometheus)"
 
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_ADMIN_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h4-ultra app admin)"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h4-ultra app prometheus)"
