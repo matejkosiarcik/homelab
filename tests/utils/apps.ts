@@ -29,6 +29,12 @@ export const apps = {
             { url: 'https://docker-cache-proxy-dockerhub.matejhome.com', title: 'DockerHub Proxy' },
         ],
     },
+    'docker-stats': {
+        title: 'Docker Stats',
+        instances: [
+            { url: 'https://docker-stats-odroid-h4-ultra.matejhome.com', title: 'DockerHub Stats - Odroid H4 Ultra' },
+        ],
+    },
     dozzle: {
         title: 'Dozzle',
         instances: [
