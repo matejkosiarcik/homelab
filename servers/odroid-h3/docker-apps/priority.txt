@@ -1,2 +1,4 @@
 dozzle-agent
+node-exporter
+docker-stats
 glances
