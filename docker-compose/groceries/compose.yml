@@ -44,8 +44,6 @@ services:
     init: false
     env_file:
       - ./app-secrets/couchdb.env
-    # environment:
-    #   COUCHDB_USER: admin
     volumes:
       - ./app-data/couchdb-data:/opt/couchdb/data:rw
 
