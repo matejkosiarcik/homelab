@@ -206,6 +206,18 @@ RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "http://decryptor:8080%{REQUEST_URI}" [P,L]
 
+# Custom groceries backend
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^groceries$ [NC]
+RewriteCond %{REQUEST_URI} ^/api/(.*)$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "http://app-backend:3333/%1" [P,L]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^groceries$ [NC]
+RewriteCond %{REQUEST_URI} ^/couchdb/(.*)$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "http://couchdb:5984/%1" [P,L]
+
 # Custom favicons
 RewriteCond %{REQUEST_URI} ^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
