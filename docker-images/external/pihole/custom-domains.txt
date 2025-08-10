@@ -117,3 +117,4 @@
 10.1.20.59 openwebui-private.matejhome.com
 10.1.20.60 owntracks.matejhome.com
 10.1.20.61 owntracks-backend.matejhome.com
+10.1.20.62 groceries.matejhome.com
