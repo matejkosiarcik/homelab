@@ -7,7 +7,7 @@ services:
       dockerfile: ./external/dozzle/Dockerfile
     environment:
       DOZZLE_REMOTE_AGENT: >
-        dozzle-agent-odroid-h4-ultra.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-2g.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-4g.matejhome.com:7007
+        dozzle-agent-odroid-h3.matejhome.com:7007,dozzle-agent-odroid-h4-ultra.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-2g.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-4g.matejhome.com:7007
     volumes:
       - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
       # Docker socket intentionally left out, as I want dozzle to use dozzle-agents always, even for current server
