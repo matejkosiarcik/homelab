@@ -2,7 +2,7 @@ export const apps = {
     actualbudget: {
         title: 'ActualBudget',
         instances: [
-            { url: 'https://actualbudget.matejhome.com', title: 'ActualBudget (private)' },
+            { url: 'https://actualbudget.matejhome.com', title: 'ActualBudget' },
         ],
     },
     certbot: {
@@ -32,6 +32,7 @@ export const apps = {
     'docker-stats': {
         title: 'Docker Stats',
         instances: [
+            { url: 'https://docker-stats-odroid-h3.matejhome.com', title: 'DockerHub Stats - Odroid H3' },
             { url: 'https://docker-stats-odroid-h4-ultra.matejhome.com', title: 'DockerHub Stats - Odroid H4 Ultra' },
         ],
     },
@@ -44,7 +45,7 @@ export const apps = {
     'dozzle-agent': {
         title: 'Dozzle Agent',
         instances: [
-            // { url: 'tcp://dozzle-agent-odroid-h3.matejhome.com', title: 'Dozzle Agent - Odroid H3' },
+            { url: 'tcp://dozzle-agent-odroid-h3.matejhome.com', title: 'Dozzle Agent - Odroid H3' },
             { url: 'tcp://dozzle-agent-odroid-h4-ultra.matejhome.com', title: 'Dozzle Agent - Odroid H4 Ultra' },
             { url: 'tcp://dozzle-agent-raspberry-pi-4b-2g.matejhome.com', title: 'Dozzle Agent - Raspberry Pi 4B 2GB' },
             { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.matejhome.com', title: 'Dozzle Agent - Raspberry Pi 4B 4GB' },
@@ -60,7 +61,7 @@ export const apps = {
     glances: {
         title: 'Glances',
         instances: [
-            // { url: 'https://glances-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
+            { url: 'https://glances-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
             { url: 'https://glances-odroid-h4-ultra.matejhome.com', title: 'Glances - Odroid H4 Ultra' },
             { url: 'https://glances-raspberry-pi-4b-2g.matejhome.com', title: 'Glances - Raspberry Pi 4B 2GB' },
             { url: 'https://glances-raspberry-pi-4b-4g.matejhome.com', title: 'Glances - Raspberry Pi 4B 4GB' },
@@ -136,7 +137,7 @@ export const apps = {
     'node-exporter': {
         title: 'Node Exporter',
         instances: [
-            // { url: 'https://node-exporter-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
+            { url: 'https://node-exporter-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
             { url: 'https://node-exporter-odroid-h4-ultra.matejhome.com', title: 'Glances - Odroid H4 Ultra' },
             { url: 'https://node-exporter-raspberry-pi-4b-2g.matejhome.com', title: 'Glances - Raspberry Pi 4B 2GB' },
             { url: 'https://node-exporter-raspberry-pi-4b-4g.matejhome.com', title: 'Glances - Raspberry Pi 4B 4GB' },
