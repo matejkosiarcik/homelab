@@ -36,6 +36,7 @@ const appAddress = (() => {
         case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
         case 'grafana': return 'http://app:3000';
+        case 'groceries': return 'app-frontend:8100';
         case 'healthchecks': return 'http://app:8000';
         case 'home-assistant': return 'http://app:8123';
         case 'homepage': return 'http://app:3000';
@@ -78,6 +79,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'glances': return '/static/favicon.ico';
         case 'gotify': return '/static/favicon-196x196.png';
         case 'grafana': return '/public/img/grafana_icon.svg';
+        case 'groceries': return '/assets/icon/favicon.svg';
         case 'healthchecks': return '/static/img/favicon.svg';
         case 'home-assistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
         case 'homepage': return '/apple-touch-icon.png';

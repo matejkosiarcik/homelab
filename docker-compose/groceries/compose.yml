@@ -1,0 +1,80 @@
+services:
+  app-backend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
+    build:
+      dockerfile: ./external/groceries-backend/Dockerfile
+    depends_on:
+      couchdb:
+        condition: service_healthy
+    env_file:
+      - ./app-secrets/app.env
+    environment:
+      COUCHDB_URL: ${DOCKER_COMPOSE_NETWORK_URL}/couchdb
+      GROCERY_URL: ${DOCKER_COMPOSE_NETWORK_URL}
+      GROCERY_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
+      SMTP_FROM: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    tmpfs:
+      - /run
+      - /var/cache/nginx
+
+  app-frontend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
+    build:
+      dockerfile: ./external/groceries-frontend/Dockerfile
+    read_only: false # TODO: Allow running in readonly mode
+    environment:
+      DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
+    # tmpfs:
+    #   - /usr/share/nginx/html
+
+  couchdb:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-couchdb
+    build:
+      dockerfile: ./external/couchdb/Dockerfile
+    read_only: false # TODO: Allow running in readonly mode
+    init: false
+    env_file:
+      - ./app-secrets/couchdb.env
+    volumes:
+      - ./app-data/couchdb-data:/opt/couchdb/data:rw
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

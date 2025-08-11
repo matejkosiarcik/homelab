@@ -506,6 +506,37 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
+*groceries*)
+    # App
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
+    printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
+    printf 'SMTP_PASSWORD=\n' >>"$initial_output/app.env" # Placeholder
+
+    # Database
+    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb admin)"
+    printf 'COUCHDB_ADMIN_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
+    printf 'COUCHDB_PASSWORD=%s\n' "$database_password" >>"$initial_output/couchdb.env"
+    printf 'couchdb-admin,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    hmac_key="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb hmac-key)"
+    printf 'COUCHDB_HMAC_KEY=%s\n' "$hmac_key" >>"$initial_output/app.env"
+    printf 'HMAC_KEY=%s\n' "$hmac_key" >>"$initial_output/couchdb.env"
+    printf 'couchdb-hmac,%s\n' "$hmac_key" >>"$initial_output/all-credentials.csv"
+    uuid="$(load_token "$DOCKER_COMPOSE_APP_NAME" couchdb uuid)"
+    printf 'UUID=%s\n' "$uuid" >>"$initial_output/couchdb.env"
+    printf 'couchdb-uuid,%s\n' "$uuid" >>"$initial_output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
 *healthchecks*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
