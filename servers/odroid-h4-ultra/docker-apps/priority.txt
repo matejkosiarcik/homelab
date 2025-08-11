@@ -42,6 +42,7 @@ owntracks
 dawarich
 kiwix-wikipedia
 kiwix-wiktionary
+groceries
 
 # AI
 ollama
