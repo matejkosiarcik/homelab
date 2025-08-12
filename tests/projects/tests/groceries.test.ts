@@ -35,11 +35,3 @@ test.describe(apps.groceries.title, () => {
         });
     }
 });
-
-test.describe(apps['dozzle-agent'].title, () => {
-    for (const instance of apps['dozzle-agent'].instances) {
-        test.describe(instance.title, () => {
-            createTcpTests(instance.url, 7007);
-        });
-    }
-});
