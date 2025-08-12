@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM owntracks/recorder:1.0.0
+FROM owntracks/recorder:1.0.1
 ENV HOMELAB_CONTAINER_NAME=owntracks-backend \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
