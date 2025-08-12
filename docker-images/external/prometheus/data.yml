@@ -156,9 +156,15 @@ proxies:
   - url: smtp4dev.matejhome.com
   - url: tvheadend.matejhome.com
   - url: unbound-1-default.matejhome.com
-  - url: unbound-1-open.matejhome.com
+  - url: unbound-1-matej.matejhome.com
+  - url: unbound-1-monika.matejhome.com
+  - url: unbound-1-iot.matejhome.com
+  - url: unbound-1-guests.matejhome.com
   - url: unbound-2-default.matejhome.com
-  - url: unbound-2-open.matejhome.com
+  - url: unbound-2-matej.matejhome.com
+  - url: unbound-2-monika.matejhome.com
+  - url: unbound-2-iot.matejhome.com
+  - url: unbound-2-guests.matejhome.com
   - url: unifi-controller.matejhome.com
   - url: uptime-kuma.matejhome.com
   - url: vaultwarden.matejhome.com
