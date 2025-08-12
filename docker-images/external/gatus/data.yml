@@ -508,8 +508,38 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Unbound 1 Open
-    domain: unbound-1-open.matejhome.com
+  - name: Unbound 1 Matej
+    domain: unbound-1-matej.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 Monika
+    domain: unbound-1-monika.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 IoT
+    domain: unbound-1-iot.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 Guests
+    domain: unbound-1-guests.matejhome.com
     type:
       - dns
       - http
@@ -528,8 +558,38 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Unbound 2 Open
-    domain: unbound-2-open.matejhome.com
+  - name: Unbound 2 Matej
+    domain: unbound-2-matej.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Monika
+    domain: unbound-2-monika.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 IoT
+    domain: unbound-2-iot.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Guests
+    domain: unbound-2-guests.matejhome.com
     type:
       - dns
       - http
