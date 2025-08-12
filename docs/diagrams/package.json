@@ -9,7 +9,7 @@
     "fast-xml-parser": "^5.2.5",
     "lodash": "^4.17.21",
     "npm-run-all2": "^8.0.4",
-    "tsx": "^4.20.3",
+    "tsx": "^4.20.4",
     "typescript": "^5.9.2"
   },
   "devDependencies": {
