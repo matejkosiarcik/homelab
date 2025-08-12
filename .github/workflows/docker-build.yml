@@ -13,7 +13,7 @@ jobs:
       components: ${{ steps.filter.outputs.changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
 
       - name: Filter paths
         uses: dorny/paths-filter@v3.0.2
@@ -89,7 +89,7 @@ jobs:
         component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
 
       - name: Install APT dependencies
         run: sudo apt-get install --yes moreutils
