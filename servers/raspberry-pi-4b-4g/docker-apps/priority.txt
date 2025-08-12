@@ -12,6 +12,3 @@ dozzle-agent
 motioneye-kitchen
 glances
 node-exporter
-
-# App Monitoring
-gatus-2

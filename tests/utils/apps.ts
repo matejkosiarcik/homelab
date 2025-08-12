@@ -79,6 +79,12 @@ export const apps = {
             { url: 'https://grafana.matejhome.com', title: 'Grafana' },
         ]
     },
+    groceries: {
+        title: 'Groceries',
+        instances: [
+            { url: 'https://groceries.matejhome.com', title: 'Groceries' },
+        ]
+    },
     healthchecks: {
         title: 'Healthchecks',
         instances: [

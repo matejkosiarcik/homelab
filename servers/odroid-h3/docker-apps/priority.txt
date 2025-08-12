@@ -2,3 +2,6 @@ dozzle-agent
 node-exporter
 docker-stats
 glances
+
+# App Monitoring
+gatus-2
