@@ -2,6 +2,8 @@
 
 FROM ghcr.io/davideshay/groceries-server:1.1.9
 COPY ./external/groceries-backend/healthcheck.js /homelab/healthcheck.js
+COPY ./external/groceries-backend/globalItems.json /usr/app/data/globalItems.json
+COPY ./external/groceries-backend/categories.json /usr/app/data/categories.json
 ENV ACCESS_TOKEN_EXPIRES=12h \
     COUCHDB_ADMIN_USER=admin \
     COUCHDB_DATABASE=groceries \

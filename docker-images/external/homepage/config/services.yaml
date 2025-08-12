@@ -397,6 +397,12 @@
         ping: gotify.matejhome.com
         icon: /icons/gotify.png
 
+    - Groceries:
+        description: Shopping list
+        href: https://groceries.matejhome.com
+        ping: groceries.matejhome.com
+        icon: /icons/specifically-clementines.png
+
     - ActualBudget:
         description: Finance manager
         href: https://actualbudget.matejhome.com
