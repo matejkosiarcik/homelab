@@ -133,6 +133,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Glances - Raspberry Pi 4B 4GB',
         'Gotify',
         'Grafana',
+        'Groceries',
         'Healthchecks',
         'Home Assistant',
         'Homepage',

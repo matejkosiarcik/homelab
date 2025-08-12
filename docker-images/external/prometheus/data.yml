@@ -125,6 +125,7 @@ proxies:
   - url: glances-raspberry-pi-4b-4g.matejhome.com
   - url: gotify.matejhome.com
   - url: grafana.matejhome.com
+  - url: groceries.matejhome.com
   - url: healthchecks.matejhome.com
   - url: home-assistant.matejhome.com
   - url: homepage.matejhome.com
