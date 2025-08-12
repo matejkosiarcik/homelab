@@ -22,7 +22,7 @@ workflows:
 jobs:
   local_build:
     docker:
-      - image: debian:12.11
+      - image: debian:13.0
     steps:
       - checkout
       - run:

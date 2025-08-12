@@ -30,12 +30,12 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./unbound_exporter/unbound_exporter
 
-FROM debian:12.11-slim AS prefinal
+FROM debian:13.0-slim AS prefinal
 WORKDIR /homelab
 COPY ./external/unbound-prometheus-exporter/entrypoint.sh ./entrypoint.sh
 COPY --from=build /homelab/unbound_exporter/unbound_exporter ./bin/
 
-FROM debian:12.11-slim
+FROM debian:13.0-slim
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \

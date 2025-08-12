@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: User unnecessary
 # checkov:skip=CKV_DOCKER_2: Healthcheck unnecessary
 
-FROM --platform=$BUILDPLATFORM debian:12.11-slim AS oxipng-yq
+FROM --platform=$BUILDPLATFORM debian:13.0-slim AS oxipng-yq
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
