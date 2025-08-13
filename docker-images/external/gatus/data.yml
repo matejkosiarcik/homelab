@@ -204,7 +204,7 @@ apps:
     domain: grafana.matejhome.com
 
   - name: Specifically clementines (Groceries)
-    domain: grafana.matejhome.com
+    domain: groceries.matejhome.com
 
   - name: Healthchecks
     domain: healthchecks.matejhome.com
