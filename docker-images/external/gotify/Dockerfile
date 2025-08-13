@@ -40,7 +40,7 @@
 
 ### Final ####
 
-FROM debian:12.11-slim AS prefinal
+FROM debian:13.0-slim AS prefinal
 WORKDIR /homelab
 # COPY --from=favicon-5 /homelab/favicon.ico ./favicon/
 

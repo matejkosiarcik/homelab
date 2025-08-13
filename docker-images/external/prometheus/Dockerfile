@@ -3,7 +3,7 @@
 
 ### Dependencies ###
 
-FROM --platform=$BUILDPLATFORM debian:12.11-slim AS yq
+FROM --platform=$BUILDPLATFORM debian:13.0-slim AS yq
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -14,7 +14,7 @@ RUN python3 -m pip install --requirement requirements.txt --target python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM --platform=$BUILDPLATFORM debian:12.11-slim AS jinja
+FROM --platform=$BUILDPLATFORM debian:13.0-slim AS jinja
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -40,7 +40,7 @@ RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 
 ### Final ###
 
-FROM debian:12.11-slim AS prefinal
+FROM debian:13.0-slim AS prefinal
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/prometheus.yml

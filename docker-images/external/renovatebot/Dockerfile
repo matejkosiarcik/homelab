@@ -31,14 +31,14 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:12.11-slim AS supercronic
+FROM debian:13.0-slim AS supercronic
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
-FROM debian:12.11-slim AS prefinal
+FROM debian:13.0-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
