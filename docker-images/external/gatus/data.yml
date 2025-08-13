@@ -92,7 +92,6 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
-    enabled: false
 
   - name: Docker Stats - Odroid H4 Ultra
     domain: docker-stats-odroid-h4-ultra.matejhome.com
@@ -115,6 +114,7 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+    enabled: false
 
   - name: Docker Stats - Raspberry Pi 4B 4GB
     domain: docker-stats-raspberry-pi-4b-4g.matejhome.com
@@ -122,6 +122,7 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+    enabled: false
 
   - name: Dozzle
     domain: dozzle.matejhome.com
@@ -204,7 +205,7 @@ apps:
     domain: grafana.matejhome.com
 
   - name: Specifically clementines (Groceries)
-    domain: grafana.matejhome.com
+    domain: groceries.matejhome.com
 
   - name: Healthchecks
     domain: healthchecks.matejhome.com
