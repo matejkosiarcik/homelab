@@ -16,6 +16,7 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
+      - /etc/letsencrypt
       - /homelab/.status
 
   apache:
