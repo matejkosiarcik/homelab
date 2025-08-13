@@ -14,7 +14,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 COPY ./.shared/dependencies/oxipng/Cargo.toml ./
 RUN tomlq -r '."dev-dependencies" | to_entries | map("\(.key) \(.value)")[]' Cargo.toml >cargo-dependencies.txt
 
-FROM rust:1.88.0-slim-bookworm AS oxipng
+FROM rust:1.89.0-slim-bookworm AS oxipng
 WORKDIR /homelab
 COPY --from=oxipng-yq /homelab/cargo-dependencies.txt ./
 ENV CARGO_PROFILE_RELEASE_LTO=true \
