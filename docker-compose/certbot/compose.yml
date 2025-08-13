@@ -18,6 +18,7 @@ services:
     tmpfs:
       - /etc/letsencrypt
       - /homelab/.status
+      - /var/lib/letsencrypt
 
   apache:
     extends:
