@@ -1,11 +1,11 @@
 # DNS first
-# pihole-2-primary
+pihole-2-primary
 unbound-2-default
 unbound-2-matej
 unbound-2-monika
 unbound-2-iot
 unbound-2-guests
-# pihole-2-secondary
+pihole-2-secondary
 
 # Other
 dozzle-agent
