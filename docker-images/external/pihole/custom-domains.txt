@@ -18,6 +18,11 @@
 
 ### Odroid H3 ###
 
+10.1.10.1 unbound-2-default.matejhome.com
+10.1.10.2 unbound-2-matej.matejhome.com
+10.1.10.3 unbound-2-monika.matejhome.com
+10.1.10.4 unbound-2-iot.matejhome.com
+10.1.10.5 unbound-2-guests.matejhome.com
 10.1.10.21 glances-odroid-h3.matejhome.com
 10.1.10.22 dozzle-agent-odroid-h3.matejhome.com
 10.1.10.23 node-exporter-odroid-h3.matejhome.com
@@ -41,11 +46,6 @@
 
 ### Raspberry Pi 4B 4GB ###
 
-10.1.16.1 unbound-2-default.matejhome.com
-10.1.16.2 unbound-2-matej.matejhome.com
-10.1.16.3 unbound-2-monika.matejhome.com
-10.1.16.4 unbound-2-iot.matejhome.com
-10.1.16.5 unbound-2-guests.matejhome.com
 # ...9 Reserved
 10.1.16.11 pihole-2-primary.matejhome.com
 10.1.16.12 pihole-2-secondary.matejhome.com
