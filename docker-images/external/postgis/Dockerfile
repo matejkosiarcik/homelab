@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 # hadolint ignore=DL3029
-FROM --platform=linux/amd64 postgis/postgis:17-3.5-alpine
+FROM --platform=linux/amd64 postgis/postgis:17-3.5
 ENV POSTGRES_DB=database \
     POSTGRES_USER=postgres \
     HOMELAB_CONTAINER_NAME=postgis \
