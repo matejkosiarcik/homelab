@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM grafana/grafana-oss:12.1.0
+FROM grafana/grafana-oss:12.1.1
 ENV GF_PLUGINS_PREINSTALL= \
     GF_SECURITY_ADMIN_USER=admin \
     GF_SECURITY_COOKIE_SAMESITE=strict \
