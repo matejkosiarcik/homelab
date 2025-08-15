@@ -94,23 +94,23 @@ unbound_guests_1_ip='10.1.20.5'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_1_ip', 0, 0, 'Unbound 1 Guests');"
 unbound_guests_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_1_ip';")"
 
-unbound_default_2_ip='10.1.16.1'
+unbound_default_2_ip='10.1.10.1'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 Default');"
 unbound_default_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_2_ip';")"
 
-unbound_matej_2_ip='10.1.16.2'
+unbound_matej_2_ip='10.1.10.2'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_matej_2_ip', 0, 0, 'Unbound 2 Matej');"
 unbound_matej_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_matej_2_ip';")"
 
-unbound_monika_2_ip='10.1.16.3'
+unbound_monika_2_ip='10.1.10.3'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_monika_2_ip', 0, 0, 'Unbound 2 Monika');"
 unbound_monika_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_monika_2_ip';")"
 
-unbound_iot_2_ip='10.1.16.4'
+unbound_iot_2_ip='10.1.10.4'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_iot_2_ip', 0, 0, 'Unbound 2 IoT');"
 unbound_iot_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_iot_2_ip';")"
 
-unbound_guests_2_ip='10.1.16.5'
+unbound_guests_2_ip='10.1.10.5'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_2_ip', 0, 0, 'Unbound 2 Guests');"
 unbound_guests_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_2_ip';")"
 

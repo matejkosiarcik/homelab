@@ -1,7 +1,3 @@
-# DNS first
-pihole-2-primary
-pihole-2-secondary
-
 # Other
 dozzle-agent
 motioneye-kitchen
