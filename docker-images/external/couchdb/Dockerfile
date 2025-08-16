@@ -1,13 +1,12 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM couchdb:3.5.0
-# printf '%s\n' "find /opt/couchdb/etc/local.d-tmp -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R /opt/couchdb/etc/local.d-tmp/\$(basename \$1) /opt/couchdb/etc/local.d/\$(basename \$1)' - {} \;" >/homelab/docker-entrypoint-extra.sh && \
-COPY ./external/couchdb/jwt.ini /opt/couchdb/etc/local.d/
+RUN find /opt/couchdb/etc/local.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/opt/couchdb/etc/local.d/$(basename "$1")" "/homelab/local.d/$(basename "$1")"' - {} \;
+COPY ./external/couchdb/jwt.ini /homelab/local.d/
 COPY ./external/couchdb/docker-entrypoint-extra.sh /homelab/
 RUN head -n 1 /docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
     tail -n +2 /docker-entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
-    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/docker-entrypoint.sh && \
-    rm -rf /homelab
+    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/docker-entrypoint.sh
 ENV COUCHDB_USER=admin \
     HOMELAB_CONTAINER_NAME=couchdb \
     HOMELAB_CONTAINER_VARIANT=default \
