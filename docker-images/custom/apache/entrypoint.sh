@@ -214,6 +214,15 @@ if [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
         exit 1
     fi
+elif [ "$HOMELAB_APP_TYPE" = 'owntracks' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'frontend' ]; then
+        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-frontend:9117'
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'backend' ]; then
+        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-backend:9117'
+    else
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
+        exit 1
+    fi
 else
     PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter:9117'
 fi

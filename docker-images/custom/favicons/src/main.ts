@@ -36,7 +36,7 @@ const appAddress = (() => {
         case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
         case 'grafana': return 'http://app:3000';
-        case 'groceries': return 'app-frontend:8100';
+        case 'groceries': return 'http://app-frontend:8100';
         case 'healthchecks': return 'http://app:8000';
         case 'home-assistant': return 'http://app:8123';
         case 'homepage': return 'http://app:3000';

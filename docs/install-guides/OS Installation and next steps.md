@@ -21,14 +21,19 @@ Notes for installation:
 
 ## Other
 
-Run the installation...
+Notes for installation:
 
-## Postinstall - Prepare crucial packages
+- Set custom hostname (same as server-name)
+- Set Timezone _Europe/Bratislava_
+- Set username to _homelab_
+- Do not set root password
+
+## Postinstall - Prepare essential packages
 
 Install `openssh-server` in order to be able to connect to this machine via SSH.
-Install `python3` in order to be able to run ansible on this machine.
+Install `python3` in order to be able to run Ansible on this machine.
 
-TL;DR:
+On server:
 
 ```sh
 sudo apt-get update && sudo apt-get install --yes openssh-server python3
@@ -38,30 +43,51 @@ sudo apt-get update && sudo apt-get install --yes openssh-server python3
 
 Copy `homelab` public key to server, disable password authentication, enable key authentication.
 
-TL;DR:
+On client:
 
 ```sh
 ssh-copy-id -i ~/.ssh/id_homelab.pub homelab@10.1.4.[host]
 ```
 
+On server:
+
 ```sh
-sudo nano /etc/ssh/sshd_config
-# Set following line: PasswordAuthentication no
+sudo nano /etc/ssh/sshd_config # Set: "PasswordAuthentication no"
 sudo service ssh restart
 ```
 
 ## Postinstall - Enable passwordless sudo
 
-TL;DR:
+On server:
 
 ```sh
 sudo visudo
 # Set following line: homelab ALL=(ALL) NOPASSWD: ALL
 ```
 
-## Postinstall - Run ansible setup
+## Postinstall - Increase inotify limit
 
-TL;DR:
+On server:
+
+```sh
+printf '\nfs.file-max = 65536\nfs.inotify.max_user_instances = 65536\n' | sudo tee '/etc/sysctl.conf'
+```
+
+## Postinstall - Docker memory monitoring
+
+Only for ARM devices (Raspberry Pi)!
+
+Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory Docker container use:
+
+```txt
+cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+```
+
+Then `reboot`.
+
+## Postinstall - Run Ansible
+
+On client:
 
 ```sh
 ansible-playbook --limit [machine-name] playbooks/setup-server.yml
@@ -69,7 +95,7 @@ ansible-playbook --limit [machine-name] playbooks/setup-server.yml
 
 ## Postinstall - Login to vaultwarden
 
-TL;DR
+On server:
 
 ```sh
 bw login homelab@vaultwarden.matejhome.com
@@ -79,23 +105,18 @@ nano ~/.bashrc
 
 ## Postinstall - Deploy homelab
 
-TL;DR:
+On server:
 
 ```sh
 cd "$HOME/git/homelab/servers/.current"
-task install -- --prod
+task install
 sudo reboot
-cd "$HOME/git/homelab/servers/.current"
-task secrets -- --prod
-task deploy -- --prod
 ```
 
-## Postinstall - Docker memory monitoring
+Again, on server:
 
-Only for ARM devices (Raspberry Pi)!
-
-Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory docker container use:
-
-```txt
-cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+```sh
+cd "$HOME/git/homelab/servers/.current"
+task secrets
+task deploy
 ```

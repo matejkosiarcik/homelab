@@ -13,11 +13,11 @@ test.describe(apps.groceries.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test('UI: Successful login - User admin', async ({ page }) => {
+            test('UI: Successful login - User test', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
                 await page.locator('input[autocomplete="username"]').fill('test');
-                await page.locator('form input[autocomplete="current-password"]').fill(getEnv(instance.url, 'TEST_PASSWORD'));
+                await page.locator('input[autocomplete="current-password"]').fill(getEnv(instance.url, 'TEST_PASSWORD'));
                 await page.locator('ion-button[type="submit"]:has-text("Login")').click();
                 await page.waitForURL(`${instance.url}/items/list/`);
                 await expect(page.locator('button ion-icon.close-icon')).toBeVisible();
@@ -27,7 +27,7 @@ test.describe(apps.groceries.title, () => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
                 await page.locator('input[autocomplete="username"]').fill(faker.string.alpha(10));
-                await page.locator('form input[autocomplete="current-password"]').fill(faker.string.alpha(10));
+                await page.locator('input[autocomplete="current-password"]').fill(faker.string.alpha(10));
                 await page.locator('ion-button[type="submit"]:has-text("Login")').click();
                 await page.waitForSelector('ion-text:has-text("Invalid Authentication")', { timeout: 10_000 });
                 await expect(page).toHaveURL(`${instance.url}/login`);
