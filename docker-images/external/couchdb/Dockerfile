@@ -1,7 +1,9 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM couchdb:3.5.0
-RUN find /opt/couchdb/etc/local.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/opt/couchdb/etc/local.d/$(basename "$1")" "/homelab/local.d/$(basename "$1")"' - {} \;
+RUN mkdir -p /homelab/local.d && \
+    find /opt/couchdb/etc/local.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/opt/couchdb/etc/local.d/$(basename "$1")" "/homelab/local.d/$(basename "$1")"' - {} \; && \
+    find /opt/couchdb/etc/local.d -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
 COPY ./external/couchdb/jwt.ini /homelab/local.d/
 COPY ./external/couchdb/docker-entrypoint-extra.sh /homelab/
 RUN head -n 1 /docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
