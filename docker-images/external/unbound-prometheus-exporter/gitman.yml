@@ -14,7 +14,7 @@ sources:
 sources_locked:
   - repo: https://github.com/letsencrypt/unbound_exporter.git
     name: unbound_exporter
-    rev: 129ee654eb438dbad7041dc963a8c31ddab80fd8
+    rev: 304429b6cc99b2f8dbaba014ded3c8d5c309f6c2
     type: git
     params:
     sparse_paths:
