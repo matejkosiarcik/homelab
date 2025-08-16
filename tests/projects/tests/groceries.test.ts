@@ -13,7 +13,7 @@ test.describe(apps.groceries.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test('UI: Successful login - User admin', async ({ page }) => {
+            test('UI: Successful login - User test', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
                 await page.locator('input[autocomplete="username"]').fill('test');
