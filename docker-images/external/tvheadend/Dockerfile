@@ -3,6 +3,7 @@
 
 # hadolint ignore=DL3007
 FROM linuxserver/tvheadend:latest
+RUN usermod -a -G root abc
 ENV HOMELAB_CONTAINER_NAME=tvheadend \
     HOMELAB_CONTAINER_VARIANT=default \
     PUID=1000 \
