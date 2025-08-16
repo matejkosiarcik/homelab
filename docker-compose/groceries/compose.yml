@@ -27,11 +27,12 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     build:
       dockerfile: ./external/groceries-frontend/Dockerfile
-    read_only: false # TODO: Allow running in readonly mode
     environment:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
-    # tmpfs:
-    #   - /usr/share/nginx/html
+    tmpfs:
+      - /run
+      - /usr/share/nginx/html:exec
+      - /var/cache/nginx
 
   couchdb:
     extends:
