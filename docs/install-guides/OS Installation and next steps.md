@@ -31,7 +31,7 @@ Notes for installation:
 ## Postinstall - Prepare essential packages
 
 Install `openssh-server` in order to be able to connect to this machine via SSH.
-Install `python3` in order to be able to run ansible on this machine.
+Install `python3` in order to be able to run Ansible on this machine.
 
 On server:
 
@@ -77,7 +77,7 @@ printf '\nfs.file-max = 65536\nfs.inotify.max_user_instances = 65536\n' | sudo t
 
 Only for ARM devices (Raspberry Pi)!
 
-Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory docker container use:
+Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory Docker container use:
 
 ```txt
 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
@@ -85,7 +85,7 @@ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 
 Then `reboot`.
 
-## Postinstall - Run ansible setup
+## Postinstall - Run Ansible
 
 On client:
 
