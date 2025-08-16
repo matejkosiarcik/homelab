@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: User unnecessary
 
-FROM python:3.13.6-slim AS supercronic-gitman
+FROM python:3.13.7-slim AS supercronic-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -42,7 +42,7 @@ WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./custom/certbot/crontab.cron ./custom/certbot/main.sh ./custom/certbot/certbot-hook-after.sh ./custom/certbot/certbot-hook-before.sh ./
 
-FROM python:3.13.6-slim
+FROM python:3.13.7-slim
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \

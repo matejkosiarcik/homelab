@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: User unnecessary
 # checkov:skip=CKV_DOCKER_2: Healthcheck unnecessary
 
-FROM python:3.13.6-slim AS supercronic-gitman
+FROM python:3.13.7-slim AS supercronic-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
