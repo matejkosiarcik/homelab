@@ -17,7 +17,15 @@ COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
 COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
 
 FROM ghcr.io/gethomepage/homepage:v1.4.5
-COPY --from=prefinal /homelab/config/ /app/config/
+RUN mkdir -p /homelab/app-pages && \
+    find /app/.next/server/pages -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/.next/server/pages/$(basename "$1")" "/homelab/app-pages/$(basename "$1")"' - {} \; && \
+    rm -rf /app/.next/server/pages
+COPY --from=prefinal /homelab/config/ /homelab/app-config/
+COPY ./external/homepage/docker-entrypoint-extra.sh /homelab/
+RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
+    tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
+    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh && \
+    rm -rf /app/config
 COPY ./external/homepage/icons/ /app/public/icons/
 ENV HOMELAB_CONTAINER_NAME=homepage \
     HOMELAB_CONTAINER_VARIANT=default \

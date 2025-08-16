@@ -7,10 +7,14 @@ services:
       dockerfile: ./external/homepage/Dockerfile
     env_file:
       - ./app-secrets/app.env
+    volumes:
+      - ./app-logs/homepage:/app/config/logs:rw
     networks:
       internal-network: {}
       external-network: {}
-    read_only: false # TODO: Reenable readonly mode
+    tmpfs:
+      - /app/.next/server/pages
+      - /app/config
 
   certificator:
     extends:
