@@ -1,13 +1,10 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM couchdb:3.5.0
-# printf '%s\n' "find /opt/couchdb/etc/local.d-tmp -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R /opt/couchdb/etc/local.d-tmp/\$(basename \$1) /opt/couchdb/etc/local.d/\$(basename \$1)' - {} \;" >/homelab/docker-entrypoint-extra.sh && \
-COPY ./external/couchdb/jwt.ini /opt/couchdb/etc/local.d/
-# hadolint ignore=SC2016
-RUN mkdir /homelab && \
-    printf '%s\n' 'HMAC_KEY_BASE64="$(printf "%s" "$HMAC_KEY" | base64)" && cat /opt/couchdb/etc/local.d/jwt.ini | sed "s~#hmac-key#~$HMAC_KEY_BASE64~g" >/opt/couchdb/etc/local.d/jwt.ini2 && mv /opt/couchdb/etc/local.d/jwt.ini2 /opt/couchdb/etc/local.d/jwt.ini' >>/homelab/docker-entrypoint-extra.sh && \
-    printf '%s\n' 'cat /opt/couchdb/etc/local.d/jwt.ini | sed "s~#uuid#~$UUID~g" >/opt/couchdb/etc/local.d/jwt.ini2 && mv /opt/couchdb/etc/local.d/jwt.ini2 /opt/couchdb/etc/local.d/jwt.ini' >>/homelab/docker-entrypoint-extra.sh && \
-    head -n 1 /docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
+RUN find /opt/couchdb/etc/local.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/opt/couchdb/etc/local.d/$(basename "$1")" "/homelab/local.d/$(basename "$1")"' - {} \;
+COPY ./external/couchdb/jwt.ini /homelab/local.d/
+COPY ./external/couchdb/docker-entrypoint-extra.sh /homelab/
+RUN head -n 1 /docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
     tail -n +2 /docker-entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
     cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/docker-entrypoint.sh
 ENV COUCHDB_USER=admin \

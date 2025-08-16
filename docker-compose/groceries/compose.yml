@@ -40,12 +40,13 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-couchdb
     build:
       dockerfile: ./external/couchdb/Dockerfile
-    read_only: false # TODO: Allow running in readonly mode
     init: false
     env_file:
       - ./app-secrets/couchdb.env
     volumes:
       - ./app-data/couchdb-data:/opt/couchdb/data:rw
+    tmpfs:
+      - /opt/couchdb/etc/local.d
 
   certificator:
     extends:
