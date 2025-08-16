@@ -63,7 +63,8 @@ test.describe(apps['speedtest-tracker'].title, () => {
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
-                await expect(page.locator('.fi-wi-stats-overview-stat').first()).toBeVisible({ timeout: 5000 });
+                // await expect(page.locator('.fi-wi-stats-overview-stat').first()).toBeVisible({ timeout: 5000 }); // NOTE: Unauthenticate dashboard is disabled
+                await page.waitForURL(`${instance.url}/admin/login`);
             });
         });
     }
