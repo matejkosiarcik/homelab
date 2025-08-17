@@ -46,7 +46,7 @@
           - smartmontools
           - tmux
           - udisks2
-          - unbound
+          - unattended-upgrades
           - wget
           # - s-tui
       # Note: also install "nvtop", but this requires contrib and non-free packages in /etc/apt/sources.list
