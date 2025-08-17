@@ -61,10 +61,10 @@ export const apps = {
     glances: {
         title: 'Glances',
         instances: [
-            { url: 'https://glances-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
-            { url: 'https://glances-odroid-h4-ultra.matejhome.com', title: 'Glances - Odroid H4 Ultra' },
-            { url: 'https://glances-raspberry-pi-4b-2g.matejhome.com', title: 'Glances - Raspberry Pi 4B 2GB' },
-            { url: 'https://glances-raspberry-pi-4b-4g.matejhome.com', title: 'Glances - Raspberry Pi 4B 4GB' },
+            // { url: 'https://glances-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
+            // { url: 'https://glances-odroid-h4-ultra.matejhome.com', title: 'Glances - Odroid H4 Ultra' },
+            // { url: 'https://glances-raspberry-pi-4b-2g.matejhome.com', title: 'Glances - Raspberry Pi 4B 2GB' },
+            // { url: 'https://glances-raspberry-pi-4b-4g.matejhome.com', title: 'Glances - Raspberry Pi 4B 4GB' },
         ],
     },
     gotify: {
