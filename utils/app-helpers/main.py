@@ -140,7 +140,7 @@ def run_with_spinner(command: List[str], description_progress: str, description_
             time.sleep(0.1)
             spinner_index += 1
             spinner_index %= len(spinner_chars)
-        print(f"\r{" " * len(last_line)}", end="", flush=True)
+        print(f"\r{' ' * len(last_line)}", end="", flush=True)
 
     spinner_thread = threading.Thread(target=spinner_main)
     spinner_thread.start()
