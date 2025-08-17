@@ -717,10 +717,11 @@ case "$app_dirname" in
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
-    app_debug_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app debug)"
-    write_http_auth_user debug "$app_debug_password" debug
-    printf 'app-debug,%s\n' "$app_debug_password" >>"$initial_output/all-credentials.csv"
+    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
+    app_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$app_admin_password" users
+    write_http_auth_user admin "$app_admin_password" prometheus
+    printf 'admin,%s\n' "$app_admin_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
