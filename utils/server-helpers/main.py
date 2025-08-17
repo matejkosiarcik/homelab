@@ -91,7 +91,9 @@ def main(argv: List[str]):
         subcommand.add_argument("--skip", type=str, help=f"{subcommand_name.capitalize()} all apps except these")
         subcommand.add_argument("--jobs", type=int, default=1, help="A number of simultaneous actions to perform")
         if subcommand_name == "deploy":
-            subcommand.add_argument("--when", type=str, choices=["always", "onchange"], default="always", help="Deploy all apps always, or only when they changed")
+            deploy_when_group = subcommand.add_mutually_exclusive_group()
+            deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy apps only when build changed. When there is no change, app is not restarted.")
+            deploy_when_group.add_argument("--always", action="store_true", help="Deploy apps always, regardless if the build changed or not.")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
         if subcommand_name == "secrets":
@@ -109,7 +111,7 @@ def main(argv: List[str]):
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
     if command == "deploy":
-        when_mode = args.when
+        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always" if (hasattr(args, "always") and args.always is True) else "always"
 
     is_pull = hasattr(args, "pull") and args.pull is True
 
@@ -151,7 +153,7 @@ def server_action(action: str):
     if action == "secrets":
         cli_args.append("--online" if is_online else "--offline")
     if action == "deploy":
-        cli_args.extend(["--when", when_mode])
+        cli_args.extend([f"--{when_mode}"])
 
     for app in applist:
         subprocess.check_call(["task", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
