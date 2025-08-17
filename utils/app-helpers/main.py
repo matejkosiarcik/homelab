@@ -167,7 +167,11 @@ def run_with_spinner(command: List[str], description_progress: str, description_
 
 
 def docker_build():
-    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", "1", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
+    cpu_cores = os.cpu_count()
+    if cpu_cores is None:
+        cpu_cores = 1
+    threads = math.ceil(cpu_cores // 2)
+    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
     run_with_spinner(commands, "Building", "Build", False)
 
 
