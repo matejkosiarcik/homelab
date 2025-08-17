@@ -1,4 +1,7 @@
 apps:
+  - url: dawarich.matejhome.com
+    auth: basic
+    path: /metrics
   - url: docker-stats-macbook-pro-2012.matejhome.com
     auth: basic
     path: /metrics

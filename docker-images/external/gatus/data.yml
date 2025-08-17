@@ -410,6 +410,10 @@ apps:
 
   - name: Dawarich
     domain: dawarich.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
 
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
