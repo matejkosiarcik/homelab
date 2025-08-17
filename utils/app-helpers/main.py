@@ -184,7 +184,9 @@ def main(argv):
         subcommand.add_argument("--mode", type=str, choices=["dev", "prod"], help=f"Mode for {subcommand_name.capitalize()}. By default takes env variable HOMELAB_ENV")
         subcommand.add_argument("--dry-run", action="store_true", help="Dry run")
         if subcommand_name == "deploy":
-            subcommand.add_argument("--when", type=str, choices=["always", "onchange"], default="always", help="Deploy app always, or only when it changed")
+            deploy_when_group = subcommand.add_mutually_exclusive_group()
+            deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy app only when build changed. When there is no change, app is not restarted.")
+            deploy_when_group.add_argument("--always", action="store_true", help="Deploy app always, regardless if the build changed or not.")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
         if subcommand_name == "secrets":
@@ -198,7 +200,7 @@ def main(argv):
     is_dryrun = args.dry_run
 
     if command == "deploy":
-        when_mode = args.when
+        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always" if (hasattr(args, "always") and args.always is True) else "always"
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
     is_pull = hasattr(args, "pull") and args.pull is True
