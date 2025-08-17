@@ -1,3 +1,5 @@
+# Misc monitoring
 dozzle-agent
 # glances
+docker-stats
 node-exporter

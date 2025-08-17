@@ -7,7 +7,7 @@ unbound-2-iot
 unbound-2-guests
 pihole-2-secondary
 
-# Other
+# Misc monitoring
 dozzle-agent
 node-exporter
 docker-stats

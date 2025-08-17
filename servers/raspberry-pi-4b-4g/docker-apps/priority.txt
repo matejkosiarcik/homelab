@@ -1,5 +1,8 @@
-# Other
-dozzle-agent
+# Main apps
 motioneye-kitchen
+
+# Misc monitoring
+dozzle-agent
 # glances
+docker-stats
 node-exporter
