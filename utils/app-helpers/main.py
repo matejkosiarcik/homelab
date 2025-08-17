@@ -128,14 +128,14 @@ def run_with_spinner(command: List[str], description_progress: str, description_
         last_line = ""
 
         if print_output:
-            print(f"\r↓ {description_progress} {os.environ["DOCKER_COMPOSE_APP_NAME"]} 00:00")
+            print(f"\r↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00")
 
         while not done.is_set():
             elapsed = time.time() - start_time
             elapsed_mins = int(elapsed) // 60
             elapsed_secs = int(elapsed) % 60
             if not print_output:
-                last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ["DOCKER_COMPOSE_APP_NAME"]} {elapsed_mins:02d}:{elapsed_secs:02d} "
+                last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
                 print(f"\r{last_line}", end="", flush=True)
             time.sleep(0.1)
             spinner_index += 1
@@ -157,12 +157,12 @@ def run_with_spinner(command: List[str], description_progress: str, description_
         total_elapsed_mins = int(total_elapsed) // 60
         total_elapsed_secs = int(total_elapsed) % 60
         status = ascii_checkmark if exit_code == 0 else ascii_cross
-        print(f"\r{status} {description_done} {os.environ["DOCKER_COMPOSE_APP_NAME"]} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ")
+        print(f"\r{status} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ")
 
     if exit_code != 0:
-        print(f"\n↓↓↓ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command \"{' '.join(command)}\" failed:", file=sys.stderr)
+        print(f"\n↓↓↓ {os.environ['DOCKER_COMPOSE_APP_NAME']} - command \"{' '.join(command)}\" failed:", file=sys.stderr)
         print(output.decode(errors="replace"), file=sys.stderr)
-        print(f"\n↑↑↑ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command \"{' '.join(command)}\" failed.", file=sys.stderr)
+        print(f"\n↑↑↑ {os.environ['DOCKER_COMPOSE_APP_NAME']} - command \"{' '.join(command)}\" failed.", file=sys.stderr)
         sys.exit(exit_code)
 
 
