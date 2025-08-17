@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, getEnv } from '../../utils/utils';
+import { faker } from '@faker-js/faker';
 
 test.describe(apps['node-exporter'].title, () => {
     for (const instance of apps['node-exporter'].instances) {
@@ -12,6 +13,28 @@ test.describe(apps['node-exporter'].title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
+
+            test(`UI: Successful open - User admin`, async ({ page }) => {
+                await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
+                await page.goto(instance.url);
+                await page.waitForURL(`${instance.url}/`);
+                await expect(page.locator('h1:has-text("Node Exporter")')).toBeVisible();
+                await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).toBeVisible();
+            });
+
+            test(`UI: Unsuccessful open - Bad password`, async ({ page }) => {
+                await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`admin:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                await page.goto(instance.url);
+                await page.waitForURL(`${instance.url}/`);
+                await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
+                await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
+            });
+
+            test('UI: Unsuccessful open - No user', async ({ page }) => {
+                await page.goto(instance.url);
+                await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
+                await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
+            });
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
