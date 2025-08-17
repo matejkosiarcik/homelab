@@ -182,8 +182,10 @@ def server_action(action: str):
 def server_install():
     print("↓ Installing global server config")
     subprocess.check_call(["sh", path.join(git_dir, "utils", "server-helpers", "install.sh")])
-    end_datetime = datetime.now()
-    print(f"{ascii_checkmark} Install global config {end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime)))}")
+    total_elapsed = time.time() - start_time
+    total_elapsed_mins = int(total_elapsed) // 60
+    total_elapsed_secs = int(total_elapsed) % 60
+    print(f"{ascii_checkmark} Install global config {total_elapsed_mins:02d}:{total_elapsed_secs:02d}")
 
 
 if __name__ == "__main__":
