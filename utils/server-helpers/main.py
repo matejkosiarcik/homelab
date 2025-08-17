@@ -6,12 +6,14 @@ import os
 import re
 import subprocess
 import sys
+import time
 from datetime import datetime
 from os import path
 from typing import List
 
 start_datetime = datetime.now()
 start_datestr = start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
+start_time = start_datetime.timestamp()
 os.environ["START_DATE"] = start_datestr
 
 server_dir = path.abspath(path.curdir)
@@ -171,8 +173,10 @@ def server_action(action: str):
         subprocess.check_call(["task", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
         print("\n---\n")
 
-    end_datetime = datetime.now()
-    print(f"{ascii_checkmark} {action_log} docker apps {re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime)))}")
+    total_elapsed = time.time() - start_time
+    total_elapsed_mins = int(total_elapsed) // 60
+    total_elapsed_secs = int(total_elapsed) % 60
+    print(f"{ascii_checkmark} {action_log} docker apps {total_elapsed_mins:02d}:{total_elapsed_secs:02d}")
 
 
 def server_install():
