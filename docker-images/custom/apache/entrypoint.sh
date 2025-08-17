@@ -191,7 +191,9 @@ fi
 export PROXY_REDIRECT_TO_HTTP_OR_HTTPS
 
 # Set PROXY_UPSTREAM_URL_PROMETHEUS
-if [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'dawarich' ]; then
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://app:9394'
+elif [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
     PROXY_UPSTREAM_URL_PROMETHEUS='http://app-prometheus:61208'
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_UPSTREAM_URL_PROMETHEUS='http://app-prometheus-exporter'

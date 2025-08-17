@@ -12,9 +12,6 @@ services:
       - ./app-data/dawarich-database:/dawarich_db_data:rw
     environment:
       MODE: app
-      PROMETHEUS_EXPORTER_ENABLED: "false"
-      PROMETHEUS_EXPORTER_HOST: 0.0.0.0
-      PROMETHEUS_EXPORTER_PORT: 9394
     env_file:
       - ./app-secrets/app.env
     tmpfs:
@@ -34,9 +31,7 @@ services:
       - ./app-data/dawarich-storage:/var/app/storage:rw
     environment:
       MODE: sidekiq
-      PROMETHEUS_EXPORTER_ENABLED: "false"
       PROMETHEUS_EXPORTER_HOST: app
-      PROMETHEUS_EXPORTER_PORT: 9394
     env_file:
       - ./app-secrets/app.env
     healthcheck:
@@ -95,6 +90,8 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    volumes:
+      - ./app-secrets/prometheus.htpasswd:/homelab/prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:
