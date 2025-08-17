@@ -7,6 +7,8 @@
 - GitHub: <https://github.com/Freika/dawarich>
 - DockerHub: <https://hub.docker.com/r/freikin/dawarich>
 - Docs: <https://dawarich.app/docs/intro>
+    - Telemetry: <https://dawarich.app/docs/tutorials/telemetry>
+    - Prometheus exporter: <https://dawarich.app/docs/tutorials/monitoring-with-prometheus>
 
 ## Before initial installation
 
