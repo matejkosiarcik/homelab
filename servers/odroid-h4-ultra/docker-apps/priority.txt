@@ -57,7 +57,7 @@ dozzle
 changedetection
 healthchecks
 # netalertx
-glances
+# glances
 node-exporter
 docker-stats
 prometheus
