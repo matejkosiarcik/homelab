@@ -179,6 +179,7 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+    enabled: false
 
   - name: Glances Raspberry Pi 3B
     domain: glances-raspberry-pi-3b.matejhome.com
@@ -198,6 +199,7 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+    enabled: false
 
   - name: Glances Raspberry Pi 4B 4GB
     domain: glances-raspberry-pi-4b-4g.matejhome.com
@@ -207,6 +209,7 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+    enabled: false
 
   - name: Gotify
     domain: gotify.matejhome.com

@@ -11,7 +11,7 @@ pihole-2-secondary
 dozzle-agent
 node-exporter
 docker-stats
-glances
+# glances
 
 # App Monitoring
 gatus-2
