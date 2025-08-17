@@ -34,6 +34,16 @@ log.addHandler(logging.StreamHandler())
 log.addHandler(logging.FileHandler(log_file))
 
 
+def tty_supports_color():
+    return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
+
+ascii_checkmark = "✔"
+ascii_cross = "✘"
+if tty_supports_color():
+    ascii_checkmark = f"\033[32m{ascii_checkmark}\033[0m"
+    ascii_cross = f"\033[31m{ascii_cross}\033[0m"
+
+
 def get_apps_list(only: str | None, skip: str | None) -> List[str]:
     all_apps_list = sorted([x for x in next(os.walk(path.join(server_dir, "docker-apps")))[1] if not x.startswith(".") and path.isdir(path.join(server_dir, "docker-apps", x))])
 
@@ -143,7 +153,8 @@ def server_action(action: str):
         os.environ["HOMELAB_SECRETS_PREPARED"] = "yes"
 
     action_log = "Secrets for" if action == "secrets" else action.capitalize()
-    log.info("%s docker apps", action_log)
+    print(f"↓ {action_log} docker apps")
+    print("\n---\n")
 
     cli_args = ["--mode", env_mode]
     if is_dryrun:
@@ -157,16 +168,17 @@ def server_action(action: str):
 
     for app in applist:
         subprocess.check_call(["task", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
+        print("\n---\n")
 
     end_datetime = datetime.now()
-    log.info("%s docker apps - SUCCESS on %s (%s)", action_log, end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime))))
+    print(f"{ascii_checkmark} {action_log} docker apps {re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime)))}")
 
 
 def server_install():
-    log.info("Installing global server config")
+    print("↓ Installing global server config")
     subprocess.check_call(["sh", path.join(git_dir, "utils", "server-helpers", "install.sh")])
     end_datetime = datetime.now()
-    log.info("Installing global scripts - SUCCESS on %s (%s)", end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime))))
+    print(f"{ascii_checkmark} Install global config {end_datetime.strftime(r"%Y-%m-%d_%H-%M-%S"), re.sub(r".[0-9]+$", "", re.sub(r"^0:", "", str(end_datetime - start_datetime)))}")
 
 
 if __name__ == "__main__":

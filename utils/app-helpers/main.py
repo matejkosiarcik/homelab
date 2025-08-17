@@ -4,15 +4,18 @@ import argparse
 import hashlib
 import json
 import logging
+import math
 import os
 import re
 import subprocess
 import sys
+import threading
+import time
 from datetime import datetime
 from os import path
+from typing import List
 
-start_datetime = datetime.now()
-start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
+start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
@@ -34,6 +37,16 @@ log = logging.getLogger()
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
 log.addHandler(logging.FileHandler(log_file))
+
+
+def tty_supports_color():
+    return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
+
+ascii_checkmark = "✔"
+ascii_cross = "✘"
+if tty_supports_color():
+    ascii_checkmark = f"\033[32m{ascii_checkmark}\033[0m"
+    ascii_cross = f"\033[31m{ascii_cross}\033[0m"
 
 
 def load_env_file(env_path):
@@ -102,27 +115,76 @@ def get_docker_images_shasum(config: str) -> str:
     return "\n".join(output)
 
 
+def run_with_spinner(command: List[str], description_progress: str, description_done: str, print_output: bool):
+    start_time = time.time()
+    output = b""
+    process = None
+    done = threading.Event()
+
+    def spinner_main():
+        spinner_chars = "▖▘▝▗" # "◴◷◶◵" # "◜◝◞◟" # "◐◓◑◒"
+        spinner_index = 0
+        last_line = ""
+
+        if print_output:
+            print(f"\r↓ {description_progress} {os.environ["DOCKER_COMPOSE_APP_NAME"]} 00:00")
+
+        while not done.is_set():
+            elapsed = time.time() - start_time
+            elapsed_mins = int(elapsed) // 60
+            elapsed_secs = int(elapsed) % 60
+            if not print_output:
+                last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ["DOCKER_COMPOSE_APP_NAME"]} {elapsed_mins:02d}:{elapsed_secs:02d} "
+                print(f"\r{last_line}", end="", flush=True)
+            time.sleep(0.1)
+            spinner_index += 1
+            spinner_index %= len(spinner_chars)
+        print(f"\r{" " * len(last_line)}", end="", flush=True)
+
+    spinner_thread = threading.Thread(target=spinner_main)
+    spinner_thread.start()
+
+    try:
+        process = subprocess.Popen(command, stdout=None if print_output else subprocess.PIPE, stderr=None if print_output else subprocess.STDOUT, stdin=None)
+        output, _ = process.communicate()
+        exit_code = process.returncode
+    finally:
+        done.set()
+        spinner_thread.join()
+        total_elapsed = time.time() - start_time
+        total_elapsed_mins = int(total_elapsed) // 60
+        total_elapsed_secs = int(total_elapsed) % 60
+        status = ascii_checkmark if exit_code == 0 else ascii_cross
+        print(f"\r{status} {description_done} {os.environ["DOCKER_COMPOSE_APP_NAME"]} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ")
+
+    if exit_code != 0:
+        print(f"\n↓↓↓ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command \"{' '.join(command)}\" failed:", file=sys.stderr)
+        print(output.decode(errors="replace"), file=sys.stderr)
+        print(f"\n↑↑↑ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command \"{' '.join(command)}\" failed.", file=sys.stderr)
+        sys.exit(exit_code)
+
+
 def docker_build():
     commands = ["docker", "compose"] + docker_compose_args + ["--parallel", "1", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
-    subprocess.check_call(commands)
+    run_with_spinner(commands, "Building", "Build", False)
 
 
 def docker_stop():
     commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
-    subprocess.check_call(commands)
+    run_with_spinner(commands, "Stopping", "Stop", False)
 
 
 def docker_start():
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
-    subprocess.check_call(commands)
+    run_with_spinner(commands, "Starting", "Start", env_mode == "dev")
 
 
 def create_secrets():
     if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
         precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-        subprocess.check_call(precommands)
+        run_with_spinner(precommands, "Preparing secrets", "Prepare secrets", False)
     commands = ["sh", f"{git_dir}/utils/secrets-helpers/main.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-    subprocess.check_call(commands)
+    run_with_spinner(commands, "Secrets", "Secrets", False)
 
 
 def run_main_command(command: str):
@@ -135,8 +197,6 @@ def run_main_command(command: str):
     if not path.isdir(compose_path):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
-
-    print(f"Starting {command} of {full_app_name}")
 
     # Execute commands
     if command == "build":
@@ -161,10 +221,6 @@ def run_main_command(command: str):
     else:
         print(f"Unrecognized command '{command}'", file=sys.stderr)
         sys.exit(1)
-
-    end_datetime = datetime.now()
-    time_delta = (end_datetime - start_datetime).total_seconds()
-    print(f"{command.capitalize()} of {full_app_name} successful in {int(time_delta) // 60:02d}:{int(time_delta) % 60:02d}.{int((time_delta % 1) * 10):d}s")
 
 
 def main(argv):
