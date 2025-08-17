@@ -13,6 +13,13 @@ test.describe(apps['node-exporter'].title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
+            test(`UI: Successful open - User admin`, async ({ page }) => {
+                await page.goto(instance.url);
+                await page.waitForURL(`${instance.url}/`);
+                await expect(page.locator('h1:has-text("Node Exporter")')).toBeVisible();
+                await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).toBeVisible();
+            });
+
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
