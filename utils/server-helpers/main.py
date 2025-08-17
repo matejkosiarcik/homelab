@@ -37,6 +37,7 @@ log.addHandler(logging.FileHandler(log_file))
 def tty_supports_color():
     return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
 
+
 ascii_checkmark = "✔"
 ascii_cross = "✘"
 if tty_supports_color():

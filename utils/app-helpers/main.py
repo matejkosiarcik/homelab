@@ -42,6 +42,7 @@ log.addHandler(logging.FileHandler(log_file))
 def tty_supports_color():
     return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
 
+
 ascii_checkmark = "✔"
 ascii_cross = "✘"
 if tty_supports_color():
@@ -122,7 +123,7 @@ def run_with_spinner(command: List[str], description_progress: str, description_
     done = threading.Event()
 
     def spinner_main():
-        spinner_chars = "▖▘▝▗" # "◴◷◶◵" # "◜◝◞◟" # "◐◓◑◒"
+        spinner_chars = "▖▘▝▗"
         spinner_index = 0
         last_line = ""
 
@@ -144,6 +145,7 @@ def run_with_spinner(command: List[str], description_progress: str, description_
     spinner_thread = threading.Thread(target=spinner_main)
     spinner_thread.start()
 
+    exit_code = 0
     try:
         process = subprocess.Popen(command, stdout=None if print_output else subprocess.PIPE, stderr=None if print_output else subprocess.STDOUT, stdin=None)
         output, _ = process.communicate()
