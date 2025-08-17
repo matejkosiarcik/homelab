@@ -147,9 +147,9 @@ def run_with_spinner(command: List[str], description_progress: str, description_
 
     exit_code = 0
     try:
-        process = subprocess.Popen(command, stdout=None if print_output else subprocess.PIPE, stderr=None if print_output else subprocess.STDOUT, stdin=None)
-        output, _ = process.communicate()
-        exit_code = process.returncode
+        with subprocess.Popen(command, stdout=None if print_output else subprocess.PIPE, stderr=None if print_output else subprocess.STDOUT, stdin=None) as process:
+            output, _ = process.communicate()
+            exit_code = process.returncode
     finally:
         done.set()
         spinner_thread.join()
