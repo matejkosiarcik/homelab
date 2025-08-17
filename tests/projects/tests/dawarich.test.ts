@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
+import axios from 'axios';
 
 test.describe(apps.dawarich.title, () => {
     for (const instance of apps.dawarich.instances) {
@@ -29,6 +30,36 @@ test.describe(apps.dawarich.title, () => {
                 await page.locator('input[type="submit"][value="Log in"]').click();
                 await expect(page.locator('#flash-messages')).toContainText('Invalid Email or password.');
                 await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
+            });
+
+            test.skip('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/metrics`, {
+                    auth: {
+                        username: 'prometheus',
+                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                const lines = content.split('\n');
+                const metrics = [
+                    'active_record_connection_pool_busy',
+                    'active_record_connection_pool_connections',
+                    'active_record_connection_pool_dead',
+                    'active_record_connection_pool_idle',
+                    'active_record_connection_pool_size',
+                    'active_record_connection_pool_waiting',
+                    'http_request_duration_seconds',
+                    'http_request_memcache_duration_seconds',
+                    'http_request_queue_duration_seconds',
+                    'http_request_redis_duration_seconds',
+                    'http_request_sql_duration_seconds',
+                    'http_requests_total',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
             });
         });
     }
