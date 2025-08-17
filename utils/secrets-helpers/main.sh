@@ -218,6 +218,9 @@ case "$app_dirname" in
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
     printf 'api-key,%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" app api-key)" >>"$initial_output/all-credentials.csv"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Database
     database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"

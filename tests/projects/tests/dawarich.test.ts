@@ -32,7 +32,7 @@ test.describe(apps.dawarich.title, () => {
                 await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
             });
 
-            test.skip('API: Prometheus metrics content', async () => {
+            test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
                         username: 'prometheus',
@@ -44,18 +44,18 @@ test.describe(apps.dawarich.title, () => {
                 await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
                 const lines = content.split('\n');
                 const metrics = [
-                    'active_record_connection_pool_busy',
-                    'active_record_connection_pool_connections',
-                    'active_record_connection_pool_dead',
-                    'active_record_connection_pool_idle',
-                    'active_record_connection_pool_size',
-                    'active_record_connection_pool_waiting',
-                    'http_request_duration_seconds',
-                    'http_request_memcache_duration_seconds',
-                    'http_request_queue_duration_seconds',
-                    'http_request_redis_duration_seconds',
-                    'http_request_sql_duration_seconds',
-                    'http_requests_total',
+                    'ruby_active_record_connection_pool_busy',
+                    'ruby_active_record_connection_pool_connections',
+                    'ruby_active_record_connection_pool_dead',
+                    'ruby_active_record_connection_pool_idle',
+                    'ruby_active_record_connection_pool_size',
+                    'ruby_active_record_connection_pool_waiting',
+                    'ruby_http_request_duration_seconds',
+                    'ruby_http_request_memcache_duration_seconds',
+                    'ruby_http_request_queue_duration_seconds',
+                    'ruby_http_request_redis_duration_seconds',
+                    'ruby_http_request_sql_duration_seconds',
+                    'ruby_http_requests_total',
                 ];
                 for (const metric of metrics) {
                     expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();

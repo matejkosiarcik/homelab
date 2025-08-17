@@ -144,7 +144,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:glances|gatus|jellyfin|node-exporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|glances|gatus|jellyfin|node-exporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -177,7 +177,7 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_PROMETHEUS_EXPORTER_URL}/metrics" [P,L]
 
 # Custom prometheus metrics
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:glances|pihole|samba|unbound)$ [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:dawarich|glances|pihole|samba|unbound)$ [NC]
 RewriteCond %{REQUEST_URI} ^/metrics/?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
