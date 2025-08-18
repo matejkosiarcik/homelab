@@ -153,6 +153,7 @@ def run_with_spinner(command: List[str], description_progress: str, description_
     finally:
         done.set()
         spinner_thread.join()
+        output = b"N/A" if output is None else output
         total_elapsed = time.time() - start_time
         total_elapsed_mins = int(total_elapsed) // 60
         total_elapsed_secs = int(total_elapsed) % 60

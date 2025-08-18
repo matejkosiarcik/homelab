@@ -10,9 +10,9 @@ services:
     environment:
       VIKUNJA_SERVICE_PUBLICURL: ${DOCKER_COMPOSE_NETWORK_URL}/
     volumes:
-      - ./app-data/vikunja-files:/app/vikunja/files
-      - ./app-data/vikunja-db:/db
-      - ./app-logs/vikunja:/homelab/logs
+      - ./app-data/vikunja-files:/app/vikunja/files:rw
+      - ./app-data/vikunja-db:/db:rw
+      - ./app-logs/vikunja:/homelab/logs:rw
 
   certificator:
     extends:
