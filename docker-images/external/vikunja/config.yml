@@ -1,6 +1,7 @@
 service:
   timezone: Europe/Bratislava
   enableregistration: false
+  enableuserdeletion: false
 
 metrics:
   enabled: true
@@ -9,6 +10,9 @@ metrics:
 
 defaultsettings:
   week_start: 1 # Monday
+
+database:
+  path: /db/vikunja.db
 
 log:
   path: /homelab/logs
