@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM redis:8.2.0
+FROM redis:8.2.1
 ENV HOMELAB_CONTAINER_NAME=redis \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
