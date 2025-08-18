@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM dgtlmoon/changedetection.io:0.50.8
+FROM dgtlmoon/changedetection.io:0.50.9
 COPY ./external/changedetection/healthcheck.py /homelab/
 ENV FETCH_WORKERS=4 \
     HOMELAB_CONTAINER_NAME=changedetection \
