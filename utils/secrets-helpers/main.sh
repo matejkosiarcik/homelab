@@ -1172,6 +1172,12 @@ case "$app_dirname" in
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    jwt_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" app jwt-secret)"
+    printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/all-credentials.csv"
+    printf 'VIKUNJA_SERVICE_JWTSECRET=%s\n' "$jwt_secret" >>"$initial_output/app.env"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
+    printf 'VIKUNJA_METRICS_PASSWORD=%s\n' "$prometheus_password" >>"$initial_output/app.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

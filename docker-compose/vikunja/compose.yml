@@ -6,14 +6,13 @@ services:
     build:
       dockerfile: ./external/vikunja/Dockerfile
     env_file:
-      - ./app-secrets/vikunja.env
+      - ./app-secrets/app.env
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: ${DOCKER_COMPOSE_NETWORK_URL}/
     volumes:
       - ./app-data/vikunja-files:/app/vikunja/files
       - ./app-data/vikunja-db:/db
       - ./app-logs/vikunja:/homelab/logs
-    networks:
-      internal-network: {}
-      external-network: {}
 
   certificator:
     extends:
