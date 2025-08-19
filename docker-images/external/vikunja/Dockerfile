@@ -10,4 +10,6 @@ COPY --from=prefinal /homelab/ /homelab/
 ENV HOMELAB_CONTAINER_NAME=vikunja \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
+# Default user from upstream:
+USER 1000
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "./vikunja", "user", "list" ]
