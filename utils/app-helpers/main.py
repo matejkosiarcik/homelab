@@ -182,6 +182,23 @@ def docker_stop():
 
 
 def docker_start():
+    config_json = get_docker_compose_config()
+    config_obj = json.loads(config_json)
+
+    # Extract all volumes from docker-compose
+    volumes: List[str] = []
+    for service in config_obj["services"]:
+        if "volumes" not in config_obj["services"][service]:
+            continue
+        for volume in config_obj["services"][service]["volumes"]:
+            volumes.append(volume["source"])
+
+    # Precreate all volumes - this ensures proper directory permissions
+    for volume in volumes:
+        if path.exists(volume):
+            continue
+        os.makedirs(volume, exist_ok=True)
+
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
     run_with_spinner(commands, "Starting", "Start", env_mode == "dev")
 
