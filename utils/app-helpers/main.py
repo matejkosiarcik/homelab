@@ -185,7 +185,7 @@ def docker_start():
     config_json = get_docker_compose_config()
     config_obj = json.loads(config_json)
 
-    # Extract all volumes from docker-compose
+    # Extract all volumes from docker-compose yaml
     volumes: List[str] = []
     for service in config_obj["services"]:
         if "volumes" not in config_obj["services"][service]:
