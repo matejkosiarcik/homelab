@@ -185,7 +185,7 @@ def docker_start():
     config_json = get_docker_compose_config()
     config_obj = json.loads(config_json)
 
-    # Extract all volumes from docker-compose
+    # Extract all volumes from docker-compose yaml
     volumes: List[str] = []
     for service in config_obj["services"]:
         if "volumes" not in config_obj["services"][service]:
@@ -195,9 +195,10 @@ def docker_start():
 
     # Precreate all volumes - this ensures proper directory permissions
     for volume in volumes:
-        if path.exists(volume):
-            continue
-        os.makedirs(volume, exist_ok=True)
+        if not path.exists(volume):
+            os.makedirs(volume, exist_ok=True)
+        if path.isdir(volume):
+            os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
     run_with_spinner(commands, "Starting", "Start", env_mode == "dev")
