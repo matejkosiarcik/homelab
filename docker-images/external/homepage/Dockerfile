@@ -16,7 +16,7 @@ COPY ./external/homepage/config/ ./config/
 COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
 COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
 
-FROM ghcr.io/gethomepage/homepage:v1.4.5
+FROM ghcr.io/gethomepage/homepage:v1.4.6
 RUN mkdir -p /homelab/app-pages && \
     find /app/.next/server/pages -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/.next/server/pages/$(basename "$1")" "/homelab/app-pages/$(basename "$1")"' - {} \; && \
     rm -rf /app/.next/server/pages
