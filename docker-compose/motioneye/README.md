@@ -28,3 +28,4 @@ Notes:
 ## After initial installation
 
 - \[All\] Setup `admin` and `user` passwords
+- \[Prod\] Setup camera black zone
