@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Filter paths
         uses: dorny/paths-filter@v3.0.2
@@ -90,6 +92,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Install APT dependencies
         run: sudo apt-get install --yes moreutils
