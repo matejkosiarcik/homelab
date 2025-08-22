@@ -17,7 +17,5 @@
 
 - \[All\] Download models
   ```sh
-  docker run --rm --interactive --tty --entrypoint bash \
-    --volume "$PWD/app-data/ollama:/root/.ollama:rw" \
-    ollama/ollama -c 'ollama serve& && sleep 10 && ollama pull deepseek-r1:1.5b'
+  docker run --rm --interactive --tty --entrypoint bash --volume "$PWD/app-data/ollama:/root/.ollama:rw" ollama/ollama -c 'ollama serve& && sleep 10 && ollama pull deepseek-r1:1.5b'
   ```
