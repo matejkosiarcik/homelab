@@ -16,6 +16,7 @@ Kiwix:
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
+- Prepare ZIM files in `./app-data/kiwix/`
 
 ## After initial installation
 
