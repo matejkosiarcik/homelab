@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM freikin/dawarich:0.30.9
+FROM freikin/dawarich:0.30.10
 ENV APPLICATION_PROTOCOL=http \
     BACKGROUND_PROCESSING_CONCURRENCY=10 \
     DATABASE_HOST=postgis \
