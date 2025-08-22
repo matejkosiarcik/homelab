@@ -9,7 +9,7 @@ services:
     env_file:
       - ./app-secrets/app.env
     volumes:
-      - ./app-data/pihole/data:/etc/pihole:rw
+      - ./app-data/pihole:/etc/pihole:rw
     cap_add:
       - SYS_NICE
     # Hard-coded DNS is necessary because of bootstrapping problem
