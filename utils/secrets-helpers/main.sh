@@ -337,7 +337,7 @@ case "$app_dirname" in
     printf 'GLANCES_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app admin)" >>"$initial_output/app.env"
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$initial_output/app.env"
-    printf 'MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_token motioneye-kitchen app user)" >>"$initial_output/app.env"
+    printf 'MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$initial_output/app.env"
     printf 'OLLAMA_ADMIN_PASSWORD=%s\n' "$(load_token ollama app admin)" >>"$initial_output/app.env"
     printf 'OWNTRACKS_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
@@ -609,7 +609,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY=%s\n' "$(load_token home-assistant app automation-api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app automation-api-key)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_token motioneye-kitchen app user)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
     # TODO: Enable NetAlertX integration
     # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app automation-api-key)" "$initial_output/app.env"
     printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$(load_token omada-controller app readonly)" >>"$initial_output/app.env"
@@ -640,8 +640,9 @@ case "$app_dirname" in
     ;;
 *jellyfin*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
+    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -700,10 +701,8 @@ case "$app_dirname" in
     ;;
 *motioneye*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -1069,10 +1068,8 @@ case "$app_dirname" in
     ;;
 *tvheadend*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

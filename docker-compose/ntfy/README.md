@@ -27,7 +27,7 @@
 For publishing notifications to ntfy (see also: <https://github.com/caronc/apprise/wiki/Notify_ntfy>):
 
 ```txt
-ntfy://<token>@ntfy.matejhome.com/<topic>
+ntfys://<token>@ntfy.matejhome.com/<topic>
 ```
 
 Alternatively you can also publish via email (see also <https://github.com/caronc/apprise/wiki/Notify_email>):

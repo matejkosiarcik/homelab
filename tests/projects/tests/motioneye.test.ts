@@ -20,10 +20,10 @@ test.describe(apps.motioneye.title, () => {
 
             const users = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
                 {
-                    username: 'user',
+                    username: 'stream',
                 },
                 {
                     username: faker.string.alpha(10),
@@ -55,7 +55,7 @@ test.describe(apps.motioneye.title, () => {
                     });
                 }
 
-                if (variant.username === 'user') {
+                if (variant.username === 'stream') {
                     test(`UI: Successful stream open - User ${variant.username}`, async ({ page }) => {
                         await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username}_PASSWORD`)}`).toString('base64')}` });
                         await page.goto(`${instance.url}/stream`, { waitUntil: 'commit' });

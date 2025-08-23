@@ -23,8 +23,9 @@ SockPuppetBrowser (used for opening \[web\] sites):
 
 - Setup admin password in `/settings#general`
 - Setup notifications (ntfy, mail):
-    - ntfy: see [ntfy/README.md](../ntfy/README.md)
-    - mail: `smtp4dev.matejhome.com`
+    - ntfy: `ntfys://<token>@ntfy.matejhome.com/changedetection` - see also [Ntfy README.md](../ntfy/README.md)
+    - gotify: `gotifys://gotify.matejhome.com/<token>` - see also [Gotify README.md](../gotify/README.md)
+    - mail: `mailto://placeholder@matejhome.com?smtp=smtp4dev.matejhome.com&from=changedetection@matejhome.com&to=notifications@matejhome.com`
 - Tweak settings:
     - Scrape interval (6 hours)
     - Use `sockpuppetbrowser` for fetching

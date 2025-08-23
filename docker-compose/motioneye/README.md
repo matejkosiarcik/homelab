@@ -19,7 +19,7 @@ Motion:
 
 Notes:
 
-- Streaming only works in `user`, not in `admin`.
+- Streaming only works in `stream`, not in `admin`.
 
 ## Before initial installation
 
@@ -27,5 +27,5 @@ Notes:
 
 ## After initial installation
 
-- Setup `admin` and `user` passwords
+- Setup `admin` and `stream` passwords
 - Setup camera black zone
