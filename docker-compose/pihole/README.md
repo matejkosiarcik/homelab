@@ -28,4 +28,5 @@ Other notes:
 
 ## After initial installation
 
-- Disable destructive API actions
+- Optional: Configure API password
+    - Disable destructive API actions
