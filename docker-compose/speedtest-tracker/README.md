@@ -29,3 +29,4 @@ LinuxServer (unofficial):
     - `https://ntfy.matejhome.com`, topic: `speedtest-tracker`, username: `publisher`, password: `<password>`
     - `https://gotify.matejhome.com/message?token=<token>`
     - `system@speedtest-tracker.matejhome.com`
+- Add readonly API token for other services and save in Vaultwarden
