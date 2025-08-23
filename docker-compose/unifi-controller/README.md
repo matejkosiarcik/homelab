@@ -58,9 +58,9 @@ This is bad (still starting) `/status`:
 
 ## After initial installation
 
+- Setup admin account _matej_
 - Complete initial wizard / restore from backup
-    - Setup admin _username_, _password_ and _email_
-- Create extra users: `viewer`
+- Setup extra accounts: _readonly_ and _test_
 - Configure basic settings
     - Setup SMTP server address for emails
 - Connect and configure UniFi devices
