@@ -15,7 +15,7 @@ services:
       COUCHDB_URL: ${DOCKER_COMPOSE_NETWORK_URL}/couchdb
       GROCERY_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       GROCERY_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
-      SMTP_FROM: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      SMTP_FROM: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
     tmpfs:
       - /run
       - /var/cache/nginx

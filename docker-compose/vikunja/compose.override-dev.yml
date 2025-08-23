@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
     environment:
-      VIKUNJA_MAILER_FROMEMAIL: system@vikunja.localhost
+      VIKUNJA_MAILER_FROMEMAIL: vikunja@localhost
       VIKUNJA_SERVICE_ENABLEREGISTRATION: "true"
 
   certificator:

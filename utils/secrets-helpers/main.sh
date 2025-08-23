@@ -1039,19 +1039,21 @@ case "$app_dirname" in
     ;;
 *speedtest-tracker*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    matej_email=''
+    app_key=''
     if [ "$mode" = 'dev' ]; then
-        admin_email='admin@speedtest-tracker.localhost'
+        matej_email='matej@localhost'
         app_key="$(printf 'base64:' && openssl rand -base64 32)"
     else
-        admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
+        matej_email="matej@matejhome.com"
         app_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app app-key)"
     fi
-    printf '%s,%s\n' "$admin_email" "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf '%s,%s\n' "$matej_email" "$matej_password" >>"$initial_output/all-credentials.csv"
     printf 'APP_KEY=%s\n' "$app_key" >>"$initial_output/app.env"
-    printf 'ADMIN_NAME=Admin\n' >>"$initial_output/app.env"
-    printf 'ADMIN_EMAIL=%s\n' "$admin_email" >>"$initial_output/app.env"
-    printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app.env"
+    printf 'ADMIN_NAME=Matej\n' >>"$initial_output/app.env"
+    printf 'ADMIN_EMAIL=%s\n' "$matej_email" >>"$initial_output/app.env"
+    printf 'ADMIN_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
     printf 'MAIL_PASSWORD=\n' >>"$initial_output/app.env"
     printf 'MAIL_USERNAME=\n' >>"$initial_output/app.env"
 

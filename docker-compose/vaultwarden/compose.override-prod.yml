@@ -8,7 +8,7 @@ services:
     environment:
       VAULTWARDEN_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DOMAIN: ${DOCKER_COMPOSE_NETWORK_URL}
-      SMTP_FROM: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      SMTP_FROM: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
 
   certificator:
     <<: *common-service-options
