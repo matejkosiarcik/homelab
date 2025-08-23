@@ -9,6 +9,8 @@ services:
       ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DEFAULT_FROM_EMAIL: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
       SITE_ROOT: ${DOCKER_COMPOSE_NETWORK_URL}
+      # Uncomment when setting up new instance:
+      # REGISTRATION_OPEN: "True"
 
   certificator:
     <<: *common-service-options
