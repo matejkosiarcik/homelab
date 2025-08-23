@@ -29,3 +29,5 @@ SockPuppetBrowser (used for opening \[web\] sites):
     - Scrape interval (6 hours)
     - Use `sockpuppetbrowser` for fetching
     - Do not open "History" in new tabs
+    - Enable "Render anchor tag content"
+- Import watched URLs from backup
