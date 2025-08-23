@@ -7,8 +7,6 @@ services:
     <<: *common-service-options
     environment:
       VIKUNJA_MAILER_FROMEMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
-      # Uncomment when setting up new instance:
-      # VIKUNJA_SERVICE_ENABLEREGISTRATION: "true"
 
   certificator:
     <<: *common-service-options
