@@ -17,4 +17,6 @@
 
 ## After initial installation
 
-Empty
+- Temporarily set `DISABLE_ACCOUNT_CREATION=0` and create user accounts (matej, monika, test)
+- Create shared list between `matej` and `monika`
+- Create categories and shopping items
