@@ -67,7 +67,7 @@ test.describe(apps['unifi-controller'].title, () => {
                     await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
                     await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
                     await page.locator('form input[name="username"]').fill('viewer');
-                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, 'VIEWER_PASSWORD'));
+                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${variant.toUpperCase()}_PASSWORD`));
                     await page.locator('button#loginButton').click();
                     await page.waitForURL(`${instance.url}/manage/default/dashboard`, { timeout: 30_000 });
                     await expect(page.locator('#unifi-network-app-container [data-testid="activity-insights-graph"]')).toBeVisible({ timeout: 20_000 });
