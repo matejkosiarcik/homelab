@@ -28,10 +28,10 @@ Generic resources:
 
 ## After initial installation
 
-- Configure docker mirroring in docker clients according to
+- Configure Docker mirroring in Docker clients according to
   <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>, chapter "A single registry" (*example below)
 
-*The following docker config (replace `example.com` with your target IP/domain):
+*The following Docker config (replace `example.com` with your target IP/domain):
 
 ```json
 {
@@ -46,7 +46,7 @@ Generic resources:
 
 For this purpose I also considered:
 
-### Third-party docker registry proxy
+### Third-party Docker registry proxy
 
 - GitHub: <https://github.com/rpardini/docker-registry-proxy>
 

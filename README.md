@@ -13,7 +13,7 @@ Below is a general structure for this repository:
 
 - `/ansible/` - Ansible playbooks for easy maintenance for multiple servers
 - `/docs/` - General documentation and installation guides
-- `/docker-images/` - Contains Dockerfiles for all individual docker images
+- `/docker-images/` - Contains Dockerfiles for all individual Docker images
 - `/docker-compose/` - Reusable config for entire individual docker-apps
 - `/other-apps/` - Non-Docker apps (eg. for microcontrollers)
 - `/servers/` - Setup for individual physical servers
