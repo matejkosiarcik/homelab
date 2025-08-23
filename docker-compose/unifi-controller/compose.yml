@@ -19,6 +19,7 @@ services:
       external-network: {}
     stop_grace_period: 30s
     tmpfs:
+      - /defaults
       - /run:exec
 
   mongodb:

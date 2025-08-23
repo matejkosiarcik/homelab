@@ -13,4 +13,9 @@ else
     exit 1
 fi
 
-printf "show databases\n" | "$mongo_shell" "localhost:$PORT/$MONGO_DBNAME" --username "$MONGO_USER" --password "$MONGO_PASSWORD" --quiet || exit 1
+# printf "show databases\n" | "$mongo_shell" "localhost:$PORT/$MONGO_DBNAME" --username "$MONGO_USER" --password "$MONGO_PASSWORD" --quiet || exit 1
+"${mongo_shell}" <<EOF
+use ${MONGO_AUTHSOURCE}
+db.auth("${MONGO_INITDB_ROOT_USERNAME}", "${MONGO_INITDB_ROOT_PASSWORD}")
+show databases
+EOF
