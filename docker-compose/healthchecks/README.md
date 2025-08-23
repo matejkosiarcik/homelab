@@ -16,7 +16,8 @@
 
 ## After initial installation
 
-- Temporarily turn on registrations and create admin account
+- Create `admin` account
+    - Turn on password authentication
 - Configure notifications: ntfy / gotify / smtp
     - `https://ntfy.matejhome.com` + topic + access-token
     - `https://gotify.matejhome.com` + token
