@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
     environment:
-      VIKUNJA_MAILER_FROMEMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      VIKUNJA_MAILER_FROMEMAIL: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
 
   certificator:
     <<: *common-service-options

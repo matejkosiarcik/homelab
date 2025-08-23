@@ -8,7 +8,7 @@ services:
     environment:
       VAULTWARDEN_DOMAIN: localhost
       DOMAIN: ${DOCKER_COMPOSE_NETWORK_URL}
-      SMTP_FROM: system@vaultwarden.localhost
+      SMTP_FROM: vaultwarden@localhost
 
   certificator:
     <<: *common-service-options
