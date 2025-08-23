@@ -640,8 +640,9 @@ case "$app_dirname" in
     ;;
 *jellyfin*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
+    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -1069,10 +1070,8 @@ case "$app_dirname" in
     ;;
 *tvheadend*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

@@ -263,8 +263,8 @@ load_password() {
     printf 'SPEEDTEST_TRACKER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password speedtest-tracker apache status)"
     printf 'SPEEDTEST_TRACKER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password speedtest-tracker apache prometheus)"
 
-    printf 'TVHEADEND_ADMIN_PASSWORD=%s\n' "$(load_password tvheadend app admin)"
-    printf 'TVHEADEND_USER_PASSWORD=%s\n' "$(load_password tvheadend app user)"
+    printf 'TVHEADEND_STREAM_PASSWORD=%s\n' "$(load_password tvheadend app stream)"
+    printf 'TVHEADEND_TEST_PASSWORD=%s\n' "$(load_password tvheadend app test)"
     printf 'TVHEADEND_PROXY_STATUS_PASSWORD=%s\n' "$(load_password tvheadend apache status)"
     printf 'TVHEADEND_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password tvheadend apache prometheus)"
 

@@ -31,38 +31,49 @@ test.describe(apps.tvheadend.title, () => {
                 expect(body.capabilities, 'Capabilities').not.toHaveLength(0);
             });
 
-            const users = [
-                {
-                    username: 'admin',
-                },
-                {
-                    username: 'user',
-                },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
-            ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful open - User ${variant.username}`, async ({ browser }) => {
-                        const page = await browser.newPage({ httpCredentials: { username: variant.username, password: getEnv(instance.url, `${variant.username}_PASSWORD`) } });
-                        try {
-                            await page.goto(instance.url);
-                            await page.waitForURL(`${instance.url}/extjs.html`);
-                            await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
-                            await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
-                            await expect(page.locator(`.x-tab-panel-header .x-tab-strip-text:has-text("Logged in as ${variant.username}")`)).toBeVisible({ timeout: 10_000 });
-                        } finally {
-                            await page.close();
-                        }
-                    });
-                }
+            test('UI: Open - No user', async ({ page }) => {
+                await page.goto(instance.url);
+                await page.waitForURL(`${instance.url}/extjs.html`);
+                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
+            });
 
-                test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ browser }) => {
-                    const page = await browser.newPage({ httpCredentials: { username: variant.username, password: faker.string.alpha(10) } });
+            const validUsers = [
+                {
+                    user: 'test',
+                },
+                {
+                    user: 'stream',
+                },
+            ];
+            for (const variant of validUsers) {
+                test(`UI: Successful open - User ${variant.user}`, async ({ browser }) => {
+                    const page = await browser.newPage({ httpCredentials: { username: variant.user, password: getEnv(instance.url, `${variant.user}_PASSWORD`) } });
                     try {
-                        // await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/extjs.html`);
+                        await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
+                        await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
+                        await expect(page.locator(`.x-tab-panel-header .x-tab-strip-text:has-text("Logged in as ${variant.user}")`)).toBeVisible({ timeout: 10_000 });
+                    } finally {
+                        await page.close();
+                    }
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    title: 'Random user',
+                    user: faker.string.alpha(10),
+                },
+                {
+                    title: 'User test',
+                    user: 'test',
+                },
+            ];
+            for (const variant of invalidUsers) {
+                test(`UI: Unsuccessful open - ${variant.title}`, async ({ browser }) => {
+                    const page = await browser.newPage({ httpCredentials: { username: variant.user, password: faker.string.alpha(10) } });
+                    try {
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/extjs.html`);
                         await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
@@ -73,12 +84,6 @@ test.describe(apps.tvheadend.title, () => {
                     }
                 });
             }
-
-            test('UI: Open - No user', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/extjs.html`);
-                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
-            });
         });
     }
 });
