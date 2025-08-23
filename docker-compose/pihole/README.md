@@ -9,7 +9,9 @@ PiHole:
 - GitHub: <https://github.com/pi-hole/docker-pi-hole>
 - DockerHub: <https://hub.docker.com/r/pihole/pihole>
 - Docs: <https://docs.pi-hole.net>
-- Docs - Docker: <https://docs.pi-hole.net/docker>
+- <!-- textlint-disable -->
+  Docs - Docker: <https://docs.pi-hole.net/docker>
+  <!-- textlint-enable -->
 - Docs - FTL Configuration: <https://docs.pi-hole.net/ftldns/configfile>
 
 Prometheus exporter:
@@ -28,5 +30,5 @@ Other notes:
 
 ## After initial installation
 
-- Configure API password and save it in Vaultwarden
-- Disable destructive API actions
+- Optional: Configure API password
+    - Disable destructive API actions

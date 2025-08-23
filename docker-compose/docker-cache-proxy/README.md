@@ -24,14 +24,14 @@ Generic resources:
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
-    - \[Prod\] Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `app.env` for authenticated mirror
+    - Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `app.env` for authenticated mirror
 
 ## After initial installation
 
-- \[Prod\] Configure docker mirroring in docker clients according to
+- Configure Docker mirroring in Docker clients according to
   <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>, chapter "A single registry" (*example below)
 
-*The following docker config (replace `example.com` with your target IP/domain):
+*The following Docker config (replace `example.com` with your target IP/domain):
 
 ```json
 {
@@ -46,7 +46,7 @@ Generic resources:
 
 For this purpose I also considered:
 
-### Third-party docker registry proxy
+### Third-party Docker registry proxy
 
 - GitHub: <https://github.com/rpardini/docker-registry-proxy>
 
@@ -67,7 +67,7 @@ This one looks unmaintained (last commit 2 years ago)
 It has a couple pros and cons:
 
 - Pros:
-    - Can proxy docker, and other types of content
+    - Can proxy Docker, and other types of content
     - Can add/remove proxies and artifactories in UI on demand
     - Supports automatic cleanup schedules
     - Can remove artifacts (images, layers) in the admin UI

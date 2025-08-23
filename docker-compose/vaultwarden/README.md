@@ -18,7 +18,7 @@ Bitwarden:
 
 ## After initial installation
 
-- \[Prod\] Create `admin` account
-- \[Prod\] Create `Homelab collection/organization`
-- \[Prod\] Create `homelab` and `test` accounts
-- \[Prod\] Import passwords
+- Create `admin` account
+- Create `Homelab collection/organization`
+- Create `homelab` and `test` accounts
+- Import passwords

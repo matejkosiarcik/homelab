@@ -27,5 +27,5 @@ Notes:
 
 ## After initial installation
 
-- \[All\] Setup `admin` and `user` passwords
-- \[Prod\] Setup camera black zone
+- Setup `admin` and `user` passwords
+- Setup camera black zone

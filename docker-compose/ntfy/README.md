@@ -8,7 +8,9 @@
 - DockerHub: <https://hub.docker.com/r/binwiederhier/ntfy>
 - Docs: <https://docs.ntfy.sh>
 - Install guide: <https://docs.ntfy.sh/install>
-- Install guide - docker: <https://docs.ntfy.sh/install/#docker>
+- <!-- textlint-disable -->
+  Install guide - Docker: <https://docs.ntfy.sh/install/#docker>
+  <!-- textlint-enable -->
 
 ## Before initial installation
 
@@ -16,8 +18,8 @@
 
 ## After initial installation
 
-- \[Prod\] Configure basic settings
-- \[Prod\] Read publisher token and save it in Vaultwarden:
+- Configure basic settings
+- Read publisher token and save it in Vaultwarden:
     - `docker exec -it ntfy-app /bin/sh -c 'ntfy token list publisher'`
 
 ## Publishing notifications
