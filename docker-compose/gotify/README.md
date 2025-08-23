@@ -18,4 +18,12 @@ Gotify server:
 
 ## After initial installation
 
-Empty
+N/A
+
+## Publishing notifications
+
+For publishing notifications to gotify (see also: <https://gotify.net/docs/pushmsg>):
+
+```txt
+gotifys://gotify.matejhome.com/{token}
+```
