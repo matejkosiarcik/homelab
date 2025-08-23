@@ -37,7 +37,7 @@ vaultwarden
 actualbudget
 openspeedtest
 speedtest-tracker
-# TODO: vikunja
+vikunja
 owntracks
 dawarich
 kiwix-wikipedia
