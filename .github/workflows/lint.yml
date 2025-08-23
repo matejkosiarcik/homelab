@@ -65,7 +65,7 @@ jobs:
           persist-credentials: false
 
       - name: Run SuperLinter
-        uses: super-linter/super-linter@v8.0.0
+        uses: super-linter/super-linter@v8.1.0
         env:
           # global settings
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
