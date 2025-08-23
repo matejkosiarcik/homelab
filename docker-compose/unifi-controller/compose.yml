@@ -29,6 +29,7 @@ services:
     build:
       dockerfile: ./external/mongodb/Dockerfile
     environment:
+      MONGO_AUTHSOURCE: admin
       MONGO_DBNAME: unifi
       MONGO_USER: unifi
     env_file:
