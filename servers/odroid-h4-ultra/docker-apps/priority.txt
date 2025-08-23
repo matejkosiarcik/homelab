@@ -36,7 +36,7 @@ homepage
 vaultwarden
 actualbudget
 openspeedtest
-speedtest-tracker
+# speedtest-tracker # TODO: Reenable
 vikunja
 owntracks
 dawarich
