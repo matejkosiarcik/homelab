@@ -17,3 +17,4 @@
 ## After initial installation
 
 - Change credentials - defaults: `demo@dawarich.app:password`
+- Save _API key_ in Vaultwarden
