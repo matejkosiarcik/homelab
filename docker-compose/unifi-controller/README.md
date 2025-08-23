@@ -58,9 +58,9 @@ This is bad (still starting) `/status`:
 
 ## After initial installation
 
-- \[All\] Complete initial wizard / restore from backup
+- Complete initial wizard / restore from backup
     - Setup admin _username_, _password_ and _email_
-- \[Prod\] Create extra users: `viewer`
-- \[Prod\] Configure basic settings
+- Create extra users: `viewer`
+- Configure basic settings
     - Setup SMTP server address for emails
-- \[Prod\] Connect and configure UniFi devices
+- Connect and configure UniFi devices

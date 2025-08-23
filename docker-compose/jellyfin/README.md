@@ -21,24 +21,24 @@ LinuxServer (unofficial):
 
 ## After initial installation
 
-- \[Prod\] Complete initial setup wizard
+- Complete initial setup wizard
     - Create `admin` users
     - Create `monika` and `test` users
     - Disable remote connections
-- \[Prod\] Customize settings (eg. ) (location: Settings -> Administration -> General)
+- Customize settings (eg. ) (location: Settings -> Administration -> General)
     - Disable "Quick Connect"
     - Verify "Server Name"
     - Create Access token for `homepage`
     - Change cache path to `/cache`
-- \[Prod\] Connect to Tvheadend
+- Connect to Tvheadend
     - Install Tvheadend plugin (location: Settings -> Administration -> Plugins -> Catalog)
     - Restart Jellyfin (location: Settings -> Dashboard)
     - Configure Tvheadend plugin details (location: Settings -> Administration -> Plugins -> My Plugins -> Tvheadend)
         - Tvheadend address, credentials `user`
         - Enable "Hide Tvheadend Recordings channel"
     - Refresh Guide Data (location: Settings -> Administration -> Live TV)
-- \[Prod\] Create extra users (matej, monika)
-- \[Prod\] Enable Hardware Acceleration:
+- Create extra users (matej, monika)
+- Enable Hardware Acceleration:
     - This requires the host system to support it - additional system packages required, follow Jellyfin HWA docs to install them <https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/intel/#low-power-encoding>
         - `sudo apt-get install --yes firmware-linux-nonfree intel-gpu-tools vainfo`
     - Then enable Hardware Acceleration in settings accordingly (location: Settings -> Administration -> Playback):

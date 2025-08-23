@@ -23,10 +23,10 @@ Note: LinuxServer unused
 
 ## After initial installation
 
-- \[Prod\] Finish initial setup and create `admin` user
-- \[Prod\] Configure basic settings
-- \[Prod\] Create admin users: `automation`
-- \[Prod\] Create non-admin users: `matej`, `monika`, `test`
-- \[Prod\] Setup access token for `automation`
-- \[Prod\] Optional: Setup 2FA - <https://www.home-assistant.io/docs/authentication/multi-factor-auth>
-- \[Prod\] Connect smart devices
+- Finish initial setup and create `admin` user
+- Configure basic settings
+- Create admin users: `automation`
+- Create non-admin users: `matej`, `monika`, `test`
+- Setup access token for `automation`
+- Optional: Setup 2FA - <https://www.home-assistant.io/docs/authentication/multi-factor-auth>
+- Connect smart devices

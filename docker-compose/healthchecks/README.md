@@ -16,11 +16,11 @@
 
 ## After initial installation
 
-- \[Prod\] Temporarily turn on registrations and create admin account
-- \[Prod\] Configure notifications: ntfy / gotify / smtp
+- Temporarily turn on registrations and create admin account
+- Configure notifications: ntfy / gotify / smtp
     - `https://ntfy.matejhome.com` + topic + access-token
     - `https://gotify.matejhome.com` + token
     - `system@healthchecks.matejhome.com`
-- \[Prod\] Add notifications to _All_ group
-- \[Prod\] Generate api-key / api-key (readonly) / ping-key and save it in Vaultwarden
-- \[Prod\] Run script to create all healthchecks
+- Add notifications to _All_ group
+- Generate api-key / api-key (readonly) / ping-key and save it in Vaultwarden
+- Run script to create all healthchecks

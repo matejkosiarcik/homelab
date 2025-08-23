@@ -24,11 +24,11 @@ Generic resources:
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
-    - \[Prod\] Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `app.env` for authenticated mirror
+    - Optionally set `REGISTRY_PROXY_USERNAME` and `REGISTRY_PROXY_PASSWORD` in `app.env` for authenticated mirror
 
 ## After initial installation
 
-- \[Prod\] Configure docker mirroring in docker clients according to
+- Configure docker mirroring in docker clients according to
   <https://blog.alexellis.io/how-to-configure-multiple-docker-registry-mirrors>, chapter "A single registry" (*example below)
 
 *The following docker config (replace `example.com` with your target IP/domain):

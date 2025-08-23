@@ -21,11 +21,11 @@ SockPuppetBrowser (used for opening \[web\] sites):
 
 ## After initial installation
 
-- \[Prod\] Setup admin password in `/settings#general`
-- \[Prod\] Setup notifications (ntfy, mail):
+- Setup admin password in `/settings#general`
+- Setup notifications (ntfy, mail):
     - ntfy: see [ntfy/README.md](../ntfy/README.md)
     - mail: `smtp4dev.matejhome.com`
-- \[Prod\] Tweak settings:
+- Tweak settings:
     - Scrape interval (6 hours)
     - Use `sockpuppetbrowser` for fetching
     - Do not open "History" in new tabs
