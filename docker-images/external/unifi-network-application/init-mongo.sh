@@ -13,9 +13,16 @@ else
     exit 1
 fi
 
-# printf "show databases\n" | "$mongo_shell" "localhost:$PORT/$MONGO_DBNAME" --username "$MONGO_USER" --password "$MONGO_PASSWORD" --quiet || exit 1
 "${mongo_shell}" <<EOF
 use ${MONGO_AUTHSOURCE}
 db.auth("${MONGO_INITDB_ROOT_USERNAME}", "${MONGO_INITDB_ROOT_PASSWORD}")
-show databases
+db.createUser({
+    user: "${MONGO_USER}",
+    pwd: "${MONGO_PASSWORD}",
+    roles: [
+        { db: "${MONGO_DBNAME}", role: "dbOwner" },
+        { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
+        { db: "${MONGO_DBNAME}_audit", role: "dbOwner" }
+    ]
+})
 EOF

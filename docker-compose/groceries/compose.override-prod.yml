@@ -5,8 +5,10 @@ x-definitions:
 services:
   app-backend:
     <<: *common-service-options
-    # environment:
-    #   DISABLE_ACCOUNT_CREATION: "0"
+    environment:
+      PLACEHOLDER: placeholder
+      # Uncomment when setting up new instance:
+      # DISABLE_ACCOUNT_CREATION: "0"
 
   app-frontend:
     <<: *common-service-options
