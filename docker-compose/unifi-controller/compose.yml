@@ -35,7 +35,7 @@ services:
       - ./app-secrets/mongodb.env
     volumes:
       - ./app-data/mongodb:/data/db:rw
-      - ../../../../docker-images/external/unifi-network-application/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ../../../../docker-images/external/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
 
   certificator:
     extends:
