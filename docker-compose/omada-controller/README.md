@@ -13,9 +13,9 @@
 
 ## After initial installation
 
-- Setup admin _username_, _password_ and _email_
+- Setup admin account _matej_
 - Setup initial settings + initial login to finish the wizard
-- Create extra users: `viewer`
+- Setup extra accounts: _readonly_ and _test_
 - Configure basic settings
     - General config and settings customization
     - Setup SMTP server address for emails

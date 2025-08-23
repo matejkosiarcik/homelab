@@ -612,7 +612,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_USER_PASSWORD=%s\n' "$(load_token motioneye-kitchen app user)" >>"$initial_output/app.env"
     # TODO: Enable NetAlertX integration
     # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app automation-api-key)" "$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$(load_token omada-controller app viewer)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD=%s\n' "$(load_token omada-controller app readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-1-primary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app admin)" >>"$initial_output/app.env"
@@ -620,7 +620,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY=%s\n' "$(load_token speedtest-tracker app api-key-readonly)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unifi-controller app viewer)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unifi-controller app readonly)" >>"$initial_output/app.env"
     # TODO: Enable Vikunja integration
     # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app automation-api-key)" "$initial_output/app.env"
 
@@ -773,12 +773,9 @@ case "$app_dirname" in
     ;;
 *omada-controller*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)"
-    device_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app device)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'viewer,%s\n' "$viewer_password" >>"$initial_output/all-credentials.csv"
-    printf 'device,%s\n' "$device_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'readonly,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app readonly)" >>"$initial_output/all-credentials.csv"
+    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -1101,18 +1098,18 @@ case "$app_dirname" in
     ;;
 *unifi-controller*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)"
-    mongodb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'viewer,%s\n' "$viewer_password" >>"$initial_output/all-credentials.csv"
-    printf 'mongodb,%s\n' "$mongodb_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)" >>"$initial_output/all-credentials.csv"
+    printf 'readonly,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)" >>"$initial_output/all-credentials.csv"
+    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
 
     # Database
+    mongodb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
+    printf 'mongodb,%s\n' "$mongodb_password" >>"$initial_output/all-credentials.csv"
     printf 'MONGO_PASSWORD=%s\n' "$mongodb_password" >>"$initial_output/mongodb.env"
     printf '%s' "$mongodb_password" >>"$initial_output/mongodb-password.txt"
     mongodb_root_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
     printf 'MONGO_INITDB_ROOT_PASSWORD=%s\n' "$mongodb_root_password" >>"$initial_output/mongodb.env"
+    printf 'mongodb,%s\n' "$mongodb_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
