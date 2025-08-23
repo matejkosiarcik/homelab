@@ -13,6 +13,7 @@ services:
     networks:
       internal-network: {}
       external-network: {}
+    read_only: false # TODO: Enable readonly mode
     tmpfs:
       - /app
       - /run:exec
