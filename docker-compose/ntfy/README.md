@@ -8,7 +8,7 @@
 - DockerHub: <https://hub.docker.com/r/binwiederhier/ntfy>
 - Docs: <https://docs.ntfy.sh>
 - Install guide: <https://docs.ntfy.sh/install>
-- Install guide - docker: <https://docs.ntfy.sh/install/#docker>
+- Install guide - Docker: <https://docs.ntfy.sh/install/#docker>
 
 ## Before initial installation
 

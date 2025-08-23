@@ -67,7 +67,7 @@ This one looks unmaintained (last commit 2 years ago)
 It has a couple pros and cons:
 
 - Pros:
-    - Can proxy docker, and other types of content
+    - Can proxy Docker, and other types of content
     - Can add/remove proxies and artifactories in UI on demand
     - Supports automatic cleanup schedules
     - Can remove artifacts (images, layers) in the admin UI
