@@ -5,7 +5,6 @@ COPY ./external/mongodb/healthcheck.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=mongodb \
     HOMELAB_CONTAINER_VARIANT=default \
     MONGO_DBNAME=database \
-    MONGO_INITDB_ROOT_PASSWORD= \
     MONGO_INITDB_ROOT_USERNAME=root \
     MONGO_USER=mongo \
     PORT=27017 \

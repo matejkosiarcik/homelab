@@ -1111,6 +1111,8 @@ case "$app_dirname" in
     # Database
     printf 'MONGO_PASSWORD=%s\n' "$mongodb_password" >>"$initial_output/mongodb.env"
     printf '%s' "$mongodb_password" >>"$initial_output/mongodb-password.txt"
+    mongodb_root_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
+    printf 'MONGO_INITDB_ROOT_PASSWORD=%s\n' "$mongodb_root_password" >>"$initial_output/mongodb.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
