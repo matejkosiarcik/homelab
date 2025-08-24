@@ -203,7 +203,7 @@ def docker_start():
             os.makedirs(volume, exist_ok=True)
             created = True
         if created or volume.startswith(app_dir):
-            os.chown(volume, uid=current_user, gid=current_user_group)
+            # os.chown(volume, uid=current_user, gid=current_user_group)  # TODO: Fix this
             os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
