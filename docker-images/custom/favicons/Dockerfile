@@ -18,8 +18,8 @@ RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         imagemagick && \
     rm -rf /var/lib/apt/lists/*
-ARG UID
-ARG GID
+ARG UID=1
+ARG GID=1
 RUN ( groupadd -g "$GID" user || groupmod --new-name user node ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user node )
 USER user

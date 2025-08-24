@@ -14,8 +14,8 @@ RUN apt-get update -qq && \
     a2enmod auth_basic env headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     a2dismod -f alias && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
-ARG UID
-ARG GID
+ARG UID=1
+ARG GID=1
 RUN groupadd -g "$GID" user && \
     useradd -l -m -u "$UID" -g "$GID" user
 WORKDIR /homelab

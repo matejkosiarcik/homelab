@@ -45,8 +45,8 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         ca-certificates certbot curl jq xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-ARG UID
-ARG GID
+ARG UID=1
+ARG GID=1
 RUN groupadd -g "$GID" user && \
     useradd -l -m -u "$UID" -g "$GID" user
 USER user

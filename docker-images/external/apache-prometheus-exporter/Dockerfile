@@ -1,6 +1,6 @@
 FROM bitnami/apache-exporter:1.0.10
-ARG UID
-ARG GID
+ARG UID=1
+ARG GID=1
 USER root
 RUN groupadd -g "$GID" user && \
     useradd -l -m -u "$UID" -g "$GID" user
