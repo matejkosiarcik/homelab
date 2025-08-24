@@ -99,6 +99,7 @@ jobs:
           # config files
           CHECKOV_FILE_NAME: .checkov.yml
           DOCKERFILE_HADOLINT_FILE_NAME: .hadolint.yaml
+          GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE: zizmor.yml
           MARKDOWN_CONFIG_FILE: .markdownlint.json
           PYTHON_BLACK_CONFIG_FILE: pyproject.toml
           PYTHON_FLAKE8_CONFIG_FILE: setup.cfg
