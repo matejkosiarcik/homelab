@@ -16,8 +16,8 @@ RUN apt-get update -qq && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
 ARG UID
 ARG GID
-RUN groupadd -g $GID user && \
-    useradd -l -m -u $UID -g $GID user
+RUN groupadd -g "$GID" user && \
+    useradd -l -m -u "$UID" -g "$GID" user
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
