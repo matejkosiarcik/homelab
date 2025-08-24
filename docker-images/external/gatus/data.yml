@@ -639,7 +639,7 @@ apps:
     endpoints:
       - path: /metrics
         authentication:
-          basic: admin
+          basic: matej
 
   - name: Vaultwarden
     domain: vaultwarden.matejhome.com
