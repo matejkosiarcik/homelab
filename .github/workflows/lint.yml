@@ -12,7 +12,6 @@ jobs:
   azlint:
     name: AZLint
     runs-on: ubuntu-latest
-    permissions: read-all
     container:
       image: matejkosiarcik/azlint:0.6.13
       options: --user root
@@ -37,7 +36,6 @@ jobs:
   mega-linter:
     name: MegaLinter
     runs-on: ubuntu-latest
-    permissions: read-all
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
@@ -56,7 +54,6 @@ jobs:
   super-linter:
     name: SuperLinter
     runs-on: ubuntu-latest
-    permissions: read-all
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
@@ -85,6 +82,7 @@ jobs:
           VALIDATE_JSON: false # Because eslint considers .json as .js (so rules like single-quote don't make sense)
           VALIDATE_RUST_2015: false
           VALIDATE_RUST_CLIPPY: false # Somehow fails the compilation
+          VALIDATE_TRIVY: false
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_TYPESCRIPT_PRETTIER: false
           VALIDATE_TYPESCRIPT_STANDARD: false

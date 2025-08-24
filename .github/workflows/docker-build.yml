@@ -9,7 +9,6 @@ jobs:
   paths-filter:
     name: Filter changed components
     runs-on: ubuntu-latest
-    permissions: read-all
     outputs:
       components: ${{ steps.filter.outputs.changes }}
     steps:
@@ -85,7 +84,6 @@ jobs:
   build:
     name: Build - ${{ matrix.component }}
     runs-on: ubuntu-latest
-    permissions: read-all
     needs: paths-filter
     strategy:
       fail-fast: false
