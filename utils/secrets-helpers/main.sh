@@ -262,12 +262,13 @@ case "$app_dirname" in
     ;;
 *docker-stats*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password" users
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$prometheus_password" users
-    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
+    app_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$app_admin_password" users
+    printf 'admin,%s\n' "$app_admin_password" >>"$initial_output/all-credentials.csv"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user admin "$app_admin_password" prometheus
+    write_http_auth_user prometheus "$app_prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -338,6 +339,12 @@ case "$app_dirname" in
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
+    printf 'NODE_EXPORTER_MACBOOK_PRO_2012_ADMIN_PASSWORD=%s\n' "$(load_token node-exporter-macbook-pro-2012 app admin)" >>"$initial_output/app.env"
+    printf 'NODE_EXPORTER_ODROID_H3_ADMIN_PASSWORD=%s\n' "$(load_token node-exporter-odroid-h3 app admin)" >>"$initial_output/app.env"
+    printf 'NODE_EXPORTER_ODROID_H4_ULTRA_ADMIN_PASSWORD=%s\n' "$(load_token node-exporter-odroid-h4-ultra app admin)" >>"$initial_output/app.env"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_3B_ADMIN_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-3b app admin)" >>"$initial_output/app.env"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_2G_ADMIN_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-2g app admin)" >>"$initial_output/app.env"
+    printf 'NODE_EXPORTER_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD=%s\n' "$(load_token node-exporter-raspberry-pi-4b-4g app admin)" >>"$initial_output/app.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$initial_output/app.env"
     printf 'OLLAMA_ADMIN_PASSWORD=%s\n' "$(load_token ollama app admin)" >>"$initial_output/app.env"
     printf 'OWNTRACKS_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
@@ -711,13 +718,13 @@ case "$app_dirname" in
 *node-exporter*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
     app_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     write_http_auth_user admin "$app_admin_password" users
     write_http_auth_user admin "$app_admin_password" prometheus
     printf 'admin,%s\n' "$app_admin_password" >>"$initial_output/all-credentials.csv"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$app_prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users

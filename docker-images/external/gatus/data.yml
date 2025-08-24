@@ -291,6 +291,8 @@ apps:
 
   - name: Node Exporter - MacBook Pro 2012
     domain: node-exporter-macbook-pro-2012.matejhome.com
+    authentication:
+      basic: admin
     endpoints:
       - path: /metrics
         authentication:
@@ -299,6 +301,8 @@ apps:
 
   - name: Node Exporter - Odroid H3
     domain: node-exporter-odroid-h3.matejhome.com
+    authentication:
+      basic: admin
     endpoints:
       - path: /metrics
         authentication:
@@ -306,6 +310,8 @@ apps:
 
   - name: Node Exporter - Odroid H4 Ultra
     domain: node-exporter-odroid-h4-ultra.matejhome.com
+    authentication:
+      basic: admin
     endpoints:
       - path: /metrics
         authentication:
@@ -313,6 +319,8 @@ apps:
 
   - name: Node Exporter - Raspberry Pi 3B
     domain: node-exporter-raspberry-pi-3b.matejhome.com
+    authentication:
+      basic: admin
     endpoints:
       - path: /metrics
         authentication:
@@ -321,6 +329,8 @@ apps:
 
   - name: Node Exporter - Raspberry Pi 4B 2GB
     domain: node-exporter-raspberry-pi-4b-2g.matejhome.com
+    authentication:
+      basic: admin
     endpoints:
       - path: /metrics
         authentication:
@@ -328,6 +338,8 @@ apps:
 
   - name: Node Exporter - Raspberry Pi 4B 4GB
     domain: node-exporter-raspberry-pi-4b-4g.matejhome.com
+    authentication:
+      basic: admin
     endpoints:
       - path: /metrics
         authentication:
