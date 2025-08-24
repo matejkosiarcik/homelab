@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM node:24.6.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/favicons/package-lock.json ./custom/favicons/package.json ./custom/favicons/tsconfig.json ./
@@ -23,7 +21,7 @@ RUN apt-get update -qq && \
 ARG UID
 ARG GID
 RUN groupadd -g $GID user && \
-    useradd -m -u $UID -g $GID user
+    useradd -l -m -u $UID -g $GID user
 USER user
 WORKDIR /homelab
 COPY --from=prefinal --chown=user:user /homelab/node_modules ./node_modules

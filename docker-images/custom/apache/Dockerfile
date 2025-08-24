@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_3: Cannot run as non-root initially, but we switch to another user later
 
 FROM debian:13.0-slim AS prefinal
 WORKDIR /homelab
@@ -17,7 +17,7 @@ RUN apt-get update -qq && \
 ARG UID
 ARG GID
 RUN groupadd -g $GID user && \
-    useradd -m -u $UID -g $GID user
+    useradd -l -m -u $UID -g $GID user
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently

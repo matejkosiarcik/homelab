@@ -1,11 +1,9 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM bitnami/apache-exporter:1.0.10
 ARG UID
 ARG GID
 USER root
 RUN groupadd -g $GID user && \
-    useradd -m -u $UID -g $GID user
+    useradd -l -m -u $UID -g $GID user
 USER user
 WORKDIR /homelab
 COPY --chown=user:user ./external/apache-prometheus-exporter/entrypoint.sh ./

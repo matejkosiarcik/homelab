@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: User unnecessary
-
 FROM python:3.13.7-slim AS supercronic-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
@@ -50,7 +48,7 @@ RUN apt-get update && \
 ARG UID
 ARG GID
 RUN groupadd -g $GID user && \
-    useradd -m -u $UID -g $GID user
+    useradd -l -m -u $UID -g $GID user
 USER user
 WORKDIR /homelab
 COPY --from=prefinal --chown=user:user /homelab/ ./
