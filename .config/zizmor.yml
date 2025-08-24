@@ -1,14 +1,6 @@
-# rules:
-#   unpinned-uses:
-#     ignore:
-#       - .github/workflows/dependabot-auto-merge.yml
-#       - .github/workflows/docker-build.yml
-#       - .github/workflows/lint.yml
-
-ignore:
-  - error: unpinned-uses
-    file: .github/workflows/dependabot-auto-merge.yml
-  - error: unpinned-uses
-    file: .github/workflows/docker-build.yml
-  - error: unpinned-uses
-    file: .github/workflows/lint.yml
+rules:
+  unpinned-uses:
+    ignore:
+      - .github/workflows/dependabot-auto-merge.yml
+      - .github/workflows/docker-build.yml
+      - .github/workflows/lint.yml
