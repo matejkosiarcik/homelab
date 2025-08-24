@@ -78,6 +78,7 @@ def load_full_env():
         "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "999",
         "DOCKER_COMPOSE_GID": str(os.getgid()) if env_mode == "prod" else "999",
     }
+    print(default_env_values)
     if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
         default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https?://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
 
