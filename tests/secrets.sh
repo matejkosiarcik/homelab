@@ -131,7 +131,8 @@ load_password() {
     printf 'GROCERIES_PROXY_STATUS_PASSWORD=%s\n' "$(load_password groceries apache status)"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password groceries apache prometheus)"
 
-    printf 'HEALTHCHECKS_ADMIN_PASSWORD=%s\n' "$(load_password healthchecks app admin)"
+    printf 'HEALTHCHECKS_MATEJ_PASSWORD=%s\n' "$(load_password healthchecks app matej)"
+    printf 'HEALTHCHECKS_TEST_PASSWORD=%s\n' "$(load_password healthchecks app test)"
     printf 'HEALTHCHECKS_API_KEY_READONLY=%s\n' "$(load_password healthchecks app api-key-readonly)"
     printf 'HEALTHCHECKS_API_KEY_READWRITE=%s\n' "$(load_password healthchecks app api-key-readwrite)"
     printf 'HEALTHCHECKS_PING_KEY=%s\n' "$(load_password healthchecks app ping-key)"

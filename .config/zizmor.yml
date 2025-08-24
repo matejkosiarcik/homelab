@@ -1,8 +1,6 @@
 rules:
   unpinned-uses:
     ignore:
-      - "*"
-
-ignore:
-  - error: unpinned-uses
-    file: "*"
+      - .github/workflows/dependabot-auto-merge.yml
+      - .github/workflows/docker-build.yml
+      - .github/workflows/lint.yml

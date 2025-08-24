@@ -100,11 +100,11 @@ test.describe(apps.healthchecks.title, () => {
                 });
             }
 
-            test(`UI: Successful login - User admin`, async ({ page }) => {
+            test(`UI: Successful login - User test`, async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(/\/accounts\/login\/?$/);
-                await page.locator('input[name="email"]').fill('admin@healthchecks.matejhome.com');
-                await page.locator('input[name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                await page.locator('input[name="email"]').fill('test@matejhome.com');
+                await page.locator('input[name="password"]').fill(getEnv(instance.url, 'TEST_PASSWORD'));
                 await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
                 await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
                 await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();

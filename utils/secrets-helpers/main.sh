@@ -562,13 +562,8 @@ case "$app_dirname" in
     ;;
 *healthchecks*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    if [ "$mode" = 'dev' ]; then
-        admin_email='admin@healthchecks.localhost'
-    else
-        admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
-    fi
-    printf '%s,%s\n' "$admin_email" "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
     secret_key="$(load_password "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
 
