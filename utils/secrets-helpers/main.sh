@@ -215,8 +215,8 @@ case "$app_dirname" in
     ;;
 *dawarich*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     printf 'api-key,%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" app api-key)" >>"$initial_output/all-credentials.csv"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
