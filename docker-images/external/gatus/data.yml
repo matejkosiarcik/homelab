@@ -276,7 +276,7 @@ apps:
     endpoints:
       - path: /stream
         authentication:
-          basic: user
+          basic: stream
 
   - name: NetAlertX
     domain: netalertx.matejhome.com

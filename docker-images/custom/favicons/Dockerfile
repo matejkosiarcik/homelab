@@ -18,10 +18,10 @@ RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         imagemagick && \
     rm -rf /var/lib/apt/lists/*
-ARG UID
-ARG GID
-RUN groupadd -g $GID user && \
-    useradd -l -m -u $UID -g $GID user
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user node ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user node )
 USER user
 WORKDIR /homelab
 COPY --from=prefinal --chown=user:user /homelab/node_modules ./node_modules
