@@ -1,4 +1,5 @@
 services:
+  # This template should only be used for services which need host network
   template_no_network:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER
     build:
@@ -20,6 +21,7 @@ services:
     tmpfs:
       - /tmp
 
+  # General purpose service template
   template:
     extends:
       service: template_no_network
@@ -40,6 +42,9 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
     build:
       dockerfile: ./custom/certificator/Dockerfile
+      args:
+        UID: ${DOCKER_COMPOSE_UID}
+        GID: ${DOCKER_COMPOSE_GID}
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
     volumes:
@@ -49,7 +54,7 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /homelab/.status
+      - /homelab/.status:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   apache:
     extends:
@@ -57,6 +62,9 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
     build:
       dockerfile: ./custom/apache/Dockerfile
+      args:
+        UID: ${DOCKER_COMPOSE_UID}
+        GID: ${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache:/homelab/logs:rw
@@ -66,9 +74,9 @@ services:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via socat instead
     tmpfs:
-      - /var/lock
-      - /var/log/apache2
-      - /var/run/apache2
+      - /var/lock:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/apache2:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/run/apache2:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   apache-prometheus-exporter:
     extends:
@@ -76,6 +84,9 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     build:
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
+      args:
+        UID: ${DOCKER_COMPOSE_UID}
+        GID: ${DOCKER_COMPOSE_GID}
     environment:
       APACHE_HOST: apache
     env_file:
@@ -110,6 +121,9 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
     build:
       dockerfile: ./custom/favicons/Dockerfile
+      args:
+        UID: ${DOCKER_COMPOSE_UID}
+        GID: ${DOCKER_COMPOSE_GID}
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
 

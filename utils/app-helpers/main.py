@@ -31,9 +31,6 @@ when_mode = ""
 docker_compose_args = []
 docker_command_args = []
 
-current_user = -1
-current_user_group = -1
-
 os.makedirs(path.dirname(log_file), exist_ok=True)
 
 log = logging.getLogger()
@@ -73,15 +70,16 @@ def load_full_env():
         "DOCKER_COMPOSE_APP_NAME": full_app_name,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
         "DOCKER_COMPOSE_APP_TYPE": full_app_name,
-        "DOCKER_COMPOSE_CURRENT_USER": str(os.getuid()),
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
         "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
         "DOCKER_COMPOSE_NETWORK_URL": f"https://{full_app_name}.matejhome.com" if env_mode == "prod" else "https://localhost:8443",
         "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
+        "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "999",
+        "DOCKER_COMPOSE_GID": str(os.getgid()) if env_mode == "prod" else "999",
     }
     if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
-        default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
+        default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https?://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
 
     # Remove old environment values
     for key in default_env_values:
@@ -221,7 +219,7 @@ def create_secrets():
 
 
 def run_main_command(command: str):
-    global current_user, current_user_group, docker_compose_args, docker_command_args  # pylint: disable=global-statement
+    global docker_compose_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml", "--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]]
     docker_command_args = ["--dry-run"] if is_dryrun else []
 
@@ -230,10 +228,6 @@ def run_main_command(command: str):
     if not path.isdir(compose_path):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
-
-    user_name = subprocess.check_output(["whoami"]).decode().strip()
-    current_user = int(subprocess.check_output(["id", "-u", user_name]).decode().strip())
-    current_user_group = int(subprocess.check_output(["id", "-g", user_name]).decode().strip())
 
     # Execute commands
     if command == "build":
