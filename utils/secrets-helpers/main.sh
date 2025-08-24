@@ -262,12 +262,13 @@ case "$app_dirname" in
     ;;
 *docker-stats*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password" users
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$prometheus_password" users
-    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
+    app_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$app_admin_password" users
+    printf 'admin,%s\n' "$app_admin_password" >>"$initial_output/all-credentials.csv"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user admin "$app_admin_password" prometheus
+    write_http_auth_user prometheus "$app_prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -711,13 +712,13 @@ case "$app_dirname" in
 *node-exporter*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
     app_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     write_http_auth_user admin "$app_admin_password" users
     write_http_auth_user admin "$app_admin_password" prometheus
     printf 'admin,%s\n' "$app_admin_password" >>"$initial_output/all-credentials.csv"
+    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$app_prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
