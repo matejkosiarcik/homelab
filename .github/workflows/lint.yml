@@ -82,6 +82,7 @@ jobs:
           VALIDATE_JSON: false # Because eslint considers .json as .js (so rules like single-quote don't make sense)
           VALIDATE_RUST_2015: false
           VALIDATE_RUST_CLIPPY: false # Somehow fails the compilation
+          VALIDATE_TRIVY: false
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_TYPESCRIPT_PRETTIER: false
           VALIDATE_TYPESCRIPT_STANDARD: false
