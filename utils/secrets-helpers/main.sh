@@ -344,7 +344,7 @@ case "$app_dirname" in
     printf 'OWNTRACKS_BACKEND_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
     printf 'SMTP4DEV_ADMIN_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$initial_output/app.env"
-    printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(load_token uptime-kuma app admin)" >>"$initial_output/app.env"
+    printf 'UPTIME_KUMA_MATEJ_PASSWORD=%s\n' "$(load_token uptime-kuma app matej)" >>"$initial_output/app.env"
     printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wikipedia app admin)" >>"$initial_output/app.env"
     printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wiktionary app admin)" >>"$initial_output/app.env"
     # Prometheus credentials
@@ -1116,8 +1116,7 @@ case "$app_dirname" in
     ;;
 *uptime-kuma*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

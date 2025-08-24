@@ -31,6 +31,9 @@ when_mode = ""
 docker_compose_args = []
 docker_command_args = []
 
+current_user = -1
+current_user_group = -1
+
 os.makedirs(path.dirname(log_file), exist_ok=True)
 
 log = logging.getLogger()
@@ -195,8 +198,12 @@ def docker_start():
 
     # Precreate all volumes - this ensures proper directory permissions
     for volume in volumes:
+        created = False
         if not path.exists(volume):
             os.makedirs(volume, exist_ok=True)
+            created = True
+        if created or volume.startswith(app_dir):
+            os.chown(volume, uid=current_user, gid=current_user_group)
             os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
@@ -212,7 +219,7 @@ def create_secrets():
 
 
 def run_main_command(command: str):
-    global docker_compose_args, docker_command_args  # pylint: disable=global-statement
+    global current_user, current_user_group, docker_compose_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml", "--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]]
     docker_command_args = ["--dry-run"] if is_dryrun else []
 
@@ -221,6 +228,10 @@ def run_main_command(command: str):
     if not path.isdir(compose_path):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
+
+    user_name = subprocess.check_output(["whoami"]).decode().strip()
+    current_user = int(subprocess.check_output(["id", "-u", user_name]).decode().strip())
+    current_user_group = int(subprocess.check_output(["id", "-g", user_name]).decode().strip())
 
     # Execute commands
     if command == "build":
