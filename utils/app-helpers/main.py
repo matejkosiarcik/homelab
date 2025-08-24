@@ -73,7 +73,6 @@ def load_full_env():
         "DOCKER_COMPOSE_APP_NAME": full_app_name,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
         "DOCKER_COMPOSE_APP_TYPE": full_app_name,
-        "DOCKER_COMPOSE_CURRENT_USER": str(os.getuid()),
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
         "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
