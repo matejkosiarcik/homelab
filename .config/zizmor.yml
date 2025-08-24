@@ -1,4 +1,6 @@
 rules:
   unpinned-uses:
     ignore:
-      - "*.yml"
+      - dependabot-auto-merge.yml
+      - docker-build.yml
+      - lint.yml
