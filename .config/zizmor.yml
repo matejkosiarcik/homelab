@@ -1,7 +1,7 @@
-# rules:
-#   unpinned-uses:
-#     ignore:
-#       - "*"
+rules:
+  unpinned-uses:
+    ignore:
+      - "*"
 
 ignore:
   - error: unpinned-uses
