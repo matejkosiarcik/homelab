@@ -16,8 +16,8 @@ test.describe(apps.dawarich.title, () => {
 
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(`${instance.url}/users/sign_in`);
-                await page.locator('input#user_email[type="email"]').fill('admin@dawarich.matejhome.com');
-                await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                await page.locator('input#user_email[type="email"]').fill('matej@matejhome.com');
+                await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, 'MATEJ_PASSWORD'));
                 await page.locator('input[type="submit"][value="Log in"]').click();
                 await expect(page).toHaveURL(`${instance.url}/map`);
                 await expect(page.locator('#map')).toBeVisible();
