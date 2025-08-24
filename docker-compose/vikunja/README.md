@@ -18,3 +18,4 @@
 
 - Create new users: _matej_, _test_
     - Command: `docker exec -it vikunja-app ./vikunja user create --email <user>@<domain> --username <user> --password <password>`
+- Create API key (readonly) and save in vaultwarden
