@@ -7,7 +7,6 @@ COPY ./custom/apache/www/ ./www/
 COPY ./custom/apache/entrypoint.sh ./
 
 FROM debian:13.0-slim
-WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         apache2 curl inotify-tools && \
@@ -15,10 +14,16 @@ RUN apt-get update -qq && \
     a2enmod auth_basic env headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     a2dismod -f alias && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
+ARG UID
+ARG GID
+RUN groupadd -g $GID user && \
+    useradd -m -u $UID -g $GID user
+# USER user
+WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
-COPY ./custom/apache/apache.conf /etc/apache2/sites-enabled/apache.conf
-COPY --from=prefinal /homelab/ ./
+COPY --chown=user:user ./custom/apache/apache.conf /etc/apache2/sites-enabled/apache.conf
+COPY --from=prefinal --chown=user:user /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=apache \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

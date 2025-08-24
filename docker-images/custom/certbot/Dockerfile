@@ -49,7 +49,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 ARG UID
 ARG GID
-RUN ( groupadd -g $GID user || true ) && \
+RUN groupadd -g $GID user && \
     useradd -m -u $UID -g $GID user
 USER user
 WORKDIR /homelab
