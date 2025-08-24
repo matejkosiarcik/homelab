@@ -229,9 +229,9 @@ def run_main_command(command: str):
         print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
 
-    user_name = subprocess.check_output(['whoami']).decode().strip()
-    current_user = int(subprocess.check_output(['id', '-u', user_name]).decode().strip())
-    current_user_group = int(subprocess.check_output(['id', '-g', user_name]).decode().strip())
+    user_name = subprocess.check_output(["whoami"]).decode().strip()
+    current_user = int(subprocess.check_output(["id", "-u", user_name]).decode().strip())
+    current_user_group = int(subprocess.check_output(["id", "-g", user_name]).decode().strip())
 
     # Execute commands
     if command == "build":
