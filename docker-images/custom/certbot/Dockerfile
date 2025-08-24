@@ -43,12 +43,17 @@ COPY --from=supercronic /homelab/ ./
 COPY ./custom/certbot/crontab.cron ./custom/certbot/main.sh ./custom/certbot/certbot-hook-after.sh ./custom/certbot/certbot-hook-before.sh ./
 
 FROM python:3.13.7-slim
-WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         ca-certificates certbot curl jq xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /homelab/ ./
+ARG UID
+ARG GID
+RUN ( groupadd -g $GID user || true ) && \
+    useradd -m -u $UID -g $GID user
+USER user
+WORKDIR /homelab
+COPY --from=prefinal --chown=user:user /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=certbot \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \

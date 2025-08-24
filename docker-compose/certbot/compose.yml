@@ -5,6 +5,9 @@ services:
       service: app
     build:
       dockerfile: ./custom/certbot/Dockerfile
+      args:
+        UID: ${DOCKER_COMPOSE_UID}
+        GID: ${DOCKER_COMPOSE_GID}
     env_file:
       - ./app-secrets/app.env
     volumes:
@@ -16,9 +19,9 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /etc/letsencrypt
-      - /homelab/.status
-      - /var/lib/letsencrypt
+      - /etc/letsencrypt:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/.status:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/lib/letsencrypt:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   apache:
     extends:
