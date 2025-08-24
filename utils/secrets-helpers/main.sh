@@ -1139,22 +1139,10 @@ case "$app_dirname" in
     # App
     superadmin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app superadmin)"
     superadmin_password_hashed="$(printf '%s' "$superadmin_password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4 | sed 's~\$~$$~g')"
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    if [ "$mode" = 'dev' ]; then
-        admin_email='admin@vaultwarden.localhost'
-    else
-        admin_email="admin@$DOCKER_COMPOSE_NETWORK_DOMAIN"
-    fi
-    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)"
-    if [ "$mode" = 'dev' ]; then
-        user_email='user@vaultwarden.localhost'
-    else
-        user_email="user@$DOCKER_COMPOSE_NETWORK_DOMAIN"
-    fi
     printf 'ADMIN_TOKEN=%s\n' "$superadmin_password_hashed" >>"$initial_output/app.env"
     printf 'superadmin,%s\n' "$superadmin_password" >>"$initial_output/all-credentials.csv"
-    printf '%s,%s\n' "$admin_email" "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf '%s,%s\n' "$user_email" "$user_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
