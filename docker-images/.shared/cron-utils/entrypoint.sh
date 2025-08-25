@@ -9,7 +9,7 @@ export CRON
 
 # Run script initially
 if [ "${HOMELAB_CRON_SKIP_INITIAL-}" != '1' ]; then
-    timeout 5m sh /homelab/main.sh
+    timeout "${HOMELAB_CRON_INITIAL_TIMEOUT-5m}" sh /homelab/main.sh
 fi
 
 # Run cron indefinitely
