@@ -1,6 +1,9 @@
 #!/bin/sh
 set -euf
 
+mkdir -p /homelab/logs
+touch /homelab/logs/generic-access.log /homelab/logs/generic-error.log /homelab/logs/http-access.log /homelab/logs/http-error.log /homelab/logs/https-access.log /homelab/logs/https-error.log
+
 # Set HOMELAB_ENV
 if [ "${HOMELAB_ENV-x}" = 'x' ]; then
     printf 'HOMELAB_ENV unset\n' >&2
