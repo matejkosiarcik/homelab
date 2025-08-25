@@ -1001,6 +1001,8 @@ case "$app_dirname" in
     github_token="$(load_token "$DOCKER_COMPOSE_APP_NAME" app github-token)"     # GitHub PAT (even if using other git hosts)
     printf 'RENOVATE_TOKEN=%s\n' "$renovate_token" >>"$initial_output/app.env"
     printf 'GITHUB_COM_TOKEN=%s\n' "$github_token" >>"$initial_output/app.env"
+    printf 'renovate-token,%s\n' "$renovate_token" >>"$initial_output/all-credentials.csv"
+    printf 'github-token,%s\n' "$github_token" >>"$initial_output/all-credentials.csv"
     ;;
 *samba*)
     # App
