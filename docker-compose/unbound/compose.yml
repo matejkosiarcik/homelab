@@ -12,7 +12,7 @@ services:
     tmpfs:
       - /run:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     cap_add:
-      - NET_BIND_SERVICE
+      - CAP_NET_BIND_SERVICE
 
   app-prometheus-exporter:
     extends:
