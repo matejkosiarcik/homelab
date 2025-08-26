@@ -23,9 +23,9 @@ services:
       external-network: {}
     stop_grace_period: 30s
     tmpfs:
-      - /run:rw,exec
-      - /var/log/pihole:rw
-      - /var/spool:rw
+      - /run:rw,exec # TODO: Set uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/pihole:rw # TODO: Set uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/spool:rw # TODO: Set uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   app-setup:
     extends:
