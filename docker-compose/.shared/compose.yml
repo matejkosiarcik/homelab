@@ -23,6 +23,8 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 1
 
   # General purpose service template
   template:
