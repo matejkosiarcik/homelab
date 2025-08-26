@@ -8,13 +8,15 @@ RUN apt-get update && \
 ARG UID=999
 ARG GID=999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
-    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
-USER user
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
+    mkdir -p /homelab && \
+    chown -R user:user /homelab
 WORKDIR /homelab
 COPY --chown=user:user ./external/unbound/entrypoint.sh ./entrypoint.sh
 COPY --chown=user:user ./external/unbound/config ./config
 ENV HOMELAB_CONTAINER_NAME=unbound \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
+USER user
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "dig @$UNBOUND_HOST +short placeholder.matejhome.com || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

@@ -43,13 +43,15 @@ RUN apt-get update && \
 ARG UID=999
 ARG GID=999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
-    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
-USER user
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
+    mkdir -p /homelab && \
+    chown -R user:user /homelab
 WORKDIR /homelab
 COPY --from=prefinal --chown=user:user /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=unbound-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
+USER user
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:9167/metrics || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
