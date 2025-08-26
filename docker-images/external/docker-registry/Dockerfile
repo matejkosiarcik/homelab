@@ -1,10 +1,11 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM registry:3.0.0
+RUN apk add --no-cache shadow
 ARG UID=999
 ARG GID=999
-RUN addgroup -g "$GID" user || (delgroup "$(getent group "$GID" | cut -d: -f1)" && addgroup -g "$GID" user) && \
-    adduser -D -u "$UID" -G user user || (deluser "$(getent passwd "$UID" | cut -d: -f1)" && adduser -D -u "$UID" -G user user) && \
+RUN ( addgroup -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( adduser -D -u "$UID" -G user user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     mkdir -p /homelab && \
     chown -R user:user /homelab
 USER user
