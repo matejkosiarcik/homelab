@@ -5,6 +5,9 @@ services:
     build:
       context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
       dockerfile: ./external/PLACEHOLDER/Dockerfile
+      args:
+        UID: ${DOCKER_COMPOSE_UID}
+        GID: ${DOCKER_COMPOSE_GID}
     init: true
     environment:
       HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
@@ -42,9 +45,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
     build:
       dockerfile: ./custom/certificator/Dockerfile
-      args:
-        UID: ${DOCKER_COMPOSE_UID}
-        GID: ${DOCKER_COMPOSE_GID}
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
     volumes:
@@ -62,9 +62,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
     build:
       dockerfile: ./custom/apache/Dockerfile
-      args:
-        UID: ${DOCKER_COMPOSE_UID}
-        GID: ${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache:/homelab/logs:rw
@@ -84,9 +81,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     build:
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
-      args:
-        UID: ${DOCKER_COMPOSE_UID}
-        GID: ${DOCKER_COMPOSE_GID}
     environment:
       APACHE_HOST: apache
     env_file:

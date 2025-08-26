@@ -5,9 +5,6 @@ services:
       service: app
     build:
       dockerfile: ./custom/certbot/Dockerfile
-      args:
-        UID: ${DOCKER_COMPOSE_UID}
-        GID: ${DOCKER_COMPOSE_GID}
     env_file:
       - ./app-secrets/app.env
     volumes:
