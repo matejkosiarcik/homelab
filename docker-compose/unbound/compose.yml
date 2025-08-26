@@ -11,6 +11,8 @@ services:
       - ./app-logs/unbound:/homelab/logs:rw
     tmpfs:
       - /run:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    security_opt:
+      - no-new-privileges:false
 
   app-prometheus-exporter:
     extends:
