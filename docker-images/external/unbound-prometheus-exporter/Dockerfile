@@ -36,12 +36,17 @@ COPY ./external/unbound-prometheus-exporter/entrypoint.sh ./entrypoint.sh
 COPY --from=build /homelab/unbound_exporter/unbound_exporter ./bin/
 
 FROM debian:13.0-slim
-WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /homelab/ ./
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+USER user
+WORKDIR /homelab
+COPY --from=prefinal --chown=user:user /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=unbound-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
