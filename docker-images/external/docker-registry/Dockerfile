@@ -1,7 +1,14 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM registry:3.0.0
-COPY ./external/docker-registry/config.yml /etc/distribution/config.yml
+ARG UID=999
+ARG GID=999
+RUN addgroup -g "$GID" user || (delgroup $(getent group "$GID" | cut -d: -f1) && addgroup -g "$GID" user) && \
+    adduser -D -u "$UID" -G user user || (deluser $(getent passwd "$UID" | cut -d: -f1) && adduser -D -u "$UID" -G user user) && \
+    mkdir -p /homelab && \
+    chown -R user:user /homelab
+USER user
+COPY --chown=user:user ./external/docker-registry/config.yml /etc/distribution/config.yml
 ENV HOMELAB_CONTAINER_NAME=docker-registry \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
