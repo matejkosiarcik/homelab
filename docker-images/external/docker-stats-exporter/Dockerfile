@@ -3,8 +3,8 @@
 FROM wywywywy/docker_stats_exporter:20220516
 ARG UID=999
 ARG GID=999
-RUN addgroup -g "$GID" user || (delgroup $(getent group "$GID" | cut -d: -f1) && addgroup -g "$GID" user) && \
-    adduser -D -u "$UID" -G user user || (deluser $(getent passwd "$UID" | cut -d: -f1) && adduser -D -u "$UID" -G user user) && \
+RUN addgroup -g "$GID" user || (delgroup "$(getent group "$GID" | cut -d: -f1)" && addgroup -g "$GID" user) && \
+    adduser -D -u "$UID" -G user user || (deluser "$(getent passwd "$UID" | cut -d: -f1)" && adduser -D -u "$UID" -G user user) && \
     mkdir -p /homelab && \
     chown -R user:user /homelab
 USER user
