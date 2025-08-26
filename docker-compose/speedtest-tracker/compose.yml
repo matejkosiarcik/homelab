@@ -14,17 +14,17 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /app/www/bootstrap/cache
-      - /app/www/database
-      - /app/www/storage
-      - /app/www/storage/framework
-      - /app/www/storage/framework/cache
-      - /app/www/storage/framework/sessions
-      - /app/www/storage/framework/testing
-      - /app/www/storage/framework/views
-      - /app/www/storage/logs
-      - /run:exec
-      - /var/log/nginx
+      - /app/www/bootstrap/cache:rw
+      - /app/www/database:rw
+      - /app/www/storage:rw
+      - /app/www/storage/framework:rw
+      - /app/www/storage/framework/cache:rw
+      - /app/www/storage/framework/sessions:rw
+      - /app/www/storage/framework/testing:rw
+      - /app/www/storage/framework/views:rw
+      - /app/www/storage/logs:rw
+      - /run:rw,exec
+      - /var/log/nginx:rw
 
   certificator:
     extends:

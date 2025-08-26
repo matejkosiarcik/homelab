@@ -15,12 +15,12 @@ services:
       external-network: {}
     read_only: false # TODO: Fix
     tmpfs:
-      - /app
-      - /cache
-      - /data
-      - /defaults
-      - /run:exec
-      - /transcode
+      - /app:rw
+      - /cache:rw
+      - /data:rw
+      - /defaults:rw
+      - /run:rw,exec
+      - /transcode:rw
 
   app-setup:
     extends:

@@ -13,7 +13,7 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /homelab/config
+      - /homelab/config:rw
 
   certificator:
     extends:

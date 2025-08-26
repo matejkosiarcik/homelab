@@ -21,8 +21,8 @@ services:
     env_file:
       - ./app-secrets/app-setup.env
     tmpfs:
-      - /homelab/.status
-      - /root/.mc
+      - /homelab/.status:rw
+      - /root/.mc:rw
 
   certificator:
     extends:

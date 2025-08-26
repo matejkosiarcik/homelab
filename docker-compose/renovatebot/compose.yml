@@ -15,7 +15,7 @@ services:
     volumes:
       - ./app-logs/renovatebot:/homelab/logs:rw
     tmpfs:
-      - /homelab/.status
+      - /homelab/.status:rw
 
 networks:
   default:

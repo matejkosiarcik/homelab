@@ -20,8 +20,8 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 ARG UID=999
 ARG GID=999
-RUN ( groupadd -g "$GID" user || groupmod --new-name user node ) && \
-    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user node )
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
 USER user
 WORKDIR /homelab
 COPY --from=prefinal --chown=user:user /homelab/node_modules ./node_modules

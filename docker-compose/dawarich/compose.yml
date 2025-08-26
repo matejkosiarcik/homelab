@@ -15,9 +15,9 @@ services:
     env_file:
       - ./app-secrets/app.env
     tmpfs:
-      - /root/.cache/gem
-      - /var/app/db
-      - /var/app/tmp
+      - /root/.cache/gem:rw
+      - /var/app/db:rw
+      - /var/app/tmp:rw
 
   sidekiq:
     extends:
@@ -42,8 +42,8 @@ services:
       start_period: 60s
       timeout: 5s
     tmpfs:
-      - /root/.cache/gem
-      - /var/app/tmp
+      - /root/.cache/gem:rw
+      - /var/app/tmp:rw
 
   redis:
     extends:
@@ -71,7 +71,7 @@ services:
     env_file:
       - ./app-secrets/postgis.env
     tmpfs:
-      - /var/run
+      - /var/run:rw
 
   decryptor:
     extends:

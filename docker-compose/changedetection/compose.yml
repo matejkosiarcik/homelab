@@ -23,8 +23,8 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /home/chrome
-      - /homelab/chrome-user-data
+      - /home/chrome:rw
+      - /homelab/chrome-user-data:rw
 
   certificator:
     extends:

@@ -15,13 +15,18 @@ COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
 
 FROM node:24.6.0-slim
-WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         imagemagick && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /homelab/node_modules ./node_modules
-COPY --from=prefinal /homelab/ ./
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+USER user
+WORKDIR /homelab
+COPY --from=prefinal --chown=user:user /homelab/node_modules ./node_modules
+COPY --from=prefinal --chown=user:user /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=owntracks-decryptor \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
