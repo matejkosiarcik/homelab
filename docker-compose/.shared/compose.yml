@@ -19,7 +19,7 @@ services:
       - no-new-privileges:true
     read_only: true
     tmpfs:
-      - /tmp
+      - /tmp:rw
 
   # General purpose service template
   template:
@@ -101,7 +101,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     tmpfs:
-      - /run
+      - /run:rw
 
   docker-app-setup:
     extends:
@@ -113,7 +113,7 @@ services:
       DOCKER_HOST: tcp://socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
     tmpfs:
-      - /homelab/.status
+      - /homelab/.status:rw
 
   favicons:
     extends:

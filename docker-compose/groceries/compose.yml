@@ -17,8 +17,8 @@ services:
       GROCERY_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
       SMTP_FROM: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
     tmpfs:
-      - /run
-      - /var/cache/nginx
+      - /run:rw
+      - /var/cache/nginx:rw
 
   app-frontend:
     extends:
@@ -30,9 +30,9 @@ services:
     environment:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
     tmpfs:
-      - /run
-      - /usr/share/nginx/html:exec
-      - /var/cache/nginx
+      - /run:rw
+      - /usr/share/nginx/html:exec:rw
+      - /var/cache/nginx:rw
 
   couchdb:
     extends:
@@ -47,7 +47,7 @@ services:
     volumes:
       - ./app-data/couchdb-data:/opt/couchdb/data:rw
     tmpfs:
-      - /opt/couchdb/etc/local.d
+      - /opt/couchdb/etc/local.d:rw
 
   certificator:
     extends:

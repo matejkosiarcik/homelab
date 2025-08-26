@@ -28,7 +28,7 @@ services:
       GLANCES_OPT: "--export prometheus --config /homelab/glances.conf"
       DOCKER_HOST: tcp://socket-proxy:2375
     tmpfs:
-      - /root/.cache
+      - /root/.cache:rw
 
   socket-proxy:
     extends:

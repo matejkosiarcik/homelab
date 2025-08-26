@@ -16,11 +16,11 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /homelab/config/out
-      - /run
-      - /var/cache/samba
-      - /var/lib/samba
-      - /var/lib/samba/private
+      - /homelab/config/out:rw
+      - /run:rw
+      - /var/cache/samba:rw
+      - /var/lib/samba:rw
+      - /var/lib/samba/private:rw
 
   certificator:
     extends:

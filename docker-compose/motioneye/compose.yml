@@ -10,8 +10,8 @@ services:
       - ./app-data/motioneye-etc:/etc/motioneye:rw
       - ./app-data/motioneye-lib:/var/lib/motioneye:rw
     tmpfs:
-      - /run
-      - /var/log/motioneye
+      - /run:rw
+      - /var/log/motioneye:rw
 
   certificator:
     extends:

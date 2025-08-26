@@ -10,7 +10,7 @@ services:
       - ./app-data/unbound-sock:/homelab/sock:rw
       - ./app-logs/unbound:/homelab/logs:rw
     tmpfs:
-      - /run
+      - /run:rw
 
   app-prometheus-exporter:
     extends:
