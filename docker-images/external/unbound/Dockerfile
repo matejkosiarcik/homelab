@@ -3,8 +3,9 @@
 FROM debian:13.0-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        dnsutils unbound >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
+        dnsutils libcap2-bin unbound >/dev/null && \
+    rm -rf /var/lib/apt/lists/* && \
+    setcap 'cap_net_bind_service=+ep' /usr/sbin/unbound
 ARG UID=999
 ARG GID=999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \

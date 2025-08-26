@@ -23,8 +23,6 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw
-    sysctls:
-      net.ipv4.ip_unprivileged_port_start: 1
 
   # General purpose service template
   template:
@@ -33,7 +31,7 @@ services:
     networks:
       internal-network: {}
     sysctls:
-      net.ipv4.ip_unprivileged_port_start: 1
+      net.ipv4.ip_unprivileged_port_start: 0
       net.ipv6.conf.all.disable_ipv6: 1
     userns_mode: host # TODO: Remove this
 
