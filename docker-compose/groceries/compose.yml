@@ -31,7 +31,7 @@ services:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
     tmpfs:
       - /run:rw
-      - /usr/share/nginx/html:rw,exex
+      - /usr/share/nginx/html:rw,exec
       - /var/cache/nginx:rw
 
   couchdb:
