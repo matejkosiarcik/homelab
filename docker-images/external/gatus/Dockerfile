@@ -51,14 +51,29 @@ WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/config.yml
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 
-FROM twinproduction/gatus:v5.23.2
-COPY --from=prefinal /homelab/healthcheck /homelab/healthcheck
-COPY --from=prefinal /homelab/config.yml /config/config.yaml
+FROM twinproduction/gatus:v5.23.2 AS gatus
+
+FROM debian:13.0-slim
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        ca-certificates >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
+    mkdir -p /homelab && \
+    chown -R user:user /homelab
+COPY --from=prefinal --chown=user:user /homelab/healthcheck /homelab/healthcheck
+COPY --from=prefinal --chown=user:user /homelab/config.yml /config/config.yaml
+COPY --from=gatus --chown=user:user /gatus /gatus
 ENV GATUS_DELAY_START_SECONDS=0 \
     HOMELAB_CONTAINER_NAME=gatus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
+USER user
 
 # There isn't a way to do a real healthcheck inside this container, see: https://github.com/TwiN/gatus/issues/711
 # So instead we just "fake" it and provide a dummy placeholder healthcheck program
 HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/healthcheck" ]
+ENTRYPOINT [ "/gatus" ]
