@@ -3,7 +3,7 @@ FROM prom/node-exporter:v1.9.1 AS node-exporter
 FROM debian:13.0-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        ca-certificates >/dev/null && \
+        ca-certificates wget >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 ARG UID=999
 ARG GID=999
