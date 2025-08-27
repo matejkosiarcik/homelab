@@ -54,9 +54,9 @@ COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 FROM twinproduction/gatus:v5.23.2 AS gatus
 
 FROM debian:13.0-slim
-RUN apt-get update -qq && \
+RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
-        ca-certificates >/dev/null && \
+        ca-certificates libcap2-bin >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 ARG UID=999
 ARG GID=999
@@ -64,12 +64,16 @@ RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID"
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     mkdir -p /homelab && \
     chown -R user:user /homelab
+COPY --from=gatus --chown=user:user /gatus /gatus
+RUN setcap 'cap_net_raw+ep' /gatus
 COPY --from=prefinal --chown=user:user /homelab/healthcheck /homelab/healthcheck
 COPY --from=prefinal --chown=user:user /homelab/config.yml /config/config.yaml
-COPY --from=gatus --chown=user:user /gatus /gatus
-ENV GATUS_DELAY_START_SECONDS=0 \
+ENV GATUS_CONFIG_PATH="" \
+    GATUS_DELAY_START_SECONDS=0 \
+    GATUS_LOG_LEVEL=INFO \
     HOMELAB_CONTAINER_NAME=gatus \
     HOMELAB_CONTAINER_VARIANT=default \
+    PORT=8080 \
     TZ=Europe/Bratislava
 USER user
 
