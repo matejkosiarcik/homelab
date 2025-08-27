@@ -12,6 +12,7 @@ RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID"
     mkdir -p /homelab && \
     chown -R user:user /homelab
 COPY --from=dozzle --chown=user:user /dozzle /dozzle
+COPY --from=dozzle --chown=user:user /data /data
 ENV DOZZLE_AUTH_PROVIDER=simple \
     DOZZLE_HOSTNAME=Server \
     DOZZLE_ENABLE_ACTIONS=false \
