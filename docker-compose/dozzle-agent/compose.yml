@@ -19,6 +19,8 @@ services:
         condition: service_started
     networks:
       external-network: {}
+    tmpfs:
+      - /data:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   socket-proxy:
     extends:
