@@ -13,6 +13,8 @@ services:
       internal-network: {}
       external-network: {}
     stop_grace_period: 30s
+    security_opt:
+      - no-new-privileges:false # Must be unset to allow ICMP monitoring
 
   certificator:
     extends:
