@@ -1,9 +1,13 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM ghcr.io/kiwix/kiwix-serve:3.7.0
-COPY ./external/kiwix/entrypoint.sh /homelab/entrypoint.sh
+RUN apk add --no-cache shadow
+ARG UID=999
+ARG GID=999
+RUN ( addgroup -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( adduser -D -u "$UID" -G user user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+COPY --chown=user:user ./external/kiwix/entrypoint.sh /homelab/entrypoint.sh
 ENV HOMELAB_CONTAINER_NAME=kiwix \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost:8080 || exit 1" ]
+ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+USER user
