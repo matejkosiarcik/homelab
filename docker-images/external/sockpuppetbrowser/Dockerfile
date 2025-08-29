@@ -1,5 +1,4 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
-# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
 FROM dgtlmoon/sockpuppetbrowser:0.0.3
 ENV ALLOW_CDP_LOG=no \
