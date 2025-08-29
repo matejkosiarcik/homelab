@@ -1,7 +1,10 @@
-FROM bitnami/apache-exporter:1.0.10
+FROM debian:13.0-slim
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        prometheus-apache-exporter curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
 ARG UID=999
 ARG GID=999
-USER root
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     mkdir -p /homelab && \
@@ -13,4 +16,4 @@ ENV HOMELAB_CONTAINER_NAME=apache-prometheus-exporter \
     TZ=Europe/Bratislava
 USER user
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/9117' || exit 1"  ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:9117/metrics || exit 1" ]
