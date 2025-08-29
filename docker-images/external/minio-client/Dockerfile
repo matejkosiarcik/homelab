@@ -36,15 +36,22 @@ COPY --from=minio-mc-build /homelab/minio-mc/mc ./bin/
 COPY ./external/minio-client/entrypoint.sh ./external/minio-client/main.sh ./external/minio-client/plain-buckets.txt ./external/minio-client/versioned-buckets.txt ./
 
 FROM debian:13.0-slim
+ARG UID=999
+ARG GID=999
+RUN mkdir -p /homelab && \
+    ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
+    chown -R user:user /homelab
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /homelab/ ./
+COPY --from=prefinal --chown=user:user /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=certificator \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.status/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+USER user
