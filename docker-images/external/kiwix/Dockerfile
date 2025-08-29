@@ -1,5 +1,6 @@
 FROM ghcr.io/kiwix/kiwix-serve:3.7.0
-RUN apk add --no-cache shadow
+RUN apk update --no-cache && \
+    apk add --no-cache shadow
 ARG UID=999
 ARG GID=999
 RUN ( addgroup -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
