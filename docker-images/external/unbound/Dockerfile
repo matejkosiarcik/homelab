@@ -4,8 +4,8 @@ RUN apt-get update && \
         dnsutils libcap2-bin unbound >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     setcap 'cap_net_bind_service=+ep' "$(which unbound)"
-ARG UID=999
-ARG GID=999
+ARG UID=1999
+ARG GID=1999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     mkdir -p /homelab && \

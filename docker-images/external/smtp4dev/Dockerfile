@@ -1,6 +1,6 @@
 FROM rnwood/smtp4dev:3.8.6
-ARG UID=999
-ARG GID=999
+ARG UID=1999
+ARG GID=1999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
 COPY --chown=user:user ./external/smtp4dev/icons/favicon.ico ./external/smtp4dev/icons/favicon.png /app/wwwroot/
