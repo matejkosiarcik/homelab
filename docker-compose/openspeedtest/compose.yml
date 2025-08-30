@@ -5,16 +5,13 @@ services:
       service: app
     build:
       dockerfile: ./external/openspeedtest/Dockerfile
-    environment:
-      ENABLE_LETSENCRYPT: "False"
-      PUID: "1000"
-      PGID: "1000"
     tmpfs:
-      - /var/cache/nginx/client_temp:rw
-      - /var/cache/nginx/fastcgi_temp:rw
-      - /var/cache/nginx/proxy_temp:rw
-      - /var/cache/nginx/scgi_temp:rw
-      - /var/cache/nginx/uwsgi_temp:rw
+      - /etc/nginx/conf.d:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/client_temp:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/fastcgi_temp:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/proxy_temp:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/scgi_temp:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/uwsgi_temp:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:
