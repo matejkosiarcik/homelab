@@ -93,3 +93,7 @@ app.use('/prometheus', async (request: Request, response: Response) => {
 app.listen(8080, () => {
     console.log('Server started.');
 });
+
+process.on('SIGTERM', () => {
+    process.exit(0);
+});

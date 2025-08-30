@@ -101,3 +101,7 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
 app.listen(8080, () => {
     console.log('Server started.');
 });
+
+process.on('SIGTERM', () => {
+    process.exit(0);
+});

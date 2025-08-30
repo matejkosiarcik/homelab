@@ -293,3 +293,7 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
 app.listen(8080, () => {
     console.log('Server started.');
 });
+
+process.on('SIGTERM', () => {
+    process.exit(0);
+});
