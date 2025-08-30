@@ -96,7 +96,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     tmpfs:
-      - /run:rw
+      - /run:rw # TODO: Set uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   docker-app-setup:
     extends:
