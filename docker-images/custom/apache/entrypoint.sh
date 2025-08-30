@@ -249,6 +249,13 @@ EOF
 # Watch certificates in background
 inotifywait --monitor --event modify --format '%w%f' --include 'fullchain\.pem' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
 
+# Graceful shutdown
+trap 'apachectl -k stop; exit 0' TERM
+
 # Start apache
 printf 'Starting Apache\n' >&2
-apachectl -D FOREGROUND
+apachectl -D FOREGROUND &
+apache_pid="$!"
+
+# Wait for apache process to exit
+wait "$apache_pid"

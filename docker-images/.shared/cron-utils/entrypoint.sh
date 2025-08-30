@@ -29,4 +29,10 @@ if [ ! -e "$cronfile" ]; then
     exit 1
 fi
 
-supercronic "$cronfile"
+# Prepare Graceful shutdown
+trap 'exit 0' TERM
+
+# Start cron
+supercronic "$cronfile" &
+supercronic_pid="$!"
+wait "$supercronic_pid"
