@@ -1,7 +1,9 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM mongo:8.0.13
-COPY ./external/mongodb/healthcheck.sh /homelab/
+ARG UID=1999
+ARG GID=1999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+COPY --chown=user:user ./external/mongodb/healthcheck.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=mongodb \
     HOMELAB_CONTAINER_VARIANT=default \
     MONGO_DBNAME=database \
@@ -11,3 +13,4 @@ ENV HOMELAB_CONTAINER_NAME=mongodb \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "/homelab/healthcheck.sh" ]
 CMD [ "--auth", "--quiet", "--logpath", "/dev/null" ]
+USER user
