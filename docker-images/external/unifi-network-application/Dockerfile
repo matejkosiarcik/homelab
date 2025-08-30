@@ -30,5 +30,4 @@ ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     PUID=$UID
 # checkov:skip=CKV_SECRET_6: false positive in timezone
 ENV TZ=Europe/Bratislava
-
 HEALTHCHECK --interval=10s --start-period=360s --timeout=2s --retries=1 CMD [ "sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && if [ \"$(curl --insecure https://localhost:$https_port/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]

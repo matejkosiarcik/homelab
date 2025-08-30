@@ -1,12 +1,11 @@
+# checkov:skip=CKV_DOCKER_3: USER can't be set directly, but it should be used after container initialized
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
 FROM mbentley/omada-controller:5.15
 ARG UID=1999
 ARG GID=1999
 RUN ( groupadd -g "$GID" omada || groupmod --new-name omada "$(getent group "$GID" | cut -d: -f1)" ) && \
-    ( useradd -l -m -u "$UID" -g "$GID" omada || usermod --login omada "$(getent passwd "$UID" | cut -d: -f1)" ) && \
-    mkdir -p /homelab && \
-    chown -R omada:omada /homelab
+    ( useradd -l -m -u "$UID" -g "$GID" omada || usermod --login omada "$(getent passwd "$UID" | cut -d: -f1)" )
 ENV HOMELAB_CONTAINER_NAME=omada-controller \
     HOMELAB_CONTAINER_VARIANT=default \
     PUID=$UID \
