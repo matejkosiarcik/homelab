@@ -13,18 +13,19 @@ services:
     networks:
       internal-network: {}
       external-network: {}
-    tmpfs:
-      - /app/www/bootstrap/cache:rw
-      - /app/www/database:rw
-      - /app/www/storage:rw
-      - /app/www/storage/framework:rw
-      - /app/www/storage/framework/cache:rw
-      - /app/www/storage/framework/sessions:rw
-      - /app/www/storage/framework/testing:rw
-      - /app/www/storage/framework/views:rw
-      - /app/www/storage/logs:rw
-      - /run:rw,exec
-      - /var/log/nginx:rw
+    # tmpfs:
+    #   - /app/www/bootstrap/cache:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/database:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/storage:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/storage/framework:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/storage/framework/cache:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/storage/framework/sessions:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/storage/framework/testing:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/storage/framework/views:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /app/www/storage/logs:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /run:rw,exec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    #   - /var/log/nginx:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    read_only: false
 
   certificator:
     extends:
