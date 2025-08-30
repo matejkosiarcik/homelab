@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./external/ollama/Dockerfile
     volumes:
-      - ./app-data/ollama:/root/.ollama:rw
+      - ./app-data/ollama:/home/user/.ollama:rw
 
   certificator:
     extends:
