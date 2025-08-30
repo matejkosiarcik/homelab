@@ -3,8 +3,8 @@
 FROM binwiederhier/ntfy:v2.14.0
 RUN apk update --no-cache && \
     apk add --no-cache shadow
-ARG UID=999
-ARG GID=999
+ARG UID=1999
+ARG GID=1999
 RUN ( addgroup -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( adduser -D -u "$UID" -G user user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     mkdir -p /homelab && \

@@ -54,8 +54,8 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         ca-certificates libcap2-bin >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-ARG UID=999
-ARG GID=999
+ARG UID=1999
+ARG GID=1999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     mkdir -p /homelab && \

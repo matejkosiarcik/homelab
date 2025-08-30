@@ -70,8 +70,8 @@ COPY ./custom/web-automation/main.sh ./
 COPY ./custom/web-automation/crontab-home-assistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
 
 FROM node:24.7.0-slim
-ARG UID=999
-ARG GID=999
+ARG UID=1999
+ARG GID=1999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     mkdir -p /homelab && \
