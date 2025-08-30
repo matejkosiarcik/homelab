@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_3: USER can't be set directly, because of the way linuxserver.io image works, but it should be active anyway because we set PUID/PGID
 
 FROM linuxserver/unifi-network-application:9.3.45
 RUN ln -s /config/data /usr/lib/unifi/data && \
@@ -7,7 +7,12 @@ RUN ln -s /config/data /usr/lib/unifi/data && \
     mkdir -p /homelab/defaults && \
     find /defaults -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/defaults/$(basename "$1")" "/homelab/defaults/$(basename "$1")"' - {} \; && \
     rm -rf /defaults
-COPY ./external/unifi-network-application/docker-entrypoint-extra.sh /homelab/
+ARG UID=1999
+ARG GID=1999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
+    chown -R user:user /config /usr/lib/unifi
+COPY --chown=user:user ./external/unifi-network-application/docker-entrypoint-extra.sh /homelab/
 RUN head -n 1 /init >/homelab/docker-entrypoint-shebang.sh && \
     tail -n +2 /init >/homelab/docker-entrypoint-without-shebang.sh && \
     cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/init
@@ -21,8 +26,8 @@ ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     MONGO_PORT=27017 \
     MONGO_TLS= \
     MONGO_USER=unifi \
-    PGID=1000 \
-    PUID=1000
+    PGID=$GID \
+    PUID=$UID
 # checkov:skip=CKV_SECRET_6: false positive in timezone
 ENV TZ=Europe/Bratislava
 
