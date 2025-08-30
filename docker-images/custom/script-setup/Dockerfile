@@ -12,7 +12,7 @@ RUN apt-get update -qq && \
 #     mkdir -p /homelab && \
 #     chown -R user:user /homelab
 WORKDIR /homelab
- # TODO: Set --chown=user:user
+# TODO: Set --chown=user:user
 COPY ./custom/script-setup/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=script-setup \
     HOMELAB_CONTAINER_VARIANT=default \
