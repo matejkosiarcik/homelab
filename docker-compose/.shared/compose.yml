@@ -108,7 +108,7 @@ services:
       DOCKER_HOST: tcp://socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
     tmpfs:
-      - /homelab/.status:rw
+      - /homelab/.status:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   favicons:
     extends:
