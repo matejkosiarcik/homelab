@@ -17,8 +17,8 @@ services:
       GROCERY_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
       SMTP_FROM: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
     tmpfs:
-      - /run:rw
-      - /var/cache/nginx:rw
+      - /run:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   app-frontend:
     extends:
@@ -30,9 +30,9 @@ services:
     environment:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
     tmpfs:
-      - /run:rw
-      - /usr/share/nginx/html:rw,exec
-      - /var/cache/nginx:rw
+      - /run:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /usr/share/nginx/html:rw,exec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   couchdb:
     extends:
@@ -47,7 +47,7 @@ services:
     volumes:
       - ./app-data/couchdb-data:/opt/couchdb/data:rw
     tmpfs:
-      - /opt/couchdb/etc/local.d:rw
+      - /opt/couchdb/etc/local.d:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

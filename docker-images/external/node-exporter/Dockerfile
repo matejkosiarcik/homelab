@@ -15,7 +15,7 @@ COPY --from=node-exporter --chown=user:user /bin/node_exporter /bin/node_exporte
 ENV HOMELAB_CONTAINER_NAME=node_exporter \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-USER user
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost:9100 || exit 1" ]
 ENTRYPOINT [ "/bin/node_exporter" ]
 CMD [ "--path.rootfs=/host" ]
+USER user

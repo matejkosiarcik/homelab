@@ -1,6 +1,17 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM freikin/dawarich:0.30.12
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
+    mkdir -p /homelab && \
+    chown -R user:user /homelab && \
+    gem install foreman && \
+    cp -R /var/app/db /var/app/db2 && \
+    rm -rf /var/app/db && \
+    chown -R user:user /var/app
+COPY --chown=user:user ./external/dawarich/entrypoint.sh /homelab/
 ENV APPLICATION_PROTOCOL=http \
     BACKGROUND_PROCESSING_CONCURRENCY=10 \
     DATABASE_HOST=postgis \
@@ -19,10 +30,7 @@ ENV APPLICATION_PROTOCOL=http \
     STORE_GEODATA=true \
     TIME_ZONE=Europe/Bratislava \
     TZ=Europe/Bratislava
-RUN gem install foreman && \
-    cp -R /var/app/db /var/app/db2 && \
-    rm -rf /var/app/db
-COPY ./external/dawarich/entrypoint.sh /homelab/
 HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "sh", "-c", "wget -q -O - http://localhost:3000/api/v1/health | grep -q '\"status\"\\s*:\\s*\"ok\"' || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []
+USER user

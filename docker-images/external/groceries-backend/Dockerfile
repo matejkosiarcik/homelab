@@ -1,9 +1,11 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM ghcr.io/davideshay/groceries-server:1.1.9
-COPY ./external/groceries-backend/healthcheck.js /homelab/healthcheck.js
-COPY ./external/groceries-backend/globalItems.json /usr/app/data/globalItems.json
-COPY ./external/groceries-backend/categories.json /usr/app/data/categories.json
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+COPY --chown=user:user ./external/groceries-backend/healthcheck.js /homelab/healthcheck.js
+COPY --chown=user:user ./external/groceries-backend/globalItems.json /usr/app/data/globalItems.json
+COPY --chown=user:user ./external/groceries-backend/categories.json /usr/app/data/categories.json
 ENV ACCESS_TOKEN_EXPIRES=12h \
     COUCHDB_ADMIN_USER=admin \
     COUCHDB_DATABASE=groceries \
@@ -26,3 +28,4 @@ ENV ACCESS_TOKEN_EXPIRES=12h \
     SMTP_USER=sender \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "sh", "-c", "node /homelab/healthcheck.js || exit 1" ]
+USER user

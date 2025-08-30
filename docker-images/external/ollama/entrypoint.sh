@@ -1,6 +1,6 @@
 #!/bin/sh
 set -euf
 
-rm -f /root/.ollama/history
+rm -f /home/user/.ollama/history
 
 ollama serve

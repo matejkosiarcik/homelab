@@ -1,7 +1,11 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
-FROM louislam/uptime-kuma:1.23.16
+FROM louislam/uptime-kuma:2.0.0-beta.3
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
 ENV HOMELAB_CONTAINER_NAME=uptime-kuma \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
+USER user

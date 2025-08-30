@@ -1,7 +1,10 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM vaultwarden/server:1.34.3
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
 ENV EXTENDED_LOGGING=true \
     HOMELAB_CONTAINER_NAME=vaultwarden \
     HOMELAB_CONTAINER_VARIANT=default \
@@ -19,5 +22,6 @@ ENV EXTENDED_LOGGING=true \
     SMTP_TIMEOUT=10 \
     TZ=Europe/Bratislava \
     WEBSOCKET_ENABLED=true
+USER user
 
 # TODO: Set SMTP authentication: SMTP_SECURITY, SMTP_USERNAME, SMTP_PASSWORD

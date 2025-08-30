@@ -8,8 +8,7 @@ services:
     env_file:
       - ./app-secrets/app.env
     volumes:
-      - ./app-data/minio:/data
-    command: server /data --address ":9000" --console-address ":9001"
+      - ./app-data/minio:/data:rw
 
   app-setup:
     extends:
@@ -21,8 +20,8 @@ services:
     env_file:
       - ./app-secrets/app-setup.env
     tmpfs:
-      - /homelab/.status:rw
-      - /root/.mc:rw
+      - /homelab/.status:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /home/user/.mc:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

@@ -19,7 +19,7 @@ services:
       external-network: {}
     stop_grace_period: 30s
     tmpfs:
-      - /run:rw,exec
+      - /run:rw,exec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

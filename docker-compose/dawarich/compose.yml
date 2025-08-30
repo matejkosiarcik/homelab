@@ -15,9 +15,9 @@ services:
     env_file:
       - ./app-secrets/app.env
     tmpfs:
-      - /root/.cache/gem:rw
-      - /var/app/db:rw
-      - /var/app/tmp:rw
+      # - /root/.cache/gem:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/app/db:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/app/tmp:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   sidekiq:
     extends:
@@ -42,8 +42,8 @@ services:
       start_period: 60s
       timeout: 5s
     tmpfs:
-      - /root/.cache/gem:rw
-      - /var/app/tmp:rw
+      # - /root/.cache/gem:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/app/tmp:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   redis:
     extends:
@@ -71,7 +71,7 @@ services:
     env_file:
       - ./app-secrets/postgis.env
     tmpfs:
-      - /var/run:rw
+      - /var/run:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   decryptor:
     extends:

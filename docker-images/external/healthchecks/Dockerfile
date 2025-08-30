@@ -1,4 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM debian:13.0-slim AS prefinal
@@ -7,8 +6,13 @@ RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
 
 FROM healthchecks/healthchecks:v3.11
-COPY --from=prefinal /homelab /homelab
-COPY ./external/healthchecks/icons/healthchecks.png /opt/healthchecks/static-collected/img/custom-healthchecks.png
+ARG UID=999
+ARG GID=999
+USER root
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+COPY --from=prefinal --chown=user:user /homelab /homelab
+COPY --chown=user:user ./external/healthchecks/icons/healthchecks.png /opt/healthchecks/static-collected/img/custom-healthchecks.png
 ENV DB=sqlite \
     DB_NAME=/homelab/healthchecks/database.db \
     DEBUG=False \
@@ -24,15 +28,10 @@ ENV DB=sqlite \
     SHELL_ENABLED=False \
     SITE_LOGO_URL=/static/img/custom-healthchecks.png \
     TZ=Europe/Bratislava
-
 # TODO: Enable secure emails
 # EMAIL_HOST_PASSWORD=
 # EMAIL_HOST_USER=
 # EMAIL_USE_SSL=False
 # EMAIL_USE_TLS=True
-
-# User is necessary in production
-# hadolint ignore=DL3002
-USER root
-
 HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
+USER user

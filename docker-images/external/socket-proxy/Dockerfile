@@ -3,6 +3,12 @@
 FROM linuxserver/socket-proxy:3.2.4
 RUN apk update --no-cache && \
     apk add --no-cache bash
+# RUN apk update --no-cache && \
+#     apk add --no-cache bash shadow
+# ARG UID=999
+# ARG GID=999
+# RUN ( addgroup -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+#     ( adduser -D -u "$UID" -G user user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
 ENV ALLOW_RESTARTS=0 \
     ALLOW_START=0 \
     ALLOW_STOP=0 \
@@ -36,3 +42,4 @@ ENV ALLOW_RESTARTS=0 \
     VOLUMES=0
 VOLUME /var/run/docker.sock
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/2375' || exit 1" ]
+# USER user

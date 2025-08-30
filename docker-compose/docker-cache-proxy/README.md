@@ -37,7 +37,7 @@ Generic resources:
 {
   ...
   "registry-mirrors": [
-    "https://example.com"
+    "https://docker-cache-proxy-dockerhub.matejhome.com"
   ]
 }
 ```

@@ -1,7 +1,9 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM rnwood/smtp4dev:3.8.6
-COPY ./external/smtp4dev/icons/favicon.ico ./external/smtp4dev/icons/favicon.png /app/wwwroot/
+ARG UID=999
+ARG GID=999
+RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+COPY --chown=user:user ./external/smtp4dev/icons/favicon.ico ./external/smtp4dev/icons/favicon.png /app/wwwroot/
 ENV HOMELAB_CONTAINER_NAME=smtp4dev \
     HOMELAB_CONTAINER_VARIANT=default \
     ServerOptions__LockSettings=true \
@@ -19,3 +21,4 @@ ENV HOMELAB_CONTAINER_NAME=smtp4dev \
 
 # Note: curl/wget isn't available, so we have to resort to bash
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/5000' || exit 1" ]
+USER user
