@@ -22,6 +22,6 @@ ENV EXTENDED_LOGGING=true \
     SMTP_TIMEOUT=10 \
     TZ=Europe/Bratislava \
     WEBSOCKET_ENABLED=true
-USER root
+USER user
 
 # TODO: Set SMTP authentication: SMTP_SECURITY, SMTP_USERNAME, SMTP_PASSWORD
