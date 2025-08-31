@@ -17,7 +17,7 @@ test.describe(apps['vaultwarden'].title, () => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/#/login`);
                 await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                await page.locator('form input[type="email"]').fill('test@vaultwarden.matejhome.com');
+                await page.locator('form input[type="email"]').fill('test@matejhome.com');
                 await page.locator('form button:has-text("Continue")').click();
                 await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                 await page.locator('form input[type="password"]').fill(getEnv(instance.url, 'TEST_PASSWORD'));
@@ -31,7 +31,7 @@ test.describe(apps['vaultwarden'].title, () => {
                 await page.waitForURL(`${instance.url}/#/login`);
                 await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
                 const originalUrl = page.url();
-                await page.locator('form input[type="email"]').fill(`${faker.string.alpha(8)}@vaultwarden.matejhome.com`);
+                await page.locator('form input[type="email"]').fill(`${faker.string.alpha(8)}@matejhome.com`);
                 await page.locator('form button:has-text("Continue")').click();
                 await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                 await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
