@@ -1145,6 +1145,7 @@ case "$app_dirname" in
     printf 'superadmin,%s\n' "$superadmin_password" >>"$initial_output/all-credentials.csv"
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'homelab,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)" >>"$initial_output/all-credentials.csv"
+    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
