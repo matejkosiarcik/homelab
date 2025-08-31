@@ -10,7 +10,13 @@ test.describe(apps['node-exporter'].title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
+            createApiRootTest(instance.url, {
+                title: 'Authenticated (admin)',
+                headers: {
+                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                },
+            });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
