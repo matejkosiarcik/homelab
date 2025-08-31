@@ -10,9 +10,9 @@ services:
       DOMAIN: ${DOCKER_COMPOSE_NETWORK_URL}
       SMTP_FROM: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
     # Uncomment for sending invitations:
-    networks:
-      internal-network: {}
-      external-network: {}
+    # networks:
+    #   internal-network: {}
+    #   external-network: {}
 
   certificator:
     <<: *common-service-options
