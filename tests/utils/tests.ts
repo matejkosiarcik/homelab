@@ -288,7 +288,7 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
     switch (options.auth) {
         case 'basic': {
             if (options.tokens.length === 0) {
-                options.tokens.push(getEnv(url, 'PROMETHEUS_PASSWORD'));
+                options.tokens.push(getEnv(url, `${options.username}_PASSWORD`));
             }
             const prometheusVariants = [
                 {
@@ -313,7 +313,7 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
                     status: 401,
                 },
                 ...options.tokens.map((token, index) => ({
-                    title: index === 0 ? 'successful' : `successful ${index + 1}`,
+                    title: options.tokens.length === 1 ? 'successful' : `successful ${index + 1}`,
                     auth: {
                         username: options.username,
                         password: token,
@@ -344,7 +344,7 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
                     status: url.includes('minio') ? 403 : url.includes('healthchecks') ? 400 : 401,
                 },
                 ...options.tokens.map((token, index) => ({
-                    title: index === 0 ? 'successful' : `successful ${index + 1}`,
+                    title: options.tokens.length === 1 ? 'successful' : `successful ${index + 1}`,
                     auth: token,
                     status: 200,
                 })),
