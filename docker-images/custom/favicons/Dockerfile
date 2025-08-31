@@ -32,5 +32,4 @@ ENV HOMELAB_CONTAINER_NAME=favicons \
     TZ=Europe/Bratislava
 USER user
 HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
-STOPSIGNAL SIGKILL
 ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
