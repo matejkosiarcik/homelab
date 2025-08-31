@@ -143,10 +143,10 @@ export const apps = {
     'node-exporter': {
         title: 'Node Exporter',
         instances: [
-            { url: 'https://node-exporter-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
-            { url: 'https://node-exporter-odroid-h4-ultra.matejhome.com', title: 'Glances - Odroid H4 Ultra' },
-            { url: 'https://node-exporter-raspberry-pi-4b-2g.matejhome.com', title: 'Glances - Raspberry Pi 4B 2GB' },
-            { url: 'https://node-exporter-raspberry-pi-4b-4g.matejhome.com', title: 'Glances - Raspberry Pi 4B 4GB' },
+            { url: 'https://node-exporter-odroid-h3.matejhome.com', title: 'Node Exporter - Odroid H3' },
+            { url: 'https://node-exporter-odroid-h4-ultra.matejhome.com', title: 'Node Exporter - Odroid H4 Ultra' },
+            { url: 'https://node-exporter-raspberry-pi-4b-2g.matejhome.com', title: 'Node Exporter - Raspberry Pi 4B 2GB' },
+            { url: 'https://node-exporter-raspberry-pi-4b-4g.matejhome.com', title: 'Node Exporter - Raspberry Pi 4B 4GB' },
         ],
     },
     ollama: {
