@@ -28,4 +28,7 @@ ENV APP_TIMEZONE=Etc/Utc \
     RESULTS_POLLING=5s \
     SPEEDTEST_SCHEDULE="15 */4 * * *" \
     TZ=Etc/Utc
+# TODO: Consider:
+# CACHE_STORE=file \
+# APP_DEBUG=true \
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/api/healthcheck || exit 1" ]
