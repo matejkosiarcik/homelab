@@ -1,1 +1,2 @@
 gitman==3.5.3
+regex==2025.7.34 # TODO: Remove override after this issue is solved - https://github.com/jacebrowning/gitman/issues/362
