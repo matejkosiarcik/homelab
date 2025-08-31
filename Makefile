@@ -33,10 +33,10 @@ bootstrap:
 			python3 -m pip install --requirement requirements.txt --quiet --upgrade && \
 	true; done
 
-# 	PATH="$(PROJECT_DIR)/icons/venv/bin:$$PATH" \
-# 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-# 		gitman install --root icons
-# 	# --quiet --force
+	PATH="$(PROJECT_DIR)/icons/venv/bin:$$PATH" \
+	PIP_DISABLE_PIP_VERSION_CHECK=1 \
+		gitman install --root icons
+	# --quiet --force
 
 	printf '\n\n'
 
