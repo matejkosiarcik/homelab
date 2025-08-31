@@ -32,8 +32,10 @@ export const apps = {
     'docker-stats': {
         title: 'Docker Stats',
         instances: [
-            { url: 'https://docker-stats-odroid-h3.matejhome.com', title: 'DockerHub Stats - Odroid H3' },
-            { url: 'https://docker-stats-odroid-h4-ultra.matejhome.com', title: 'DockerHub Stats - Odroid H4 Ultra' },
+            { url: 'https://docker-stats-odroid-h3.matejhome.com', title: 'Docker Host Stats - Odroid H3' },
+            { url: 'https://docker-stats-odroid-h4-ultra.matejhome.com', title: 'Docker Host Stats - Odroid H4 Ultra' },
+            { url: 'https://docker-stats-raspberry-pi-4b-2g.matejhome.com', title: 'Docker Host Stats - Raspberry Pi 4B 2GB' },
+            { url: 'https://docker-stats-raspberry-pi-4b-4g.matejhome.com', title: 'Docker Host Stats - Raspberry Pi 4B 4GB' },
         ],
     },
     dozzle: {
