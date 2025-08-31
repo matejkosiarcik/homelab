@@ -1,4 +1,4 @@
-FROM rnwood/smtp4dev:3.8.6
+FROM rnwood/smtp4dev:3.9.0
 ARG UID=1999
 ARG GID=1999
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
