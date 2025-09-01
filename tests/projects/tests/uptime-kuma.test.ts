@@ -12,11 +12,11 @@ test.describe(apps['uptime-kuma'].title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
-            createPrometheusTests(instance.url, { auth: 'basic', username: 'admin' });
+            createPrometheusTests(instance.url, { auth: 'basic', username: 'matej' });
 
             const users = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
                 {
                     username: faker.string.alpha(10),
