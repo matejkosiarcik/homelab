@@ -18,7 +18,7 @@ test.describe(apps.vikunja.title, () => {
                 // Load page
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
-                await expect(page.locator('.form-container form')).toBeVisible();
+                await expect(page.locator('form#loginform')).toBeVisible();
 
                 // Fill in form
                 await page.locator('form#loginform input#username').fill('test');
@@ -26,7 +26,7 @@ test.describe(apps.vikunja.title, () => {
                 await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
 
                 // Verify login
-                await expect(page.locator('aside li:has-text("Inbox") a[href="/projects/1"]')).toBeVisible();
+                await expect(page.locator('aside li .project-menu-title:has-text("Inbox")')).toBeVisible();
             });
 
             const users = [
@@ -44,11 +44,11 @@ test.describe(apps.vikunja.title, () => {
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);
                     const originalUrl = page.url();
-                    await expect(page.locator('.form-container form')).toBeVisible();
+                    await expect(page.locator('form#loginform')).toBeVisible();
 
                     // Fill in form
                     await page.locator('form#loginform input#username').fill('test');
-                    await page.locator('form#loginform input#password').fill(getEnv(instance.url, 'TEST_PASSWORD'));
+                    await page.locator('form#loginform input#password').fill(faker.string.alphanumeric(10));
                     await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
 
                     // Verify fail
