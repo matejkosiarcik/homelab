@@ -1159,8 +1159,10 @@ case "$app_dirname" in
     ;;
 *vikunja*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)"
+    printf 'test,%s\n' "$test_password" >>"$initial_output/all-credentials.csv"
     jwt_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" app jwt-secret)"
     printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/all-credentials.csv"
     printf 'VIKUNJA_SERVICE_JWTSECRET=%s\n' "$jwt_secret" >>"$initial_output/app.env"
