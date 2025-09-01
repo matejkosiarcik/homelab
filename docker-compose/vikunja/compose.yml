@@ -9,6 +9,7 @@ services:
       - ./app-secrets/app.env
     environment:
       VIKUNJA_SERVICE_PUBLICURL: ${DOCKER_COMPOSE_NETWORK_URL}/
+      VIKUNJA_MAILER_FROMEMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
       - ./app-data/vikunja-files:/app/vikunja/files:rw
       - ./app-data/vikunja-db:/db:rw
