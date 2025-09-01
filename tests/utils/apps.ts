@@ -257,11 +257,10 @@ export const apps = {
             { url: 'https://vaultwarden.matejhome.com', title: 'Vaultwarden' },
         ],
     },
-    // TODO: Enable when Vikunja is deployed
-    // vikunja: {
-    //     title: 'Vikunja',
-    //     instances: [
-    //         { url: 'https://vikunja.matejhome.com', title: 'Vikunja' },
-    //     ],
-    // },
+    vikunja: {
+        title: 'Vikunja',
+        instances: [
+            { url: 'https://vikunja.matejhome.com', title: 'Vikunja' },
+        ],
+    },
 };

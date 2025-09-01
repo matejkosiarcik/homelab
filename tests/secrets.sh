@@ -330,6 +330,7 @@ load_password() {
     printf 'VAULTWARDEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vaultwarden apache status)"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden apache prometheus)"
 
+    printf 'VIKUNJA_TEST_PASSWORD=%s\n' "$(load_password vikunja app test)"
     printf 'VIKUNJA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vikunja apache status)"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja apache prometheus)"
 
