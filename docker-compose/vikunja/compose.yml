@@ -14,6 +14,9 @@ services:
       - ./app-data/vikunja-files:/app/vikunja/files:rw
       - ./app-data/vikunja-db:/db:rw
       - ./app-logs/vikunja:/homelab/logs:rw
+    networks:
+      internal-network: {}
+      external-network: {}
 
   certificator:
     extends:
