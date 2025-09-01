@@ -18,7 +18,7 @@ test.describe(apps.vikunja.title, () => {
                 // Load page
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
-                await expect(page.locator('.form-container form')).toBeVisible();
+                await expect(page.locator('form#loginform')).toBeVisible();
 
                 // Fill in form
                 await page.locator('form#loginform input#username').fill('test');
@@ -44,7 +44,7 @@ test.describe(apps.vikunja.title, () => {
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);
                     const originalUrl = page.url();
-                    await expect(page.locator('.form-container form')).toBeVisible();
+                    await expect(page.locator('form#loginform')).toBeVisible();
 
                     // Fill in form
                     await page.locator('form#loginform input#username').fill('test');
