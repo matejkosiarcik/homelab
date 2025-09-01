@@ -31,3 +31,4 @@ mailer:
   enabled: true
   host: smtp4dev.matejhome.com
   port: 25
+  skiptlsverify: true # TODO: Remove override after using authentication on SMTP with STARTTLS
