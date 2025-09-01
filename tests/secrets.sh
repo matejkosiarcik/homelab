@@ -141,7 +141,7 @@ load_password() {
     printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password healthchecks apache prometheus)"
 
     printf 'HOME_ASSISTANT_TEST_PASSWORD=%s\n' "$(load_password home-assistant app test)"
-    printf 'HOME_ASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password home-assistant app automation-api-key)"
+    printf 'HOME_ASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password home-assistant app api-key)"
     printf 'HOME_ASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password home-assistant apache status)"
     printf 'HOME_ASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password home-assistant apache prometheus)"
 
@@ -321,8 +321,8 @@ load_password() {
     printf 'UNIFI_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unifi-controller apache status)"
     printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unifi-controller apache prometheus)"
 
-    printf 'UPTIME_KUMA_ADMIN_PASSWORD=%s\n' "$(load_password uptime-kuma app admin)"
-    printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma app admin)"
+    printf 'UPTIME_KUMA_MATEJ_PASSWORD=%s\n' "$(load_password uptime-kuma app matej)"
+    printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma app prometheus)"
     printf 'UPTIME_KUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache status)"
     printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache prometheus)"
 
