@@ -16,5 +16,6 @@
 ## After initial installation
 
 - Setup main password
-- Enable end-to-end encryption
-- Copy SyncID to vaultwarden
+- Change display date, start day of week
+- Enable end-to-end encryption and copy key to Vaultwarden
+- Copy SyncID to Vaultwarden
