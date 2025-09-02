@@ -25,8 +25,8 @@ RUN mkdir -p /homelab && \
     tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
     cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh && \
     rm -rf /app/config /homelab/docker-entrypoint-extra.sh
-ARG UID=1999
-ARG GID=1999
+ARG UID=1000
+ARG GID=1000
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     chown -R user:user /app /homelab

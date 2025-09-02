@@ -1,6 +1,6 @@
 FROM mongo:8.0.13
-ARG UID=1999
-ARG GID=1999
+ARG UID=1000
+ARG GID=1000
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
 COPY --chown=user:user ./external/mongodb/healthcheck.sh /homelab/
