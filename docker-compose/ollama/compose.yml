@@ -6,8 +6,7 @@ services:
     build:
       dockerfile: ./external/ollama/Dockerfile
     volumes:
-      - ./app-data/ollama-data:/home/user/.ollama:rw
-      - ./app-data/ollama-keys:/home/ubuntu/.ollama:rw
+      - ./app-data/ollama:/homelab/ollama:rw
 
   certificator:
     extends:
