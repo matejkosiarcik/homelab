@@ -36,8 +36,8 @@ COPY --from=minio-mc-build /homelab/minio-mc/mc ./bin/
 COPY ./external/minio-client/entrypoint.sh ./external/minio-client/main.sh ./external/minio-client/plain-buckets.txt ./external/minio-client/versioned-buckets.txt ./
 
 FROM debian:13.0-slim
-ARG UID=1999
-ARG GID=1999
+ARG UID=1000
+ARG GID=1000
 RUN mkdir -p /homelab && \
     ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \

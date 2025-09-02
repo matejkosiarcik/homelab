@@ -6,8 +6,8 @@ RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
 
 FROM healthchecks/healthchecks:v3.11
-ARG UID=1999
-ARG GID=1999
+ARG UID=1000
+ARG GID=1000
 USER root
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
