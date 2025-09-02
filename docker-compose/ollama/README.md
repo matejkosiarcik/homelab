@@ -18,6 +18,6 @@
 - Download models:
 
 ```sh
-docker run --rm --interactive --tty --entrypoint bash --volume "$PWD/app-data/ollama-data:/home/user/.ollama:rw" ollama/ollama -c '(ollama serve &) && sleep 10 && ollama pull <model>'
+docker run --rm --interactive --tty --entrypoint bash --volume "$PWD/app-data/ollama:/homelab/ollama:rw" ollama-app -c '(ollama serve &) && sleep 10 && ollama pull <model>'
 # Replace <model> with eg. deepseek-r1:1.5b
 ```

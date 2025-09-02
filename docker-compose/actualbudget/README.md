@@ -7,7 +7,9 @@
 - Homepage: <https://actualbudget.org>
 - GitHub: <https://github.com/actualbudget/actual>
 - DockerHub: <https://hub.docker.com/r/actualbudget/actual-server>
-- Install guide: <https://actualbudget.org/docs/install/docker>
+- <!-- textlint-disable -->
+  Install guide: <https://actualbudget.org/docs/install/docker>
+  <!-- textlint-enable -->
 
 ## Before initial installation
 
@@ -16,5 +18,6 @@
 ## After initial installation
 
 - Setup main password
-- Enable end-to-end encryption
-- Copy SyncID to vaultwarden
+- Change display date, start day of week
+- Enable end-to-end encryption and copy key to Vaultwarden
+- Copy SyncID to Vaultwarden
