@@ -14,7 +14,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 COPY ./external/samba/prometheus-exporter/gitman.yml ./
 RUN gitman install --quiet
 
-FROM golang:1.25.0-bookworm AS samba-exporter-build
+FROM golang:1.25.1-bookworm AS samba-exporter-build
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
