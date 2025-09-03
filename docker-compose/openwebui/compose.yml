@@ -11,6 +11,8 @@ services:
       CORS_ALLOW_ORIGIN: "${DOCKER_COMPOSE_NETWORK_URL}"
     volumes:
       - ./app-data/openwebui:/app/backend/data:rw
+    tmpfs:
+      - /app/backend/open_webui/static:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     networks:
       internal-network: {}
       external-network: {}
