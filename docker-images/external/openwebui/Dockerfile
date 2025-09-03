@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
-
 FROM ghcr.io/open-webui/open-webui:v0.6.26
 RUN mkdir -p /homelab/app-static && \
     find /app/backend/open_webui/static -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/backend/open_webui/static/$(basename "$1")" "/homelab/app-static/$(basename "$1")"' - {} \; && \

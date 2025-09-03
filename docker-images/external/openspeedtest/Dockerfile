@@ -3,12 +3,12 @@ USER root
 RUN mkdir -p /homelab/etc-nginx-conf.d && \
     find /etc/nginx/conf.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/etc/nginx/conf.d/$(basename "$1")" "/homelab/etc-nginx-conf.d/$(basename "$1")"' - {} \; && \
     rm -rf /etc/nginx/conf.d
-COPY ./external/openspeedtest/docker-entrypoint-extra.sh /homelab/
+COPY ./external/openspeedtest/entrypoint-extra.sh /homelab/
 RUN mkdir -p /homelab && \
-    head -n 1 /entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
-    tail -n +2 /entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
-    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/entrypoint.sh && \
-    rm -rf /homelab/docker-entrypoint-extra.sh
+    head -n 1 /entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/entrypoint.sh && \
+    rm -rf /homelab/entrypoint-extra.sh
 RUN apk update --no-cache && \
     apk add --no-cache shadow
 ARG UID=1000

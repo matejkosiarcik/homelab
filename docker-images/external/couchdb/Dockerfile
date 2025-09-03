@@ -7,10 +7,10 @@ RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID"
     find /opt/couchdb/etc/local.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/opt/couchdb/etc/local.d/$(basename "$1")" "/homelab/local.d/$(basename "$1")"' - {} \; && \
     rm -rf /opt/couchdb/etc/local.d
 COPY --chown=user:user ./external/couchdb/jwt.ini /homelab/local.d/
-COPY --chown=user:user ./external/couchdb/docker-entrypoint-extra.sh /homelab/
-RUN head -n 1 /docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
-    tail -n +2 /docker-entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
-    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/docker-entrypoint.sh
+COPY --chown=user:user ./external/couchdb/entrypoint-extra.sh /homelab/
+RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
 ENV COUCHDB_USER=admin \
     HOMELAB_CONTAINER_NAME=couchdb \
     HOMELAB_CONTAINER_VARIANT=default \

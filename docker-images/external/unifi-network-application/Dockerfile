@@ -12,10 +12,10 @@ ARG GID=1000
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
     chown -R user:user /config /usr/lib/unifi
-COPY --chown=user:user ./external/unifi-network-application/docker-entrypoint-extra.sh /homelab/
-RUN head -n 1 /init >/homelab/docker-entrypoint-shebang.sh && \
-    tail -n +2 /init >/homelab/docker-entrypoint-without-shebang.sh && \
-    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/init
+COPY --chown=user:user ./external/unifi-network-application/entrypoint-extra.sh /homelab/
+RUN head -n 1 /init >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /init >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/init
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     HOMELAB_CONTAINER_NAME=unifi-controller \
     HOMELAB_CONTAINER_VARIANT=default \

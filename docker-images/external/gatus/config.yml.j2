@@ -20,10 +20,10 @@ default-alert-settings: &default-alert-settings
   send-on-resolved: true
 alerting:
   email:
-    from: ${HOMELAB_APP_NAME}@matejhome.com
+    from: system@${HOMELAB_APP_NAME}.matejhome.com
     host: smtp4dev.matejhome.com
     port: 25
-    to: notifications@${HOMELAB_APP_EXTERNAL_DOMAIN}
+    to: notifications@matejhome.com
     client:
       insecure: true
     default-alert:
