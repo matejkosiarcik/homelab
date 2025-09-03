@@ -19,12 +19,12 @@ FROM ghcr.io/gethomepage/homepage:v1.4.6
 RUN mkdir -p /homelab/app-pages && \
     find /app/.next/server/pages -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/.next/server/pages/$(basename "$1")" "/homelab/app-pages/$(basename "$1")"' - {} \; && \
     rm -rf /app/.next/server/pages
-COPY ./external/homepage/docker-entrypoint-extra.sh /homelab/
+COPY ./external/homepage/entrypoint-extra.sh /homelab/
 RUN mkdir -p /homelab && \
-    head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
-    tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
-    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh && \
-    rm -rf /app/config /homelab/docker-entrypoint-extra.sh
+    head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh && \
+    rm -rf /app/config /homelab/entrypoint-extra.sh
 ARG UID=1000
 ARG GID=1000
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \

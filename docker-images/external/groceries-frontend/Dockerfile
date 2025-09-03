@@ -6,10 +6,10 @@ RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID"
     mkdir -p /homelab/nginx-html && \
     find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/usr/share/nginx/html/$(basename "$1")" "/homelab/nginx-html/$(basename "$1")"' - {} \; && \
     find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
-COPY --chown=user:user ./external/groceries-frontend/docker-entrypoint-extra.sh /homelab/
-RUN head -n 1 /docker-entrypoint.sh >/homelab/docker-entrypoint-shebang.sh && \
-    tail -n +2 /docker-entrypoint.sh >/homelab/docker-entrypoint-without-shebang.sh && \
-    cat /homelab/docker-entrypoint-shebang.sh /homelab/docker-entrypoint-extra.sh /homelab/docker-entrypoint-without-shebang.sh >/docker-entrypoint.sh
+COPY --chown=user:user ./external/groceries-frontend/entrypoint-extra.sh /homelab/
+RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
 COPY --chown=user:user ./external/groceries-frontend/nginx.conf /etc/nginx/conf.d/default.conf
 ENV COUCHDB_USER=admin \
     DEFAULT_API_URL=https://placeholder.matejhome.com/api \
