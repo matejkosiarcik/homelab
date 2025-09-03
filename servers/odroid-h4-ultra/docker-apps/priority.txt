@@ -60,7 +60,7 @@ healthchecks
 node-exporter
 docker-stats
 prometheus
-# grafana
+grafana
 
 # App Monitoring
 gatus-1
