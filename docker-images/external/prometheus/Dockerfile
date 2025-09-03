@@ -1,6 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-# checkov:skip=CKV_DOCKER_8: Ignore root user
-
 ### Dependencies ###
 
 FROM --platform=$BUILDPLATFORM debian:13.0-slim AS yq
@@ -46,12 +43,18 @@ COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/prometheus.yml
 
 FROM prom/prometheus:v3.5.0
-COPY --from=prefinal /homelab /homelab
+ARG UID=1000
+ARG GID=1000
+USER root
+RUN ( addgroup -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
+    ( adduser -D -u "$UID" -G user user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
+    mkdir -p /homelab && \
+    chown -R user:user /homelab
+COPY --from=prefinal --chown=user:user /homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://admin:$PROMETHEUS_ADMIN_PASSWORD@localhost:9090 || exit 1" ]
-# hadolint ignore=DL3002
-USER root
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
 CMD []
+USER user
