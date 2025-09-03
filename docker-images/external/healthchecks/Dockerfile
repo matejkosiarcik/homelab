@@ -33,5 +33,5 @@ ENV DB=sqlite \
 # EMAIL_HOST_USER=
 # EMAIL_USE_SSL=False
 # EMAIL_USE_TLS=True
-HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
 USER user

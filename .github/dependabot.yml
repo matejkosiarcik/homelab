@@ -8,8 +8,6 @@ updates:
       interval: daily
       time: "01:00"
       timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
     assignees:
       - matejkosiarcik
     open-pull-requests-limit: 1
@@ -21,11 +19,6 @@ updates:
   # Docker
   - package-ecosystem: docker
     directories:
-      - /docker-images/.shared/build-stages/imagemagick
-      - /docker-images/.shared/build-stages/oxipng
-      - /docker-images/.shared/build-stages/png2ico
-      - /docker-images/.shared/build-stages/supercronic
-      - /docker-images/.shared/build-stages/zopflipng
       - /docker-images/custom/apache
       - /docker-images/custom/certbot
       - /docker-images/custom/certificator
@@ -69,8 +62,6 @@ updates:
       interval: daily
       time: "02:15"
       timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
     assignees:
       - matejkosiarcik
     open-pull-requests-limit: 1
@@ -97,8 +88,6 @@ updates:
       interval: daily
       time: "02:30"
       timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
     assignees:
       - matejkosiarcik
     open-pull-requests-limit: 1
@@ -120,8 +109,6 @@ updates:
       interval: daily
       time: "02:45"
       timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
     assignees:
       - matejkosiarcik
     open-pull-requests-limit: 1
@@ -138,8 +125,6 @@ updates:
       interval: daily
       time: "03:00"
       timezone: Europe/Bratislava
-    reviewers:
-      - matejkosiarcik
     assignees:
       - matejkosiarcik
     open-pull-requests-limit: 1
