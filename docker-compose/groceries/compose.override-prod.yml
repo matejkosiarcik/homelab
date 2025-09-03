@@ -8,7 +8,7 @@ services:
     environment:
       PLACEHOLDER: placeholder
       # Uncomment when setting up new instance:
-      DISABLE_ACCOUNT_CREATION: "0"
+      # DISABLE_ACCOUNT_CREATION: "0"
 
   app-frontend:
     <<: *common-service-options
