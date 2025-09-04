@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM docker:28.3.3
+FROM docker:28.4.0
 RUN apk update --no-cache && \
     apk add --no-cache shadow
 ARG UID=1000
