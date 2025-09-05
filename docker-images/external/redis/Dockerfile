@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM redis:8.2.1
 ARG UID=1000
 ARG GID=1000

@@ -15,12 +15,12 @@ services:
       external-network: {}
     read_only: false # TODO: Fix
     tmpfs:
-      - /app:rw
-      - /cache:rw
-      - /data:rw
-      - /defaults:rw
-      - /run:rw,exec
-      - /transcode:rw
+      - /app:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /cache:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /data:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /defaults:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,exec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /transcode:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   app-setup:
     extends:

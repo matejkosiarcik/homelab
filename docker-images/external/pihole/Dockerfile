@@ -1,7 +1,11 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM pihole/pihole:2025.08.0
-COPY ./external/pihole/custom-domains.txt ./external/pihole/setup.sh /homelab/
+RUN apk update --no-cache && \
+    apk add --no-cache shadow
+ARG UID=1000
+ARG GID=1000
+COPY --chown=pihole:pihole ./external/pihole/custom-domains.txt ./external/pihole/setup.sh /homelab/
 ENV DHCP_ACTIVE=false \
     DNSMASQ_USER=root \
     FTLCONF_dns_domain=matejhome.com \
@@ -18,6 +22,8 @@ ENV DHCP_ACTIVE=false \
     FTLCONF_webserver_interface_theme=default-darker \
     HOMELAB_CONTAINER_NAME=pihole \
     HOMELAB_CONTAINER_VARIANT=default \
+    PIHOLE_GID=$GID \
+    PIHOLE_UID=$UID \
     TZ=Europe/Bratislava
 # TODO: Remove DNSMASQ_USER=root override above
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/admin || exit 1" ]

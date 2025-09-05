@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM node:24.7.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/owntracks-decryptor/package-lock.json ./custom/owntracks-decryptor/package.json ./custom/owntracks-decryptor/tsconfig.json ./

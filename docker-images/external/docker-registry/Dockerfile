@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM registry:3.0.0
 RUN apk update --no-cache && \
     apk add --no-cache shadow

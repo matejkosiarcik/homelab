@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM ollama/ollama:0.11.10
 ARG UID=1000
 ARG GID=1000
