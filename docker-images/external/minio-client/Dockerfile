@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM python:3.13.7-slim AS minio-mc-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \

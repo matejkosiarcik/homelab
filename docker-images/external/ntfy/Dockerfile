@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM binwiederhier/ntfy:v2.14.0
 RUN apk update --no-cache && \
     apk add --no-cache shadow

@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
-
 FROM freikin/dawarich:0.30.12
 ARG UID=1000
 ARG GID=1000

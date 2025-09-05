@@ -1,5 +1,3 @@
-# checkov:skip=CKV_DOCKER_3: User unnecessary
-
 FROM python:3.13.7-slim AS supercronic-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
