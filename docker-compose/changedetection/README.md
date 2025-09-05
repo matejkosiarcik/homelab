@@ -27,8 +27,9 @@ SockPuppetBrowser (used for opening \[web\] sites):
     - gotify: `gotifys://gotify.matejhome.com/<token>` - see also [Gotify README.md](../gotify/README.md)
     - mail: `mailto://placeholder@matejhome.com?smtp=smtp4dev.matejhome.com&from=changedetection@matejhome.com&to=notifications@matejhome.com`
 - Tweak settings:
-    - Scrape interval (6 hours)
-    - Use `sockpuppetbrowser` for fetching
-    - Do not open "History" in new tabs
-    - Enable "Render anchor tag content"
+    - Change `General > Time between checks`
+    - Change `General > Jitter`
+    - Enable `Fetching > sockpuppetbrowser`
+    - Disble `UI Options > Open history in new tab`
+    - Enable `Global Filters > Render anchor tag`
 - Import watched URLs from backup
