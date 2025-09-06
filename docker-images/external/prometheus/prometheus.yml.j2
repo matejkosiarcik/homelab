@@ -8,7 +8,7 @@ scrape_configs:
     metrics_path: {{ app.path }}
     {%- if app.auth == "basic" %}
     basic_auth:
-      username: {{ "admin" if app.url.startswith("uptime-kuma") else "prometheus" }}
+      username: {{ "admin" if app.url.startswith("uptimekuma") else "prometheus" }}
       password: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_PASSWORD{{ "}" }}
     {%- elif app.auth == "bearer" %}
     authorization:

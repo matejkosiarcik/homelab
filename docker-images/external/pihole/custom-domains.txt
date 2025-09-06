@@ -79,14 +79,14 @@
 10.1.20.21 unifi-controller.matejhome.com
 10.1.20.22 omada-controller.matejhome.com
 10.1.20.23 docker-cache-proxy-dockerhub.matejhome.com
-10.1.20.24 home-assistant.matejhome.com
+10.1.20.24 homeassistant.matejhome.com
 10.1.20.25 jellyfin.matejhome.com
 10.1.20.26 minio.matejhome.com
 10.1.20.27 minio-console.matejhome.com
 10.1.20.28 smtp4dev.matejhome.com
 10.1.20.29 healthchecks.matejhome.com
 10.1.20.30 gatus-1.matejhome.com
-10.1.20.31 speedtest-tracker.matejhome.com
+10.1.20.31 speedtesttracker.matejhome.com
 10.1.20.32 homepage.matejhome.com
 10.1.20.33 changedetection.matejhome.com
 10.1.20.34 ntfy.matejhome.com
@@ -103,7 +103,7 @@
 10.1.20.45 vaultwarden.matejhome.com
 10.1.20.46 prometheus.matejhome.com
 10.1.20.47 certbot.matejhome.com
-10.1.20.48 uptime-kuma.matejhome.com
+10.1.20.48 uptimekuma.matejhome.com
 10.1.20.49 node-exporter-odroid-h4-ultra.matejhome.com
 10.1.20.50 ollama.matejhome.com
 10.1.20.51 openwebui.matejhome.com

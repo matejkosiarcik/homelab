@@ -213,12 +213,12 @@
 - Smart Home:
     - Home Assistant:
         description: Smart Home system
-        href: https://home-assistant.matejhome.com
-        ping: home-assistant.matejhome.com
-        icon: /icons/home-assistant.png
+        href: https://homeassistant.matejhome.com
+        ping: homeassistant.matejhome.com
+        icon: /icons/homeassistant.png
         widget:
           type: homeassistant
-          url: https://home-assistant.matejhome.com
+          url: https://homeassistant.matejhome.com
           key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY}}"
           custom:
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
@@ -317,12 +317,12 @@
 
     - Uptime Kuma:
         description: Uptime monitoring system
-        href: https://uptime-kuma.matejhome.com
-        ping: uptime-kuma.matejhome.com
-        icon: /icons/uptime-kuma.png
+        href: https://uptimekuma.matejhome.com
+        ping: uptimekuma.matejhome.com
+        icon: /icons/uptimekuma.png
         widget:
           type: uptimekuma
-          url: https://uptime-kuma.matejhome.com
+          url: https://uptimekuma.matejhome.com
           slug: dashboard
 
     - Prometheus:
@@ -343,12 +343,12 @@
 
     - SpeedTest Tracker:
         description: Internet speed monitoring system
-        href: https://speedtest-tracker.matejhome.com
-        ping: speedtest-tracker.matejhome.com
+        href: https://speedtesttracker.matejhome.com
+        ping: speedtesttracker.matejhome.com
         icon: /icons/speedtest.png
         widget:
           type: speedtest
-          url: https://speedtest-tracker.matejhome.com
+          url: https://speedtesttracker.matejhome.com
           key: "{{HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY}}"
           version: 2
           bitratePrecision: 1

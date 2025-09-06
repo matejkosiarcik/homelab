@@ -230,7 +230,7 @@ apps:
       - path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS_PROMETHEUS_TOKEN}
 
   - name: Home Assistant
-    domain: home-assistant.matejhome.com
+    domain: homeassistant.matejhome.com
     endpoints:
       - path: /api/prometheus
         authentication:
@@ -502,7 +502,7 @@ apps:
         - 25
 
   - name: Speedtest Tracker
-    domain: speedtest-tracker.matejhome.com
+    domain: speedtesttracker.matejhome.com
     endpoints:
       - path: /api/healthcheck
         conditions:
@@ -647,7 +647,7 @@ apps:
           - "[STATUS] == 200"
 
   - name: Uptime Kuma
-    domain: uptime-kuma.matejhome.com
+    domain: uptimekuma.matejhome.com
     endpoints:
       - path: /metrics
         authentication:

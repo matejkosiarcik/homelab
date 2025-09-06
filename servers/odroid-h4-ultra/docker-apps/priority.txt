@@ -21,7 +21,7 @@ omada-controller
 unifi-controller
 
 # Home automation
-home-assistant
+homeassistant
 
 # Notifications
 smtp4dev
@@ -36,7 +36,7 @@ homepage
 vaultwarden
 actualbudget
 openspeedtest
-speedtest-tracker
+speedtesttracker
 vikunja
 owntracks
 dawarich
@@ -64,7 +64,7 @@ grafana
 
 # App Monitoring
 gatus-1
-uptime-kuma
+uptimekuma
 
 # Non-server apps
 renovatebot

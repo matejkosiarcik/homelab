@@ -24,7 +24,6 @@ jobs:
           filters: |
             actualbudget:
               - '**/actualbudget*/**'
-              - '**/actual-budget*/**'
             changedetection:
               - '**/changedetection*/**'
             docker-cache-proxy:
@@ -40,9 +39,8 @@ jobs:
               - '**/gatus*/**'
             healthchecks:
               - '**/healthchecks*/**'
-            home-assistant:
+            homeassistant:
               - '**/homeassistant*/**'
-              - '**/home-assistant*/**'
             homepage:
               - '**/homepage*/**'
             jellyfin:
@@ -69,8 +67,8 @@ jobs:
               - '**/smb*/**'
             smtp4dev:
               - '**/smtp4dev*/**'
-            speedtest-tracker:
-              - '**/speedtest-tracker*/**'
+            speedtesttracker:
+              - '**/speedtesttracker*/**'
             tvheadend:
               - '**/tvheadend*/**'
             unbound:
@@ -78,8 +76,8 @@ jobs:
             unifi-controller:
               - '**/unifi-controller*/**'
               - '**/unifi-network-application*/**'
-            uptime-kuma:
-              - '**/uptime-kuma*/**'
+            uptimekuma:
+              - '**/uptimekuma*/**'
 
   build:
     name: Build - ${{ matrix.component }}
@@ -118,7 +116,7 @@ jobs:
             printf '%s ' '"dozzle-server": ["/servers/odroid-h4-ultra/docker-apps/dozzle"],'
             printf '%s ' '"gatus": ["/servers/odroid-h4-ultra/docker-apps/gatus-1", "/servers/odroid-h3/docker-apps/gatus-2"],'
             printf '%s ' '"healthchecks": ["/servers/odroid-h4-ultra/docker-apps/healthchecks"],'
-            printf '%s ' '"home-assistant": ["/servers/odroid-h4-ultra/docker-apps/home-assistant"],'
+            printf '%s ' '"homeassistant": ["/servers/odroid-h4-ultra/docker-apps/homeassistant"],'
             printf '%s ' '"homepage": ["/servers/odroid-h4-ultra/docker-apps/homepage"],'
             printf '%s ' '"jellyfin": ["/servers/odroid-h4-ultra/docker-apps/jellyfin"],'
             printf '%s ' '"minio": ["/servers/odroid-h4-ultra/docker-apps/minio"],'
@@ -134,7 +132,7 @@ jobs:
               '"/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-primary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-secondary"],'
             printf '%s ' '"samba": ["/servers/macbook-pro-2012/docker-apps/samba-data", "/servers/macbook-pro-2012/docker-apps/samba-snapshots"],'
             printf '%s ' '"smtp4dev": ["/servers/odroid-h4-ultra/docker-apps/smtp4dev"],'
-            printf '%s ' '"speedtest-tracker": ["/servers/odroid-h4-ultra/docker-apps/speedtest-tracker"],'
+            printf '%s ' '"speedtesttracker": ["/servers/odroid-h4-ultra/docker-apps/speedtesttracker"],'
             printf '%s ' '"tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],'
             printf '%s ' '"unbound": ["/servers/odroid-h4-ultra/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],'
             printf '%s ' '"unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"]'

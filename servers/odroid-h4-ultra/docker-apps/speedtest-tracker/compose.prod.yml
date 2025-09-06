@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/speedtest-tracker/compose.override-prod.yml
-    project_directory: .

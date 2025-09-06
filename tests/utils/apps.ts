@@ -93,10 +93,10 @@ export const apps = {
             { url: 'https://healthchecks.matejhome.com', title: 'Healthchecks' },
         ],
     },
-    'home-assistant': {
+    homeassistant: {
         title: 'Home Assistant',
         instances: [
-            { url: 'https://home-assistant.matejhome.com', title: 'Home Assistant' },
+            { url: 'https://homeassistant.matejhome.com', title: 'Home Assistant' },
         ],
     },
     homepage: {
@@ -212,10 +212,10 @@ export const apps = {
             { url: 'https://smtp4dev.matejhome.com', title: 'Smtp4dev' },
         ],
     },
-    'speedtest-tracker': {
+    speedtesttracker: {
         title: 'Speedtest Tracker',
         instances: [
-            { url: 'https://speedtest-tracker.matejhome.com', title: 'Speedtest Tracker' },
+            { url: 'https://speedtesttracker.matejhome.com', title: 'Speedtest Tracker' },
         ],
     },
     tvheadend: {
@@ -245,10 +245,10 @@ export const apps = {
             { url: 'https://unifi-controller.matejhome.com', title: 'UniFi Controller' },
         ],
     },
-    'uptime-kuma': {
+    uptimekuma: {
         title: 'Uptime Kuma',
         instances: [
-            { url: 'https://uptime-kuma.matejhome.com', title: 'Uptime Kuma' },
+            { url: 'https://uptimekuma.matejhome.com', title: 'Uptime Kuma' },
         ],
     },
     vaultwarden: {

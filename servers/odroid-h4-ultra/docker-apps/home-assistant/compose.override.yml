@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/home-assistant/compose.override-dev.yml
-    project_directory: .

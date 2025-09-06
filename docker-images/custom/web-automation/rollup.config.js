@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
 
 const files = {
-    'home-assistant': ['backup.ts'],
+    'homeassistant': ['backup.ts'],
     'omada-controller': ['backup.ts'],
     'unifi-controller': ['backup.ts'],
 };
