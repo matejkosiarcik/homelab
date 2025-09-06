@@ -42,7 +42,6 @@ jobs:
               - '**/healthchecks*/**'
             homeassistant:
               - '**/homeassistant*/**'
-              - '**/home-assistant*/**'
             homepage:
               - '**/homepage*/**'
             jellyfin:
