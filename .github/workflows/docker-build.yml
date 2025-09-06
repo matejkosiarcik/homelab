@@ -24,7 +24,6 @@ jobs:
           filters: |
             actualbudget:
               - '**/actualbudget*/**'
-              - '**/actual-budget*/**'
             changedetection:
               - '**/changedetection*/**'
             docker-cache-proxy:
