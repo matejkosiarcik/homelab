@@ -4,3 +4,5 @@ rules:
       - dependabot-auto-merge.yml
       - docker-build.yml
       - lint.yml
+  template-injection:
+      - docker-build.yml
