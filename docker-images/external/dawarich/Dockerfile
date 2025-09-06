@@ -1,4 +1,4 @@
-FROM freikin/dawarich:0.30.12
+FROM freikin/dawarich:0.31.0
 ARG UID=1000
 ARG GID=1000
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
