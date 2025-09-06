@@ -69,8 +69,8 @@ jobs:
               - '**/smb*/**'
             smtp4dev:
               - '**/smtp4dev*/**'
-            speedtest-tracker:
-              - '**/speedtest-tracker*/**'
+            speedtesttracker:
+              - '**/speedtesttracker*/**'
             tvheadend:
               - '**/tvheadend*/**'
             unbound:
@@ -134,7 +134,7 @@ jobs:
               '"/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-primary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-secondary"],'
             printf '%s ' '"samba": ["/servers/macbook-pro-2012/docker-apps/samba-data", "/servers/macbook-pro-2012/docker-apps/samba-snapshots"],'
             printf '%s ' '"smtp4dev": ["/servers/odroid-h4-ultra/docker-apps/smtp4dev"],'
-            printf '%s ' '"speedtest-tracker": ["/servers/odroid-h4-ultra/docker-apps/speedtest-tracker"],'
+            printf '%s ' '"speedtesttracker": ["/servers/odroid-h4-ultra/docker-apps/speedtesttracker"],'
             printf '%s ' '"tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],'
             printf '%s ' '"unbound": ["/servers/odroid-h4-ultra/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],'
             printf '%s ' '"unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"]'

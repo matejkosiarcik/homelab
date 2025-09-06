@@ -135,7 +135,7 @@ convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/sv
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$output_dir/healthchecks.png"
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/homeassistant.png" "$output_dir/homeassistant.png"
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "$output_dir/pihole.png"
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$output_dir/speedtest-tracker.png"
+convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/speedtest-icon.png" "$output_dir/speedtesttracker.png"
 convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/unifi-protect.png" "$output_dir/unifi-protect.png"
 
 ### OSA Icons ###

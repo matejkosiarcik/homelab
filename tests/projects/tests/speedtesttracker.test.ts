@@ -8,8 +8,8 @@ type SpeedtestTrackerHealthcheckResponse = {
     message: string,
 };
 
-test.describe(apps['speedtest-tracker'].title, () => {
-    for (const instance of apps['speedtest-tracker'].instances) {
+test.describe(apps.speedtesttracker.title, () => {
+    for (const instance of apps.speedtesttracker.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
@@ -27,11 +27,11 @@ test.describe(apps['speedtest-tracker'].title, () => {
             const users = [
                 {
                     username: 'admin',
-                    email: 'admin@speedtest-tracker.matejhome.com',
+                    email: 'admin@speedtesttracker.matejhome.com',
                 },
                 {
                     username: faker.string.alpha(10),
-                    email: `${faker.string.alpha(10)}@speedtest-tracker.matejhome.com`,
+                    email: `${faker.string.alpha(10)}@speedtesttracker.matejhome.com`,
                     random: true,
                 }
             ];

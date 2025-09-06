@@ -267,9 +267,9 @@ load_password() {
     printf 'SMTP4DEV_PROXY_STATUS_PASSWORD=%s\n' "$(load_password smtp4dev apache status)"
     printf 'SMTP4DEV_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password smtp4dev apache prometheus)"
 
-    printf 'SPEEDTEST_TRACKER_ADMIN_PASSWORD=%s\n' "$(load_password speedtest-tracker app admin)"
-    printf 'SPEEDTEST_TRACKER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password speedtest-tracker apache status)"
-    printf 'SPEEDTEST_TRACKER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password speedtest-tracker apache prometheus)"
+    printf 'SPEEDTEST_TRACKER_ADMIN_PASSWORD=%s\n' "$(load_password speedtesttracker app admin)"
+    printf 'SPEEDTEST_TRACKER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password speedtesttracker apache status)"
+    printf 'SPEEDTEST_TRACKER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password speedtesttracker apache prometheus)"
 
     printf 'TVHEADEND_STREAM_PASSWORD=%s\n' "$(load_password tvheadend app stream)"
     printf 'TVHEADEND_TEST_PASSWORD=%s\n' "$(load_password tvheadend app test)"

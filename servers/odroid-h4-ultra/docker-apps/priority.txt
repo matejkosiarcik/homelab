@@ -36,7 +36,7 @@ homepage
 vaultwarden
 actualbudget
 openspeedtest
-speedtest-tracker
+speedtesttracker
 vikunja
 owntracks
 dawarich

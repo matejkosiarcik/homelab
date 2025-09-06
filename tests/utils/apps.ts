@@ -212,10 +212,10 @@ export const apps = {
             { url: 'https://smtp4dev.matejhome.com', title: 'Smtp4dev' },
         ],
     },
-    'speedtest-tracker': {
+    speedtesttracker: {
         title: 'Speedtest Tracker',
         instances: [
-            { url: 'https://speedtest-tracker.matejhome.com', title: 'Speedtest Tracker' },
+            { url: 'https://speedtesttracker.matejhome.com', title: 'Speedtest Tracker' },
         ],
     },
     tvheadend: {

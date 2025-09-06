@@ -502,7 +502,7 @@ apps:
         - 25
 
   - name: Speedtest Tracker
-    domain: speedtest-tracker.matejhome.com
+    domain: speedtesttracker.matejhome.com
     endpoints:
       - path: /api/healthcheck
         conditions:

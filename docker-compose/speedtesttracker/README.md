@@ -1,6 +1,6 @@
 # SpeedTest Tracker
 
-![diagram](../../docs/diagrams/out/apps/speedtest-tracker.png)
+![diagram](../../docs/diagrams/out/apps/speedtesttracker.png)
 
 ## Docs
 
@@ -24,9 +24,9 @@ LinuxServer (unofficial):
 
 - Setup speed tresholds
 - Add (always) webhook to healthchecks
-    - `https://healthchecks.matejhome.com/ping/<ping-key>/speedtest-tracker-app`
-- Add (treshold) webhook to ntfy / gotify / smtp notifications
-    - `https://ntfy.matejhome.com`, topic: `speedtest-tracker`, username: `publisher`, password: `<password>`
+    - `https://healthchecks.matejhome.com/ping/<ping-key>/speedtesttracker-app`
+- Add (treshold) webhook to ntfy / gotify / smtp notifications:
+    - `https://ntfy.matejhome.com`, topic: `speedtesttracker`, username: `publisher`, password: `<password>`
     - `https://gotify.matejhome.com/message?token=<token>`
-    - `speedtest-tracker@matejhome.com`
+    - `speedtesttracker@matejhome.com`
 - Add readonly API token for other services and save in Vaultwarden

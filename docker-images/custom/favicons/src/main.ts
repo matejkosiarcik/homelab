@@ -55,7 +55,7 @@ const appAddress = (() => {
         case 'prometheus': return 'http://app:9090';
         case 'samba': return '';
         case 'smtp4dev': return 'http://app:5000';
-        case 'speedtest-tracker': return 'https://app';
+        case 'speedtesttracker': return 'https://app';
         case 'tvheadend': return 'http://app:9981';
         case 'unbound': return ''; // http://app:8080
         case 'unifi-controller': return 'https://app:8443';
@@ -98,7 +98,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'prometheus': return '/favicon.svg';
         case 'samba': return `@/homelab/icons/${appType}.png`;
         case 'smtp4dev': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
-        case 'speedtest-tracker': return '/favicon.ico';
+        case 'speedtesttracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
         case 'unbound': return `@/homelab/icons/${appType}.png`;
         case 'unifi-controller': return '/manage/angular/g0da6a4ab3/images/favicons/favicon-192.png';

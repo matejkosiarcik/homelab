@@ -86,7 +86,7 @@
 10.1.20.28 smtp4dev.matejhome.com
 10.1.20.29 healthchecks.matejhome.com
 10.1.20.30 gatus-1.matejhome.com
-10.1.20.31 speedtest-tracker.matejhome.com
+10.1.20.31 speedtesttracker.matejhome.com
 10.1.20.32 homepage.matejhome.com
 10.1.20.33 changedetection.matejhome.com
 10.1.20.34 ntfy.matejhome.com

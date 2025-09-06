@@ -52,7 +52,7 @@ updates:
       - /docker-images/external/smtp4dev
       - /docker-images/external/socket-proxy
       - /docker-images/external/sockpuppetbrowser
-      - /docker-images/external/speedtest-tracker
+      - /docker-images/external/speedtesttracker
       - /docker-images/external/tvheadend
       - /docker-images/external/unifi-network-application
       - /docker-images/external/vikunja
