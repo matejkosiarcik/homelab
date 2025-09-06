@@ -64,7 +64,7 @@ grafana
 
 # App Monitoring
 gatus-1
-uptime-kuma
+uptimekuma
 
 # Non-server apps
 renovatebot

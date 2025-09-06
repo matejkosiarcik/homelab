@@ -78,8 +78,8 @@ jobs:
             unifi-controller:
               - '**/unifi-controller*/**'
               - '**/unifi-network-application*/**'
-            uptime-kuma:
-              - '**/uptime-kuma*/**'
+            uptimekuma:
+              - '**/uptimekuma*/**'
 
   build:
     name: Build - ${{ matrix.component }}

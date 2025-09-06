@@ -317,12 +317,12 @@
 
     - Uptime Kuma:
         description: Uptime monitoring system
-        href: https://uptime-kuma.matejhome.com
-        ping: uptime-kuma.matejhome.com
-        icon: /icons/uptime-kuma.png
+        href: https://uptimekuma.matejhome.com
+        ping: uptimekuma.matejhome.com
+        icon: /icons/uptimekuma.png
         widget:
           type: uptimekuma
-          url: https://uptime-kuma.matejhome.com
+          url: https://uptimekuma.matejhome.com
           slug: dashboard
 
     - Prometheus:

@@ -245,10 +245,10 @@ export const apps = {
             { url: 'https://unifi-controller.matejhome.com', title: 'UniFi Controller' },
         ],
     },
-    'uptime-kuma': {
+    uptimekuma: {
         title: 'Uptime Kuma',
         instances: [
-            { url: 'https://uptime-kuma.matejhome.com', title: 'Uptime Kuma' },
+            { url: 'https://uptimekuma.matejhome.com', title: 'Uptime Kuma' },
         ],
     },
     vaultwarden: {

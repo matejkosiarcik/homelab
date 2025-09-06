@@ -59,7 +59,7 @@ const appAddress = (() => {
         case 'tvheadend': return 'http://app:9981';
         case 'unbound': return ''; // http://app:8080
         case 'unifi-controller': return 'https://app:8443';
-        case 'uptime-kuma': return 'http://app:3001';
+        case 'uptimekuma': return 'http://app:3001';
         case 'vaultwarden': return 'http://app:80';
         case 'vikunja': return 'http://app:3456';
         default: throw new Error(`Unknown app type ${appType}`);
@@ -102,7 +102,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
         case 'unbound': return `@/homelab/icons/${appType}.png`;
         case 'unifi-controller': return '/manage/angular/g0da6a4ab3/images/favicons/favicon-192.png';
-        case 'uptime-kuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
+        case 'uptimekuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
         case 'vikunja': return '/images/icons/apple-touch-icon-180x180.png';
         default: throw new Error(`Unknown app type: ${appType}`);

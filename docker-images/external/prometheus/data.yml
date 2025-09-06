@@ -89,7 +89,7 @@ apps:
   - url: prometheus.matejhome.com
     auth: basic
     path: /metrics
-  - url: uptime-kuma.matejhome.com
+  - url: uptimekuma.matejhome.com
     auth: basic
     path: /metrics
   - url: unbound-1-default.matejhome.com
@@ -187,7 +187,7 @@ proxies:
   - url: unbound-2-iot.matejhome.com
   - url: unbound-2-guests.matejhome.com
   - url: unifi-controller.matejhome.com
-  - url: uptime-kuma.matejhome.com
+  - url: uptimekuma.matejhome.com
   - url: vaultwarden.matejhome.com
   - url: wikipedia.matejhome.com
   - url: wiktionary.matejhome.com

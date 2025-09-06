@@ -1,6 +1,6 @@
 # Uptime Kuma
 
-![diagram](../../docs/diagrams/out/apps/uptime-kuma.png)
+![diagram](../../docs/diagrams/out/apps/uptimekuma.png)
 
 ## Docs
 

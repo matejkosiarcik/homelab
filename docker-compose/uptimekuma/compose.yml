@@ -4,9 +4,9 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/uptime-kuma/Dockerfile
+      dockerfile: ./external/uptimekuma/Dockerfile
     volumes:
-      - ./app-data/uptime-kuma:/app/data:rw
+      - ./app-data/uptimekuma:/app/data:rw
     networks:
       internal-network: {}
       external-network: {}

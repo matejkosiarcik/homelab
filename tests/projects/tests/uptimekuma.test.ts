@@ -4,8 +4,8 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { faker } from '@faker-js/faker';
 import { getEnv } from '../../utils/utils';
 
-test.describe(apps['uptime-kuma'].title, () => {
-    for (const instance of apps['uptime-kuma'].instances) {
+test.describe(apps.uptimekuma.title, () => {
+    for (const instance of apps.uptimekuma.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

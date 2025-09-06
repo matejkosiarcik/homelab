@@ -103,7 +103,7 @@
 10.1.20.45 vaultwarden.matejhome.com
 10.1.20.46 prometheus.matejhome.com
 10.1.20.47 certbot.matejhome.com
-10.1.20.48 uptime-kuma.matejhome.com
+10.1.20.48 uptimekuma.matejhome.com
 10.1.20.49 node-exporter-odroid-h4-ultra.matejhome.com
 10.1.20.50 ollama.matejhome.com
 10.1.20.51 openwebui.matejhome.com

@@ -321,10 +321,10 @@ load_password() {
     printf 'UNIFI_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unifi-controller apache status)"
     printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unifi-controller apache prometheus)"
 
-    printf 'UPTIME_KUMA_MATEJ_PASSWORD=%s\n' "$(load_password uptime-kuma app matej)"
-    printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma app prometheus)"
-    printf 'UPTIME_KUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache status)"
-    printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptime-kuma apache prometheus)"
+    printf 'UPTIME_KUMA_MATEJ_PASSWORD=%s\n' "$(load_password uptimekuma app matej)"
+    printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptimekuma app prometheus)"
+    printf 'UPTIME_KUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptimekuma apache status)"
+    printf 'UPTIME_KUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptimekuma apache prometheus)"
 
     printf 'VAULTWARDEN_TEST_PASSWORD=%s\n' "$(load_password vaultwarden app test)"
     printf 'VAULTWARDEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vaultwarden apache status)"
