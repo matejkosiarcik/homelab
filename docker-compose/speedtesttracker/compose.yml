@@ -25,7 +25,7 @@ services:
     #   - /app/www/storage/logs:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     #   - /run:rw,exec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     #   - /var/log/nginx:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    read_only: false
+    read_only: false # TODO: Enable readonly mode
 
   certificator:
     extends:
