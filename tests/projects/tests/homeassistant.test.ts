@@ -4,8 +4,8 @@ import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe(apps['home-assistant'].title, () => {
-    for (const instance of apps['home-assistant'].instances) {
+test.describe(apps.homeassistant.title, () => {
+    for (const instance of apps.homeassistant.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

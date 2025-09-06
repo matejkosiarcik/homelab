@@ -372,7 +372,7 @@ case "$app_dirname" in
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
-    printf 'HOME_ASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token home-assistant app api-key)" >>"$initial_output/app.env"
+    printf 'HOME_ASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app api-key)" >>"$initial_output/app.env"
     printf 'JELLYFIN_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin app prometheus)" >>"$initial_output/app.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$initial_output/app.env"
     printf 'NODE_EXPORTER_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
@@ -423,7 +423,7 @@ case "$app_dirname" in
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token grafana apache prometheus)" >>"$initial_output/app.env"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token groceries apache prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token healthchecks apache prometheus)" >>"$initial_output/app.env"
-    printf 'HOME_ASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token home-assistant apache prometheus)" >>"$initial_output/app.env"
+    printf 'HOME_ASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homeassistant apache prometheus)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homepage apache prometheus)" >>"$initial_output/app.env"
     printf 'JELLYFIN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin apache prometheus)" >>"$initial_output/app.env"
     printf 'MINIO_CONSOLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
@@ -584,7 +584,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*home-assistant*)
+*homeassistant*)
     # App
     printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
 
@@ -608,7 +608,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_GRAFANA_PASSWORD=%s\n' "$(load_token grafana app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY=%s\n' "$(load_token home-assistant app api-key)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY=%s\n' "$(load_token homeassistant app api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
     # TODO: Enable NetAlertX integration
@@ -886,7 +886,7 @@ case "$app_dirname" in
     printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
-    printf 'HOME_ASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token home-assistant app api-key)" >>"$initial_output/app.env"
+    printf 'HOME_ASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app api-key)" >>"$initial_output/app.env"
     printf 'JELLYFIN_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin app prometheus)" >>"$initial_output/app.env"
     printf 'MINIO_PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$initial_output/app.env"
     printf 'NODE_EXPORTER_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token node-exporter-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
@@ -935,7 +935,7 @@ case "$app_dirname" in
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token grafana apache prometheus)" >>"$initial_output/app.env"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token groceries apache prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token healthchecks apache prometheus)" >>"$initial_output/app.env"
-    printf 'HOME_ASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token home-assistant apache prometheus)" >>"$initial_output/app.env"
+    printf 'HOME_ASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homeassistant apache prometheus)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homepage apache prometheus)" >>"$initial_output/app.env"
     printf 'JELLYFIN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin apache prometheus)" >>"$initial_output/app.env"
     printf 'MINIO_CONSOLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"

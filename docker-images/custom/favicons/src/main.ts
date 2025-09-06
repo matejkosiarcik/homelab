@@ -38,7 +38,7 @@ const appAddress = (() => {
         case 'grafana': return 'http://app:3000';
         case 'groceries': return 'http://app-frontend:8100';
         case 'healthchecks': return 'http://app:8000';
-        case 'home-assistant': return 'http://app:8123';
+        case 'homeassistant': return 'http://app:8123';
         case 'homepage': return 'http://app:3000';
         case 'jellyfin': return 'http://app:8096';
         case 'kiwix': return 'http://app:8080';
@@ -81,7 +81,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'grafana': return '/public/img/grafana_icon.svg';
         case 'groceries': return '/assets/icon/favicon.svg';
         case 'healthchecks': return '/static/img/favicon.svg';
-        case 'home-assistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
+        case 'homeassistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
         case 'homepage': return '/apple-touch-icon.png';
         case 'jellyfin': return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
         case 'kiwix': return '/skin/favicon/apple-touch-icon.png';

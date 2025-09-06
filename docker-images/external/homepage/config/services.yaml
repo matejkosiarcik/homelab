@@ -213,12 +213,12 @@
 - Smart Home:
     - Home Assistant:
         description: Smart Home system
-        href: https://home-assistant.matejhome.com
-        ping: home-assistant.matejhome.com
-        icon: /icons/home-assistant.png
+        href: https://homeassistant.matejhome.com
+        ping: homeassistant.matejhome.com
+        icon: /icons/homeassistant.png
         widget:
           type: homeassistant
-          url: https://home-assistant.matejhome.com
+          url: https://homeassistant.matejhome.com
           key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY}}"
           custom:
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"

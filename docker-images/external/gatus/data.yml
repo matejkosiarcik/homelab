@@ -230,7 +230,7 @@ apps:
       - path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS_PROMETHEUS_TOKEN}
 
   - name: Home Assistant
-    domain: home-assistant.matejhome.com
+    domain: homeassistant.matejhome.com
     endpoints:
       - path: /api/prometheus
         authentication:

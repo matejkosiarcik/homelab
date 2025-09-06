@@ -93,10 +93,10 @@ export const apps = {
             { url: 'https://healthchecks.matejhome.com', title: 'Healthchecks' },
         ],
     },
-    'home-assistant': {
+    homeassistant: {
         title: 'Home Assistant',
         instances: [
-            { url: 'https://home-assistant.matejhome.com', title: 'Home Assistant' },
+            { url: 'https://homeassistant.matejhome.com', title: 'Home Assistant' },
         ],
     },
     homepage: {
