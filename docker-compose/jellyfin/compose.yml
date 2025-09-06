@@ -13,7 +13,7 @@ services:
     networks:
       internal-network: {}
       external-network: {}
-    read_only: false # TODO: Fix
+    read_only: false # TODO: Enable readonly mode
     tmpfs:
       - /app:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /cache:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

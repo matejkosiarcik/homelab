@@ -20,7 +20,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     build:
       dockerfile: ./external/owntracks-frontend/Dockerfile
-    read_only: false # TODO: Find a way to enable readonly mode
+    read_only: false # TODO: Enable readonly mode
     tmpfs:
       - /run:rw,exec
       - /var/cache/nginx:rw
