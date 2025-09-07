@@ -47,10 +47,10 @@ export const apps = {
     'dozzle-agent': {
         title: 'Dozzle Agent',
         instances: [
-            { url: 'tcp://dozzle-agent-odroid-h3.matejhome.com', title: 'Dozzle Agent - Odroid H3' },
-            { url: 'tcp://dozzle-agent-odroid-h4-ultra.matejhome.com', title: 'Dozzle Agent - Odroid H4 Ultra' },
-            { url: 'tcp://dozzle-agent-raspberry-pi-4b-2g.matejhome.com', title: 'Dozzle Agent - Raspberry Pi 4B 2GB' },
-            { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.matejhome.com', title: 'Dozzle Agent - Raspberry Pi 4B 4GB' },
+            { url: 'tcp://dozzle-agent-odroid-h3.matejhome.com', title: 'Dozzle agent - Odroid H3' },
+            { url: 'tcp://dozzle-agent-odroid-h4-ultra.matejhome.com', title: 'Dozzle agent - Odroid H4 Ultra' },
+            { url: 'tcp://dozzle-agent-raspberry-pi-4b-2g.matejhome.com', title: 'Dozzle agent - Raspberry Pi 4B 2GB' },
+            { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.matejhome.com', title: 'Dozzle agent - Raspberry Pi 4B 4GB' },
         ],
     },
     gatus: {
@@ -94,9 +94,9 @@ export const apps = {
         ],
     },
     homeassistant: {
-        title: 'Home Assistant',
+        title: 'HomeAssistant',
         instances: [
-            { url: 'https://homeassistant.matejhome.com', title: 'Home Assistant' },
+            { url: 'https://homeassistant.matejhome.com', title: 'HomeAssistant' },
         ],
     },
     homepage: {
@@ -142,13 +142,13 @@ export const apps = {
             { url: 'https://ntfy.matejhome.com', title: 'Ntfy' },
         ],
     },
-    'node-exporter': {
-        title: 'Node Exporter',
+    nodeexporter: {
+        title: 'NodeExporter',
         instances: [
-            { url: 'https://node-exporter-odroid-h3.matejhome.com', title: 'Node Exporter - Odroid H3' },
-            { url: 'https://node-exporter-odroid-h4-ultra.matejhome.com', title: 'Node Exporter - Odroid H4 Ultra' },
-            { url: 'https://node-exporter-raspberry-pi-4b-2g.matejhome.com', title: 'Node Exporter - Raspberry Pi 4B 2GB' },
-            { url: 'https://node-exporter-raspberry-pi-4b-4g.matejhome.com', title: 'Node Exporter - Raspberry Pi 4B 4GB' },
+            { url: 'https://nodeexporter-odroid-h3.matejhome.com', title: 'NodeExporter - Odroid H3' },
+            { url: 'https://nodeexporter-odroid-h4-ultra.matejhome.com', title: 'NodeExporter - Odroid H4 Ultra' },
+            { url: 'https://nodeexporter-raspberry-pi-4b-2g.matejhome.com', title: 'NodeExporter - Raspberry Pi 4B 2GB' },
+            { url: 'https://nodeexporter-raspberry-pi-4b-4g.matejhome.com', title: 'NodeExporter - Raspberry Pi 4B 4GB' },
         ],
     },
     ollama: {
@@ -172,10 +172,10 @@ export const apps = {
         ],
     },
     openwebui: {
-        title: 'Open WebUI',
+        title: 'OpenWebUI',
         instances: [
-            { url: 'https://openwebui.matejhome.com', title: 'Open WebUI' },
-            { url: 'https://openwebui-private.matejhome.com', title: 'Open WebUI - Private' },
+            { url: 'https://openwebui.matejhome.com', title: 'OpenWebUI' },
+            { url: 'https://openwebui-private.matejhome.com', title: 'OpenWebUI - Private' },
         ],
     },
     owntracks: {
@@ -213,9 +213,9 @@ export const apps = {
         ],
     },
     speedtesttracker: {
-        title: 'Speedtest Tracker',
+        title: 'SpeedtestTracker',
         instances: [
-            { url: 'https://speedtesttracker.matejhome.com', title: 'Speedtest Tracker' },
+            { url: 'https://speedtesttracker.matejhome.com', title: 'SpeedtestTracker' },
         ],
     },
     tvheadend: {
@@ -246,9 +246,9 @@ export const apps = {
         ],
     },
     uptimekuma: {
-        title: 'Uptime Kuma',
+        title: 'UptimeKuma',
         instances: [
-            { url: 'https://uptimekuma.matejhome.com', title: 'Uptime Kuma' },
+            { url: 'https://uptimekuma.matejhome.com', title: 'UptimeKuma' },
         ],
     },
     vaultwarden: {

@@ -56,22 +56,22 @@ apps:
   - url: minio.matejhome.com
     auth: bearer
     path: /minio/v2/metrics/cluster
-  - url: node-exporter-macbook-pro-2012.matejhome.com
+  - url: nodeexporter-macbook-pro-2012.matejhome.com
     auth: basic
     path: /metrics
-  - url: node-exporter-odroid-h3.matejhome.com
+  - url: nodeexporter-odroid-h3.matejhome.com
     auth: basic
     path: /metrics
-  - url: node-exporter-odroid-h4-ultra.matejhome.com
+  - url: nodeexporter-odroid-h4-ultra.matejhome.com
     auth: basic
     path: /metrics
-  - url: node-exporter-raspberry-pi-3b.matejhome.com
+  - url: nodeexporter-raspberry-pi-3b.matejhome.com
     auth: basic
     path: /metrics
-  - url: node-exporter-raspberry-pi-4b-2g.matejhome.com
+  - url: nodeexporter-raspberry-pi-4b-2g.matejhome.com
     auth: basic
     path: /metrics
-  - url: node-exporter-raspberry-pi-4b-4g.matejhome.com
+  - url: nodeexporter-raspberry-pi-4b-4g.matejhome.com
     auth: basic
     path: /metrics
   - url: pihole-1-primary.matejhome.com
@@ -154,12 +154,12 @@ proxies:
   - url: minio-console.matejhome.com
   - url: minio.matejhome.com
   - url: motioneye-kitchen.matejhome.com
-  # - url: node-exporter-macbook-pro-2012.matejhome.com
-  - url: node-exporter-odroid-h3.matejhome.com
-  - url: node-exporter-odroid-h4-ultra.matejhome.com
-  # - url: node-exporter-raspberry-pi-3b.matejhome.com
-  - url: node-exporter-raspberry-pi-4b-2g.matejhome.com
-  - url: node-exporter-raspberry-pi-4b-4g.matejhome.com
+  # - url: nodeexporter-macbook-pro-2012.matejhome.com
+  - url: nodeexporter-odroid-h3.matejhome.com
+  - url: nodeexporter-odroid-h4-ultra.matejhome.com
+  # - url: nodeexporter-raspberry-pi-3b.matejhome.com
+  - url: nodeexporter-raspberry-pi-4b-2g.matejhome.com
+  - url: nodeexporter-raspberry-pi-4b-4g.matejhome.com
   - url: ntfy.matejhome.com
   - url: ollama-private.matejhome.com
   - url: ollama.matejhome.com

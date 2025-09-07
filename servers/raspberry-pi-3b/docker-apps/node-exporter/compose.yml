@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/node-exporter/compose.yml
-    project_directory: .

@@ -52,8 +52,8 @@ jobs:
               - '**/motioneye*/**'
             netalertx:
               - '**/netalertx*/**'
-            node-exporter:
-              - '**/node-exporter*/**'
+            nodeexporter:
+              - '**/nodeexporter*/**'
             ntfy:
               - '**/ntfy*/**'
             omada-controller:
@@ -122,7 +122,7 @@ jobs:
             printf '%s ' '"minio": ["/servers/odroid-h4-ultra/docker-apps/minio"],'
             printf '%s ' '"motioneye": ["/servers/raspberry-pi-4b-4g/docker-apps/motioneye-kitchen"],'
             printf '%s ' '"netalertx": ["/servers/odroid-h4-ultra/docker-apps/netalertx"],'
-            printf '%s ' '"node-exporter": ["/servers/odroid-h4-ultra/docker-apps/node-exporter"],'
+            printf '%s ' '"nodeexporter": ["/servers/odroid-h4-ultra/docker-apps/nodeexporter"],'
             printf '%s ' '"ntfy": ["/servers/odroid-h4-ultra/docker-apps/ntfy"],'
             printf '%s ' '"omada-controller": ["/servers/odroid-h4-ultra/docker-apps/omada-controller"],'
             printf '%s ' '"openspeedtest": ["/servers/odroid-h4-ultra/docker-apps/openspeedtest"],'
