@@ -44,7 +44,7 @@ const appAddress = (() => {
         case 'kiwix': return 'http://app:8080';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
-        case 'node-exporter': return ''; // http://app:9100
+        case 'nodeexporter': return ''; // http://app:9100
         case 'ntfy': return 'http://app:80';
         case 'ollama': return ''; // http://app:11434
         case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
@@ -87,7 +87,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
-        case 'node-exporter': return `@/homelab/icons/${appType}.png`;
+        case 'nodeexporter': return `@/homelab/icons/${appType}.png`;
         case 'ntfy': return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
         case 'ollama': return `@/homelab/icons/${appType}.png`;
         case 'omada-controller': return '/favicon.ico';

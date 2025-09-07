@@ -4,4 +4,4 @@ motioneye-kitchen
 # Misc monitoring
 dozzle-agent
 docker-stats
-node-exporter
+nodeexporter

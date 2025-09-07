@@ -42,7 +42,7 @@ updates:
       - /docker-images/external/mongodb
       - /docker-images/external/motioneye
       - /docker-images/external/netalertx
-      - /docker-images/external/node-exporter
+      - /docker-images/external/nodeexporter
       - /docker-images/external/ntfy
       - /docker-images/external/omada-controller
       - /docker-images/external/pihole

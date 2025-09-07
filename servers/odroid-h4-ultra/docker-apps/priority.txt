@@ -57,7 +57,7 @@ dozzle
 changedetection
 healthchecks
 # netalertx
-node-exporter
+nodeexporter
 docker-stats
 prometheus
 grafana

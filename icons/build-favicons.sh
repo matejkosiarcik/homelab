@@ -56,7 +56,7 @@ magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-tmp.png" -gravity Center 
 convert_image_full "$tmpdir/ollama-final.png" "$output_dir/ollama.png"
 
 ## Other ##
-convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/node-exporter.png"
+convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/nodeexporter.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$output_dir/docker-cache-proxy.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$output_dir/docker-stats.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dawarich.svg" "$output_dir/dawarich.png"

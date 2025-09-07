@@ -72,7 +72,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
         exit 1
     fi
-elif [ "$HOMELAB_APP_TYPE" = 'node-exporter' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'nodeexporter' ]; then
     PROXY_UPSTREAM_URL="http://app:9100"
 elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_UPSTREAM_URL="http://app"

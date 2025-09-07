@@ -571,34 +571,34 @@
         ping: glances-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/glances.png
 
-    - Node Exporter - MacBook Pro 2012:
+    - NodeExporter - MacBook Pro 2012:
         description: Resource monitoring
-        href: https://node-exporter-macbook-pro-2012.matejhome.com
-        ping: node-exporter-macbook-pro-2012.matejhome.com
+        href: https://nodeexporter-macbook-pro-2012.matejhome.com
+        ping: nodeexporter-macbook-pro-2012.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter - Odroid H3:
+    - NodeExporter - Odroid H3:
         description: Resource monitoring
-        href: https://node-exporter-odroid-h3.matejhome.com
-        ping: node-exporter-odroid-h3.matejhome.com
+        href: https://nodeexporter-odroid-h3.matejhome.com
+        ping: nodeexporter-odroid-h3.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter - Odroid H4 Ultra:
+    - NodeExporter - Odroid H4 Ultra:
         description: Resource monitoring
-        href: https://node-exporter-odroid-h4-ultra.matejhome.com
-        ping: node-exporter-odroid-h4-ultra.matejhome.com
+        href: https://nodeexporter-odroid-h4-ultra.matejhome.com
+        ping: nodeexporter-odroid-h4-ultra.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter - Raspberry Pi 4B 2GB:
+    - NodeExporter - Raspberry Pi 4B 2GB:
         description: Resource monitoring
-        href: https://node-exporter-raspberry-pi-4b-2g.matejhome.com
-        ping: node-exporter-raspberry-pi-4b-2g.matejhome.com
+        href: https://nodeexporter-raspberry-pi-4b-2g.matejhome.com
+        ping: nodeexporter-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/placeholder.png
 
-    - Node Exporter - Raspberry Pi 4B 4GB:
+    - NodeExporter - Raspberry Pi 4B 4GB:
         description: Resource monitoring
-        href: https://node-exporter-raspberry-pi-4b-4g.matejhome.com
-        ping: node-exporter-raspberry-pi-4b-4g.matejhome.com
+        href: https://nodeexporter-raspberry-pi-4b-4g.matejhome.com
+        ping: nodeexporter-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/placeholder.png
 
     - Docker Stats - MacBook Pro 2012:

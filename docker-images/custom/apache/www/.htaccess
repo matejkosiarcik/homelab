@@ -144,7 +144,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|glances|gatus|jellyfin|node-exporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|glances|gatus|jellyfin|nodeexporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -160,7 +160,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats|homepage|kiwix|node-exporter|ollama|owntracks)$# && %{REQUEST_URI} !~ m#^/metrics(?:/.*)?$# && %{REQUEST_URI} !~ m#^/\.apache(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.(?:ico|png)$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats|homepage|kiwix|nodeexporter|ollama|owntracks)$# && %{REQUEST_URI} !~ m#^/metrics(?:/.*)?$# && %{REQUEST_URI} !~ m#^/\.apache(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.(?:ico|png)$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file

@@ -142,13 +142,13 @@ export const apps = {
             { url: 'https://ntfy.matejhome.com', title: 'Ntfy' },
         ],
     },
-    'node-exporter': {
-        title: 'Node Exporter',
+    nodeexporter: {
+        title: 'NodeExporter',
         instances: [
-            { url: 'https://node-exporter-odroid-h3.matejhome.com', title: 'Node Exporter - Odroid H3' },
-            { url: 'https://node-exporter-odroid-h4-ultra.matejhome.com', title: 'Node Exporter - Odroid H4 Ultra' },
-            { url: 'https://node-exporter-raspberry-pi-4b-2g.matejhome.com', title: 'Node Exporter - Raspberry Pi 4B 2GB' },
-            { url: 'https://node-exporter-raspberry-pi-4b-4g.matejhome.com', title: 'Node Exporter - Raspberry Pi 4B 4GB' },
+            { url: 'https://nodeexporter-odroid-h3.matejhome.com', title: 'NodeExporter - Odroid H3' },
+            { url: 'https://nodeexporter-odroid-h4-ultra.matejhome.com', title: 'NodeExporter - Odroid H4 Ultra' },
+            { url: 'https://nodeexporter-raspberry-pi-4b-2g.matejhome.com', title: 'NodeExporter - Raspberry Pi 4B 2GB' },
+            { url: 'https://nodeexporter-raspberry-pi-4b-4g.matejhome.com', title: 'NodeExporter - Raspberry Pi 4B 4GB' },
         ],
     },
     ollama: {

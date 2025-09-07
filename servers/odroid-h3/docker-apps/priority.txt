@@ -9,7 +9,7 @@ pihole-2-secondary
 
 # Misc monitoring
 dozzle-agent
-node-exporter
+nodeexporter
 docker-stats
 
 # App Monitoring
