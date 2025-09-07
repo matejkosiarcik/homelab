@@ -60,15 +60,6 @@ export const apps = {
             { url: 'https://gatus-2.matejhome.com', title: 'Gatus 2' },
         ],
     },
-    glances: {
-        title: 'Glances',
-        instances: [
-            // { url: 'https://glances-odroid-h3.matejhome.com', title: 'Glances - Odroid H3' },
-            // { url: 'https://glances-odroid-h4-ultra.matejhome.com', title: 'Glances - Odroid H4 Ultra' },
-            // { url: 'https://glances-raspberry-pi-4b-2g.matejhome.com', title: 'Glances - Raspberry Pi 4B 2GB' },
-            // { url: 'https://glances-raspberry-pi-4b-4g.matejhome.com', title: 'Glances - Raspberry Pi 4B 4GB' },
-        ],
-    },
     gotify: {
         title: 'Gotify',
         instances: [
@@ -176,12 +167,6 @@ export const apps = {
         instances: [
             { url: 'https://openwebui.matejhome.com', title: 'OpenWebUI' },
             { url: 'https://openwebui-private.matejhome.com', title: 'OpenWebUI - Private' },
-        ],
-    },
-    owntracks: {
-        title: 'Owntracks',
-        instances: [
-            { url: 'https://owntracks.matejhome.com', backendUlr: 'https://owntracks.matejhome.com', title: 'Owntracks' },
         ],
     },
     pihole: {

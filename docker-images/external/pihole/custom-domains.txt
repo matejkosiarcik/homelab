@@ -27,7 +27,7 @@
 10.1.10.11 pihole-2-primary.matejhome.com
 10.1.10.12 pihole-2-secondary.matejhome.com
 # ...19 Reserved
-10.1.10.21 glances-odroid-h3.matejhome.com
+# 10.1.10.21 glances
 10.1.10.22 dozzle-agent-odroid-h3.matejhome.com
 10.1.10.23 nodeexporter-odroid-h3.matejhome.com
 10.1.10.24 docker-stats-odroid-h3.matejhome.com
@@ -36,7 +36,7 @@
 ### Raspberry Pi 3B ###
 
 10.1.12.1 tvheadend.matejhome.com
-10.1.12.2 glances-raspberry-pi-3b.matejhome.com
+# 10.1.12.2 glances
 10.1.12.3 dozzle-agent-raspberry-pi-3b.matejhome.com
 10.1.12.4 nodeexporter-raspberry-pi-3b.matejhome.com
 10.1.12.5 docker-stats-raspberry-pi-3b.matejhome.com
@@ -44,7 +44,7 @@
 ### Raspberry Pi 4B 2GB ###
 
 10.1.14.21 dozzle-agent-raspberry-pi-4b-2g.matejhome.com
-10.1.14.22 glances-raspberry-pi-4b-2g.matejhome.com
+# 10.1.14.22 glances
 10.1.14.23 nodeexporter-raspberry-pi-4b-2g.matejhome.com
 10.1.14.24 docker-stats-raspberry-pi-4b-2g.matejhome.com
 
@@ -52,7 +52,7 @@
 
 10.1.16.22 dozzle-agent-raspberry-pi-4b-4g.matejhome.com
 10.1.16.23 motioneye-kitchen.matejhome.com
-10.1.16.24 glances-raspberry-pi-4b-4g.matejhome.com
+# 10.1.16.24 glances
 10.1.16.25 nodeexporter-raspberry-pi-4b-4g.matejhome.com
 10.1.16.26 docker-stats-raspberry-pi-4b-4g.matejhome.com
 
@@ -61,7 +61,7 @@
 10.1.18.1 samba-data.matejhome.com
 10.1.18.2 samba-snapshots.matejhome.com
 10.1.18.3 dozzle-agent-macbook-pro-2012.matejhome.com
-10.1.18.4 glances-macbook-pro-2012.matejhome.com
+# 10.1.18.4 glances
 10.1.18.5 nodeexporter-macbook-pro-2012.matejhome.com
 10.1.18.6 docker-stats-macbook-pro-2012.matejhome.com
 
@@ -99,7 +99,7 @@
 10.1.20.41 dozzle-agent-odroid-h4-ultra.matejhome.com
 10.1.20.42 netalertx.matejhome.com
 10.1.20.43 vikunja.matejhome.com
-10.1.20.44 glances-odroid-h4-ultra.matejhome.com
+# 10.1.20.44 glances
 10.1.20.45 vaultwarden.matejhome.com
 10.1.20.46 prometheus.matejhome.com
 10.1.20.47 certbot.matejhome.com
@@ -115,6 +115,6 @@
 10.1.20.57 docker-stats-odroid-h4-ultra.matejhome.com
 10.1.20.58 ollama-private.matejhome.com
 10.1.20.59 openwebui-private.matejhome.com
-10.1.20.60 owntracks.matejhome.com
-10.1.20.61 owntracks-backend.matejhome.com
+# 10.1.20.60 owntracks frontend
+# 10.1.20.61 owntracks backend
 10.1.20.62 groceries.matejhome.com
