@@ -5,7 +5,7 @@ WORKDIR /homelab
 RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
 
-FROM healthchecks/healthchecks:v3.11.2.2
+FROM healthchecks/healthchecks:v3.11.2
 ARG UID=1000
 ARG GID=1000
 USER root
