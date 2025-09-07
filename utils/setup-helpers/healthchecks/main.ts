@@ -75,7 +75,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
             cron: '00 01 * * *',
         },
         {
-            name: 'Speedtest Tracker - App',
+            name: 'SpeedtestTracker - App',
             cron: '15 */4 * * *',
         },
     ];
@@ -135,7 +135,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Grafana',
         'Groceries',
         'Healthchecks',
-        'Home Assistant',
+        'HomeAssistant',
         'Homepage',
         'Jellyfin',
         'Kiwix - Wikipedia',
@@ -163,7 +163,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'PiHole - 2 Secondary',
         'Prometheus',
         'Smtp4dev',
-        'Speedtest Tracker',
+        'SpeedtestTracker',
         'Tvheadend',
         'Unbound - 1 Default',
         'Unbound - 1 Matej',
@@ -176,7 +176,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Unbound - 2 IoT',
         'Unbound - 2 Guests',
         'Unifi Controller',
-        'Uptime Kuma',
+        'UptimeKuma',
         'Vaultwarden',
         'Vikunja',
     ];
