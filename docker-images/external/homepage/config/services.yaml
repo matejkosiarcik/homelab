@@ -479,18 +479,6 @@
         #   key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
         #   enableTaskList: true
 
-    - Owntracks:
-        description: Location tracking
-        href: https://owntracks.matejhome.com
-        ping: owntracks.matejhome.com
-        icon: /icons/owntracks.png
-
-    - Owntracks [backend]:
-        description: Location tracking
-        href: https://owntracks-backend.matejhome.com
-        ping: owntracks-backend.matejhome.com
-        icon: /icons/owntracks.png
-
     - Dawarich:
         description: Location tracking
         href: https://dawarich.matejhome.com

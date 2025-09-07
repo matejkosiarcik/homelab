@@ -169,12 +169,6 @@ export const apps = {
             { url: 'https://openwebui-private.matejhome.com', title: 'OpenWebUI - Private' },
         ],
     },
-    owntracks: {
-        title: 'Owntracks',
-        instances: [
-            { url: 'https://owntracks.matejhome.com', backendUlr: 'https://owntracks.matejhome.com', title: 'Owntracks' },
-        ],
-    },
     pihole: {
         title: 'PiHole',
         instances: [

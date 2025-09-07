@@ -410,16 +410,6 @@ apps:
   - name: Open WebUI [private]
     domain: openwebui-private.matejhome.com
 
-  - name: Owntracks
-    domain: owntracks.matejhome.com
-    authentication:
-      basic: admin
-
-  - name: Owntracks [backend]
-    domain: owntracks-backend.matejhome.com
-    authentication:
-      basic: admin
-
   - name: Dawarich
     domain: dawarich.matejhome.com
     endpoints:
