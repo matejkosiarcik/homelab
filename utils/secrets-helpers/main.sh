@@ -586,7 +586,10 @@ case "$app_dirname" in
     ;;
 *homeassistant*)
     # App
-    printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
+    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
+    printf 'viewer,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -774,7 +777,7 @@ case "$app_dirname" in
 *omadacontroller*)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
-    printf 'readonly,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app readonly)" >>"$initial_output/all-credentials.csv"
+    printf 'viewer,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)" >>"$initial_output/all-credentials.csv"
     printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
@@ -1101,7 +1104,7 @@ case "$app_dirname" in
 *unificontroller*)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
-    printf 'readonly,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app readonly)" >>"$initial_output/all-credentials.csv"
+    printf 'viewer,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app viewer)" >>"$initial_output/all-credentials.csv"
     printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
 
     # Database
