@@ -163,7 +163,7 @@ load_password() {
     printf 'MINIO_CONSOLE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password minio apache status)"
     printf 'MINIO_CONSOLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password minio apache prometheus)"
 
-    printf 'MOTIONEYE_KITCHEN_MATEJ_PASSWORD=%s\n' "$(load_password motioneye-kitchen app matej)"
+    printf 'MOTIONEYE_KITCHEN_ADMIN_PASSWORD=%s\n' "$(load_password motioneye-kitchen app admin)"
     printf 'MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_password motioneye-kitchen app stream)"
     printf 'MOTIONEYE_KITCHEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache status)"
     printf 'MOTIONEYE_KITCHEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache prometheus)"
@@ -218,7 +218,7 @@ load_password() {
     printf 'OLLAMA_PRIVATE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama-private apache status)"
     printf 'OLLAMA_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama-private apache prometheus)"
 
-    printf 'OMADA_CONTROLLER_READONLY_PASSWORD=%s\n' "$(load_password omadacontroller app readonly)"
+    printf 'OMADA_CONTROLLER_VIEWER_PASSWORD=%s\n' "$(load_password omadacontroller app viewer)"
     printf 'OMADA_CONTROLLER_TEST_PASSWORD=%s\n' "$(load_password omadacontroller app test)"
     printf 'OMADA_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password omadacontroller apache status)"
     printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password omadacontroller apache prometheus)"
@@ -316,7 +316,7 @@ load_password() {
     printf 'UNBOUND_2_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache status)"
     printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache prometheus)"
 
-    printf 'UNIFI_CONTROLLER_READONLY_PASSWORD=%s\n' "$(load_password unificontroller app readonly)"
+    printf 'UNIFI_CONTROLLER_VIEWER_PASSWORD=%s\n' "$(load_password unificontroller app viewer)"
     printf 'UNIFI_CONTROLLER_TEST_PASSWORD=%s\n' "$(load_password unificontroller app test)"
     printf 'UNIFI_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unificontroller apache status)"
     printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unificontroller apache prometheus)"
