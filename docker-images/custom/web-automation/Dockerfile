@@ -65,7 +65,7 @@ RUN --mount=type=cache,target=/root/.cache/ms-playwright \
     mkdir -p /backup /log
 COPY --from=nodejs-build /homelab/dist ./dist
 COPY ./custom/web-automation/main.sh ./
-COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omada-controller-backup.cron ./custom/web-automation/crontab-unifi-controller-backup.cron ./
+COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omadacontroller-backup.cron ./custom/web-automation/crontab-unificontroller-backup.cron ./
 
 FROM node:24.7.0-slim
 ARG UID=1000

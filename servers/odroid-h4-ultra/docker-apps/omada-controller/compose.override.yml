@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/omada-controller/compose.override-dev.yml
-    project_directory: .

@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/unifi-controller/compose.yml
-    project_directory: .

@@ -31,13 +31,13 @@ export function getTargetUrl(): string {
             case 'homeassistant': {
                 return 'http://homeassistant:8123';
             }
-            case 'omada-controller': {
-                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://omada-controller:8443' : 'https://omada-controller';
+            case 'omadacontroller': {
+                return process.env['HOMELAB_ENV'] === 'dev' ? 'https://omadacontroller:8443' : 'https://omadacontroller';
             }
             case 'pihole': {
                 return 'http://pihole';
             }
-            case 'unifi-controller': {
+            case 'unificontroller': {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'https://unifi-network-application:8443' : 'https://unifi-network-application:8443';
             }
             default: {

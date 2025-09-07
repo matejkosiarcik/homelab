@@ -21,8 +21,8 @@ type OmadaControllerStatusResponse = {
     },
 };
 
-test.describe(apps['omada-controller'].title, () => {
-    for (const instance of apps['omada-controller'].instances) {
+test.describe(apps.omadacontroller.title, () => {
+    for (const instance of apps.omadacontroller.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

@@ -158,10 +158,10 @@ export const apps = {
             { url: 'https://ollama-private.matejhome.com', title: 'Ollama - Private' },
         ],
     },
-    'omada-controller': {
-        title: 'Omada Controller',
+    omadacontroller: {
+        title: 'OmadaController',
         instances: [
-            { url: 'https://omada-controller.matejhome.com', title: 'Omada Controller' },
+            { url: 'https://omadacontroller.matejhome.com', title: 'OmadaController' },
         ],
     },
     openspeedtest: {
@@ -239,10 +239,10 @@ export const apps = {
             { url: 'https://unbound-2-guests.matejhome.com', title: 'Unbound 2 Guests' },
         ]
     },
-    'unifi-controller': {
-        title: 'UniFi Controller',
+    unificontroller: {
+        title: 'UniFiController',
         instances: [
-            { url: 'https://unifi-controller.matejhome.com', title: 'UniFi Controller' },
+            { url: 'https://unificontroller.matejhome.com', title: 'UniFiController' },
         ],
     },
     uptimekuma: {

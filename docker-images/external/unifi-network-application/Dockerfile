@@ -17,7 +17,7 @@ RUN head -n 1 /init >/homelab/entrypoint-shebang.sh && \
     tail -n +2 /init >/homelab/entrypoint-without-shebang.sh && \
     cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/init
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
-    HOMELAB_CONTAINER_NAME=unifi-controller \
+    HOMELAB_CONTAINER_NAME=unificontroller \
     HOMELAB_CONTAINER_VARIANT=default \
     MEM_LIMIT=2048 \
     MEM_STARTUP=2048 \

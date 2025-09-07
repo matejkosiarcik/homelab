@@ -56,7 +56,8 @@ jobs:
               - '**/nodeexporter*/**'
             ntfy:
               - '**/ntfy*/**'
-            omada-controller:
+            omadacontroller:
+              - '**/omadacontroller*/**'
               - '**/omada-controller*/**'
             openspeedtest:
               - '**/openspeedtest*/**'
@@ -73,8 +74,8 @@ jobs:
               - '**/tvheadend*/**'
             unbound:
               - '**/unbound*/**'
-            unifi-controller:
-              - '**/unifi-controller*/**'
+            unificontroller:
+              - '**/unificontroller*/**'
               - '**/unifi-network-application*/**'
             uptimekuma:
               - '**/uptimekuma*/**'
@@ -124,7 +125,7 @@ jobs:
             printf '%s ' '"netalertx": ["/servers/odroid-h4-ultra/docker-apps/netalertx"],'
             printf '%s ' '"nodeexporter": ["/servers/odroid-h4-ultra/docker-apps/nodeexporter"],'
             printf '%s ' '"ntfy": ["/servers/odroid-h4-ultra/docker-apps/ntfy"],'
-            printf '%s ' '"omada-controller": ["/servers/odroid-h4-ultra/docker-apps/omada-controller"],'
+            printf '%s ' '"omadacontroller": ["/servers/odroid-h4-ultra/docker-apps/omadacontroller"],'
             printf '%s ' '"openspeedtest": ["/servers/odroid-h4-ultra/docker-apps/openspeedtest"],'
             printf '%s %s %s' \
               '"pihole":' \
@@ -135,7 +136,7 @@ jobs:
             printf '%s ' '"speedtesttracker": ["/servers/odroid-h4-ultra/docker-apps/speedtesttracker"],'
             printf '%s ' '"tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],'
             printf '%s ' '"unbound": ["/servers/odroid-h4-ultra/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],'
-            printf '%s ' '"unifi-controller": ["/servers/raspberry-pi-4b-4g/docker-apps/unifi-controller"]'
+            printf '%s ' '"unificontroller": ["/servers/raspberry-pi-4b-4g/docker-apps/unificontroller"]'
             printf '%s ' '}'
           } | jq ".${{ matrix.component }}" | sponge 'components.txt'
           cat 'components.txt'

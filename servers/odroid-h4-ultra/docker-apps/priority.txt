@@ -17,8 +17,8 @@ docker-cache-proxy-dockerhub
 jellyfin
 
 # Network controllers
-omada-controller
-unifi-controller
+omadacontroller
+unificontroller
 
 # Home automation
 homeassistant

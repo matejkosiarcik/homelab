@@ -2,8 +2,8 @@ import typescript from '@rollup/plugin-typescript';
 
 const files = {
     'homeassistant': ['backup.ts'],
-    'omada-controller': ['backup.ts'],
-    'unifi-controller': ['backup.ts'],
+    'omadacontroller': ['backup.ts'],
+    'unificontroller': ['backup.ts'],
 };
 
 const exportArray = Object.entries(files).map(([directory, files]) => ({
