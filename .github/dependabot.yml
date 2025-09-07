@@ -31,7 +31,6 @@ updates:
       - /docker-images/external/docker-registry
       - /docker-images/external/dozzle
       - /docker-images/external/gatus
-      - /docker-images/external/glances
       - /docker-images/external/gotify
       - /docker-images/external/healthchecks
       - /docker-images/external/homeassistant
