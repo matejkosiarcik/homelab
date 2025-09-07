@@ -1,6 +1,6 @@
 # UniFi Controller
 
-![diagram](../../docs/diagrams/out/apps/unifi-controller.png)
+![diagram](../../docs/diagrams/out/apps/unificontroller.png)
 
 ## Docs
 

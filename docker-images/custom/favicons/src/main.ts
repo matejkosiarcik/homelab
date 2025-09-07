@@ -47,7 +47,7 @@ const appAddress = (() => {
         case 'nodeexporter': return ''; // http://app:9100
         case 'ntfy': return 'http://app:80';
         case 'ollama': return ''; // http://app:11434
-        case 'omada-controller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
+        case 'omadacontroller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
         case 'openwebui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'owntracks': return 'http://app-backend:8083';
@@ -58,7 +58,7 @@ const appAddress = (() => {
         case 'speedtesttracker': return 'https://app';
         case 'tvheadend': return 'http://app:9981';
         case 'unbound': return ''; // http://app:8080
-        case 'unifi-controller': return 'https://app:8443';
+        case 'unificontroller': return 'https://app:8443';
         case 'uptimekuma': return 'http://app:3001';
         case 'vaultwarden': return 'http://app:80';
         case 'vikunja': return 'http://app:3456';
@@ -90,7 +90,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'nodeexporter': return `@/homelab/icons/${appType}.png`;
         case 'ntfy': return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
         case 'ollama': return `@/homelab/icons/${appType}.png`;
-        case 'omada-controller': return '/favicon.ico';
+        case 'omadacontroller': return '/favicon.ico';
         case 'openwebui': return '/static/favicon.svg';
         case 'openspeedtest': return '/assets/images/icons/apple-touch-icon.png';
         case 'owntracks': return '/static/recorder.png'; // <- Backend, '/favicon.ico' <- Frontend
@@ -101,7 +101,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'speedtesttracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
         case 'unbound': return `@/homelab/icons/${appType}.png`;
-        case 'unifi-controller': return '/manage/angular/g0da6a4ab3/images/favicons/favicon-192.png';
+        case 'unificontroller': return '/manage/angular/g0da6a4ab3/images/favicons/favicon-192.png';
         case 'uptimekuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
         case 'vikunja': return '/images/icons/apple-touch-icon-180x180.png';

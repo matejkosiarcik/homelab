@@ -367,7 +367,7 @@ apps:
       basic: admin
 
   - name: Omada Controller
-    domain: omada-controller.matejhome.com
+    domain: omadacontroller.matejhome.com
     additional_ports:
       other:
         - 29811
@@ -628,7 +628,7 @@ apps:
           basic: prometheus
 
   - name: Unifi Controller
-    domain: unifi-controller.matejhome.com
+    domain: unificontroller.matejhome.com
     additional_ports:
       other:
         - 6789

@@ -47,7 +47,7 @@ export async function runAutomation<T>(callback: (page: Page) => Promise<T>, _op
     let isBrowserOpen = true;
     try {
         const page = await browser.newPage({ baseURL: options.baseUrl, strictSelectors: true, ignoreHTTPSErrors: true, recordVideo: { dir: tmpDir } });
-        if (['omada-controller', 'unifi-controller'].includes(getAppName())) {
+        if (['omadacontroller', 'unificontroller'].includes(getAppName())) {
             page.setDefaultNavigationTimeout(15_000);
             page.setDefaultTimeout(5000);
         } else if (['pihole'].includes(getAppName())) {

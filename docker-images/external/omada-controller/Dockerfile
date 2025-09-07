@@ -6,7 +6,7 @@ ARG UID=1000
 ARG GID=1000
 RUN ( groupadd -g "$GID" omada || groupmod --new-name omada "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" omada || usermod --login omada "$(getent passwd "$UID" | cut -d: -f1)" )
-ENV HOMELAB_CONTAINER_NAME=omada-controller \
+ENV HOMELAB_CONTAINER_NAME=omadacontroller \
     HOMELAB_CONTAINER_VARIANT=default \
     PUID=$UID \
     PGID=$GID \

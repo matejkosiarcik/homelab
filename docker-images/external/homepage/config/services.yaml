@@ -25,23 +25,23 @@
 
     - UniFi Controller:
         description: SDN manager
-        href: https://unifi-controller.matejhome.com
-        ping: unifi-controller.matejhome.com
+        href: https://unificontroller.matejhome.com
+        ping: unificontroller.matejhome.com
         icon: /icons/unifi.png
         widget:
           type: unifi
-          url: https://unifi-controller.matejhome.com
+          url: https://unificontroller.matejhome.com
           username: readonly
           password: "{{HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD}}"
 
     - Omada Controller:
         description: SDN manager
-        href: https://omada-controller.matejhome.com
-        ping: omada-controller.matejhome.com
+        href: https://omadacontroller.matejhome.com
+        ping: omadacontroller.matejhome.com
         icon: /icons/tp-link-omada.png
         widget:
           type: omada
-          url: https://omada-controller.matejhome.com
+          url: https://omadacontroller.matejhome.com
           username: readonly
           password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
           site: Home

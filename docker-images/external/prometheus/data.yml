@@ -163,7 +163,7 @@ proxies:
   - url: ntfy.matejhome.com
   - url: ollama-private.matejhome.com
   - url: ollama.matejhome.com
-  - url: omada-controller.matejhome.com
+  - url: omadacontroller.matejhome.com
   - url: openspeedtest.matejhome.com
   - url: openwebui-private.matejhome.com
   - url: openwebui.matejhome.com
@@ -186,7 +186,7 @@ proxies:
   - url: unbound-2-monika.matejhome.com
   - url: unbound-2-iot.matejhome.com
   - url: unbound-2-guests.matejhome.com
-  - url: unifi-controller.matejhome.com
+  - url: unificontroller.matejhome.com
   - url: uptimekuma.matejhome.com
   - url: vaultwarden.matejhome.com
   - url: wikipedia.matejhome.com

@@ -1,6 +1,6 @@
 # TP-Link Omada SDN Controller
 
-![diagram](../../docs/diagrams/out/apps/omada-controller.png)
+![diagram](../../docs/diagrams/out/apps/omadacontroller.png)
 
 ## Docs
 

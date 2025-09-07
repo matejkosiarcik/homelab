@@ -76,8 +76,8 @@
 10.1.20.11 pihole-1-primary.matejhome.com
 10.1.20.12 pihole-1-secondary.matejhome.com
 # ...19 Reserved
-10.1.20.21 unifi-controller.matejhome.com
-10.1.20.22 omada-controller.matejhome.com
+10.1.20.21 unificontroller.matejhome.com
+10.1.20.22 omadacontroller.matejhome.com
 10.1.20.23 docker-cache-proxy-dockerhub.matejhome.com
 10.1.20.24 homeassistant.matejhome.com
 10.1.20.25 jellyfin.matejhome.com

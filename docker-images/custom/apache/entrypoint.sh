@@ -78,7 +78,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'ollama' ]; then
     PROXY_UPSTREAM_URL="http://app:11434"
-elif [ "$HOMELAB_APP_TYPE" = 'omada-controller' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'omadacontroller' ]; then
     if [ "$HOMELAB_ENV" = 'dev' ]; then
         PROXY_UPSTREAM_URL="https://app:8443"
     elif [ "$HOMELAB_ENV" = 'prod' ]; then
@@ -114,7 +114,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     PROXY_UPSTREAM_URL="http://app:9981"
 elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
     PROXY_UPSTREAM_URL='http://not-found'
-elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'unificontroller' ]; then
     PROXY_UPSTREAM_URL="https://app:8443"
 elif [ "$HOMELAB_APP_TYPE" = 'uptimekuma' ]; then
     PROXY_UPSTREAM_URL="http://app:3001"
@@ -154,14 +154,14 @@ export PROXY_HTTP_PORT
 # Set PROXY_HTTPS_PORT
 if [ "$HOMELAB_ENV" = 'prod' ]; then
     PROXY_HTTPS_PORT='443'
-    if [ "$HOMELAB_APP_TYPE" = 'omada-controller' ] || [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
+    if [ "$HOMELAB_APP_TYPE" = 'omadacontroller' ] || [ "$HOMELAB_APP_TYPE" = 'unificontroller' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
             PROXY_HTTPS_PORT='444'
         fi
     fi
 elif [ "$HOMELAB_ENV" = 'dev' ]; then
     PROXY_HTTPS_PORT='8443'
-    if [ "$HOMELAB_APP_TYPE" = 'omada-controller' ] || [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ]; then
+    if [ "$HOMELAB_APP_TYPE" = 'omadacontroller' ] || [ "$HOMELAB_APP_TYPE" = 'unificontroller' ]; then
         if [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
             PROXY_HTTPS_PORT='8444'
         fi
@@ -177,7 +177,7 @@ if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
     PROXY_FORCE_HTTPS='false'
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
     PROXY_FORCE_HTTPS='false'
-elif [ "$HOMELAB_APP_TYPE" = 'unifi-controller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
+elif [ "$HOMELAB_APP_TYPE" = 'unificontroller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 else
     PROXY_FORCE_HTTPS='true'

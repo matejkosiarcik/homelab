@@ -14,8 +14,8 @@ type UnifiControllerStatusResponse = {
     data: unknown[],
 };
 
-test.describe(apps['unifi-controller'].title, () => {
-    for (const instance of apps['unifi-controller'].instances) {
+test.describe(apps.unificontroller.title, () => {
+    for (const instance of apps.unificontroller.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

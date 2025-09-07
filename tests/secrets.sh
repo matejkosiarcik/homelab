@@ -218,10 +218,10 @@ load_password() {
     printf 'OLLAMA_PRIVATE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama-private apache status)"
     printf 'OLLAMA_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama-private apache prometheus)"
 
-    printf 'OMADA_CONTROLLER_READONLY_PASSWORD=%s\n' "$(load_password omada-controller app readonly)"
-    printf 'OMADA_CONTROLLER_TEST_PASSWORD=%s\n' "$(load_password omada-controller app test)"
-    printf 'OMADA_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password omada-controller apache status)"
-    printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password omada-controller apache prometheus)"
+    printf 'OMADA_CONTROLLER_READONLY_PASSWORD=%s\n' "$(load_password omadacontroller app readonly)"
+    printf 'OMADA_CONTROLLER_TEST_PASSWORD=%s\n' "$(load_password omadacontroller app test)"
+    printf 'OMADA_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password omadacontroller apache status)"
+    printf 'OMADA_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password omadacontroller apache prometheus)"
 
     printf 'OPENWEBUI_ADMIN_PASSWORD=%s\n' "$(load_password openwebui app admin)"
     printf 'OPENWEBUI_PROXY_STATUS_PASSWORD=%s\n' "$(load_password openwebui apache status)"
@@ -316,10 +316,10 @@ load_password() {
     printf 'UNBOUND_2_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache status)"
     printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache prometheus)"
 
-    printf 'UNIFI_CONTROLLER_READONLY_PASSWORD=%s\n' "$(load_password unifi-controller app readonly)"
-    printf 'UNIFI_CONTROLLER_TEST_PASSWORD=%s\n' "$(load_password unifi-controller app test)"
-    printf 'UNIFI_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unifi-controller apache status)"
-    printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unifi-controller apache prometheus)"
+    printf 'UNIFI_CONTROLLER_READONLY_PASSWORD=%s\n' "$(load_password unificontroller app readonly)"
+    printf 'UNIFI_CONTROLLER_TEST_PASSWORD=%s\n' "$(load_password unificontroller app test)"
+    printf 'UNIFI_CONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unificontroller apache status)"
+    printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unificontroller apache prometheus)"
 
     printf 'UPTIME_KUMA_MATEJ_PASSWORD=%s\n' "$(load_password uptimekuma app matej)"
     printf 'UPTIME_KUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptimekuma app prometheus)"
