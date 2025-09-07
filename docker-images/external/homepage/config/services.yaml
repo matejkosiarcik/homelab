@@ -31,7 +31,7 @@
         widget:
           type: unifi
           url: https://unificontroller.matejhome.com
-          username: readonly
+          username: viewer
           password: "{{HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD}}"
 
     - Omada Controller:
@@ -42,7 +42,7 @@
         widget:
           type: omada
           url: https://omadacontroller.matejhome.com
-          username: readonly
+          username: viewer
           password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
           site: Home
           fields: ["activeUser", "alerts"]
