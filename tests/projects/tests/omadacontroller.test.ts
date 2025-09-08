@@ -72,12 +72,12 @@ test.describe(apps.omadacontroller.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'Random user',
-                    user: faker.string.alpha(10),
-                },
-                {
                     title: 'User test',
                     user: 'test',
+                },
+                {
+                    title: 'Random user',
+                    user: faker.string.alpha(10),
                 },
             ];
             for (const variant of invalidUsers) {

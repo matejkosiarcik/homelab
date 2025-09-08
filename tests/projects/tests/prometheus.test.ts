@@ -32,24 +32,24 @@ test.describe(apps.prometheus.title, () => {
                     random: true,
                 }
             ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`API: Successful get root - User ${variant.username}`, async () => {
+            for (const user of users) {
+                if (!user.random) {
+                    test(`API: Successful get root - User ${user.username}`, async () => {
                         const response = await axios.get(instance.url, {
                             beforeRedirect: (opts) => {
                                 opts['headers'] = {
-                                    Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                                    Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
                                 };
                             },
                             headers: {
-                                Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
                             },
                         });
                         expect(response.status, 'Response Status').toStrictEqual(200);
                     });
 
-                    test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
+                    test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
                         await page.goto(instance.url);
                         await expect(page.locator('#root header:has-text("Prometheus")')).toBeVisible({ timeout: 10_000 });
                         await expect(page.locator('#root header a:has-text("Query")')).toBeVisible();
@@ -58,34 +58,34 @@ test.describe(apps.prometheus.title, () => {
                     });
                 }
 
-                test(`API: Unsuccessful get root with bad password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful get root with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(instance.url, {
                         auth: {
-                            username: variant.username,
+                            username: user.username,
                             password: faker.string.alphanumeric(10),
                         },
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
-                test(`API: Unsuccessful get root without password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful get root without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(instance.url, {
                         auth: {
-                            username: variant.username,
+                            username: user.username,
                             password: '',
                         },
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
-                test(`UI: Unsuccessful open with bad password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                test(`UI: Unsuccessful open with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
                 });
 
-                test(`UI: Unsuccessful open without password - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:`).toString('base64')}` });
+                test(`UI: Unsuccessful open without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
                 });
