@@ -56,18 +56,18 @@ test.describe(apps.smtp4dev.title, () => {
                     random: true,
                 }
             ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
+            for (const user of users) {
+                if (!user.random) {
+                    test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
                         await page.goto(instance.url);
                         await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
                     });
 
-                    test(`API: Successful messages - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                    test(`API: Successful messages - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                         const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
                             auth: {
-                                username: variant.username,
+                                username: user.username,
                                 password: getEnv(instance.url, 'ADMIN_PASSWORD'),
                             },
                         });
@@ -75,8 +75,8 @@ test.describe(apps.smtp4dev.title, () => {
                     });
                 }
 
-                test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     try {
                         await page.goto(instance.url);
                     } catch {
@@ -85,10 +85,10 @@ test.describe(apps.smtp4dev.title, () => {
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
 
-                test(`API: Unsuccessful messages - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful messages - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
                         auth: {
-                            username: variant.username,
+                            username: user.username,
                             password: faker.string.alpha(10),
                         },
                         validateStatus: () => true,

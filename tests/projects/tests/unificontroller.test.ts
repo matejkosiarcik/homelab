@@ -58,12 +58,12 @@ test.describe(apps.unificontroller.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'Random user',
-                    username: faker.string.alpha(10),
-                },
-                {
                     title: 'User test',
                     username: 'test',
+                },
+                {
+                    title: 'Random user',
+                    username: faker.string.alpha(10),
                 },
             ];
             for (const user of invalidUsers) {

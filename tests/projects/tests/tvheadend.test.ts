@@ -39,21 +39,21 @@ test.describe(apps.tvheadend.title, () => {
 
             const validUsers = [
                 {
-                    user: 'test',
+                    username: 'test',
                 },
                 {
-                    user: 'stream',
+                    username: 'stream',
                 },
             ];
-            for (const variant of validUsers) {
-                test(`UI: Successful open - User ${variant.user}`, async ({ browser }) => {
-                    const page = await browser.newPage({ httpCredentials: { username: variant.user, password: getEnv(instance.url, `${variant.user}_PASSWORD`) } });
+            for (const user of validUsers) {
+                test(`UI: Successful open - User ${user.username}`, async ({ browser }) => {
+                    const page = await browser.newPage({ httpCredentials: { username: user.username, password: getEnv(instance.url, `${user.username}_PASSWORD`) } });
                     try {
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/extjs.html`);
                         await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
                         await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
-                        await expect(page.locator(`.x-tab-panel-header .x-tab-strip-text:has-text("Logged in as ${variant.user}")`)).toBeVisible({ timeout: 10_000 });
+                        await expect(page.locator(`.x-tab-panel-header .x-tab-strip-text:has-text("Logged in as ${user.username}")`)).toBeVisible({ timeout: 10_000 });
                     } finally {
                         await page.close();
                     }
@@ -62,17 +62,17 @@ test.describe(apps.tvheadend.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'Random user',
-                    user: faker.string.alpha(10),
+                    title: 'User test',
+                    username: 'test',
                 },
                 {
-                    title: 'User test',
-                    user: 'test',
+                    title: 'Random user',
+                    username: faker.string.alpha(10),
                 },
             ];
-            for (const variant of invalidUsers) {
-                test(`UI: Unsuccessful open - ${variant.title}`, async ({ browser }) => {
-                    const page = await browser.newPage({ httpCredentials: { username: variant.user, password: faker.string.alpha(10) } });
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful open - ${user.title}`, async ({ browser }) => {
+                    const page = await browser.newPage({ httpCredentials: { username: user.username, password: faker.string.alpha(10) } });
                     try {
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/extjs.html`);
