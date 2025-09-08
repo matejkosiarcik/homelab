@@ -24,36 +24,40 @@ test.describe(apps.speedtesttracker.title, () => {
                 expect(body.message, 'Response Message').toMatch(/.+/);
             });
 
-            const users = [
+            const validUsers = [
                 {
-                    username: 'admin',
-                    email: 'admin@speedtesttracker.matejhome.com',
+                    email: 'matej@matejhome.com'
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
+                    await page.goto(`${instance.url}/admin/login`);
+                    await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                    await page.locator('form input[id="data.email"][type="email"]').fill(user.email);
+                    await page.locator('form input[id="data.password"][type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                    await page.locator('form button:has-text("Sign in")').click();
+                    await page.waitForURL(`${instance.url}/admin`);
+                    await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
+                    await expect(page.locator('main .fi-wi-stats-overview-stat').first()).toBeVisible();
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    title: 'Random user',
+                    email: `${faker.string.alpha(10)}@matejhome.com`,
                 },
                 {
-                    username: faker.string.alpha(10),
-                    email: `${faker.string.alpha(10)}@speedtesttracker.matejhome.com`,
-                    random: true,
-                }
+                    title: 'User matej',
+                    email: 'matej@matejhome.com',
+                },
             ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await page.goto(`${instance.url}/admin/login`);
-                        await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                        await page.locator('form input[id="data.email"][type="email"]').fill(variant.email);
-                        await page.locator('form input[id="data.password"][type="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await page.locator('form button:has-text("Sign in")').click();
-                        await page.waitForURL(`${instance.url}/admin`);
-                        await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
-                        await expect(page.locator('main .fi-wi-stats-overview-stat').first()).toBeVisible();
-                    });
-                }
-
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
                     await page.goto(`${instance.url}/admin/login`);
                     await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
                     const originalUrl = page.url();
-                    await page.locator('form input[id="data.email"][type="email"]').fill(variant.email);
+                    await page.locator('form input[id="data.email"][type="email"]').fill(user.email);
                     await page.locator('form input[id="data.password"][type="password"]').fill(faker.string.alpha(10));
                     await page.locator('form button:has-text("Sign in")').click();
                     await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
