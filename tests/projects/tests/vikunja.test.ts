@@ -14,32 +14,40 @@ test.describe(apps.vikunja.title, () => {
             createFaviconTests(instance.url);
             // TODO: Prometheus tests
 
-            test(`UI: Successful login - User test`, async ({ page }) => {
-                // Load page
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login`);
-                await expect(page.locator('form#loginform')).toBeVisible();
-
-                // Fill in form
-                await page.locator('form#loginform input#username').fill('test');
-                await page.locator('form#loginform input#password').fill(getEnv(instance.url, 'TEST_PASSWORD'));
-                await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
-
-                // Verify login
-                await expect(page.locator('aside li .project-menu-title:has-text("Inbox")')).toBeVisible();
-            });
-
-            const users = [
+            const validUsers = [
                 {
                     username: 'test',
                 },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
             ];
-            for (const variant of users) {
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+            for (const user of validUsers) {
+                test(`UI: Successful login - User ${user}`, async ({ page }) => {
+                    // Load page
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/login`);
+                    await expect(page.locator('form#loginform')).toBeVisible();
+
+                    // Fill in form
+                    await page.locator('form#loginform input#username').fill(user.username);
+                    await page.locator('form#loginform input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
+
+                    // Verify login
+                    await expect(page.locator('aside li .project-menu-title:has-text("Inbox")')).toBeVisible();
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    title: 'Random user',
+                    username: faker.string.alpha(10),
+                },
+                {
+                    title: 'User test',
+                    username: 'test',
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
                     // Load page
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);
@@ -47,7 +55,7 @@ test.describe(apps.vikunja.title, () => {
                     await expect(page.locator('form#loginform')).toBeVisible();
 
                     // Fill in form
-                    await page.locator('form#loginform input#username').fill('test');
+                    await page.locator('form#loginform input#username').fill(user.username);
                     await page.locator('form#loginform input#password').fill(faker.string.alphanumeric(10));
                     await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
 

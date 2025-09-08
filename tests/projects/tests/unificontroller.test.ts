@@ -35,42 +35,48 @@ test.describe(apps.unificontroller.title, () => {
                 expect(body.data, 'Response body .data').toHaveLength(0);
             });
 
+            const validUsers = [
+                {
+                    username: 'test',
+                },
+                {
+                    username: 'viewer'
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
+                    await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
+                    await page.locator('form input[name="username"]').fill(user.username);
+                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('button#loginButton').click();
+                    await page.waitForURL(`${instance.url}/manage/default/dashboard`, { timeout: 30_000 });
+                    await expect(page.locator('#unifi-network-app-container [data-testid="activity-insights-graph"]')).toBeVisible({ timeout: 20_000 });
+                });
+            }
 
             const invalidUsers = [
                 {
                     title: 'Random user',
-                    user: faker.string.alpha(10),
+                    username: faker.string.alpha(10),
                 },
                 {
                     title: 'User test',
-                    user: 'test',
+                    username: 'test',
                 },
             ];
-            for (const variant of invalidUsers) {
-                test(`UI: Unsuccessful login - ${variant.title}`, async ({ page }) => {
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
                     await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
                     const originalUrl = page.url();
-                    await page.locator('form input[name="username"]').fill(faker.string.alpha(10));
+                    await page.locator('form input[name="username"]').fill(user.username);
                     await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('button#loginButton').click();
                     await expect(page.locator('.appInfoBox--danger:has-text("Invalid username and/or password.")')).toBeVisible();
                     await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                });
-            }
-
-            const validUsers = ['test', 'readonly'];
-            for (const variant of validUsers) {
-                test(`UI: Successful login - User ${variant}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
-                    await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
-                    await page.locator('form input[name="username"]').fill(variant);
-                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${variant.toUpperCase()}_PASSWORD`));
-                    await page.locator('button#loginButton').click();
-                    await page.waitForURL(`${instance.url}/manage/default/dashboard`, { timeout: 30_000 });
-                    await expect(page.locator('#unifi-network-app-container [data-testid="activity-insights-graph"]')).toBeVisible({ timeout: 20_000 });
                 });
             }
         });

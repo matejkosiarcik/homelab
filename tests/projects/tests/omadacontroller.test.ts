@@ -49,6 +49,27 @@ test.describe(apps.omadacontroller.title, () => {
                 expect(body.result.mspMode, 'Response body .result.mspMode').toStrictEqual(false);
             });
 
+            const validUsers = [
+                {
+                    username: 'test',
+                },
+                {
+                    username: 'viewer',
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
+                    await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
+                    await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('.login-form a.button-button[title="Log in"]').click();
+                    await page.waitForURL(`${instance.url}/#dashboardGlobal`);
+                    await expect(page.locator('#main-view .header__menu')).toBeVisible();
+                    await expect(page.locator('#main-view #app')).toBeVisible();
+                });
+            }
+
             const invalidUsers = [
                 {
                     title: 'Random user',
@@ -69,20 +90,6 @@ test.describe(apps.omadacontroller.title, () => {
                     await page.locator('.login-form a.button-button[title="Log in"]').click();
                     await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();
                     await expect(page, 'URL should not change').toHaveURL(originalUrl);
-                });
-            }
-
-            const validUsers = ['test', 'readonly'];
-            for (const variant of validUsers) {
-                test(`UI: Successful login - User ${variant}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
-                    await page.locator('.login-form input[placeholder^="Username"]').fill(variant);
-                    await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${variant.toUpperCase()}_PASSWORD`));
-                    await page.locator('.login-form a.button-button[title="Log in"]').click();
-                    await page.waitForURL(`${instance.url}/#dashboardGlobal`);
-                    await expect(page.locator('#main-view .header__menu')).toBeVisible();
-                    await expect(page.locator('#main-view #app')).toBeVisible();
                 });
             }
         });
