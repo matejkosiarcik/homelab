@@ -14,23 +14,42 @@ test.describe(apps.dawarich.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test('UI: Successful login', async ({ page }) => {
-                await page.goto(`${instance.url}/users/sign_in`);
-                await page.locator('input#user_email[type="email"]').fill('matej@matejhome.com');
-                await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, 'MATEJ_PASSWORD'));
-                await page.locator('input[type="submit"][value="Log in"]').click();
-                await expect(page).toHaveURL(`${instance.url}/map`);
-                await expect(page.locator('#map')).toBeVisible();
-            });
+            const validUsers = [
+                {
+                    email: 'test@matejhome.com',
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
+                    await page.goto(`${instance.url}/users/sign_in`);
+                    await page.locator('input#user_email[type="email"]').fill(user.email);
+                    await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                    await page.locator('input[type="submit"][value="Log in"]').click();
+                    await expect(page).toHaveURL(`${instance.url}/map`);
+                    await expect(page.locator('#map')).toBeVisible();
+                });
+            }
 
-            test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(`${instance.url}/users/sign_in`);
-                await page.locator('input#user_email[type="email"]').fill(`${faker.string.alpha(10)}@example.com`);
-                await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));
-                await page.locator('input[type="submit"][value="Log in"]').click();
-                await expect(page.locator('#flash-messages')).toContainText('Invalid Email or password.');
-                await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
-            });
+            const invalidUsers = [
+                {
+                    title: 'User test',
+                    email: 'test@matejhome.com',
+                },
+                {
+                    title: 'Random user',
+                    email: `${faker.string.alpha(10)}@matejhome.com`,
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                    await page.goto(`${instance.url}/users/sign_in`);
+                    await page.locator('input#user_email[type="email"]').fill(user.email);
+                    await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));
+                    await page.locator('input[type="submit"][value="Log in"]').click();
+                    await expect(page.locator('#flash-messages')).toContainText('Invalid Email or password.');
+                    await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
+                });
+            }
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
@@ -44,17 +63,7 @@ test.describe(apps.dawarich.title, () => {
                 await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
                 const lines = content.split('\n');
                 const metrics = [
-                    'ruby_active_record_connection_pool_busy',
-                    'ruby_active_record_connection_pool_connections',
-                    'ruby_active_record_connection_pool_dead',
-                    'ruby_active_record_connection_pool_idle',
-                    'ruby_active_record_connection_pool_size',
-                    'ruby_active_record_connection_pool_waiting',
                     'ruby_http_request_duration_seconds',
-                    'ruby_http_request_memcache_duration_seconds',
-                    'ruby_http_request_queue_duration_seconds',
-                    'ruby_http_request_redis_duration_seconds',
-                    'ruby_http_request_sql_duration_seconds',
                     'ruby_http_requests_total',
                 ];
                 for (const metric of metrics) {

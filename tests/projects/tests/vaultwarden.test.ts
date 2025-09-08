@@ -54,7 +54,6 @@ test.describe(apps['vaultwarden'].title, () => {
                     await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
-
         });
     }
 });
