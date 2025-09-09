@@ -28,7 +28,7 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:13.0-slim AS supercronic
+FROM debian:13.1-slim AS supercronic
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./

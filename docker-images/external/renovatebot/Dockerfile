@@ -28,19 +28,19 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:13.0-slim AS supercronic
+FROM debian:13.1-slim AS supercronic
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
-FROM debian:13.0-slim AS prefinal
+FROM debian:13.1-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
 
-FROM renovate/renovate:41.97.9-full
+FROM renovate/renovate:41.98.1-full
 ARG UID=1000
 ARG GID=1000
 USER root

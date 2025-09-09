@@ -28,12 +28,12 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./minio-mc/mc
 
-FROM debian:13.0-slim AS prefinal
+FROM debian:13.1-slim AS prefinal
 WORKDIR /homelab
 COPY --from=minio-mc-build /homelab/minio-mc/mc ./bin/
 COPY ./external/minio-client/entrypoint.sh ./external/minio-client/main.sh ./external/minio-client/plain-buckets.txt ./external/minio-client/versioned-buckets.txt ./
 
-FROM debian:13.0-slim
+FROM debian:13.1-slim
 ARG UID=1000
 ARG GID=1000
 RUN mkdir -p /homelab && \
