@@ -1,12 +1,12 @@
 # checkov:skip=CKV_DOCKER_3: Cannot run as non-root initially, but we switch to another user later
 
-FROM debian:13.0-slim AS prefinal
+FROM debian:13.1-slim AS prefinal
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./custom/apache/www/ ./www/
 COPY ./custom/apache/entrypoint.sh ./
 
-FROM debian:13.0-slim
+FROM debian:13.1-slim
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         apache2 curl inotify-tools && \

@@ -5,7 +5,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Dependencies ###
 
-FROM --platform=$BUILDPLATFORM debian:13.0-slim AS yq
+FROM --platform=$BUILDPLATFORM debian:13.1-slim AS yq
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -16,7 +16,7 @@ RUN python3 -m pip install --requirement requirements.txt --target python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM --platform=$BUILDPLATFORM debian:13.0-slim AS jinja
+FROM --platform=$BUILDPLATFORM debian:13.1-slim AS jinja
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -42,14 +42,14 @@ RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
 ### Final ###
 
-FROM debian:13.0-slim AS prefinal
+FROM debian:13.1-slim AS prefinal
 WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/config.yml
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 
 FROM twinproduction/gatus:v5.23.2 AS gatus
 
-FROM debian:13.0-slim
+FROM debian:13.1-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         ca-certificates libcap2-bin >/dev/null && \

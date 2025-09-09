@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
-FROM debian:13.0-slim AS prefinal
+FROM debian:13.1-slim AS prefinal
 WORKDIR /homelab
 RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py

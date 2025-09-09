@@ -1,6 +1,6 @@
 FROM amir20/dozzle:v8.13.12 AS dozzle
 
-FROM debian:13.0-slim
+FROM debian:13.1-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         ca-certificates >/dev/null && \
