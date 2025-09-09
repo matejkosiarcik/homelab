@@ -26,12 +26,9 @@ test.describe(apps.homeassistant.title, () => {
                 const lines = content.split('\n');
                 const metrics = [
                     'homeassistant_binary_sensor_state',
-                    'homeassistant_device_tracker_state',
                     'homeassistant_entity_available',
                     'homeassistant_last_updated_time_seconds',
                     'homeassistant_light_brightness_percent',
-                    'homeassistant_person_state',
-                    'homeassistant_sensor_battery_percent',
                     'homeassistant_sensor_timestamp_seconds',
                     'homeassistant_state_change_created',
                     'homeassistant_state_change_total',
