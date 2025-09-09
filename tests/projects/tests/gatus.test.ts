@@ -40,28 +40,34 @@ test.describe(apps.gatus.title, () => {
                 }
             });
 
-            const users = [
+            const validUsers = [
                 {
                     username: 'admin',
                 },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
             ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
-                        await page.goto(instance.url);
-                        await expect(page.locator('.animate-spin')).toBeVisible();
-                        await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
-                        await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
-                    });
-                }
+            for (const user of validUsers) {
+                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await expect(page.locator('.animate-spin')).toBeVisible();
+                    await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
+                    await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
+                });
+            }
 
-                test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+            const invalidUsers = [
+                {
+                    title: 'User admin',
+                    username: 'admin',
+                },
+                {
+                    title: 'Random user',
+                    username: faker.string.alpha(10),
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful open - ${user.title}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
                 });

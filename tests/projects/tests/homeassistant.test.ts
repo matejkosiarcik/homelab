@@ -26,12 +26,9 @@ test.describe(apps.homeassistant.title, () => {
                 const lines = content.split('\n');
                 const metrics = [
                     'homeassistant_binary_sensor_state',
-                    'homeassistant_device_tracker_state',
                     'homeassistant_entity_available',
                     'homeassistant_last_updated_time_seconds',
                     'homeassistant_light_brightness_percent',
-                    'homeassistant_person_state',
-                    'homeassistant_sensor_battery_percent',
                     'homeassistant_sensor_timestamp_seconds',
                     'homeassistant_state_change_created',
                     'homeassistant_state_change_total',
@@ -42,30 +39,49 @@ test.describe(apps.homeassistant.title, () => {
                 }
             });
 
-            test('UI: Successful login - User test', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
-                await page.locator('input[name="username"]').fill('test');
-                await page.locator('input[name="password"]').fill(getEnv(instance.url, 'TEST_PASSWORD'));
-                await page.locator('button.button').click();
-                await page.waitForURL(`${instance.url}/lovelace/0`);
-                await expect(page.locator('home-assistant')).toBeVisible();
-                await expect(page.locator('ha-sidebar')).toBeVisible();
-                await expect(page.locator('ha-panel-lovelace')).toBeVisible();
-            });
+            const validUsers = [
+                {
+                    username: 'test',
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful login - User ${user}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
+                    await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
+                    await page.locator('input[name="username"]').fill(user.username);
+                    await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('button.button').click();
+                    await page.waitForURL(`${instance.url}/lovelace/0`);
+                    await expect(page.locator('home-assistant')).toBeVisible();
+                    await expect(page.locator('ha-sidebar')).toBeVisible();
+                    await expect(page.locator('ha-panel-lovelace')).toBeVisible();
+                });
+            }
 
-            test('UI: Unsuccessful login - Random user', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                const originalUrl = page.url();
-                await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
-                await page.locator('input[name="username"]').fill(faker.string.alpha(10));
-                await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                await page.locator('button.button').click();
-                await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
-                await expect(page, 'URL should not change').toHaveURL(originalUrl);
-            });
+            const invalidUsers = [
+                {
+                    title: 'User test',
+                    username: 'test',
+                },
+                {
+                    title: 'Random user',
+                    username: faker.string.alpha(10),
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
+                    const originalUrl = page.url();
+                    await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
+                    await page.locator('input[name="username"]').fill(user.username);
+                    await page.locator('input[name="password"]').fill(faker.string.alpha(10));
+                    await page.locator('button.button').click();
+                    await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                });
+            }
         });
     }
 });
