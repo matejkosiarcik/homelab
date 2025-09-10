@@ -30,24 +30,24 @@ test.describe(apps.motioneye.title, () => {
                     random: true,
                 }
             ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful full login - User ${variant.username}`, async ({ page }) => {
+            for (const user of users) {
+                if (!user.random) {
+                    test(`UI: Successful full login - User ${user.username}`, async ({ page }) => {
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/`);
-                        await page.locator('form input[name="username"]').fill(variant.username);
-                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                         await page.locator('.button:has-text("Login")').click();
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('img.camera')).toBeVisible();
                         await expect(page.locator('.settings-top-bar .icon.settings-button')).toBeVisible();
                     });
 
-                    test(`UI: Successful embed open - User ${variant.username}`, async ({ page }) => {
+                    test(`UI: Successful embed open - User ${user.username}`, async ({ page }) => {
                         await page.goto(`${instance.url}/picture/1/frame/`);
                         await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                        await page.locator('form input[name="username"]').fill(variant.username);
-                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                         await page.locator('.button:has-text("Login")').click();
                         await page.waitForURL(`${instance.url}/picture/1/frame/`);
                         await expect(page.locator('.admin .icon.settings-button')).not.toBeVisible();
@@ -55,38 +55,38 @@ test.describe(apps.motioneye.title, () => {
                     });
                 }
 
-                if (variant.username === 'stream') {
-                    test(`UI: Successful stream open - User ${variant.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username}_PASSWORD`)}`).toString('base64')}` });
+                if (user.username === 'stream') {
+                    test(`UI: Successful stream open - User ${user.username}`, async ({ page }) => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                         await page.goto(`${instance.url}/stream`, { waitUntil: 'commit' });
                         await expect(page.locator('body > img')).toBeVisible({ timeout: 5000 });
                     });
                 }
 
-                test(`UI: Unsuccessful full login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                test(`UI: Unsuccessful full login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/`);
-                    await page.locator('form input[name="username"]').fill(variant.username);
+                    await page.locator('form input[name="username"]').fill(user.username);
                     await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('.button:has-text("Login")').click();
                     await page.waitForURL(`${instance.url}/`);
                     await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
                 });
 
-                test(`UI: Unsuccessful embed open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                test(`UI: Unsuccessful embed open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(`${instance.url}/picture/1/frame/`);
                     await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                    await page.locator('form input[name="username"]').fill(variant.username);
+                    await page.locator('form input[name="username"]').fill(user.username);
                     await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
                     await page.locator('.button:has-text("Login")').click();
                     await page.waitForURL(`${instance.url}/picture/1/frame/`);
                     await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
                 });
 
-                test(`API: Unsuccessful stream open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful stream open - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(`${instance.url}/stream`, {
                         auth: {
-                            username: variant.username,
+                            username: user.username,
                             password: faker.string.alpha(10),
                         },
                     });

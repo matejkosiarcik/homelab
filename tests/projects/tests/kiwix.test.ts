@@ -28,35 +28,35 @@ test.describe(apps.kiwix.title, () => {
                     random: true,
                 }
             ];
-            for (const variant of users) {
-                if (!variant.random) {
-                    test(`UI: Successful open - User ${variant.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
+            for (const user of users) {
+                if (!user.random) {
+                    test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/#lang=eng`);
                         await expect(page.locator('.book__list .book').first()).toBeVisible();
                     });
 
-                    test(`API: Successful root - User ${variant.username}`, async () => {
+                    test(`API: Successful root - User ${user.username}`, async () => {
                         const response = await axios.get(instance.url, {
                             headers: {
-                                Authorization: `Basic ${Buffer.from(`${variant.username}:${getEnv(instance.url, `${variant.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
                             },
                         });
                         expect(response.status, 'Response Status').toStrictEqual(200);
                     });
                 }
 
-                test(`UI: Unsuccessful open - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('.book__list .book').first()).not.toBeVisible();
                 });
 
-                test(`API: Unsuccessful root - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(instance.url, {
                         headers: {
-                            Authorization: `Basic ${Buffer.from(`${variant.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
+                            Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
                         },
                     });
                     expect(response.status, 'Response Status').toStrictEqual(401);
