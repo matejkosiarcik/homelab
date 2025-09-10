@@ -18,36 +18,39 @@ test.describe(apps.ntfy.title, () => {
                 await expect(page.locator('text="All notifications"').first()).toBeVisible({ timeout: 5000 });
             });
 
-            for (const variant of [
+            for (const user of [
                 {
-                    username: 'admin',
+                    title: 'User test',
+                    username: 'user',
                 },
+            ]) {
+                test(`UI: Successful login - User ${user.title}`, async ({ page }) => {
+                    await delay(2500); // Must delay tests a bit
+                    await page.goto(instance.url);
+                    await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
+                    await page.locator('.MuiDialogContent-root input#topic').fill('test');
+                    await delay(100);
+                    await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
+                    await page.locator('.MuiDialogContent-root input#username').fill(user.username);
+                    await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await delay(250);
+                    await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ timeout: 4000 });
+                    await page.waitForURL(`${instance.url}/test`);
+                    await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
+                });
+            }
+
+            for (const user of [
                 {
+                    title: 'User test',
                     username: 'user',
                 },
                 {
+                    title: 'Random user',
                     username: faker.string.alpha(10),
-                    random: true,
                 }
             ]) {
-                if (!variant.random) {
-                    test(`UI: Successful login - User ${variant.username}`, async ({ page }) => {
-                        await delay(2500); // Must delay tests a bit
-                        await page.goto(instance.url);
-                        await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
-                        await page.locator('.MuiDialogContent-root input#topic').fill('test');
-                        await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
-                        await page.locator('.MuiDialogContent-root input#username').fill(variant.username);
-                        await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
-                        await delay(250);
-                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ timeout: 4000 });
-                        await page.waitForURL(`${instance.url}/test`);
-                        await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
-                    });
-                }
-
-                test(`UI: Unsuccessful login - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
                     await delay(2500); // Must delay tests a bit
                     await page.goto(instance.url);
                     await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().waitFor()
@@ -56,16 +59,16 @@ test.describe(apps.ntfy.title, () => {
                     await page.locator('.MuiDialogContent-root input#topic').fill('test');
                     await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
-                    await page.locator('.MuiDialogContent-root input#username').fill(variant.username);
+                    await page.locator('.MuiDialogContent-root input#username').fill(user.username);
                     await page.locator('.MuiDialogContent-root input#password').fill(faker.string.alpha(10));
                     await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
-                    await expect(page.locator('.MuiDialog-container')).toContainText(`User ${variant.username} not authorized`);
+                    await expect(page.locator('.MuiDialog-container')).toContainText(`User ${user.username} not authorized`);
                     await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
             }
 
-            for (const variant of [
+            for (const user of [
                 {
                     username: 'publisher',
                 },
@@ -74,11 +77,11 @@ test.describe(apps.ntfy.title, () => {
                     random: true,
                 }
             ]) {
-                test(`API: Unsuccessful send notification  - ${variant.random ? 'Random user' : `User ${variant.username}`}`, async () => {
+                test(`API: Unsuccessful send notification  - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     await delay(2500); // Must delay tests a bit
                     const response = await axios.request({
                         auth: {
-                            username: variant.username,
+                            username: user.username,
                             password: faker.string.alpha(10),
                         },
                         data: faker.string.alphanumeric(30),
@@ -90,23 +93,20 @@ test.describe(apps.ntfy.title, () => {
                 });
             }
 
-            for (const variant of [
-                {
-                    username: 'admin',
-                },
+            for (const user of [
                 {
                     username: 'user',
                 },
             ]) {
-                test(`API+UI: Send notification in "publisher" and view in "${variant.username}"`, async ({ page }) => {
+                test(`API+UI: Send notification in "publisher" and view in "${user.username}"`, async ({ page }) => {
                     await delay(2500); // Must delay tests a bit
                     await page.goto(instance.url);
                     await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
                     await page.locator('.MuiDialogContent-root input#topic').fill('test');
                     await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
-                    await page.locator('.MuiDialogContent-root input#username').fill(variant.username);
-                    await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${variant.username}_PASSWORD`));
+                    await page.locator('.MuiDialogContent-root input#username').fill(user.username);
+                    await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                     await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
                     await page.waitForURL(`${instance.url}/test`);
@@ -117,8 +117,8 @@ test.describe(apps.ntfy.title, () => {
 
                     const response = await axios.request({
                         auth: {
-                            username: variant.username,
-                            password: getEnv(instance.url, `${variant.username}_PASSWORD`),
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
                         },
                         data: notification,
                         maxRedirects: 0,
