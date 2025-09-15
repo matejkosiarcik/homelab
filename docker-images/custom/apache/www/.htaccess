@@ -123,7 +123,7 @@ RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
 # Custom redirects to prevent 404 root errors
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot|unbound)$ [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot|unbound|docker-stats)$ [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /.apache/index.html [L]
 
@@ -151,7 +151,7 @@ RewriteRule ^ /.apache/not-found [L]
     AuthUserFile /homelab/prometheus.htpasswd
     Require valid-user
 </If>
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats)$# && %{REQUEST_URI} =~ m#^/?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats)$# && %{REQUEST_URI} =~ m#^/metrics?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -189,6 +189,13 @@ RewriteCond %{REQUEST_URI} ^/metrics/?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
+
+# Custom prometheus metrics for docker-stats
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:docker-stats)$ [NC]
+RewriteCond %{REQUEST_URI} ^/metrics/?$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}/" [P,L]
 
 # Custom owntracks/dawarich decryptor
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^owntracks$ [NC]
