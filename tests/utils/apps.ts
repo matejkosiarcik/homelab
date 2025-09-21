@@ -184,6 +184,12 @@ export const apps = {
             { url: 'https://prometheus.matejhome.com', title: 'Prometheus' },
         ],
     },
+    renovatebot: {
+        title: 'Renovatebot',
+        instances: [
+            { url: 'https://renovatebot.matejhome.com', title: 'Renovatebot' },
+        ],
+    },
     samba: {
         title: 'SMB',
         instances: [

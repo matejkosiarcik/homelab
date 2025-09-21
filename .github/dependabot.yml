@@ -73,7 +73,6 @@ updates:
   - package-ecosystem: npm
     directories:
       - /utils/setup-helpers/healthchecks
-      - /docker-images/.shared/dependencies/zopflipng
       - /docker-images/custom/favicons
       - /docker-images/custom/homepage-widgets
       - /docker-images/custom/owntracks-decryptor
@@ -113,21 +112,5 @@ updates:
     open-pull-requests-limit: 1
     groups:
       pip:
-        patterns:
-          - "*"
-
-  # Cargo
-  - package-ecosystem: cargo
-    directories:
-      - /docker-images/.shared/dependencies/oxipng
-    schedule:
-      interval: daily
-      time: "03:00"
-      timezone: Europe/Bratislava
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      cargo:
         patterns:
           - "*"
