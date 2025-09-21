@@ -1,4 +1,4 @@
-// import crypto from 'node:crypto';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import os from 'node:os';
@@ -42,15 +42,15 @@ const log = winston.createLogger({
     ],
 });
 
-// function hashFile(filepath: string): Promise<string> {
-//     return new Promise((resolve, reject) => {
-//         const hash = crypto.createHash('sha256');
-//         const stream = fs.createReadStream(filepath);
-//         stream.on('data', chunk => hash.update(chunk));
-//         stream.on('end', () => resolve(hash.digest('hex')));
-//         stream.on('error', () => reject());
-//     });
-// }
+function hashFile(filepath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const hash = crypto.createHash('sha256');
+        const stream = fs.createReadStream(filepath);
+        stream.on('data', chunk => hash.update(chunk));
+        stream.on('end', () => resolve(hash.digest('hex')));
+        stream.on('error', () => reject());
+    });
+}
 
 async function getFileType(file: string): Promise<string> {
     const execaProcess = await execa('file', ['--mime-type', path.join(sourceDirectory, file)], {
@@ -64,33 +64,61 @@ async function getFileType(file: string): Promise<string> {
     return output;
 }
 
+async function atomicCopyFile(source: string, target: string) {
+    const tmpdir = await fsx.mkdtemp(path.join(os.tmpdir(), 'homelab-'));
+    try {
+        const tmpfile = path.join(tmpdir, 'file.bin');
+        await fsx.copyFile(source, tmpfile);
+        await fsx.rename(tmpfile, target);
+    } finally {
+        await fsx.rm(tmpdir, { force: true, recursive: true });
+    }
+}
+
+async function runCommand(command: string[], output?: string | undefined) {
+    const subprocess = await execa(command[0], command.slice(1), {
+        all: true,
+        timeout: 3_600_000, // 1 hour
+        stdout: output ? { file: output } : 'pipe',
+        stderr: 'pipe',
+        stdin: 'pipe',
+        detached: true,
+    });
+    if (subprocess.exitCode !== 0) {
+        throw new Error(`Command "${command.join(' ')}" ${subprocess.timedOut ? 'timed out' : `exited with code ${subprocess.exitCode}`}:\n${subprocess.all}`);
+    }
+}
+
+function ensureExtension(filepath: string, extension: string): string {
+    return `${filepath}${path.basename(filepath).replace(/^.*\./, '') === extension ? '' : `.${extension}`}`;
+}
+
 async function processFile(relativeFilepath: string) {
-    console.error();
+    console.error(); // Just print blank line between files
 
-    // const fileHash = await hashFile(path.join(sourceDirectory, relativeFilepath));
-    // const cacheFilepath = path.join(cacheDirectory, fileHash.substring(0, 2), `${fileHash}.bin`);
+    const fileHash = await hashFile(path.join(sourceDirectory, relativeFilepath));
+    const cachedFilepath = path.join(cacheDirectory, fileHash.substring(0, 2), `${fileHash}.bin`);
     const sourceFilepath = path.join(sourceDirectory, relativeFilepath);
-    const targetFilepath = path.join(targetDirectory, relativeFilepath);
+    const defaultTargetFilepath = path.join(targetDirectory, relativeFilepath);
 
-    if (['.DS_Store', 'Icon\r'].includes(path.basename(relativeFilepath))) {
+    if ([/Private.*\.zip/, '.DS_Store', 'Icon\r'].some((el) => typeof el === 'string' ? el === path.basename(relativeFilepath) : el.test(path.basename(relativeFilepath)))) {
         log.info(`Skipping file ${relativeFilepath.replace(/\s/g, ' ')}`);
         return;
     }
 
-    // await fsx.mkdir(path.dirname(cacheFilepath), { recursive: true });
-    await fsx.mkdir(path.dirname(targetFilepath), { recursive: true });
-
-    // Check if the file was already processed and just copy it if it was
-    // TODO: check if the file exists with other extensions
-    // if (fs.existsSync(cacheFilepath)) {
-    //     await fsx.copyFile(cacheFilepath, targetFilepath);
-    //     return;
-    // }
+    await fsx.mkdir(path.dirname(cachedFilepath), { recursive: true });
+    await fsx.mkdir(path.dirname(defaultTargetFilepath), { recursive: true });
 
     const fileType = await getFileType(relativeFilepath);
     const [fileType1, fileType2] = fileType.split(';')[0].trim().split('/');
-    const originalExtension = path.extname(relativeFilepath).substring(1);
+    log.debug(`Detected ${relativeFilepath} as ${fileType1}/${fileType2}`);
+    const originalExtension = path.basename(relativeFilepath).replace(/^.*\./, '');
 
+    /**
+     * Determine actual filetype
+     * Here we merge multiple mimetypes into a single type
+     * And resolve any misdirections, eg. when some audio formats identify as video, we force them as audio instead
+     */
     const actualFileType = (() => {
         switch (fileType1) {
             case 'image': {
@@ -210,11 +238,61 @@ async function processFile(relativeFilepath: string) {
     })();
     log.info(`Detected ${relativeFilepath.replace(/\s/g, ' ')} as ${fileType1}/${fileType2} - ${actualFileType}`);
 
-    let outputFilename = '';
+    const potentialTargetFilepath = (() => {
+        let filename = (() => {
+            switch (actualFileType) {
+                case 'audio': {
+                    return ensureExtension(path.basename(relativeFilepath), 'opus');
+                }
+                case 'binary': {
+                    return path.basename(relativeFilepath);
+                }
+                case 'document-office': {
+                    return ensureExtension(path.basename(relativeFilepath), 'pdf');
+                }
+                case 'document-pdf': {
+                    return ensureExtension(path.basename(relativeFilepath), 'pdf');
+                }
+                case 'image': {
+                    return ensureExtension(path.basename(relativeFilepath), 'avif');
+                }
+                case 'image-animation': {
+                    return ensureExtension(path.basename(relativeFilepath), 'avif');
+                }
+                case 'video': {
+                    return ensureExtension(path.basename(relativeFilepath), 'mkv');
+                }
+                case 'text': {
+                    return path.basename(relativeFilepath);
+                }
+                case 'text-json': {
+                    return path.basename(relativeFilepath);
+                }
+                case 'text-xml': {
+                    return path.basename(relativeFilepath);
+                }
+                case 'text-yaml': {
+                    return path.basename(relativeFilepath);
+                }
+                default: {
+                    return path.basename(relativeFilepath);
+                }
+            }
+        })();
+        return path.join(path.dirname(defaultTargetFilepath), filename);
+    })();
+
+    let outputFilename = path.basename(potentialTargetFilepath);
+
+    if (fs.existsSync(cachedFilepath)) {
+        log.info(`Copying file ${relativeFilepath} from cache as ${path.basename(potentialTargetFilepath)}`);
+        await atomicCopyFile(cachedFilepath, potentialTargetFilepath);
+        return;
+    }
 
     async function fallbackCopy() {
-        await fsx.copyFile(sourceFilepath, targetFilepath);
-        outputFilename = path.basename(targetFilepath);
+        outputFilename = path.basename(defaultTargetFilepath);
+        await atomicCopyFile(sourceFilepath, defaultTargetFilepath);
     }
 
     async function convertFile(callback: (temporaryDirectory: string) => Promise<string>) {
@@ -228,12 +306,10 @@ async function processFile(relativeFilepath: string) {
 
             // Compare sizes and only use converted file if it's smaller
             if (convertedFileStat.size < sourceFileStat.size) {
-
-                outputFilename = path.basename(convertedFilepath);
-                // await fsx.copyFile(convertedFilepath, cacheFilepath);
-                await fsx.copyFile(convertedFilepath, path.join(path.dirname(targetFilepath), path.basename(convertedFilepath)));
+                await atomicCopyFile(convertedFilepath, cachedFilepath);
+                await atomicCopyFile(convertedFilepath, potentialTargetFilepath);
             } else {
-                log.warn(`File ${relativeFilepath} was not optimized (bigger result)`);
+                log.warn(`File ${relativeFilepath} was not optimized, but enlarged`);
                 await fallbackCopy();
             }
         } catch (error) {
@@ -244,39 +320,19 @@ async function processFile(relativeFilepath: string) {
         }
     }
 
-    async function runCommand(command: string[], output?: string | undefined) {
-        const subprocess = await execa(command[0], command.slice(1), {
-            all: true,
-            timeout: 3_600_000, // 1 hour
-            stdout: output ? { file: output } : 'pipe',
-            stderr: 'pipe',
-            stdin: 'pipe',
-            detached: true,
-        });
-        if (subprocess.exitCode !== 0) {
-            throw new Error(`Command "${command.join(' ')}" ${subprocess.timedOut ? 'timed out' : `exited with code ${subprocess.exitCode}`}:\n${subprocess.all}`);
-        }
-    }
-
-    function ensureExtension(filepath: string, extension: string): string {
-        return `${filepath}${path.basename(filepath).replace(/^.*\./, '') === extension ? '' : `.${extension}`}`;
-    }
-
     log.info(`Optimizing ${relativeFilepath.replace(/\s/g, ' ')} (${actualFileType})`);
     switch (actualFileType) {
         case 'audio': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.opus');
+                const outputFile = path.join(temporaryDirectory, 'file.opus');
                 await runCommand([
                     'ffmpeg',
                     '-i', sourceFilepath,
                     '-c:a', 'libopus',
                     '-b:a', '96k',
                     '-threads', '1', // Restrict to a single thread
-                    tmpFile,
+                    outputFile,
                 ]);
-                const outputFile = ensureExtension(path.join(temporaryDirectory, path.basename(relativeFilepath)), 'opus');
-                await fsx.rename(tmpFile, outputFile);
                 return path.basename(outputFile);
             });
             break;
@@ -287,7 +343,8 @@ async function processFile(relativeFilepath: string) {
         }
         case 'document-office': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, `${path.basename(relativeFilepath).replace(/\..+$/, '')}.pdf`);
+                await fsx.mkdir(path.join(temporaryDirectory, 'tmpdir1'), { recursive: true });
+                const tmpFile1 = path.join(temporaryDirectory, 'tmpdir1', `${path.basename(relativeFilepath).replace(/\..+$/, '')}.pdf`);
                 await runCommand([
                     'soffice',
                     '--headless',
@@ -296,8 +353,8 @@ async function processFile(relativeFilepath: string) {
                     '--outdir', temporaryDirectory,
                     sourceFilepath,
                 ]);
-                await fsx.mkdir(path.join(temporaryDirectory, 'tmpdir'), { recursive: true });
-                const tmpFile2 = path.join(temporaryDirectory, 'tmpdir', 'file.pdf');
+                await fsx.mkdir(path.join(temporaryDirectory, 'tmpdir2'), { recursive: true });
+                const tmpFile2 = path.join(temporaryDirectory, 'tmpdir2', 'file.pdf');
                 await runCommand([
                     'gs',
                     '-sDEVICE=pdfwrite',
@@ -315,9 +372,9 @@ async function processFile(relativeFilepath: string) {
                     '-dAutoFilterColorImages=false',
                     '-dColorImageFilter=/DCTEncode',
                     `-sOutputFile=${tmpFile2}`,
-                    tmpFile,
+                    tmpFile1,
                 ]);
-                const outputFile = ensureExtension(path.join(temporaryDirectory, path.basename(relativeFilepath)), 'pdf');
+                const outputFile = path.join(temporaryDirectory, 'file.pdf');
                 await fsx.rename(tmpFile2, outputFile);
                 return path.basename(outputFile);
             });
@@ -325,7 +382,7 @@ async function processFile(relativeFilepath: string) {
         }
         case 'document-pdf': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.pdf');
+                const outputFile = path.join(temporaryDirectory, 'file.pdf');
                 await runCommand([
                     'gs',
                     '-sDEVICE=pdfwrite',
@@ -342,21 +399,19 @@ async function processFile(relativeFilepath: string) {
                     '-dJPEGQ=40',
                     '-dAutoFilterColorImages=false',
                     '-dColorImageFilter=/DCTEncode',
-                    `-sOutputFile=${tmpFile}`,
+                    `-sOutputFile=${outputFile}`,
                     sourceFilepath,
                 ]);
                 // '-dEmbedAllFonts=true',
                 // '-dSubsetFonts=true',
                 // '-dCompressFonts=true',
-                const outputFile = ensureExtension(path.join(temporaryDirectory, path.basename(relativeFilepath)), 'pdf');
-                await fsx.rename(tmpFile, outputFile);
                 return path.basename(outputFile);
             });
             break;
         }
         case 'image': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.avif');
+                const outputFile = path.join(temporaryDirectory, 'file.avif');
                 await runCommand([
                     'magick',
                     sourceFilepath,
@@ -374,17 +429,15 @@ async function processFile(relativeFilepath: string) {
                     'heic:speed=0',
                     '-define',
                     'heic:preserve-alpha=true',
-                    tmpFile,
+                    outputFile,
                 ]);
-                const outputFile = ensureExtension(path.join(temporaryDirectory, path.basename(relativeFilepath)), 'avif');
-                await fsx.rename(tmpFile, outputFile);
                 return path.basename(outputFile);
             });
             break;
         }
         case 'image-animation': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.avif');
+                const outputFile = path.join(temporaryDirectory, 'file.avif');
                 await runCommand([
                     'ffmpeg',
                     '-i', sourceFilepath,
@@ -395,17 +448,15 @@ async function processFile(relativeFilepath: string) {
                     '-svtav1-params', 'tune=0',
                     '-vf', 'scale=w=480:h=480:force_original_aspect_ratio=decrease',
                     '-threads', '1', // Restrict to a single thread
-                    tmpFile,
+                    outputFile,
                 ]);
-                const outputFile = ensureExtension(path.join(temporaryDirectory, path.basename(relativeFilepath)), 'avif');
-                await fsx.rename(tmpFile, outputFile);
                 return path.basename(outputFile);
             });
             break;
         }
         case 'video': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.mkv');
+                const outputFile = path.join(temporaryDirectory, 'file.mkv');
                 await runCommand([
                     'ffmpeg',
                     '-i', sourceFilepath,
@@ -416,10 +467,8 @@ async function processFile(relativeFilepath: string) {
                     '-svtav1-params', 'tune=0',
                     '-vf', 'scale=w=1920:h=1080:force_original_aspect_ratio=decrease',
                     '-threads', '1', // Restrict to a single thread
-                    tmpFile,
+                    outputFile,
                 ]);
-                const outputFile = ensureExtension(path.join(temporaryDirectory, path.basename(relativeFilepath)), 'mkv');
-                await fsx.rename(tmpFile, outputFile);
                 return path.basename(outputFile);
             });
             break;
@@ -430,45 +479,39 @@ async function processFile(relativeFilepath: string) {
         }
         case 'text-json': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.json');
+                const outputFile = path.join(temporaryDirectory, 'file.json');
                 await runCommand([
                     'jq',
                     '.',
                     '--compact-output',
                     sourceFilepath,
-                ], tmpFile);
-                const outputFile = path.join(temporaryDirectory, path.basename(relativeFilepath));
-                await fsx.rename(tmpFile, outputFile);
+                ], outputFile);
                 return path.basename(outputFile);
             });
             break;
         }
         case 'text-xml': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.xml');
+                const outputFile = path.join(temporaryDirectory, 'file.xml');
                 await runCommand([
                     'xmllint',
                     '--noblanks',
                     sourceFilepath,
-                ], tmpFile);
-                const outputFile = path.join(temporaryDirectory, path.basename(relativeFilepath));
-                await fsx.rename(tmpFile, outputFile);
+                ], outputFile);
                 return path.basename(outputFile);
             });
             break;
         }
         case 'text-yaml': {
             await convertFile(async (temporaryDirectory) => {
-                const tmpFile = path.join(temporaryDirectory, 'file.yaml');
+                const outputFile = path.join(temporaryDirectory, 'file.yaml');
                 await runCommand([
                     'yq',
                     '.',
                     '--compact-output',
                     '--yaml-output',
                     sourceFilepath,
-                ], tmpFile);
-                const outputFile = path.join(temporaryDirectory, path.basename(relativeFilepath));
-                await fsx.rename(tmpFile, outputFile);
+                ], outputFile);
                 return path.basename(outputFile);
             });
             break;
@@ -480,7 +523,7 @@ async function processFile(relativeFilepath: string) {
         }
     }
 
-    log.info(`File ${relativeFilepath.replace(/\s/g, ' ')} is converted as ${outputFilename.replace(/\s/g, ' ')}`);
+    log.info(`File converted from ${relativeFilepath.replace(/\s/g, ' ')} to ${outputFilename.replace(/\s/g, ' ')}`);
 }
 
 void (async () => {
