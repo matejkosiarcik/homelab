@@ -41,11 +41,7 @@ test.describe(apps.smtp4dev.title, () => {
                 },
             });
             createTcpTests(instance.url, [25, 80, 443]);
-            createFaviconTests(instance.url, {
-                headers: {
-                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
-                },
-            });
+            createFaviconTests(instance.url);
 
             const users = [
                 {
