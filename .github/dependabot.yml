@@ -115,19 +115,3 @@ updates:
       pip:
         patterns:
           - "*"
-
-  # Cargo
-  - package-ecosystem: cargo
-    directories:
-      - /docker-images/.shared/dependencies/oxipng
-    schedule:
-      interval: daily
-      time: "03:00"
-      timezone: Europe/Bratislava
-    assignees:
-      - matejkosiarcik
-    open-pull-requests-limit: 1
-    groups:
-      cargo:
-        patterns:
-          - "*"
