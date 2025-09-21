@@ -73,7 +73,6 @@ updates:
   - package-ecosystem: npm
     directories:
       - /utils/setup-helpers/healthchecks
-      - /docker-images/.shared/dependencies/zopflipng
       - /docker-images/custom/favicons
       - /docker-images/custom/homepage-widgets
       - /docker-images/custom/owntracks-decryptor
