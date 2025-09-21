@@ -1,5 +1,5 @@
 ---
-title: Placeholder
+title: Data optimization
 config:
     theme: dark
 ---
@@ -16,13 +16,13 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        placeholder("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Placeholder")
-        class placeholder strong_border;
+        data_optimization("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/data-optimization.png' style='min-width:80px;max-width:80px' /></div>Data optimization")
+        class data_optimization strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8080| placeholder
+        inbound_interface -->|:80,443| apache_proxy -->|/*:8080| data_optimization
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| placeholder
+        apache_proxy -->|/favicon.ico| favicons -.->|use| data_optimization
     end
 
     subgraph others_1["Others"]
@@ -39,6 +39,7 @@ flowchart LR
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
+        data_optimization -->|report status| healthchecks
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
     end
