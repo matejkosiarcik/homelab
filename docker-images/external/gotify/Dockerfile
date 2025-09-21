@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
-FROM gotify/server:2.7.2
+FROM gotify/server:2.7.3
 ARG UID=1000
 ARG GID=1000
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
