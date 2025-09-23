@@ -1009,6 +1009,9 @@ case "$app_dirname" in
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$matej_password" users
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users

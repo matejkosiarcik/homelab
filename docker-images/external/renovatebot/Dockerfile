@@ -35,10 +35,22 @@ COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
+FROM node:24.8.0-slim AS nodejs-build
+WORKDIR /homelab
+COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
+COPY ./.shared/cron-utils/on-demand/src/ ./src/
+RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+    npm run build && \
+    npm prune --production
+
 FROM debian:13.1-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
+COPY --from=nodejs-build /homelab/package.json ./server/
+COPY --from=nodejs-build /homelab/node_modules ./server/node_modules
+COPY --from=nodejs-build /homelab/dist ./server/dist
+COPY ./custom/favicons/icons ./icons
 
 FROM renovate/renovate:41.125.0-full
 ARG UID=1000
