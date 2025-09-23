@@ -4,14 +4,9 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/renovatebot/Dockerfile
-    env_file:
-      - ./app-secrets/app.env
-    networks:
-      internal-network: {}
-      external-network: {}
+      dockerfile: ./custom/data-optimization/Dockerfile
     volumes:
-      - ./app-logs/renovatebot:/homelab/logs:rw
+      - ./app-logs/data-optimization:/homelab/logs:rw
     tmpfs:
       - /homelab/.status:rw
 
@@ -24,8 +19,6 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
-    volumes:
-      - ./app-secrets/users.htpasswd:/homelab/users.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

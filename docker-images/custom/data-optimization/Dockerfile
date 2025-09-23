@@ -35,6 +35,14 @@ COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
+FROM node:24.7.0-slim AS nodejs-build
+WORKDIR /homelab
+COPY ./custom/data-optimization/package-lock.json ./custom/data-optimization/package.json ./custom/data-optimization/tsconfig.json ./
+COPY ./custom/data-optimization/src/ ./src/
+RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+    npm run build && \
+    npm prune --production
+
 FROM node:24.8.0-slim AS nodejs-server-build
 WORKDIR /homelab
 COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
@@ -43,28 +51,38 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM debian:13.1-slim AS prefinal
+FROM node:24.7.0-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
-COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
+COPY ./external/data-optimization/crontab.cron ./external/data-optimization/main.sh ./
+COPY --from=nodejs-build /homelab/package.json ./
+COPY --from=nodejs-build /homelab/node_modules ./node_modules
+COPY --from=nodejs-build /homelab/dist ./dist
 COPY --from=nodejs-server-build /homelab/package.json ./server/
 COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
 COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
-FROM renovate/renovate:41.125.0-full
+FROM node:24.7.0-slim
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+        ghostscript imagemagick jq libreoffice && \
+    rm -rf /var/lib/apt/lists/*
 ARG UID=1000
 ARG GID=1000
-USER root
 RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
     ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
-    chown -R user:user /usr/src/app
-COPY --from=prefinal --chown=user:user /homelab/ /homelab/
-COPY  --chown=user:user ./external/renovatebot/config.js /usr/src/app/config.js
-ENV HOMELAB_CONTAINER_NAME=renovatebot \
+    mkdir -p /homelab && \
+    chown -R user:user /homelab
+WORKDIR /homelab
+COPY --from=prefinal --chown=user:user /homelab/node_modules ./node_modules
+COPY --from=prefinal --chown=user:user /homelab/ ./
+ENV HOMELAB_CONTAINER_NAME=homepage-widgets \
     HOMELAB_CONTAINER_VARIANT=default \
     HOMELAB_CRON_SKIP_INITIAL=1 \
-    PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 USER user
 HEALTHCHECK --interval=10s --start-period=10m --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.status/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+# USER user
+# HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+# ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
