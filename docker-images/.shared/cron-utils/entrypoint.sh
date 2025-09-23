@@ -9,7 +9,7 @@ export CRON
 
 # Run script initially
 if [ "${HOMELAB_CRON_SKIP_INITIAL-}" != '1' ]; then
-    timeout "${HOMELAB_CRON_INITIAL_TIMEOUT-5m}" sh /homelab/main.sh
+    sh /homelab/cron-wrapper.sh
 fi
 
 # Run cron indefinitely
@@ -32,7 +32,18 @@ fi
 # Prepare Graceful shutdown
 trap 'exit 0' TERM
 
+# Start HTTP server
+if [ -e '/homelab/server/dist/main.js' ]; then
+    node /homelab/server/dist/main.js &
+    node_pid="$!"
+fi
+
 # Start cron
 supercronic "$cronfile" &
 supercronic_pid="$!"
+
+# Wait for subprocesses
 wait "$supercronic_pid"
+if [ "${node_pid-x}" != x ]; then
+    wait "$node_pid"
+fi
