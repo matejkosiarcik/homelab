@@ -11,6 +11,7 @@ if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
 
+const dataDirectories = process.env['DATA_DIR']?.split(',') ?? [];
 const snapshotsDirectory = path.resolve(process.env['SNAPSHOTS_DIR'] || '/source-data');
 let sourceDirectory = '/placeholder';
 const targetDirectory = path.resolve(process.env['TARGET_DIR'] || '/target-data');
@@ -531,32 +532,34 @@ async function processFile(relativeFilepath: string) {
 void (async () => {
     const snapshotDirectories = await fsx.readdir(snapshotsDirectory, { withFileTypes: false, recursive: false });
     const lastSnapshotDirectory = snapshotDirectories.filter((el) => /^zfs-auto-snap_hourly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+$/.test(el)).toSorted((lhs, rhs) => lhs.localeCompare(rhs)).at(-1)!;
-    sourceDirectory = path.join(snapshotsDirectory, lastSnapshotDirectory);
 
-    const files = await fsx.readdir(sourceDirectory, { withFileTypes: false, recursive: true });
-    for (const relativeFilepath of files) {
-        const fullFilepath = path.join(sourceDirectory, relativeFilepath);
+    for (const dataDirectory of dataDirectories) {
+        sourceDirectory = path.join(snapshotsDirectory, lastSnapshotDirectory, dataDirectory);
+        const files = await fsx.readdir(sourceDirectory, { withFileTypes: false, recursive: true });
+        for (const relativeFilepath of files) {
+            const fullFilepath = path.join(sourceDirectory, relativeFilepath);
 
-        // Only optimize files
-        if (!(await fsx.stat(fullFilepath)).isFile()) {
-            continue;
+            // Only optimize files
+            if (!(await fsx.stat(fullFilepath)).isFile()) {
+                continue;
+            }
+
+            // Skip lockfiles
+            if ([
+                /^.~/,
+            ].some((el) => el.test(relativeFilepath))) {
+                continue;
+            }
+
+            // Skip version-control and build artifact directories
+            if ([
+                /^.*\/(?:.git|.venv|node_modules|venv)\//,
+            ].some((el) => el.test(fullFilepath))) {
+                continue;
+            }
+
+            await processFile(relativeFilepath);
         }
-
-        // Skip lockfiles
-        if ([
-            /^.~/,
-        ].some((el) => el.test(relativeFilepath))) {
-            continue;
-        }
-
-        // Skip version-control and build artifact directories
-        if ([
-            /^.*\/(?:.git|.venv|node_modules|venv)\//,
-        ].some((el) => el.test(fullFilepath))) {
-            continue;
-        }
-
-        await processFile(relativeFilepath);
     }
 })();
 
