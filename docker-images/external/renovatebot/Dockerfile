@@ -35,7 +35,7 @@ COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
-FROM node:24.8.0-slim AS nodejs-build
+FROM node:24.8.0-slim AS nodejs-server-build
 WORKDIR /homelab
 COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
 COPY ./.shared/cron-utils/on-demand/src/ ./src/
@@ -47,10 +47,9 @@ FROM debian:13.1-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
-COPY --from=nodejs-build /homelab/package.json ./server/
-COPY --from=nodejs-build /homelab/node_modules ./server/node_modules
-COPY --from=nodejs-build /homelab/dist ./server/dist
-COPY ./custom/favicons/icons ./icons
+COPY --from=nodejs-server-build /homelab/package.json ./server/
+COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
+COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
 FROM renovate/renovate:41.125.0-full
 ARG UID=1000
