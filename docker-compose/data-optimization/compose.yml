@@ -5,6 +5,10 @@ services:
       service: app
     build:
       dockerfile: ./custom/data-optimization/Dockerfile
+    volumes:
+      - ./app-logs/data-optimization:/homelab/logs:rw
+    tmpfs:
+      - /homelab/.status:rw
 
   certificator:
     extends:

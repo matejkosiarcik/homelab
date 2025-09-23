@@ -1,3 +1,40 @@
+FROM python:3.13.7-slim AS supercronic-gitman
+WORKDIR /homelab
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        git >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/dependencies/gitman/requirements.txt ./
+ENV PIP_ROOT_USER_ACTION=ignore
+RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/homelab/python-vendor/bin:$PATH" \
+    PYTHONPATH=/homelab/python-vendor
+COPY ./.shared/dependencies/supercronic/gitman.yml ./
+RUN gitman install --quiet && \
+    find . -type d -name .git -prune -exec rm -rf {} \;
+
+FROM golang:1.25.1-bookworm AS supercronic-build
+WORKDIR /homelab
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
+ENV CGO_ENABLED=0
+WORKDIR /homelab/supercronic
+RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
+    strip --strip-all supercronic
+WORKDIR /homelab
+COPY ./.shared/build-utils/validate-executable.sh ./
+RUN sh validate-executable.sh ./supercronic/supercronic
+
+FROM debian:13.1-slim AS supercronic
+WORKDIR /homelab
+RUN mkdir -p ./certs ./logs
+COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
+COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
+ENV PATH="/homelab/bin:$PATH"
+
 FROM node:24.7.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/data-optimization/package-lock.json ./custom/data-optimization/package.json ./custom/data-optimization/tsconfig.json ./
@@ -6,11 +43,24 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
+FROM node:24.8.0-slim AS nodejs-server-build
+WORKDIR /homelab
+COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
+COPY ./.shared/cron-utils/on-demand/src/ ./src/
+RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+    npm run build && \
+    npm prune --production
+
 FROM node:24.7.0-slim AS prefinal
 WORKDIR /homelab
+COPY --from=supercronic /homelab/ ./
+COPY ./external/data-optimization/crontab.cron ./external/data-optimization/main.sh ./
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
+COPY --from=nodejs-server-build /homelab/package.json ./server/
+COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
+COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
 FROM node:24.7.0-slim
 RUN apt-get update -qq && \
@@ -28,7 +78,11 @@ COPY --from=prefinal --chown=user:user /homelab/node_modules ./node_modules
 COPY --from=prefinal --chown=user:user /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=homepage-widgets \
     HOMELAB_CONTAINER_VARIANT=default \
+    HOMELAB_CRON_SKIP_INITIAL=1 \
     TZ=Europe/Bratislava
 USER user
-HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
-ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
+HEALTHCHECK --interval=10s --start-period=10m --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/.status/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+# USER user
+# HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+# ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
