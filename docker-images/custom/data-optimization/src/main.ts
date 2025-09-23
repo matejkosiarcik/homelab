@@ -11,16 +11,19 @@ if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
 
-const sourceDirectory = path.resolve(process.env['SOURCE_DIR'] || '/source-data');
+const dataDirectories = process.env['DATA_DIR']?.split(',') ?? [];
+const snapshotsDirectory = path.resolve(process.env['SNAPSHOTS_DIR'] || '/source-data');
+let sourceDirectory = '/placeholder';
 const targetDirectory = path.resolve(process.env['TARGET_DIR'] || '/target-data');
 const cacheDirectory = path.resolve(process.env['CACHE_DIR'] || '/cache-data');
 
-console.log('Source directory:', sourceDirectory);
+console.log('Snapshots directory:', snapshotsDirectory);
 console.log('Target directory:', targetDirectory);
 console.log('Cache directory:', cacheDirectory);
 
-if (!fs.existsSync(path.dirname(sourceDirectory))) {
-    fs.mkdirSync(path.dirname(sourceDirectory), { recursive: true });
+if (!fs.existsSync(path.dirname(snapshotsDirectory))) {
+    console.error(`Snapshots directory not found: ${snapshotsDirectory}`);
+    process.exit(1);
 }
 if (!fs.existsSync(path.dirname(targetDirectory))) {
     fs.mkdirSync(path.dirname(targetDirectory), { recursive: true });
@@ -527,40 +530,36 @@ async function processFile(relativeFilepath: string) {
 }
 
 void (async () => {
-    // For all files:
-    // 1. Hash file
-    // 2. Check database if the filepath and hash match
-    // 2a). If filepath does not exist at all -> goto 4.
-    // 2b). If filepath exists and hash not matches -> goto 4.
-    // 2c). If filepath exists and hash matches -> goto (end)
-    // 3. Delete optimized file from target directory and database entry
-    // 4. Optimize file and save in target directory
-    // 5. Save filepath and original hash in database
+    const snapshotDirectories = await fsx.readdir(snapshotsDirectory, { withFileTypes: false, recursive: false });
+    const lastSnapshotDirectory = snapshotDirectories.filter((el) => /^zfs-auto-snap_hourly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+$/.test(el)).toSorted((lhs, rhs) => lhs.localeCompare(rhs)).at(-1)!;
 
-    const files = await fsx.readdir(sourceDirectory, { withFileTypes: false, recursive: true });
-    for (const relativeFilepath of files) {
-        const fullFilepath = path.join(sourceDirectory, relativeFilepath);
+    for (const dataDirectory of dataDirectories) {
+        sourceDirectory = path.join(snapshotsDirectory, lastSnapshotDirectory, dataDirectory);
+        const files = await fsx.readdir(sourceDirectory, { withFileTypes: false, recursive: true });
+        for (const relativeFilepath of files) {
+            const fullFilepath = path.join(sourceDirectory, relativeFilepath);
 
-        // Only optimize files
-        if (!(await fsx.stat(fullFilepath)).isFile()) {
-            continue;
+            // Only optimize files
+            if (!(await fsx.stat(fullFilepath)).isFile()) {
+                continue;
+            }
+
+            // Skip lockfiles
+            if ([
+                /^.~/,
+            ].some((el) => el.test(relativeFilepath))) {
+                continue;
+            }
+
+            // Skip version-control and build artifact directories
+            if ([
+                /^.*\/(?:.git|.venv|node_modules|venv)\//,
+            ].some((el) => el.test(fullFilepath))) {
+                continue;
+            }
+
+            await processFile(relativeFilepath);
         }
-
-        // Skip lockfiles
-        if ([
-            /^.~/,
-        ].some((el) => el.test(relativeFilepath))) {
-            continue;
-        }
-
-        // Skip version-control and build artifact directories
-        if ([
-            /^.*\/(?:.git|.venv|node_modules|venv)\//,
-        ].some((el) => el.test(fullFilepath))) {
-            continue;
-        }
-
-        await processFile(relativeFilepath);
     }
 })();
 
