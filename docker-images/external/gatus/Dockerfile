@@ -47,7 +47,7 @@ WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/config.yml
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 
-FROM twinproduction/gatus:v5.24.2 AS gatus
+FROM twinproduction/gatus:v5.24.3 AS gatus
 
 FROM debian:13.1-slim
 RUN apt-get update && \

@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: USER can't be set directly, but it should be used after container initialized
 
-FROM linuxserver/speedtest-tracker:1.6.6
+FROM linuxserver/speedtest-tracker:1.6.7
 RUN apk update --no-cache && \
     apk add --no-cache shadow
 ARG UID=1000

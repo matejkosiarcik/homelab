@@ -40,7 +40,7 @@ WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
 
-FROM renovate/renovate:41.122.3-full
+FROM renovate/renovate:41.125.0-full
 ARG UID=1000
 ARG GID=1000
 USER root
