@@ -33,7 +33,12 @@ if [ "$CRON" = '1' ]; then
 fi
 
 # Lock lockfile for to run exclusively
-locked="$(set +e; mkdir /tmp/homelab-cron.lockd; printf '%s' "$?"; set -e)"
+locked="$(
+    set +e
+    mkdir /tmp/homelab-cron.lockd
+    printf '%s' "$?"
+    set -e
+)"
 if [ "$locked" -ne 0 ]; then
     printf '%s Another instance of the script is already running. Exiting.\n' "$(date +'%Y-%m-%dT%H:%M:%S')" | tee -a "$logfile" >&2
     exit 1
