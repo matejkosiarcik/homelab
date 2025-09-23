@@ -7,8 +7,6 @@ services:
       dockerfile: ./external/renovatebot/Dockerfile
     env_file:
       - ./app-secrets/app.env
-    environment:
-      HOMELAB_CRON_SKIP_INITIAL: "1"
     networks:
       internal-network: {}
       external-network: {}

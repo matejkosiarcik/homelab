@@ -62,6 +62,7 @@ COPY --from=prefinal --chown=user:user /homelab/ /homelab/
 COPY  --chown=user:user ./external/renovatebot/config.js /usr/src/app/config.js
 ENV HOMELAB_CONTAINER_NAME=renovatebot \
     HOMELAB_CONTAINER_VARIANT=default \
+    HOMELAB_CRON_SKIP_INITIAL=1 \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 USER user
