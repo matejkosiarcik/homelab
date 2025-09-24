@@ -72,7 +72,8 @@ updates:
   # NPM
   - package-ecosystem: npm
     directories:
-      - /utils/setup-helpers/healthchecks
+      - /docker-images/.shared/cron-utils/on-demand
+      - /docker-images/custom/data-optimization
       - /docker-images/custom/favicons
       - /docker-images/custom/homepage-widgets
       - /docker-images/custom/owntracks-decryptor
@@ -81,6 +82,7 @@ updates:
       - /docs/diagrams
       - /icons
       - /tests
+      - /utils/setup-helpers/healthchecks
     versioning-strategy: increase
     schedule:
       interval: daily
@@ -99,6 +101,7 @@ updates:
     directories:
       - /ansible
       - /docker-images/.shared/dependencies/gitman
+      - /docker-images/.shared/dependencies/image-tools
       - /docker-images/.shared/dependencies/jinja
       - /docker-images/.shared/dependencies/yq
       - /docker-images/external/homeassistant
