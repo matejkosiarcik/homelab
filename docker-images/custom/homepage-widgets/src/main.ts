@@ -43,7 +43,7 @@ app.get('/smtp4dev', async (_: Request, response: Response) => {
     try {
         const axiosResponse = await axios.get('https://smtp4dev.matejhome.com/api/messages?page=1&pageSize=100', {
             headers: {
-                authorization: `Basic ${Buffer.from(`admin:${process.env['SMTP4DEV_PASSWORD']}`).toString('base64')}`,
+                authorization: `Basic ${Buffer.from(`matej:${process.env['SMTP4DEV_PASSWORD']}`).toString('base64')}`,
             },
             maxRedirects: 99,
         });

@@ -263,9 +263,12 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
     switch (appType) {
         case 'homepage':
         case 'ollama':
-        case 'prometheus':
-        case 'smtp4dev': {
+        case 'prometheus': {
             headers['Authorization'] = `Basic ${Buffer.from(`admin:${process.env['ADMIN_PASSWORD']}`).toString('base64')}`;
+            break;
+        }
+        case 'smtp4dev': {
+            headers['Authorization'] = `Basic ${Buffer.from(`matej:${process.env['MATEJ_PASSWORD']}`).toString('base64')}`;
             break;
         }
         default: {

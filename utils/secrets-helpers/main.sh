@@ -350,7 +350,7 @@ case "$app_dirname" in
     printf 'OWNTRACKS_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
     printf 'OWNTRACKS_BACKEND_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
     printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
-    printf 'SMTP4DEV_ADMIN_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$initial_output/app.env"
+    printf 'SMTP4DEV_MATEJ_PASSWORD=%s\n' "$(load_token smtp4dev app matej)" >>"$initial_output/app.env"
     printf 'UPTIME_KUMA_MATEJ_PASSWORD=%s\n' "$(load_token uptimekuma app matej)" >>"$initial_output/app.env"
     printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wikipedia app admin)" >>"$initial_output/app.env"
     printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wiktionary app admin)" >>"$initial_output/app.env"
@@ -622,7 +622,6 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY=%s\n' "$(load_token speedtesttracker app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unificontroller app readonly)" >>"$initial_output/app.env"
     # TODO: Enable Vikunja integration
@@ -640,7 +639,7 @@ case "$app_dirname" in
 
     # Widgets
     printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/widgets.env"
-    printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app admin)" >>"$initial_output/widgets.env"
+    printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app matej)" >>"$initial_output/widgets.env"
     ;;
 *jellyfin*)
     # App
@@ -1041,9 +1040,9 @@ case "$app_dirname" in
     ;;
 *smtp4dev*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'ServerOptions__Users__0__Password=%s\n' "$admin_password" >>"$initial_output/app.env"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    printf 'ServerOptions__Users__0__Password=%s\n' "$matej_password" >>"$initial_output/app.env"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -1053,7 +1052,7 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/favicons.env"
+    printf 'MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/favicons.env"
     ;;
 *speedtesttracker*)
     # App
