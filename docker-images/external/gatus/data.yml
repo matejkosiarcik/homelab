@@ -486,7 +486,7 @@ apps:
     domain: smtp4dev.matejhome.com
     type: [smtp, http]
     authentication:
-      basic: admin
+      basic: matej
     additional_ports:
       other:
         - 25
