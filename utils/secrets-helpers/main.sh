@@ -1040,7 +1040,7 @@ case "$app_dirname" in
     ;;
 *smtp4dev*)
     # App
-    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'ServerOptions__Users__0__Password=%s\n' "$matej_password" >>"$initial_output/app.env"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
 
