@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "axios": "^1.12.2",
-    "chai": "^6.0.1",
+    "chai": "^6.2.0",
     "dotenv": "^17.2.2",
     "playwright": "^1.55.1"
   },
@@ -16,9 +16,9 @@
     "@tsconfig/recommended": "^1.0.10",
     "@types/chai": "^5.2.2",
     "@types/node": "^24.5.2",
-    "rollup": "^4.52.2",
+    "rollup": "^4.52.3",
     "tslib": "^2.8.1",
-    "tsx": "^4.20.5",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.2"
   }
 }
