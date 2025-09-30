@@ -7,7 +7,7 @@ Prerequisite: Server should be fully setup via ansible already.
 Main guide - https://wiki.debian.org/ZFS:
 
 ```sh
-sudo apt-get install -y zfsutils-linux
+sudo apt-get install -y zfsutils-linux zfs-dkms
 ```
 
 ## Setup
