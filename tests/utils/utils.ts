@@ -15,7 +15,11 @@ export async function delay(timeout: number): Promise<void> {
 }
 
 export function getEnv(instanceUrl: string, name: string): string {
-    const instanceName = URL.parse(instanceUrl)!.hostname.replace(/\.matejhome\.com$/, '').replaceAll('-', '_');
+    const parsedUrl = URL.parse(instanceUrl);
+    if (!parsedUrl) {
+        throw new Error(`Invalid URL ${instanceUrl}`);
+    }
+    const instanceName = parsedUrl.hostname.replace(/\.matejhome\.com$/, '').replaceAll('-', '_');
     const envName = `${instanceName}_${name}`.toUpperCase();
     if (!(envName in process.env) || !process.env[envName]) {
         throw new Error(`Environment variable "${envName}" not set`);
@@ -36,7 +40,7 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
             reject(new Error('DNS Timeout'));
         });
 
-        req.on('message', function (err: any, answer: { answer: { address: string }[] }) {
+        req.on('message', (err: any, answer: { answer: { address: string }[] }) => {
             if (err) {
                 reject(new Error(`DNS Message error: ${err}`));
                 return;
@@ -44,7 +48,7 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
             returnData.push(...answer.answer.map((entry) => entry.address));
         });
 
-        req.on('end', function () {
+        req.on('end', () => {
             resolve(returnData.sort());
         });
 
