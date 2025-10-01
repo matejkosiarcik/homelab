@@ -2,7 +2,7 @@
 
 ## Installation
 
-Prerequisite: Server should be fully setup via ansible already.
+Prerequisite: Server should be fully setup via Ansible already.
 
 Main guide - <https://wiki.debian.org/ZFS>:
 
