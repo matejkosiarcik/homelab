@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import dotevn from 'dotenv';
 import { execa } from 'execa';
 import { PassThrough } from 'node:stream';

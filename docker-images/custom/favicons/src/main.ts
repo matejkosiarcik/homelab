@@ -6,7 +6,7 @@ import path from 'node:path';
 import axios from 'axios';
 import dotevn from 'dotenv';
 import { execa } from 'execa';
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import png2ico from 'png-to-ico';
 import sharp from 'sharp';
 

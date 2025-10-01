@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import axios, { AxiosError } from 'axios';
 import dotevn from 'dotenv';
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import sodium from 'libsodium-wrappers';
 
 if (fs.existsSync('.env')) {

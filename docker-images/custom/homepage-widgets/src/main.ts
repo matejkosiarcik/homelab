@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import axios from 'axios';
 import dotevn from 'dotenv';
 
