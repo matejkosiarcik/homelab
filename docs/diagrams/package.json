@@ -10,7 +10,7 @@
     "lodash": "^4.17.21",
     "npm-run-all2": "^8.0.4",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.6",
