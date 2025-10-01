@@ -12,8 +12,14 @@ These actions should be performed after a device is setup for the first time eve
 
 ## Odroid H4 / H4+ / H4 Ultra
 
-- Update Bios: `https://wiki.odroid.com/odroid-h4/hardware/h4_bios_update`
-- Enable UP mode: `https://wiki.odroid.com/odroid-h4/hardware/unlimited_performance_mode`
+- Update Bios - `https://wiki.odroid.com/odroid-h4/hardware/h4_bios_update`
+- Enable UP mode - `https://wiki.odroid.com/odroid-h4/hardware/unlimited_performance_mode`:
     - TL;DR: BIOS > Advanced > CPU Power management > Power Limit 4 = 45000
-- Enable Automatic boot: `https://wiki.odroid.com/odroid-h4/application_note/autostart_when_power_applied`
+- Enable Automatic boot - `https://wiki.odroid.com/odroid-h4/application_note/autostart_when_power_applied`:
     - TL;DR: BIOS > Chipset > PCH-IO Configuration > State after G3 = S0 state
+- Enable partial memory ECC:
+    - Open BIOS > Chipset > System Agent (SA) Configuration > Memory Configuration > In-Band ECC Support
+- Increase dedicated NVRAM:
+    - TL;DR: ? <!-- TODO: Fill in breadcrumbs here-->
+- Enable automatic start after power-off - `https://wiki.odroid.com/odroid-h4/application_note/autostart_when_power_applied`:
+    - TL;DR: ? <!-- TODO: Fill in breadcrumbs here-->
