@@ -1,5 +1,4 @@
 {
-  "$schema": "https://biomejs.dev/schemas/next/schema.json",
   "formatter": {
     "enabled": true,
     "recommended": true,
