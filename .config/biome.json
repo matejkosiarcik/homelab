@@ -1,0 +1,20 @@
+{
+  "$schema": "https://biomejs.dev/schemas/next/schema.json",
+  "formatter": {
+    "enabled": true,
+    "recommended": true,
+    "includes": ["**", "!**/*.json"]
+  },
+  "linter": {
+    "enabled": true,
+    "recommended": true,
+    "rules": {
+      "complexity": {
+        "useLiteralKeys": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      }
+    }
+  }
+}
