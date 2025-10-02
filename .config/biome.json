@@ -3,7 +3,10 @@
   "formatter": {
     "enabled": true,
     "recommended": true,
-    "includes": ["**", "!**/*.json"]
+    "includes": [
+      "**",
+      "!**/*.json"
+    ]
   },
   "linter": {
     "enabled": true,
