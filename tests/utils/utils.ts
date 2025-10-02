@@ -40,7 +40,7 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
             reject(new Error('DNS Timeout'));
         });
 
-        req.on('message', (err: any, answer: { answer: { address: string }[] }) => {
+        req.on('message', (err: unknown, answer: { answer: { address: string }[] }) => {
             if (err) {
                 reject(new Error(`DNS Message error: ${err}`));
                 return;

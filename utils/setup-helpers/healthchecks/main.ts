@@ -80,7 +80,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         },
     ];
     for (const healthcheck of otherHealthchecks) {
-        const slug = healthcheck.name.toLocaleLowerCase().replaceAll(' ', '-').replaceAll(/\-+/g, '-');
+        const slug = healthcheck.name.toLocaleLowerCase().replaceAll(' ', '-').replaceAll(/-+/g, '-');
         await addHealthcheck({ slug: slug, schedule: healthcheck.cron, name: healthcheck.name, uuid: '', grace: 0, tz: '', });
     }
 
@@ -94,7 +94,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     ];
     for (const _name of deployHealthchecks) {
         const name = `${_name} - Deploy`;
-        const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+        const slug = name.toLocaleLowerCase().replaceAll(/[ [\]]/g, '-').replaceAll(/-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
         await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, tz: '', }); // TODO: Set time
     }
 
@@ -108,7 +108,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     ];
     for (const _name of updateHealthchecks) {
         const name = `${_name} - Update`;
-        const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+        const slug = name.toLocaleLowerCase().replaceAll(/[ [\]]/g, '-').replaceAll(/-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
         await addHealthcheck({ slug: slug, schedule: '00 00 * * *', name: name, uuid: '', grace: 0, tz: '', }); // TODO: Set time
     }
 
@@ -182,7 +182,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
     ];
     for (const _name of certificatorHealthchecks) {
         const name = `${_name} - Certificator`;
-        const slug = name.toLocaleLowerCase().replaceAll(/[ \[\]]/g, '-').replaceAll(/\-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
+        const slug = name.toLocaleLowerCase().replaceAll(/[ [\]]/g, '-').replaceAll(/-+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
         await addHealthcheck({ slug: slug, schedule: '30 01 * * *', name: name, uuid: '', grace: 0, tz: '', });
     }
 
