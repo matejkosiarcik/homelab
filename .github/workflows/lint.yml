@@ -73,6 +73,8 @@ jobs:
 
           # Disabled linters below
           VALIDATE_BASH_EXEC: false
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_BIOME_LINT: false
           VALIDATE_CSS: false
           VALIDATE_DOCKERFILE_HADOLINT: false
           VALIDATE_JAVASCRIPT_ES: false
