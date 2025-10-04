@@ -14,7 +14,7 @@ sources:
 sources_locked:
   - repo: https://github.com/aptible/supercronic.git
     name: supercronic
-    rev: cfd6038f87540d65e4d67339a56fb3389cb129f4
+    rev: 822e66adf97b2001649276819a26589eb4dada9e
     type: git
     params:
     sparse_paths:
