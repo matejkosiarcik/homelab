@@ -16,13 +16,31 @@ RUN apt-get update -qq && \
     rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
 ARG UID=1000
 ARG GID=1000
-RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
-    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
+RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
+        groupadd --gid "$GID" homelab && \
+    true; else \
+        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
+        groupmod --new-name homelab "$oldgroupname" && \
+    true; fi && \
+    nologinshell='' && \
+    if [ -e /sbin/nologin ]; then \
+        nologinshell='/sbin/nologin' && \
+    true; elif [ -e /usr/sbin/nologin ]; then \
+        nologinshell='/usr/sbin/nologin' && \
+    true; else \
+        nologinshell='/bin/false' && \
+    true; fi && \
+    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
+        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
+    true; else \
+        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
+        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
+    true; fi
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
-COPY --chown=user:user ./custom/apache/apache.conf /etc/apache2/sites-enabled/apache.conf
-COPY --from=prefinal --chown=user:user /homelab/ ./
+COPY --chown=homelab:homelab ./custom/apache/apache.conf /etc/apache2/sites-enabled/apache.conf
+COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=apache \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
