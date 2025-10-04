@@ -30,6 +30,7 @@ SockPuppetBrowser (used for opening \[web\] sites):
     - Change `General > Time between checks`
     - Change `General > Jitter`
     - Enable `Fetching > sockpuppetbrowser`
-    - Disble `UI Options > Open history in new tab`
+    - Disable `UI Options > Open history in new tab`
     - Enable `Global Filters > Render anchor tag`
+    - Create custom groups in `Groups`
 - Import watched URLs from backup
