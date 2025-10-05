@@ -7,6 +7,7 @@ services:
       dockerfile: ./external/actualbudget/Dockerfile
     volumes:
       - ./app-data/actualbudget-data:/data:rw
+    init: false
 
   certificator:
     extends:
