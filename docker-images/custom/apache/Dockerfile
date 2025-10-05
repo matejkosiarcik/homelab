@@ -35,7 +35,9 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; else \
         oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
         usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi
+    true; fi && \
+    mkdir -p /home/homelab /homelab && \
+    chown -R homelab:homelab /home/homelab /homelab
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently

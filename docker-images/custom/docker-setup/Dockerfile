@@ -23,8 +23,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
         oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
         usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
     true; fi && \
-    mkdir -p /homelab && \
-    chown -R homelab:homelab /homelab
+    mkdir -p /home/homelab /homelab && \
+    chown -R homelab:homelab /home/homelab /homelab
 COPY --chown=homelab:homelab ./custom/docker-setup/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=docker-setup \
     HOMELAB_CONTAINER_VARIANT=default \
