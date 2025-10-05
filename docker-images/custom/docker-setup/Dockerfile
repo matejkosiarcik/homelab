@@ -1,9 +1,9 @@
 FROM docker:28.4.0
-RUN apk update --no-cache && \
-    apk add --no-cache shadow
 ARG UID=1000
 ARG GID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
+RUN apk update --no-cache && \
+    apk add --no-cache shadow && \
+    if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \
     true; else \
         oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
@@ -24,7 +24,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
         usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
     true; fi && \
     mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+    chown -R homelab:homelab /home/homelab /homelab && \
+    apk del --no-cache shadow
 COPY --chown=homelab:homelab ./custom/docker-setup/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=docker-setup \
     HOMELAB_CONTAINER_VARIANT=default \
