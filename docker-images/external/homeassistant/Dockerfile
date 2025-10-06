@@ -1,4 +1,4 @@
-FROM homeassistant/home-assistant:2025.10.0
+FROM homeassistant/home-assistant:2025.10.1
 RUN apk update --no-cache && \
     apk add --no-cache shadow
 ARG UID=1000
