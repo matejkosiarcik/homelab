@@ -7,15 +7,34 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 ARG UID=1000
 ARG GID=1000
-RUN ( groupadd -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
-    ( useradd -l -m -u "$UID" -g "$GID" user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" )
-COPY --from=minio --chown=user:user /usr/bin/minio /usr/bin/minio
+RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
+        groupadd --gid "$GID" homelab && \
+    true; else \
+        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
+        groupmod --new-name homelab "$oldgroupname" && \
+    true; fi && \
+    nologinshell='' && \
+    if [ -e /sbin/nologin ]; then \
+        nologinshell='/sbin/nologin' && \
+    true; elif [ -e /usr/sbin/nologin ]; then \
+        nologinshell='/usr/sbin/nologin' && \
+    true; else \
+        nologinshell='/bin/false' && \
+    true; fi && \
+    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
+        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
+    true; else \
+        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
+        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
+    true; fi && \
+    mkdir -p /home/homelab /homelab && \
+    chown -R homelab:homelab /home/homelab /homelab
+COPY --from=minio --chown=homelab:homelab /usr/bin/minio /usr/bin/minio
 ENV HOMELAB_CONTAINER_NAME=minio-server \
     HOMELAB_CONTAINER_VARIANT=default \
     MINIO_ROOT_USER=admin \
     TZ=Europe/Bratislava
-USER user
+USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:9000/minio/health/live || exit 1" ]
 ENTRYPOINT [ "minio" ]
 CMD [ "server", "/data", "--address", ":9000", "--console-address", ":9001" ]
-USER user

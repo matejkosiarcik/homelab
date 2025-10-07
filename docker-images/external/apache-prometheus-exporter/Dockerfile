@@ -28,7 +28,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
 WORKDIR /homelab
-COPY --chown=user:user ./external/apache-prometheus-exporter/entrypoint.sh ./
+COPY --chown=homelab:homelab ./external/apache-prometheus-exporter/entrypoint.sh ./
 ENV HOMELAB_CONTAINER_NAME=apache-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
