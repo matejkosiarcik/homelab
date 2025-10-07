@@ -24,6 +24,6 @@ Client:
 
 ## After initial installation
 
-- Create prometheus token with local CLI:
+- Create prometheus token with local CLI and save in Vaultwarden:
     - `mc alias set homelab https://minio.matejhome.com`
     - `mc admin prometheus generate homelab`
