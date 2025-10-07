@@ -25,4 +25,5 @@ Client:
 ## After initial installation
 
 - Create prometheus token with local CLI:
-    - `docker exec minio-app -it ntfy-app /bin/sh -c 'mc admin prometheus generate homelab'`
+    - `mc alias set homelab https://minio.matejhome.com`
+    - `mc admin prometheus generate homelab`
