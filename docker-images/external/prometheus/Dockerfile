@@ -46,15 +46,23 @@ FROM prom/prometheus:v3.6.0
 ARG UID=1000
 ARG GID=1000
 USER root
-RUN ( addgroup -g "$GID" user || groupmod --new-name user "$(getent group "$GID" | cut -d: -f1)" ) && \
-    ( adduser -D -u "$UID" -G user user || usermod --login user "$(getent passwd "$UID" | cut -d: -f1)" ) && \
-    mkdir -p /homelab && \
-    chown -R user:user /homelab
-COPY --from=prefinal --chown=user:user /homelab /homelab
+RUN addgroup -g "$GID" homelab && \
+    nologinshell='' && \
+    if [ -e /sbin/nologin ]; then \
+        nologinshell='/sbin/nologin' && \
+    true; elif [ -e /usr/sbin/nologin ]; then \
+        nologinshell='/usr/sbin/nologin' && \
+    true; else \
+        nologinshell='/bin/false' && \
+    true; fi && \
+    adduser -D -h /home/homelab -u "$UID" -G homelab -s "$nologinshell" homelab && \
+    mkdir -p /home/homelab /homelab && \
+    chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://admin:$PROMETHEUS_ADMIN_PASSWORD@localhost:9090 || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
 CMD []
-USER user
+USER homelab
