@@ -25,4 +25,4 @@ Client:
 ## After initial installation
 
 - Create prometheus token with local CLI:
-    - `mc admin prometheus generate homelab`
+    - `docker exec minio-app -it ntfy-app /bin/sh -c 'mc admin prometheus generate homelab'`
