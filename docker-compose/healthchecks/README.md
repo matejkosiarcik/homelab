@@ -16,12 +16,10 @@
 
 ## After initial installation
 
-- Create `admin` account
+- Create `matej@matejhome.com` account
     - Turn on password authentication
-- Configure notifications: ntfy / gotify / smtp
+- Configure notifications: ntfy & gotify
     - `https://ntfy.matejhome.com` + topic + access-token
     - `https://gotify.matejhome.com` + token
-    - `healthchecks@matejhome.com`
-- Add notifications to _All_ group
 - Generate api-key / api-key (readonly) / ping-key and save it in Vaultwarden
 - Run script to create all healthchecks
