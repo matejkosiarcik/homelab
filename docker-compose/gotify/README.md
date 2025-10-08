@@ -18,7 +18,9 @@ Gotify server:
 
 ## After initial installation
 
-N/A
+- Create apps for receiving notifications:
+    - _Changedetection_, _Gatus_, _Healthchecks_, _UptimeKuma_
+    - Save _Gatus_ token in _Vaultwarden_
 
 ## Publishing notifications
 
