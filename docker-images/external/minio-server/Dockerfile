@@ -1,4 +1,4 @@
-FROM minio/minio:RELEASE.2025-07-23T15-54-02Z AS minio
+FROM minio/minio:RELEASE.2025-09-07T16-13-09Z AS minio
 
 FROM debian:13.1-slim
 RUN apt-get update && \
