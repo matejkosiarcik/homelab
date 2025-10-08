@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM python:3.13.7-slim AS samba-exporter-gitman
+FROM python:3.14.0-slim AS samba-exporter-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -14,7 +14,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 COPY ./external/samba/prometheus-exporter/gitman.yml ./
 RUN gitman install --quiet
 
-FROM golang:1.25.1-bookworm AS samba-exporter-build
+FROM golang:1.25.2-bookworm AS samba-exporter-build
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \

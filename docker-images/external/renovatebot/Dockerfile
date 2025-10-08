@@ -1,4 +1,4 @@
-FROM python:3.13.7-slim AS supercronic-gitman
+FROM python:3.14.0-slim AS supercronic-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -13,7 +13,7 @@ COPY ./.shared/dependencies/supercronic/gitman.yml ./
 RUN gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.25.1-bookworm AS supercronic-build
+FROM golang:1.25.2-bookworm AS supercronic-build
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -51,7 +51,7 @@ COPY --from=nodejs-server-build /homelab/package.json ./server/
 COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
 COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
-FROM renovate/renovate:41.138.1-full
+FROM renovate/renovate:41.140.2-full
 ARG UID=1000
 ARG GID=1000
 USER root
