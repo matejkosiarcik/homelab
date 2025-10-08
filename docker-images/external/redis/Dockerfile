@@ -1,4 +1,4 @@
-FROM redis:8.2.1
+FROM redis:8.2.2
 ARG UID=1000
 ARG GID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
