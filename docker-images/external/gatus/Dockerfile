@@ -1,4 +1,4 @@
-FROM golang:1.25.1-alpine AS healthcheck-builder
+FROM golang:1.25.2-alpine AS healthcheck-builder
 WORKDIR /homelab
 COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
