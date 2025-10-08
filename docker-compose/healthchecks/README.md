@@ -16,7 +16,7 @@
 
 ## After initial installation
 
-- Create `matej@matejhome.com` account
+- Create `matej@matejhome.com` and `test@matejhome.com` accounts
     - Turn on password authentication
 - Configure notifications: ntfy & gotify
     - `https://ntfy.matejhome.com` + topic + access-token
