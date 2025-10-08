@@ -45,7 +45,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: docker:28.4.0
+      - image: docker:28.5.0
     steps:
       - checkout
       - setup_remote_docker:
@@ -65,7 +65,7 @@ jobs:
       server:
         type: string
     docker:
-      - image: docker:28.4.0
+      - image: docker:28.5.0
     steps:
       - checkout
       - setup_remote_docker:
