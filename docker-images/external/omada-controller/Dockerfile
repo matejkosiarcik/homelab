@@ -5,10 +5,10 @@ FROM mbentley/omada-controller:5.15
 ARG UID=1000
 ARG GID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
+        groupadd --gid "$GID" omada && \
     true; else \
         oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
+        groupmod --new-name omada "$oldgroupname" && \
     true; fi && \
     nologinshell='' && \
     if [ -e /sbin/nologin ]; then \
@@ -19,13 +19,13 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
         nologinshell='/bin/false' && \
     true; fi && \
     if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
+        useradd --no-log-init --home /home/omada --uid "$UID" --gid "$GID" --shell "$nologinshell" omada && \
     true; else \
         oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
+        usermod --move-home --home /home/omada --uid "$UID" --gid "$GID" --shell "$nologinshell" --login omada "$oldusername" && \
     true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+    mkdir -p /home/omada /homelab && \
+    chown -R omada:omada /home/omada /homelab
 ENV HOMELAB_CONTAINER_NAME=omadacontroller \
     HOMELAB_CONTAINER_VARIANT=default \
     PUID=$UID \
