@@ -1,4 +1,4 @@
-FROM freikin/dawarich:0.31.0
+FROM freikin/dawarich:0.33.1
 ARG UID=1000
 ARG GID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
