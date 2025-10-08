@@ -14,4 +14,4 @@
 
 ## After initial installation
 
-Empty
+- Create admin account `matej@matejhome.com`
