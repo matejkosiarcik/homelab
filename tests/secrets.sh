@@ -140,7 +140,7 @@ load_password() {
     printf 'HEALTHCHECKS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password healthchecks apache status)"
     printf 'HEALTHCHECKS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password healthchecks apache prometheus)"
 
-    printf 'HOMEASSISTANT_TEST_PASSWORD=%s\n' "$(load_password homeassistant app test)"
+    printf 'HOMEASSISTANT_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password homeassistant app homelab-test)"
     printf 'HOMEASSISTANT_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password homeassistant app api-key)"
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant apache status)"
     printf 'HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homeassistant apache prometheus)"
@@ -149,7 +149,7 @@ load_password() {
     printf 'HOMEPAGE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homepage apache status)"
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homepage apache prometheus)"
 
-    printf 'JELLYFIN_TEST_PASSWORD=%s\n' "$(load_password jellyfin app test)"
+    printf 'JELLYFIN_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password jellyfin app homelab-test)"
     printf 'JELLYFIN_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin app prometheus)"
     printf 'JELLYFIN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin apache status)"
     printf 'JELLYFIN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin apache prometheus)"
