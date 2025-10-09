@@ -683,16 +683,16 @@ case "$app_dirname" in
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
-    test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
     printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
-    printf 'test,%s\n' "$test_password" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'MINIO_ROOT_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app.env"
 
     # Setup
     printf 'MINIO_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app-setup.env"
     printf 'MINIO_USER_PASSWORD=%s\n' "$user_password" >>"$initial_output/app-setup.env"
-    printf 'MINIO_TEST_PASSWORD=%s\n' "$test_password" >>"$initial_output/app-setup.env"
+    printf 'MINIO_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -1163,8 +1163,8 @@ case "$app_dirname" in
     printf 'ADMIN_TOKEN=%s\n' "$superadmin_password_hashed" >>"$initial_output/app.env"
     printf 'superadmin,%s\n' "$superadmin_password" >>"$initial_output/all-credentials.csv"
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
-    printf 'homelab,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)" >>"$initial_output/all-credentials.csv"
-    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-viewer,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -1178,10 +1178,8 @@ case "$app_dirname" in
     ;;
 *vikunja*)
     # App
-    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
-    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
-    test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)"
-    printf 'test,%s\n' "$test_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
     jwt_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" app jwt-secret)"
     printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/all-credentials.csv"
     printf 'VIKUNJA_SERVICE_JWTSECRET=%s\n' "$jwt_secret" >>"$initial_output/app.env"
