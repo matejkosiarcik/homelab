@@ -45,7 +45,7 @@ test.describe(apps.speedtesttracker.title, () => {
             const invalidUsers = [
                 {
                     title: 'Random user',
-                    email: `${faker.string.alpha(10)}@matejhome.com`,
+                    email: `${faker.string.alpha(10)}@homelab.matejhome.com`,
                 },
                 {
                     title: 'User matej',

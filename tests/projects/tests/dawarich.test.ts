@@ -16,7 +16,7 @@ test.describe(apps.dawarich.title, () => {
 
             const validUsers = [
                 {
-                    email: 'test@matejhome.com',
+                    email: 'homelab-test@homelab.matejhome.com',
                 },
             ];
             for (const user of validUsers) {
@@ -33,11 +33,11 @@ test.describe(apps.dawarich.title, () => {
             const invalidUsers = [
                 {
                     title: 'User test',
-                    email: 'test@matejhome.com',
+                    email: 'homelab-test@homelab.matejhome.com',
                 },
                 {
                     title: 'Random user',
-                    email: `${faker.string.alpha(10)}@matejhome.com`,
+                    email: `${faker.string.alpha(10)}@homelab.matejhome.com`,
                 },
             ];
             for (const user of invalidUsers) {
