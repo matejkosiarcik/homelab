@@ -22,7 +22,7 @@ LinuxServer (unofficial):
 ## After initial installation
 
 - Complete initial setup wizard with `matej`
-    - Create `monika` and `test` users
+    - Create `homelab`, `homelab-test`, and `monika` users
     - Disable remote connections
 - Customize settings (eg. ) (location: Settings -> Administration -> General)
     - Disable "Quick Connect"

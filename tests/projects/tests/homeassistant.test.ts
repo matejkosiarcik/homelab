@@ -41,7 +41,7 @@ test.describe(apps.homeassistant.title, () => {
 
             const validUsers = [
                 {
-                    username: 'test',
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
@@ -61,8 +61,8 @@ test.describe(apps.homeassistant.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User test',
-                    username: 'test',
+                    title: 'User homelab-test',
+                    username: 'homelab-test',
                 },
                 {
                     title: 'Random user',

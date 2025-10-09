@@ -21,11 +21,11 @@ test.describe(apps.jellyfin.title, () => {
                 expect(response.data, 'Response body').toStrictEqual('Healthy');
             });
 
-            test(`UI: Successful login - User test`, async ({ page }) => {
+            test(`UI: Successful login - User homelab-test`, async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(/\/login\.html(?:\?.*)?$/);
                 await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                await page.locator('input#txtManualName').fill('test');
+                await page.locator('input#txtManualName').fill('homelab-test');
                 await page.locator('input#txtManualPassword').fill(getEnv(instance.url, 'TEST_PASSWORD'));
                 await page.locator('button[type="submit"]').click();
                 await page.waitForURL(`${instance.url}/web/#/home.html`);
