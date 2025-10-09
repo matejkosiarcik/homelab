@@ -13,9 +13,9 @@
 
 ## After initial installation
 
-- Setup admin account _matej_
+- Setup admin account `matej`
 - Setup initial settings + initial login to finish the wizard
-- Setup extra accounts: _readonly_ and _test_
+- Setup extra accounts: `homelab-admin`, `homelab-test`, and `homelab-viewer`
 - Configure basic settings
     - General config and settings customization
     - Setup SMTP server address for emails
