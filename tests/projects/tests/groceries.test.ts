@@ -13,11 +13,11 @@ test.describe(apps.groceries.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test('UI: Successful login - User test', async ({ page }) => {
+            test('UI: Successful login - User homelab-test', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
-                await page.locator('input[autocomplete="username"]').fill('testtest'); // Username is weird, because there is a minimum length limit
-                await page.locator('input[autocomplete="current-password"]').fill(getEnv(instance.url, 'TEST_PASSWORD'));
+                await page.locator('input[autocomplete="username"]').fill('homelab-test'); // Username is weird, because there is a minimum length limit
+                await page.locator('input[autocomplete="current-password"]').fill(getEnv(instance.url, 'HOMELAB_TEST_PASSWORD'));
                 await page.locator('ion-button[type="submit"]:has-text("Login")').click();
                 await page.waitForURL(`${instance.url}/lists`);
                 await expect(page.locator('ion-icon.sync-icon')).toBeVisible();
