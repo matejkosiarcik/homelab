@@ -38,7 +38,7 @@ load_password() {
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password changedetection apache prometheus)"
 
     printf 'DAWARICH_MATEJ_PASSWORD=%s\n' "$(load_password dawarich app matej)"
-    printf 'DAWARICH_TEST_PASSWORD=%s\n' "$(load_password dawarich app test)"
+    printf 'DAWARICH_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password dawarich app homelab-test)"
     printf 'DAWARICH_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dawarich apache status)"
     printf 'DAWARICH_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dawarich apache prometheus)"
     printf 'DAWARICH_PROMETHEUS_PASSWORD=%s\n' "$(load_password dawarich app prometheus)"
@@ -127,12 +127,12 @@ load_password() {
     printf 'GRAFANA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password grafana apache status)"
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password grafana apache prometheus)"
 
-    printf 'GROCERIES_TEST_PASSWORD=%s\n' "$(load_password groceries app test)"
+    printf 'GROCERIES_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password groceries app homelab-test)"
     printf 'GROCERIES_PROXY_STATUS_PASSWORD=%s\n' "$(load_password groceries apache status)"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password groceries apache prometheus)"
 
     printf 'HEALTHCHECKS_MATEJ_PASSWORD=%s\n' "$(load_password healthchecks app matej)"
-    printf 'HEALTHCHECKS_TEST_PASSWORD=%s\n' "$(load_password healthchecks app test)"
+    printf 'HEALTHCHECKS_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password healthchecks app homelab-test)"
     printf 'HEALTHCHECKS_API_KEY_READONLY=%s\n' "$(load_password healthchecks app api-key-readonly)"
     printf 'HEALTHCHECKS_API_KEY_READWRITE=%s\n' "$(load_password healthchecks app api-key-readwrite)"
     printf 'HEALTHCHECKS_PING_KEY=%s\n' "$(load_password healthchecks app ping-key)"
@@ -156,7 +156,7 @@ load_password() {
 
     printf 'MINIO_ADMIN_PASSWORD=%s\n' "$(load_password minio app admin)"
     printf 'MINIO_USER_PASSWORD=%s\n' "$(load_password minio app user)"
-    printf 'MINIO_TEST_PASSWORD=%s\n' "$(load_password minio app test)"
+    printf 'MINIO_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password minio app homelab-test)"
     printf 'MINIO_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password minio app prometheus-token)"
     printf 'MINIO_PROXY_STATUS_PASSWORD=%s\n' "$(load_password minio apache status)"
     printf 'MINIO_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password minio apache prometheus)"
@@ -272,7 +272,7 @@ load_password() {
     printf 'SPEEDTESTTRACKER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password speedtesttracker apache prometheus)"
 
     printf 'TVHEADEND_STREAM_PASSWORD=%s\n' "$(load_password tvheadend app stream)"
-    printf 'TVHEADEND_TEST_PASSWORD=%s\n' "$(load_password tvheadend app test)"
+    printf 'TVHEADEND_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password tvheadend app homelab-test)"
     printf 'TVHEADEND_PROXY_STATUS_PASSWORD=%s\n' "$(load_password tvheadend apache status)"
     printf 'TVHEADEND_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password tvheadend apache prometheus)"
 
@@ -326,11 +326,11 @@ load_password() {
     printf 'UPTIMEKUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptimekuma apache status)"
     printf 'UPTIMEKUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptimekuma apache prometheus)"
 
-    printf 'VAULTWARDEN_TEST_PASSWORD=%s\n' "$(load_password vaultwarden app test)"
+    printf 'VAULTWARDEN_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password vaultwarden app homelab-test)"
     printf 'VAULTWARDEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vaultwarden apache status)"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden apache prometheus)"
 
-    printf 'VIKUNJA_TEST_PASSWORD=%s\n' "$(load_password vikunja app test)"
+    printf 'VIKUNJA_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password vikunja app homelab-test)"
     printf 'VIKUNJA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vikunja apache status)"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja apache prometheus)"
 

@@ -35,9 +35,9 @@ if ! mc admin user list minio | grep 'user' >/dev/null; then
     mc admin policy attach minio readwrite --user user
 fi
 
-if ! mc admin user list minio | grep 'test' >/dev/null; then
-    mc admin user add minio test "$MINIO_TEST_PASSWORD"
-    mc admin policy attach minio readonly --user test
+if ! mc admin user list minio | grep 'homelab-test' >/dev/null; then
+    mc admin user add minio homelab-test "$MINIO_HOMELAB_TEST_PASSWORD"
+    mc admin policy attach minio readonly --user homelab-test
 fi
 
 # Create new buckets

@@ -16,10 +16,14 @@
 
 ## After initial installation
 
-- Create `matej@matejhome.com` and `test@matejhome.com` accounts
+- Create admin `matej@matejhome.com` account
     - Turn on password authentication
-- Configure notifications: ntfy & gotify
+    - Disable email reminders
+- Configure admin notifications: ntfy & gotify
     - `https://ntfy.matejhome.com` + topic + access-token
     - `https://gotify.matejhome.com` + token
 - Generate api-key / api-key (readonly) / ping-key and save it in Vaultwarden
 - Run script to create all healthchecks
+- Create non-admin `homelab-test@homelab.matejhome.com` account
+    - Turn on password authentication
+    - Disable email reminders
