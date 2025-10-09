@@ -218,8 +218,8 @@ load_password() {
     printf 'OLLAMA_PRIVATE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama-private apache status)"
     printf 'OLLAMA_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama-private apache prometheus)"
 
-    printf 'OMADACONTROLLER_VIEWER_PASSWORD=%s\n' "$(load_password omadacontroller app viewer)"
-    printf 'OMADACONTROLLER_TEST_PASSWORD=%s\n' "$(load_password omadacontroller app test)"
+    printf 'OMADACONTROLLER_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password omadacontroller app homelab-viewer)"
+    printf 'OMADACONTROLLER_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password omadacontroller app homelab-test)"
     printf 'OMADACONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password omadacontroller apache status)"
     printf 'OMADACONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password omadacontroller apache prometheus)"
 
