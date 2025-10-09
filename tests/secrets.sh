@@ -37,7 +37,6 @@ load_password() {
     printf 'CHANGEDETECTION_PROXY_STATUS_PASSWORD=%s\n' "$(load_password changedetection apache status)"
     printf 'CHANGEDETECTION_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password changedetection apache prometheus)"
 
-    printf 'DAWARICH_MATEJ_PASSWORD=%s\n' "$(load_password dawarich app matej)"
     printf 'DAWARICH_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password dawarich app homelab-test)"
     printf 'DAWARICH_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dawarich apache status)"
     printf 'DAWARICH_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dawarich apache prometheus)"
