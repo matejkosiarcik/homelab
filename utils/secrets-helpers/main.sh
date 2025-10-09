@@ -613,7 +613,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_GRAFANA_PASSWORD=%s\n' "$(load_token grafana app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app api-key)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app homelab-api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
     # TODO: Enable NetAlertX integration
     # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app api-key)" "$initial_output/app.env"
@@ -645,8 +645,9 @@ case "$app_dirname" in
 *jellyfin*)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
-    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
-    printf 'test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app test)" >>"$initial_output/all-credentials.csv"
+    printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
