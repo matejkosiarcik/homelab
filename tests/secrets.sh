@@ -316,8 +316,8 @@ load_password() {
     printf 'UNBOUND_2_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache status)"
     printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache prometheus)"
 
-    printf 'UNIFICONTROLLER_VIEWER_PASSWORD=%s\n' "$(load_password unificontroller app viewer)"
-    printf 'UNIFICONTROLLER_TEST_PASSWORD=%s\n' "$(load_password unificontroller app test)"
+    printf 'UNIFICONTROLLER_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unificontroller app homelab-viewer)"
+    printf 'UNIFICONTROLLER_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unificontroller app homelab-test)"
     printf 'UNIFICONTROLLER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unificontroller apache status)"
     printf 'UNIFICONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unificontroller apache prometheus)"
 

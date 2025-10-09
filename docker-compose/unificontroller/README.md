@@ -58,9 +58,9 @@ This is bad (still starting) `/status`:
 
 ## After initial installation
 
-- Setup admin account _matej_
+- Setup main admin account `matej`
 - Complete initial wizard / restore from backup
-- Setup extra accounts: _readonly_ and _test_
+- Setup extra accounts: `homelab-admin`, `homelab-test`, and `homelab-viewer`
 - Configure basic settings
     - Setup SMTP server address for emails
-- Connect and configure UniFi devices
+- Connect and configure UniFi networks/WiFis/devices
