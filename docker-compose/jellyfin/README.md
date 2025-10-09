@@ -21,13 +21,13 @@ LinuxServer (unofficial):
 
 ## After initial installation
 
-- Complete initial setup wizard wit `matej`
+- Complete initial setup wizard with `matej`
     - Create `monika` and `test` users
     - Disable remote connections
 - Customize settings (eg. ) (location: Settings -> Administration -> General)
     - Disable "Quick Connect"
     - Verify "Server Name"
-    - Create Access token for `homepage`
+    - Create Access token for `Homelab`
     - Change cache path to `/cache`
 - Connect to Tvheadend
     - Install Tvheadend plugin (location: Settings -> Administration -> Plugins -> Catalog)

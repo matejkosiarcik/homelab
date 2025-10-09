@@ -23,10 +23,8 @@ Note: LinuxServer unused
 
 ## After initial installation
 
-- Finish initial setup and create `admin` user
+- Finish initial setup and create `matej` user
 - Configure basic settings
-- Create admin users: `automation`
-- Create non-admin users: `matej`, `monika`, `test`
-- Setup access token for `automation`
-- Optional: Setup 2FA - <https://www.home-assistant.io/docs/authentication/multi-factor-auth>
+- Create admin users: `homelab-viewer` and setup access token
+- Create non-admin users: `homelab-admin`, `homelab-test`, and `monika`
 - Connect smart devices
