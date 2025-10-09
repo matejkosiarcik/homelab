@@ -692,7 +692,7 @@ case "$app_dirname" in
     # Setup
     printf 'MINIO_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app-setup.env"
     printf 'MINIO_USER_PASSWORD=%s\n' "$user_password" >>"$initial_output/app-setup.env"
-    printf 'MINIO_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
+    printf 'MINIO_HOMELAB_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
