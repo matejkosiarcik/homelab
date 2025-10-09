@@ -37,10 +37,10 @@ test.describe(apps.unificontroller.title, () => {
 
             const validUsers = [
                 {
-                    username: 'test',
+                    username: 'homelab-test',
                 },
                 {
-                    username: 'viewer'
+                    username: 'homelab-viewer'
                 },
             ];
             for (const user of validUsers) {
@@ -58,8 +58,8 @@ test.describe(apps.unificontroller.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User test',
-                    username: 'test',
+                    title: 'User homelab-test',
+                    username: 'homelab-test',
                 },
                 {
                     title: 'Random user',
