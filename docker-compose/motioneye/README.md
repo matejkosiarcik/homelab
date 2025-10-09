@@ -27,5 +27,8 @@ Notes:
 
 ## After initial installation
 
-- Setup `admin` and `stream` passwords
-- Setup camera black zone
+- Setup `admin` and `stream` user passwords
+    - By default there are no passwords
+- Setup camera
+    - Add camera according to ![](./Add%20camera.png)
+    - Setup blacked out zone
