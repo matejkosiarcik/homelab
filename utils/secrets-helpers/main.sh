@@ -640,7 +640,7 @@ case "$app_dirname" in
 
     # Widgets
     printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/widgets.env"
-    printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app matej)" >>"$initial_output/widgets.env"
+    printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app homelab-viewer)" >>"$initial_output/widgets.env"
     ;;
 *jellyfin*)
     # App
@@ -1046,6 +1046,12 @@ case "$app_dirname" in
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'ServerOptions__Users__0__Password=%s\n' "$matej_password" >>"$initial_output/app.env"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'ServerOptions__Users__1__Password=%s\n' "$homelab_viewer_password" >>"$initial_output/app.env"
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'ServerOptions__Users__2__Password=%s\n' "$homelab_test_password" >>"$initial_output/app.env"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

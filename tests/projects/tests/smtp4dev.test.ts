@@ -37,41 +37,47 @@ test.describe(apps.smtp4dev.title, () => {
             createApiRootTest(instance.url, {
                 title: 'Authenticated',
                 headers: {
-                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                    Authorization: `Basic ${Buffer.from(`homelab-test:${getEnv(instance.url, 'HOMELAB_TEST_PASSWORD')}`).toString('base64')}`
                 },
             });
             createTcpTests(instance.url, [25, 80, 443]);
             createFaviconTests(instance.url);
 
-            const users = [
+            const validUsers = [
                 {
-                    username: 'admin',
+                    username: 'homelab-test'
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
+                });
+
+                test(`API: Successful messages - User ${user.username}`, async () => {
+                    const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    title: 'User homelab-test',
+                    username: 'homelab-test',
                 },
                 {
+                    title: 'Random user',
                     username: faker.string.alpha(10),
-                    random: true,
-                }
+                },
             ];
-            for (const user of users) {
-                if (!user.random) {
-                    test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
-                        await page.goto(instance.url);
-                        await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
-                    });
-
-                    test(`API: Successful messages - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                        const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
-                            auth: {
-                                username: user.username,
-                                password: getEnv(instance.url, 'ADMIN_PASSWORD'),
-                            },
-                        });
-                        expect(response.status, 'Response Status').toStrictEqual(200);
-                    });
-                }
-
-                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful open - ${user.title}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     try {
                         await page.goto(instance.url);
@@ -81,7 +87,7 @@ test.describe(apps.smtp4dev.title, () => {
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
 
-                test(`API: Unsuccessful messages - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                test(`API: Unsuccessful messages - ${user.title}`, async () => {
                     const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
                         auth: {
                             username: user.username,
@@ -105,8 +111,8 @@ test.describe(apps.smtp4dev.title, () => {
             test('API: Successful get messages', async () => {
                 const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
                     auth: {
-                        username: 'admin',
-                        password: getEnv(instance.url, 'ADMIN_PASSWORD'),
+                        username: 'homelab-test',
+                        password: getEnv(instance.url, 'HOMELAB_TEST_PASSWORD'),
                     },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);

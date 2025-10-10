@@ -266,7 +266,7 @@ load_password() {
     printf 'RENOVATEBOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password renovatebot apache status)"
     printf 'RENOVATEBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password renovatebot apache prometheus)"
 
-    printf 'SMTP4DEV_ADMIN_PASSWORD=%s\n' "$(load_password smtp4dev app admin)"
+    printf 'SMTP4DEV_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password smtp4dev app homelab-test)"
     printf 'SMTP4DEV_PROXY_STATUS_PASSWORD=%s\n' "$(load_password smtp4dev apache status)"
     printf 'SMTP4DEV_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password smtp4dev apache prometheus)"
 
