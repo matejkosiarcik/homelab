@@ -23,3 +23,4 @@ Bitwarden:
 - Import passwords from JSON/CSV backup
     - Change imported collection from `Default collection` to `Homelab`
 - Share `Homelab` organization+collection with `homelab-viewer` (readonly)
+- Login personal PC and all servers
