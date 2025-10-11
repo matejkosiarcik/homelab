@@ -19,5 +19,7 @@ Bitwarden:
 ## After initial installation
 
 - Create accounts `matej`, `homelab-viewer` and `homelab-test` on `https://vaultwarden.tld/admin`
-- Create `Homelab collection/organization` under `matej` user and share with `homelab-viewer` (readonly)
+- Create `Homelab` organization from `matej` user
 - Import passwords from JSON/CSV backup
+    - Change imported collection from `Default collection` to `Homelab`
+- Share `Homelab` organization+collection with `homelab-viewer` (readonly)
