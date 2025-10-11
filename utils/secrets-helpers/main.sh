@@ -1096,7 +1096,8 @@ case "$app_dirname" in
 *tvheadend*)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
-    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-stream)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

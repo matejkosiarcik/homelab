@@ -274,7 +274,7 @@ load_password() {
     printf 'SPEEDTESTTRACKER_PROXY_STATUS_PASSWORD=%s\n' "$(load_password speedtesttracker apache status)"
     printf 'SPEEDTESTTRACKER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password speedtesttracker apache prometheus)"
 
-    printf 'TVHEADEND_STREAM_PASSWORD=%s\n' "$(load_password tvheadend app stream)"
+    printf 'TVHEADEND_HOMELAB_STREAM_PASSWORD=%s\n' "$(load_password tvheadend app homelab-stream)"
     printf 'TVHEADEND_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password tvheadend app homelab-test)"
     printf 'TVHEADEND_PROXY_STATUS_PASSWORD=%s\n' "$(load_password tvheadend apache status)"
     printf 'TVHEADEND_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password tvheadend apache prometheus)"
