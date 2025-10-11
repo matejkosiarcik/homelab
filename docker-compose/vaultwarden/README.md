@@ -18,6 +18,6 @@ Bitwarden:
 
 ## After initial installation
 
-- Create accounts `[matej,homelab,test]@matejhome.com` on `https://vaultwarden.tld/admin`
-- Create `Homelab collection/organization` under `matej` user and share with `homelab` (readonly)
+- Create accounts `matej`, `homelab-viewer` and `homelab-test` on `https://vaultwarden.tld/admin`
+- Create `Homelab collection/organization` under `matej` user and share with `homelab-viewer` (readonly)
 - Import passwords from JSON/CSV backup
