@@ -1046,10 +1046,10 @@ case "$app_dirname" in
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'ServerOptions__Users__0__Password=%s\n' "$matej_password" >>"$initial_output/app.env"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
-    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     printf 'ServerOptions__Users__1__Password=%s\n' "$homelab_viewer_password" >>"$initial_output/app.env"
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
-    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     printf 'ServerOptions__Users__2__Password=%s\n' "$homelab_test_password" >>"$initial_output/app.env"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
 
