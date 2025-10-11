@@ -2,7 +2,7 @@
 
 > This directory contains Ansible playbooks for automating setup and maintenance of my servers in my homelab.
 
-Before launching ansible, make sure you have dependencies installed:
+Before launching Ansible, make sure you have dependencies installed:
 
 ```sh
 make clean bootstrap # In repository root

@@ -4,7 +4,9 @@
 
 ## Docs
 
-- GitHub: <https://github.com/TwiN/gatus?tab=readme-ov-file#docker>
+- <!-- textlint-disable -->
+  GitHub: <https://github.com/TwiN/gatus?tab=readme-ov-file#docker>
+  <!-- textlint-enable -->
 - DockerHub: <https://hub.docker.com/r/twinproduction/gatus>
 
 ## Before initial installation
