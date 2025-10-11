@@ -39,10 +39,10 @@ test.describe(apps.tvheadend.title, () => {
 
             const validUsers = [
                 {
-                    username: 'test',
+                    username: 'homelab-test',
                 },
                 {
-                    username: 'stream',
+                    username: 'homelab-stream',
                 },
             ];
             for (const user of validUsers) {
@@ -63,7 +63,7 @@ test.describe(apps.tvheadend.title, () => {
             const invalidUsers = [
                 {
                     title: 'User test',
-                    username: 'test',
+                    username: 'homelab-test',
                 },
                 {
                     title: 'Random user',

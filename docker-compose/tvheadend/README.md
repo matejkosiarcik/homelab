@@ -21,7 +21,5 @@ LinuxServer (unofficial):
 
 ## After initial installation
 
-- Setup Tvheadend:
-    - Finish "setup wizard" according to <https://docs.linuxserver.io/images/docker-tvheadend/#application-setup>, TL;DR: goto `Configuration > General > Base > Start Wizard`
 - Setup anonymous user, in order to allow jellyfin to load channel logos, accordingly:
     - ![anonymous user](./anonymous%20user.png)
