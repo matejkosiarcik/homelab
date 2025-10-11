@@ -3,11 +3,11 @@
 
 # hadolint ignore=DL3007
 FROM linuxserver/tvheadend:latest
-RUN apk update --no-cache && \
-    apk add --no-cache shadow
 ARG UID=1000
 ARG GID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
+RUN apk update --no-cache && \
+    apk add --no-cache shadow && \
+    if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \
     true; else \
         oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
@@ -32,7 +32,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     usermod --append --groups root abc && \
     groupadd video123 && \
     groupmod --gid 44 video123 && \
-    usermod --append --groups video123 abc
+    usermod --append --groups video123 abc && \
+    apk del --no-cache shadow
 ENV HOMELAB_CONTAINER_NAME=tvheadend \
     HOMELAB_CONTAINER_VARIANT=default \
     PGID=$GID \
