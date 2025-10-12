@@ -140,7 +140,7 @@ endpoints:
   {%- for item in dns %}
 
   - <<: *default-icmp
-    name: External DNS - {{ item.name }} - ICMP
+    name: {{ item.name }} - ICMP - External DNS
     group: External DNS
     url: icmp://{{ item.ip }}
     {%- if item.enabled is defined and not item.enabled %}
@@ -148,7 +148,7 @@ endpoints:
     {%- endif %}
 
   - <<: *default-dns-a
-    name: External DNS - {{ item.name }} - DNS A
+    name: {{ item.name }} - DNS A - External DNS
     group: External DNS
     url: "{{ item.ip }}"
     {%- if item.enabled is defined and not item.enabled %}
@@ -156,7 +156,7 @@ endpoints:
     {%- endif %}
 
   - <<: *default-dns-aaaa
-    name: External DNS - {{ item.name }} - DNS AAAA
+    name: {{ item.name }} - DNS AAAA - External DNS
     group: External DNS
     url: "{{ item.ip }}"
     {%- if item.enabled is defined and not item.enabled %}
@@ -169,7 +169,7 @@ endpoints:
   {%- for item in network %}
 
   - <<: *default-icmp
-    name: {{ item.name }}
+    name: ICMP - {{ item.name }}
     group: Network equipment
     url: icmp://{{ item.ip }}
     alerts:
@@ -185,7 +185,7 @@ endpoints:
   {%- for item in servers %}
 
   - <<: *default-icmp
-    name: {{ item.name }}
+    name: ICMP - {{ item.name }}
     group: Servers
     url: icmp://{{ item.ip }}
     alerts:
@@ -205,7 +205,7 @@ endpoints:
   {%- if item.type is not defined or "http" in item.type %}
 
   - <<: *default-http-infrequent
-    name: {{ item.name }} - HTTP{% if item.authentication is defined %} (noauth){% endif %}
+    name: HTTP{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: http://{{ item.domain }}
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -226,7 +226,7 @@ endpoints:
 
   - <<: *default-https
   {%- endif %}
-    name: {{ item.name }} - HTTPS{% if item.authentication is defined %} (noauth){% endif %}
+    name: HTTPS{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -248,7 +248,7 @@ endpoints:
   {%- if item.authentication is defined %}
 
   - <<: *default-https
-    name: {{ item.name }} - HTTPS
+    name: HTTPS - {{ item.name }}
     group: App - {{ item.name }}
     {%- if item.authentication.basic is defined %}
     url: https://{{ item.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ item.authentication.basic | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}
@@ -270,7 +270,7 @@ endpoints:
   {%- endif %}
 
   - <<: *default-https-infrequent
-    name: {{ item.name }} - HTTPS Proxy /metrics (noauth)
+    name: HTTPS Proxy /metrics (noauth) - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/.apache/metrics
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -281,21 +281,35 @@ endpoints:
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
-    name: {{ item.name }} - HTTPS Proxy /metrics
+    name: HTTPS Proxy /metrics - {{ item.name }}
     group: App - {{ item.name }}
     url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
-    name: {{ item.name }} - HTTPS favicon ICO
+    name: HTTPS /favicon.ico - {{ item.name }}
+    group: App - {{ item.name }}
+    url: https://{{ item.domain }}/favicon.ico
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {{- is_enabled(item) }}
+
+  - <<: *default-http-infrequent
+    name: HTTP /favicon.ico - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/favicon.ico
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
-    name: {{ item.name }} - HTTPS favicon PNG
+    name: HTTPS /favicon.png - {{ item.name }}
+    group: App - {{ item.name }}
+    url: https://{{ item.domain }}/favicon.png
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {{- is_enabled(item) }}
+
+  - <<: *default-http-infrequent
+    name: HTTP /favicon.png - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/favicon.png
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -305,7 +319,7 @@ endpoints:
   {%- for endpoint in item.endpoints %}
 
   - <<: *default-https-infrequent
-    name: {{ item.name }} - {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %}
+    name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     {% if endpoint.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -322,7 +336,7 @@ endpoints:
   {%- if endpoint.authentication is defined %}
 
   - <<: *default-https-infrequent
-    name: {{ item.name }} - {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}
+    name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }} - {{ item.name }}
     group: App - {{ item.name }}
     {%- if endpoint.authentication.basic is defined %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ endpoint.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ endpoint.authentication.basic | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}{{ endpoint.path }}
@@ -350,7 +364,7 @@ endpoints:
   {%- if item.type is defined and "dns" in item.type %}
 
   - <<: *default-dns-a
-    name: {{ item.name }} - DNS A
+    name: DNS A - {{ item.name }}
     group: App - {{ item.name }}
     url: {{ item.domain }}
     alerts:
@@ -359,7 +373,7 @@ endpoints:
     {{- is_enabled(item) }}
 
   - <<: *default-dns-aaaa
-    name: {{ item.name }} - DNS AAAA
+    name: DNS AAAA - {{ item.name }}
     group: App - {{ item.name }}
     url: {{ item.domain }}
     {{- is_enabled(item) }}
@@ -369,7 +383,7 @@ endpoints:
   {%- for port in item.additional_ports.http %}
 
   - <<: *default-http
-    name: {{ item.name }} - HTTP:{{ port }}{% if item.authentication is defined %} (noauth){% endif %}
+    name: HTTP:{{ port }}{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: http://{{ item.domain }}:{{ port }}
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -380,7 +394,7 @@ endpoints:
   {%- for port in item.additional_ports.https %}
 
   - <<: *default-https
-    name: {{ item.name }} - HTTPS:{{ port }}{% if item.authentication is defined %} (noauth){% endif %}
+    name: HTTPS:{{ port }}{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}:{{ port }}
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -391,7 +405,7 @@ endpoints:
   {%- for port in item.additional_ports.other %}
 
   - <<: *default-tcp
-    name: {{ item.name }} - TCP:{{ port }}
+    name: TCP:{{ port }} - {{ item.name }}
     group: App - {{ item.name }}
     url: tcp://{{ item.domain }}:{{ port }}
     {{- is_enabled(item) }}
