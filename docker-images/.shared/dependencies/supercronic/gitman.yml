@@ -2,7 +2,7 @@ location: gitman-repositories/
 sources:
   - repo: https://github.com/aptible/supercronic.git
     name: supercronic
-    rev: master
+    rev: main
     type: git
     params: --depth=1
     sparse_paths:
@@ -14,7 +14,7 @@ sources:
 sources_locked:
   - repo: https://github.com/aptible/supercronic.git
     name: supercronic
-    rev: 822e66adf97b2001649276819a26589eb4dada9e
+    rev: 2a26b59b9278d7087100eafbaf505eb1c7f917ef
     type: git
     params:
     sparse_paths:
