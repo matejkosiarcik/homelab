@@ -72,6 +72,6 @@ ENV HOMELAB_CONTAINER_NAME=samba \
     SAMBA_GROUP=homelab \
     SAMBA_USERNAME=homelab \
     TZ=Europe/Bratislava
-USER homelab
+# USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/139' || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
