@@ -16,7 +16,7 @@ test.describe(apps.grafana.title, () => {
 
             for (const user of [
                 {
-                    username: 'test',
+                    username: 'homelab-test',
                 },
             ]) {
                 test(`UI: Successful open - User test`, async ({ page }) => {
@@ -33,8 +33,8 @@ test.describe(apps.grafana.title, () => {
 
             for (const user of [
                 {
-                    title: 'User test',
-                    username: 'test',
+                    title: 'User homelab-test',
+                    username: 'homelab-test',
                 },
                 {
                     title: 'Random user',

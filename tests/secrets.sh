@@ -325,7 +325,6 @@ load_password() {
     printf 'UNIFICONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unificontroller apache prometheus)"
 
     printf 'UPTIMEKUMA_MATEJ_PASSWORD=%s\n' "$(load_password uptimekuma app matej)"
-    printf 'UPTIMEKUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptimekuma app prometheus)"
     printf 'UPTIMEKUMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password uptimekuma apache status)"
     printf 'UPTIMEKUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password uptimekuma apache prometheus)"
 

@@ -20,7 +20,7 @@ test.describe(apps.vikunja.title, () => {
                 },
             ];
             for (const user of validUsers) {
-                test(`UI: Successful login - User ${user}`, async ({ page }) => {
+                test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
                     // Load page
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);
@@ -38,8 +38,8 @@ test.describe(apps.vikunja.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User test',
-                    username: 'test',
+                    title: 'User homelab-test',
+                    username: 'homelab-test',
                 },
                 {
                     title: 'Random user',
