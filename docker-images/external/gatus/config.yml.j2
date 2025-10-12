@@ -72,19 +72,19 @@ alerting:
 
 default-icmp: &default-icmp
   alerts: []
-  interval: 15m
+  interval: 20m
   conditions:
     - "[CONNECTED] == true"
 
 default-tcp: &default-tcp
   alerts: []
-  interval: 15m
+  interval: 20m
   conditions:
     - "[CONNECTED] == true"
 
 default-udp: &default-udp
   alerts: []
-  interval: 15m
+  interval: 20m
   conditions:
     - "[CONNECTED] == true"
 
@@ -113,14 +113,14 @@ default-dns-aaaa: &default-dns-aaaa
 
 default-http: &default-http
   alerts: []
-  interval: 15m
+  interval: 20m
   conditions:
     - "[CONNECTED] == true"
     - "[STATUS] == 200"
 
 default-http-infrequent: &default-http-infrequent
   <<: *default-http
-  interval: 120m
+  interval: 240m
 
 default-https: &default-https
   alerts: []
@@ -132,7 +132,7 @@ default-https: &default-https
 
 default-https-infrequent: &default-https-infrequent
   <<: *default-https
-  interval: 120m
+  interval: 240m
 
 endpoints:
   ### DNS ###
@@ -284,6 +284,20 @@ endpoints:
     name: {{ item.name }} - HTTPS Proxy /metrics
     group: App - {{ item.name }}
     url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {{- is_enabled(item) }}
+
+  - <<: *default-https-infrequent
+    name: {{ item.name }} - HTTPS favicon ICO
+    group: App - {{ item.name }}
+    url: https://{{ item.domain }}/favicon.ico
+    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {{- is_enabled(item) }}
+
+  - <<: *default-https-infrequent
+    name: {{ item.name }} - HTTPS favicon PNG
+    group: App - {{ item.name }}
+    url: https://{{ item.domain }}/favicon.png
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
