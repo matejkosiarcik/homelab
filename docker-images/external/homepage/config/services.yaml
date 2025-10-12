@@ -32,7 +32,7 @@
           type: unifi
           url: https://unificontroller.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR_UNIFICONTROLLER_PASSWORD}}"
 
     - Omada Controller:
         description: SDN manager
@@ -43,7 +43,7 @@
           type: omada
           url: https://omadacontroller.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR_OMADACONTROLLER_PASSWORD}}"
           site: Home
           fields: ["activeUser", "alerts"]
 
@@ -219,7 +219,7 @@
         widget:
           type: homeassistant
           url: https://homeassistant.matejhome.com
-          key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_HOMEASSISTANT_APIKEY}}"
           custom:
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
               label: Turned on lights

@@ -29,11 +29,11 @@ flowchart LR
         home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
         gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        uptime_kuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br/>Kuma")
+        uptimekuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br/>Kuma")
 
         home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
-        gatus & uptime_kuma -->|monitor| inbound_interface
+        gatus & uptimekuma -->|monitor| inbound_interface
     end
 
     subgraph others_2["Others"]
