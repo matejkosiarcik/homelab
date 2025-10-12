@@ -36,7 +36,7 @@ test.describe(apps.gotify.title, () => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/#/login`);
                 await expect(page.locator('form#login-form')).toBeVisible();
-                await expect(page.locator('.MuiSnackbar-root:has-text("Login failed")')).not.toBeVisible();
+                await expect(page.locator('.notistack-snackbar:has-text("Login failed")')).not.toBeVisible();
 
                 // Fill in form
                 await page.locator('form#login-form input[autocomplete="username"]').fill(faker.string.alpha(10));
@@ -44,7 +44,7 @@ test.describe(apps.gotify.title, () => {
                 await page.locator('form#login-form button[type="submit"]:has-text("Login")').click();
 
                 // Verify fail
-                await expect(page.locator('.MuiSnackbar-root:has-text("Login failed")')).toBeVisible();
+                await expect(page.locator('.notistack-snackbar:has-text("Login failed")')).toBeVisible();
             });
         });
     }

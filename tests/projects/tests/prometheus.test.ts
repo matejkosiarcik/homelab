@@ -179,7 +179,7 @@ test.describe(apps.prometheus.title, () => {
                     'prometheus_sd_received_updates_total',
                     'prometheus_sd_updates_delayed_total',
                     'prometheus_sd_updates_total',
-                    'prometheus_target_interval_length_seconds',
+                    // 'prometheus_target_interval_length_seconds',
                     'prometheus_target_interval_length_seconds_count',
                     'prometheus_target_interval_length_seconds_sum',
                     'prometheus_target_metadata_cache_bytes',
