@@ -9,7 +9,7 @@ import sys
 import time
 from datetime import datetime
 from os import path
-from typing import List
+from typing import List, Optional
 
 start_datetime = datetime.now()
 start_datestr = start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
@@ -47,7 +47,7 @@ if tty_supports_color():
     ascii_cross = f"\033[31m{ascii_cross}\033[0m"
 
 
-def get_apps_list(only: str | None, skip: str | None) -> List[str]:
+def get_apps_list(only: Optional[str], skip: Optional[str]) -> List[str]:
     all_apps_list = sorted([x for x in next(os.walk(path.join(server_dir, "docker-apps")))[1] if not x.startswith(".") and path.isdir(path.join(server_dir, "docker-apps", x))])
 
     with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
