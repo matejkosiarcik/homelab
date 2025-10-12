@@ -219,7 +219,7 @@
         widget:
           type: homeassistant
           url: https://homeassistant.matejhome.com
-          key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_HOMEASSISTANT_APIKEY}}"
           custom:
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
               label: Turned on lights
