@@ -123,6 +123,7 @@ load_password() {
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify apache prometheus)"
 
     printf 'GRAFANA_ADMIN_PASSWORD=%s\n' "$(load_password grafana app admin)"
+    # TODO: printf 'GRAFANA_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password grafana app homelab-test)"
     printf 'GRAFANA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password grafana apache status)"
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password grafana apache prometheus)"
 

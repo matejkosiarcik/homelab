@@ -60,10 +60,8 @@ nodeexporter
 docker-stats
 prometheus
 grafana
+renovatebot
 
 # App Monitoring
 gatus-1
 uptimekuma
-
-# Non-server apps
-renovatebot
