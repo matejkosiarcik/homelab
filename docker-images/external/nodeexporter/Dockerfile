@@ -30,7 +30,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
 COPY --from=nodeexporter --chown=homelab:homelab /bin/node_exporter /bin/node_exporter
-ENV HOMELAB_CONTAINER_NAME=node_exporter \
+ENV HOMELAB_CONTAINER_NAME=nodeexporter \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost:9100 || exit 1" ]
