@@ -19,7 +19,7 @@ test.describe(apps.grafana.title, () => {
                     username: 'homelab-test',
                 },
             ]) {
-                test(`UI: Successful open - User test`, async ({ page }) => {
+                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);

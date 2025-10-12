@@ -151,7 +151,7 @@ test.describe(apps.minio.title, () => {
             test('UI: Successful login - User homelab-test', async ({ page }) => {
                 await page.goto(instance.consoleUrl);
                 await page.waitForURL(`${instance.consoleUrl}/login`);
-                await page.locator('input#accessKey').fill('test');
+                await page.locator('input#accessKey').fill('homelab-test');
                 await page.locator('input#secretKey').fill(getEnv(instance.url, 'HOMELAB_TEST_PASSWORD'));
                 await page.locator('button#do-login[type="submit"]').click();
                 await page.waitForURL(`${instance.consoleUrl}/browser`);
