@@ -19,15 +19,6 @@ default-alert-settings: &default-alert-settings
   success-threshold: 1
   send-on-resolved: true
 alerting:
-  email:
-    from: system@${HOMELAB_APP_NAME}.matejhome.com
-    host: smtp4dev.matejhome.com
-    port: 25
-    to: notifications@matejhome.com
-    client:
-      insecure: true
-    default-alert:
-      <<: *default-alert-settings
   ntfy:
     url: https://ntfy.matejhome.com
     topic: gatus
@@ -51,7 +42,6 @@ alerting:
 {#
 {%- macro all_alerts() -%}
     alerts:
-      - type: email
       - type: ntfy
       - type: gotify
 {%- endmacro -%}
@@ -183,7 +173,6 @@ endpoints:
     group: Network equipment
     url: icmp://{{ item.ip }}
     alerts:
-      - type: email
       - type: ntfy
       - type: gotify
     {%- if item.enabled is defined and not item.enabled %}
@@ -200,7 +189,6 @@ endpoints:
     group: Servers
     url: icmp://{{ item.ip }}
     alerts:
-      - type: email
       - type: ntfy
       - type: gotify
     {%- if item.enabled is defined and not item.enabled %}
@@ -244,7 +232,6 @@ endpoints:
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if item.authentication is not defined %}
     alerts:
-      - type: email
       - type: ntfy
       - type: gotify
     {%- endif %}
@@ -353,7 +340,6 @@ endpoints:
     group: App - {{ item.name }}
     url: {{ item.domain }}
     alerts:
-      - type: email
       - type: ntfy
       - type: gotify
     {{- is_enabled(item) }}

@@ -15,11 +15,11 @@
 ## After initial installation
 
 - Setup admin _username_ and _password_
-- Setup monitoring
+- Setup monitoring for itself and gatus
 - Settings setup:
     - Setup timezone
     - Setup Primary Base URL
     - Disallow automatic updates
-    - Setup notifications (Ntfy, Gotify, SMTP)
+    - Setup notifications (Ntfy and Gotify)
     - Modify data persistancy interval
 - Setup status page `dashboard`
