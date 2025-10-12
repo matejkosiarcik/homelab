@@ -349,7 +349,7 @@
         widget:
           type: speedtest
           url: https://speedtesttracker.matejhome.com
-          key: "{{HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY}}"
+          key: "{{HOMEPAGE_VAR_SPEEDTESTTRACKER_APIKEY}}"
           version: 2
           bitratePrecision: 1
 

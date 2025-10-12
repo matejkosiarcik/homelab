@@ -62,7 +62,7 @@ flowchart LR
         pihole_1_secondary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Secondary")
         renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>Renovatebot")
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
-        speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtesttracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
+        speedtesttracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtesttracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
         unbound_1_default("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Default")
         unbound_1_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Matej")
         unbound_1_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Monika")
@@ -78,7 +78,7 @@ flowchart LR
         gatus_1 ~~~ healthchecks ~~~ homeassistant
         homepage ~~~ jellyfin ~~~ minio
         ntfy ~~~ omadacontroller ~~~ renovatebot
-        speedtest_tracker ~~~ pihole_1_primary ~~~ pihole_1_secondary
+        speedtesttracker ~~~ pihole_1_primary ~~~ pihole_1_secondary
         smtp4dev ~~~ unbound_1_default ~~~ unbound_1_matej
         unbound_1_monika ~~~ unbound_1_iot ~~~ unbound_1_guests
     end
