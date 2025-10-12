@@ -253,13 +253,6 @@
         icon: /icons/samba.png
         target: _self
 
-    - SMB (snapshots):
-        description: ZFS Snapshots from main data store
-        href: javascript:copyUrl('smb://samba-snapshots.matejhome.com')
-        ping: samba-snapshots.matejhome.com
-        icon: /icons/samba.png
-        target: _self
-
 - Media:
     - Jellyfin:
         description: Media server

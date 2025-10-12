@@ -131,7 +131,7 @@ jobs:
               '"pihole":' \
               '["/servers/odroid-h4-ultra/docker-apps/pihole-1-primary", "/servers/odroid-h4-ultra/docker-apps/pihole-1-secondary",' \
               '"/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-primary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-secondary"],'
-            printf '%s ' '"samba": ["/servers/macbook-pro-2012/docker-apps/samba-data", "/servers/macbook-pro-2012/docker-apps/samba-snapshots"],'
+            printf '%s ' '"samba": ["/servers/macbook-pro-2012/docker-apps/samba-data"],'
             printf '%s ' '"smtp4dev": ["/servers/odroid-h4-ultra/docker-apps/smtp4dev"],'
             printf '%s ' '"speedtesttracker": ["/servers/odroid-h4-ultra/docker-apps/speedtesttracker"],'
             printf '%s ' '"tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],'

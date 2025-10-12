@@ -59,7 +59,6 @@
 ### MacBook Pro 2012 ###
 
 10.1.18.1 samba-data.matejhome.com
-10.1.18.2 samba-snapshots.matejhome.com
 10.1.18.3 dozzle-agent-macbook-pro-2012.matejhome.com
 # 10.1.18.4 glances
 10.1.18.5 nodeexporter-macbook-pro-2012.matejhome.com

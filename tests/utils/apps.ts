@@ -194,7 +194,6 @@ export const apps = {
         title: 'SMB',
         instances: [
             { url: 'smb://samba-data.matejhome.com', title: 'SMB (data)' },
-            { url: 'smb://samba-snapshots.matejhome.com', title: 'SMB (snapshots)' },
         ],
     },
     smtp4dev: {

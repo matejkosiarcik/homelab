@@ -474,14 +474,6 @@ apps:
         - 139
         - 445
 
-  - name: Samba [snapshots]
-    domain: samba-snapshots.matejhome.com
-    type: [smb]
-    additional_ports:
-      other:
-        - 139
-        - 445
-
   - name: Smtp4dev
     domain: smtp4dev.matejhome.com
     type: [smtp, http]
