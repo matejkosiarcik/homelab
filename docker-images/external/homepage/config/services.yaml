@@ -32,7 +32,7 @@
           type: unifi
           url: https://unificontroller.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR_UNIFICONTROLLER_PASSWORD}}"
 
     - Omada Controller:
         description: SDN manager

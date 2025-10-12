@@ -462,7 +462,7 @@ case "$app_dirname" in
     printf 'UNBOUND_2_MONIKA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-monika apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-iot apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-guests apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unificontroller apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNIFICONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unificontroller apache prometheus)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma apache prometheus)" >>"$initial_output/app.env"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vaultwarden apache prometheus)" >>"$initial_output/app.env"
     printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token kiwix-wikipedia apache prometheus)" >>"$initial_output/app.env"
@@ -624,7 +624,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_SPEEDTEST_TRACKER_APIKEY=%s\n' "$(load_token speedtesttracker app api-key-readonly)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_UNIFI_CONTROLLER_PASSWORD=%s\n' "$(load_token unificontroller app homelab-viewer)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_UNIFICONTROLLER_PASSWORD=%s\n' "$(load_token unificontroller app homelab-viewer)" >>"$initial_output/app.env"
     # TODO: Enable Vikunja integration
     # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app api-key-readonly)" "$initial_output/app.env"
 
@@ -981,7 +981,7 @@ case "$app_dirname" in
     printf 'UNBOUND_2_MONIKA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-monika apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-iot apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-guests apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNIFI_CONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unificontroller apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNIFICONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unificontroller apache prometheus)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma apache prometheus)" >>"$initial_output/app.env"
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vaultwarden apache prometheus)" >>"$initial_output/app.env"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vikunja apache prometheus)" >>"$initial_output/app.env"
