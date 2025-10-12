@@ -43,7 +43,7 @@
           type: omada
           url: https://omadacontroller.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_OMADA_CONTROLLER_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR_OMADACONTROLLER_PASSWORD}}"
           site: Home
           fields: ["activeUser", "alerts"]
 
