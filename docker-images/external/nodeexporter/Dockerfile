@@ -29,7 +29,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
-COPY --from=nodeexporter --chown=homelab:homelab /bin/node_exporter /bin/node_exporter
+COPY --from=nodeexporter --chown=homelab:homelab /bin/node_exporter /bin/
 ENV HOMELAB_CONTAINER_NAME=nodeexporter \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
