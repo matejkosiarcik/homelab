@@ -52,22 +52,22 @@ test.describe(apps.unificontroller.title, () => {
                     await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                     await page.locator('button#loginButton').click();
                     await page.waitForURL(`${instance.url}/manage/default/dashboard`, { timeout: 30_000 });
-                    await expect(page.locator('#unifi-network-app-container [data-testid="activity-insights-graph"]')).toBeVisible({ timeout: 20_000 });
+                    await expect(page.locator('[data-testid="header_usericon"]')).toBeVisible({ timeout: 20_000 });
+                    await expect(page.locator('a[data-testid="navigation-dashboard"]')).toBeVisible({ timeout: 20_000 });
                 });
             }
 
             const invalidUsers = [
                 {
-                    title: 'User homelab-test',
                     username: 'homelab-test',
                 },
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
                     await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });

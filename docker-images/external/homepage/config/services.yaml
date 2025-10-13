@@ -478,6 +478,12 @@
         ping: dawarich.matejhome.com
         icon: /icons/dawarich.png
 
+    - Renovatebot:
+        description: Dependency updates
+        href: https://renovatebot.matejhome.com
+        ping: renovatebot.matejhome.com
+        icon: /icons/renovatebot.png
+
     - Wikipedia:
         description: Free Encyclopedia
         href: https://wikipedia.matejhome.com

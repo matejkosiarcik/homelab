@@ -14,11 +14,12 @@ test.describe(apps.grafana.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            for (const user of [
+            const validUsers = [
                 {
                     username: 'homelab-test',
                 },
-            ]) {
+            ];
+            for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);
@@ -31,17 +32,17 @@ test.describe(apps.grafana.title, () => {
                 });
             }
 
-            for (const user of [
+            const invalidUsers = [
                 {
-                    title: 'User homelab-test',
                     username: 'homelab-test',
                 },
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
-            ]) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);
                     const originalUrl = page.url();

@@ -162,6 +162,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'PiHole - 2 Primary',
         'PiHole - 2 Secondary',
         'Prometheus',
+        'Renovatebot',
         'Smtp4dev',
         'SpeedtestTracker',
         'Tvheadend',

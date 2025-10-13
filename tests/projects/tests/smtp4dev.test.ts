@@ -68,16 +68,15 @@ test.describe(apps.smtp4dev.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User homelab-test',
                     username: 'homelab-test',
                 },
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful open - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     try {
                         await page.goto(instance.url);
@@ -87,7 +86,7 @@ test.describe(apps.smtp4dev.title, () => {
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
 
-                test(`API: Unsuccessful messages - ${user.title}`, async () => {
+                test(`API: Unsuccessful messages - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
                         auth: {
                             username: user.username,

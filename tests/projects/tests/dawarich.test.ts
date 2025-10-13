@@ -32,16 +32,15 @@ test.describe(apps.dawarich.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User test',
                     email: 'homelab-test@homelab.matejhome.com',
                 },
                 {
-                    title: 'Random user',
                     email: `${faker.string.alpha(10)}@homelab.matejhome.com`,
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
                     await page.goto(`${instance.url}/users/sign_in`);
                     await page.locator('input#user_email[type="email"]').fill(user.email);
                     await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));

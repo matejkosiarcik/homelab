@@ -72,20 +72,19 @@ test.describe(apps.omadacontroller.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User homelab-test',
-                    user: 'homelab-test',
+                    username: 'homelab-test',
                 },
                 {
-                    title: 'Random user',
-                    user: faker.string.alpha(10),
+                    username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
-            for (const variant of invalidUsers) {
-                test(`UI: Unsuccessful login - ${variant.title}`, async ({ page }) => {
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
                     const originalUrl = page.url();
-                    await page.locator('.login-form input[placeholder^="Username"]').fill(variant.user);
+                    await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
                     await page.locator('.login-form input[type="password"]').fill(faker.string.alpha(10));
                     await page.locator('.login-form a.button-button[title="Log in"]').click();
                     await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();

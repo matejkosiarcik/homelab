@@ -466,6 +466,11 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: Renovatebot
+    domain: renovatebot.matejhome.com
+    authentication:
+      basic: admin
+
   - name: Samba [data]
     domain: samba-data.matejhome.com
     type: [smb]

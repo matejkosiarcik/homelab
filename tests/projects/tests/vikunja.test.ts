@@ -16,7 +16,7 @@ test.describe(apps.vikunja.title, () => {
 
             const validUsers = [
                 {
-                    username: 'test',
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
@@ -38,21 +38,21 @@ test.describe(apps.vikunja.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User homelab-test',
                     username: 'homelab-test',
                 },
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     // Load page
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);
                     const originalUrl = page.url();
                     await expect(page.locator('form#loginform')).toBeVisible();
+                    await page.waitForTimeout(5000); // Must delay otherwise the page reloads and test fails
 
                     // Fill in form
                     await page.locator('form#loginform input#username').fill(user.username);

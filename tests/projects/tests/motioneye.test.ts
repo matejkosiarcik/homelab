@@ -18,42 +18,36 @@ test.describe(apps.motioneye.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            const users = [
+            const validUsers = [
                 {
                     username: 'matej',
                 },
                 {
                     username: 'stream',
                 },
-                {
-                    username: faker.string.alpha(10),
-                    random: true,
-                }
             ];
-            for (const user of users) {
-                if (!user.random) {
-                    test(`UI: Successful full login - User ${user.username}`, async ({ page }) => {
-                        await page.goto(instance.url);
-                        await page.waitForURL(`${instance.url}/`);
-                        await page.locator('form input[name="username"]').fill(user.username);
-                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('.button:has-text("Login")').click();
-                        await page.waitForURL(`${instance.url}/`);
-                        await expect(page.locator('img.camera')).toBeVisible();
-                        await expect(page.locator('.settings-top-bar .icon.settings-button')).toBeVisible();
-                    });
+            for (const user of validUsers) {
+                test(`UI: Successful full login - User ${user.username}`, async ({ page }) => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/`);
+                    await page.locator('form input[name="username"]').fill(user.username);
+                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('.button:has-text("Login")').click();
+                    await page.waitForURL(`${instance.url}/`);
+                    await expect(page.locator('img.camera')).toBeVisible();
+                    await expect(page.locator('.settings-top-bar .icon.settings-button')).toBeVisible();
+                });
 
-                    test(`UI: Successful embed open - User ${user.username}`, async ({ page }) => {
-                        await page.goto(`${instance.url}/picture/1/frame/`);
-                        await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                        await page.locator('form input[name="username"]').fill(user.username);
-                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('.button:has-text("Login")').click();
-                        await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                        await expect(page.locator('.admin .icon.settings-button')).not.toBeVisible();
-                        await expect(page.locator('img.camera')).toBeVisible();
-                    });
-                }
+                test(`UI: Successful embed open - User ${user.username}`, async ({ page }) => {
+                    await page.goto(`${instance.url}/picture/1/frame/`);
+                    await page.waitForURL(`${instance.url}/picture/1/frame/`);
+                    await page.locator('form input[name="username"]').fill(user.username);
+                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('.button:has-text("Login")').click();
+                    await page.waitForURL(`${instance.url}/picture/1/frame/`);
+                    await expect(page.locator('.admin .icon.settings-button')).not.toBeVisible();
+                    await expect(page.locator('img.camera')).toBeVisible();
+                });
 
                 if (user.username === 'stream') {
                     test(`UI: Successful stream open - User ${user.username}`, async ({ page }) => {
@@ -62,7 +56,15 @@ test.describe(apps.motioneye.title, () => {
                         await expect(page.locator('body > img')).toBeVisible({ timeout: 5000 });
                     });
                 }
+            }
 
+            const invalidUsers = [
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidUsers) {
                 test(`UI: Unsuccessful full login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/`);
