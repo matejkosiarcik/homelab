@@ -17,6 +17,9 @@ test.describe(apps.ollama.title, () => {
 
             const validUsers = [
                 {
+                    username: 'matej',
+                },
+                {
                     username: 'homelab-viewer',
                 },
                 {

@@ -23,6 +23,9 @@ test.describe(apps.prometheus.title, () => {
 
             const validUsers = [
                 {
+                    username: 'matej'
+                },
+                {
                     username: 'homelab-viewer',
                 },
                 {
@@ -63,10 +66,7 @@ test.describe(apps.prometheus.title, () => {
 
             const invalidUsers = [
                 {
-                    username: 'matej',
-                },
-                {
-                    username: 'prometheus',
+                    username: 'homelab-test',
                 },
                 {
                     username: faker.string.alpha(10),
@@ -117,11 +117,11 @@ test.describe(apps.prometheus.title, () => {
                 await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
             });
 
-            test('API: Prometheus metrics - User matej', async () => {
+            test('API: Prometheus metrics - User homelab-viewer', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
-                        username: 'matej',
-                        password: getEnv(instance.url, 'MATEJ_PASSWORD'),
+                        username: 'homelab-viewer',
+                        password: getEnv(instance.url, 'HOMELAB_VIEWER_PASSWORD'),
                     },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);

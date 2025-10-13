@@ -23,6 +23,9 @@ test.describe(apps.jellyfin.title, () => {
 
             const validUsers = [
                 {
+                    username: 'homelab-viewer',
+                },
+                {
                     username: 'homelab-test',
                 },
             ];

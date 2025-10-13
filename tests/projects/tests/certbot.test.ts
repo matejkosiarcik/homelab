@@ -31,78 +31,152 @@ test.describe(apps.certbot.title, () => {
                 expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/${randomSubpath}`);
             });
 
-            const dataVariants = [
+            // const dataVariants = [
+            //     {
+            //         title: 'no credentials',
+            //         auth: undefined as unknown as { username: string, password: string },
+            //         status: 401,
+            //     },
+            //     {
+            //         title: 'empty password [homelab-viewer]',
+            //         auth: {
+            //             username: 'homelab-viewer',
+            //             password: '',
+            //         },
+            //         status: 401,
+            //     },
+            //     {
+            //         title: 'empty password [homelab-test]',
+            //         auth: {
+            //             username: 'homelab-test',
+            //             password: '',
+            //         },
+            //         status: 401,
+            //     },
+            //     {
+            //         title: 'wrong password [homelab-viewer]',
+            //         auth: {
+            //             username: 'homelab-viewer',
+            //             password: faker.string.alphanumeric(10),
+            //         },
+            //         status: 401,
+            //     },
+            //     {
+            //         title: 'wrong password [homelab-test]',
+            //         auth: {
+            //             username: 'homelab-test',
+            //             password: faker.string.alphanumeric(10),
+            //         },
+            //         status: 401,
+            //     },
+            //     {
+            //         title: 'wrong username/password',
+            //         auth: {
+            //             username: faker.string.alphanumeric(10),
+            //             password: faker.string.alphanumeric(10),
+            //         },
+            //         status: 401,
+            //     },
+            //     {
+            //         title: 'successful [homelab-viewer]',
+            //         auth: {
+            //             username: 'homelab-viewer',
+            //             password: getEnv(instance.url, 'HOMELAB_VIEWER_PASSWORD'),
+            //         },
+            //         status: 200,
+            //     },
+            //     {
+            //         title: 'successful [homelab-test]',
+            //         auth: {
+            //             username: 'homelab-test',
+            //             password: getEnv(instance.url, 'HOMELAB_TEST_PASSWORD'),
+            //         },
+            //         status: 200,
+            //     },
+            // ];
+            // for (const variant of dataVariants) {
+            //     test(`API: Get certificate (${variant.title})`, async () => {
+            //         const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, { auth: variant.auth });
+            //         expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            //     });
+
+            //     test(`API: Get random download subpath (${variant.title})`, async () => {
+            //         const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, { auth: variant.auth });
+            //         expect(response.status, 'Response Status').toStrictEqual(variant.status === 200 ? 404 : variant.status);
+            //     });
+            // }
+
+            const validUsers = [
                 {
-                    title: 'no credentials',
-                    auth: undefined as unknown as { username: string, password: string },
-                    status: 401,
+                    username: 'matej'
                 },
                 {
-                    title: 'empty password [homelab-viewer]',
-                    auth: {
-                        username: 'homelab-viewer',
-                        password: '',
-                    },
-                    status: 401,
+                    username: 'homelab-viewer',
                 },
                 {
-                    title: 'empty password [matej]',
-                    auth: {
-                        username: 'matej',
-                        password: '',
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'wrong password [homelab-viewer]',
-                    auth: {
-                        username: 'homelab-viewer',
-                        password: faker.string.alphanumeric(10),
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'wrong password [matej]',
-                    auth: {
-                        username: 'matej',
-                        password: faker.string.alphanumeric(10),
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'wrong username/password',
-                    auth: {
-                        username: faker.string.alphanumeric(10),
-                        password: faker.string.alphanumeric(10),
-                    },
-                    status: 401,
-                },
-                {
-                    title: 'successful [homelab-viewer]',
-                    auth: {
-                        username: 'homelab-viewer',
-                        password: getEnv(instance.url, 'HOMELAB_VIEWER_PASSWORD'),
-                    },
-                    status: 200,
-                },
-                {
-                    title: 'successful [matej]',
-                    auth: {
-                        username: 'matej',
-                        password: getEnv(instance.url, 'MATEJ_PASSWORD'),
-                    },
-                    status: 200,
+                    username: 'homelab-test',
                 },
             ];
-            for (const variant of dataVariants) {
-                test(`API: Get certificate (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, { auth: variant.auth });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            for (const user of validUsers) {
+                test(`API: Get certificate - User ${user.username})`, async () => {
+                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
 
-                test(`API: Get random download subpath (${variant.title})`, async () => {
-                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, { auth: variant.auth });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status === 200 ? 404 : variant.status);
+                test(`API: Get random download subpath - User ${user.username}`, async () => {
+                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(404);
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    username: 'homelab-test',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`API: Get certificate - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alphanumeric(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
+
+                test(`API: Get random download subpath without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                        auth: {
+                            username: user.username,
+                            password: '',
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(404);
+                });
+
+                test(`API: Get random download subpath with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alphanumeric(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(404);
                 });
             }
 

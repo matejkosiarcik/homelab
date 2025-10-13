@@ -14,16 +14,6 @@ test.describe(apps.gatus.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test('API: Prometheus metrics - User matej', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'matej',
-                        password: getEnv(instance.url, 'MATEJ_PASSWORD'),
-                    },
-                });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-            });
-
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
@@ -52,7 +42,13 @@ test.describe(apps.gatus.title, () => {
 
             const validUsers = [
                 {
-                    username: 'matej',
+                    username: 'matej'
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
@@ -63,11 +59,21 @@ test.describe(apps.gatus.title, () => {
                     await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
                     await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
                 });
+
+                test(`API: Prometheus metrics - User ${user.username}`, async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
             }
 
             const invalidUsers = [
                 {
-                    username: 'matej',
+                    username: 'homelab-test',
                 },
                 {
                     username: faker.string.alpha(10),
@@ -75,8 +81,14 @@ test.describe(apps.gatus.title, () => {
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                test(`UI: Unsuccessful open with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                });
+
+                test(`UI: Unsuccessful open without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
                 });

@@ -39,6 +39,9 @@ test.describe(apps.smtp4dev.title, () => {
 
             const validUsers = [
                 {
+                    username: 'matej'
+                },
+                {
                     username: 'homelab-viewer'
                 },
                 {
@@ -59,7 +62,7 @@ test.describe(apps.smtp4dev.title, () => {
                     await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
                 });
 
-                test(`API: Successful messages - User ${user.username}`, async () => {
+                test(`API: Successful get messages - User ${user.username}`, async () => {
                     const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
                         auth: {
                             username: user.username,
@@ -90,11 +93,22 @@ test.describe(apps.smtp4dev.title, () => {
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
 
-                test(`API: Unsuccessful messages - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                test(`API: Unsuccessful get messages with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
                         auth: {
                             username: user.username,
                             password: faker.string.alpha(10),
+                        },
+                        validateStatus: () => true,
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
+
+                test(`API: Unsuccessful get messages without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                        auth: {
+                            username: user.username,
+                            password: '',
                         },
                         validateStatus: () => true,
                     });
