@@ -4,7 +4,7 @@ set -euf
 tmpfile="$(mktemp)"
 
 # web.yml
-sed "s~\${PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED" | base64 -d)~g;s~\${PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED" | base64 -d)~g" </homelab/web.yml >"$tmpfile"
+sed "s~\${PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED" | base64 -d)~g;s~\${PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED" | base64 -d)~g" </homelab/web.yml >"$tmpfile"
 cat <"$tmpfile" >/homelab/config/web.yml
 
 # prometheus.yml

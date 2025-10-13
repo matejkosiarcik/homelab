@@ -144,14 +144,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|glances|gatus|jellyfin|nodeexporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/prometheus.htpasswd
-    Require valid-user
-</If>
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats)$# && %{REQUEST_URI} =~ m#^/metrics?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|nodeexporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file

@@ -13,7 +13,7 @@ test.describe(apps.kiwix.title, () => {
             createApiRootTest(instance.url, {
                 title: 'Authenticated',
                 headers: {
-                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                    Authorization: `Basic ${Buffer.from(`matej:${getEnv(instance.url, 'MATEJ_PASSWORD')}`).toString('base64')}`
                 },
             });
             createTcpTests(instance.url, [80, 443]);
@@ -21,7 +21,7 @@ test.describe(apps.kiwix.title, () => {
 
             const validUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
             ];
             for (const user of validUsers) {
@@ -44,7 +44,7 @@ test.describe(apps.kiwix.title, () => {
 
             const invalidUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
                 {
                     username: faker.string.alpha(10),

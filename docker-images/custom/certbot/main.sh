@@ -106,7 +106,7 @@ fi
 certbot certonly --manual --non-interactive --agree-tos \
     --preferred-challenges dns \
     --domain "*.$domain" \
-    --email "$CERTBOT_ADMIN_EMAIL" \
+    --email "$CERTBOT_PUBLIC_EMAIL" \
     --manual-auth-hook 'sh certbot-hook-before.sh >>/homelab/logs/certbot.log 2>&1' \
     --manual-cleanup-hook 'sh certbot-hook-after.sh >>/homelab/logs/certbot.log 2>&1' \
     $test_cert_mode || printf '%s\n' "$?" >"$statusfile"

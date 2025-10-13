@@ -28,8 +28,8 @@ load_password() {
     printf 'ACTUALBUDGET_PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget apache status)"
     printf 'ACTUALBUDGET_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget apache prometheus)"
 
-    printf 'CERTBOT_ADMIN_PASSWORD=%s\n' "$(load_password certbot apache admin)"
-    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_password certbot apache viewer)"
+    printf 'CERTBOT_MATEJ_PASSWORD=%s\n' "$(load_password certbot apache matej)"
+    printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password certbot apache homelab-viewer)"
     printf 'CERTBOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password certbot apache status)"
     printf 'CERTBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password certbot apache prometheus)"
 
@@ -78,12 +78,12 @@ load_password() {
     printf 'DOZZLE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dozzle apache status)"
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dozzle apache prometheus)"
 
-    printf 'GATUS_1_ADMIN_PASSWORD=%s\n' "$(load_password gatus-1 app admin)"
+    printf 'GATUS_1_MATEJ_PASSWORD=%s\n' "$(load_password gatus-1 app matej)"
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-1 app prometheus)"
     printf 'GATUS_1_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-1 apache status)"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-1 apache prometheus)"
 
-    printf 'GATUS_2_ADMIN_PASSWORD=%s\n' "$(load_password gatus-2 app admin)"
+    printf 'GATUS_2_MATEJ_PASSWORD=%s\n' "$(load_password gatus-2 app matej)"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 app prometheus)"
     printf 'GATUS_2_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-2 apache status)"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 apache prometheus)"
@@ -145,7 +145,7 @@ load_password() {
     printf 'HOMEASSISTANT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homeassistant apache status)"
     printf 'HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homeassistant apache prometheus)"
 
-    printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$(load_password homepage app admin)"
+    printf 'HOMEPAGE_MATEJ_PASSWORD=%s\n' "$(load_password homepage app matej)"
     printf 'HOMEPAGE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homepage apache status)"
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homepage apache prometheus)"
 
@@ -258,7 +258,7 @@ load_password() {
     printf 'PIHOLE_2_SECONDARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache status)"
     printf 'PIHOLE_2_SECONDARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache prometheus)"
 
-    printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$(load_password prometheus app admin)"
+    printf 'PROMETHEUS_MATEJ_PASSWORD=%s\n' "$(load_password prometheus app matej)"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$(load_password prometheus app prometheus)"
     printf 'PROMETHEUS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password prometheus apache status)"
     printf 'PROMETHEUS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password prometheus apache prometheus)"
@@ -337,11 +337,11 @@ load_password() {
     printf 'VIKUNJA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vikunja apache status)"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja apache prometheus)"
 
-    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wikipedia app admin)"
+    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wikipedia app matej)"
     printf 'WIKIPEDIA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia apache status)"
     printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia apache prometheus)"
 
-    printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wiktionary app admin)"
+    printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wiktionary app matej)"
     printf 'WIKTIONARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary apache status)"
     printf 'WIKTIONARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary apache prometheus)"
 } >>'.secrets.env'

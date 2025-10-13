@@ -13,7 +13,7 @@ test.describe(apps['docker-stats'].title, () => {
             createFaviconTests(instance.url);
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/`, {
+                const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
                         username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),

@@ -295,7 +295,7 @@
           type: gatus
           url: https://gatus-1.matejhome.com
           username: admin
-          password: "{{HOMEPAGE_VAR_GATUS_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR_GATUS_1_PASSWORD}}"
 
     - Gatus 2:
         description: Uptime monitoring system

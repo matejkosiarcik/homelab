@@ -38,33 +38,33 @@ test.describe(apps.certbot.title, () => {
                     status: 401,
                 },
                 {
-                    title: 'empty password [viewer]',
+                    title: 'empty password [homelab-viewer]',
                     auth: {
-                        username: 'viewer',
+                        username: 'homelab-viewer',
                         password: '',
                     },
                     status: 401,
                 },
                 {
-                    title: 'empty password [admin]',
+                    title: 'empty password [matej]',
                     auth: {
-                        username: 'admin',
+                        username: 'matej',
                         password: '',
                     },
                     status: 401,
                 },
                 {
-                    title: 'wrong password [viewer]',
+                    title: 'wrong password [homelab-viewer]',
                     auth: {
-                        username: 'viewer',
+                        username: 'homelab-viewer',
                         password: faker.string.alphanumeric(10),
                     },
                     status: 401,
                 },
                 {
-                    title: 'wrong password [admin]',
+                    title: 'wrong password [matej]',
                     auth: {
-                        username: 'admin',
+                        username: 'matej',
                         password: faker.string.alphanumeric(10),
                     },
                     status: 401,
@@ -78,18 +78,18 @@ test.describe(apps.certbot.title, () => {
                     status: 401,
                 },
                 {
-                    title: 'successful [viewer]',
+                    title: 'successful [homelab-viewer]',
                     auth: {
-                        username: 'viewer',
-                        password: getEnv(instance.url, 'VIEWER_PASSWORD'),
+                        username: 'homelab-viewer',
+                        password: getEnv(instance.url, 'HOMELAB_VIEWER_PASSWORD'),
                     },
                     status: 200,
                 },
                 {
-                    title: 'successful [admin]',
+                    title: 'successful [matej]',
                     auth: {
-                        username: 'admin',
-                        password: getEnv(instance.url, 'ADMIN_PASSWORD'),
+                        username: 'matej',
+                        password: getEnv(instance.url, 'MATEJ_PASSWORD'),
                     },
                     status: 200,
                 },
@@ -111,8 +111,8 @@ test.describe(apps.certbot.title, () => {
                     decompress: false,
                     responseType: 'arraybuffer',
                     auth: {
-                        username: 'viewer',
-                        password: getEnv(instance.url, 'VIEWER_PASSWORD'),
+                        username: 'homelab-viewer',
+                        password: getEnv(instance.url, 'HOMELAB_VIEWER_PASSWORD'),
                     },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
