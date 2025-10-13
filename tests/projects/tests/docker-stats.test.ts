@@ -62,7 +62,7 @@ test.describe(apps['docker-stats'].title, () => {
                             password: faker.string.alpha(10),
                         },
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
                 test(`API: Unsuccessful get prometheus metrics without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
@@ -72,7 +72,7 @@ test.describe(apps['docker-stats'].title, () => {
                             password: '',
                         },
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
