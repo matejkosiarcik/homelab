@@ -332,12 +332,6 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app admin)" >>"$initial_output/app.env"
     printf 'GATUS_1_MATEJ_PASSWORD=%s\n' "$(load_token gatus-1 app matej)" >>"$initial_output/app.env"
     printf 'GATUS_2_MATEJ_PASSWORD=%s\n' "$(load_token gatus-2 app matej)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_ADMIN_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_ADMIN_PASSWORD=%s\n' "$(load_token glances-odroid-h3 app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_ADMIN_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_ADMIN_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_ADMIN_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app admin)" >>"$initial_output/app.env"
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
@@ -366,12 +360,6 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
@@ -415,12 +403,6 @@ case "$app_dirname" in
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gotify apache prometheus)" >>"$initial_output/app.env"
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token grafana apache prometheus)" >>"$initial_output/app.env"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token groceries apache prometheus)" >>"$initial_output/app.env"
@@ -473,25 +455,6 @@ case "$app_dirname" in
     # printf 'DESKLAMP_RIGHT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token desklamp-right apache prometheus)" >>"$initial_output/app.env"
     # printf 'NETALERTX_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token netalertx apache prometheus)" >>"$initial_output/app.env"
     # printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token vikunja apache prometheus)" >>"$initial_output/app.env"
-
-    # Apache
-    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
-
-    # Certificator
-    write_certificator_users
-    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
-
-    # Favicons
-    touch "$initial_output/favicons.env"
-    ;;
-*glances*)
-    # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    sh "$helper_script_dir/glances/main.sh" "$admin_password" "$initial_output/glances-password.txt"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -886,12 +849,6 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
@@ -933,12 +890,6 @@ case "$app_dirname" in
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gotify apache prometheus)" >>"$initial_output/app.env"
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token grafana apache prometheus)" >>"$initial_output/app.env"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token groceries apache prometheus)" >>"$initial_output/app.env"

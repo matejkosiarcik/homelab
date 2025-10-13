@@ -88,36 +88,6 @@ load_password() {
     printf 'GATUS_2_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-2 apache status)"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 apache prometheus)"
 
-    printf 'GLANCES_MACBOOK_PRO_2012_PASSWORD=%s\n' "$(load_password glances-macbook-pro-2012 app admin)"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-macbook-pro-2012 app prometheus)"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances-macbook-pro-2012 apache status)"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-macbook-pro-2012 apache prometheus)"
-
-    printf 'GLANCES_ODROID_H3_PASSWORD=%s\n' "$(load_password glances-odroid-h3 app admin)"
-    printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-odroid-h3 app prometheus)"
-    printf 'GLANCES_ODROID_H3_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances-odroid-h3 apache status)"
-    printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-odroid-h3 apache prometheus)"
-
-    printf 'GLANCES_ODROID_H4_ULTRA_PASSWORD=%s\n' "$(load_password glances-odroid-h4-ultra app admin)"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-odroid-h4-ultra app prometheus)"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances-odroid-h4-ultra apache status)"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-odroid-h4-ultra apache prometheus)"
-
-    printf 'GLANCES_RASPBERRY_PI_3B_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-3b app admin)"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-3b app prometheus)"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-3b apache status)"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-3b apache prometheus)"
-
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-2g app admin)"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-2g app prometheus)"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-2g apache status)"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-2g apache prometheus)"
-
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-4g app admin)"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-4g app prometheus)"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-4g apache status)"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password glances-raspberry-pi-4b-4g apache prometheus)"
-
     printf 'GOTIFY_ADMIN_PASSWORD=%s\n' "$(load_password gotify app admin)"
     printf 'GOTIFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gotify apache status)"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify apache prometheus)"
