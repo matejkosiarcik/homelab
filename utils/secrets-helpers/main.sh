@@ -264,9 +264,9 @@ case "$app_dirname" in
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$matej_password" users
+    write_http_auth_user matej "$matej_password" prometheus
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user matej "$matej_password" prometheus
     write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
@@ -1085,6 +1085,9 @@ case "$app_dirname" in
 *unbound*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$matej_password" prometheus
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"

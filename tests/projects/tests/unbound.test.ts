@@ -21,6 +21,26 @@ test.describe(apps.unbound.title, () => {
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
 
+            const prometheusUsers = [
+                {
+                    username: 'matej'
+                },
+                {
+                    username: 'prometheus'
+                },
+            ];
+            for (const user of prometheusUsers) {
+                test(`API: Get prometheus metrics - User ${user.username}`, async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
             test('DNS: example.com lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);

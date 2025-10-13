@@ -51,10 +51,10 @@ test.describe(apps.omadacontroller.title, () => {
 
             const validUsers = [
                 {
-                    username: 'homelab-test',
+                    username: 'homelab-viewer',
                 },
                 {
-                    username: 'homelab-viewer',
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {

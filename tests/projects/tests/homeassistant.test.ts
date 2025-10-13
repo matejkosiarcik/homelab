@@ -41,6 +41,9 @@ test.describe(apps.homeassistant.title, () => {
 
             const validUsers = [
                 {
+                    username: 'homelab-viewer',
+                },
+                {
                     username: 'homelab-test',
                 },
             ];
