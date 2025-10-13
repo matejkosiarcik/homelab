@@ -16,7 +16,7 @@ test.describe(apps.vikunja.title, () => {
 
             const validUsers = [
                 {
-                    username: 'test',
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
@@ -52,6 +52,7 @@ test.describe(apps.vikunja.title, () => {
                     await page.waitForURL(`${instance.url}/login`);
                     const originalUrl = page.url();
                     await expect(page.locator('form#loginform')).toBeVisible();
+                    await page.waitForTimeout(5000); // Must delay otherwise the page reloads and test fails
 
                     // Fill in form
                     await page.locator('form#loginform input#username').fill(user.username);
