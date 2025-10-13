@@ -14,6 +14,16 @@ test.describe(apps.gatus.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
+            test('API: Prometheus metrics - User matej', async () => {
+                const response = await axios.get(`${instance.url}/metrics`, {
+                    auth: {
+                        username: 'matej',
+                        password: getEnv(instance.url, 'MATEJ_PASSWORD'),
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
+
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {

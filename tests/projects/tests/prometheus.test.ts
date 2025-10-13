@@ -17,10 +17,47 @@ test.describe(apps.prometheus.title, () => {
                     Authorization: `Basic ${Buffer.from(`matej:${getEnv(instance.url, 'MATEJ_PASSWORD')}`).toString('base64')}`
                 },
             });
+            createApiRootTest(instance.url, {
+                title: 'Badly authenticated - User prometheus',
+                headers: {
+                    Authorization: `Basic ${Buffer.from(`prometheus:${getEnv(instance.url, 'PROMETHEUS_PASSWORD')}`).toString('base64')}`
+                },
+                status: 401,
+            });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            const users = [
+            const validUsers = [
+                {
+                    username: 'matej',
+                },
+            ];
+            for (const user of validUsers) {
+                test(`API: Successful get root - User ${user.username}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        beforeRedirect: (opts) => {
+                            opts['headers'] = {
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                            };
+                        },
+                        headers: {
+                            Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+
+                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await expect(page.locator('#root header:has-text("Prometheus")')).toBeVisible({ timeout: 10_000 });
+                    await expect(page.locator('#root header a:has-text("Query")')).toBeVisible();
+                    await expect(page.locator('#root header a:has-text("Alerts")')).toBeVisible();
+                    await expect(page.locator('#root header button:has-text("Status")')).toBeVisible();
+                });
+            }
+
+            const invalidUsers = [
                 {
                     username: 'matej',
                 },
@@ -32,32 +69,7 @@ test.describe(apps.prometheus.title, () => {
                     random: true,
                 },
             ];
-            for (const user of users) {
-                if (!user.random) {
-                    test(`API: Successful get root - User ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                        const response = await axios.get(instance.url, {
-                            beforeRedirect: (opts) => {
-                                opts['headers'] = {
-                                    Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
-                                };
-                            },
-                            headers: {
-                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
-                            },
-                        });
-                        expect(response.status, 'Response Status').toStrictEqual(200);
-                    });
-
-                    test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
-                        await page.goto(instance.url);
-                        await expect(page.locator('#root header:has-text("Prometheus")')).toBeVisible({ timeout: 10_000 });
-                        await expect(page.locator('#root header a:has-text("Query")')).toBeVisible();
-                        await expect(page.locator('#root header a:has-text("Alerts")')).toBeVisible();
-                        await expect(page.locator('#root header button:has-text("Status")')).toBeVisible();
-                    });
-                }
-
+            for (const user of invalidUsers) {
                 test(`API: Unsuccessful get root with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(instance.url, {
                         auth: {
@@ -99,6 +111,16 @@ test.describe(apps.prometheus.title, () => {
             test('UI: Unsuccessful open - No user', async ({ page }) => {
                 await page.goto(instance.url);
                 await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
+            });
+
+            test('API: Prometheus metrics - User matej', async () => {
+                const response = await axios.get(`${instance.url}/metrics`, {
+                    auth: {
+                        username: 'matej',
+                        password: getEnv(instance.url, 'MATEJ_PASSWORD'),
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Prometheus metrics content', async () => {
