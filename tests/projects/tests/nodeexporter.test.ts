@@ -20,21 +20,69 @@ test.describe(apps.nodeexporter.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test(`UI: Successful open - User admin`, async ({ page }) => {
-                await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/`);
-                await expect(page.locator('h1:has-text("Node Exporter")')).toBeVisible();
-                await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).toBeVisible();
-            });
+            const validUsers = [
+                {
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/`);
+                    await expect(page.locator('h1:has-text("Node Exporter")')).toBeVisible();
+                    await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).toBeVisible();
+                });
 
-            test(`UI: Unsuccessful open - Bad password`, async ({ page }) => {
-                await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`admin:${faker.string.alphanumeric(10)}`).toString('base64')}` });
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/`);
-                await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
-                await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
-            });
+                test(`API: Get prometheus metrics - User ${user.username}`, async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful open with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/`);
+                    await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
+                    await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
+                });
+
+                test(`UI: Unsuccessful open without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/`);
+                    await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
+                    await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
+                });
+            }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
                 await page.goto(instance.url);

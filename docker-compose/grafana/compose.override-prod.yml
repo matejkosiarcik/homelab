@@ -5,7 +5,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    # user: ${DOCKER_COMPOSE_CURRENT_USER}
 
   certificator:
     <<: *common-service-options
