@@ -26,6 +26,12 @@ test.describe(apps.unbound.title, () => {
                     username: 'matej'
                 },
                 {
+                    username: 'homelab-viewer'
+                },
+                {
+                    username: 'homelab-test'
+                },
+                {
                     username: 'prometheus'
                 },
             ];
@@ -38,6 +44,37 @@ test.describe(apps.unbound.title, () => {
                         },
                     });
                     expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
+            const invalidPrometheusUsers = [
+                {
+                    username: 'homelab-test'
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidPrometheusUsers) {
+                test(`API: Unsuccessful get prometheus metrics with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alphanumeric(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
+
+                test(`API: Unsuccessful get prometheus metrics without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: user.username,
+                            password: '',
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
