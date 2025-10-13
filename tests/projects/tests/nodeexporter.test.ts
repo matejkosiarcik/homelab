@@ -84,6 +84,34 @@ test.describe(apps.nodeexporter.title, () => {
                 });
             }
 
+            const invalidPrometheusUsers = [
+                {
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidPrometheusUsers) {
+                test(`API: Unsuccessful get prometheus metrics - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alpha(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
+
             test('UI: Unsuccessful open - No user', async ({ page }) => {
                 await page.goto(instance.url);
                 await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();

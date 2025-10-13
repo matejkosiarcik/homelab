@@ -21,7 +21,7 @@ test.describe(apps.unbound.title, () => {
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
 
-            const prometheusUsers = [
+            const prometheusValidUsers = [
                 {
                     username: 'matej'
                 },
@@ -35,7 +35,7 @@ test.describe(apps.unbound.title, () => {
                     username: 'prometheus'
                 },
             ];
-            for (const user of prometheusUsers) {
+            for (const user of prometheusValidUsers) {
                 test(`API: Get prometheus metrics - User ${user.username}`, async () => {
                     const response = await axios.get(`${instance.url}/metrics`, {
                         auth: {
