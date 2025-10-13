@@ -26,24 +26,6 @@ apps:
   - url: gatus-2.matejhome.com
     auth: basic
     path: /metrics
-  # - url: glances-macbook-pro-2012.matejhome.com
-  #   auth: basic
-  #   path: /metrics
-  # - url: glances-odroid-h3.matejhome.com
-  #   auth: basic
-  #   path: /metrics
-  # - url: glances-odroid-h4-ultra.matejhome.com
-  #   auth: basic
-  #   path: /metrics
-  # - url: glances-raspberry-pi-3b.matejhome.com
-  #   auth: basic
-  #   path: /metrics
-  # - url: glances-raspberry-pi-4b-2g.matejhome.com
-  #   auth: basic
-  #   path: /metrics
-  # - url: glances-raspberry-pi-4b-4g.matejhome.com
-  #   auth: basic
-  #   path: /metrics
   - url: healthchecks.matejhome.com
     auth: bearer
     path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
@@ -138,12 +120,6 @@ proxies:
   - url: dozzle.matejhome.com
   - url: gatus-1.matejhome.com
   - url: gatus-2.matejhome.com
-  # - url: glances-macbook-pro-2012.matejhome.com
-  # - url: glances-odroid-h3.matejhome.com
-  # - url: glances-odroid-h4-ultra.matejhome.com
-  # - url: glances-raspberry-pi-3b.matejhome.com
-  # - url: glances-raspberry-pi-4b-2g.matejhome.com
-  # - url: glances-raspberry-pi-4b-4g.matejhome.com
   - url: gotify.matejhome.com
   - url: grafana.matejhome.com
   - url: groceries.matejhome.com

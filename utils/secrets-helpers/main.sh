@@ -262,13 +262,13 @@ case "$app_dirname" in
     ;;
 *docker-stats*)
     # App
-    app_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$app_admin_password" users
-    printf 'admin,%s\n' "$app_admin_password" >>"$initial_output/all-credentials.csv"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user admin "$app_admin_password" prometheus
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$matej_password" users
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user matej "$matej_password" prometheus
+    write_http_auth_user prometheus "$prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -321,39 +321,35 @@ case "$app_dirname" in
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     # Main credentials
     printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_token certbot apache viewer)" >>"$initial_output/app.env"
-    printf 'DOCKER_STATS_MACBOOK_PRO_2012_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app admin)" >>"$initial_output/app.env"
-    printf 'DOCKER_STATS_ODROID_H3_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app admin)" >>"$initial_output/app.env"
-    printf 'DOCKER_STATS_ODROID_H4_ULTRA_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra app admin)" >>"$initial_output/app.env"
-    printf 'DOCKER_STATS_RASPBERRY_PI_3B_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-3b app admin)" >>"$initial_output/app.env"
-    printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g app admin)" >>"$initial_output/app.env"
-    printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app admin)" >>"$initial_output/app.env"
-    printf 'GATUS_MATEJ_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_ADMIN_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_ADMIN_PASSWORD=%s\n' "$(load_token glances-odroid-h3 app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_ADMIN_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_ADMIN_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_ADMIN_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g app admin)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app admin)" >>"$initial_output/app.env"
+    printf 'DOCKER_STATS_MACBOOK_PRO_2012_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app matej)" >>"$initial_output/app.env"
+    printf 'DOCKER_STATS_ODROID_H3_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app matej)" >>"$initial_output/app.env"
+    printf 'DOCKER_STATS_ODROID_H4_ULTRA_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra app matej)" >>"$initial_output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_3B_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-3b app matej)" >>"$initial_output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g app matej)" >>"$initial_output/app.env"
+    printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app matej)" >>"$initial_output/app.env"
+    printf 'GATUS_1_MATEJ_PASSWORD=%s\n' "$(load_token gatus-1 app matej)" >>"$initial_output/app.env"
+    printf 'GATUS_2_MATEJ_PASSWORD=%s\n' "$(load_token gatus-2 app matej)" >>"$initial_output/app.env"
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_ADMIN_PASSWORD=%s\n' "$(load_token homepage app admin)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_MATEJ_PASSWORD=%s\n' "$(load_token homepage app matej)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
-    printf 'NODEEXPORTER_MACBOOK_PRO_2012_ADMIN_PASSWORD=%s\n' "$(load_token nodeexporter-macbook-pro-2012 app admin)" >>"$initial_output/app.env"
-    printf 'NODEEXPORTER_ODROID_H3_ADMIN_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 app admin)" >>"$initial_output/app.env"
-    printf 'NODEEXPORTER_ODROID_H4_ULTRA_ADMIN_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h4-ultra app admin)" >>"$initial_output/app.env"
-    printf 'NODEEXPORTER_RASPBERRY_PI_3B_ADMIN_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-3b app admin)" >>"$initial_output/app.env"
-    printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G_ADMIN_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-2g app admin)" >>"$initial_output/app.env"
-    printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_ADMIN_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-4g app admin)" >>"$initial_output/app.env"
+    printf 'NODEEXPORTER_MACBOOK_PRO_2012_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-macbook-pro-2012 app matej)" >>"$initial_output/app.env"
+    printf 'NODEEXPORTER_ODROID_H3_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 app matej)" >>"$initial_output/app.env"
+    printf 'NODEEXPORTER_ODROID_H4_ULTRA_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h4-ultra app matej)" >>"$initial_output/app.env"
+    printf 'NODEEXPORTER_RASPBERRY_PI_3B_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-3b app matej)" >>"$initial_output/app.env"
+    printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-2g app matej)" >>"$initial_output/app.env"
+    printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-4g app matej)" >>"$initial_output/app.env"
     printf 'NTFY_TOKEN=%s\n' "$(load_token ntfy app publisher-token)" >>"$initial_output/app.env"
-    printf 'OLLAMA_ADMIN_PASSWORD=%s\n' "$(load_token ollama app admin)" >>"$initial_output/app.env"
+    printf 'OLLAMA_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token ollama app homelab-viewer)" >>"$initial_output/app.env"
     printf 'OWNTRACKS_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
     printf 'OWNTRACKS_BACKEND_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
-    printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
-    printf 'SMTP4DEV_MATEJ_PASSWORD=%s\n' "$(load_token smtp4dev app matej)" >>"$initial_output/app.env"
+    printf 'PROMETHEUS_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token prometheus app homelab-viewer)" >>"$initial_output/app.env"
+    printf 'SMTP4DEV_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token smtp4dev app homelab-viewer)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_MATEJ_PASSWORD=%s\n' "$(load_token uptimekuma app matej)" >>"$initial_output/app.env"
-    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wikipedia app admin)" >>"$initial_output/app.env"
-    printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_token kiwix-wiktionary app admin)" >>"$initial_output/app.env"
+    printf 'WIKIPEDIA_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token kiwix-wikipedia app homelab-viewer)" >>"$initial_output/app.env"
+    printf 'WIKTIONARY_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token kiwix-wiktionary app homelab-viewer)" >>"$initial_output/app.env"
     # Prometheus credentials
     printf 'DAWARICH_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
@@ -364,12 +360,6 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
@@ -413,12 +403,6 @@ case "$app_dirname" in
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gotify apache prometheus)" >>"$initial_output/app.env"
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token grafana apache prometheus)" >>"$initial_output/app.env"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token groceries apache prometheus)" >>"$initial_output/app.env"
@@ -474,28 +458,9 @@ case "$app_dirname" in
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
-
-    # Certificator
-    write_certificator_users
-    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
-
-    # Favicons
-    touch "$initial_output/favicons.env"
-    ;;
-*glances*)
-    # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    sh "$helper_script_dir/glances/main.sh" "$admin_password" "$initial_output/glances-password.txt"
-
-    # Apache
-    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
+    printf 'app-prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
@@ -607,6 +572,12 @@ case "$app_dirname" in
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$admin_password" users
     printf 'matej,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    write_http_auth_user homelab-test "$homelab_test_password" users
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$(load_token changedetection app api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_GATUS_1_PASSWORD=%s\n' "$(load_token gatus-1 app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app admin)" >>"$initial_output/app.env"
@@ -636,10 +607,10 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/favicons.env"
+    printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
 
     # Widgets
-    printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/widgets.env"
+    printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app homelab-viewer)" >>"$initial_output/widgets.env"
     printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app homelab-viewer)" >>"$initial_output/widgets.env"
     ;;
 *jellyfin*)
@@ -647,6 +618,7 @@ case "$app_dirname" in
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-admin)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-viewer,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
 
     # Apache
@@ -671,6 +643,9 @@ case "$app_dirname" in
     monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
     write_http_auth_user monika "$monika_password" users
     printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
@@ -681,17 +656,17 @@ case "$app_dirname" in
     ;;
 *minio*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
-    printf 'MINIO_ROOT_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app.env"
+    printf 'MINIO_ROOT_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
 
     # Setup
-    printf 'MINIO_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app-setup.env"
-    printf 'MINIO_USER_PASSWORD=%s\n' "$user_password" >>"$initial_output/app-setup.env"
+    printf 'MINIO_MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app-setup.env"
+    printf 'MINIO_HOMELAB_VIEWER_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/app-setup.env"
     printf 'MINIO_HOMELAB_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
 
     # Apache
@@ -722,13 +697,13 @@ case "$app_dirname" in
 *nodeexporter*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    app_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$app_admin_password" users
-    write_http_auth_user admin "$app_admin_password" prometheus
-    printf 'admin,%s\n' "$app_admin_password" >>"$initial_output/all-credentials.csv"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    write_http_auth_user admin "$admin_password" users
+    write_http_auth_user admin "$admin_password" prometheus
+    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
@@ -761,9 +736,12 @@ case "$app_dirname" in
     ;;
 *ollama*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password" users
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$matej_password" users
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -773,7 +751,7 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/favicons.env"
+    printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
     ;;
 *omadacontroller*)
     # App
@@ -805,8 +783,8 @@ case "$app_dirname" in
     ;;
 *openwebui*)
     # App
-    ollama_admin_password="$(load_token ollama app admin)"
-    printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_admin_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
+    ollama_matej_password="$(load_token ollama app matej)"
+    printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_matej_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
     secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
     printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
@@ -869,11 +847,17 @@ case "$app_dirname" in
 *prometheus*)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    prometheus_password="$(load_token "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     printf 'PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     printf 'PROMETHEUS_MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'PROMETHEUS_HOMELAB_VIEWER_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$homelab_viewer_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
+    printf 'PROMETHEUS_HOMELAB_VIEWER_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/app.env"
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$initial_output/app.env"
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
     # Other apps prometheus credentials
     printf 'DAWARICH_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich app prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
@@ -884,12 +868,6 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 app prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g app prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_PROJECT=%s\n' "$(load_token healthchecks app project-id)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS_PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT_PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
@@ -931,12 +909,6 @@ case "$app_dirname" in
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-macbook-pro-2012 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H3_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-3b apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
-    printf 'GLANCES_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token glances-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gotify apache prometheus)" >>"$initial_output/app.env"
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token grafana apache prometheus)" >>"$initial_output/app.env"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token groceries apache prometheus)" >>"$initial_output/app.env"
@@ -998,7 +970,7 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    printf 'ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/favicons.env"
+    printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
     ;;
 *renovatebot*)
     # App
@@ -1031,9 +1003,9 @@ case "$app_dirname" in
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    app_prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    write_http_auth_user prometheus "$app_prometheus_password" prometheus
-    printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/all-credentials.csv"
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
+    printf 'app-prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
@@ -1062,7 +1034,7 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    printf 'MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/favicons.env"
+    printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
     ;;
 *speedtesttracker*)
     # App
@@ -1152,7 +1124,7 @@ case "$app_dirname" in
     ;;
 *uptimekuma*)
     # App
-    printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

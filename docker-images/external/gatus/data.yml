@@ -139,6 +139,9 @@ apps:
 
   - name: Gatus 1
     domain: gatus-1.matejhome.com
+    # TODO: Enable authentication
+    # authentication:
+    #   basic: matej
     endpoints:
       - path: /metrics
         authentication:
@@ -146,70 +149,13 @@ apps:
 
   - name: Gatus 2
     domain: gatus-2.matejhome.com
+    # TODO: Enable authentication
+    # authentication:
+    #   basic: matej
     endpoints:
       - path: /metrics
         authentication:
           basic: prometheus
-
-  - name: Glances MacBook Pro 2012
-    domain: glances-macbook-pro-2012.matejhome.com
-    authentication:
-      basic: admin
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
-
-  - name: Glances Odroid H3
-    domain: glances-odroid-h3.matejhome.com
-    authentication:
-      basic: admin
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
-
-  - name: Glances Odroid H4 Ultra
-    domain: glances-odroid-h4-ultra.matejhome.com
-    authentication:
-      basic: admin
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
-
-  - name: Glances Raspberry Pi 3B
-    domain: glances-raspberry-pi-3b.matejhome.com
-    authentication:
-      basic: admin
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
-
-  - name: Glances Raspberry Pi 4B 2GB
-    domain: glances-raspberry-pi-4b-2g.matejhome.com
-    authentication:
-      basic: admin
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
-
-  - name: Glances Raspberry Pi 4B 4GB
-    domain: glances-raspberry-pi-4b-4g.matejhome.com
-    authentication:
-      basic: admin
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
 
   - name: Gotify
     domain: gotify.matejhome.com
@@ -359,12 +305,12 @@ apps:
   - name: Ollama
     domain: ollama.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
 
   - name: Ollama [private]
     domain: ollama-private.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
 
   - name: Omada Controller
     domain: omadacontroller.matejhome.com
@@ -460,7 +406,7 @@ apps:
   - name: Prometheus
     domain: prometheus.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:

@@ -33,7 +33,7 @@ const appAddress = (() => {
         case 'docker-stats': return ''; // http://app:9487
         case 'dozzle': return 'http://app:8080';
         case 'gatus': return 'http://app:8080';
-        case 'glances': return 'http://app:61208';
+        // case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
         case 'grafana': return 'http://app:3000';
         case 'groceries': return 'http://app-frontend:8100';
@@ -77,7 +77,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'docker-stats': return `@/homelab/icons/${appType}.png`;
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
-        case 'glances': return '/static/favicon.ico';
+        // case 'glances': return '/static/favicon.ico';
         case 'gotify': return '/static/favicon-196x196.png';
         case 'grafana': return '/public/img/grafana_icon.svg';
         case 'groceries': return '/assets/icon/favicon.svg';
@@ -263,12 +263,9 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
     switch (appType) {
         case 'homepage':
         case 'ollama':
-        case 'prometheus': {
-            headers['Authorization'] = `Basic ${Buffer.from(`admin:${process.env['ADMIN_PASSWORD']}`).toString('base64')}`;
-            break;
-        }
+        case 'prometheus':
         case 'smtp4dev': {
-            headers['Authorization'] = `Basic ${Buffer.from(`matej:${process.env['MATEJ_PASSWORD']}`).toString('base64')}`;
+            headers['Authorization'] = `Basic ${Buffer.from(`homelab-viewer:${process.env['FAVICON_PASSWORD']}`).toString('base64')}`;
             break;
         }
         default: {
