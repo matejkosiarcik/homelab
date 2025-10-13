@@ -14,7 +14,7 @@ test.describe(apps.prometheus.title, () => {
             createApiRootTest(instance.url, {
                 title: 'Authenticated',
                 headers: {
-                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                    Authorization: `Basic ${Buffer.from(`matej:${getEnv(instance.url, 'MATEJ_PASSWORD')}`).toString('base64')}`
                 },
             });
             createTcpTests(instance.url, [80, 443]);
@@ -22,7 +22,7 @@ test.describe(apps.prometheus.title, () => {
 
             const users = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
                 {
                     username: 'prometheus',

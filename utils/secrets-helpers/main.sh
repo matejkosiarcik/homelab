@@ -868,10 +868,10 @@ case "$app_dirname" in
     ;;
 *prometheus*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     prometheus_password="$(load_token "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
-    printf 'PROMETHEUS_ADMIN_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$admin_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
-    printf 'PROMETHEUS_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app.env"
+    printf 'PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
+    printf 'PROMETHEUS_MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$initial_output/app.env"
     # Other apps prometheus credentials
