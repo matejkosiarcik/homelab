@@ -12,13 +12,7 @@ test.describe(apps.prometheus.title, () => {
             createPrometheusTests(instance.url, { auth: 'basic' });
             createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createApiRootTest(instance.url, {
-                title: 'Authenticated',
-                headers: {
-                    Authorization: `Basic ${Buffer.from(`matej:${getEnv(instance.url, 'MATEJ_PASSWORD')}`).toString('base64')}`
-                },
-            });
-            createApiRootTest(instance.url, {
-                title: 'Badly authenticated - User prometheus',
+                title: 'Authenticated - User prometheus (unsuccessful)',
                 headers: {
                     Authorization: `Basic ${Buffer.from(`prometheus:${getEnv(instance.url, 'PROMETHEUS_PASSWORD')}`).toString('base64')}`
                 },
@@ -29,10 +23,20 @@ test.describe(apps.prometheus.title, () => {
 
             const validUsers = [
                 {
-                    username: 'matej',
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
+                createApiRootTest(instance.url, {
+                    title: `Authenticated - ${user.username}`,
+                    headers: {
+                        Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}`
+                    },
+                });
+
                 test(`API: Successful get root - User ${user.username}`, async () => {
                     const response = await axios.get(instance.url, {
                         beforeRedirect: (opts) => {

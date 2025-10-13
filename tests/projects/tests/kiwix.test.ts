@@ -10,21 +10,25 @@ test.describe(apps.kiwix.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
-            createApiRootTest(instance.url, {
-                title: 'Authenticated',
-                headers: {
-                    Authorization: `Basic ${Buffer.from(`matej:${getEnv(instance.url, 'MATEJ_PASSWORD')}`).toString('base64')}`
-                },
-            });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
             const validUsers = [
                 {
-                    username: 'matej',
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
+                createApiRootTest(instance.url, {
+                    title: `Authenticated - User ${user.username}`,
+                    headers: {
+                        Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}`
+                    },
+                });
+
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);
@@ -44,7 +48,7 @@ test.describe(apps.kiwix.title, () => {
 
             const invalidUsers = [
                 {
-                    username: 'matej',
+                    username: 'homelab-test',
                 },
                 {
                     username: faker.string.alpha(10),

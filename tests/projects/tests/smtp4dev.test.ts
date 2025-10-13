@@ -34,21 +34,25 @@ test.describe(apps.smtp4dev.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
-            createApiRootTest(instance.url, {
-                title: 'Authenticated',
-                headers: {
-                    Authorization: `Basic ${Buffer.from(`homelab-test:${getEnv(instance.url, 'HOMELAB_TEST_PASSWORD')}`).toString('base64')}`
-                },
-            });
             createTcpTests(instance.url, [25, 80, 443]);
             createFaviconTests(instance.url);
 
             const validUsers = [
                 {
+                    username: 'homelab-viewer'
+                },
+                {
                     username: 'homelab-test'
                 },
             ];
             for (const user of validUsers) {
+                createApiRootTest(instance.url, {
+                    title: `Authenticated - User ${user.username}`,
+                    headers: {
+                        Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}`
+                    },
+                });
+
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);

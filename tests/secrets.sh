@@ -116,6 +116,8 @@ load_password() {
     printf 'HOMEASSISTANT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homeassistant apache prometheus)"
 
     printf 'HOMEPAGE_MATEJ_PASSWORD=%s\n' "$(load_password homepage app matej)"
+    printf 'HOMEPAGE_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password homepage app homelab-viewer)"
+    printf 'HOMEPAGE_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password homepage app homelab-test)"
     printf 'HOMEPAGE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homepage apache status)"
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homepage apache prometheus)"
 
@@ -180,11 +182,13 @@ load_password() {
     printf 'NETALERTX_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ntfy apache status)"
     printf 'NETALERTX_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ntfy apache prometheus)"
 
-    printf 'OLLAMA_ADMIN_PASSWORD=%s\n' "$(load_password ollama app admin)"
+    printf 'OLLAMA_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password ollama app homelab-viewer)"
+    printf 'OLLAMA_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password ollama app homelab-test)"
     printf 'OLLAMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama apache status)"
     printf 'OLLAMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama apache prometheus)"
 
-    printf 'OLLAMA_PRIVATE_ADMIN_PASSWORD=%s\n' "$(load_password ollama-private app admin)"
+    printf 'OLLAMA_PRIVATE_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password ollama-private app homelab-viewer)"
+    printf 'OLLAMA_PRIVATE_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password ollama-private app homelab-test)"
     printf 'OLLAMA_PRIVATE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama-private apache status)"
     printf 'OLLAMA_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama-private apache prometheus)"
 
@@ -228,15 +232,19 @@ load_password() {
     printf 'PIHOLE_2_SECONDARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache status)"
     printf 'PIHOLE_2_SECONDARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache prometheus)"
 
-    printf 'PROMETHEUS_MATEJ_PASSWORD=%s\n' "$(load_password prometheus app matej)"
+    printf 'PROMETHEUS_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password prometheus app homelab-viewer)"
+    printf 'PROMETHEUS_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password prometheus app homelab-test)"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$(load_password prometheus app prometheus)"
     printf 'PROMETHEUS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password prometheus apache status)"
     printf 'PROMETHEUS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password prometheus apache prometheus)"
 
     printf 'RENOVATEBOT_MATEJ_PASSWORD=%s\n' "$(load_password renovatebot app matej)"
+    printf 'RENOVATEBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password renovatebot app homelab-viewer)"
+    printf 'RENOVATEBOT_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password renovatebot app homelab-test)"
     printf 'RENOVATEBOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password renovatebot apache status)"
     printf 'RENOVATEBOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password renovatebot apache prometheus)"
 
+    printf 'SMTP4DEV_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password smtp4dev app homelab-viewer)"
     printf 'SMTP4DEV_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password smtp4dev app homelab-test)"
     printf 'SMTP4DEV_PROXY_STATUS_PASSWORD=%s\n' "$(load_password smtp4dev apache status)"
     printf 'SMTP4DEV_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password smtp4dev apache prometheus)"
@@ -307,11 +315,13 @@ load_password() {
     printf 'VIKUNJA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vikunja apache status)"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja apache prometheus)"
 
-    printf 'WIKIPEDIA_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wikipedia app matej)"
+    printf 'WIKIPEDIA_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password kiwix-wikipedia app homelab-viewer)"
+    printf 'WIKIPEDIA_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password kiwix-wikipedia app homelab-test)"
     printf 'WIKIPEDIA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia apache status)"
     printf 'WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia apache prometheus)"
 
-    printf 'WIKTIONARY_ADMIN_PASSWORD=%s\n' "$(load_password kiwix-wiktionary app matej)"
+    printf 'WIKTIONARY_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password kiwix-wiktionary app homelab-viewer)"
+    printf 'WIKTIONARY_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password kiwix-wiktionary app homelab-test)"
     printf 'WIKTIONARY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary apache status)"
     printf 'WIKTIONARY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary apache prometheus)"
 } >>'.secrets.env'

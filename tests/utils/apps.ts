@@ -146,7 +146,7 @@ export const apps = {
         title: 'Ollama',
         instances: [
             { url: 'https://ollama.matejhome.com', title: 'Ollama' },
-            { url: 'https://ollama-private.matejhome.com', title: 'Ollama - Private' },
+            // TODO: Reactivete: { url: 'https://ollama-private.matejhome.com', title: 'Ollama - Private' },
         ],
     },
     omadacontroller: {
@@ -166,7 +166,7 @@ export const apps = {
         title: 'OpenWebUI',
         instances: [
             { url: 'https://openwebui.matejhome.com', title: 'OpenWebUI' },
-            { url: 'https://openwebui-private.matejhome.com', title: 'OpenWebUI - Private' },
+            // TODO: Reactivete: { url: 'https://openwebui-private.matejhome.com', title: 'OpenWebUI - Private' },
         ],
     },
     pihole: {

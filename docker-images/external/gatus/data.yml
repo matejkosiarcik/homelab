@@ -305,12 +305,12 @@ apps:
   - name: Ollama
     domain: ollama.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
 
   - name: Ollama [private]
     domain: ollama-private.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
 
   - name: Omada Controller
     domain: omadacontroller.matejhome.com
@@ -406,7 +406,7 @@ apps:
   - name: Prometheus
     domain: prometheus.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
