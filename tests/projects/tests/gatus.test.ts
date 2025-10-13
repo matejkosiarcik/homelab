@@ -42,7 +42,7 @@ test.describe(apps.gatus.title, () => {
 
             const validUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
             ];
             for (const user of validUsers) {
@@ -57,7 +57,7 @@ test.describe(apps.gatus.title, () => {
 
             const invalidUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
                 {
                     username: faker.string.alpha(10),

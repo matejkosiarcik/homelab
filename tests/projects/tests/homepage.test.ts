@@ -21,7 +21,7 @@ test.describe(apps.homepage.title, () => {
 
             const validUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
             ];
             for (const user of validUsers) {
@@ -43,7 +43,7 @@ test.describe(apps.homepage.title, () => {
 
             const invalidUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
                 },
                 {
                     username: faker.string.alpha(10),
@@ -76,7 +76,7 @@ test.describe(apps.homepage.title, () => {
             test('API: Get healthcheck', async () => {
                 const response = await axios.get(`${instance.url}/api/healthcheck`, {
                     headers: {
-                        Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`,
+                        Authorization: `Basic ${Buffer.from(`matej:${getEnv(instance.url, 'MATEJ_PASSWORD')}`).toString('base64')}`,
                     },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);

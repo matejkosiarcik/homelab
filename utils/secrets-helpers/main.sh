@@ -191,14 +191,14 @@ case "$app_dirname" in
     ;;
 *certbot*)
     # App
-    certbot_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache viewer)"
-    write_http_auth_user viewer "$certbot_viewer_password" users
-    printf 'viewer,%s\n' "$certbot_viewer_password" >>"$initial_output/all-credentials.csv"
-    certbot_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache admin)"
-    write_http_auth_user admin "$certbot_admin_password" users
-    printf 'admin,%s\n' "$certbot_admin_password" >>"$initial_output/all-credentials.csv"
-    certbot_admin_email="$(load_token "$DOCKER_COMPOSE_APP_NAME" certbot admin-email)"
-    printf 'CERTBOT_ADMIN_EMAIL=%s\n' "$certbot_admin_email" >>"$initial_output/app.env"
+    certbot_homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache homelab-viewer)"
+    write_http_auth_user homelab-viewer "$certbot_homelab_viewer_password" users
+    printf 'homelab-viewer,%s\n' "$certbot_homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    certbot_matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache matej)"
+    write_http_auth_user matej "$certbot_matej_password" users
+    printf 'matej,%s\n' "$certbot_matej_password" >>"$initial_output/all-credentials.csv"
+    certbot_public_email="$(load_token "$DOCKER_COMPOSE_APP_NAME" certbot public-email)"
+    printf 'CERTBOT_PUBLIC_EMAIL=%s\n' "$certbot_public_email" >>"$initial_output/app.env"
     websupport_api_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport api-key)"
     printf 'WEBSUPPORT_API_KEY=%s\n' "$websupport_api_key" >>"$initial_output/app.env"
     websupport_api_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport api-secret)"
@@ -319,8 +319,8 @@ case "$app_dirname" in
     ;;
 *gatus*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     # Main credentials
     printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_token certbot apache viewer)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_ADMIN_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app admin)" >>"$initial_output/app.env"
@@ -604,11 +604,11 @@ case "$app_dirname" in
     ;;
 *homepage*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password" users
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$admin_password" users
+    printf 'matej,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$(load_token changedetection app api-key)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_GATUS_PASSWORD=%s\n' "$(load_token gatus-1 app admin)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_GATUS_1_PASSWORD=%s\n' "$(load_token gatus-1 app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_GRAFANA_PASSWORD=%s\n' "$(load_token grafana app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
@@ -665,9 +665,9 @@ case "$app_dirname" in
 *kiwix*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password" users
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$matej_password" users
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
     write_http_auth_user monika "$monika_password" users
     printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
