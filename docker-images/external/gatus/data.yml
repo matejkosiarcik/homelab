@@ -139,6 +139,9 @@ apps:
 
   - name: Gatus 1
     domain: gatus-1.matejhome.com
+    # TODO: Enable authentication
+    # authentication:
+    #   basic: matej
     endpoints:
       - path: /metrics
         authentication:
@@ -146,6 +149,9 @@ apps:
 
   - name: Gatus 2
     domain: gatus-2.matejhome.com
+    # TODO: Enable authentication
+    # authentication:
+    #   basic: matej
     endpoints:
       - path: /metrics
         authentication:
