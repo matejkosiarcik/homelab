@@ -62,16 +62,15 @@ test.describe(apps.tvheadend.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User test',
                     username: 'homelab-test',
                 },
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful open - ${user.title}`, async ({ browser }) => {
+                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ browser }) => {
                     const page = await browser.newPage({ httpCredentials: { username: user.username, password: faker.string.alpha(10) } });
                     try {
                         await page.goto(instance.url);

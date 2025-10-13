@@ -19,34 +19,39 @@ test.describe(apps.kiwix.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            const users = [
+            const validUsers = [
+                {
+                    username: 'admin',
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/#lang=eng`);
+                    await expect(page.locator('.book__list .book').first()).toBeVisible();
+                });
+
+                test(`API: Successful root - User ${user.username}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        headers: {
+                            Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
+            const invalidUsers = [
                 {
                     username: 'admin',
                 },
                 {
                     username: faker.string.alpha(10),
                     random: true,
-                }
+                },
             ];
-            for (const user of users) {
-                if (!user.random) {
-                    test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
-                        await page.goto(instance.url);
-                        await page.waitForURL(`${instance.url}/#lang=eng`);
-                        await expect(page.locator('.book__list .book').first()).toBeVisible();
-                    });
-
-                    test(`API: Successful root - User ${user.username}`, async () => {
-                        const response = await axios.get(instance.url, {
-                            headers: {
-                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
-                            },
-                        });
-                        expect(response.status, 'Response Status').toStrictEqual(200);
-                    });
-                }
-
+            for (const user of invalidUsers) {
                 test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     await page.goto(instance.url);

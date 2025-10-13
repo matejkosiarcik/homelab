@@ -57,16 +57,15 @@ test.describe(apps.gatus.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User admin',
                     username: 'admin',
                 },
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful open - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();

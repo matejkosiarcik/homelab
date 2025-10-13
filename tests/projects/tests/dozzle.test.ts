@@ -32,12 +32,12 @@ test.describe(apps.dozzle.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login?redirectUrl=/`);
                     await page.locator('form input[name="username"]').fill(user.username);

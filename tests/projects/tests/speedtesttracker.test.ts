@@ -44,16 +44,15 @@ test.describe(apps.speedtesttracker.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'Random user',
-                    email: `${faker.string.alpha(10)}@homelab.matejhome.com`,
+                    email: 'matej@matejhome.com',
                 },
                 {
-                    title: 'User matej',
-                    email: 'matej@matejhome.com',
+                    email: `${faker.string.alpha(10)}@homelab.matejhome.com`,
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
                     await page.goto(`${instance.url}/admin/login`);
                     await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
                     const originalUrl = page.url();

@@ -38,16 +38,15 @@ test.describe(apps.vikunja.title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'User homelab-test',
                     username: 'homelab-test',
                 },
                 {
-                    title: 'Random user',
                     username: faker.string.alpha(10),
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     // Load page
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);

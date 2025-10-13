@@ -148,27 +148,45 @@ test.describe(apps.minio.title, () => {
                 }
             });
 
-            test('UI: Successful login - User homelab-test', async ({ page }) => {
-                await page.goto(instance.consoleUrl);
-                await page.waitForURL(`${instance.consoleUrl}/login`);
-                await page.locator('input#accessKey').fill('homelab-test');
-                await page.locator('input#secretKey').fill(getEnv(instance.url, 'HOMELAB_TEST_PASSWORD'));
-                await page.locator('button#do-login[type="submit"]').click();
-                await page.waitForURL(`${instance.consoleUrl}/browser`);
-                await expect(page.locator('#root .menuItems')).toBeVisible();
-                await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
-            });
+            const validUsers = [
+                {
+                    username: 'homelab-test',
+                },
+            ];
+            for (const user of validUsers) {
+                test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
+                    await page.goto(instance.consoleUrl);
+                    await page.waitForURL(`${instance.consoleUrl}/login`);
+                    await page.locator('input#accessKey').fill(user.username);
+                    await page.locator('input#secretKey').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('button#do-login[type="submit"]').click();
+                    await page.waitForURL(`${instance.consoleUrl}/browser`);
+                    await expect(page.locator('#root .menuItems')).toBeVisible();
+                    await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
+                });
+            }
 
-            test('UI: Unsuccessful login - Random user', async ({ page }) => {
-                await page.goto(instance.consoleUrl);
-                await page.waitForURL(`${instance.consoleUrl}/login`);
-                const originalUrl = page.url();
-                await page.locator('input#accessKey').fill(faker.string.alpha(10));
-                await page.locator('input#secretKey').fill(faker.string.alpha(10));
-                await page.locator('button#do-login[type="submit"]').click();
-                await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
-                await expect(page, 'URL should not change').toHaveURL(originalUrl);
-            });
+            const invalidUsers = [
+                {
+                    username: 'homelab-test',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await page.goto(instance.consoleUrl);
+                    await page.waitForURL(`${instance.consoleUrl}/login`);
+                    const originalUrl = page.url();
+                    await page.locator('input#accessKey').fill(user.username);
+                    await page.locator('input#secretKey').fill(faker.string.alpha(10));
+                    await page.locator('button#do-login[type="submit"]').click();
+                    await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                });
+            }
         });
     }
 });

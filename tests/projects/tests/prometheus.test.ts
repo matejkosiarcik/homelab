@@ -30,11 +30,11 @@ test.describe(apps.prometheus.title, () => {
                 {
                     username: faker.string.alpha(10),
                     random: true,
-                }
+                },
             ];
             for (const user of users) {
                 if (!user.random) {
-                    test(`API: Successful get root - User ${user.username}`, async () => {
+                    test(`API: Successful get root - User ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                         const response = await axios.get(instance.url, {
                             beforeRedirect: (opts) => {
                                 opts['headers'] = {

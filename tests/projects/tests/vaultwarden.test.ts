@@ -35,12 +35,12 @@ test.describe(apps['vaultwarden'].title, () => {
 
             const invalidUsers = [
                 {
-                    title: 'Random user',
                     email: `${faker.string.alpha(10)}@homelab.matejhome.com`,
+                    random: true,
                 },
             ];
             for (const user of invalidUsers) {
-                test(`UI: Unsuccessful login - ${user.title}`, async ({ page }) => {
+                test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/#/login`);
                     await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
