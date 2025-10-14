@@ -91,7 +91,7 @@ test.describe(apps.certbot.title, () => {
                             password: '',
                         },
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(404);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
                 test(`API: Get random download subpath with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
@@ -101,7 +101,7 @@ test.describe(apps.certbot.title, () => {
                             password: faker.string.alphanumeric(10),
                         },
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(404);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
