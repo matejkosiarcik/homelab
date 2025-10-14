@@ -33,11 +33,11 @@ if [ "$HOMELAB_ENV" = 'prod' ]; then
     tmpdir="$(mktemp -d)"
     certificate_archive_file="$tmpdir/certificate.tar.xz"
     timeout 45s sh <<EOF
-    while ! curl --fail --silent --show-error --output /dev/null --user "viewer:$CERTBOT_VIEWER_PASSWORD" 'https://certbot.matejhome.com/download/certificate.tar.xz'; do
+    while ! curl --fail --silent --show-error --output /dev/null --user "homelab-viewer:$CERTBOT_HOMELAB_VIEWER_PASSWORD" 'https://certbot.matejhome.com/download/certificate.tar.xz'; do
         sleep 5
     done
 EOF
-    curl --fail --silent --show-error --output "$certificate_archive_file" --user "viewer:$CERTBOT_VIEWER_PASSWORD" 'https://certbot.matejhome.com/download/certificate.tar.xz'
+    curl --fail --silent --show-error --output "$certificate_archive_file" --user "homelab-viewer:$CERTBOT_HOMELAB_VIEWER_PASSWORD" 'https://certbot.matejhome.com/download/certificate.tar.xz'
     find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
     tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1
     rm -rf "$tmpdir"
