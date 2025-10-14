@@ -68,7 +68,12 @@ load_username() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.username"
+        {
+            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.username"
+        } || {
+            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            exit 1
+        }
     else
         printf '%s\n' "$3"
     fi
@@ -80,7 +85,12 @@ load_password() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+        {
+            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+        } || {
+            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            exit 1
+        }
     else
         printf 'Password123.\n'
     fi
@@ -92,7 +102,12 @@ load_token() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+        {
+            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+        } || {
+            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            exit 1
+        }
     else
         printf '\n'
     fi
@@ -104,7 +119,12 @@ load_notes() {
     # $3 - account name
 
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").notes"
+        {
+            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").notes"
+        } || {
+            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            exit 1
+        }
     else
         printf '\n'
     fi
@@ -154,8 +174,8 @@ write_default_proxy_users() {
 
 write_certificator_users() {
     # No arguments
-    certbot_viewer_password="$(load_token certbot apache viewer)"
-    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$certbot_viewer_password" >>"$initial_output/certificator.env"
+    certbot_homelab_viewer_password="$(load_token certbot app homelab-viewer)"
+    printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$certbot_homelab_viewer_password" >>"$initial_output/certificator.env"
 }
 
 case "$app_dirname" in
@@ -334,7 +354,7 @@ case "$app_dirname" in
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     printf 'PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     # Main credentials
-    printf 'CERTBOT_VIEWER_PASSWORD=%s\n' "$(load_token certbot apache viewer)" >>"$initial_output/app.env"
+    printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token certbot app homelab-viewer)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_MACBOOK_PRO_2012_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-macbook-pro-2012 app matej)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 app matej)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_MATEJ_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra app matej)" >>"$initial_output/app.env"
