@@ -191,12 +191,15 @@ case "$app_dirname" in
     ;;
 *certbot*)
     # App
-    certbot_homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache homelab-viewer)"
-    write_http_auth_user homelab-viewer "$certbot_homelab_viewer_password" users
-    printf 'homelab-viewer,%s\n' "$certbot_homelab_viewer_password" >>"$initial_output/all-credentials.csv"
-    certbot_matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" apache matej)"
+    certbot_matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$certbot_matej_password" users
     printf 'matej,%s\n' "$certbot_matej_password" >>"$initial_output/all-credentials.csv"
+    certbot_homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    write_http_auth_user homelab-viewer "$certbot_homelab_viewer_password" users
+    printf 'homelab-viewer,%s\n' "$certbot_homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    certbot_homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    write_http_auth_user homelab-test "$certbot_homelab_test_password" users
+    printf 'homelab-test,%s\n' "$certbot_homelab_test_password" >>"$initial_output/all-credentials.csv"
     certbot_public_email="$(load_token "$DOCKER_COMPOSE_APP_NAME" certbot public-email)"
     printf 'CERTBOT_PUBLIC_EMAIL=%s\n' "$certbot_public_email" >>"$initial_output/app.env"
     websupport_api_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" websupport api-key)"
