@@ -14,7 +14,7 @@ test.describe(apps.nodeexporter.title, () => {
             createApiRootTest(instance.url, {
                 title: 'Authenticated (admin)',
                 headers: {
-                    Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}`
+                    Authorization: `Basic ${Buffer.from(`matej:${getEnv(instance.url, 'MATEJ_PASSWORD')}`).toString('base64')}`
                 },
             });
             createTcpTests(instance.url, [80, 443]);
@@ -33,7 +33,7 @@ test.describe(apps.nodeexporter.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`admin:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/`);
                     await expect(page.locator('h1:has-text("Node Exporter")')).toBeVisible();
@@ -107,7 +107,7 @@ test.describe(apps.nodeexporter.title, () => {
                             password: faker.string.alpha(10),
                         },
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
