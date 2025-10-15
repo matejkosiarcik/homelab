@@ -28,7 +28,7 @@ RUN apk update --no-cache && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
 ENV GF_PLUGINS_PREINSTALL= \
-    GF_SECURITY_ADMIN_USER=admin \
+    GF_SECURITY_ADMIN_USER=matej \
     GF_SECURITY_COOKIE_SAMESITE=strict \
     GF_SECURITY_COOKIE_SECURE=true \
     GF_SECURITY_DISABLE_GRAVATAR=true \

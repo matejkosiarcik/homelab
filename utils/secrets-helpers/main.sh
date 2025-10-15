@@ -518,9 +518,13 @@ case "$app_dirname" in
     ;;
 *grafana*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'GF_SECURITY_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app.env"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'GF_SECURITY_ADMIN_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -610,13 +614,13 @@ case "$app_dirname" in
     write_http_auth_user homelab-test "$homelab_test_password" users
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$(load_token changedetection app api-key)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_GATUS_1_PASSWORD=%s\n' "$(load_token gatus-1 app admin)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app admin)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_GRAFANA_PASSWORD=%s\n' "$(load_token grafana app admin)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_GATUS_1_PASSWORD=%s\n' "$(load_token gatus-1 app matej)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app matej)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_GRAFANA_PASSWORD=%s\n' "$(load_token grafana app homelab-viewer)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HOMEASSISTANT_APIKEY=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app homelab-api-key)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
     # TODO: Enable NetAlertX integration
     # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app api-key)" "$initial_output/app.env"
     printf 'HOMEPAGE_VAR_OMADACONTROLLER_PASSWORD=%s\n' "$(load_token omadacontroller app homelab-viewer)" >>"$initial_output/app.env"
@@ -624,7 +628,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-2-primary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-2-secondary app admin)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app admin)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app homelab-viewer)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_SPEEDTESTTRACKER_APIKEY=%s\n' "$(load_token speedtesttracker app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_UNIFICONTROLLER_PASSWORD=%s\n' "$(load_token unificontroller app homelab-viewer)" >>"$initial_output/app.env"
     # TODO: Enable Vikunja integration
@@ -848,28 +852,6 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*owntracks*)
-    # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    write_http_auth_user admin "$admin_password" users
-    write_http_auth_user matej "$admin_password" users
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-
-    # Decryptor
-    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
-    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/decryptor.env"
-    printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
-
-    # Apache
-    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-
-    # Certificator
-    write_certificator_users
-    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
-
-    # Favicons
-    touch "$initial_output/favicons.env"
-    ;;
 *pihole*)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
@@ -896,6 +878,7 @@ case "$app_dirname" in
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     printf 'PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     printf 'PROMETHEUS_MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
@@ -903,6 +886,9 @@ case "$app_dirname" in
     printf 'PROMETHEUS_HOMELAB_VIEWER_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$homelab_viewer_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     printf 'PROMETHEUS_HOMELAB_VIEWER_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/app.env"
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    printf 'PROMETHEUS_HOMELAB_TEST_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$homelab_test_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
+    printf 'PROMETHEUS_HOMELAB_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app.env"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     printf 'PROMETHEUS_PROMETHEUS_PASSWORD=%s\n' "$prometheus_password" >>"$initial_output/app.env"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
@@ -931,7 +917,7 @@ case "$app_dirname" in
     printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary app prometheus)" >>"$initial_output/app.env"
-    printf 'UPTIMEKUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma app admin)" >>"$initial_output/app.env"
+    printf 'UPTIMEKUMA_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma app matej)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-default app prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_MATEJ_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-matej app prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_MONIKA_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-monika app prometheus)" >>"$initial_output/app.env"
