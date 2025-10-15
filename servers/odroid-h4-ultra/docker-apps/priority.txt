@@ -45,7 +45,7 @@ groceries
 
 # AI
 ollama
-# openwebui
+openwebui
 # ollama-private
 # openwebui-private
 # stable-diffusion
