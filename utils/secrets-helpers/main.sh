@@ -1030,10 +1030,10 @@ case "$app_dirname" in
     write_http_auth_user matej "$matej_password" users
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
-    write_http_auth_user matej "$homelab_viewer_password" users
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
-    write_http_auth_user matej "$homelab_test_password" users
+    write_http_auth_user homelab-test "$homelab_test_password" users
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
