@@ -32,7 +32,7 @@ test.describe(apps.groceries.title, () => {
 
             const invalidUsers = [
                 {
-                    username: 'homelab-test',
+                    username: 'homelabtest',
                 },
                 {
                     username: faker.string.alpha(10),

@@ -601,8 +601,8 @@ case "$app_dirname" in
 *homepage*)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
-    write_http_auth_user matej "$admin_password" users
-    printf 'matej,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    write_http_auth_user matej "$matej_password" users
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     write_http_auth_user homelab-viewer "$homelab_viewer_password" users
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
