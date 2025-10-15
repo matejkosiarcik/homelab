@@ -218,12 +218,14 @@ load_password() {
     printf 'OLLAMA_MATEJ_PASSWORD=%s\n' "$(load_password ollama app matej)"
     printf 'OLLAMA_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password ollama app homelab-viewer)"
     printf 'OLLAMA_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password ollama app homelab-test)"
+    printf 'OLLAMA_OPENWEBUI_PASSWORD=%s\n' "$(load_password ollama app openwebui)"
     printf 'OLLAMA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama apache status)"
     printf 'OLLAMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama apache prometheus)"
 
     printf 'OLLAMA_PRIVATE_MATEJ_PASSWORD=%s\n' "$(load_password ollama-private app matej)"
     printf 'OLLAMA_PRIVATE_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password ollama-private app homelab-viewer)"
     printf 'OLLAMA_PRIVATE_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password ollama-private app homelab-test)"
+    printf 'OLLAMA_PRIVATE_OPENWEBUI_PASSWORD=%s\n' "$(load_password ollama-private app openwebui)"
     printf 'OLLAMA_PRIVATE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama-private apache status)"
     printf 'OLLAMA_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama-private apache prometheus)"
 
