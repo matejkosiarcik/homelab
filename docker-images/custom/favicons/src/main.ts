@@ -53,7 +53,7 @@ const appAddress = (() => {
         case 'owntracks': return 'http://app-backend:8083';
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
-        case 'renovatebot': return 'http://app:8080';
+        case 'renovatebot': return '' // http://app:8080
         case 'samba': return '';
         case 'smtp4dev': return 'http://app:5000';
         case 'speedtesttracker': return 'https://app';
@@ -97,7 +97,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'owntracks': return '/static/recorder.png'; // <- Backend, '/favicon.ico' <- Frontend
         case 'pihole': return '/admin/img/favicons/apple-touch-icon.png';
         case 'prometheus': return '/favicon.svg';
-        case 'renovatebot': return '/favicon.png'; // TODO: Determine value
+        case 'renovatebot': return `@/homelab/icons/${appType}.png`;
         case 'samba': return `@/homelab/icons/${appType}.png`;
         case 'smtp4dev': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'speedtesttracker': return '/favicon.ico';
