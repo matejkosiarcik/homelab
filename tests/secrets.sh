@@ -115,7 +115,7 @@ load_password() {
     printf 'GRAFANA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password grafana apache status)"
     printf 'GRAFANA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password grafana apache prometheus)"
 
-    printf 'GROCERIES_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password groceries app homelab-test)"
+    printf 'GROCERIES_HOMELABTEST_PASSWORD=%s\n' "$(load_password groceries app homelab-test)"
     printf 'GROCERIES_PROXY_STATUS_PASSWORD=%s\n' "$(load_password groceries apache status)"
     printf 'GROCERIES_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password groceries apache prometheus)"
 
