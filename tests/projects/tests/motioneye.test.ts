@@ -20,7 +20,7 @@ test.describe(apps.motioneye.title, () => {
 
             const validUsers = [
                 {
-                    username: 'matej',
+                    username: 'admin',
                 },
                 {
                     username: 'stream',
