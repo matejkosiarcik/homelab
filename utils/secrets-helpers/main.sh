@@ -551,6 +551,8 @@ case "$app_dirname" in
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
     printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'SMTP_PASSWORD=\n' >>"$initial_output/app.env" # Placeholder
 
     # Database
