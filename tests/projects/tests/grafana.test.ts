@@ -16,12 +16,15 @@ test.describe(apps.grafana.title, () => {
 
             const validUsers = [
                 {
+                    username: 'matej',
+                },
+                {
                     username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                    // await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await page.waitForURL(`${instance.url}/login`);
                     await page.locator('input[name="user"]').waitFor({ timeout: 6000 });
