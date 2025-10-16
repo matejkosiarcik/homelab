@@ -847,8 +847,8 @@ case "$app_dirname" in
     ;;
 *openwebui*)
     # App
-    ollama_matej_password="$(load_token ollama app matej)"
-    printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_matej_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
+    ollama_openwebui_password="$(load_token ollama app openwebui)"
+    printf 'OLLAMA_BASE_URL=%s\n' "https://openwebui:$ollama_openwebui_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
     secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
     printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
