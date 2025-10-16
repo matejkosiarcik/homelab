@@ -106,7 +106,9 @@ load_password() {
     printf 'GATUS_2_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-2 apache status)"
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 apache prometheus)"
 
-    printf 'GOTIFY_ADMIN_PASSWORD=%s\n' "$(load_password gotify app admin)"
+    printf 'GOTIFY_MATEJ_PASSWORD=%s\n' "$(load_password gotify app matej)"
+    printf 'GOTIFY_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password gotify app homelab-viewer)"
+    printf 'GOTIFY_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password gotify app homelab-test)"
     printf 'GOTIFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gotify apache status)"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify apache prometheus)"
 
