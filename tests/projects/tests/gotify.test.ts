@@ -15,7 +15,13 @@ test.describe(apps.gotify.title, () => {
 
             const validUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
@@ -40,7 +46,7 @@ test.describe(apps.gotify.title, () => {
 
             const invalidUsers = [
                 {
-                    username: 'admin',
+                    username: 'homelab-test',
                 },
                 {
                     username: faker.string.alpha(10),
