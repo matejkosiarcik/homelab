@@ -142,7 +142,9 @@ load_password() {
     printf 'HOMEPAGE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password homepage apache status)"
     printf 'HOMEPAGE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password homepage apache prometheus)"
 
-    printf 'JELLYFIN_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password jellyfin app homelab-viewer)"
+    printf 'JELLYFIN_MATEJ_PASSWORD=%s\n' "$(load_password jellyfin app matej)"
+    printf 'JELLYFIN_MONIKA_PASSWORD=%s\n' "$(load_password jellyfin app monika)"
+    printf 'JELLYFIN_HOMELAB_ADMIN_PASSWORD=%s\n' "$(load_password jellyfin app homelab-admin)"
     printf 'JELLYFIN_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password jellyfin app homelab-test)"
     printf 'JELLYFIN_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin app prometheus)"
     printf 'JELLYFIN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin apache status)"
