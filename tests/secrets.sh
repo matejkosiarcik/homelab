@@ -107,7 +107,6 @@ load_password() {
     printf 'GATUS_2_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 apache prometheus)"
 
     printf 'GOTIFY_MATEJ_PASSWORD=%s\n' "$(load_password gotify app matej)"
-    printf 'GOTIFY_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password gotify app homelab-viewer)"
     printf 'GOTIFY_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password gotify app homelab-test)"
     printf 'GOTIFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password gotify apache status)"
     printf 'GOTIFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gotify apache prometheus)"
@@ -209,10 +208,10 @@ load_password() {
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-4g apache status)"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-4g apache prometheus)"
 
-    printf 'NTFY_ADMIN_PASSWORD=%s\n' "$(load_password ntfy app admin)"
-    printf 'NTFY_USER_PASSWORD=%s\n' "$(load_password ntfy app user)"
-    printf 'NTFY_PUBLISHER_PASSWORD=%s\n' "$(load_password ntfy app publisher)"
-    printf 'NTFY_PUBLISHER_TOKEN=%s\n' "$(load_password ntfy app publisher-token)"
+    printf 'NTFY_MATEJ_PASSWORD=%s\n' "$(load_password ntfy app matej)"
+    printf 'NTFY_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password ntfy app homelab-viewer)"
+    printf 'NTFY_HOMELAB_PUBLISHER_PASSWORD=%s\n' "$(load_password ntfy app homelab-publisher)"
+    printf 'NTFY_HOMELAB_PUBLISHER_TOKEN=%s\n' "$(load_password ntfy app homelab-publisher-token)"
     printf 'NTFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ntfy apache status)"
     printf 'NTFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ntfy apache prometheus)"
 

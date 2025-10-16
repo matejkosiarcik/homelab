@@ -26,14 +26,14 @@ if [ "$(ntfy user list 2>&1 | grep -E '^user' | sed -E 's~^user ([a-zA-Z0-9*_-]+
 fi
 
 # Tweak existing users
-NTFY_PASSWORD="$NTFY_PASSWORD_ADMIN" ntfy user change-pass admin
-ntfy user change-role admin admin
-NTFY_PASSWORD="$NTFY_PASSWORD_USER" ntfy user change-pass user
-ntfy user change-role user user
-ntfy access user '*' read-write
-NTFY_PASSWORD="$NTFY_PASSWORD_PUBLISHER" ntfy user change-pass publisher
-ntfy user change-role publisher user
-ntfy access publisher '*' write-only
+NTFY_PASSWORD="$NTFY_PASSWORD_MATEJ" ntfy user change-pass matej
+ntfy user change-role matej admin
+NTFY_PASSWORD="$NTFY_PASSWORD_HOMELAB_VIEWER" ntfy user change-pass homelab-viewer
+ntfy user change-role homelab-viewer user
+ntfy access homelab-viewer '*' read-only
+NTFY_PASSWORD="$NTFY_PASSWORD_HOMELAB_PUBLISHER" ntfy user change-pass homelab-publisher
+ntfy user change-role homelab-publisher user
+ntfy access homelab-publisher '*' write-only
 
 # Create publishing token if not already created
 publisher_tokens_count="$(ntfy token list publisher 2>&1 | grep -c -E '^- tk_' || true)"
