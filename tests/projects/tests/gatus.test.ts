@@ -53,7 +53,7 @@ test.describe(apps.gatus.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, 'ADMIN_PASSWORD')}`).toString('base64')}` });
+                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('.animate-spin')).toBeVisible();
                     await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
