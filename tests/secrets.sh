@@ -152,6 +152,7 @@ load_password() {
 
     printf 'MINIO_MATEJ_PASSWORD=%s\n' "$(load_password minio app matej)"
     printf 'MINIO_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password minio app homelab-viewer)"
+    printf 'MINIO_HOMELAB_WRITER_PASSWORD=%s\n' "$(load_password minio app homelab-writer)"
     printf 'MINIO_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password minio app homelab-test)"
     printf 'MINIO_PROMETHEUS_BEARER_TOKEN=%s\n' "$(load_password minio app prometheus-token)"
     printf 'MINIO_PROXY_STATUS_PASSWORD=%s\n' "$(load_password minio apache status)"
