@@ -10,7 +10,7 @@ database:
   connection: data/gotify.db
 
 defaultuser:
-  name: admin
+  name: matej
 
 passstrength: 10 # the bcrypt password strength (higher = better but also slower)
 uploadedimagesdir: data/images # the directory for storing uploaded images
