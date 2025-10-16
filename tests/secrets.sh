@@ -209,7 +209,7 @@ load_password() {
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-4g apache prometheus)"
 
     printf 'NTFY_MATEJ_PASSWORD=%s\n' "$(load_password ntfy app matej)"
-    printf 'NTFY_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password ntfy app homelab-viewer)"
+    printf 'NTFY_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password ntfy app homelab-test)"
     printf 'NTFY_HOMELAB_PUBLISHER_PASSWORD=%s\n' "$(load_password ntfy app homelab-publisher)"
     printf 'NTFY_HOMELAB_PUBLISHER_TOKEN=%s\n' "$(load_password ntfy app homelab-publisher-token)"
     printf 'NTFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ntfy apache status)"
