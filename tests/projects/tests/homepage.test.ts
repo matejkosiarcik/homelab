@@ -26,7 +26,7 @@ test.describe(apps.homepage.title, () => {
             ];
             for (const user of validUsers) {
                 createApiRootTest(instance.url, {
-                    title: 'Authenticated',
+                    title: `Authenticated - User ${user.username}`,
                     headers: {
                         Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}`
                     },
