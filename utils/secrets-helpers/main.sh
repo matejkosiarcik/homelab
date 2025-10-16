@@ -715,6 +715,7 @@ case "$app_dirname" in
 
     # Setup
     printf 'MINIO_MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app-setup.env"
+    printf 'MINIO_HOMELAB_WRITER_PASSWORD=%s\n' "$homelab_writer_password" >>"$initial_output/app-setup.env"
     printf 'MINIO_HOMELAB_VIEWER_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/app-setup.env"
     printf 'MINIO_HOMELAB_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
 
