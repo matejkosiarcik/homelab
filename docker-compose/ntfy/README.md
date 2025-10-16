@@ -20,7 +20,7 @@
 
 - Configure basic settings
 - Read publisher token and save it in Vaultwarden:
-    - `docker exec -it ntfy-app /bin/sh -c 'ntfy token list publisher'`
+    - `docker exec -it ntfy-app /bin/sh -c 'ntfy token list homelab-publisher'`
 
 ## Publishing notifications
 

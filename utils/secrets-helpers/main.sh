@@ -774,8 +774,8 @@ case "$app_dirname" in
     ;;
 *ntfy*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
     publisher_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app publisher)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
     printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
