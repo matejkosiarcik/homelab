@@ -817,7 +817,7 @@ case "$app_dirname" in
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
 
     # Favicons
-    printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
+    touch "$initial_output/favicons.env"
     ;;
 *omadacontroller*)
     # App
