@@ -222,7 +222,7 @@ apps:
     endpoints:
       - path: /stream
         authentication:
-          basic: stream
+          basic: homelab-stream
 
   - name: NetAlertX
     domain: netalertx.matejhome.com

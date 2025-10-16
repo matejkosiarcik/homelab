@@ -27,7 +27,7 @@ Notes:
 
 ## After initial installation
 
-- Setup `admin` and `stream` user passwords
+- Setup `admin` and `homelab-stream` user passwords
     - By default there are no passwords
 - Setup camera
     - Add camera according to ![Add camera](./Add%20camera.png)
