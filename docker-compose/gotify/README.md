@@ -21,6 +21,7 @@ Gotify server:
 - Create apps for receiving notifications:
     - _Changedetection_, _Gatus_, _Healthchecks_, _UptimeKuma_
     - Save _Gatus_ token in _Vaultwarden_
+- Create `homelab-viewer` and `homelab-test` users
 
 ## Publishing notifications
 
