@@ -375,7 +375,7 @@ case "$app_dirname" in
     printf 'GATUS_2_MATEJ_PASSWORD=%s\n' "$(load_token gatus-2 app matej)" >>"$initial_output/app.env"
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_MATEJ_PASSWORD=%s\n' "$(load_token homepage app matej)" >>"$initial_output/app.env"
-    printf 'MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app stream)" >>"$initial_output/app.env"
+    printf 'MOTIONEYE_KITCHEN_HOMELAB_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_MACBOOK_PRO_2012_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-macbook-pro-2012 app matej)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H3_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 app matej)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H4_ULTRA_MATEJ_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h4-ultra app matej)" >>"$initial_output/app.env"
@@ -631,7 +631,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HOMEASSISTANT_APIKEY=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app homelab-api-key)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_HOMELAB_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
     # TODO: Enable NetAlertX integration
     # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app api-key)" "$initial_output/app.env"
     printf 'HOMEPAGE_VAR_OMADACONTROLLER_PASSWORD=%s\n' "$(load_token omadacontroller app homelab-viewer)" >>"$initial_output/app.env"
@@ -734,7 +734,7 @@ case "$app_dirname" in
 *motioneye*)
     # App
     printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)" >>"$initial_output/all-credentials.csv"
-    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app stream)" >>"$initial_output/all-credentials.csv"
+    printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-stream)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -802,9 +802,6 @@ case "$app_dirname" in
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$matej_password" users
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
-    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
-    write_http_auth_user homelab-viewer "$homelab_viewer_password" users
-    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     write_http_auth_user homelab-test "$homelab_test_password" users
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"

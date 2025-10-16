@@ -162,7 +162,7 @@ load_password() {
     printf 'MINIO_CONSOLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password minio apache prometheus)"
 
     printf 'MOTIONEYE_KITCHEN_ADMIN_PASSWORD=%s\n' "$(load_password motioneye-kitchen app admin)"
-    printf 'MOTIONEYE_KITCHEN_STREAM_PASSWORD=%s\n' "$(load_password motioneye-kitchen app stream)"
+    printf 'MOTIONEYE_KITCHEN_HOMELAB_STREAM_PASSWORD=%s\n' "$(load_password motioneye-kitchen app homelab-stream)"
     printf 'MOTIONEYE_KITCHEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache status)"
     printf 'MOTIONEYE_KITCHEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache prometheus)"
 
@@ -209,7 +209,7 @@ load_password() {
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-4g apache prometheus)"
 
     printf 'NTFY_MATEJ_PASSWORD=%s\n' "$(load_password ntfy app matej)"
-    printf 'NTFY_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password ntfy app homelab-viewer)"
+    printf 'NTFY_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password ntfy app homelab-test)"
     printf 'NTFY_HOMELAB_PUBLISHER_PASSWORD=%s\n' "$(load_password ntfy app homelab-publisher)"
     printf 'NTFY_HOMELAB_PUBLISHER_TOKEN=%s\n' "$(load_password ntfy app homelab-publisher-token)"
     printf 'NTFY_PROXY_STATUS_PASSWORD=%s\n' "$(load_password ntfy apache status)"

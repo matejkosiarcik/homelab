@@ -23,7 +23,7 @@ test.describe(apps.motioneye.title, () => {
                     username: 'admin',
                 },
                 {
-                    username: 'stream',
+                    username: 'homelab-stream',
                 },
             ];
             for (const user of validUsers) {
