@@ -150,6 +150,15 @@ test.describe(apps.minio.title, () => {
 
             const validUsers = [
                 {
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-writer',
+                },
+                {
                     username: 'homelab-test',
                 },
             ];

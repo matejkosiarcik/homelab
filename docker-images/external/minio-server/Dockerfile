@@ -32,7 +32,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
 COPY --from=minio --chown=homelab:homelab /usr/bin/minio /usr/bin/minio
 ENV HOMELAB_CONTAINER_NAME=minio-server \
     HOMELAB_CONTAINER_VARIANT=default \
-    MINIO_ROOT_USER=admin \
+    MINIO_ROOT_USER=matej \
     TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:9000/minio/health/live || exit 1" ]
