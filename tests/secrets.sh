@@ -388,7 +388,6 @@ load_password() {
     printf 'VAULTWARDEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden apache prometheus)"
 
     printf 'VIKUNJA_MATEJ_PASSWORD=%s\n' "$(load_password vikunja app matej)"
-    printf 'VIKUNJA_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password vikunja app homelab-viewer)"
     printf 'VIKUNJA_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password vikunja app homelab-test)"
     printf 'VIKUNJA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password vikunja apache status)"
     printf 'VIKUNJA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja apache prometheus)"
