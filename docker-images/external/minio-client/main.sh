@@ -31,12 +31,12 @@ mc alias set minio "$minio_url" 'matej' "$MINIO_MATEJ_PASSWORD"
 mc ping minio --exit
 
 if ! mc admin user list minio | grep 'homelab-writer' >/dev/null; then
-    mc admin user add minio 'homelab-writer' "$MINIO_USER_PASSWORD"
+    mc admin user add minio 'homelab-writer' "$MINIO_HOMELAB_WRITER_PASSWORD"
     mc admin policy attach minio readonly --user 'homelab-writer'
 fi
 
 if ! mc admin user list minio | grep 'homelab-viewer' >/dev/null; then
-    mc admin user add minio 'homelab-viewer' "$MINIO_USER_PASSWORD"
+    mc admin user add minio 'homelab-viewer' "$MINIO_HOMELAB_VIEWER_PASSWORD"
     mc admin policy attach minio readonly --user 'homelab-viewer'
 fi
 
