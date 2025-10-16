@@ -23,7 +23,13 @@ test.describe(apps.jellyfin.title, () => {
 
             const validUsers = [
                 {
-                    username: 'homelab-viewer',
+                    username: 'matej',
+                },
+                {
+                    username: 'monika',
+                },
+                {
+                    username: 'homelab-admin',
                 },
                 {
                     username: 'homelab-test',

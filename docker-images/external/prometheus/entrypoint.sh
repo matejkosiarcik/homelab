@@ -1,11 +1,13 @@
 #!/bin/sh
 set -euf
 
-tmpfile="$(mktemp)"
-
 # web.yml
-sed "s~\${PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED" | base64 -d)~g;s~\${PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED" | base64 -d)~g" </homelab/web.yml >"$tmpfile"
-cat <"$tmpfile" >/homelab/config/web.yml
+cat </homelab/web.yml |
+    sed "s~\${PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_MATEJ_PASSWORD_ENCRYPTED" | base64 -d)~g" |
+    sed "s~\${PROMETHEUS_HOMELAB_VIEWER_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_HOMELAB_VIEWER_PASSWORD_ENCRYPTED" | base64 -d)~g" |
+    sed "s~\${PROMETHEUS_HOMELAB_TEST_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_HOMELAB_TEST_PASSWORD_ENCRYPTED" | base64 -d)~g" |
+    sed "s~\${PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED}~$(printf '%s' "$PROMETHEUS_PROMETHEUS_PASSWORD_ENCRYPTED" | base64 -d)~g" |
+    cat >'/homelab/config/web.yml'
 
 # prometheus.yml
 cat </homelab/prometheus.yml |
@@ -91,9 +93,7 @@ cat </homelab/prometheus.yml |
     sed "s~\${VIKUNJA_PROXY_PROMETHEUS_PASSWORD}~$VIKUNJA_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD}~$WIKIPEDIA_PROXY_PROMETHEUS_PASSWORD~g" |
     sed "s~\${WIKTIONARY_PROXY_PROMETHEUS_PASSWORD}~$WIKTIONARY_PROXY_PROMETHEUS_PASSWORD~g" |
-    cat >"$tmpfile"
-cat <"$tmpfile" >/homelab/config/prometheus.yml
-rm -f "$tmpfile"
+    cat >'/homelab/config/prometheus.yml'
 
 if [ "$(wc -l </homelab/config/prometheus.yml)" -eq 0 ]; then
     printf "Error: /homelab/config/prometheus.yml is empty" >&2
