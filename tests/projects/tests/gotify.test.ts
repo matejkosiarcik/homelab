@@ -18,9 +18,6 @@ test.describe(apps.gotify.title, () => {
                     username: 'matej',
                 },
                 {
-                    username: 'homelab-viewer',
-                },
-                {
                     username: 'homelab-test',
                 },
             ];

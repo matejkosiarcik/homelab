@@ -20,7 +20,7 @@ test.describe(apps.ntfy.title, () => {
 
             const validUsers = [
                 {
-                    username: 'homelab-viewer',
+                    username: 'matej',
                 },
                 {
                     username: 'homelab-test',
@@ -42,7 +42,7 @@ test.describe(apps.ntfy.title, () => {
                     await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
                 });
 
-                test(`API+UI: Send notification in publisher and view in ${user.username}`, async ({ page }) => {
+                test(`API+UI: Send notification in homelab-publisher and view in ${user.username}`, async ({ page }) => {
                     await delay(2500); // Must delay tests a bit
                     await page.goto(instance.url);
                     await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
@@ -61,8 +61,8 @@ test.describe(apps.ntfy.title, () => {
 
                     const response = await axios.request({
                         auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            username: 'homelab-publisher',
+                            password: getEnv(instance.url, 'HOMELAB_PUBLISHER_PASSWORD'),
                         },
                         data: notification,
                         maxRedirects: 0,
@@ -78,7 +78,7 @@ test.describe(apps.ntfy.title, () => {
                 });
             }
 
-            const invalidUsers = [
+            const invalidViewerUsers = [
                 {
                     username: 'homelab-test',
                 },
@@ -87,7 +87,7 @@ test.describe(apps.ntfy.title, () => {
                     random: true,
                 },
             ];
-            for (const user of invalidUsers) {
+            for (const user of invalidViewerUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await delay(2500); // Must delay tests a bit
                     await page.goto(instance.url);
@@ -106,16 +106,16 @@ test.describe(apps.ntfy.title, () => {
                 });
             }
 
-            const invalidUsers2 = [
+            const invalidPublisherUsers2 = [
                 {
-                    username: 'publisher',
+                    username: 'homelab-test',
                 },
                 {
                     username: faker.string.alpha(10),
                     random: true,
                 },
             ];
-            for (const user of invalidUsers2) {
+            for (const user of invalidPublisherUsers2) {
                 test(`API: Unsuccessful send notification  - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     await delay(2500); // Must delay tests a bit
                     const response = await axios.request({
