@@ -706,15 +706,18 @@ case "$app_dirname" in
 *minio*)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    homelab_writer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-writer)"
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-writer,%s\n' "$homelab_writer_password" >>"$initial_output/all-credentials.csv"
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'MINIO_ROOT_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
 
     # Setup
     printf 'MINIO_MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app-setup.env"
+    printf 'MINIO_HOMELAB_WRITER_PASSWORD=%s\n' "$homelab_writer_password" >>"$initial_output/app-setup.env"
     printf 'MINIO_HOMELAB_VIEWER_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/app-setup.env"
     printf 'MINIO_HOMELAB_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
 
