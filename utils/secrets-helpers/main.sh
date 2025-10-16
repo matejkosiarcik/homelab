@@ -775,14 +775,17 @@ case "$app_dirname" in
 *ntfy*)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
-    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
-    publisher_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app publisher)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
-    printf 'publisher,%s\n' "$publisher_password" >>"$initial_output/all-credentials.csv"
-    printf 'NTFY_PASSWORD_ADMIN=%s\n' "$admin_password" >>"$initial_output/app.env"
-    printf 'NTFY_PASSWORD_USER=%s\n' "$user_password" >>"$initial_output/app.env"
-    printf 'NTFY_PASSWORD_PUBLISHER=%s\n' "$publisher_password" >>"$initial_output/app.env"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_MATEJ=%s\n' "$matej_password" >>"$initial_output/app.env"
+    homelab_publisher_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-publisher)"
+    printf 'homelab-publisher,%s\n' "$homelab_publisher_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_HOMELAB_PUBLISHER=%s\n' "$homelab_publisher_password" >>"$initial_output/app.env"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_HOMELAB_VIEWER=%s\n' "$homelab_viewer_password" >>"$initial_output/app.env"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_HOMELAB_TEST=%s\n' "$homelab_test_password" >>"$initial_output/app.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
