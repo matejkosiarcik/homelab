@@ -876,7 +876,7 @@ case "$app_dirname" in
     ;;
 *prometheus*)
     # App
-    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
