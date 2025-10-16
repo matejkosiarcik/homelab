@@ -512,8 +512,6 @@ case "$app_dirname" in
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     printf 'GOTIFY_DEFAULTUSER_PASS=%s\n' "$matej_password" >>"$initial_output/app.env"
-    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
-    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
 
