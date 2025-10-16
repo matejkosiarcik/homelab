@@ -551,6 +551,8 @@ case "$app_dirname" in
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
     printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'SMTP_PASSWORD=\n' >>"$initial_output/app.env" # Placeholder
 
     # Database
@@ -772,15 +774,18 @@ case "$app_dirname" in
     ;;
 *ntfy*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    user_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app user)"
-    publisher_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app publisher)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    printf 'user,%s\n' "$user_password" >>"$initial_output/all-credentials.csv"
-    printf 'publisher,%s\n' "$publisher_password" >>"$initial_output/all-credentials.csv"
-    printf 'NTFY_PASSWORD_ADMIN=%s\n' "$admin_password" >>"$initial_output/app.env"
-    printf 'NTFY_PASSWORD_USER=%s\n' "$user_password" >>"$initial_output/app.env"
-    printf 'NTFY_PASSWORD_PUBLISHER=%s\n' "$publisher_password" >>"$initial_output/app.env"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_MATEJ=%s\n' "$matej_password" >>"$initial_output/app.env"
+    homelab_publisher_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-publisher)"
+    printf 'homelab-publisher,%s\n' "$homelab_publisher_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_HOMELAB_PUBLISHER=%s\n' "$homelab_publisher_password" >>"$initial_output/app.env"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_HOMELAB_VIEWER=%s\n' "$homelab_viewer_password" >>"$initial_output/app.env"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
+    printf 'NTFY_PASSWORD_HOMELAB_TEST=%s\n' "$homelab_test_password" >>"$initial_output/app.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -847,8 +852,8 @@ case "$app_dirname" in
     ;;
 *openwebui*)
     # App
-    ollama_matej_password="$(load_token ollama app matej)"
-    printf 'OLLAMA_BASE_URL=%s\n' "https://admin:$ollama_matej_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
+    ollama_openwebui_password="$(load_token ollama app openwebui)"
+    printf 'OLLAMA_BASE_URL=%s\n' "https://openwebui:$ollama_openwebui_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
     secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
     printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"

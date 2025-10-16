@@ -20,9 +20,6 @@ test.describe(apps.ollama.title, () => {
                     username: 'matej',
                 },
                 {
-                    username: 'homelab-viewer',
-                },
-                {
                     username: 'homelab-test',
                 },
             ];
