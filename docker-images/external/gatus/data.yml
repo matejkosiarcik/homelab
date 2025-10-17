@@ -81,7 +81,7 @@ apps:
   - name: Docker Stats - MacBook Pro 2012
     domain: docker-stats-macbook-pro-2012.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -91,7 +91,7 @@ apps:
   - name: Docker Stats - Odroid H3
     domain: docker-stats-odroid-h3.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -100,7 +100,7 @@ apps:
   - name: Docker Stats - Odroid H4 Ultra
     domain: docker-stats-odroid-h4-ultra.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -109,7 +109,7 @@ apps:
   - name: Docker Stats - Raspberry Pi 3B
     domain: docker-stats-raspberry-pi-3b.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -119,7 +119,7 @@ apps:
   - name: Docker Stats - Raspberry Pi 4B 2GB
     domain: docker-stats-raspberry-pi-4b-2g.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -128,7 +128,7 @@ apps:
   - name: Docker Stats - Raspberry Pi 4B 4GB
     domain: docker-stats-raspberry-pi-4b-4g.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -185,7 +185,7 @@ apps:
   - name: Homepage
     domain: homepage.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
 
   - name: Jellyfin
     domain: jellyfin.matejhome.com
@@ -238,7 +238,7 @@ apps:
   - name: NodeExporter - MacBook Pro 2012
     domain: nodeexporter-macbook-pro-2012.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -248,7 +248,7 @@ apps:
   - name: NodeExporter - Odroid H3
     domain: nodeexporter-odroid-h3.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -257,7 +257,7 @@ apps:
   - name: NodeExporter - Odroid H4 Ultra
     domain: nodeexporter-odroid-h4-ultra.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -266,7 +266,7 @@ apps:
   - name: NodeExporter - Raspberry Pi 3B
     domain: nodeexporter-raspberry-pi-3b.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -276,7 +276,7 @@ apps:
   - name: NodeExporter - Raspberry Pi 4B 2GB
     domain: nodeexporter-raspberry-pi-4b-2g.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -285,7 +285,7 @@ apps:
   - name: NodeExporter - Raspberry Pi 4B 4GB
     domain: nodeexporter-raspberry-pi-4b-4g.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
     endpoints:
       - path: /metrics
         authentication:
@@ -415,7 +415,7 @@ apps:
   - name: Renovatebot
     domain: renovatebot.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
 
   - name: Samba [data]
     domain: samba-data.matejhome.com
@@ -598,9 +598,9 @@ apps:
   - name: Wikipedia
     domain: wikipedia.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
 
   - name: Wiktionary
     domain: wiktionary.matejhome.com
     authentication:
-      basic: admin
+      basic: homelab-viewer
