@@ -7,7 +7,7 @@
   "dependencies": {
     "@actual-app/api": "^25.10.0",
     "@faker-js/faker": "^10.1.0",
-    "@playwright/test": "^1.56.0",
+    "@playwright/test": "^1.56.1",
     "async": "^3.2.6",
     "axios": "^1.12.2",
     "date-fns": "^4.1.0",
@@ -29,7 +29,7 @@
     "@types/async": "^3.2.25",
     "@types/lodash": "^4.17.20",
     "@types/lzma-native": "^4.0.4",
-    "@types/node": "^24.8.0",
+    "@types/node": "^24.8.1",
     "@types/user-agents": "^1.0.4",
     "cross-env": "^10.1.0",
     "exitzero": "^1.0.1",
