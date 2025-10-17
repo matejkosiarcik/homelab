@@ -262,7 +262,6 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
     const headers: Record<string, string> = {};
     switch (appType) {
         case 'homepage':
-        case 'ollama':
         case 'prometheus':
         case 'smtp4dev': {
             headers['Authorization'] = `Basic ${Buffer.from(`homelab-viewer:${process.env['FAVICON_PASSWORD']}`).toString('base64')}`;
