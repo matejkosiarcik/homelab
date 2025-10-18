@@ -47,6 +47,13 @@ apps:
   - name: ChangeDetection
     domain: changedetection.matejhome.com
 
+  - name: Dawarich
+    domain: dawarich.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
   - name: Desklamp Left
     domain: desklamp-left.matejhome.com
     endpoints:
@@ -361,6 +368,7 @@ apps:
     domain: ollama-private.matejhome.com
     authentication:
       basic: homelab-viewer
+    enabled: false # TODO: Reenable
 
   - name: Omada Controller
     domain: omadacontroller.matejhome.com
@@ -405,13 +413,7 @@ apps:
 
   - name: Open WebUI [private]
     domain: openwebui-private.matejhome.com
-
-  - name: Dawarich
-    domain: dawarich.matejhome.com
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
+    enabled: false # TODO: Reenable
 
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
@@ -479,7 +481,7 @@ apps:
     domain: smtp4dev.matejhome.com
     type: [smtp, http]
     authentication:
-      basic: matej
+      basic: homelab-viewer
     additional_ports:
       tcp:
         - 25
