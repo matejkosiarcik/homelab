@@ -22,8 +22,6 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
-    # environment:
-    #   HOMELAB_FORCE_PROTOCOL: HTTP
 
   apache-prometheus-exporter:
     extends:
