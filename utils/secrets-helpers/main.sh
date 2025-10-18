@@ -377,7 +377,7 @@ case "$app_dirname" in
     printf 'GATUS_1_MATEJ_PASSWORD=%s\n' "$(load_token gatus-1 app matej)" >>"$initial_output/app.env" # TODO: Change user to homelab-viewer
     printf 'GATUS_2_MATEJ_PASSWORD=%s\n' "$(load_token gatus-2 app matej)" >>"$initial_output/app.env" # TODO: Change user to homelab-viewer
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_MATEJ_PASSWORD=%s\n' "$(load_token homepage app matej)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token homepage app homelab-viewer)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN_HOMELAB_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_MACBOOK_PRO_2012_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token nodeexporter-macbook-pro-2012 app homelab-viewer)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H3_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 app homelab-viewer)" >>"$initial_output/app.env"
@@ -416,8 +416,8 @@ case "$app_dirname" in
     printf 'NODEEXPORTER_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-3b app prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-2g app prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-4g app prometheus)" >>"$initial_output/app.env"
-    printf 'OLLAMA_PRIVATE_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private app prometheus)" >>"$initial_output/app.env"
     printf 'OLLAMA_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama app prometheus)" >>"$initial_output/app.env"
+    printf 'OLLAMA_PRIVATE_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_SECONDARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary app prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_PRIMARY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary app prometheus)" >>"$initial_output/app.env"
@@ -465,8 +465,8 @@ case "$app_dirname" in
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'NTFY_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ntfy apache prometheus)" >>"$initial_output/app.env"
-    printf 'OLLAMA_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OLLAMA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama apache prometheus)" >>"$initial_output/app.env"
+    printf 'OLLAMA_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OMADACONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omadacontroller apache prometheus)" >>"$initial_output/app.env"
     printf 'OPENSPEEDTEST_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$initial_output/app.env"
     printf 'OPENWEBUI_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui-private apache prometheus)" >>"$initial_output/app.env"
@@ -806,6 +806,9 @@ case "$app_dirname" in
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$matej_password" users
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     write_http_auth_user homelab-test "$homelab_test_password" users
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
