@@ -11,7 +11,25 @@ export async function delay(timeout: number): Promise<void> {
         setTimeout(() => {
             resolve();
         }, timeout);
-    })
+    });
+}
+
+export async function retry<T>(fn: () => T | Promise<T>, _options?: { retries?: number | undefined; } | undefined): Promise<T> {
+    const options = {
+        retries: _options?.retries ?? 1,
+    };
+
+    let lastError = new Error('Retry placeholder');
+
+    for (let i = 0; i < options.retries; i++) {
+        try {
+            return await fn();
+        } catch (error) {
+            lastError = error instanceof Error ? error : new Error(`${error}`);
+        }
+    }
+
+    throw lastError;
 }
 
 export function getEnv(instanceUrl: string, name: string): string {
@@ -28,31 +46,35 @@ export function getEnv(instanceUrl: string, name: string): string {
 }
 
 export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-        const returnData: string[] = [];
-        const req = dns.Request({
-            question: dns.Question({ name: domain, type: type, }),
-            server: { address: dnsServer, port: 53, type: transport },
-            timeout: 6000,
-        });
+    return await retry(async () => {
+        return await new Promise((resolve, reject) => {
+            const returnData: string[] = [];
+            const req = dns.Request({
+                question: dns.Question({ name: domain, type: type, }),
+                server: { address: dnsServer, port: 53, type: transport },
+                timeout: 8000,
+            });
 
-        req.on('timeout', () => {
-            reject(new Error('DNS Timeout'));
-        });
+            req.on('timeout', () => {
+                reject(new Error('DNS Timeout'));
+            });
 
-        req.on('message', (err: unknown, answer: { answer: { address: string }[] }) => {
-            if (err) {
-                reject(new Error(`DNS Message error: ${err}`));
-                return;
-            }
-            returnData.push(...answer.answer.map((entry) => entry.address));
-        });
+            req.on('message', (err: unknown, answer: { answer: { address: string }[] }) => {
+                if (err) {
+                    reject(new Error(`DNS Message error: ${err}`));
+                    return;
+                }
+                returnData.push(...answer.answer.map((entry) => entry.address));
+            });
 
-        req.on('end', () => {
-            resolve(returnData.sort());
-        });
+            req.on('end', () => {
+                resolve(returnData.sort());
+            });
 
-        req.send();
+            req.send();
+        });
+    }, {
+        retries: 2,
     });
 }
 
