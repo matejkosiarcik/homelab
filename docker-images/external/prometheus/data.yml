@@ -38,18 +38,18 @@ apps:
   - url: minio.matejhome.com
     auth: bearer
     path: /minio/v2/metrics/cluster
-  - url: nodeexporter-macbook-pro-2012.matejhome.com
-    auth: basic
-    path: /metrics
+  # - url: nodeexporter-macbook-pro-2012.matejhome.com
+  #   auth: basic
+  #   path: /metrics
   - url: nodeexporter-odroid-h3.matejhome.com
     auth: basic
     path: /metrics
   - url: nodeexporter-odroid-h4-ultra.matejhome.com
     auth: basic
     path: /metrics
-  - url: nodeexporter-raspberry-pi-3b.matejhome.com
-    auth: basic
-    path: /metrics
+  # - url: nodeexporter-raspberry-pi-3b.matejhome.com
+  #   auth: basic
+  #   path: /metrics
   - url: nodeexporter-raspberry-pi-4b-2g.matejhome.com
     auth: basic
     path: /metrics
@@ -137,13 +137,12 @@ proxies:
   - url: nodeexporter-raspberry-pi-4b-2g.matejhome.com
   - url: nodeexporter-raspberry-pi-4b-4g.matejhome.com
   - url: ntfy.matejhome.com
-  - url: ollama-private.matejhome.com
   - url: ollama.matejhome.com
+  # - url: ollama-private.matejhome.com
   - url: omadacontroller.matejhome.com
   - url: openspeedtest.matejhome.com
-  - url: openwebui-private.matejhome.com
   - url: openwebui.matejhome.com
-  - url: owntracks-backend.matejhome.com
+  # - url: openwebui-private.matejhome.com
   - url: pihole-1-primary.matejhome.com
   - url: pihole-1-secondary.matejhome.com
   - url: pihole-2-primary.matejhome.com
