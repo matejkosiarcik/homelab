@@ -324,10 +324,13 @@ case "$app_dirname" in
     ;;
 *dozzle*)
     # App
-    admin_password="$(load_password dozzle app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
-    hash_password_bcrypt "$admin_password" >"$tmpdir/admin-password-bcrypt.txt"
-    printf 'users:\n admin:\n  email: admin@%s\n  name: admin\n  password: %s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" "$(cat "$tmpdir/admin-password-bcrypt.txt")" |
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    hash_password_bcrypt "$matej_password" >"$tmpdir/matej-password-encrypted.txt"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
+    hash_password_bcrypt "$homelab_test_password" >"$tmpdir/homelab-test-password-encrypted.txt"
+    printf 'users:\n matej:\n  email: matej@%s\n  name: matej\n  password: %s\n homelab-test:\n  email: homelab-test@homelab.%s\n  name: homelab-test\n  password: %s\n' "$DOCKER_COMPOSE_NETWORK_DOMAIN" "$(cat "$tmpdir/matej-password-encrypted.txt")" "$DOCKER_COMPOSE_NETWORK_DOMAIN" "$(cat "$tmpdir/homelab-test-password-encrypted.txt")" |
         sed -E 's~^( +)~\1\1\1\1~' >"$initial_output/dozzle-users.yml"
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         app_key="$(load_notes dozzle app key)"

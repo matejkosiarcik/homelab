@@ -15,7 +15,10 @@ test.describe(apps.dozzle.title, () => {
 
             const validUsers = [
                 {
-                    username: 'admin',
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-test',
                 },
             ];
             for (const user of validUsers) {
@@ -31,6 +34,9 @@ test.describe(apps.dozzle.title, () => {
             }
 
             const invalidUsers = [
+                {
+                    username: 'homelab-test',
+                },
                 {
                     username: faker.string.alpha(10),
                     random: true,
