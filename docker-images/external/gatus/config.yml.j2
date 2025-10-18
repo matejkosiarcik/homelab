@@ -402,7 +402,7 @@ endpoints:
     {{- is_enabled(item) }}
   {%- endfor %}
 
-  {%- for port in item.additional_ports.other %}
+  {%- for port in item.additional_ports.tcp %}
 
   - <<: *default-tcp
     name: TCP:{{ port }} - {{ item.name }}
