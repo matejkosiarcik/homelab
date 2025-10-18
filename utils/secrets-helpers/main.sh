@@ -357,14 +357,17 @@ case "$app_dirname" in
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
     printf 'PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     write_http_auth_user matej "$matej_password" prometheus
+    write_http_auth_user matej "$matej_password" users
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     write_http_auth_user homelab-viewer "$homelab_viewer_password" prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     write_http_auth_user homelab-test "$homelab_test_password" prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" users
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     # Main credentials
     printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token certbot app homelab-viewer)" >>"$initial_output/app.env"
