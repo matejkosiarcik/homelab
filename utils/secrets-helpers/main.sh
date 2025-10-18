@@ -634,8 +634,8 @@ case "$app_dirname" in
     write_http_auth_user homelab-test "$homelab_test_password" users
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'HOMEPAGE_VAR_CHANGEDETECTION_APIKEY=%s\n' "$(load_token changedetection app api-key)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_GATUS_1_PASSWORD=%s\n' "$(load_token gatus-1 app matej)" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app matej)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_GATUS_1_PASSWORD=%s\n' "$(load_token gatus-1 app homelab-viewer)" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_GATUS_2_PASSWORD=%s\n' "$(load_token gatus-2 app homelab-viewer)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_GRAFANA_PASSWORD=%s\n' "$(load_token grafana app homelab-viewer)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HEALTHCHECKS_APIKEY=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_HOMEASSISTANT_APIKEY=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
