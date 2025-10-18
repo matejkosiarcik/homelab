@@ -7,7 +7,7 @@ services:
     <<: *common-service-options
     environment:
       DOMAIN_NAME: localhost
-      USER_EMAIL: admin@openspeedtest.localhost
+      USER_EMAIL: openspeedtest@openspeedtest.localhost
 
   certificator:
     <<: *common-service-options

@@ -11,7 +11,7 @@ services:
       - ./app-secrets/app.env
     environment:
       GF_LOG_LEVEL: error
-      GF_SECURITY_ADMIN_EMAIL: admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      GF_SECURITY_ADMIN_EMAIL: matej@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       GF_SERVER_ROOT_URL: ${DOCKER_COMPOSE_NETWORK_URL}
 
   certificator:

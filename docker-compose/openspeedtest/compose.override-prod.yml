@@ -7,7 +7,7 @@ services:
     <<: *common-service-options
     environment:
       DOMAIN_NAME: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-      USER_EMAIL: admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      USER_EMAIL: openspeedtest@${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   certificator:
     <<: *common-service-options

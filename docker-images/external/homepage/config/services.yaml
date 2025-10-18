@@ -443,13 +443,7 @@
         ping: ntfy.matejhome.com
         icon: /icons/ntfy.png
 
-    - OpenSpeedTest (HTTP):
-        description: LAN speedtest
-        href: http://openspeedtest.matejhome.com
-        ping: openspeedtest.matejhome.com
-        icon: /icons/openspeedtest.png
-
-    - OpenSpeedTest (HTTPS):
+    - OpenSpeedTest:
         description: LAN speedtest
         href: https://openspeedtest.matejhome.com
         ping: openspeedtest.matejhome.com
