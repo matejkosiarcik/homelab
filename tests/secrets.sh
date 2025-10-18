@@ -88,7 +88,7 @@ load_password() {
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-4b-4g apache status)"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-4b-4g apache prometheus)"
 
-    printf 'DOZZLE_ADMIN_PASSWORD=%s\n' "$(load_password dozzle app admin)"
+    printf 'DOZZLE_MATEJ_PASSWORD=%s\n' "$(load_password dozzle app matej)"
     printf 'DOZZLE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password dozzle apache status)"
     printf 'DOZZLE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dozzle apache prometheus)"
 
