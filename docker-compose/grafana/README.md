@@ -15,4 +15,4 @@
 
 ## After initial installation
 
-Empty
+- Create users: `homelab-viewer` and `homelab-test`
