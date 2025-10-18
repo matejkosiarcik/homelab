@@ -18,9 +18,6 @@ test.describe(apps['openwebui'].title, () => {
                     email: 'matej@matejhome.com',
                 },
                 {
-                    email: 'homelab-viewer@homelab.matejhome.com',
-                },
-                {
                     email: 'homelab-test@homelab.matejhome.com',
                 },
             ];

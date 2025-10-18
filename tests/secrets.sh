@@ -241,10 +241,12 @@ load_password() {
     printf 'OMADACONTROLLER_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password omadacontroller apache prometheus)"
 
     printf 'OPENWEBUI_MATEJ_PASSWORD=%s\n' "$(load_password openwebui app matej)"
+    printf 'OPENWEBUI_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password openwebui app homelab-test)"
     printf 'OPENWEBUI_PROXY_STATUS_PASSWORD=%s\n' "$(load_password openwebui apache status)"
     printf 'OPENWEBUI_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password openwebui apache prometheus)"
 
     printf 'OPENWEBUI_PRIVATE_MATEJ_PASSWORD=%s\n' "$(load_password openwebui-private app matej)"
+    printf 'OPENWEBUI_PRIVATE_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password openwebui-private app homelab-test)"
     printf 'OPENWEBUI_PRIVATE_PROXY_STATUS_PASSWORD=%s\n' "$(load_password openwebui-private apache status)"
     printf 'OPENWEBUI_PRIVATE_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password openwebui-private apache prometheus)"
 
