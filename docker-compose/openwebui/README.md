@@ -15,3 +15,4 @@
 ## After initial installation
 
 - Create admin account `matej@matejhome.com`
+- Create user accounts: `homelab-viewer@homelab.matejhome.com`
