@@ -391,6 +391,7 @@ case "$app_dirname" in
     printf 'OWNTRACKS_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
     printf 'OWNTRACKS_BACKEND_ADMIN_PASSWORD=%s\n' "$(load_token owntracks app admin)" >>"$initial_output/app.env"
     printf 'PROMETHEUS_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token prometheus app homelab-viewer)" >>"$initial_output/app.env"
+    printf 'RENOVATEBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token renovatebot app homelab-viewer)" >>"$initial_output/app.env"
     printf 'SMTP4DEV_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token smtp4dev app homelab-viewer)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_MATEJ_PASSWORD=%s\n' "$(load_token uptimekuma app matej)" >>"$initial_output/app.env"
     printf 'WIKIPEDIA_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token kiwix-wikipedia app homelab-viewer)" >>"$initial_output/app.env"
