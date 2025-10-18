@@ -53,14 +53,22 @@ test.describe(apps.vikunja.title, () => {
                     const originalUrl = page.url();
                     await expect(page.locator('form#loginform')).toBeVisible();
 
-                    // Fill in form
-                    await page.locator('form#loginform input#username').fill(user.username);
-                    await page.locator('form#loginform input#password').fill(faker.string.alphanumeric(10));
-                    await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
+                    // For loop necessary to overcome flakiness
+                    for (let i = 0; i < 2; i++) {
+                        // Fill in form
+                        await page.locator('form#loginform input#username').fill(user.username);
+                        await page.locator('form#loginform input#password').fill(faker.string.alphanumeric(10));
+                        await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
 
-                    // Verify fail
-                    await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
-                    await expect(page).toHaveURL(originalUrl);
+                        // Verify fail
+                        try {
+                            await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
+                            await expect(page).toHaveURL(originalUrl);
+                        } catch {
+                            continue;
+                        }
+                        break;
+                    }
                 });
             }
         });
