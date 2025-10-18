@@ -65,7 +65,7 @@ app.use('/prometheus', async (request: Request, response: Response) => {
         const targetUrl = `https://prometheus.matejhome.com${request.path}`;
         const axiosHeaders = {
             ...request.headers,
-            authorization: `Basic ${Buffer.from(`admin:${process.env['PROMETHEUS_PASSWORD']}`).toString('base64')}`,
+            authorization: `Basic ${Buffer.from(`homelab-viewer:${process.env['PROMETHEUS_PASSWORD']}`).toString('base64')}`,
         };
         delete axiosHeaders['host'];
 
