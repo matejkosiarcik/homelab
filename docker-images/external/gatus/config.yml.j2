@@ -2,10 +2,11 @@ storage:
   type: sqlite
   path: /data/gatus.db
 
-security:
-  basic:
-    username: matej
-    password-bcrypt-base64: ${PASSWORD_ENCRYPTED}
+# Security settings moved to Apache server
+# security:
+#   basic:
+#     username: matej
+#     password-bcrypt-base64: ${PASSWORD_ENCRYPTED}
 
 ui:
   default-sort-by: group
