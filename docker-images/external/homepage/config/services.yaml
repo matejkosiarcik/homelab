@@ -294,7 +294,7 @@
         widget:
           type: gatus
           url: https://gatus-1.matejhome.com
-          username: admin
+          username: matej # TODO: Change to homelab-viewer
           password: "{{HOMEPAGE_VAR_GATUS_1_PASSWORD}}"
 
     - Gatus 2:
@@ -305,7 +305,7 @@
         widget:
           type: gatus
           url: https://gatus-2.matejhome.com
-          username: admin
+          username: matej # TODO: Change to homelab-viewer
           password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
 
     - Uptime Kuma:
