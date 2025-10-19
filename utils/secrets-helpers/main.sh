@@ -642,7 +642,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_JELLYFIN_APIKEY=%s\n' "$(load_token jellyfin app homelab-api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_MOTIONEYE_KITCHEN_HOMELAB_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
     # TODO: Enable NetAlertX integration
-    # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_password netalertx app api-key)" "$initial_output/app.env"
+    # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY=%s\n' "$(load_token netalertx app api-key)" "$initial_output/app.env"
     printf 'HOMEPAGE_VAR_OMADACONTROLLER_PASSWORD=%s\n' "$(load_token omadacontroller app homelab-viewer)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD=%s\n' "$(load_token pihole-1-primary app admin)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD=%s\n' "$(load_token pihole-1-secondary app admin)" >>"$initial_output/app.env"
@@ -651,8 +651,7 @@ case "$app_dirname" in
     printf 'HOMEPAGE_VAR_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app homelab-viewer)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_SPEEDTESTTRACKER_APIKEY=%s\n' "$(load_token speedtesttracker app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_VAR_UNIFICONTROLLER_PASSWORD=%s\n' "$(load_token unificontroller app homelab-viewer)" >>"$initial_output/app.env"
-    # TODO: Enable Vikunja integration
-    # printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_password vikunja app api-key-readonly)" "$initial_output/app.env"
+    printf 'HOMEPAGE_VAR_VIKUNJA_APIKEY=%s\n' "$(load_token vikunja app api-key-readonly)" >>"$initial_output/app.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

@@ -460,11 +460,10 @@
         href: https://vikunja.matejhome.com
         ping: vikunja.matejhome.com
         icon: /icons/vikunja.png
-        # widget:
-        #   type: vikunja
-        #   url: https://vikunja.matejhome.com
-        #   key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
-        #   enableTaskList: true
+        widget:
+          type: vikunja
+          url: https://vikunja.matejhome.com
+          key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
 
     - Dawarich:
         description: Location tracking
