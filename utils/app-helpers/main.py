@@ -163,9 +163,9 @@ def run_with_spinner(command: List[str], description_progress: str, description_
         print(f"\r{status} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ")
 
     if exit_code != 0:
-        print(f"\n↓↓↓ {os.environ['DOCKER_COMPOSE_APP_NAME']} - command \"{' '.join(command)}\" failed:", file=sys.stderr)
+        print(f'\n↓↓↓ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command "{" ".join(command)}" failed:', file=sys.stderr)
         print(output.decode(errors="replace"), file=sys.stderr)
-        print(f"\n↑↑↑ {os.environ['DOCKER_COMPOSE_APP_NAME']} - command \"{' '.join(command)}\" failed.", file=sys.stderr)
+        print(f'\n↑↑↑ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command "{" ".join(command)}" failed.', file=sys.stderr)
         sys.exit(exit_code)
 
 
