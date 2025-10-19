@@ -29,6 +29,7 @@ is_online = True
 is_pull = False
 env_mode = ""
 when_mode = ""
+include_secrets = False
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -84,7 +85,7 @@ def get_apps_list(only: Optional[str], skip: Optional[str]) -> List[str]:
 
 
 def main(argv: List[str]):
-    global applist, env_mode, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
+    global applist, env_mode, include_secrets, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -107,6 +108,7 @@ def main(argv: List[str]):
             deploy_when_group = subcommand.add_mutually_exclusive_group()
             deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy apps only when build changed. When there is no change, app is not restarted.")
             deploy_when_group.add_argument("--always", action="store_true", help="Deploy apps always, regardless if the build changed or not.")
+            subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
         if subcommand_name == "secrets":
@@ -125,6 +127,7 @@ def main(argv: List[str]):
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
     if command == "deploy":
         when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always" if (hasattr(args, "always") and args.always is True) else "always"
+        include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
 
     is_pull = hasattr(args, "pull") and args.pull is True
 
@@ -166,6 +169,8 @@ def server_action(action: str):
         cli_args.append("--pull")
     if action == "secrets":
         cli_args.append("--online" if is_online else "--offline")
+    if action == "deploy" and include_secrets is True:
+        cli_args.append("--with-secrets")
     if action == "deploy":
         cli_args.extend([f"--{when_mode}"])
 

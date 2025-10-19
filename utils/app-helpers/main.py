@@ -27,6 +27,7 @@ is_online = True
 is_pull = True
 env_mode = ""
 when_mode = ""
+include_secrets = False
 
 docker_compose_args = []
 docker_command_args = []
@@ -162,9 +163,9 @@ def run_with_spinner(command: List[str], description_progress: str, description_
         print(f"\r{status} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ")
 
     if exit_code != 0:
-        print(f"\n↓↓↓ {os.environ['DOCKER_COMPOSE_APP_NAME']} - command \"{' '.join(command)}\" failed:", file=sys.stderr)
+        print(f'\n↓↓↓ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command "{" ".join(command)}" failed:', file=sys.stderr)
         print(output.decode(errors="replace"), file=sys.stderr)
-        print(f"\n↑↑↑ {os.environ['DOCKER_COMPOSE_APP_NAME']} - command \"{' '.join(command)}\" failed.", file=sys.stderr)
+        print(f'\n↑↑↑ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command "{" ".join(command)}" failed.', file=sys.stderr)
         sys.exit(exit_code)
 
 
@@ -233,6 +234,8 @@ def run_main_command(command: str):
     if command == "build":
         docker_build()
     elif command == "deploy":
+        if include_secrets is True:
+            create_secrets()
         config = get_docker_compose_config()
         shasum_before = get_docker_images_shasum(config)
         docker_build()
@@ -255,7 +258,7 @@ def run_main_command(command: str):
 
 
 def main(argv):
-    global env_mode, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
+    global env_mode, include_secrets, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -274,6 +277,7 @@ def main(argv):
             deploy_when_group = subcommand.add_mutually_exclusive_group()
             deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy app only when build changed. When there is no change, app is not restarted.")
             deploy_when_group.add_argument("--always", action="store_true", help="Deploy app always, regardless if the build changed or not.")
+            subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
         if subcommand_name == "secrets":
@@ -288,6 +292,7 @@ def main(argv):
 
     if command == "deploy":
         when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always" if (hasattr(args, "always") and args.always is True) else "always"
+        include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
     is_pull = hasattr(args, "pull") and args.pull is True
