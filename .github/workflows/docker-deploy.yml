@@ -33,10 +33,20 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3.11.1
 
+      - name: Setup Python
+        uses: actions/setup-python@v6.0.0
+        with:
+          python-version: 3.x
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v5.0.0
+        with:
+          node-version: latest
+
       - name: Install system dependencies
         run: |
           set -euf
-          sudo apt-get install --yes --no-install-recommends apache2-utils git moreutils nodejs npm python3
+          sudo apt-get install --yes --no-install-recommends apache2-utils moreutils
           npm install -g @go-task/cli
 
       - name: Prepare secrets
@@ -47,7 +57,7 @@ jobs:
 
       - name: Build apps
         working-directory: './servers/${{ matrix.server }}'
-        run: task build -- --mode dev
+        run: task build -- --mode dev --dry-run
 
       - name: Run apps
         working-directory: './servers/${{ matrix.server }}'
