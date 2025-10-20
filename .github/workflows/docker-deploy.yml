@@ -1,0 +1,54 @@
+name: Docker build
+
+permissions: {}
+
+on:
+  pull_request:
+
+jobs:
+  deploy:
+    name: Deploy - ${{ matrix.server }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        server:
+          - macbook-pro-2012
+          - odroid-h3
+          - odroid-h4-ultra
+          - raspberry-pi-3b
+          - raspberry-pi-4b-2g
+          - raspberry-pi-4b-4g
+          # - raspberry-pi-zero-2w-1
+          # - raspberry-pi-zero-2w-2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3.6.0
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
+      - name: Install system dependencies
+        run: |
+          set -euf
+          apt-get install --yes --no-install-recommends apache2-utils git moreutils nodejs npm python3
+          npm install -g @go-task/cli
+
+      - name: Prepare secrets
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        working-directory: './servers/${{ matrix.server }}'
+        run: task secrets -- --mode dev --offline
+
+      - name: Build apps
+        working-directory: './servers/${{ matrix.server }}'
+        run: task build -- --mode dev
+
+      - name: Run apps
+        working-directory: './servers/${{ matrix.server }}'
+        run: task start -- --mode dev --dry-run
