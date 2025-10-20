@@ -210,12 +210,12 @@
         name: "@bitwarden/cli"
         global: true
 
-    # TODO: Remove this package after problems are resolved upstream
-    - name: Install Semver (Bitwarden CLI dependency)
-      become: true
-      community.general.npm:
-        name: semver
-        global: true
+    # TODO: Check on new servers if this package is still required to be explicitly installed
+    # - name: Install Semver (Bitwarden CLI dependency)
+    #   become: true
+    #   community.general.npm:
+    #     name: semver
+    #     global: true
 
     - name: Install Task runner
       become: true
