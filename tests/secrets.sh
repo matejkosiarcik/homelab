@@ -18,7 +18,8 @@ load_password() {
     # $2 - container name
     # $3 - account name
 
-    bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
+    bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.password"
 }
 
 {
