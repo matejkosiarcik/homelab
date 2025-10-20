@@ -57,7 +57,7 @@ jobs:
 
       - name: Build apps
         working-directory: './servers/${{ matrix.server }}'
-        run: task build -- --mode dev --dry-run
+        run: task build -- --mode dev --dry-run >/dev/null
 
       - name: Run apps
         working-directory: './servers/${{ matrix.server }}'
