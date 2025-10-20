@@ -377,8 +377,8 @@ case "$app_dirname" in
     # printf 'DOCKER_STATS_RASPBERRY_PI_3B_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-3b app homelab-viewer)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g app homelab-viewer)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g app homelab-viewer)" >>"$initial_output/app.env"
-    printf 'GATUS_1_MATEJ_PASSWORD=%s\n' "$(load_token gatus-1 app matej)" >>"$initial_output/app.env" # TODO: Change user to homelab-viewer
-    printf 'GATUS_2_MATEJ_PASSWORD=%s\n' "$(load_token gatus-2 app matej)" >>"$initial_output/app.env" # TODO: Change user to homelab-viewer
+    printf 'GATUS_1_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token gatus-1 app homelab-viewer)" >>"$initial_output/app.env"
+    printf 'GATUS_2_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token gatus-2 app homelab-viewer)" >>"$initial_output/app.env"
     printf 'GOTIFY_TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
     printf 'HOMEPAGE_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token homepage app homelab-viewer)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN_HOMELAB_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
