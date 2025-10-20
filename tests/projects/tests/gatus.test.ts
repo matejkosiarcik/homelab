@@ -10,35 +10,9 @@ test.describe(apps.gatus.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
-
-            test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
-                });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'gatus_results_certificate_expiration_seconds',
-                    'gatus_results_code_total',
-                    'gatus_results_connected_total',
-                    'gatus_results_duration_seconds',
-                    'gatus_results_endpoint_success',
-                    'gatus_results_total',
-                    'promhttp_metric_handler_requests_in_flight',
-                    'promhttp_metric_handler_requests_total',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
-            });
 
             const validUsers = [
                 {
@@ -58,6 +32,16 @@ test.describe(apps.gatus.title, () => {
                     await expect(page.locator('.animate-spin')).toBeVisible();
                     await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
                     await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
+                });
+
+                test(`API: API Get root - User ${user.username}`, async () => {
+                    const response = await axios.get(`${instance.url}`, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
 
                 test(`API: Prometheus metrics - User ${user.username}`, async () => {
@@ -97,6 +81,32 @@ test.describe(apps.gatus.title, () => {
             test('UI: Unsuccessful open - No user', async ({ page }) => {
                 await page.goto(instance.url);
                 await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+            });
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/metrics`, {
+                    auth: {
+                        username: 'prometheus',
+                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                const lines = content.split('\n');
+                const metrics = [
+                    'gatus_results_certificate_expiration_seconds',
+                    'gatus_results_code_total',
+                    'gatus_results_connected_total',
+                    'gatus_results_duration_seconds',
+                    'gatus_results_endpoint_success',
+                    'gatus_results_total',
+                    'promhttp_metric_handler_requests_in_flight',
+                    'promhttp_metric_handler_requests_total',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
             });
         });
     }
