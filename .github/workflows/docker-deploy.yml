@@ -1,4 +1,4 @@
-name: Docker build
+name: Deploy
 
 permissions: {}
 
@@ -36,7 +36,7 @@ jobs:
       - name: Install system dependencies
         run: |
           set -euf
-          apt-get install --yes --no-install-recommends apache2-utils git moreutils nodejs npm python3
+          sudo apt-get install --yes --no-install-recommends apache2-utils git moreutils nodejs npm python3
           npm install -g @go-task/cli
 
       - name: Prepare secrets
