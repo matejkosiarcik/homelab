@@ -308,14 +308,24 @@
           username: homelab-viewer
           password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
 
-    - Uptime Kuma:
+    - UptimeKuma 1:
         description: Uptime monitoring system
-        href: https://uptimekuma.matejhome.com
-        ping: uptimekuma.matejhome.com
+        href: https://uptimekuma-1.matejhome.com
+        ping: uptimekuma-1.matejhome.com
         icon: /icons/uptimekuma.png
         widget:
           type: uptimekuma
-          url: https://uptimekuma.matejhome.com
+          url: https://uptimekuma-1.matejhome.com
+          slug: dashboard
+
+    - UptimeKuma 2:
+        description: Uptime monitoring system
+        href: https://uptimekuma-2.matejhome.com
+        ping: uptimekuma-2.matejhome.com
+        icon: /icons/uptimekuma.png
+        widget:
+          type: uptimekuma
+          url: https://uptimekuma-2.matejhome.com
           slug: dashboard
 
     - Prometheus:

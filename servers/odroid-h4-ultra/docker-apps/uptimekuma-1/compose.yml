@@ -1,0 +1,3 @@
+include:
+  - path: ../../../../docker-compose/uptimekuma/compose.yml
+    project_directory: .
