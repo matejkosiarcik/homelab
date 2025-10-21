@@ -14,3 +14,4 @@ docker-stats
 
 # App Monitoring
 gatus-2
+uptimekuma-2
