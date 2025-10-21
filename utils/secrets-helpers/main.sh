@@ -47,7 +47,7 @@ app_dirname="$(basename "$app_dir" | sed -E 's~^\.~~')"
 tmpdir="$(mktemp -d)"
 
 if [ "$mode" = 'prod' ]; then
-    healthcheck_ping_key="$(bw list items --search 'homelab--healthchecks--app--ping-key' | jq -er '.[] | select(.name == "homelab--healthchecks--app--ping-key").login.password')"
+    healthcheck_ping_key="$(bw list items --search 'healthchecks__app__ping_key' | jq -er '.[] | select(.name == "healthchecks__app__ping_key").login.password')"
 else
     healthcheck_ping_key=''
 fi
