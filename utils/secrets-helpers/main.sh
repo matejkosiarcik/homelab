@@ -67,11 +67,12 @@ load_username() {
     # $2 - container name
     # $3 - account name
 
+    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
     if [ "$mode" = 'prod' ]; then
         {
-            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.username"
+            bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.username"
         } || {
-            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            printf 'Could not load %s\n' "$itemname" >&2
             exit 1
         }
     else
@@ -84,11 +85,12 @@ load_password() {
     # $2 - container name
     # $3 - account name
 
+    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
     if [ "$mode" = 'prod' ]; then
         {
-            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+            bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.password"
         } || {
-            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            printf 'Could not load %s\n' "$itemname" >&2
             exit 1
         }
     else
@@ -101,11 +103,12 @@ load_token() {
     # $2 - container name
     # $3 - account name
 
+    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         {
-            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").login.password"
+            bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.password"
         } || {
-            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            printf 'Could not load %s\n' "$itemname" >&2
             exit 1
         }
     else
@@ -118,11 +121,12 @@ load_notes() {
     # $2 - container name
     # $3 - account name
 
+    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         {
-            bw list items --search "homelab--$1--$2--$3" | jq -er ".[] | select(.name == \"homelab--$1--$2--$3\").notes"
+            bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").notes"
         } || {
-            printf 'Could not load %s\n' "homelab--$1--$2--$3" >&2
+            printf 'Could not load %s\n' "$itemname" >&2
             exit 1
         }
     else
