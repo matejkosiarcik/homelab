@@ -64,4 +64,4 @@ renovatebot
 
 # App Monitoring
 gatus-1
-uptimekuma
+uptimekuma-1
