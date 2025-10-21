@@ -3,6 +3,7 @@ rules:
     ignore:
       - dependabot-auto-merge.yml
       - docker-build.yml
+      - docker-deploy.yml
       - lint.yml
   template-injection:
     ignore:
