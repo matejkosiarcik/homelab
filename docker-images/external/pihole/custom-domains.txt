@@ -32,6 +32,7 @@
 10.1.10.23 nodeexporter-odroid-h3.matejhome.com
 10.1.10.24 docker-stats-odroid-h3.matejhome.com
 10.1.10.25 gatus-2.matejhome.com
+10.1.10.26 uptimekuma-2.matejhome.com
 
 ### Raspberry Pi 3B ###
 
@@ -102,7 +103,7 @@
 10.1.20.45 vaultwarden.matejhome.com
 10.1.20.46 prometheus.matejhome.com
 10.1.20.47 certbot.matejhome.com
-10.1.20.48 uptimekuma.matejhome.com
+10.1.20.48 uptimekuma-1.matejhome.com
 10.1.20.49 nodeexporter-odroid-h4-ultra.matejhome.com
 10.1.20.50 ollama.matejhome.com
 10.1.20.51 openwebui.matejhome.com

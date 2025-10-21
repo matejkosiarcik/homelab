@@ -238,7 +238,8 @@ export const apps = {
     uptimekuma: {
         title: 'UptimeKuma',
         instances: [
-            { url: 'https://uptimekuma.matejhome.com', title: 'UptimeKuma' },
+            { url: 'https://uptimekuma-1.matejhome.com', title: 'UptimeKuma 1' },
+            { url: 'https://uptimekuma-2.matejhome.com', title: 'UptimeKuma 2' },
         ],
     },
     vaultwarden: {

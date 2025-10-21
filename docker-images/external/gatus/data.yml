@@ -629,8 +629,15 @@ apps:
           - "[CONNECTED] == true"
           - "[STATUS] == 200"
 
-  - name: Uptime Kuma
-    domain: uptimekuma.matejhome.com
+  - name: UptimeKuma 1
+    domain: uptimekuma-1.matejhome.com
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: matej
+
+  - name: UptimeKuma 2
+    domain: uptimekuma-2.matejhome.com
     endpoints:
       - path: /metrics
         authentication:

@@ -171,7 +171,8 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Unbound - 2 IoT',
         'Unbound - 2 Guests',
         'UnifiController',
-        'UptimeKuma',
+        'UptimeKuma - 1',
+        'UptimeKuma - 2',
         'Vaultwarden',
         'Vikunja',
     ];
