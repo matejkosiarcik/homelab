@@ -52,13 +52,13 @@ jobs:
       - name: Prepare secrets
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        working-directory: './servers/${{ matrix.server }}'
+        working-directory: ./servers/${{ matrix.server }}
         run: task secrets -- --mode dev --offline
 
       # - name: Build apps
-      #   working-directory: './servers/${{ matrix.server }}'
+      #   working-directory: ./servers/${{ matrix.server }}
       #   run: task build -- --mode dev --dry-run
 
       - name: Run apps
-        working-directory: './servers/${{ matrix.server }}'
+        working-directory: ./servers/${{ matrix.server }}
         run: task start -- --mode dev --dry-run
