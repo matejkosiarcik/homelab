@@ -11,8 +11,8 @@ done
 
 sleep "${HOMELAB_SETUP_DELAY-5}"
 
+# Enable Prometheus metrics
 sed 's~<EnableMetrics>false</EnableMetrics>~<EnableMetrics>true</EnableMetrics>~' <'/homelab/data/system.xml' | sponge '/homelab/data/system.xml'
-
 if ! grep '<EnableMetrics>true</EnableMetrics>' <'/homelab/data/system.xml' >/dev/null; then
     printf 'Failed to enable metrics\n' >&2
     exit 1

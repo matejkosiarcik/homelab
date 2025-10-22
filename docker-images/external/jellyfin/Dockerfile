@@ -3,7 +3,14 @@
 FROM linuxserver/jellyfin:10.11.0
 ARG UID=1000
 ARG GID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
+RUN if [ ! -e '/usr/share/jellyfin/web' ]; then \
+        printf 'Jellyfin web directory not found\n' >&2 && \
+        exit 1 && \
+    true; fi && \
+    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
+        find '/usr/share/jellyfin/web' -name 'favicon.*.ico' -type f -mindepth 1 -maxdepth 1 -exec cp {} /usr/share/jellyfin/web/favicon.ico \; && \
+    true; fi && \
+    if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \
     true; else \
         oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
