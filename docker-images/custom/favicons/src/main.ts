@@ -103,7 +103,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'speedtesttracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
         case 'unbound': return `@/homelab/icons/${appType}.png`;
-        case 'unificontroller': return '/manage/angular/g9ea569acb/images/favicons/favicon-192.png';
+        case 'unificontroller': return '/manage/angular/g4d72f483d/images/favicons/favicon-192.png';
         case 'uptimekuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
         case 'vikunja': return '/images/icons/apple-touch-icon-180x180.png';
