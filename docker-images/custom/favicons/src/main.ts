@@ -84,7 +84,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'healthchecks': return '/static/img/favicon.svg';
         case 'homeassistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
         case 'homepage': return '/apple-touch-icon.png';
-        case 'jellyfin': return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
+        case 'jellyfin': return '/web/favicon.bc8d51405ec040305a87.ico';
         case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
@@ -103,7 +103,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'speedtesttracker': return '/favicon.ico';
         case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
         case 'unbound': return `@/homelab/icons/${appType}.png`;
-        case 'unificontroller': return '/manage/angular/g9ea569acb/images/favicons/favicon-192.png';
+        case 'unificontroller': return '/manage/angular/g4d72f483d/images/favicons/favicon-192.png';
         case 'uptimekuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
         case 'vaultwarden': return '/images/apple-touch-icon.png';
         case 'vikunja': return '/images/icons/apple-touch-icon-180x180.png';
