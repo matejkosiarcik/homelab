@@ -175,7 +175,6 @@ def docker_build():
     if cpu_cores is None:
         cpu_cores = 1
     threads = math.ceil(cpu_cores // 2)
-    print("hostname", socket.gethostname())
     if re.sub(r"\.local$", "", socket.gethostname()) == "raspberry-pi-3b":
         # Force this old Raspberry Pi to single thread only to workaround build problems otherwise
         threads = 1
