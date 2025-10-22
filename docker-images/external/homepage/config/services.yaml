@@ -316,7 +316,7 @@
         widget:
           type: uptimekuma
           url: https://uptimekuma-1.matejhome.com
-          slug: dashboard
+          slug: homelab
 
     - UptimeKuma 2:
         description: Uptime monitoring system
@@ -326,7 +326,7 @@
         widget:
           type: uptimekuma
           url: https://uptimekuma-2.matejhome.com
-          slug: dashboard
+          slug: homelab
 
     - Prometheus:
         description: Prometheus
