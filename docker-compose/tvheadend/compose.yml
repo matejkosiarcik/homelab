@@ -14,8 +14,8 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /app:rw
-      - /run:rw,exec
+      - /app:rw # TODO: Finish TMPFS
+      - /run:rw,exec # TODO: Finish TMPFS
 
   certificator:
     extends:

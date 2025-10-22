@@ -8,7 +8,7 @@ services:
     volumes:
       - ./app-logs/data-optimization:/homelab/logs:rw
     tmpfs:
-      - /homelab/.status:rw
+      - /homelab/.status:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

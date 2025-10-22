@@ -13,7 +13,7 @@ services:
     volumes:
       - ./app-logs/renovatebot:/homelab/logs:rw
     tmpfs:
-      - /homelab/.status:rw
+      - /homelab/.status:rw # TODO: Finish TMPFS
 
   certificator:
     extends:
