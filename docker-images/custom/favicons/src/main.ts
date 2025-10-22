@@ -84,7 +84,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'healthchecks': return '/static/img/favicon.svg';
         case 'homeassistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
         case 'homepage': return '/apple-touch-icon.png';
-        case 'jellyfin': return imageType === 'ico' ? '/web/favicon.ico' : '/web/favicon.png';
+        case 'jellyfin': return '/web/favicon.bc8d51405ec040305a87.ico';
         case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
