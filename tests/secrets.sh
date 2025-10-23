@@ -47,13 +47,6 @@ load_password() {
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-cache-proxy-dockerhub apache status)"
     printf 'DOCKER_CACHE_PROXY_DOCKERHUB_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-cache-proxy-dockerhub apache prometheus)"
 
-    # printf 'DOCKER_STATS_MACBOOK_PRO_2012_MATEJ_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 app matej)"
-    # printf 'DOCKER_STATS_MACBOOK_PRO_2012_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 app homelab-viewer)"
-    # printf 'DOCKER_STATS_MACBOOK_PRO_2012_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 app homelab-test)"
-    # printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 app prometheus)"
-    # printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 apache status)"
-    # printf 'DOCKER_STATS_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-macbook-pro-2012 apache prometheus)"
-
     printf 'DOCKER_STATS_ODROID_H3_MATEJ_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app matej)"
     printf 'DOCKER_STATS_ODROID_H3_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app homelab-viewer)"
     printf 'DOCKER_STATS_ODROID_H3_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app homelab-test)"
@@ -67,13 +60,6 @@ load_password() {
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h4-ultra app prometheus)"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h4-ultra apache status)"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h4-ultra apache prometheus)"
-
-    # printf 'DOCKER_STATS_RASPBERRY_PI_3B_MATEJ_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-3b app matej)"
-    # printf 'DOCKER_STATS_RASPBERRY_PI_3B_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-3b app homelab-viewer)"
-    # printf 'DOCKER_STATS_RASPBERRY_PI_3B_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-3b app homelab-test)"
-    # printf 'DOCKER_STATS_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-3b app prometheus)"
-    # printf 'DOCKER_STATS_RASPBERRY_PI_3B_PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-3b apache status)"
-    # printf 'DOCKER_STATS_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-3b apache prometheus)"
 
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_MATEJ_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-4b-2g app matej)"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password docker-stats-raspberry-pi-4b-2g app homelab-viewer)"
@@ -168,13 +154,6 @@ load_password() {
     printf 'MOTIONEYE_KITCHEN_PROXY_STATUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache status)"
     printf 'MOTIONEYE_KITCHEN_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password motioneye-kitchen apache prometheus)"
 
-    printf 'NODEEXPORTER_MACBOOK_PRO_2012_MATEJ_PASSWORD=%s\n' "$(load_password nodeexporter-macbook-pro-2012 app matej)"
-    printf 'NODEEXPORTER_MACBOOK_PRO_2012_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password nodeexporter-macbook-pro-2012 app homelab-viewer)"
-    printf 'NODEEXPORTER_MACBOOK_PRO_2012_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password nodeexporter-macbook-pro-2012 app homelab-test)"
-    printf 'NODEEXPORTER_MACBOOK_PRO_2012_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-macbook-pro-2012 app prometheus)"
-    printf 'NODEEXPORTER_MACBOOK_PRO_2012_PROXY_STATUS_PASSWORD=%s\n' "$(load_password nodeexporter-macbook-pro-2012 apache status)"
-    printf 'NODEEXPORTER_MACBOOK_PRO_2012_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-macbook-pro-2012 apache prometheus)"
-
     printf 'NODEEXPORTER_ODROID_H3_MATEJ_PASSWORD=%s\n' "$(load_password nodeexporter-odroid-h3 app matej)"
     printf 'NODEEXPORTER_ODROID_H3_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password nodeexporter-odroid-h3 app homelab-viewer)"
     printf 'NODEEXPORTER_ODROID_H3_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password nodeexporter-odroid-h3 app homelab-test)"
@@ -188,13 +167,6 @@ load_password() {
     printf 'NODEEXPORTER_ODROID_H4_ULTRA_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-odroid-h4-ultra app prometheus)"
     printf 'NODEEXPORTER_ODROID_H4_ULTRA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password nodeexporter-odroid-h4-ultra apache status)"
     printf 'NODEEXPORTER_ODROID_H4_ULTRA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-odroid-h4-ultra apache prometheus)"
-
-    printf 'NODEEXPORTER_RASPBERRY_PI_3B_MATEJ_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-3b app matej)"
-    printf 'NODEEXPORTER_RASPBERRY_PI_3B_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-3b app homelab-viewer)"
-    printf 'NODEEXPORTER_RASPBERRY_PI_3B_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-3b app homelab-test)"
-    printf 'NODEEXPORTER_RASPBERRY_PI_3B_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-3b app prometheus)"
-    printf 'NODEEXPORTER_RASPBERRY_PI_3B_PROXY_STATUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-3b apache status)"
-    printf 'NODEEXPORTER_RASPBERRY_PI_3B_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-3b apache prometheus)"
 
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G_MATEJ_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-2g app matej)"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-2g app homelab-viewer)"
@@ -314,6 +286,20 @@ load_password() {
     printf 'UNBOUND_1_DEFAULT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-default apache status)"
     printf 'UNBOUND_1_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-default apache prometheus)"
 
+    printf 'UNBOUND_1_GUESTS_MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-guests app matej)"
+    printf 'UNBOUND_1_GUESTS_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-guests app homelab-viewer)"
+    printf 'UNBOUND_1_GUESTS_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-guests app homelab-test)"
+    printf 'UNBOUND_1_GUESTS_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-guests app prometheus)"
+    printf 'UNBOUND_1_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-guests apache status)"
+    printf 'UNBOUND_1_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-guests apache prometheus)"
+
+    printf 'UNBOUND_1_IOT_MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-iot app matej)"
+    printf 'UNBOUND_1_IOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-iot app homelab-viewer)"
+    printf 'UNBOUND_1_IOT_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-iot app homelab-test)"
+    printf 'UNBOUND_1_IOT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-iot app prometheus)"
+    printf 'UNBOUND_1_IOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-iot apache status)"
+    printf 'UNBOUND_1_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-iot apache prometheus)"
+
     printf 'UNBOUND_1_MATEJ_MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-matej app matej)"
     printf 'UNBOUND_1_MATEJ_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-matej app homelab-viewer)"
     printf 'UNBOUND_1_MATEJ_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-matej app homelab-test)"
@@ -328,26 +314,26 @@ load_password() {
     printf 'UNBOUND_1_MONIKA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-monika apache status)"
     printf 'UNBOUND_1_MONIKA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-monika apache prometheus)"
 
-    printf 'UNBOUND_1_IOT_MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-iot app matej)"
-    printf 'UNBOUND_1_IOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-iot app homelab-viewer)"
-    printf 'UNBOUND_1_IOT_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-iot app homelab-test)"
-    printf 'UNBOUND_1_IOT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-iot app prometheus)"
-    printf 'UNBOUND_1_IOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-iot apache status)"
-    printf 'UNBOUND_1_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-iot apache prometheus)"
-
-    printf 'UNBOUND_1_GUESTS_MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-guests app matej)"
-    printf 'UNBOUND_1_GUESTS_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-guests app homelab-viewer)"
-    printf 'UNBOUND_1_GUESTS_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-guests app homelab-test)"
-    printf 'UNBOUND_1_GUESTS_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-guests app prometheus)"
-    printf 'UNBOUND_1_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-guests apache status)"
-    printf 'UNBOUND_1_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-guests apache prometheus)"
-
     printf 'UNBOUND_2_DEFAULT_MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-default app matej)"
     printf 'UNBOUND_2_DEFAULT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-default app homelab-viewer)"
     printf 'UNBOUND_2_DEFAULT_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-default app homelab-test)"
     printf 'UNBOUND_2_DEFAULT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-default app prometheus)"
     printf 'UNBOUND_2_DEFAULT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-default apache status)"
     printf 'UNBOUND_2_DEFAULT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-default apache prometheus)"
+
+    printf 'UNBOUND_2_GUESTS_MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-guests app matej)"
+    printf 'UNBOUND_2_GUESTS_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-guests app homelab-viewer)"
+    printf 'UNBOUND_2_GUESTS_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-guests app homelab-test)"
+    printf 'UNBOUND_2_GUESTS_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests app prometheus)"
+    printf 'UNBOUND_2_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache status)"
+    printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache prometheus)"
+
+    printf 'UNBOUND_2_IOT_MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-iot app matej)"
+    printf 'UNBOUND_2_IOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-iot app homelab-viewer)"
+    printf 'UNBOUND_2_IOT_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-iot app homelab-test)"
+    printf 'UNBOUND_2_IOT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-iot app prometheus)"
+    printf 'UNBOUND_2_IOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-iot apache status)"
+    printf 'UNBOUND_2_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-iot apache prometheus)"
 
     printf 'UNBOUND_2_MATEJ_MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-matej app matej)"
     printf 'UNBOUND_2_MATEJ_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-matej app homelab-viewer)"
@@ -362,20 +348,6 @@ load_password() {
     printf 'UNBOUND_2_MONIKA_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-monika app prometheus)"
     printf 'UNBOUND_2_MONIKA_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-monika apache status)"
     printf 'UNBOUND_2_MONIKA_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-monika apache prometheus)"
-
-    printf 'UNBOUND_2_IOT_MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-iot app matej)"
-    printf 'UNBOUND_2_IOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-iot app homelab-viewer)"
-    printf 'UNBOUND_2_IOT_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-iot app homelab-test)"
-    printf 'UNBOUND_2_IOT_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-iot app prometheus)"
-    printf 'UNBOUND_2_IOT_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-iot apache status)"
-    printf 'UNBOUND_2_IOT_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-iot apache prometheus)"
-
-    printf 'UNBOUND_2_GUESTS_MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-guests app matej)"
-    printf 'UNBOUND_2_GUESTS_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-guests app homelab-viewer)"
-    printf 'UNBOUND_2_GUESTS_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-guests app homelab-test)"
-    printf 'UNBOUND_2_GUESTS_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests app prometheus)"
-    printf 'UNBOUND_2_GUESTS_PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache status)"
-    printf 'UNBOUND_2_GUESTS_PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-guests apache prometheus)"
 
     printf 'UNIFICONTROLLER_HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unificontroller app homelab-viewer)"
     printf 'UNIFICONTROLLER_HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unificontroller app homelab-test)"
