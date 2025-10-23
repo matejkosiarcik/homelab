@@ -38,7 +38,7 @@ export function getEnv(instanceUrl: string, name: string): string {
         throw new Error(`Invalid URL ${instanceUrl}`);
     }
     const instanceName = parsedUrl.hostname.replace(/\.matejhome\.com$/, '').replaceAll('-', '_');
-    const envName = `${instanceName}_${name.replaceAll('-', '_')}`.toUpperCase();
+    const envName = `${instanceName}__${name.replaceAll('-', '_')}`.toUpperCase();
     if (!(envName in process.env) || !process.env[envName]) {
         throw new Error(`Environment variable "${envName}" not set`);
     }
