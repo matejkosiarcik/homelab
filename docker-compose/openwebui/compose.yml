@@ -12,7 +12,7 @@ services:
     volumes:
       - ./app-data/openwebui:/app/backend/data:rw
     tmpfs:
-      - /app/backend/open_webui/static:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /app/backend/open_webui/static:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     networks:
       internal-network: {}
       external-network: {}
