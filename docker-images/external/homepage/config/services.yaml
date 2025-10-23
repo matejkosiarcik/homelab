@@ -329,7 +329,7 @@
           slug: homelab
 
     - Prometheus:
-        description: Prometheus
+        description: Metrics monitoring
         href: https://prometheus.matejhome.com
         ping: prometheus.matejhome.com
         icon: /icons/prometheus.png

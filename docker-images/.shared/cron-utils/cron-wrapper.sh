@@ -46,7 +46,7 @@ fi
 trap 'rm -rf /tmp/homelab-cron.lockd' EXIT
 
 # Run actual job
-cron_job_timeout="${CRON_TIMEOUT-10m}"
+cron_job_timeout="${HOMELAB_CRON_TIMEOUT-10m}"
 (timeout "$cron_job_timeout" sh /homelab/main.sh 2>&1 || printf '%s\n' "$?" >"$statusfile") | tee -a "$logfile" >&2
 
 # Send end-signal to healthchecks

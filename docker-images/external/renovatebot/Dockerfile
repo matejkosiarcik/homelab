@@ -82,6 +82,7 @@ COPY  --chown=homelab:homelab ./external/renovatebot/config.js /usr/src/app/conf
 ENV HOMELAB_CONTAINER_NAME=renovatebot \
     HOMELAB_CONTAINER_VARIANT=default \
     HOMELAB_CRON_SKIP_INITIAL=1 \
+    HOMELAB_CRON_TIMEOUT=30m \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 USER homelab
