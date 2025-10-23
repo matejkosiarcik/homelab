@@ -79,7 +79,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     chown -R homelab:homelab /home/homelab /homelab /usr/src/app
 COPY --from=prefinal --chown=homelab:homelab /homelab/ /homelab/
 COPY  --chown=homelab:homelab ./external/renovatebot/config.js /usr/src/app/config.js
-ENV HOMELAB_CONTAINER_NAME=renovatebot \
+ENV CRON_TIMEOUT=30m \
+    HOMELAB_CONTAINER_NAME=renovatebot \
     HOMELAB_CONTAINER_VARIANT=default \
     HOMELAB_CRON_SKIP_INITIAL=1 \
     PATH="/homelab/bin:$PATH" \
