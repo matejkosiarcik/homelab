@@ -153,7 +153,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|owntracks|renovatebot)$# && %{REQUEST_URI} !~ m#^/metrics(?:/.*)?$# && %{REQUEST_URI} !~ m#^/\.apache(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.(?:ico|png)$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|owntracks|renovatebot|unbound)$# && %{REQUEST_URI} !~ m#^/metrics(?:/.*)?$# && %{REQUEST_URI} !~ m#^/\.apache(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.(?:ico|png)$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
