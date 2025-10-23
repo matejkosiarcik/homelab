@@ -23,8 +23,8 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /home/chrome:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /homelab/chrome-user-data:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /home/chrome:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/chrome-user-data:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

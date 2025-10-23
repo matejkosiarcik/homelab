@@ -20,8 +20,8 @@ services:
     env_file:
       - ./app-secrets/app-setup.env
     tmpfs:
-      - /homelab/.status:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /home/homelab/.mc:rw,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/.status:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /home/homelab/.mc:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:
