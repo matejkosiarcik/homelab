@@ -13,7 +13,7 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /homelab/config:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

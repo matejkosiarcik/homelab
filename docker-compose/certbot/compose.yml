@@ -16,9 +16,9 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /etc/letsencrypt:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /homelab/.status:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/lib/letsencrypt:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /etc/letsencrypt:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/lib/letsencrypt:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   apache:
     extends:

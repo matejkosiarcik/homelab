@@ -6,12 +6,12 @@ services:
     build:
       dockerfile: ./external/openspeedtest/Dockerfile
     tmpfs:
-      - /etc/nginx/conf.d:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/cache/nginx/client_temp:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/cache/nginx/fastcgi_temp:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/cache/nginx/proxy_temp:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/cache/nginx/scgi_temp:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/cache/nginx/uwsgi_temp:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /etc/nginx/conf.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/client_temp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/fastcgi_temp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/proxy_temp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/scgi_temp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx/uwsgi_temp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:
