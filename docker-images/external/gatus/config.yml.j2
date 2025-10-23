@@ -252,7 +252,7 @@ endpoints:
     name: HTTPS - {{ item.name }}
     group: App - {{ item.name }}
     {%- if item.authentication.basic is defined %}
-    url: https://{{ item.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ item.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}
+    url: https://{{ item.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ item.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}
     {%- elif item.authentication.bearer is defined %}
     url: https://{{ item.domain }}
     headers:
@@ -284,7 +284,7 @@ endpoints:
   - <<: *default-https-infrequent
     name: HTTPS Proxy /metrics - {{ item.name }}
     group: App - {{ item.name }}
-    url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
+    url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
     {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
@@ -340,7 +340,7 @@ endpoints:
     name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }} - {{ item.name }}
     group: App - {{ item.name }}
     {%- if endpoint.authentication.basic is defined %}
-    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ endpoint.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ endpoint.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}{{ endpoint.path }}
+    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ endpoint.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ endpoint.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}{{ endpoint.path }}
     {%- elif endpoint.authentication.bearer is defined %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     headers:
