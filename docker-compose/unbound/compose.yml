@@ -10,7 +10,7 @@ services:
       - ./app-data/unbound-sock:/homelab/sock:rw
       - ./app-logs/unbound:/homelab/logs:rw
     tmpfs:
-      - /run:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     security_opt:
       - no-new-privileges:false
 

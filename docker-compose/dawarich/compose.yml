@@ -15,9 +15,9 @@ services:
     env_file:
       - ./app-secrets/app.env
     tmpfs:
-      # - /root/.cache/gem:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/app/db:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/app/tmp:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /root/.cache/gem:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/app/db:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/app/tmp:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   sidekiq:
     extends:
@@ -42,8 +42,8 @@ services:
       start_period: 60s
       timeout: 5s
     tmpfs:
-      # - /root/.cache/gem:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/app/tmp:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /root/.cache/gem:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/app/tmp:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   redis:
     extends:
@@ -71,7 +71,7 @@ services:
     env_file:
       - ./app-secrets/postgis.env
     tmpfs:
-      - /var/run:rw,noexec,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/run:rw,noexec,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   decryptor:
     extends:
