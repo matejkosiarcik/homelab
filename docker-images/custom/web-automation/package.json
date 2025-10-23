@@ -12,7 +12,7 @@
     "playwright": "^1.56.1"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^12.2.0",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@tsconfig/recommended": "^1.0.10",
     "@types/chai": "^5.2.3",
     "@types/node": "^24.9.1",
