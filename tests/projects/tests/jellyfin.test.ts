@@ -38,12 +38,12 @@ test.describe(apps.jellyfin.title, () => {
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
                     await page.goto(instance.url);
-                    await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                    await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
                     await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
                     await page.locator('input#txtManualName').fill(user.username);
                     await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                     await page.locator('button[type="submit"]').click();
-                    await page.waitForURL(`${instance.url}/web/#/home.html`);
+                    await page.waitForURL(`${instance.url}/web/#/home`);
                     await expect(page.locator('#indexPage.homePage')).toBeVisible();
                     await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
                 });
@@ -61,7 +61,7 @@ test.describe(apps.jellyfin.title, () => {
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
-                    await page.waitForURL(/\/login\.html(?:\?.*)?$/);
+                    await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
                     const originalUrl = page.url();
                     await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
                     await page.locator('input#txtManualName').fill(user.username);
