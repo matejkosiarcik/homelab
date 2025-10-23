@@ -32,7 +32,7 @@
           type: unifi
           url: https://unificontroller.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_UNIFICONTROLLER_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD}}"
 
     - Omada Controller:
         description: SDN manager
@@ -43,7 +43,7 @@
           type: omada
           url: https://omadacontroller.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_OMADACONTROLLER_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR__OMADACONTROLLER__PASSWORD}}"
           site: Home
           fields: ["activeUser", "alerts"]
 
@@ -115,7 +115,7 @@
           type: pihole
           url: https://pihole-1-primary.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_1_PRIMARY_PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_1_PRIMARY__PASSWORD}}"
 
     - PiHole 1 Secondary:
         description: DNS server with built-in adblocking
@@ -126,7 +126,7 @@
           type: pihole
           url: https://pihole-1-secondary.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_1_SECONDARY_PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_1_SECONDARY__PASSWORD}}"
 
     - PiHole 2 Primary:
         description: DNS server with built-in adblocking
@@ -137,7 +137,7 @@
           type: pihole
           url: https://pihole-2-primary.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_2_PRIMARY_PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_2_PRIMARY__PASSWORD}}"
 
     - PiHole 2 Secondary:
         description: DNS server with built-in adblocking
@@ -148,7 +148,7 @@
           type: pihole
           url: https://pihole-2-secondary.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_2_SECONDARY_PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_2_SECONDARY__PASSWORD}}"
 
     - Unbound 1 Default:
         description: Entrypoint DNS server
@@ -219,7 +219,7 @@
         widget:
           type: homeassistant
           url: https://homeassistant.matejhome.com
-          key: "{{HOMEPAGE_VAR_HOMEASSISTANT_APIKEY}}"
+          key: "{{HOMEPAGE_VAR__HOMEASSISTANT_APIKEY}}"
           custom:
             - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
               label: Turned on lights
@@ -231,7 +231,7 @@
         icon: /icons/motioneye.png
         widget:
           type: mjpeg
-          stream: "https://homelab-stream:{{HOMEPAGE_VAR_MOTIONEYE_KITCHEN_HOMELAB_STREAM_PASSWORD}}@motioneye-kitchen.matejhome.com/stream"
+          stream: "https://homelab-stream:{{HOMEPAGE_VAR__MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD}}@motioneye-kitchen.matejhome.com/stream"
 
     - Desklamp - left:
         description: Custom smart lamp
@@ -262,7 +262,7 @@
         widget:
           type: jellyfin
           url: https://jellyfin.matejhome.com
-          key: "{{HOMEPAGE_VAR_JELLYFIN_APIKEY}}"
+          key: "{{HOMEPAGE_VAR__JELLYFIN__APIKEY}}"
           enableBlocks: false
           enableNowPlaying: true
           enableUser: false
@@ -284,7 +284,7 @@
         widget:
           type: healthchecks
           url: https://healthchecks.matejhome.com
-          key: "{{HOMEPAGE_VAR_HEALTHCHECKS_APIKEY}}"
+          key: "{{HOMEPAGE_VAR__HEALTHCHECKS__APIKEY}}"
 
     - Gatus 1:
         description: Uptime monitoring system
@@ -295,7 +295,7 @@
           type: gatus
           url: https://gatus-1.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_GATUS_1_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR__GATUS_1__PASSWORD}}"
 
     - Gatus 2:
         description: Uptime monitoring system
@@ -306,7 +306,7 @@
           type: gatus
           url: https://gatus-2.matejhome.com
           username: homelab-viewer
-          password: "{{HOMEPAGE_VAR_GATUS_2_PASSWORD}}"
+          password: "{{HOMEPAGE_VAR__GATUS_2__PASSWORD}}"
 
     - UptimeKuma 1:
         description: Uptime monitoring system
@@ -352,7 +352,7 @@
         widget:
           type: speedtest
           url: https://speedtesttracker.matejhome.com
-          key: "{{HOMEPAGE_VAR_SPEEDTESTTRACKER_APIKEY}}"
+          key: "{{HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY}}"
           version: 2
           bitratePrecision: 1
 
@@ -364,7 +364,7 @@
         widget:
           type: changedetectionio
           url: https://changedetection.matejhome.com
-          key: "{{HOMEPAGE_VAR_CHANGEDETECTION_APIKEY}}"
+          key: "{{HOMEPAGE_VAR__CHANGEDETECTION__APIKEY}}"
 
     - NetAlertX:
         description: Network monitoring
@@ -374,7 +374,7 @@
         # widget:
         #   type: netalertx
         #   url: https://netalertx.matejhome.com
-        #   key: "{{HOMEPAGE_VAR_NETALERTX_APIKEY}}"
+        #   key: "{{HOMEPAGE_VAR__NETALERTX__APIKEY}}"
 
     - Grafana:
         description: Metrics and Log monitoring
@@ -385,7 +385,7 @@
         #   type: grafana
         #   url: https://grafana.matejhome.com
         #   username: admin
-        #   password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
+        #   password: "{{HOMEPAGE_VAR__GRAFANA__PASSWORD}}"
 
 - Other Apps:
     - Homepage:
@@ -473,7 +473,7 @@
         widget:
           type: vikunja
           url: https://vikunja.matejhome.com
-          key: "{{HOMEPAGE_VAR_VIKUNJA_APIKEY}}"
+          key: "{{HOMEPAGE_VAR__VIKUNJA__APIKEY}}"
 
     - Dawarich:
         description: Location tracking
