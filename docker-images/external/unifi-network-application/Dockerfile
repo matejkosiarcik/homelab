@@ -1,7 +1,8 @@
 # checkov:skip=CKV_DOCKER_3: USER can't be set directly, because of the way linuxserver.io image works, but it should be active anyway because we set PUID/PGID
 
 FROM linuxserver/unifi-network-application:9.5.21
-RUN ln -s /config/data /usr/lib/unifi/data && \
+RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
+    ln -s /config/data /usr/lib/unifi/data && \
     ln -s /config/logs /usr/lib/unifi/logs && \
     ln -s /run/unifi /usr/lib/unifi/run && \
     mkdir -p /homelab/defaults && \
