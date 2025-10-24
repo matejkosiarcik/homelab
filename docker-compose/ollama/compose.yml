@@ -18,7 +18,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-secrets/users.htpasswd:/homelab/users.htpasswd:ro
+      - ./app-secrets/users.htpasswd:/homelab/users/users.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:
