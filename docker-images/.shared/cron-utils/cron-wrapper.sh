@@ -20,10 +20,9 @@ if [ "${HOMELAB_HEALTHCHECK_URL-}" != '' ]; then
     printf '\n' | tee -a "$logfile" >&2
 else
     printf 'HOMELAB_HEALTHCHECK_URL unset\n' | tee -a "$logfile" >&2
-    # TODO: Enable this after healthchecks are working
-    # if [ "$HOMELAB_ENV" = 'prod' ]; then
-    #     exit 1
-    # fi
+    if [ "$HOMELAB_ENV" = 'prod' ]; then
+        exit 1
+    fi
 fi
 
 if [ "$CRON" = '1' ]; then
