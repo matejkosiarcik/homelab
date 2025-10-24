@@ -16,11 +16,11 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /homelab/config/out:rw # TODO: Finish TMPFS
-      - /run:rw # TODO: Finish TMPFS
-      - /var/cache/samba:rw # TODO: Finish TMPFS
-      - /var/lib/samba:rw # TODO: Finish TMPFS
-      - /var/lib/samba/private:rw # TODO: Finish TMPFS
+      - /homelab/config/out:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/lib/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/lib/samba/private:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:
