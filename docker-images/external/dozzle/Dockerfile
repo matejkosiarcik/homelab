@@ -1,4 +1,4 @@
-FROM amir20/dozzle:v8.14.5 AS dozzle
+FROM amir20/dozzle:v8.14.6 AS dozzle
 
 FROM debian:13.1-slim
 RUN apt-get update && \
