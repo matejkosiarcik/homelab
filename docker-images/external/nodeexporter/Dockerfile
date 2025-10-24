@@ -1,4 +1,4 @@
-FROM prom/node-exporter:v1.9.1 AS nodeexporter
+FROM prom/node-exporter:v1.10.0 AS nodeexporter
 
 FROM debian:13.1-slim
 RUN apt-get update && \
