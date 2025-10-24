@@ -10,17 +10,17 @@ RewriteBase /
 
 # Remove port from _HOST if applicable
 RewriteRule ^ - [E=_HOST:%{HTTP_HOST},NE]
-RewriteCond %{ENV:_HOST} ^(.*):.*$ [NC]
+RewriteCond %{ENV:_HOST} ^(?:.*):.*$ [NC]
 RewriteRule ^ - [E=_HOST:%1,NE]
 
 # Set _ALLOW_HTTPS depending on current path
 RewriteRule ^ - [E=_ALLOW_HTTPS:true,NE]
-RewriteCond %{REQUEST_URI} ^/.well-known/acme-challenge/ [NC]
+RewriteCond %{REQUEST_URI} ^/\.well-known/acme-challenge/ [NC]
 RewriteRule ^ - [E=_ALLOW_HTTPS:false,NE]
 
 # Set _FORCE_HTTPS depending on current path
 RewriteRule ^ - [E=_FORCE_HTTPS:false,NE]
-RewriteCond %{REQUEST_URI} ^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/\.apache(?:/.*)?$ [NC]
 RewriteRule ^ - [E=_FORCE_HTTPS:true,NE]
 
 # Set target protocol
@@ -55,7 +55,7 @@ RewriteCond %{ENV:_PORT} ^:443$ [NC]
 RewriteRule ^ - [E=_PORT:,NE]
 
 # Redirect [internally] all directories without trailing slash
-RewriteCond %{REQUEST_URI} ^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/\.apache(?:/.*)?$ [NC]
 RewriteCond %{HTTPS} on [NC]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} !/$
@@ -107,7 +107,7 @@ RewriteRule ^ "%{ENV:_PROTOCOL}://%{ENV:_HOST}%{ENV:_PORT}%{REQUEST_URI}" [L,R=3
 # Return index.html for directories
 RewriteCond %{ENV:_REDIRECT} false [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC,OR]
-RewriteCond %{REQUEST_URI} ^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} ^/\.apache(?:/.*)?$ [NC]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_FILENAME}/index.html -f
 RewriteRule ^ "%{REQUEST_URI}/index.html" [L]
@@ -131,11 +131,11 @@ RewriteRule ^ /.apache/index.html [L]
 RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
 RewriteCond %{REQUEST_URI} !^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{REQUEST_URI} !^/metrics$ [NC]
-RewriteCond %{REQUEST_URI} !^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/\.apache(?:/.*)?$ [NC]
 RewriteRule ^ /.apache/not-found [L]
 
 # Protect Apache proxy prometheus endpoint
-<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/.apache/metrics/?$#">
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/\.apache/metrics$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -144,7 +144,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|nodeexporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics/?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|nodeexporter|pihole|samba|unbound)$# && %{REQUEST_URI} =~ m#^/metrics$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -153,7 +153,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|owntracks|renovatebot|unbound)$# && %{REQUEST_URI} !~ m#^/metrics(?:/.*)?$# && %{REQUEST_URI} !~ m#^/\.apache(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.(?:ico|png)$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|owntracks|renovatebot|unbound)$# && %{REQUEST_URI} !~ m#^/metrics$# && %{REQUEST_URI} !~ m#^/\.apache(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.(?:ico|png)$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -162,7 +162,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect Certbot sensitive endpoints
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download(/.*)?$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download(?:/.*)?$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -171,21 +171,21 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Custom prometheus metrics for apache itself
-RewriteCond %{REQUEST_URI} ^/.apache/metrics/?$ [NC]
+RewriteCond %{REQUEST_URI} ^/\.apache/metrics$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_PROMETHEUS_EXPORTER_URL}/metrics" [P,L]
 
 # Custom prometheus metrics
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:dawarich|glances|pihole|samba|unbound)$ [NC]
-RewriteCond %{REQUEST_URI} ^/metrics/?$ [NC]
+RewriteCond %{REQUEST_URI} ^/metrics$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
 
 # Custom prometheus metrics for docker-stats
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:docker-stats)$ [NC]
-RewriteCond %{REQUEST_URI} ^/metrics/?$ [NC]
+RewriteCond %{REQUEST_URI} ^/metrics$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}/" [P,L]
@@ -223,7 +223,7 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "http://favicons:8080%{REQUEST_URI}" [P,L]
 
 # Proxy websockets upstream
-RewriteCond %{REQUEST_URI} !^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/\.apache(?:/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{HTTP:Connection} upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL_WS} !^$ [NC]
@@ -238,15 +238,15 @@ RewriteCond %{ENV:PROXY_UPSTREAM_URL_STREAM} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_STREAM}/" [P,L]
 
 # Proxy regular requests upstream
-RewriteCond %{REQUEST_URI} !^/.apache(/.*)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/\.apache(?:/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}%{REQUEST_URI}" [P,L]
 
 # Return 404 instead of 403 for not found directory-index
-RewriteCond %{REQUEST_URI} !^/.apache/status$ [NC]
-RewriteCond %{REQUEST_URI} !^/.apache/metrics$ [NC]
+RewriteCond %{REQUEST_URI} !^/\.apache/status$ [NC]
+RewriteCond %{REQUEST_URI} !^/\.apache/metrics$ [NC]
 RewriteCond %{ENV:_REDIRECT} false [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL} ^$ [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
