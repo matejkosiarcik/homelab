@@ -14,8 +14,8 @@ services:
       internal-network: {}
       external-network: {}
     tmpfs:
-      - /app:rw # TODO: Finish TMPFS
-      - /run:rw,exec # TODO: Finish TMPFS
+      - /app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:
