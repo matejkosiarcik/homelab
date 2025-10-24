@@ -139,8 +139,15 @@ RewriteRule ^ /.apache/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/users/proxy-prometheus.htpasswd
     Require valid-user
+    <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$#">
+        # Allow readonly methods
+        AuthUserFile /homelab/users/proxy-prometheus.htpasswd
+    </If>
+    <Else>
+        # Deny non-readonly methods altogether
+        AuthUserFile /homelab/users/empty.htpasswd
+    </Else>
 </If>
 
 # Protect prometheus /metrics endpoint
@@ -148,26 +155,40 @@ RewriteRule ^ /.apache/not-found [L]
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
-    AuthUserFile /homelab/users/prometheus.htpasswd
     Require valid-user
+    <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$#">
+        # Allow readonly methods
+        AuthUserFile /homelab/users/prometheus.htpasswd
+    </If>
+    <Else>
+        # Deny non-readonly methods altogether
+        AuthUserFile /homelab/users/empty.htpasswd
+    </Else>
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|owntracks|renovatebot|unbound)$# && %{REQUEST_URI} !~ m#^/metrics$# && %{REQUEST_URI} !~ m#^/\.apache(?:/.*)?$# && %{REQUEST_URI} !~ m#^/favicon.(?:ico|png)$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/users/prometheus.htpasswd
-    Require valid-user
-</If>
-
-# Protect Certbot sensitive endpoints
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} == 'certbot' && %{REQUEST_URI} =~ m#^/download(?:/.*)?$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    AuthUserFile /homelab/users/users.htpasswd
-    Require valid-user
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|owntracks|renovatebot|unbound)$#">
+    <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && ( %{REQUEST_URI} =~ m#^/\.apache(?:/.*)?$# || %{REQUEST_URI} =~ m#^/favicon\.(?:ico|png)$# )">
+        # Allow requests with readonly methods to safe locations
+    </If>
+    <Else>
+        AuthType Basic
+        AuthName Protected
+        AuthBasicProvider file
+        Require valid-user
+        <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$#">
+            # Allow readonly requests to viewers
+            AuthUserFile /homelab/users/users-viewers.htpasswd
+        </If>
+        <ElseIf "%{REQUEST_URI} =~ m#^/\.apache(?:/.*)?$#">
+            # Deny non-readonly requests for eveybody to internal locations
+            AuthUserFile /homelab/users/empty.htpasswd
+        </ElseIf>
+        <Else>
+            # Allow everything for admins
+            AuthUserFile /homelab/users/users-admins.htpasswd
+        </Else>
+    </Else>
 </If>
 
 # Custom prometheus metrics for apache itself

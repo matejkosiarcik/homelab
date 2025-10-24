@@ -26,7 +26,8 @@ services:
       service: apache
     volumes:
       - ./app-data/certbot:/homelab/www/download:rw
-      - ./app-secrets/users.htpasswd:/homelab/users/users.htpasswd:ro
+      - ./app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
+      - ./app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

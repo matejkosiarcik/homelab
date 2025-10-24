@@ -38,7 +38,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab /homelab/users && \
     chown -R homelab:homelab /home/homelab /homelab && \
-    touch /homelab/users/no-users.htpasswd
+    touch /homelab/users/empty.htpasswd
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
