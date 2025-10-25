@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
-FROM pihole/pihole:2025.08.0
+FROM pihole/pihole:2025.10.0
 RUN apk update --no-cache && \
     apk add --no-cache shadow
 ARG UID=1000
