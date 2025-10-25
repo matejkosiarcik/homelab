@@ -26,6 +26,7 @@
 # ...9 Reserved
 10.1.10.11 pihole-2-primary.matejhome.com
 10.1.10.12 pihole-2-secondary.matejhome.com
+10.1.10.13 pihole-2-blackhole.matejhome.com
 # ...19 Reserved
 # 10.1.10.21 glances
 10.1.10.22 dozzle-agent-odroid-h3.matejhome.com
@@ -75,6 +76,7 @@
 # ...9 Reserved
 10.1.20.11 pihole-1-primary.matejhome.com
 10.1.20.12 pihole-1-secondary.matejhome.com
+10.1.20.13 pihole-1-blackhole.matejhome.com
 # ...19 Reserved
 10.1.20.21 unificontroller.matejhome.com
 10.1.20.22 omadacontroller.matejhome.com

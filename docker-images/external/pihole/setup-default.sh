@@ -4,7 +4,7 @@ set -euf
 sql() {
     command="$1"
     i=0
-    while [ "$i" -lt '3' ]; do
+    while [ "$i" -le '3' ]; do
         i="$((i + 1))"
         status='0'
         pihole-FTL sqlite3 /etc/pihole/gravity.db "$command" || {

@@ -66,8 +66,8 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache:/homelab/logs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/proxy-status.htpasswd:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/proxy-prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/users/proxy-prometheus.htpasswd:ro
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via socat instead

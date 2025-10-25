@@ -4,32 +4,52 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/jellyfin/Dockerfile
-    init: false
-    hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
+      dockerfile: ./external/pihole/Dockerfile
+      args:
+        SETUP_SCRIPT: blackhole
+    hostname: pihole-placeholder # This fixes random container hostname in dashboard header
+    env_file:
+      - ./app-secrets/app.env
     volumes:
-      - ./app-data/jellyfin:/config:rw
-      - ./app-logs/jellyfin:/logs:rw
+      - ./app-data/pihole:/etc/pihole:rw
+    cap_add:
+      - SYS_NICE
     networks:
       internal-network: {}
       external-network: {}
-    read_only: false # TODO: Enable readonly mode
+    stop_grace_period: 30s
     tmpfs:
-      - /app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /cache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /data:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /defaults:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /transcode:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /tmp/jellyfin:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},size=4G
+      - /var/log/pihole:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/spool:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   app-setup:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: script-app-setup
-    volumes:
-      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
-      - ./app-data/jellyfin:/homelab/data:rw
+      service: docker-app-setup
+
+  app-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
+    build:
+      dockerfile: ./external/pihole-prometheus-exporter/Dockerfile
+    environment:
+      PIHOLE_HOSTNAME: app
+      PIHOLE_PORT: 80
+    env_file:
+      - ./app-secrets/app-prometheus-exporter.env
+
+  socket-proxy:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: socket-proxy
+    environment:
+      CONTAINERS: 1
+      EXEC: 1
+      PING: 1
+      POST: 1
 
   certificator:
     extends:
