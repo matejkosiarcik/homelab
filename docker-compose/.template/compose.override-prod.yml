@@ -16,7 +16,6 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
-      # Fill in other ports as necessary #
 
   apache-prometheus-exporter:
     <<: *common-service-options
