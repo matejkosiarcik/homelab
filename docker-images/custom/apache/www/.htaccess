@@ -10,7 +10,7 @@ RewriteBase /
 
 # Remove port from _HOST if applicable
 RewriteRule ^ - [E=_HOST:%{HTTP_HOST},NE]
-RewriteCond %{ENV:_HOST} ^(?:.*):.*$ [NC]
+RewriteCond %{ENV:_HOST} ^(.*):.*$ [NC]
 RewriteRule ^ - [E=_HOST:%1,NE]
 
 # Set _ALLOW_HTTPS depending on current path
