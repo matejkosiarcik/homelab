@@ -7,7 +7,7 @@ services:
     <<: *common-service-options
     environment:
       PLACEHOLDER: placeholder
-      # Uncomment when setting up new instance:
+      # Uncomment for initial setup (signups):
       # DISABLE_ACCOUNT_CREATION: "0"
 
   app-frontend:

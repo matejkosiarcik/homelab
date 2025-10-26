@@ -68,6 +68,7 @@ def load_env_file(env_path):
 
 
 def load_full_env():
+    default_protocol = "smb" if "samba" in full_app_name else "https"
     default_env_values = {
         "DOCKER_COMPOSE_APP_NAME": full_app_name,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
@@ -75,13 +76,11 @@ def load_full_env():
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
         "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
-        "DOCKER_COMPOSE_NETWORK_URL": f"https://{full_app_name}.matejhome.com" if env_mode == "prod" else "https://localhost:8443",
+        "DOCKER_COMPOSE_NETWORK_URL": f"{default_protocol}://{full_app_name}.matejhome.com" if env_mode == "prod" else f"{default_protocol}://localhost:8443",
         "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
         "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "1000",
         "DOCKER_COMPOSE_GID": str(os.getgid()) if env_mode == "prod" else "1000",
     }
-    if default_env_values["DOCKER_COMPOSE_APP_TYPE"] == "samba":
-        default_env_values["DOCKER_COMPOSE_NETWORK_URL"] = re.sub(r"https?://", "smb://", default_env_values["DOCKER_COMPOSE_NETWORK_URL"])
 
     # Remove old environment values
     for key in default_env_values:
@@ -98,6 +97,11 @@ def load_full_env():
     for key, default_value in default_env_values.items():
         if os.environ.get(key) is None:
             os.environ[key] = default_value
+
+    for i in range(2, 10):
+        if f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}" in os.environ and f"DOCKER_COMPOSE_NETWORK_URL_{i}" not in os.environ:
+            domain = os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"]
+            os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = f"{default_protocol}://{domain}"
 
 
 def get_docker_compose_config() -> str:

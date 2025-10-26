@@ -2,6 +2,10 @@
 
 FROM linuxserver/unifi-network-application:9.5.21
 RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
+    if [ ! -e './webapps/ROOT/app-unifi/angular/favicon.ico' ]; then \
+        printf 'File "favicon.ico" not found\n' >&2 && \
+        exit 1 && \
+    true; fi && \
     ln -s /config/data /usr/lib/unifi/data && \
     ln -s /config/logs /usr/lib/unifi/logs && \
     ln -s /run/unifi /usr/lib/unifi/run && \
