@@ -10,6 +10,10 @@ RUN if [ ! -e '/usr/share/jellyfin/web' ]; then \
     if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
         find '/usr/share/jellyfin/web' -name 'favicon.*.ico' -type f -mindepth 1 -maxdepth 1 -exec cp {} /usr/share/jellyfin/web/favicon.ico \; && \
     true; fi && \
+    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
+        printf 'File "favicon.ico" not found\n' >&2 && \
+        exit 1 && \
+    true; fi && \
     if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \
     true; else \
