@@ -44,6 +44,7 @@ convert_image_full "$input_dir/gitman-repositories/bash-logo/assets/Logos/Icons/
 
 ### Dashboard Icons ###
 
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/adventure-log.svg" "$output_dir/adventurelog.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/aws.svg" "$output_dir/aws.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/azure.svg" "$output_dir/azure.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/caddy.svg" "$output_dir/caddy.png"
