@@ -117,6 +117,6 @@
 10.1.20.57 docker-stats-odroid-h4-ultra.matejhome.com
 10.1.20.58 ollama-private.matejhome.com
 10.1.20.59 openwebui-private.matejhome.com
-# 10.1.20.60 owntracks frontend
-# 10.1.20.61 owntracks backend
+10.1.20.60 adventurelog.matejhome.com
+10.1.20.61 adventurelog-backend.matejhome.com
 10.1.20.62 groceries.matejhome.com

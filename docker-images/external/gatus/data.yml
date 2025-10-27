@@ -41,6 +41,9 @@ apps:
   - name: ActualBudget
     domain: actualbudget.matejhome.com
 
+  - name: Adventure Log
+    domain: adventurelog.matejhome.com
+
   - name: Certbot
     domain: certbot.matejhome.com
 
