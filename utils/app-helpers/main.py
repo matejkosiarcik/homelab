@@ -99,9 +99,13 @@ def load_full_env():
             os.environ[key] = default_value
 
     for i in range(2, 10):
-        if f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}" in os.environ and f"DOCKER_COMPOSE_NETWORK_URL_{i}" not in os.environ:
+        if os.environ.get(f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}") is not None and os.environ.get(f"DOCKER_COMPOSE_NETWORK_URL_{i}") is None:
             domain = os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"]
             os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = f"{default_protocol}://{domain}"
+        elif os.environ.get(f"DOCKER_COMPOSE_NETWORK_URL_{i}") is None:
+            domain = os.environ["DOCKER_COMPOSE_NETWORK_DOMAIN"]
+            os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = f"{default_protocol}://{domain}"
+            os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"] = domain
 
 
 def get_docker_compose_config() -> str:
