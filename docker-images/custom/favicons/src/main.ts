@@ -26,6 +26,7 @@ const appType = (() => {
 const appAddress = (() => {
     switch (appType) {
         case 'actualbudget': return 'http://app:5006';
+        case 'adventurelog': return 'http://app-frontend:3000';
         case 'certbot': return 'http://app:8080';
         case 'changedetection': return 'http://app:5000';
         case 'dawarich': return 'http://app:3000';
@@ -69,7 +70,8 @@ const appAddress = (() => {
 
 function getFaviconPath(imageType: 'ico' | 'png'): string {
     switch (appType) {
-        case 'actualbudget': return imageType === 'ico' ? '/favicon.ico' : '	/apple-touch-icon.png';
+        case 'actualbudget': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
+        case 'adventurelog': return '/favicon.png';
         case 'certbot': return `@/homelab/icons/${appType}.png`;
         case 'changedetection': return '/static/favicons/apple-touch-icon.png';
         case 'dawarich': return `@/homelab/icons/${appType}.png`;
