@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.3.0",
-    "@tsconfig/recommended": "^1.0.10",
+    "@tsconfig/recommended": "^1.0.11",
     "@types/chai": "^5.2.3",
     "@types/node": "^24.9.2",
     "rollup": "^4.52.5",
