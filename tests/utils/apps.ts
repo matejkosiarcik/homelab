@@ -5,6 +5,12 @@ export const apps = {
             { url: 'https://actualbudget.matejhome.com', title: 'ActualBudget' },
         ],
     },
+    adventurelog: {
+        title: 'AdventureLog',
+        instances: [
+            { url: 'https://adventurelog.matejhome.com', title: 'AdventureLog', backendUrl: 'https://adventurelog-backend.matejhome.com', },
+        ],
+    },
     certbot: {
         title: 'Certbot',
         instances: [

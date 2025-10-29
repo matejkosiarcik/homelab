@@ -412,6 +412,12 @@
         ping: actualbudget.matejhome.com
         icon: /icons/actualbudget.png
 
+    - AdventureLog:
+        description: Trip planner
+        href: https://adventurelog.matejhome.com
+        ping: adventurelog.matejhome.com
+        icon: /icons/adventurelog.png
+
     - Certbot:
         description: Let's Encrypt certificates
         href: https://certbot.matejhome.com
