@@ -1,0 +1,39 @@
+x-definitions:
+  common-service-options: &common-service-options
+    restart: "no"
+
+services:
+  app-frontend:
+    <<: *common-service-options
+
+  app-backend:
+    <<: *common-service-options
+    networks:
+      internal-network: {}
+      external-network: {}
+    environment:
+      DISABLE_REGISTRATION: False
+
+  certificator:
+    <<: *common-service-options
+
+  apache-frontend:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:8080:80
+      - 127.0.0.1:8443:443
+
+  apache-prometheus-exporter-frontend:
+    <<: *common-service-options
+
+  apache-backend:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:8081:80
+      - 127.0.0.1:8444:443
+
+  apache-prometheus-exporter-backend:
+    <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options

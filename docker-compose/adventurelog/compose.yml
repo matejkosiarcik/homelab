@@ -1,0 +1,115 @@
+services:
+  app-frontend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
+    build:
+      dockerfile: ./external/adventurelog-frontend/Dockerfile
+    environment:
+      ORIGIN: ${DOCKER_COMPOSE_NETWORK_URL}
+
+  app-backend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
+    build:
+      dockerfile: ./external/adventurelog-backend/Dockerfile
+    environment:
+      CSRF_TRUSTED_ORIGINS: ${DOCKER_COMPOSE_NETWORK_URL},${DOCKER_COMPOSE_NETWORK_URL_2}
+      DJANGO_ADMIN_EMAIL: django@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      FRONTEND_URL: ${DOCKER_COMPOSE_NETWORK_URL}
+      PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL_2}
+      DEFAULT_FROM_EMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+    env_file:
+      - ./app-secrets/app-backend.env
+    volumes:
+      - ./app-data/adventurelog-media:/code/media:rw
+      - ./app-logs/adventurelog-backend-nginx:/var/log/nginx:rw
+    tmpfs:
+      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/lib/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    networks: # Internet access necessary for downloading data from raw.githubusercontent.com
+      internal-network: {}
+      external-network: {}
+
+  database:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-database
+    build:
+      dockerfile: ./external/postgis/Dockerfile
+    shm_size: 1G
+    environment:
+      POSTGRES_DB: adventurelog
+      POSTGRES_USER: postgres
+    env_file:
+      - ./app-secrets/postgis.env
+    volumes:
+      - ./app-data/postgis-data:/var/lib/postgresql/data:rw
+    tmpfs:
+      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache-frontend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend
+    environment:
+      HOMELAB_CONTAINER_VARIANT: frontend
+    volumes:
+      - ./app-logs/apache-frontend:/homelab/logs:rw
+
+  apache-prometheus-exporter-frontend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend
+    environment:
+      APACHE_HOST: apache-frontend
+    volumes:
+      - ./app-logs/apache-prometheus-exporter-frontend:/homelab/logs:rw
+
+  apache-backend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-backend
+    environment:
+      HOMELAB_CONTAINER_VARIANT: backend
+    volumes:
+      - ./app-logs/apache-backend:/homelab/logs:rw
+
+  apache-prometheus-exporter-backend:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend
+    environment:
+      APACHE_HOST: apache-backend
+    volumes:
+      - ./app-logs/apache-prometheus-exporter-backend:/homelab/logs:rw
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

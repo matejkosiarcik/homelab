@@ -1,0 +1,40 @@
+x-definitions:
+  common-service-options: &common-service-options
+    restart: unless-stopped
+
+services:
+  app-frontend:
+    <<: *common-service-options
+
+  app-backend:
+    <<: *common-service-options
+    # Uncomment for initial setup (signups):
+    # networks:
+    #   internal-network: {}
+    #   external-network: {}
+    # environment:
+    #   DISABLE_REGISTRATION: False
+
+  certificator:
+    <<: *common-service-options
+
+  apache-frontend:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+
+  apache-prometheus-exporter-frontend:
+    <<: *common-service-options
+
+  apache-backend:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP_2}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP_2}:443:443
+
+  apache-prometheus-exporter-backend:
+    <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options
