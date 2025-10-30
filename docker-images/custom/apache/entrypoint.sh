@@ -29,6 +29,15 @@ export HOMELAB_APP_EXTERNAL_DOMAIN
 # Set PROXY_UPSTREAM_URL
 if [ "$HOMELAB_APP_TYPE" = 'actualbudget' ]; then
     PROXY_UPSTREAM_URL="http://app:5006"
+elif [ "$HOMELAB_APP_TYPE" = 'adventurelog' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'frontend' ]; then
+        PROXY_UPSTREAM_URL="http://app-frontend:3000"
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'backend' ]; then
+        PROXY_UPSTREAM_URL="http://app-backend:80"
+    else
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
+        exit 1
+    fi
 elif [ "$HOMELAB_APP_TYPE" = 'certbot' ]; then
     PROXY_UPSTREAM_URL=''
 elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
@@ -147,6 +156,9 @@ if [ "$HOMELAB_ENV" = 'prod' ]; then
     PROXY_HTTP_PORT='80'
 elif [ "$HOMELAB_ENV" = 'dev' ]; then
     PROXY_HTTP_PORT='8080'
+    if [ "$HOMELAB_APP_TYPE" = 'adventurelog' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'backend' ]; then
+        PROXY_HTTP_PORT='8081'
+    fi
 else
     printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
     exit 1
@@ -156,17 +168,10 @@ export PROXY_HTTP_PORT
 # Set PROXY_HTTPS_PORT
 if [ "$HOMELAB_ENV" = 'prod' ]; then
     PROXY_HTTPS_PORT='443'
-    if [ "$HOMELAB_APP_TYPE" = 'omadacontroller' ] || [ "$HOMELAB_APP_TYPE" = 'unificontroller' ]; then
-        if [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_HTTPS_PORT='444'
-        fi
-    fi
 elif [ "$HOMELAB_ENV" = 'dev' ]; then
     PROXY_HTTPS_PORT='8443'
-    if [ "$HOMELAB_APP_TYPE" = 'omadacontroller' ] || [ "$HOMELAB_APP_TYPE" = 'unificontroller' ]; then
-        if [ "$HOMELAB_CONTAINER_VARIANT" = 'portal' ]; then
-            PROXY_HTTPS_PORT='8444'
-        fi
+    if [ "$HOMELAB_APP_TYPE" = 'adventurelog' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'backend' ]; then
+        PROXY_HTTPS_PORT='8444'
     fi
 else
     printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
@@ -211,7 +216,16 @@ fi
 export PROXY_UPSTREAM_URL_PROMETHEUS
 
 # Set PROXY_PROMETHEUS_EXPORTER_URL
-if [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
+if [ "$HOMELAB_APP_TYPE" = 'adventurelog' ]; then
+    if [ "$HOMELAB_CONTAINER_VARIANT" = 'frontend' ]; then
+        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-frontend:9117'
+    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'backend' ]; then
+        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-backend:9117'
+    else
+        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
+        exit 1
+    fi
+elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     if [ "$HOMELAB_CONTAINER_VARIANT" = 'api' ]; then
         PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-api:9117'
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then

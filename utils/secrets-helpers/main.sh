@@ -185,8 +185,34 @@ write_certificator_users() {
 case "$app_dirname" in
 *actualbudget*)
     # App
-    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
-    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)" >>"$initial_output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
+*adventurelog*)
+    # App
+    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
+    printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
+    django_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app django-admin)"
+    printf 'DJANGO_ADMIN_PASSWORD=%s\n' "$django_admin_password" >>"$initial_output/app-backend.env"
+    printf 'django-admin,%s\n' "$django_admin_password" >>"$initial_output/all-credentials.csv"
+    secret_key="$(load_password "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app-backend.env"
+    printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
+
+    # Database
+    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    printf 'PGPASSWORD=%s\n' "$database_password" >>"$initial_output/app-backend.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
+    printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
