@@ -35,7 +35,7 @@ COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
-FROM node:24.10.0-slim AS nodejs-build
+FROM node:24.11.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/data-optimization/package-lock.json ./custom/data-optimization/package.json ./custom/data-optimization/tsconfig.json ./
 COPY ./custom/data-optimization/src/ ./src/
@@ -43,7 +43,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:24.10.0-slim AS nodejs-server-build
+FROM node:24.11.0-slim AS nodejs-server-build
 WORKDIR /homelab
 COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
 COPY ./.shared/cron-utils/on-demand/src/ ./src/
@@ -51,7 +51,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:24.10.0-slim AS prefinal
+FROM node:24.11.0-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./external/data-optimization/crontab.cron ./external/data-optimization/main.sh ./
@@ -62,7 +62,7 @@ COPY --from=nodejs-server-build /homelab/package.json ./server/
 COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
 COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
-FROM node:24.10.0-slim
+FROM node:24.11.0-slim
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         ghostscript imagemagick jq libreoffice && \
