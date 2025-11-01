@@ -231,7 +231,7 @@ apps:
       - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics
         authentication:
           bearer: PROMETHEUS_TOKEN
-      - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS_PROMETHEUS_TOKEN}
+      - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS__PROMETHEUS_TOKEN}
 
   - name: Home Assistant
     domain: homeassistant.matejhome.com

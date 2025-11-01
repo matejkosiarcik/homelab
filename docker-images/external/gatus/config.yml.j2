@@ -256,7 +256,7 @@ endpoints:
     {%- elif item.authentication.bearer is defined %}
     url: https://{{ item.domain }}
     headers:
-      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ item.authentication.bearer }}{{ "}" }}
+      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ item.authentication.bearer }}{{ "}" }}
     {%- else %}
     url: https://{{ item.domain }}
     {%- endif %}
