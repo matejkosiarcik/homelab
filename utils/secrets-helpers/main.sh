@@ -1211,12 +1211,12 @@ case "$app_dirname" in
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     write_http_auth_user homelab-viewer "$homelab_viewer_password" prometheus
     write_http_auth_user homelab-viewer "$homelab_viewer_password" proxy-prometheus
-    write_http_auth_user homelab-viewer "$matej_password" users-viewers
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users-viewers
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     write_http_auth_user homelab-test "$homelab_test_password" prometheus
     write_http_auth_user homelab-test "$homelab_test_password" proxy-prometheus
-    write_http_auth_user homelab-test "$matej_password" users-viewers
+    write_http_auth_user homelab-test "$homelab_test_password" users-viewers
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
