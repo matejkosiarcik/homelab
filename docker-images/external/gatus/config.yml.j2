@@ -344,7 +344,7 @@ endpoints:
     {%- elif endpoint.authentication.bearer is defined %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     headers:
-      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}_{{ endpoint.authentication.bearer }}{{ "}" }}
+      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ endpoint.authentication.bearer }}{{ "}" }}
     {%- else %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     {%- endif %}
