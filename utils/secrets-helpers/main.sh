@@ -201,6 +201,7 @@ case "$app_dirname" in
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
+    printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
     django_admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app django-admin)"
     printf 'DJANGO_ADMIN_PASSWORD=%s\n' "$django_admin_password" >>"$initial_output/app-backend.env"
     printf 'django-admin,%s\n' "$django_admin_password" >>"$initial_output/all-credentials.csv"
