@@ -171,6 +171,9 @@ RewriteRule ^ /.apache/not-found [L]
     <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && ( %{REQUEST_URI} =~ m#^/\.apache(?:/.*)?$# || %{REQUEST_URI} =~ m#^/favicon\.(?:ico|png)$# )">
         # Allow requests with readonly methods to safe locations
     </If>
+    <ElseIf "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/metrics$#">
+        # Metrics endpoint should be handled in another branch
+    </ElseIf>
     <Else>
         AuthType Basic
         AuthName Protected
