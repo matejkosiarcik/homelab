@@ -28,7 +28,7 @@ apps:
     path: /metrics
   - url: healthchecks.matejhome.com
     auth: bearer
-    path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
+    path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics
   - url: homeassistant.matejhome.com
     auth: bearer
     path: /api/prometheus

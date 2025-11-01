@@ -228,10 +228,10 @@ apps:
     domain: healthchecks.matejhome.com
     endpoints:
       - path: /api/v3/status
-      - path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics
+      - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics
         authentication:
           bearer: PROMETHEUS_TOKEN
-      - path: /projects/${HEALTHCHECKS_PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS_PROMETHEUS_TOKEN}
+      - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS_PROMETHEUS_TOKEN}
 
   - name: Home Assistant
     domain: homeassistant.matejhome.com

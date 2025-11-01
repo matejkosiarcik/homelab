@@ -94,10 +94,10 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     chown -R homelab:homelab /home/homelab /homelab
 WORKDIR /homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab/node_modules ./node_modules
-USER homelab
 RUN apt-get update && \
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
+USER homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 COPY --from=prefinal --chown=homelab:homelab /root/.cache-ms-playwright /home/homelab/.cache/ms-playwright
 ENV HOMELAB_CONTAINER_NAME=web-automation \
