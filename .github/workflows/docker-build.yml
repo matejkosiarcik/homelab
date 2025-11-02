@@ -110,10 +110,9 @@ jobs:
             printf '%s ' '"actualbudget": ["/servers/odroid-h4-ultra/docker-apps/actualbudget"],'
             printf '%s ' '"changedetection": ["/servers/odroid-h4-ultra/docker-apps/changedetection"],'
             printf '%s ' '"docker-cache-proxy": ["/servers/odroid-h4-ultra/docker-apps/docker-cache-proxy-dockerhub"],'
-            printf '%s %s %s' \
+            printf '%s %s' \
               '"dozzle-agent":' \
-              '["/servers/odroid-h4-ultra/docker-apps/dozzle-agent", "/servers/raspberry-pi-3b/docker-apps/dozzle-agent",' \
-              '"/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],'
+              '["/servers/odroid-h4-ultra/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],'
             printf '%s ' '"dozzle-server": ["/servers/odroid-h4-ultra/docker-apps/dozzle"],'
             printf '%s ' '"gatus": ["/servers/odroid-h4-ultra/docker-apps/gatus-1", "/servers/odroid-h3/docker-apps/gatus-2"],'
             printf '%s ' '"healthchecks": ["/servers/odroid-h4-ultra/docker-apps/healthchecks"],'
@@ -134,7 +133,7 @@ jobs:
             printf '%s ' '"samba": ["/servers/macbook-pro-2012/docker-apps/samba-data"],'
             printf '%s ' '"smtp4dev": ["/servers/odroid-h4-ultra/docker-apps/smtp4dev"],'
             printf '%s ' '"speedtesttracker": ["/servers/odroid-h4-ultra/docker-apps/speedtesttracker"],'
-            printf '%s ' '"tvheadend": ["/servers/raspberry-pi-3b/docker-apps/tvheadend"],'
+            printf '%s ' '"tvheadend": ["/servers/raspberry-pi-4b-2g/docker-apps/tvheadend"],'
             printf '%s ' '"unbound": ["/servers/odroid-h4-ultra/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],'
             printf '%s ' '"unificontroller": ["/servers/raspberry-pi-4b-4g/docker-apps/unificontroller"]'
             printf '%s ' '}'

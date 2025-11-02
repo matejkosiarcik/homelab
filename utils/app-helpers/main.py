@@ -7,7 +7,6 @@ import logging
 import math
 import os
 import re
-import socket
 import subprocess
 import sys
 import threading
@@ -183,9 +182,6 @@ def docker_build():
     if cpu_cores is None:
         cpu_cores = 1
     threads = math.ceil(cpu_cores // 2)
-    if re.sub(r"\.local$", "", socket.gethostname()) == "raspberry-pi-3b":
-        # Force this old Raspberry Pi to single thread only to workaround build problems otherwise
-        threads = 1
     commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
     run_with_spinner(commands, "Building", "Build", False)
 

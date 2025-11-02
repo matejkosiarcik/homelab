@@ -2,18 +2,12 @@ apps:
   - url: dawarich.matejhome.com
     auth: basic
     path: /metrics
-  # - url: docker-stats-macbook-pro-2012.matejhome.com
-  #   auth: basic
-  #   path: /metrics
   - url: docker-stats-odroid-h3.matejhome.com
     auth: basic
     path: /metrics
   - url: docker-stats-odroid-h4-ultra.matejhome.com
     auth: basic
     path: /metrics
-  # - url: docker-stats-raspberry-pi-3b.matejhome.com
-  #   auth: basic
-  #   path: /metrics
   - url: docker-stats-raspberry-pi-4b-2g.matejhome.com
     auth: basic
     path: /metrics
@@ -38,18 +32,12 @@ apps:
   - url: minio.matejhome.com
     auth: bearer
     path: /minio/v2/metrics/cluster
-  # - url: nodeexporter-macbook-pro-2012.matejhome.com
-  #   auth: basic
-  #   path: /metrics
   - url: nodeexporter-odroid-h3.matejhome.com
     auth: basic
     path: /metrics
   - url: nodeexporter-odroid-h4-ultra.matejhome.com
     auth: basic
     path: /metrics
-  # - url: nodeexporter-raspberry-pi-3b.matejhome.com
-  #   auth: basic
-  #   path: /metrics
   - url: nodeexporter-raspberry-pi-4b-2g.matejhome.com
     auth: basic
     path: /metrics
@@ -114,10 +102,8 @@ proxies:
   - url: changedetection.matejhome.com
   - url: dawarich.matejhome.com
   - url: docker-cache-proxy-dockerhub.matejhome.com
-  # - url: docker-stats-macbook-pro-2012.matejhome.com
   - url: docker-stats-odroid-h3.matejhome.com
   - url: docker-stats-odroid-h4-ultra.matejhome.com
-  # - url: docker-stats-raspberry-pi-3b.matejhome.com
   - url: docker-stats-raspberry-pi-4b-2g.matejhome.com
   - url: docker-stats-raspberry-pi-4b-4g.matejhome.com
   - url: dozzle.matejhome.com
@@ -133,10 +119,8 @@ proxies:
   - url: minio-console.matejhome.com
   - url: minio.matejhome.com
   - url: motioneye-kitchen.matejhome.com
-  # - url: nodeexporter-macbook-pro-2012.matejhome.com
   - url: nodeexporter-odroid-h3.matejhome.com
   - url: nodeexporter-odroid-h4-ultra.matejhome.com
-  # - url: nodeexporter-raspberry-pi-3b.matejhome.com
   - url: nodeexporter-raspberry-pi-4b-2g.matejhome.com
   - url: nodeexporter-raspberry-pi-4b-4g.matejhome.com
   - url: ntfy.matejhome.com
