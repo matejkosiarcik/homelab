@@ -69,7 +69,7 @@
           - linux-headers-arm64
 
     # Just a note, this can take a long time, especially on first run
-    - name: Update APT packages
+    - name: Upgrade APT packages
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       become: true
       ansible.builtin.apt:
@@ -77,32 +77,72 @@
         autoclean: true
         autoremove: true
 
-    - name: Vacuum journal logs
-      register: journactl_vacuum
-      when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
-      changed_when: "'Deleted archived journal' in journactl_vacuum.stdout or journactl_vacuum.stdout | regex_search('Vacuuming done, freed [1-9]')"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        if [ ! -e /var/log/journal ]; then
-          exit 0
-        fi
-        sudo journalctl --vacuum-time=2d --vacuum-size=5M --rotate 2>&1
+    ## General config ##
 
-    - name: Stop unbound service
-      register: stop_unbound
-      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
-      changed_when: "'CHANGED' in stop_unbound.stdout"
+    # This prevents problems with inotify and open file descriptors
+    - name: Raise inotify limits
+      register: inotify_limits
+      changed_when: "'CHANGED' in inotify_limits.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        status_before="$(sudo systemctl status unbound || true)"
-        sudo systemctl stop unbound
-        sudo systemctl disable unbound
-        status_after="$(sudo systemctl status unbound || true)"
-        if [ "$status_before" != "$status_after" ]; then
+
+        # In debian 13 file "/etc/sysctl.conf" changed to "/usr/lib/sysctl.d/50-default.conf"
+        if [ ! -f '/usr/lib/sysctl.d/50-default.conf' ]; then
+          printf 'File '/usr/lib/sysctl.d/50-default.conf' not found' >&2
+          exit 1
+        fi
+        before_sha="$(shasum '/usr/lib/sysctl.d/50-default.conf')"
+
+        if [ "$(tail -c1 '/usr/lib/sysctl.d/50-default.conf')" != '\n' ]; then
+          printf '\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
+        fi
+
+        if ! grep 'fs.file-max = 65536' <'/usr/lib/sysctl.d/50-default.conf' >/dev/null; then
+          printf 'fs.file-max = 65536\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
+        fi
+        if ! grep 'fs.inotify.max_user_instances = 65536' <'/usr/lib/sysctl.d/50-default.conf' >/dev/null; then
+          printf 'fs.inotify.max_user_instances = 65536\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
+        fi
+
+        after_sha="$(shasum '/usr/lib/sysctl.d/50-default.conf')"
+        if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
 
-    ## General config ##
+    # This prevents problems with inotify and open file descriptors
+    - name: Allow docker memory monitoring
+      register: docker_memory_monitoring
+      when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
+      changed_when: "'CHANGED' in docker_memory_monitoring.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+
+        if [ ! -f '/boot/firmware/cmdline.txt' ]; then
+          printf 'File '/boot/firmware/cmdline.txt' not found' >&2
+          exit 1
+        fi
+        before_sha="$(shasum '/boot/firmware/cmdline.txt')"
+
+        if ! grep 'cgroup_enable=cpuset' <'/boot/firmware/cmdline.txt' >/dev/null; then
+          printf ' cgroup_enable=cpuset' | sudo tee --append '/boot/firmware/cmdline.txt' >/dev/null
+        fi
+        if ! grep 'cgroup_enable=memory' <'/boot/firmware/cmdline.txt' >/dev/null; then
+          printf ' cgroup_enable=memory' | sudo tee --append '/boot/firmware/cmdline.txt' >/dev/null
+        fi
+        if ! grep 'cgroup_memory=1' <'/boot/firmware/cmdline.txt' >/dev/null; then
+          printf ' cgroup_memory=1' | sudo tee --append '/boot/firmware/cmdline.txt' >/dev/null
+        fi
+
+        after_sha="$(shasum '/boot/firmware/cmdline.txt')"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
+
+    - name: Reboot
+      when: inotify_limits.changed or docker_memory_monitoring.changed
+      throttle: 1
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
 
     - name: Setup Shell environment
       register: shell_setup
@@ -135,6 +175,9 @@
         if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
           printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
         fi
+        if ! grep 'export BW_SESSION=' <"$HOME/.bashrc" >/dev/null; then
+          printf 'export BW_SESSION="" ### Fill in! ###\n' >>"$HOME/.bashrc"
+        fi
         if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
           printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.profile"
         fi
@@ -160,7 +203,7 @@
         set -eufo pipefail
         if ! command -v log2ram >/dev/null 2>&1; then
           echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
-            | sudo tee /etc/apt/sources.list.d/azlux.list
+            | sudo tee /etc/apt/sources.list.d/azlux.list >/dev/null
           sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
           sudo apt-get update
           sudo apt-get install --yes log2ram

@@ -65,26 +65,6 @@ sudo visudo
 # Set following line: homelab ALL=(ALL) NOPASSWD: ALL
 ```
 
-## Postinstall - Increase inotify limit
-
-On server:
-
-```sh
-printf '\nfs.file-max = 65536\nfs.inotify.max_user_instances = 65536\n' | sudo tee '/etc/sysctl.conf'
-```
-
-## Postinstall - Docker memory monitoring
-
-Only for ARM devices (Raspberry Pi)!
-
-Add following entries to `/boot/firmware/cmdline.txt` to enable reading how much memory Docker container use:
-
-```txt
-cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
-```
-
-Then `reboot`.
-
 ## Postinstall - Run Ansible
 
 On client:
