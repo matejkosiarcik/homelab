@@ -16,11 +16,8 @@ jobs:
           - macbook-pro-2012
           - odroid-h3
           - odroid-h4-ultra
-          - raspberry-pi-3b
           - raspberry-pi-4b-2g
           - raspberry-pi-4b-4g
-          # - raspberry-pi-zero-2w-1
-          # - raspberry-pi-zero-2w-2
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0

@@ -116,16 +116,6 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Docker Stats - Raspberry Pi 3B
-    domain: docker-stats-raspberry-pi-3b.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
-
   - name: Docker Stats - Raspberry Pi 4B 2GB
     domain: docker-stats-raspberry-pi-4b-2g.matejhome.com
     authentication:
@@ -171,15 +161,6 @@ apps:
     additional_ports:
       tcp:
         - 7007
-
-  - name: Dozzle Agent - Raspberry Pi 3B
-    domain: dozzle-agent-raspberry-pi-3b.matejhome.com
-    type:
-      - tcp
-    additional_ports:
-      tcp:
-        - 7007
-    enabled: false
 
   - name: Dozzle Agent - Raspberry Pi 4B 2GB
     domain: dozzle-agent-raspberry-pi-4b-2g.matejhome.com
@@ -320,16 +301,6 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
-
-  - name: NodeExporter - Raspberry Pi 3B
-    domain: nodeexporter-raspberry-pi-3b.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
 
   - name: NodeExporter - Raspberry Pi 4B 2GB
     domain: nodeexporter-raspberry-pi-4b-2g.matejhome.com
