@@ -21,5 +21,7 @@ LinuxServer (unofficial):
 
 ## After initial installation
 
+- Setup users `matej` (admin), `homelab-stream`, `homelab-test`
 - Setup anonymous user, in order to allow jellyfin to load channel logos, accordingly:
     - ![anonymous user](./anonymous%20user.png)
+- Setup channels

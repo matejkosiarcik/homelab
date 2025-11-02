@@ -276,6 +276,7 @@ load_password() {
     printf 'TVHEADEND__MATEJ_PASSWORD=%s\n' "$(load_password tvheadend app matej)"
     printf 'TVHEADEND__HOMELAB_STREAM_PASSWORD=%s\n' "$(load_password tvheadend app homelab-stream)"
     printf 'TVHEADEND__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password tvheadend app homelab-test)"
+    printf 'TVHEADEND__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password tvheadend app homelab-viewer)"
     printf 'TVHEADEND__PROXY_STATUS_PASSWORD=%s\n' "$(load_password tvheadend apache status)"
     printf 'TVHEADEND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password tvheadend apache prometheus)"
 

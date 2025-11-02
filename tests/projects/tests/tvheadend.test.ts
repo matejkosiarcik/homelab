@@ -44,6 +44,9 @@ test.describe(apps.tvheadend.title, () => {
                 {
                     username: 'homelab-stream',
                 },
+                {
+                    username: 'homelab-viewer',
+                },
             ];
             for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ browser }) => {
