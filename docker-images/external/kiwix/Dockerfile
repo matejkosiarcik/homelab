@@ -1,4 +1,4 @@
-FROM ghcr.io/kiwix/kiwix-serve:3.7.0
+FROM ghcr.io/kiwix/kiwix-serve:3.8.0
 ARG UID=1000
 ARG GID=1000
 RUN apk update --no-cache && \
