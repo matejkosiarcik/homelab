@@ -40,11 +40,11 @@
 
 ### Server - Raspberry Pi 4B 4GB ###
 
+10.1.16.21 docker-stats-raspberry-pi-4b-4g.matejhome.com
 10.1.16.22 dozzle-agent-raspberry-pi-4b-4g.matejhome.com
-10.1.16.23 motioneye-kitchen.matejhome.com
-# 10.1.16.24 glances-raspberry-pi-4b-4g.matejhome.com
-10.1.16.25 nodeexporter-raspberry-pi-4b-4g.matejhome.com
-10.1.16.26 docker-stats-raspberry-pi-4b-4g.matejhome.com
+# 10.1.16.23 glances-raspberry-pi-4b-4g.matejhome.com
+10.1.16.24 nodeexporter-raspberry-pi-4b-4g.matejhome.com
+10.1.16.31 motioneye-kitchen.matejhome.com
 
 ### Server - MacBook Pro 2012 ###
 
