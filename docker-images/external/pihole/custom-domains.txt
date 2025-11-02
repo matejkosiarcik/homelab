@@ -32,10 +32,10 @@
 
 ### Server - Raspberry Pi 4B 2GB ###
 
-10.1.14.21 dozzle-agent-raspberry-pi-4b-2g.matejhome.com
-# 10.1.14.22 glances-raspberry-pi-4b-2g.matejhome.com
-10.1.14.23 nodeexporter-raspberry-pi-4b-2g.matejhome.com
-10.1.14.24 docker-stats-raspberry-pi-4b-2g.matejhome.com
+10.1.14.21 docker-stats-raspberry-pi-4b-2g.matejhome.com
+10.1.14.22 dozzle-agent-raspberry-pi-4b-2g.matejhome.com
+# 10.1.14.23 glances-raspberry-pi-4b-2g.matejhome.com
+10.1.14.24 nodeexporter-raspberry-pi-4b-2g.matejhome.com
 10.1.14.31 tvheadend.matejhome.com
 
 ### Server - Raspberry Pi 4B 4GB ###
