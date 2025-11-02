@@ -62,7 +62,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://homelab-viewer:$PROMETHEUS_HOMELAB_VIEWER_PASSWORD@localhost:9090 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://homelab-viewer:$PROMETHEUS__HOMELAB_VIEWER_PASSWORD@localhost:9090 || exit 1" ]
 ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
 CMD []
 USER homelab
