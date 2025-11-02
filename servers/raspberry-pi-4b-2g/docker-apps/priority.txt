@@ -1,5 +1,8 @@
-# Misc monitoring
-dozzle-agent
-docker-stats
-nodeexporter
+# Main apps
 tvheadend
+
+# Monitoring
+docker-stats
+dozzle-agent
+# glances
+nodeexporter
