@@ -110,7 +110,7 @@ jobs:
             printf '%s ' '"actualbudget": ["/servers/odroid-h4-ultra/docker-apps/actualbudget"],'
             printf '%s ' '"changedetection": ["/servers/odroid-h4-ultra/docker-apps/changedetection"],'
             printf '%s ' '"docker-cache-proxy": ["/servers/odroid-h4-ultra/docker-apps/docker-cache-proxy-dockerhub"],'
-            printf '%s %s %s' \
+            printf '%s %s' \
               '"dozzle-agent":' \
               '["/servers/odroid-h4-ultra/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],'
             printf '%s ' '"dozzle-server": ["/servers/odroid-h4-ultra/docker-apps/dozzle"],'
