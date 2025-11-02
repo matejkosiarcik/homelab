@@ -14,7 +14,7 @@ sources:
 sources_locked:
   - repo: https://github.com/imker25/samba_exporter.git
     name: samba_exporter
-    rev: f4cb6a75b7fcc73ffc88f9226d310a05bd6d3751
+    rev: 51a0efeec99ed6d75af51a2fbb5180e2d1c6d56d
     type: git
     params:
     sparse_paths:
