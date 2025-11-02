@@ -2,3 +2,4 @@
 dozzle-agent
 docker-stats
 nodeexporter
+tvheadend
