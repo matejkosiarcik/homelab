@@ -75,18 +75,15 @@
 10.1.20.27 minio-console.matejhome.com
 10.1.20.28 smtp4dev.matejhome.com
 10.1.20.29 healthchecks.matejhome.com
-10.1.20.30 gatus-1.matejhome.com
-10.1.20.31 speedtesttracker.matejhome.com
-10.1.20.32 homepage.matejhome.com
-10.1.20.33 changedetection.matejhome.com
-10.1.20.34 ntfy.matejhome.com
-10.1.20.35 openspeedtest.matejhome.com
-10.1.20.36 actualbudget.matejhome.com
-10.1.20.37 gotify.matejhome.com
-# 10.1.20.38 desklamp-left-wrapper.matejhome.com
-# 10.1.20.39 desklamp-right-wrapper.matejhome.com
+10.1.20.130 gatus-1.matejhome.com
+10.1.20.131 speedtesttracker.matejhome.com
+10.1.20.132 homepage.matejhome.com
+10.1.20.133 changedetection.matejhome.com
+10.1.20.134 ntfy.matejhome.com
+10.1.20.135 openspeedtest.matejhome.com
+10.1.20.136 actualbudget.matejhome.com
+10.1.20.137 gotify.matejhome.com
 10.1.20.40 dozzle.matejhome.com
-10.1.20.41 dozzle-agent-odroid-h4-ultra.matejhome.com
 10.1.20.42 netalertx.matejhome.com
 10.1.20.43 vikunja.matejhome.com
 10.1.20.44 renovatebot.matejhome.com
@@ -94,7 +91,6 @@
 10.1.20.46 prometheus.matejhome.com
 10.1.20.47 certbot.matejhome.com
 10.1.20.48 uptimekuma-1.matejhome.com
-10.1.20.49 nodeexporter-odroid-h4-ultra.matejhome.com
 10.1.20.50 ollama.matejhome.com
 10.1.20.51 openwebui.matejhome.com
 10.1.20.52 stable-diffusion.matejhome.com
@@ -102,12 +98,16 @@
 10.1.20.54 dawarich.matejhome.com
 10.1.20.55 wikipedia.matejhome.com
 10.1.20.56 wiktionary.matejhome.com
-10.1.20.57 docker-stats-odroid-h4-ultra.matejhome.com
 10.1.20.58 ollama-private.matejhome.com
 10.1.20.59 openwebui-private.matejhome.com
 10.1.20.60 adventurelog.matejhome.com
 10.1.20.61 adventurelog-backend.matejhome.com
 10.1.20.62 groceries.matejhome.com
+
+10.1.20.121 docker-stats-odroid-h4-ultra.matejhome.com
+10.1.20.122 dozzle-agent-odroid-h4-ultra.matejhome.com
+# 10.1.20.123 glances-odroid-h4-ultra.matejhome.com
+10.1.20.124 nodeexporter-odroid-h4-ultra.matejhome.com
 
 ## Mischalenous ##
 
