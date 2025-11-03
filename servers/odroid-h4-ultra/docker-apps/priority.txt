@@ -9,6 +9,7 @@ unbound-1-default
 unbound-1-matej
 unbound-1-monika
 pihole-1-secondary
+pihole-1-blackhole
 
 # Caches
 docker-cache-proxy-dockerhub
