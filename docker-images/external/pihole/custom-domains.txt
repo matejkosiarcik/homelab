@@ -66,15 +66,17 @@
 10.1.20.12 pihole-1-secondary.matejhome.com
 10.1.20.13 pihole-1-blackhole.matejhome.com
 # ...19 Reserved
-10.1.20.21 unificontroller.matejhome.com
-10.1.20.22 omadacontroller.matejhome.com
-10.1.20.23 docker-cache-proxy-dockerhub.matejhome.com
-10.1.20.24 homeassistant.matejhome.com
-10.1.20.25 jellyfin.matejhome.com
-10.1.20.26 minio.matejhome.com
-10.1.20.27 minio-console.matejhome.com
-10.1.20.28 smtp4dev.matejhome.com
-10.1.20.29 healthchecks.matejhome.com
+10.1.20.121 docker-stats-odroid-h4-ultra.matejhome.com
+10.1.20.122 dozzle-agent-odroid-h4-ultra.matejhome.com
+# 10.1.20.123 glances-odroid-h4-ultra.matejhome.com
+10.1.20.124 nodeexporter-odroid-h4-ultra.matejhome.com
+10.1.20.31 unificontroller.matejhome.com
+10.1.20.32 omadacontroller.matejhome.com
+10.1.20.33 docker-cache-proxy-dockerhub.matejhome.com
+10.1.20.34 homeassistant.matejhome.com
+10.1.20.35 jellyfin.matejhome.com
+10.1.20.38 smtp4dev.matejhome.com
+10.1.20.39 healthchecks.matejhome.com
 10.1.20.130 gatus-1.matejhome.com
 10.1.20.131 speedtesttracker.matejhome.com
 10.1.20.132 homepage.matejhome.com
@@ -104,11 +106,9 @@
 10.1.20.161 adventurelog-backend.matejhome.com
 10.1.20.162 groceries.matejhome.com
 
-10.1.20.121 docker-stats-odroid-h4-ultra.matejhome.com
-10.1.20.122 dozzle-agent-odroid-h4-ultra.matejhome.com
-# 10.1.20.123 glances-odroid-h4-ultra.matejhome.com
-10.1.20.124 nodeexporter-odroid-h4-ultra.matejhome.com
+10.1.20.236 minio.matejhome.com
+10.1.20.237 minio-console.matejhome.com
 
 ## Mischalenous ##
 
-10.1.20.21 unifi # Some UniFi devices require this
+10.1.20.31 unifi # Some UniFi devices require this
