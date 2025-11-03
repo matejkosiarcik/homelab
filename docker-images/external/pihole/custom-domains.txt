@@ -23,12 +23,12 @@
 10.1.10.12 pihole-2-secondary.matejhome.com
 10.1.10.13 pihole-2-blackhole.matejhome.com
 # ...19 Reserved
-# 10.1.10.21 glances-odroid-h3.matejhome.com
+10.1.10.21 docker-stats-odroid-h3.matejhome.com
 10.1.10.22 dozzle-agent-odroid-h3.matejhome.com
-10.1.10.23 nodeexporter-odroid-h3.matejhome.com
-10.1.10.24 docker-stats-odroid-h3.matejhome.com
-10.1.10.25 gatus-2.matejhome.com
-10.1.10.26 uptimekuma-2.matejhome.com
+# 10.1.10.23 glances-odroid-h3.matejhome.com
+10.1.10.24 nodeexporter-odroid-h3.matejhome.com
+10.1.10.31 gatus-2.matejhome.com
+10.1.10.32 uptimekuma-2.matejhome.com
 
 ### Server - Raspberry Pi 4B 2GB ###
 
