@@ -6,6 +6,7 @@ unbound-2-default
 unbound-2-matej
 unbound-2-monika
 pihole-2-secondary
+pihole-2-blackhole
 
 # Misc monitoring
 dozzle-agent
