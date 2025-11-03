@@ -9,17 +9,10 @@ flowchart LR
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef no_border stroke:#ffffff00,stroke-width:0px;
 
-    subgraph raspberry_pi_3b["Raspberry Pi 3B"]
-        dozzle_agent_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
-        tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
-
-        %% hidden_raspberry_pi_3b(" ")
-        %% class hidden_raspberry_pi_3b no_border
-    end
-
     subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2GB"]
         dozzle_agent_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
-        dwservice("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dwservice.png' style='min-width:80px;max-width:80px' /></div>DWService")
+        %% dwservice("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dwservice.png' style='min-width:80px;max-width:80px' /></div>DWService")
+        tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
 
         %% hidden_raspberry_pi_4b_2g(" ")
         %% class hidden_raspberry_pi_4b_2g no_border

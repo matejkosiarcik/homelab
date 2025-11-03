@@ -69,13 +69,6 @@
         icon: /icons/odroid.png
         target: _self
 
-    - Raspberry Pi 3B:
-        description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.2')
-        ping: "10.1.4.2"
-        icon: /icons/raspberry-pi.png
-        target: _self
-
     - Raspberry Pi 4B 2G:
         description: App server
         href: javascript:copyUrl('ssh matej@10.1.4.3')
@@ -89,21 +82,6 @@
         ping: "10.1.4.4"
         icon: /icons/raspberry-pi.png
         target: _self
-
-    # Disable for indeterminate time
-    # - Raspberry Pi Zero 2W 1:
-    #     description: IoT device
-    #     href: javascript:copyUrl('ssh matej@10.1.4.6')
-    #     ping: "10.1.4.6"
-    #     icon: /icons/raspberry-pi.png
-    #     target: _self
-
-    # - Raspberry Pi Zero 2W 2:
-    #     description: IoT device
-    #     href: javascript:copyUrl('ssh matej@10.1.4.7')
-    #     ping: "10.1.4.7"
-    #     icon: /icons/raspberry-pi.png
-    #     target: _self
 
 - DNS:
     - PiHole 1 Primary:

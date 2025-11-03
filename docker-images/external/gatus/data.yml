@@ -24,18 +24,10 @@ servers:
     enabled: false # TODO: Reenable
   - name: Odroid H4 Ultra
     ip: 10.1.4.11
-  - name: Raspberry Pi 3B
-    ip: 10.1.4.2
   - name: Raspberry Pi 4B 2GB
     ip: 10.1.4.3
   - name: Raspberry Pi 4B 4GB
     ip: 10.1.4.4
-  - name: Raspberry Pi Zero 2W 1
-    ip: 10.1.4.6
-    enabled: false # TODO: Reenable
-  - name: Raspberry Pi Zero 2W 2
-    ip: 10.1.4.7
-    enabled: false # TODO: Reenable
 
 apps:
   - name: ActualBudget
