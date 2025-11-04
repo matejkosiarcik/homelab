@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_3: USER can't be set directly, because of the way linuxserver.io image works, but it should be active anyway because we set PUID/PGID
 
-FROM linuxserver/jellyfin:10.11.1
+FROM linuxserver/jellyfin:10.11.2
 ARG UID=1000
 ARG GID=1000
 RUN if [ ! -e '/usr/share/jellyfin/web' ]; then \
