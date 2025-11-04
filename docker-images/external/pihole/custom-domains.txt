@@ -48,11 +48,11 @@
 
 ### Server - MacBook Pro 2012 ###
 
-10.1.18.1 samba-data.matejhome.com
-10.1.18.3 dozzle-agent-macbook-pro-2012.matejhome.com
-10.1.18.4 glances-macbook-pro-2012.matejhome.com
-10.1.18.5 nodeexporter-macbook-pro-2012.matejhome.com
-10.1.18.6 docker-stats-macbook-pro-2012.matejhome.com
+10.1.18.21 docker-stats-macbook-pro-2012.matejhome.com
+10.1.18.22 dozzle-agent-macbook-pro-2012.matejhome.com
+10.1.18.23 glances-macbook-pro-2012.matejhome.com
+10.1.18.24 nodeexporter-macbook-pro-2012.matejhome.com
+10.1.18.31 samba-data.matejhome.com
 
 ### Server - Odroid H4 Ultra ###
 
@@ -72,9 +72,10 @@
 10.1.20.24 nodeexporter-odroid-h4-ultra.matejhome.com
 10.1.20.31 unificontroller.matejhome.com
 10.1.20.32 omadacontroller.matejhome.com
-10.1.20.33 docker-cache-proxy-dockerhub.matejhome.com
+10.1.20.33 certbot.matejhome.com
 10.1.20.34 homeassistant.matejhome.com
-10.1.20.35 jellyfin.matejhome.com
+10.1.20.35 docker-cache-proxy-dockerhub.matejhome.com
+10.1.20.36 jellyfin.matejhome.com
 10.1.20.38 smtp4dev.matejhome.com
 10.1.20.39 healthchecks.matejhome.com
 10.1.20.130 gatus-1.matejhome.com
@@ -91,7 +92,6 @@
 10.1.20.144 renovatebot.matejhome.com
 10.1.20.145 vaultwarden.matejhome.com
 10.1.20.146 prometheus.matejhome.com
-10.1.20.147 certbot.matejhome.com
 10.1.20.148 uptimekuma-1.matejhome.com
 10.1.20.150 ollama.matejhome.com
 10.1.20.151 openwebui.matejhome.com

@@ -55,10 +55,23 @@ magick -background none -bordercolor transparent "$input_dir/gitman-repositories
 magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-tmp.png" -gravity Center -composite "$tmpdir/ollama-final.png"
 convert_image_full "$tmpdir/ollama-final.png" "$output_dir/ollama.png"
 
+# Smtp4dev
+
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "$input_dir/other/smtp4dev-favicon.png" "$tmpdir/smtp4dev-favicon-16.png"
+optimize_image "$tmpdir/smtp4dev-favicon-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "$input_dir/other/smtp4dev-favicon.png" "$tmpdir/smtp4dev-favicon-32.png"
+optimize_image "$tmpdir/smtp4dev-favicon-32.png"
+convert_ico "$tmpdir/smtp4dev-favicon-16.png $tmpdir/smtp4dev-favicon-32.png" "$(git rev-parse --show-toplevel)/docker-images/external/smtp4dev/icons/favicon.ico"
+
+convert_image_full "$input_dir/other/smtp4dev-favicon.png" "$(git rev-parse --show-toplevel)/docker-images/external/smtp4dev/icons/favicon.png"
+
 ## Other ##
+
+convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$tmpdir/docker.png"
+cp "$tmpdir/docker.png" "$output_dir/docker-cache-proxy.png"
+cp "$tmpdir/docker.png" "$output_dir/docker-stats.png"
+
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dawarich.svg" "$output_dir/dawarich.png"
-convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$output_dir/docker-cache-proxy.png"
-convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$output_dir/docker-stats.png"
 convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/nodeexporter.png"
 convert_image_full "$input_dir/other/renovatebot.png" "$output_dir/renovatebot.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/samba-server.svg" "$output_dir/samba.png"
