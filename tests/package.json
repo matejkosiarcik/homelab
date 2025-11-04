@@ -5,7 +5,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@actual-app/api": "^25.10.0",
+    "@actual-app/api": "^25.11.0",
     "@faker-js/faker": "^10.1.0",
     "@playwright/test": "^1.56.1",
     "async": "^3.2.6",
@@ -29,7 +29,7 @@
     "@types/async": "^3.2.25",
     "@types/lodash": "^4.17.20",
     "@types/lzma-native": "^4.0.4",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.0",
     "@types/user-agents": "^1.0.4",
     "cross-env": "^10.1.0",
     "exitzero": "^1.0.1",
