@@ -55,6 +55,7 @@ printf 'Main table found\n'
 sql 'DELETE FROM [adlist_by_group];'
 sql 'DELETE FROM [gravity];'
 sql 'DELETE FROM [adlist];'
+sql 'DELETE FROM [domainlist];'
 
 # Ban all domains
 sql "INSERT INTO [domainlist] (type, domain, enabled, date_added, date_modified, comment) VALUES (3, '.*', 1, 0, 0, '');"

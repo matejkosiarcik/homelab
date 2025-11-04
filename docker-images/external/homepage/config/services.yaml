@@ -106,6 +106,17 @@
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_1_SECONDARY__PASSWORD}}"
 
+    - PiHole 1 Blackhole:
+        description: DNS server with built-in adblocking
+        href: https://pihole-1-blackhole.matejhome.com
+        ping: pihole-1-blackhole.matejhome.com
+        icon: /icons/pihole.png
+        widget:
+          type: pihole
+          url: https://pihole-1-blackhole.matejhome.com
+          version: 6
+          key: "{{HOMEPAGE_VAR__PIHOLE_1_BLACKHOLE__PASSWORD}}"
+
     - PiHole 2 Primary:
         description: DNS server with built-in adblocking
         href: https://pihole-2-primary.matejhome.com
@@ -127,6 +138,17 @@
           url: https://pihole-2-secondary.matejhome.com
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_2_SECONDARY__PASSWORD}}"
+
+    - PiHole 2 Blackhole:
+        description: DNS server with built-in adblocking
+        href: https://pihole-2-blackhole.matejhome.com
+        ping: pihole-2-blackhole.matejhome.com
+        icon: /icons/pihole.png
+        widget:
+          type: pihole
+          url: https://pihole-2-blackhole.matejhome.com
+          version: 6
+          key: "{{HOMEPAGE_VAR__PIHOLE_2_BLACKHOLE__PASSWORD}}"
 
     - Unbound 1 Default:
         description: Entrypoint DNS server

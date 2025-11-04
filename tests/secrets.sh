@@ -240,6 +240,11 @@ load_password() {
     printf 'PIHOLE_1_SECONDARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary apache status)"
     printf 'PIHOLE_1_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary apache prometheus)"
 
+    printf 'PIHOLE_1_BLACKHOLE__PASSWORD=%s\n' "$(load_password pihole-1-blackhole app admin)"
+    printf 'PIHOLE_1_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-blackhole app prometheus)"
+    printf 'PIHOLE_1_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-blackhole apache status)"
+    printf 'PIHOLE_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-blackhole apache prometheus)"
+
     printf 'PIHOLE_2_PRIMARY__PASSWORD=%s\n' "$(load_password pihole-2-primary app admin)"
     printf 'PIHOLE_2_PRIMARY__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-primary app prometheus)"
     printf 'PIHOLE_2_PRIMARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-primary apache status)"
@@ -249,6 +254,11 @@ load_password() {
     printf 'PIHOLE_2_SECONDARY__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary app prometheus)"
     printf 'PIHOLE_2_SECONDARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache status)"
     printf 'PIHOLE_2_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache prometheus)"
+
+    printf 'PIHOLE_2_BLACKHOLE__PASSWORD=%s\n' "$(load_password pihole-2-blackhole app admin)"
+    printf 'PIHOLE_2_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-blackhole app prometheus)"
+    printf 'PIHOLE_2_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-blackhole apache status)"
+    printf 'PIHOLE_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-blackhole apache prometheus)"
 
     printf 'PROMETHEUS__MATEJ_PASSWORD=%s\n' "$(load_password prometheus app matej)"
     printf 'PROMETHEUS__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password prometheus app homelab-viewer)"
