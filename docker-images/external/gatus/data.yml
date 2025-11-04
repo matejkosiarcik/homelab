@@ -399,6 +399,16 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: PiHole 1 Blackhole
+    domain: pihole-1-blackhole.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
   - name: PiHole 2 Primary
     domain: pihole-2-primary.matejhome.com
     type:
@@ -411,6 +421,16 @@ apps:
 
   - name: PiHole 2 Secondary
     domain: pihole-2-secondary.matejhome.com
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: PiHole 2 Blackhole
+    domain: pihole-2-blackhole.matejhome.com
     type:
       - dns
       - http
