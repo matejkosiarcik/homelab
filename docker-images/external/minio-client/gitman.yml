@@ -14,7 +14,7 @@ sources:
 sources_locked:
   - repo: https://github.com/minio/mc.git
     name: minio-mc
-    rev: 7394ce0dd2a80935aded936b09fa12cbb3cb8096
+    rev: ed0b962588f581ebd84d3e2a21a21f24c2b37fc1
     type: git
     params:
     sparse_paths:
