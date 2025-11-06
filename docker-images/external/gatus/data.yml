@@ -20,14 +20,13 @@ network:
 
 servers:
   - name: Odroid H3
-    ip: 10.1.4.8
-    enabled: false # TODO: Reenable
+    ip: 10.1.4.108
   - name: Odroid H4 Ultra
-    ip: 10.1.4.11
+    ip: 10.1.4.111
   - name: Raspberry Pi 4B 2GB
-    ip: 10.1.4.3
+    ip: 10.1.4.103
   - name: Raspberry Pi 4B 4GB
-    ip: 10.1.4.4
+    ip: 10.1.4.104
 
 apps:
   - name: ActualBudget
