@@ -1,10 +1,10 @@
 ### Servers ###
 
-10.1.4.101 server-macbook-pro-2012.matejhome.com
-10.1.4.103 server-raspberry-pi-4b-2g.matejhome.com
-10.1.4.104 server-raspberry-pi-4b-4g.matejhome.com
-10.1.4.108 server-odroid-h3.matejhome.com
-10.1.4.111 server-odroid-h4-ultra.matejhome.com
+10.1.4.1 server-odroid-h3.matejhome.com
+10.1.4.3 server-odroid-h4-ultra.matejhome.com
+10.1.4.5 server-raspberry-pi-4b-2g.matejhome.com
+10.1.4.6 server-raspberry-pi-4b-4g.matejhome.com
+10.1.4.7 server-macbook-pro-2012.matejhome.com
 
 ### IoT Devices ###
 

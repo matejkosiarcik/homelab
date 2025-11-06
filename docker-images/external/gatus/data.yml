@@ -20,13 +20,15 @@ network:
 
 servers:
   - name: Odroid H3
-    ip: 10.1.4.108
+    ip: 10.1.4.1
   - name: Odroid H4 Ultra
-    ip: 10.1.4.111
+    ip: 10.1.4.3
   - name: Raspberry Pi 4B 2GB
-    ip: 10.1.4.103
+    ip: 10.1.4.5
   - name: Raspberry Pi 4B 4GB
-    ip: 10.1.4.104
+    ip: 10.1.4.6
+  - name: MacBook Pro 2012
+    ip: 10.1.4.7
 
 apps:
   - name: ActualBudget
@@ -79,16 +81,6 @@ apps:
           - "[STATUS] == 200"
           - "has([BODY].repositories) == true"
 
-  - name: Docker Stats - MacBook Pro 2012
-    domain: docker-stats-macbook-pro-2012.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
-
   - name: Docker Stats - Odroid H3
     domain: docker-stats-odroid-h3.matejhome.com
     authentication:
@@ -127,15 +119,6 @@ apps:
 
   - name: Dozzle
     domain: dozzle.matejhome.com
-
-  - name: Dozzle Agent - MacBook Pro 2012
-    domain: dozzle-agent-macbook-pro-2012.matejhome.com
-    type:
-      - tcp
-    additional_ports:
-      tcp:
-        - 7007
-    enabled: false
 
   - name: Dozzle Agent - Odroid H3
     domain: dozzle-agent-odroid-h3.matejhome.com
@@ -264,16 +247,6 @@ apps:
       - path: /api/prometheus
         authentication:
           basic: PROMETHEUS_PASSWORD
-
-  - name: NodeExporter - MacBook Pro 2012
-    domain: nodeexporter-macbook-pro-2012.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-    enabled: false
 
   - name: NodeExporter - Odroid H3
     domain: nodeexporter-odroid-h3.matejhome.com
