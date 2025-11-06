@@ -1,4 +1,4 @@
-FROM homeassistant/home-assistant:2025.10.4
+FROM homeassistant/home-assistant:2025.11.0
 ARG UID=1000
 ARG GID=1000
 RUN apk update --no-cache && \
