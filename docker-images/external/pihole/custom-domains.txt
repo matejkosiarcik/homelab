@@ -30,6 +30,60 @@
 10.1.10.31 gatus-2.matejhome.com
 10.1.10.32 uptimekuma-2.matejhome.com
 
+### Server - Odroid H4 Ultra ###
+
+10.1.12.1 unbound-1-default.matejhome.com
+10.1.12.2 unbound-1-matej.matejhome.com
+10.1.12.3 unbound-1-monika.matejhome.com
+10.1.12.4 unbound-1-iot.matejhome.com
+10.1.12.5 unbound-1-guests.matejhome.com
+# ...9 Reserved
+10.1.12.11 pihole-1-primary.matejhome.com
+10.1.12.12 pihole-1-secondary.matejhome.com
+10.1.12.13 pihole-1-blackhole.matejhome.com
+# ...19 Reserved
+10.1.12.21 docker-stats-odroid-h4-ultra.matejhome.com
+10.1.12.22 dozzle-agent-odroid-h4-ultra.matejhome.com
+10.1.12.23 glances-odroid-h4-ultra.matejhome.com
+10.1.12.24 nodeexporter-odroid-h4-ultra.matejhome.com
+10.1.12.31 unificontroller.matejhome.com
+10.1.12.32 omadacontroller.matejhome.com
+10.1.12.33 certbot.matejhome.com
+10.1.12.34 homeassistant.matejhome.com
+10.1.12.35 docker-cache-proxy-dockerhub.matejhome.com
+10.1.12.36 jellyfin.matejhome.com
+10.1.12.38 smtp4dev.matejhome.com
+10.1.12.39 healthchecks.matejhome.com
+10.1.12.130 gatus-1.matejhome.com
+10.1.12.131 speedtesttracker.matejhome.com
+10.1.12.132 homepage.matejhome.com
+10.1.12.133 changedetection.matejhome.com
+10.1.12.134 ntfy.matejhome.com
+10.1.12.135 openspeedtest.matejhome.com
+10.1.12.136 actualbudget.matejhome.com
+10.1.12.137 gotify.matejhome.com
+10.1.12.140 dozzle.matejhome.com
+10.1.12.142 netalertx.matejhome.com
+10.1.12.143 vikunja.matejhome.com
+10.1.12.144 renovatebot.matejhome.com
+10.1.12.145 vaultwarden.matejhome.com
+10.1.12.146 prometheus.matejhome.com
+10.1.12.148 uptimekuma-1.matejhome.com
+10.1.12.150 ollama.matejhome.com
+10.1.12.151 openwebui.matejhome.com
+10.1.12.152 stable-diffusion.matejhome.com
+10.1.12.153 grafana.matejhome.com
+10.1.12.154 dawarich.matejhome.com
+10.1.12.155 wikipedia.matejhome.com
+10.1.12.156 wiktionary.matejhome.com
+10.1.12.158 ollama-private.matejhome.com
+10.1.12.159 openwebui-private.matejhome.com
+10.1.12.160 adventurelog.matejhome.com
+10.1.12.161 adventurelog-backend.matejhome.com
+10.1.12.162 groceries.matejhome.com
+10.1.12.236 minio.matejhome.com
+10.1.12.237 minio-console.matejhome.com
+
 ### Server - Raspberry Pi 4B 2GB ###
 
 10.1.14.21 docker-stats-raspberry-pi-4b-2g.matejhome.com
@@ -54,60 +108,6 @@
 10.1.18.24 nodeexporter-macbook-pro-2012.matejhome.com
 10.1.18.31 samba-data.matejhome.com
 
-### Server - Odroid H4 Ultra ###
-
-10.1.20.1 unbound-1-default.matejhome.com
-10.1.20.2 unbound-1-matej.matejhome.com
-10.1.20.3 unbound-1-monika.matejhome.com
-10.1.20.4 unbound-1-iot.matejhome.com
-10.1.20.5 unbound-1-guests.matejhome.com
-# ...9 Reserved
-10.1.20.11 pihole-1-primary.matejhome.com
-10.1.20.12 pihole-1-secondary.matejhome.com
-10.1.20.13 pihole-1-blackhole.matejhome.com
-# ...19 Reserved
-10.1.20.21 docker-stats-odroid-h4-ultra.matejhome.com
-10.1.20.22 dozzle-agent-odroid-h4-ultra.matejhome.com
-10.1.20.23 glances-odroid-h4-ultra.matejhome.com
-10.1.20.24 nodeexporter-odroid-h4-ultra.matejhome.com
-10.1.20.31 unificontroller.matejhome.com
-10.1.20.32 omadacontroller.matejhome.com
-10.1.20.33 certbot.matejhome.com
-10.1.20.34 homeassistant.matejhome.com
-10.1.20.35 docker-cache-proxy-dockerhub.matejhome.com
-10.1.20.36 jellyfin.matejhome.com
-10.1.20.38 smtp4dev.matejhome.com
-10.1.20.39 healthchecks.matejhome.com
-10.1.20.130 gatus-1.matejhome.com
-10.1.20.131 speedtesttracker.matejhome.com
-10.1.20.132 homepage.matejhome.com
-10.1.20.133 changedetection.matejhome.com
-10.1.20.134 ntfy.matejhome.com
-10.1.20.135 openspeedtest.matejhome.com
-10.1.20.136 actualbudget.matejhome.com
-10.1.20.137 gotify.matejhome.com
-10.1.20.140 dozzle.matejhome.com
-10.1.20.142 netalertx.matejhome.com
-10.1.20.143 vikunja.matejhome.com
-10.1.20.144 renovatebot.matejhome.com
-10.1.20.145 vaultwarden.matejhome.com
-10.1.20.146 prometheus.matejhome.com
-10.1.20.148 uptimekuma-1.matejhome.com
-10.1.20.150 ollama.matejhome.com
-10.1.20.151 openwebui.matejhome.com
-10.1.20.152 stable-diffusion.matejhome.com
-10.1.20.153 grafana.matejhome.com
-10.1.20.154 dawarich.matejhome.com
-10.1.20.155 wikipedia.matejhome.com
-10.1.20.156 wiktionary.matejhome.com
-10.1.20.158 ollama-private.matejhome.com
-10.1.20.159 openwebui-private.matejhome.com
-10.1.20.160 adventurelog.matejhome.com
-10.1.20.161 adventurelog-backend.matejhome.com
-10.1.20.162 groceries.matejhome.com
-10.1.20.236 minio.matejhome.com
-10.1.20.237 minio-console.matejhome.com
-
 ## Mischalenous ##
 
-10.1.20.31 unifi # Some UniFi devices require this
+10.1.12.31 unifi # Some UniFi devices require this
