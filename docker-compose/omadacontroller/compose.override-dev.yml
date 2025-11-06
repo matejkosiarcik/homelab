@@ -11,9 +11,10 @@ services:
       PORTAL_HTTP_PORT: 8081
       PORTAL_HTTPS_PORT: 8444
     ports:
+      - 127.0.0.1:19810:19810/udp
       - 127.0.0.1:27001:27001/udp
       - 127.0.0.1:29810:29810/udp
-      - 127.0.0.1:29811-29816:29811-29816
+      - 127.0.0.1:29811-29817:29811-29817
 
   certificator:
     <<: *common-service-options
