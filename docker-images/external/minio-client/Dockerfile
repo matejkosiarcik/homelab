@@ -13,7 +13,7 @@ COPY ./external/minio-client/gitman.yml ./
 RUN gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.25.3-bookworm AS minio-mc-build
+FROM golang:1.25.4-bookworm AS minio-mc-build
 WORKDIR /homelab
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
