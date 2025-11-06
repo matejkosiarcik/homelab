@@ -48,39 +48,39 @@
           fields: ["activeUser", "alerts"]
 
 - Servers:
-    - MacBook Pro 2012:
-        description: NAS
-        href: javascript:copyUrl('ssh matej@10.1.4.101')
-        ping: "10.1.4.101"
-        icon: /icons/apple.png
-        target: _self
-
     - Odroid H3:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.108')
-        ping: "10.1.4.108"
+        href: javascript:copyUrl('ssh matej@10.1.4.1')
+        ping: "10.1.4.1"
         icon: /icons/odroid.png
         target: _self
 
     - Odroid H4 Ultra:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.111')
-        ping: "10.1.4.111"
+        href: javascript:copyUrl('ssh matej@10.1.4.3')
+        ping: "10.1.4.3"
         icon: /icons/odroid.png
         target: _self
 
     - Raspberry Pi 4B 2G:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.103')
-        ping: "10.1.4.103"
+        href: javascript:copyUrl('ssh matej@10.1.4.5')
+        ping: "10.1.4.5"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 4G:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.104')
-        ping: "10.1.4.104"
+        href: javascript:copyUrl('ssh matej@10.1.4.6')
+        ping: "10.1.4.6"
         icon: /icons/raspberry-pi.png
+        target: _self
+
+    - MacBook Pro 2012:
+        description: NAS
+        href: javascript:copyUrl('ssh matej@10.1.4.7')
+        ping: "10.1.4.7"
+        icon: /icons/apple.png
         target: _self
 
 - DNS:
@@ -537,12 +537,6 @@
         icon: /icons/stable-diffusion.png
 
 - Resources:
-    - NodeExporter - MacBook Pro 2012:
-        description: Resource monitoring
-        href: https://nodeexporter-macbook-pro-2012.matejhome.com
-        ping: nodeexporter-macbook-pro-2012.matejhome.com
-        icon: /icons/placeholder.png
-
     - NodeExporter - Odroid H3:
         description: Resource monitoring
         href: https://nodeexporter-odroid-h3.matejhome.com
@@ -566,12 +560,6 @@
         href: https://nodeexporter-raspberry-pi-4b-4g.matejhome.com
         ping: nodeexporter-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/placeholder.png
-
-    - Docker Stats - MacBook Pro 2012:
-        description: Docker usage monitoring
-        href: https://docker-stats-macbook-pro-2012.matejhome.com
-        ping: docker-stats-macbook-pro-2012.matejhome.com
-        icon: /icons/docker.png
 
     - Docker Stats - Odroid H3:
         description: Docker usage monitoring
