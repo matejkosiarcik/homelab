@@ -21,7 +21,6 @@ network:
 servers:
   - name: Odroid H3
     ip: 10.1.4.108
-    enabled: false # TODO: Reenable
   - name: Odroid H4 Ultra
     ip: 10.1.4.111
   - name: Raspberry Pi 4B 2GB
