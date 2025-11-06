@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: USER can't be set directly, but it should be used after container initialized
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
-FROM mbentley/omada-controller:5.15
+FROM mbentley/omada-controller:6.0
 ARG UID=1000
 ARG GID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
