@@ -18,6 +18,7 @@
 10.1.10.3 unbound-2-monika.matejhome.com
 10.1.10.4 unbound-2-iot.matejhome.com
 10.1.10.5 unbound-2-guests.matejhome.com
+10.1.10.6 unbound-2-blackhole.matejhome.com
 # ...9 Reserved
 10.1.10.11 pihole-2-primary.matejhome.com
 10.1.10.12 pihole-2-secondary.matejhome.com
@@ -37,6 +38,7 @@
 10.1.12.3 unbound-1-monika.matejhome.com
 10.1.12.4 unbound-1-iot.matejhome.com
 10.1.12.5 unbound-1-guests.matejhome.com
+10.1.12.6 unbound-1-blackhole.matejhome.com
 # ...9 Reserved
 10.1.12.11 pihole-1-primary.matejhome.com
 10.1.12.12 pihole-1-secondary.matejhome.com
