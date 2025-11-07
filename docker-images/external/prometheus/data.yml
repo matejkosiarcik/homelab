@@ -71,7 +71,16 @@ apps:
   - url: uptimekuma-2.matejhome.com
     auth: basic
     path: /metrics
+  - url: unbound-1-blackhole.matejhome.com
+    auth: basic
+    path: /metrics
   - url: unbound-1-default.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: unbound-1-guests.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: unbound-1-iot.matejhome.com
     auth: basic
     path: /metrics
   - url: unbound-1-matej.matejhome.com
@@ -80,25 +89,22 @@ apps:
   - url: unbound-1-monika.matejhome.com
     auth: basic
     path: /metrics
-  - url: unbound-1-iot.matejhome.com
-    auth: basic
-    path: /metrics
-  - url: unbound-1-guests.matejhome.com
+  - url: unbound-2-blackhole.matejhome.com
     auth: basic
     path: /metrics
   - url: unbound-2-default.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: unbound-2-guests.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: unbound-2-iot.matejhome.com
     auth: basic
     path: /metrics
   - url: unbound-2-matej.matejhome.com
     auth: basic
     path: /metrics
   - url: unbound-2-monika.matejhome.com
-    auth: basic
-    path: /metrics
-  - url: unbound-2-iot.matejhome.com
-    auth: basic
-    path: /metrics
-  - url: unbound-2-guests.matejhome.com
     auth: basic
     path: /metrics
 
