@@ -100,15 +100,6 @@ elif [ "$HOMELAB_APP_TYPE" = 'openwebui' ]; then
     PROXY_UPSTREAM_URL="http://app:8080"
 elif [ "$HOMELAB_APP_TYPE" = 'openspeedtest' ]; then
     PROXY_UPSTREAM_URL="http://app:3000" # HTTPS endpoint is also available, but plain HTTP results in better performance
-elif [ "$HOMELAB_APP_TYPE" = 'owntracks' ]; then
-    if [ "$HOMELAB_CONTAINER_VARIANT" = 'frontend' ]; then
-        PROXY_UPSTREAM_URL="http://app-frontend"
-    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'backend' ]; then
-        PROXY_UPSTREAM_URL="http://app-backend:8083"
-    else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
-        exit 1
-    fi
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
     PROXY_UPSTREAM_URL="http://app"
 elif [ "$HOMELAB_APP_TYPE" = 'prometheus' ]; then
@@ -230,15 +221,6 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
         PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-api:9117'
     elif [ "$HOMELAB_CONTAINER_VARIANT" = 'console' ]; then
         PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-console:9117'
-    else
-        printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
-        exit 1
-    fi
-elif [ "$HOMELAB_APP_TYPE" = 'owntracks' ]; then
-    if [ "$HOMELAB_CONTAINER_VARIANT" = 'frontend' ]; then
-        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-frontend:9117'
-    elif [ "$HOMELAB_CONTAINER_VARIANT" = 'backend' ]; then
-        PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter-backend:9117'
     else
         printf 'Unknown HOMELAB_CONTAINER_VARIANT: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_CONTAINER_VARIANT-N/A}" "$HOMELAB_APP_TYPE"
         exit 1

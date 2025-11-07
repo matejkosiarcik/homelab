@@ -51,7 +51,6 @@ const appAddress = (() => {
         case 'omadacontroller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
         case 'openwebui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
-        case 'owntracks': return 'http://app-backend:8083';
         case 'pihole': return 'http://app:80';
         case 'prometheus': return 'http://app:9090';
         case 'renovatebot': return '' // http://app:8080
@@ -96,7 +95,6 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'omadacontroller': return '/favicon.ico';
         case 'openwebui': return '/static/favicon.svg';
         case 'openspeedtest': return '/assets/images/icons/apple-touch-icon.png';
-        case 'owntracks': return '/static/recorder.png'; // <- Backend, '/favicon.ico' <- Frontend
         case 'pihole': return '/admin/img/favicons/apple-touch-icon.png';
         case 'prometheus': return '/favicon.svg';
         case 'renovatebot': return `@/homelab/icons/${appType}.png`;
