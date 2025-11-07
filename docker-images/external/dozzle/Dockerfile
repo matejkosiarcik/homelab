@@ -32,8 +32,9 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
 COPY --from=dozzle --chown=homelab:homelab /dozzle /dozzle
 COPY --from=dozzle --chown=homelab:homelab /data /data
 ENV DOZZLE_AUTH_PROVIDER=simple \
-    DOZZLE_HOSTNAME=Server \
     DOZZLE_ENABLE_ACTIONS=false \
+    DOZZLE_HOSTNAME=Server \
+    DOZZLE_REMOTE_AGENT=dozzle-agent-odroid-h3.matejhome.com:7007,dozzle-agent-odroid-h4-ultra.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-2g.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-4g.matejhome.com:7007 \
     HOMELAB_CONTAINER_NAME=dozzle \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

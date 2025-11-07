@@ -70,7 +70,6 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
         const host = (() => {
             switch (process.env['HOMELAB_APP_TYPE']) {
                 case 'dawarich': return 'app:3000';
-                case 'owntracks': return 'app-backend:8083';
                 default: throw new Error(`Unknown app ${process.env['HOMELAB_APP_TYPE']}`);
             }
         })();

@@ -167,7 +167,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|owntracks|renovatebot|unbound)$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|renovatebot|unbound)$#">
     <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && ( %{REQUEST_URI} =~ m#^/\.apache(?:/.*)?$# || %{REQUEST_URI} =~ m#^/favicon\.(?:ico|png)$# )">
         # Allow requests with readonly methods to safe locations
     </If>
@@ -214,16 +214,10 @@ RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}/" [P,L]
 
-# Custom owntracks/dawarich decryptor
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^owntracks$ [NC]
-RewriteCond %{REQUEST_METHOD} POST [NC]
-RewriteCond %{REQUEST_URI} ^/pub [NC]
-RewriteCond %{HTTP:Upgrade} !websocket [NC]
-RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "http://decryptor:8080%{REQUEST_URI}" [P,L]
+# Custom owntracks decryptor for dawarich
 # RewriteCond %{ENV:HOMELAB_APP_TYPE} ^dawarich$ [NC]
 # RewriteCond %{REQUEST_METHOD} POST [NC]
-# RewriteCond %{REQUEST_URI} ^/api/v1/owntracks/points [NC]
+# RewriteCond %{REQUEST_URI} ^/api/v1/owntracks/points [NC] # Or /pub
 # RewriteCond %{HTTP:Upgrade} !websocket [NC]
 # RewriteCond %{HTTP:Connection} !upgrade [NC]
 # RewriteRule ^ "http://decryptor:8080%{REQUEST_URI}" [P,L]

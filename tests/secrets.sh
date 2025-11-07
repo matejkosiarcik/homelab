@@ -226,10 +226,6 @@ load_password() {
     printf 'OPENSPEEDTEST__PROXY_STATUS_PASSWORD=%s\n' "$(load_password openspeedtest apache status)"
     printf 'OPENSPEEDTEST__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password openspeedtest apache prometheus)"
 
-    printf 'OWNTRACKS__ADMIN_PASSWORD=%s\n' "$(load_password owntracks app admin)"
-    printf 'OWNTRACKS__PROXY_STATUS_PASSWORD=%s\n' "$(load_password owntracks apache status)"
-    printf 'OWNTRACKS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password owntracks apache prometheus)"
-
     printf 'PIHOLE_1_PRIMARY__PASSWORD=%s\n' "$(load_password pihole-1-primary app admin)"
     printf 'PIHOLE_1_PRIMARY__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-primary app prometheus)"
     printf 'PIHOLE_1_PRIMARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-primary apache status)"

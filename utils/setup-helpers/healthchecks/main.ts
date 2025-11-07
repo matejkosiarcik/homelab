@@ -144,7 +144,6 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Open WebUI',
         'Open WebUI [private]',
         'Openspeedtest',
-        'Owntracks',
         'PiHole - 1 Primary',
         'PiHole - 1 Secondary',
         'PiHole - 2 Primary',
