@@ -468,8 +468,44 @@ apps:
           - "has([BODY].api_version) == true"
           - "has([BODY].name) == true"
 
+  - name: Unbound 1 Blackhole
+    domain: unbound-1-blackhole.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
   - name: Unbound 1 Default
     domain: unbound-1-default.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 Guests
+    domain: unbound-1-guests.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 IoT
+    domain: unbound-1-iot.matejhome.com
     authentication:
       basic: homelab-viewer
     type:
@@ -504,20 +540,8 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Unbound 1 IoT
-    domain: unbound-1-iot.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    type:
-      - dns
-      - http
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
-  - name: Unbound 1 Guests
-    domain: unbound-1-guests.matejhome.com
+  - name: Unbound 2 Blackhole
+    domain: unbound-2-blackhole.matejhome.com
     authentication:
       basic: homelab-viewer
     type:
@@ -530,6 +554,30 @@ apps:
 
   - name: Unbound 2 Default
     domain: unbound-2-default.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Guests
+    domain: unbound-2-guests.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 IoT
+    domain: unbound-2-iot.matejhome.com
     authentication:
       basic: homelab-viewer
     type:
@@ -554,30 +602,6 @@ apps:
 
   - name: Unbound 2 Monika
     domain: unbound-2-monika.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    type:
-      - dns
-      - http
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
-  - name: Unbound 2 IoT
-    domain: unbound-2-iot.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    type:
-      - dns
-      - http
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
-  - name: Unbound 2 Guests
-    domain: unbound-2-guests.matejhome.com
     authentication:
       basic: homelab-viewer
     type:
