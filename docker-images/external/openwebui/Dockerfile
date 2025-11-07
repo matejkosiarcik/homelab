@@ -1,4 +1,4 @@
-FROM ghcr.io/open-webui/open-webui:0.6.34
+FROM ghcr.io/open-webui/open-webui:v0.6.36
 RUN mkdir -p /homelab/app-static && \
     find /app/backend/open_webui/static -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/backend/open_webui/static/$(basename "$1")" "/homelab/app-static/$(basename "$1")"' - {} \; && \
     rm -rf /app/backend/open_webui/static
