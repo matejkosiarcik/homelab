@@ -101,6 +101,17 @@ default-dns-a: &default-dns-a
     - "[BODY] != 127.0.0.1"
     - "[DNS_RCODE] == NOERROR"
 
+default-dns-blackhole-a: &default-dns-blackhole-a
+  alerts: []
+  interval: 30m
+  dns:
+    query-name: "example.com"
+    query-type: "A"
+  conditions:
+    - "[CONNECTED] == true"
+    - "[BODY] == 0.0.0.0"
+    - "[DNS_RCODE] == NOERROR"
+
 default-dns-aaaa: &default-dns-aaaa
   alerts: []
   interval: 30m
@@ -109,7 +120,20 @@ default-dns-aaaa: &default-dns-aaaa
     query-type: "AAAA"
   conditions:
     - "[CONNECTED] == true"
+    - "[BODY] != ::"
+    - "[BODY] != ::0"
     - "[BODY] != ::1"
+    - "[DNS_RCODE] == NOERROR"
+
+default-dns-blackhole-aaaa: &default-dns-blackhole-aaaa
+  alerts: []
+  interval: 30m
+  dns:
+    query-name: "example.com"
+    query-type: "AAAA"
+  conditions:
+    - "[CONNECTED] == true"
+    - "[BODY] == ::"
     - "[DNS_RCODE] == NOERROR"
 
 default-http: &default-http
@@ -374,6 +398,24 @@ endpoints:
     {{- is_enabled(item) }}
 
   - <<: *default-dns-aaaa
+    name: DNS AAAA - {{ item.name }}
+    group: App - {{ item.name }}
+    url: {{ item.domain }}
+    {{- is_enabled(item) }}
+  {%- endif %}
+
+  {%- if item.type is defined and "dns[blackhole]" in item.type %}
+
+  - <<: *default-dns-blackhole-a
+    name: DNS A - {{ item.name }}
+    group: App - {{ item.name }}
+    url: {{ item.domain }}
+    alerts:
+      - type: ntfy
+      - type: gotify
+    {{- is_enabled(item) }}
+
+  - <<: *default-dns-blackhole-aaaa
     name: DNS AAAA - {{ item.name }}
     group: App - {{ item.name }}
     url: {{ item.domain }}

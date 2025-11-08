@@ -30,6 +30,8 @@ is_pull = False
 env_mode = ""
 when_mode = ""
 include_secrets = False
+include_extra_services = False
+only_extra_services = False
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -48,44 +50,43 @@ if tty_supports_color():
     ascii_cross = f"\033[31m{ascii_cross}\033[0m"
 
 
-def get_apps_list(only: Optional[str], skip: Optional[str]) -> List[str]:
-    all_apps_list = sorted([x for x in next(os.walk(path.join(server_dir, "docker-apps")))[1] if not x.startswith(".") and path.isdir(path.join(server_dir, "docker-apps", x))])
+def get_apps_list(only_apps: Optional[str], skip_apps: Optional[str]) -> List[str]:
+    priority_apps_list = []
 
-    with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
-        priority_apps_list = [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
+    if not only_extra_services:
+        with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
+            priority_apps_list += [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
+
+    if include_extra_services or only_extra_services:
+        with open(path.join(server_dir, "docker-apps", "priority-extra.txt"), "r", encoding="utf-8") as file:
+            priority_apps_list += [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
 
     def app_regex(appname: str) -> str:
         partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
         return f".*{partial_regex}.*"
 
-    output_apps_list = priority_apps_list
-
-    if len(all_apps_list) != len(output_apps_list):
-        extra_apps = ", ".join([x for x in all_apps_list if x not in output_apps_list])
-        print(f"You have undeclared apps in priority.txt: {extra_apps}", file=sys.stderr)
-
-    if only is not None and len(only) > 0:
-        only_list = [x for x in only.split(",") if len(x) > 0]
-        output_apps_list_2 = []
+    if only_apps is not None and len(only_apps) > 0:
+        only_list = [x for x in only_apps.split(",") if len(x) > 0]
+        priority_apps_list_2 = []
         for app in only_list:
-            matched_apps = sorted([x for x in output_apps_list if re.match(app_regex(app), x)])
-            output_apps_list_2.extend(matched_apps)
-        output_apps_list = output_apps_list_2
+            matched_apps = sorted([x for x in priority_apps_list if re.match(app_regex(app), x)])
+            priority_apps_list_2.extend(matched_apps)
+        priority_apps_list = priority_apps_list_2
 
-    if skip is not None and len(skip) > 0:
-        skip_list = [x for x in skip.split(",") if len(x) > 0]
-        output_apps_list_2 = output_apps_list
+    if skip_apps is not None and len(skip_apps) > 0:
+        skip_list = [x for x in skip_apps.split(",") if len(x) > 0]
+        priority_apps_list_2 = priority_apps_list
         for app in skip_list:
-            matched_apps = sorted([x for x in output_apps_list if re.match(app_regex(app), x)])
+            matched_apps = sorted([x for x in priority_apps_list if re.match(app_regex(app), x)])
             for matched_app in matched_apps:
-                output_apps_list_2.remove(matched_app)
-        output_apps_list = output_apps_list_2
+                priority_apps_list_2.remove(matched_app)
+        priority_apps_list = priority_apps_list_2
 
-    return output_apps_list
+    return priority_apps_list
 
 
 def main(argv: List[str]):
-    global applist, env_mode, include_secrets, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
+    global applist, env_mode, include_extra_services, include_secrets, is_dryrun, is_online, is_pull, only_extra_services, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -104,6 +105,9 @@ def main(argv: List[str]):
         subcommand.add_argument("--only", type=str, help=f"{subcommand_name.capitalize()} only these apps")
         subcommand.add_argument("--skip", type=str, help=f"{subcommand_name.capitalize()} all apps except these")
         subcommand.add_argument("--jobs", type=int, default=1, help="A number of simultaneous actions to perform")
+        extra_group = subcommand.add_mutually_exclusive_group()
+        extra_group.add_argument("--with-extra", action="store_true", help="Include extra services")
+        extra_group.add_argument("--only-extra", action="store_true", help="Only deploy extra services")
         if subcommand_name == "deploy":
             deploy_when_group = subcommand.add_mutually_exclusive_group()
             deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy apps only when build changed. When there is no change, app is not restarted.")
@@ -118,10 +122,13 @@ def main(argv: List[str]):
 
     args = parser.parse_args(argv)
 
-    applist = get_apps_list(args.only, args.skip)
-
     command = args.subcommand
     is_dryrun = args.dry_run
+
+    include_extra_services = args.with_extra
+    only_extra_services = args.only_extra
+
+    applist = get_apps_list(args.only, args.skip)
 
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)

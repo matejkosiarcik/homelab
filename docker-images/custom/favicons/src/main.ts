@@ -73,7 +73,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'adventurelog': return '/favicon.png';
         case 'certbot': return `@/homelab/icons/${appType}.png`;
         case 'changedetection': return '/static/favicons/apple-touch-icon.png';
-        case 'dawarich': return `@/homelab/icons/${appType}.png`;
+        case 'dawarich': return `/assets/favicon/apple-touch-icon.png`;
         case 'docker-cache-proxy': return `@/homelab/icons/${appType}.png`;
         case 'docker-stats': return `@/homelab/icons/${appType}.png`;
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';

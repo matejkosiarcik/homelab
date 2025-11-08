@@ -9,10 +9,10 @@ scrape_configs:
     {%- if app.auth == "basic" %}
     basic_auth:
       username: {{ "matej" if app.url.startswith("uptimekuma") else "prometheus" }}
-      password: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_PASSWORD{{ "}" }}
+      password: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}__PROMETHEUS_PASSWORD{{ "}" }}
     {%- elif app.auth == "bearer" %}
     authorization:
-      credentials: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROMETHEUS_TOKEN{{ "}" }}
+      credentials: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}__PROMETHEUS_TOKEN{{ "}" }}
     {%- endif %}
     static_configs:
       - targets: [{{ app.url }}]
@@ -23,7 +23,7 @@ scrape_configs:
     metrics_path: /.apache/metrics
     basic_auth:
       username: proxy-prometheus
-      password: ${{ "{" }}{{ proxy.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}_PROXY_PROMETHEUS_PASSWORD{{ "}" }}
+      password: ${{ "{" }}{{ proxy.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}
     static_configs:
       - targets: [{{ proxy.url }}]
 {%- endfor %}
