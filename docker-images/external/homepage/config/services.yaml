@@ -106,6 +106,17 @@
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_1_SECONDARY__PASSWORD}}"
 
+    - PiHole 1 Internal:
+        description: DNS server with built-in adblocking
+        href: https://pihole-1-internal.matejhome.com
+        ping: pihole-1-internal.matejhome.com
+        icon: /icons/pihole.png
+        widget:
+          type: pihole
+          url: https://pihole-1-internal.matejhome.com
+          version: 6
+          key: "{{HOMEPAGE_VAR__PIHOLE_1_INTERNAL__PASSWORD}}"
+
     - PiHole 1 Blackhole:
         description: DNS server with built-in adblocking
         href: https://pihole-1-blackhole.matejhome.com
@@ -138,6 +149,17 @@
           url: https://pihole-2-secondary.matejhome.com
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_2_SECONDARY__PASSWORD}}"
+
+    - PiHole 2 Internal:
+        description: DNS server with built-in adblocking
+        href: https://pihole-2-internal.matejhome.com
+        ping: pihole-2-internal.matejhome.com
+        icon: /icons/pihole.png
+        widget:
+          type: pihole
+          url: https://pihole-2-internal.matejhome.com
+          version: 6
+          key: "{{HOMEPAGE_VAR__PIHOLE_2_INTERNAL__PASSWORD}}"
 
     - PiHole 2 Blackhole:
         description: DNS server with built-in adblocking
@@ -180,6 +202,18 @@
         ping: unbound-1-guests.matejhome.com
         icon: /icons/unbound.png
 
+    - Unbound 1 Internal:
+        description: Entrypoint DNS server
+        href: https://unbound-1-internal.matejhome.com
+        ping: unbound-1-internal.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 1 Blackhole:
+        description: Entrypoint DNS server
+        href: https://unbound-1-blackhole.matejhome.com
+        ping: unbound-1-blackhole.matejhome.com
+        icon: /icons/unbound.png
+
     - Unbound 2 Default:
         description: Entrypoint DNS server
         href: https://unbound-2-default.matejhome.com
@@ -208,6 +242,18 @@
         description: Entrypoint DNS server
         href: https://unbound-2-guests.matejhome.com
         ping: unbound-2-guests.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Internal:
+        description: Entrypoint DNS server
+        href: https://unbound-2-internal.matejhome.com
+        ping: unbound-2-internal.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Blackhole:
+        description: Entrypoint DNS server
+        href: https://unbound-2-blackhole.matejhome.com
+        ping: unbound-2-blackhole.matejhome.com
         icon: /icons/unbound.png
 
 - Smart Home:
