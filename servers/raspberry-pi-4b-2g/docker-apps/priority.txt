@@ -1,6 +1,3 @@
-# Main apps
-tvheadend
-
 # Monitoring
 docker-stats
 dozzle-agent
