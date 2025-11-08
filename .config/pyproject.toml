@@ -13,12 +13,12 @@ disable = [
   "duplicate-code",
   "fixme",
   "invalid-name",
-  "max-statements",
   "missing-class-docstring",
   "missing-function-docstring",
   "missing-module-docstring",
   "no-else-return",
   "too-few-public-methods",
+  "too-many-statements",
   "unused-wildcard-import",
   "wildcard-import",
 ]
