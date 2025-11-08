@@ -73,8 +73,8 @@ services:
       - /var/log/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/run/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     dns: # Use blackhole DNS
-      - 10.1.12.6
-      - 10.1.10.6
+      - 10.1.12.7
+      - 10.1.10.7
     networks:
       internal-network: {}
       external-network: {} # TODO: Connect to external world via socat instead
