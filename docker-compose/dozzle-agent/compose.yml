@@ -17,7 +17,11 @@ services:
     depends_on:
       socket-proxy:
         condition: service_started
+    dns: # Use blackhole DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
+      internal-network: {}
       external-network: {}
 
   socket-proxy:

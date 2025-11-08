@@ -12,6 +12,9 @@ services:
       SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
       - ./app-logs/samba:/var/log/samba:rw
+    dns: # Use blackhole DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

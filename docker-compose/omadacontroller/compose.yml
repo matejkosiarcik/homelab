@@ -12,6 +12,9 @@ services:
     volumes:
       - ./app-data/omada-controller:/opt/tplink/EAPController/data:rw
       - ./app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
+    dns: # Use blackhole DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

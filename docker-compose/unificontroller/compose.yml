@@ -14,6 +14,9 @@ services:
     volumes:
       - ./app-data/unifi-network-application:/config:rw
       - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
+    dns: # Use blackhole DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}
