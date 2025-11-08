@@ -236,6 +236,11 @@ load_password() {
     printf 'PIHOLE_1_SECONDARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary apache status)"
     printf 'PIHOLE_1_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary apache prometheus)"
 
+    printf 'PIHOLE_1_INTERNAL__PASSWORD=%s\n' "$(load_password pihole-1-internal app admin)"
+    printf 'PIHOLE_1_INTERNAL__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-internal app prometheus)"
+    printf 'PIHOLE_1_INTERNAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-internal apache status)"
+    printf 'PIHOLE_1_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-internal apache prometheus)"
+
     printf 'PIHOLE_1_BLACKHOLE__PASSWORD=%s\n' "$(load_password pihole-1-blackhole app admin)"
     printf 'PIHOLE_1_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-blackhole app prometheus)"
     printf 'PIHOLE_1_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-blackhole apache status)"
@@ -250,6 +255,11 @@ load_password() {
     printf 'PIHOLE_2_SECONDARY__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary app prometheus)"
     printf 'PIHOLE_2_SECONDARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache status)"
     printf 'PIHOLE_2_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache prometheus)"
+
+    printf 'PIHOLE_2_INTERNAL__PASSWORD=%s\n' "$(load_password pihole-2-internal app admin)"
+    printf 'PIHOLE_2_INTERNAL__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-internal app prometheus)"
+    printf 'PIHOLE_2_INTERNAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-internal apache status)"
+    printf 'PIHOLE_2_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-internal apache prometheus)"
 
     printf 'PIHOLE_2_BLACKHOLE__PASSWORD=%s\n' "$(load_password pihole-2-blackhole app admin)"
     printf 'PIHOLE_2_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-blackhole app prometheus)"
@@ -286,13 +296,6 @@ load_password() {
     printf 'TVHEADEND__PROXY_STATUS_PASSWORD=%s\n' "$(load_password tvheadend apache status)"
     printf 'TVHEADEND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password tvheadend apache prometheus)"
 
-    printf 'UNBOUND_1_BLACKHOLE__MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app matej)"
-    printf 'UNBOUND_1_BLACKHOLE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app homelab-viewer)"
-    printf 'UNBOUND_1_BLACKHOLE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app homelab-test)"
-    printf 'UNBOUND_1_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app prometheus)"
-    printf 'UNBOUND_1_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-blackhole apache status)"
-    printf 'UNBOUND_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-blackhole apache prometheus)"
-
     printf 'UNBOUND_1_DEFAULT__MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-default app matej)"
     printf 'UNBOUND_1_DEFAULT__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-default app homelab-viewer)"
     printf 'UNBOUND_1_DEFAULT__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-default app homelab-test)"
@@ -328,12 +331,19 @@ load_password() {
     printf 'UNBOUND_1_MONIKA__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-monika apache status)"
     printf 'UNBOUND_1_MONIKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-monika apache prometheus)"
 
-    printf 'UNBOUND_2_BLACKHOLE__MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app matej)"
-    printf 'UNBOUND_2_BLACKHOLE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app homelab-viewer)"
-    printf 'UNBOUND_2_BLACKHOLE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app homelab-test)"
-    printf 'UNBOUND_2_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app prometheus)"
-    printf 'UNBOUND_2_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole apache status)"
-    printf 'UNBOUND_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole apache prometheus)"
+    printf 'UNBOUND_1_INTERNAL__MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-internal app matej)"
+    printf 'UNBOUND_1_INTERNAL__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-internal app homelab-viewer)"
+    printf 'UNBOUND_1_INTERNAL__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-internal app homelab-test)"
+    printf 'UNBOUND_1_INTERNAL__PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-internal app prometheus)"
+    printf 'UNBOUND_1_INTERNAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-internal apache status)"
+    printf 'UNBOUND_1_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-internal apache prometheus)"
+
+    printf 'UNBOUND_1_BLACKHOLE__MATEJ_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app matej)"
+    printf 'UNBOUND_1_BLACKHOLE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app homelab-viewer)"
+    printf 'UNBOUND_1_BLACKHOLE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app homelab-test)"
+    printf 'UNBOUND_1_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-blackhole app prometheus)"
+    printf 'UNBOUND_1_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-1-blackhole apache status)"
+    printf 'UNBOUND_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-1-blackhole apache prometheus)"
 
     printf 'UNBOUND_2_DEFAULT__MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-default app matej)"
     printf 'UNBOUND_2_DEFAULT__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-default app homelab-viewer)"
@@ -369,6 +379,20 @@ load_password() {
     printf 'UNBOUND_2_MONIKA__PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-monika app prometheus)"
     printf 'UNBOUND_2_MONIKA__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-monika apache status)"
     printf 'UNBOUND_2_MONIKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-monika apache prometheus)"
+
+    printf 'UNBOUND_2_INTERNAL__MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-internal app matej)"
+    printf 'UNBOUND_2_INTERNAL__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-internal app homelab-viewer)"
+    printf 'UNBOUND_2_INTERNAL__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-internal app homelab-test)"
+    printf 'UNBOUND_2_INTERNAL__PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-internal app prometheus)"
+    printf 'UNBOUND_2_INTERNAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-internal apache status)"
+    printf 'UNBOUND_2_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-internal apache prometheus)"
+
+    printf 'UNBOUND_2_BLACKHOLE__MATEJ_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app matej)"
+    printf 'UNBOUND_2_BLACKHOLE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app homelab-viewer)"
+    printf 'UNBOUND_2_BLACKHOLE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app homelab-test)"
+    printf 'UNBOUND_2_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole app prometheus)"
+    printf 'UNBOUND_2_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole apache status)"
+    printf 'UNBOUND_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole apache prometheus)"
 
     printf 'UNIFICONTROLLER__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unificontroller app homelab-viewer)"
     printf 'UNIFICONTROLLER__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unificontroller app homelab-test)"
