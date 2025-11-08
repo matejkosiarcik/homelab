@@ -10,6 +10,9 @@ services:
       - ./app-data/tvheadend-data:/config:rw
       - ./config/groupadd.txt:/groupadd:ro
       # - ./app-data/tvheadend-recordings:/recordings
+    dns: # Use blackhole DNS
+      - 10.1.12.7
+      - 10.1.10.7
     networks:
       internal-network: {}
       external-network: {}

@@ -18,11 +18,13 @@
 10.1.10.3 unbound-2-monika.matejhome.com
 10.1.10.4 unbound-2-iot.matejhome.com
 10.1.10.5 unbound-2-guests.matejhome.com
-10.1.10.6 unbound-2-blackhole.matejhome.com
+10.1.10.6 unbound-2-internal.matejhome.com
+10.1.10.7 unbound-2-blackhole.matejhome.com
 # ...9 Reserved
 10.1.10.11 pihole-2-primary.matejhome.com
 10.1.10.12 pihole-2-secondary.matejhome.com
-10.1.10.13 pihole-2-blackhole.matejhome.com
+10.1.10.16 pihole-2-internal.matejhome.com
+10.1.10.17 pihole-2-blackhole.matejhome.com
 # ...19 Reserved
 10.1.10.21 docker-stats-odroid-h3.matejhome.com
 10.1.10.22 dozzle-agent-odroid-h3.matejhome.com
@@ -38,11 +40,13 @@
 10.1.12.3 unbound-1-monika.matejhome.com
 10.1.12.4 unbound-1-iot.matejhome.com
 10.1.12.5 unbound-1-guests.matejhome.com
-10.1.12.6 unbound-1-blackhole.matejhome.com
+10.1.12.6 unbound-1-internal.matejhome.com
+10.1.12.7 unbound-1-blackhole.matejhome.com
 # ...9 Reserved
 10.1.12.11 pihole-1-primary.matejhome.com
 10.1.12.12 pihole-1-secondary.matejhome.com
-10.1.12.13 pihole-1-blackhole.matejhome.com
+10.1.12.16 pihole-1-internal.matejhome.com
+10.1.12.17 pihole-1-blackhole.matejhome.com
 # ...19 Reserved
 10.1.12.21 docker-stats-odroid-h4-ultra.matejhome.com
 10.1.12.22 dozzle-agent-odroid-h4-ultra.matejhome.com

@@ -10,6 +10,7 @@ services:
     volumes:
       - ./app-data/smtp4dev:/smtp4dev:rw
     networks:
+      internal-network: {}
       external-network: {}
     stop_grace_period: 30s
 

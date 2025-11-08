@@ -373,6 +373,16 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: PiHole 1 Internal
+    domain: pihole-1-internal.matejhome.com
+    type:
+      - dns[blackhole]
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
   - name: PiHole 1 Blackhole
     domain: pihole-1-blackhole.matejhome.com
     type:
@@ -397,6 +407,16 @@ apps:
     domain: pihole-2-secondary.matejhome.com
     type:
       - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: PiHole 2 Internal
+    domain: pihole-2-internal.matejhome.com
+    type:
+      - dns[blackhole]
       - http
     endpoints:
       - path: /metrics
@@ -470,18 +490,6 @@ apps:
           - "has([BODY].api_version) == true"
           - "has([BODY].name) == true"
 
-  - name: Unbound 1 Blackhole
-    domain: unbound-1-blackhole.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    type:
-      - dns[blackhole]
-      - http
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
   - name: Unbound 1 Default
     domain: unbound-1-default.matejhome.com
     authentication:
@@ -542,8 +550,20 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Unbound 2 Blackhole
-    domain: unbound-2-blackhole.matejhome.com
+  - name: Unbound 1 Internal
+    domain: unbound-1-internal.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns[blackhole]
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 Blackhole
+    domain: unbound-1-blackhole.matejhome.com
     authentication:
       basic: homelab-viewer
     type:
@@ -608,6 +628,30 @@ apps:
       basic: homelab-viewer
     type:
       - dns
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Internal
+    domain: unbound-2-internal.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns[blackhole]
+      - http
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Blackhole
+    domain: unbound-2-blackhole.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type:
+      - dns[blackhole]
       - http
     endpoints:
       - path: /metrics

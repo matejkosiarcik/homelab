@@ -51,11 +51,11 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator:/homelab/logs:rw
+    tmpfs:
+      - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     networks:
       internal-network: {}
       external-network: {}
-    tmpfs:
-      - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   apache:
     extends:
@@ -68,13 +68,16 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/users/proxy-prometheus.htpasswd:ro
-    networks:
-      internal-network: {}
-      external-network: {} # TODO: Connect to external world via socat instead
     tmpfs:
       - /var/lock:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/run/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    dns: # Use blackhole DNS
+      - 10.1.12.7
+      - 10.1.10.7
+    networks:
+      internal-network: {}
+      external-network: {} # TODO: Connect to external world via socat instead
 
   apache-prometheus-exporter:
     extends:
