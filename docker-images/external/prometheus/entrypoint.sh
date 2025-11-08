@@ -14,14 +14,14 @@ process_template() {
     tmpfile="$tmpdir/file.txt"
     linefile="$tmpdir/line.txt"
 
-    cat "$input_file" | sed -E 's~^ ~_~g' | while read -r line; do
+    sed -E 's~^ ~_~g' <"$input_file" | while read -r line; do
         variables="$(printf '%s' "$line" | grep -E -o '\$\{[^}]*\}' 2>/dev/null | sed -E 's~^\$\{([^}]*)\}~\1~' || true)"
 
         printf '%s\n' "$line" >"$linefile"
 
         printf '%s\n' "$variables" | while read -r var; do
             if [ "$var" = '' ]; then
-                continue;
+                continue
             fi
 
             # Read variable value
@@ -40,14 +40,14 @@ process_template() {
                 }
             fi
 
-            line="$(cat "$linefile" | sed "s~\${$var}~$value~g")"
+            line="$(sed "s~\${$var}~$value~g" <"$linefile")"
             printf '%s\n' "$line" >"$linefile"
         done
 
         cat "$linefile" >>"$tmpfile"
     done
 
-    cat "$tmpfile" | sed -E 's~^_~ ~g' >"$output_file"
+    sed -E 's~^_~ ~g' <"$tmpfile" >"$output_file"
 }
 
 process_template /homelab/web.yml /homelab/config/web.yml
