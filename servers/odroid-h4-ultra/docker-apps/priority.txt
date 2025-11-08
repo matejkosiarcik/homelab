@@ -15,9 +15,6 @@ pihole-1-blackhole
 # Caches
 docker-cache-proxy-dockerhub
 
-# Media
-jellyfin
-
 # Network controllers
 omadacontroller
 unificontroller
