@@ -57,8 +57,8 @@
 
     - Odroid H4 Ultra:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.3')
-        ping: "10.1.4.3"
+        href: javascript:copyUrl('ssh matej@10.1.4.4')
+        ping: "10.1.4.4"
         icon: /icons/odroid.png
         target: _self
 
