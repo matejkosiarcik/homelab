@@ -39,6 +39,8 @@ apps:
 
   - name: Certbot
     domain: certbot.matejhome.com
+    authentication:
+      basic: homelab-viewer
 
   - name: ChangeDetection
     domain: changedetection.matejhome.com
@@ -374,7 +376,7 @@ apps:
   - name: PiHole 1 Blackhole
     domain: pihole-1-blackhole.matejhome.com
     type:
-      - dns
+      - dns[blackhole]
       - http
     endpoints:
       - path: /metrics
@@ -404,7 +406,7 @@ apps:
   - name: PiHole 2 Blackhole
     domain: pihole-2-blackhole.matejhome.com
     type:
-      - dns
+      - dns[blackhole]
       - http
     endpoints:
       - path: /metrics
@@ -473,7 +475,7 @@ apps:
     authentication:
       basic: homelab-viewer
     type:
-      - dns
+      - dns[blackhole]
       - http
     endpoints:
       - path: /metrics
@@ -545,7 +547,7 @@ apps:
     authentication:
       basic: homelab-viewer
     type:
-      - dns
+      - dns[blackhole]
       - http
     endpoints:
       - path: /metrics
