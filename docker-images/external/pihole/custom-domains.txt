@@ -1,7 +1,7 @@
 ### Servers ###
 
 10.1.4.1 server-odroid-h3.matejhome.com
-10.1.4.3 server-odroid-h4-ultra.matejhome.com
+10.1.4.4 server-odroid-h4-ultra.matejhome.com
 10.1.4.5 server-raspberry-pi-4b-2g.matejhome.com
 10.1.4.6 server-raspberry-pi-4b-4g.matejhome.com
 10.1.4.7 server-macbook-pro-2012.matejhome.com

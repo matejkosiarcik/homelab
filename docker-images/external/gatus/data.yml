@@ -22,7 +22,7 @@ servers:
   - name: Odroid H3
     ip: 10.1.4.1
   - name: Odroid H4 Ultra
-    ip: 10.1.4.3
+    ip: 10.1.4.4
   - name: Raspberry Pi 4B 2GB
     ip: 10.1.4.5
   - name: Raspberry Pi 4B 4GB
