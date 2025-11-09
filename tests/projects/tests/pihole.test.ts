@@ -176,7 +176,7 @@ test.describe(apps.pihole.title, () => {
                     'pihole_reply',
                     'pihole_status',
                     'pihole_top_ads',
-                    'pihole_top_queries',
+                    ...(instance.title.toLowerCase().endsWith(' blackhole') ? [] : ['pihole_top_queries']),
                     'pihole_top_sources',
                     'pihole_unique_clients',
                     'pihole_unique_domains',

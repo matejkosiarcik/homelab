@@ -29,6 +29,12 @@ load_password() {
     printf 'ACTUALBUDGET__PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget apache status)"
     printf 'ACTUALBUDGET__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget apache prometheus)"
 
+    printf 'ADVENTURELOG__MATEJ_PASSWORD=%s\n' "$(load_password adventurelog app matej)"
+    printf 'ADVENTURELOG__MONIKA_PASSWORD=%s\n' "$(load_password adventurelog app monika)"
+    printf 'ADVENTURELOG__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password adventurelog app homelab-test)"
+    printf 'ADVENTURELOG__PROXY_STATUS_PASSWORD=%s\n' "$(load_password adventurelog apache status)"
+    printf 'ADVENTURELOG__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password adventurelog apache prometheus)"
+
     printf 'CERTBOT__MATEJ_PASSWORD=%s\n' "$(load_password certbot app matej)"
     printf 'CERTBOT__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password certbot app homelab-viewer)"
     printf 'CERTBOT__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password certbot app homelab-test)"
