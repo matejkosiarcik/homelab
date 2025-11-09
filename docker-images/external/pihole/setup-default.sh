@@ -39,7 +39,7 @@ printf 'Database found\n'
 # Wait for database tables to be ready
 db_log='0'
 while true; do
-    count="$(sql "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='gravity';")"
+    count="$(sql "SELECT count(*) FROM [sqlite_master] WHERE type='table' AND name='gravity';")"
     if [ "$count" -gt '0' ]; then
         break
     fi
@@ -52,9 +52,9 @@ done
 printf 'Main table found\n'
 
 # Wipe other existing entities
-sql 'DELETE FROM client_by_group;'
+sql 'DELETE FROM [client_by_group];'
 sql 'DELETE FROM [group] WHERE id!=0;'
-sql 'DELETE FROM client;'
+sql 'DELETE FROM [client];'
 
 # Add custom open group
 default_group_id='0'
@@ -64,59 +64,59 @@ adfull_group_id="$(sql "SELECT id FROM [group] WHERE name='Adfull';")"
 # Custom clients
 unbound_default_1_ip='10.1.12.1'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_1_ip', 0, 0, 'Unbound 1 Default');"
-unbound_default_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_1_ip';")"
+unbound_default_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_default_1_ip';")"
 
 unbound_matej_1_ip='10.1.12.2'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_matej_1_ip', 0, 0, 'Unbound 1 Matej');"
-unbound_matej_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_matej_1_ip';")"
+unbound_matej_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_matej_1_ip';")"
 
 unbound_monika_1_ip='10.1.12.3'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_monika_1_ip', 0, 0, 'Unbound 1 Monika');"
-unbound_monika_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_monika_1_ip';")"
+unbound_monika_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_monika_1_ip';")"
 
 unbound_iot_1_ip='10.1.12.4'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_iot_1_ip', 0, 0, 'Unbound 1 IoT');"
-unbound_iot_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_iot_1_ip';")"
+unbound_iot_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_iot_1_ip';")"
 
 unbound_guests_1_ip='10.1.12.5'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_1_ip', 0, 0, 'Unbound 1 Guests');"
-unbound_guests_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_1_ip';")"
+unbound_guests_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_guests_1_ip';")"
 
 unbound_internal_1_ip='10.1.12.6'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_1_ip', 0, 0, 'Unbound 1 Guests');"
-unbound_internal_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_internal_1_ip';")"
+unbound_internal_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_internal_1_ip';")"
 
 unbound_blackhole_1_ip='10.1.12.7'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_1_ip', 0, 0, 'Unbound 1 Guests');"
-unbound_blackhole_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_blackhole_1_ip';")"
+unbound_blackhole_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_blackhole_1_ip';")"
 
 unbound_default_2_ip='10.1.10.1'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 Default');"
-unbound_default_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_2_ip';")"
+unbound_default_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_default_2_ip';")"
 
 unbound_matej_2_ip='10.1.10.2'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_matej_2_ip', 0, 0, 'Unbound 2 Matej');"
-unbound_matej_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_matej_2_ip';")"
+unbound_matej_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_matej_2_ip';")"
 
 unbound_monika_2_ip='10.1.10.3'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_monika_2_ip', 0, 0, 'Unbound 2 Monika');"
-unbound_monika_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_monika_2_ip';")"
+unbound_monika_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_monika_2_ip';")"
 
 unbound_iot_2_ip='10.1.10.4'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_iot_2_ip', 0, 0, 'Unbound 2 IoT');"
-unbound_iot_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_iot_2_ip';")"
+unbound_iot_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_iot_2_ip';")"
 
 unbound_guests_2_ip='10.1.10.5'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_2_ip', 0, 0, 'Unbound 2 Guests');"
-unbound_guests_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_2_ip';")"
+unbound_guests_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_guests_2_ip';")"
 
 unbound_internal_2_ip='10.1.10.6'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_2_ip', 0, 0, 'Unbound 2 Guests');"
-unbound_internal_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_internal_2_ip';")"
+unbound_internal_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_internal_2_ip';")"
 
 unbound_blackhole_2_ip='10.1.10.7'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_2_ip', 0, 0, 'Unbound 2 Guests');"
-unbound_blackhole_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_blackhole_2_ip';")"
+unbound_blackhole_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_blackhole_2_ip';")"
 
 # Assign clients to groups
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_1_id;"
