@@ -28,6 +28,8 @@ load_password() {
     printf 'ACTUALBUDGET__SYNC_ID=%s\n' "$(load_password actualbudget app sync-id)"
     printf 'ACTUALBUDGET__PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget apache status)"
     printf 'ACTUALBUDGET__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget apache prometheus)"
+    printf 'ACTUALBUDGET_BACKEND__PROXY_STATUS_PASSWORD=%s\n' "$(load_password actualbudget apache status)"
+    printf 'ACTUALBUDGET_BACKEND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password actualbudget apache prometheus)"
 
     printf 'ADVENTURELOG__MATEJ_PASSWORD=%s\n' "$(load_password adventurelog app matej)"
     printf 'ADVENTURELOG__MONIKA_PASSWORD=%s\n' "$(load_password adventurelog app monika)"
