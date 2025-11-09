@@ -17,9 +17,53 @@ test.describe(apps.unbound.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
+
+            const validUsers = [
+                {
+                    username: 'matej'
+                },
+                {
+                    username: 'homelab-viewer'
+                },
+                {
+                    username: 'homelab-test'
+                },
+            ];
+            for (const user of validUsers) {
+                test(`API: API Get root - User ${user.username}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    username: 'homelab-test'
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`API: Unsuccessful API Get root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alphanumeric(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
+            }
 
             const prometheusValidUsers = [
                 {
@@ -36,6 +80,7 @@ test.describe(apps.unbound.title, () => {
                 },
             ];
             for (const user of prometheusValidUsers) {
+
                 test(`API: Get prometheus metrics - User ${user.username}`, async () => {
                     const response = await axios.get(`${instance.url}/metrics`, {
                         auth: {
@@ -91,7 +136,8 @@ test.describe(apps.unbound.title, () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().endsWith(' blackhole') || instance.title.toLowerCase().endsWith(' internal')) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual('0.0.0.0');
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
+                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 expect(ips, `Domain example.com should be resolved`).not.toHaveLength(0);
                                 for (const ip of ips) {
@@ -132,7 +178,7 @@ test.describe(apps.unbound.title, () => {
                             const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().endsWith(' blackhole')) {
                                 expect(ips, `Domain ${instanceDomain} should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
                                 expect(ips[0], `Domain ${instanceDomain} should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 switch (ipVariant) {
@@ -165,8 +211,9 @@ test.describe(apps.unbound.title, () => {
                             const domain = `${faker.string.alpha(10)}.matejhome.com`;
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().endsWith(' blackhole')) {
-                                expect(ips, `Domain ${domain} should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain ${domain} should be resolved to no IP address`).toStrictEqual('0.0.0.0');
+                                expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
+                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 expect(ips, 'Domain should not be resolved').toHaveLength(0);
                             }
