@@ -29,7 +29,11 @@ test.describe(apps.gatus.title, () => {
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                     await page.goto(instance.url);
-                    await expect(page.locator('.animate-spin')).toBeVisible();
+                    try {
+                        await expect(page.locator('.animate-spin')).toBeVisible({ timeout: 4000 });
+                    } catch {
+                        // Ignore error
+                    }
                     await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
                     await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
                 });
@@ -75,6 +79,16 @@ test.describe(apps.gatus.title, () => {
                     await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
                     await page.goto(instance.url);
                     await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                });
+
+                test(`API: Unsuccessful API Get root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alphanumeric(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 

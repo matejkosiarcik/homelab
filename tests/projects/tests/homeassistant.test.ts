@@ -51,10 +51,10 @@ test.describe(apps.homeassistant.title, () => {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
                     await page.goto(instance.url);
                     await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                    await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
-                    await page.locator('input[name="username"]').fill(user.username);
-                    await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('button.button').click();
+                    await page.locator('form input[name="username"]').waitFor({ timeout: 6000 });
+                    await page.locator('form input[name="username"]').fill(user.username);
+                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('form button.button').click();
                     await page.waitForURL(`${instance.url}/lovelace/0`);
                     await expect(page.locator('home-assistant')).toBeVisible();
                     await expect(page.locator('ha-sidebar')).toBeVisible();
@@ -76,10 +76,10 @@ test.describe(apps.homeassistant.title, () => {
                     await page.goto(instance.url);
                     await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
                     const originalUrl = page.url();
-                    await page.locator('input[name="username"]').waitFor({ timeout: 6000 });
-                    await page.locator('input[name="username"]').fill(user.username);
-                    await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('button.button').click();
+                    await page.locator('form input[name="username"]').waitFor({ timeout: 6000 });
+                    await page.locator('form input[name="username"]').fill(user.username);
+                    await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
+                    await page.locator('form button.button').click();
                     await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
                     await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });
