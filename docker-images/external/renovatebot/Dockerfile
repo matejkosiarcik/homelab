@@ -52,8 +52,8 @@ COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
 COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
 FROM renovate/renovate:42.1.3-full
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 USER root
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \

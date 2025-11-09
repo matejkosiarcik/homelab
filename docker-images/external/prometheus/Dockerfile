@@ -43,8 +43,8 @@ COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/prometheus.yml
 
 FROM prom/prometheus:v3.7.3
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 USER root
 RUN addgroup -g "$GID" homelab && \
     nologinshell='' && \

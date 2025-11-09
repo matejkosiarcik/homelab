@@ -12,8 +12,8 @@ RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".
     mkdir -p /homelab/defaults && \
     find /defaults -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/defaults/$(basename "$1")" "/homelab/defaults/$(basename "$1")"' - {} \; && \
     rm -rf /defaults
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \
     true; else \

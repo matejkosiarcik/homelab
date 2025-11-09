@@ -25,8 +25,8 @@ RUN mkdir -p /homelab && \
     tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
     cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh && \
     rm -rf /app/config /homelab/entrypoint-extra.sh
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \
     true; else \
