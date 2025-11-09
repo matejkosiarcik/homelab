@@ -58,6 +58,7 @@ sql 'DELETE FROM [adlist];'
 sql 'DELETE FROM [domainlist];'
 
 # Ban all domains
+# sql "INSERT INTO [domainlist] (type, domain, enabled, date_added, date_modified, comment) VALUES (0, '^[^.]+\.matejhome\.com$', 1, 0, 0, '');"
 sql "INSERT INTO [domainlist] (type, domain, enabled, date_added, date_modified, comment) VALUES (3, '.*', 1, 0, 0, '');"
 
 # Set custom local domains
