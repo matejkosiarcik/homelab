@@ -17,9 +17,53 @@ test.describe(apps.unbound.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createPrometheusTests(instance.url, { auth: 'basic' });
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
+
+            const validUsers = [
+                {
+                    username: 'matej'
+                },
+                {
+                    username: 'homelab-viewer'
+                },
+                {
+                    username: 'homelab-test'
+                },
+            ];
+            for (const user of validUsers) {
+                test(`API: API Get root - User ${user.username}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    username: 'homelab-test'
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`API: Unsuccessful API Get root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alphanumeric(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
+            }
 
             const prometheusValidUsers = [
                 {
@@ -36,6 +80,7 @@ test.describe(apps.unbound.title, () => {
                 },
             ];
             for (const user of prometheusValidUsers) {
+
                 test(`API: Get prometheus metrics - User ${user.username}`, async () => {
                     const response = await axios.get(`${instance.url}/metrics`, {
                         auth: {

@@ -35,7 +35,7 @@ test.describe(apps.gatus.title, () => {
                 });
 
                 test(`API: API Get root - User ${user.username}`, async () => {
-                    const response = await axios.get(`${instance.url}`, {
+                    const response = await axios.get(instance.url, {
                         auth: {
                             username: user.username,
                             password: getEnv(instance.url, `${user.username}_PASSWORD`),
