@@ -73,7 +73,7 @@ services:
       service: apache-prometheus-exporter
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend
     environment:
-      APACHE_HOST: apache-frontend
+      HOMELAB_CONTAINER_VARIANT: frontend
     volumes:
       - ./app-logs/apache-prometheus-exporter-frontend:/homelab/logs:rw
 
@@ -93,7 +93,7 @@ services:
       service: apache-prometheus-exporter
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend
     environment:
-      APACHE_HOST: apache-backend
+      HOMELAB_CONTAINER_VARIANT: backend
     volumes:
       - ./app-logs/apache-prometheus-exporter-backend:/homelab/logs:rw
 

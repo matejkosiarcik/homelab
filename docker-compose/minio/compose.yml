@@ -38,6 +38,16 @@ services:
     volumes:
       - ./app-logs/apache-api:/homelab/logs:rw
 
+  apache-prometheus-exporter-api:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api
+    environment:
+      HOMELAB_CONTAINER_VARIANT: api
+    volumes:
+      - ./app-logs/apache-prometheus-exporter-api:/homelab/logs:rw
+
   apache-console:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
@@ -48,23 +58,13 @@ services:
     volumes:
       - ./app-logs/apache-console:/homelab/logs:rw
 
-  apache-prometheus-exporter-api:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: apache-prometheus-exporter
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api
-    environment:
-      APACHE_HOST: apache-api
-    volumes:
-      - ./app-logs/apache-prometheus-exporter-api:/homelab/logs:rw
-
   apache-prometheus-exporter-console:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console
     environment:
-      APACHE_HOST: apache-console
+      HOMELAB_CONTAINER_VARIANT: console
     volumes:
       - ./app-logs/apache-prometheus-exporter-console:/homelab/logs:rw
 
