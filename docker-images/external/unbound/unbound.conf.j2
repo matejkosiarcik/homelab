@@ -62,6 +62,10 @@ forward-zone:
     {{- default_piholes() }}
 
 forward-zone:
+    name: "unifi."
+    {{- default_piholes() }}
+
+forward-zone:
     name: "."
     {{- blackhole_piholes() }}
 {% else %}
