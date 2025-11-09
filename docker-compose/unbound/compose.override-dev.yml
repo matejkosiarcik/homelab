@@ -8,8 +8,6 @@ services:
     networks:
       internal-network: {}
       external-network: {}
-    environment:
-      UNBOUND_HOST: 127.0.0.1
     ports:
       - 127.0.0.1:8053:53/tcp
       - 127.0.0.1:8053:53/udp

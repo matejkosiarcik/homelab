@@ -6,16 +6,9 @@ services:
   app:
     <<: *common-service-options
     network_mode: host
-    environment:
-      UNBOUND_HOST: ${DOCKER_COMPOSE_NETWORK_IP}
-    # ports:
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
-    #   - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp
 
   app-prometheus-exporter:
     <<: *common-service-options
-    # volumes:
-    #   - /homelab/config/unbound/${DOCKER_COMPOSE_UNBOUND_NAME}.sock:/homelab/sock/unbound.sock:rw
 
   certificator:
     <<: *common-service-options
