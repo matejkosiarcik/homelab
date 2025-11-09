@@ -59,8 +59,7 @@ sql 'DELETE FROM client;'
 # Add custom open group
 default_group_id='0'
 sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Open', 0, 0, 'The group without adblocking');"
-open_group_id="$(sql "SELECT id FROM [group] WHERE name='Open';")"
-# all_groups="$(printf '%s\n%s\n' "$default_group_id" "$open_group_id")"
+adfull_group_id="$(sql "SELECT id FROM [group] WHERE name='Adfull';")"
 
 # Custom clients
 unbound_default_1_ip='10.1.12.1'
@@ -83,6 +82,14 @@ unbound_guests_1_ip='10.1.12.5'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_1_ip', 0, 0, 'Unbound 1 Guests');"
 unbound_guests_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_1_ip';")"
 
+unbound_internal_1_ip='10.1.12.6'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_1_ip', 0, 0, 'Unbound 1 Guests');"
+unbound_internal_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_internal_1_ip';")"
+
+unbound_blackhole_1_ip='10.1.12.7'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_1_ip', 0, 0, 'Unbound 1 Guests');"
+unbound_blackhole_1_id="$(sql "SELECT id FROM client WHERE ip='$unbound_blackhole_1_ip';")"
+
 unbound_default_2_ip='10.1.10.1'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 Default');"
 unbound_default_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_default_2_ip';")"
@@ -103,17 +110,29 @@ unbound_guests_2_ip='10.1.10.5'
 sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_2_ip', 0, 0, 'Unbound 2 Guests');"
 unbound_guests_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_guests_2_ip';")"
 
+unbound_internal_2_ip='10.1.10.6'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_2_ip', 0, 0, 'Unbound 2 Guests');"
+unbound_internal_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_internal_2_ip';")"
+
+unbound_blackhole_2_ip='10.1.10.7'
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_2_ip', 0, 0, 'Unbound 2 Guests');"
+unbound_blackhole_2_id="$(sql "SELECT id FROM client WHERE ip='$unbound_blackhole_2_ip';")"
+
 # Assign clients to groups
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_default_2_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_matej_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_matej_2_id;"
+sql "UPDATE client_by_group SET group_id=$adfull_group_id WHERE client_id=$unbound_monika_1_id;"
+sql "UPDATE client_by_group SET group_id=$adfull_group_id WHERE client_id=$unbound_monika_2_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_iot_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_iot_2_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_guests_1_id;"
 sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_guests_2_id;"
-sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_monika_1_id;"
-sql "UPDATE client_by_group SET group_id=$open_group_id WHERE client_id=$unbound_monika_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_internal_1_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_internal_2_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_blackhole_1_id;"
+sql "UPDATE client_by_group SET group_id=$default_group_id WHERE client_id=$unbound_blackhole_2_id;"
 
 # Set custom local domains
 custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
