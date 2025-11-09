@@ -122,6 +122,7 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
+# TODO: Do this page handling better???
 # Custom rewrite to prevent 404 root errors
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot|docker-stats|samba|unbound)$ [NC]
 RewriteCond %{REQUEST_URI} ^/?$
