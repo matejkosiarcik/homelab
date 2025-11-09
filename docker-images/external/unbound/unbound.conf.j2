@@ -1,0 +1,73 @@
+{%- macro default_piholes() -%}
+  {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
+    forward-addr: 10.1.12.11
+    forward-addr: 10.1.12.12
+    forward-addr: 10.1.10.11
+    forward-addr: 10.1.10.12
+  {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
+    forward-addr: 10.1.10.11
+    forward-addr: 10.1.10.12
+    forward-addr: 10.1.12.11
+    forward-addr: 10.1.12.12
+  {%- else %}
+    $ Unknown IP: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}} $
+  {%- endif %}
+{%- endmacro -%}
+
+{%- macro blackhole_piholes() -%}
+  {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
+    forward-addr: 10.1.12.19
+    forward-addr: 10.1.10.19
+  {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
+    forward-addr: 10.1.10.19
+    forward-addr: 10.1.12.19
+  {%- else %}
+    $ Unknown IP: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}} $
+  {%- endif %}
+{%- endmacro -%}
+
+server:
+    {%- if env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
+    interface: 0.0.0.0
+    {%- else %}
+    interface: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}}
+    outgoing-interface: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}}
+    {%- endif %}
+    username: ""
+    access-control: 10.0.0.0/8 allow
+    access-control: 127.0.0.0/8 allow
+    access-control: 172.16.0.0/12 allow
+    access-control: 192.168.0.0/16 allow
+    hide-identity: yes
+    hide-version: yes
+    logfile: /homelab/logs/unbound.log
+    extended-statistics: yes
+    cache-max-ttl: 60
+    cache-min-ttl: 1
+    # These options are not in debian's unbound version yet:
+    # cache-max-negative-ttl: 10
+    # cache-min-negative-ttl: 1
+
+{% if env["HOMELAB_APP_NAME"].endswith("-default") or env["HOMELAB_APP_NAME"].endswith("-matej") or env["HOMELAB_APP_NAME"].endswith("-monika") or env["HOMELAB_APP_NAME"].endswith("-guests") or env["HOMELAB_APP_NAME"].endswith("-iot") %}
+forward-zone:
+    name: "."
+    {{- default_piholes() -}}
+{% elif env["HOMELAB_APP_NAME"].endswith("-blackhole") %}
+forward-zone:
+    name: "."
+    {{- blackhole_piholes() }}
+{% elif env["HOMELAB_APP_NAME"].endswith("-internal") %}
+forward-zone:
+    name: "matejhome.com."
+    {{- default_piholes() }}
+
+forward-zone:
+    name: "."
+    {{- blackhole_piholes() }}
+{% else %}
+    $ Unknown app: {{- env["HOMELAB_APP_NAME"] -}} $
+{% endif %}
+
+remote-control:
+    control-enable: yes
+    control-interface: /homelab/sock/unbound.sock
