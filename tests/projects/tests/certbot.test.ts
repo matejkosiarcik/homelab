@@ -14,7 +14,7 @@ test.describe(apps.certbot.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
@@ -43,6 +43,16 @@ test.describe(apps.certbot.title, () => {
                 },
             ];
             for (const user of validUsers) {
+                test(`API: API Get root - User ${user.username}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: user.username,
+                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
+
                 test(`API: Get certificate - User ${user.username})`, async () => {
                     const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
                         auth: {
@@ -74,6 +84,16 @@ test.describe(apps.certbot.title, () => {
                 },
             ];
             for (const user of invalidUsers) {
+                test(`API: Unsuccessful API Get root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    const response = await axios.get(instance.url, {
+                        auth: {
+                            username: user.username,
+                            password: faker.string.alphanumeric(10),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
+
                 test(`API: Get certificate - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
                         auth: {
