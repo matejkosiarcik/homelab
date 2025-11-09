@@ -178,8 +178,10 @@ export const apps = {
     pihole: {
         title: 'PiHole',
         instances: [
+            { url: 'https://pihole-1-blackhole.matejhome.com', title: 'PiHole 1 Blackhole' },
             { url: 'https://pihole-1-primary.matejhome.com', title: 'PiHole 1 Primary' },
             { url: 'https://pihole-1-secondary.matejhome.com', title: 'PiHole 1 Secondary' },
+            { url: 'https://pihole-2-blackhole.matejhome.com', title: 'PiHole 2 Blackhole' },
             { url: 'https://pihole-2-primary.matejhome.com', title: 'PiHole 2 Primary' },
             { url: 'https://pihole-2-secondary.matejhome.com', title: 'PiHole 2 Secondary' },
         ],
@@ -223,13 +225,17 @@ export const apps = {
     unbound: {
         title: 'Unbound',
         instances: [
+            { url: 'https://unbound-1-blackhole.matejhome.com', title: 'Unbound 1 Blackhole' },
             { url: 'https://unbound-1-default.matejhome.com', title: 'Unbound 1 Default' },
             { url: 'https://unbound-1-guests.matejhome.com', title: 'Unbound 1 Guests' },
+            { url: 'https://unbound-1-internal.matejhome.com', title: 'Unbound 1 Internal' },
             { url: 'https://unbound-1-iot.matejhome.com', title: 'Unbound 1 IoT' },
             { url: 'https://unbound-1-matej.matejhome.com', title: 'Unbound 1 Matej' },
             { url: 'https://unbound-1-monika.matejhome.com', title: 'Unbound 1 Monika' },
+            { url: 'https://unbound-2-blackhole.matejhome.com', title: 'Unbound 2 Blackhole' },
             { url: 'https://unbound-2-default.matejhome.com', title: 'Unbound 2 Default' },
             { url: 'https://unbound-2-guests.matejhome.com', title: 'Unbound 2 Guests' },
+            { url: 'https://unbound-2-internal.matejhome.com', title: 'Unbound 2 Internal' },
             { url: 'https://unbound-2-iot.matejhome.com', title: 'Unbound 2 IoT' },
             { url: 'https://unbound-2-matej.matejhome.com', title: 'Unbound 2 Matej' },
             { url: 'https://unbound-2-monika.matejhome.com', title: 'Unbound 2 Monika' },
