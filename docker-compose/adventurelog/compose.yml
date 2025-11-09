@@ -30,7 +30,8 @@ services:
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    networks: # Internet access necessary for downloading data from raw.githubusercontent.com
+    # Internet access necessary for downloading data from raw.githubusercontent.com
+    networks:
       internal-network: {}
       external-network: {}
 
