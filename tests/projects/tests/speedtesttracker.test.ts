@@ -32,9 +32,9 @@ test.describe(apps.speedtesttracker.title, () => {
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
                     await page.goto(`${instance.url}/admin/login`);
-                    await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                    await page.locator('form input[id="data.email"][type="email"]').fill(user.email);
-                    await page.locator('form input[id="data.password"][type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                    await page.locator('form input[id="form.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                    await page.locator('form input[id="form.email"][type="email"]').fill(user.email);
+                    await page.locator('form input[id="form.password"][type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
                     await page.locator('form button:has-text("Sign in")').click();
                     await page.waitForURL(`${instance.url}/admin`);
                     await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
@@ -54,10 +54,10 @@ test.describe(apps.speedtesttracker.title, () => {
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
                     await page.goto(`${instance.url}/admin/login`);
-                    await page.locator('form input[id="data.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                    await page.locator('form input[id="form.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
                     const originalUrl = page.url();
-                    await page.locator('form input[id="data.email"][type="email"]').fill(user.email);
-                    await page.locator('form input[id="data.password"][type="password"]').fill(faker.string.alpha(10));
+                    await page.locator('form input[id="form.email"][type="email"]').fill(user.email);
+                    await page.locator('form input[id="form.password"][type="password"]').fill(faker.string.alpha(10));
                     await page.locator('form button:has-text("Sign in")').click();
                     await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
                     await expect(page, 'URL should not change').toHaveURL(originalUrl);
