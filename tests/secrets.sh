@@ -236,11 +236,6 @@ load_password() {
     printf 'PIHOLE_1_SECONDARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary apache status)"
     printf 'PIHOLE_1_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-secondary apache prometheus)"
 
-    printf 'PIHOLE_1_INTERNAL__PASSWORD=%s\n' "$(load_password pihole-1-internal app admin)"
-    printf 'PIHOLE_1_INTERNAL__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-internal app prometheus)"
-    printf 'PIHOLE_1_INTERNAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-internal apache status)"
-    printf 'PIHOLE_1_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-internal apache prometheus)"
-
     printf 'PIHOLE_1_BLACKHOLE__PASSWORD=%s\n' "$(load_password pihole-1-blackhole app admin)"
     printf 'PIHOLE_1_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-1-blackhole app prometheus)"
     printf 'PIHOLE_1_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-1-blackhole apache status)"
@@ -255,11 +250,6 @@ load_password() {
     printf 'PIHOLE_2_SECONDARY__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary app prometheus)"
     printf 'PIHOLE_2_SECONDARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache status)"
     printf 'PIHOLE_2_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-secondary apache prometheus)"
-
-    printf 'PIHOLE_2_INTERNAL__PASSWORD=%s\n' "$(load_password pihole-2-internal app admin)"
-    printf 'PIHOLE_2_INTERNAL__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-internal app prometheus)"
-    printf 'PIHOLE_2_INTERNAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_password pihole-2-internal apache status)"
-    printf 'PIHOLE_2_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-internal apache prometheus)"
 
     printf 'PIHOLE_2_BLACKHOLE__PASSWORD=%s\n' "$(load_password pihole-2-blackhole app admin)"
     printf 'PIHOLE_2_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_password pihole-2-blackhole app prometheus)"

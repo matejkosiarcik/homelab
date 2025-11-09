@@ -23,7 +23,6 @@
 # ...9 Reserved
 10.1.10.11 pihole-2-primary.matejhome.com
 10.1.10.12 pihole-2-secondary.matejhome.com
-10.1.10.16 pihole-2-internal.matejhome.com
 10.1.10.17 pihole-2-blackhole.matejhome.com
 # ...19 Reserved
 10.1.10.21 docker-stats-odroid-h3.matejhome.com
@@ -45,7 +44,6 @@
 # ...9 Reserved
 10.1.12.11 pihole-1-primary.matejhome.com
 10.1.12.12 pihole-1-secondary.matejhome.com
-10.1.12.16 pihole-1-internal.matejhome.com
 10.1.12.17 pihole-1-blackhole.matejhome.com
 # ...19 Reserved
 10.1.12.21 docker-stats-odroid-h4-ultra.matejhome.com

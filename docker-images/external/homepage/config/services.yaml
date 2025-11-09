@@ -106,17 +106,6 @@
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_1_SECONDARY__PASSWORD}}"
 
-    - PiHole 1 Internal:
-        description: DNS server with built-in adblocking
-        href: https://pihole-1-internal.matejhome.com
-        ping: pihole-1-internal.matejhome.com
-        icon: /icons/pihole.png
-        widget:
-          type: pihole
-          url: https://pihole-1-internal.matejhome.com
-          version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_1_INTERNAL__PASSWORD}}"
-
     - PiHole 1 Blackhole:
         description: DNS server with built-in adblocking
         href: https://pihole-1-blackhole.matejhome.com
@@ -149,17 +138,6 @@
           url: https://pihole-2-secondary.matejhome.com
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_2_SECONDARY__PASSWORD}}"
-
-    - PiHole 2 Internal:
-        description: DNS server with built-in adblocking
-        href: https://pihole-2-internal.matejhome.com
-        ping: pihole-2-internal.matejhome.com
-        icon: /icons/pihole.png
-        widget:
-          type: pihole
-          url: https://pihole-2-internal.matejhome.com
-          version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_2_INTERNAL__PASSWORD}}"
 
     - PiHole 2 Blackhole:
         description: DNS server with built-in adblocking
