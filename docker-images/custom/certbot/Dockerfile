@@ -40,7 +40,7 @@ WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./custom/certbot/crontab.cron ./custom/certbot/main.sh ./custom/certbot/certbot-hook-after.sh ./custom/certbot/certbot-hook-before.sh ./
 
-FROM python:3.14.0-slim
+FROM debian:13.1-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         ca-certificates certbot curl jq xz-utils >/dev/null && \
