@@ -11,6 +11,7 @@ services:
       - ./app-data/ntfy-cache:/var/cache/ntfy:rw
       - ./app-data/ntfy-lib:/var/lib/ntfy:rw
       # - ./app-data/ntfy-etc:/etc/ntfy:rw
+    # Internet access requied for publishing notifications through firebase
     networks:
       internal-network: {}
       external-network: {}

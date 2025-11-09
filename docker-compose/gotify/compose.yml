@@ -10,6 +10,9 @@ services:
     volumes:
       - ./app-data/gotify:/app/data:rw
       - ./app-data/gotify-etc:/etc/gotify:rw
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

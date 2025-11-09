@@ -9,6 +9,9 @@ services:
       - ./app-secrets/app.env
     volumes:
       - ./app-logs/homepage:/app/config/logs:rw
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}
@@ -48,6 +51,9 @@ services:
       dockerfile: ./custom/homepage-widgets/Dockerfile
     env_file:
       - ./app-secrets/widgets.env
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

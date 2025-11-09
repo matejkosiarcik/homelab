@@ -11,6 +11,9 @@ services:
       SITE_NAME: Healthchecks
     volumes:
       - ./app-data/healthchecks:/homelab/healthchecks:rw
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

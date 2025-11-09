@@ -9,9 +9,6 @@ services:
   app-backend:
     <<: *common-service-options
     # Uncomment for initial setup (signups):
-    # networks:
-    #   internal-network: {}
-    #   external-network: {}
     # environment:
     #   DISABLE_REGISTRATION: False
 

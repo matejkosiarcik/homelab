@@ -14,6 +14,9 @@ services:
       - ./app-data/pihole:/etc/pihole:rw
     cap_add:
       - SYS_NICE
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

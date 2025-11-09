@@ -10,6 +10,7 @@ services:
       - ./config/app.env
     volumes:
       - ./app-data/docker-registry:/var/lib/registry:rw
+    # Internet access required for reading remove registry data
     networks:
       internal-network: {}
       external-network: {}

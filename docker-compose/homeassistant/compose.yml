@@ -14,6 +14,9 @@ services:
     #   - NET_ADMIN
     #   - NET_RAW
     # privileged: true
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

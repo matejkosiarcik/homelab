@@ -13,6 +13,9 @@ services:
       - ./app-data/openwebui:/app/backend/data:rw
     tmpfs:
       - /app/backend/open_webui/static:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}
