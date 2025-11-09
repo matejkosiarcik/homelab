@@ -91,8 +91,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     build:
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
-    environment:
-      APACHE_HOST: apache
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
 
