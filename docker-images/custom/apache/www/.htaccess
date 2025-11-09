@@ -168,7 +168,7 @@ RewriteRule ^ /.apache/not-found [L]
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|prometheus|renovatebot|unbound)$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|homepage|kiwix|nodeexporter|ollama|prometheus|renovatebot|smtp4dev|unbound)$#">
     <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && ( %{REQUEST_URI} =~ m#^/\.apache(?:/.*)?$# || %{REQUEST_URI} =~ m#^/favicon\.(?:ico|png)$# )">
         # Allow requests with readonly methods to safe locations
     </If>

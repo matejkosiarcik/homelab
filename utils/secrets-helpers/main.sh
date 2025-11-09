@@ -987,15 +987,15 @@ case "$app_dirname" in
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
     printf 'PROMETHEUS__HOMELAB_VIEWER_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$homelab_viewer_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
-    write_http_auth_user homelab-viewer "$matej_password" prometheus
-    write_http_auth_user homelab-viewer "$matej_password" proxy-prometheus
-    write_http_auth_user homelab-viewer "$matej_password" users-viewers
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" proxy-prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users-viewers
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'PROMETHEUS__HOMELAB_TEST_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$homelab_test_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
-    write_http_auth_user homelab-test "$matej_password" prometheus
-    write_http_auth_user homelab-test "$matej_password" proxy-prometheus
-    write_http_auth_user homelab-test "$matej_password" users-viewers
+    write_http_auth_user homelab-test "$homelab_test_password" prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" proxy-prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" users-viewers
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
     printf 'PROMETHEUS__PROMETHEUS_PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$prometheus_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
@@ -1177,12 +1177,21 @@ case "$app_dirname" in
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'ServerOptions__Users__0__Password=%s\n' "$matej_password" >>"$initial_output/app.env"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    write_http_auth_user matej "$matej_password" proxy-prometheus
+    write_http_auth_user matej "$matej_password" users-viewers
+    write_http_auth_user matej "$matej_password" users-admins
     homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
     printf 'ServerOptions__Users__1__Password=%s\n' "$homelab_viewer_password" >>"$initial_output/app.env"
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" proxy-prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users-viewers
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users-admins
     homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
     printf 'ServerOptions__Users__2__Password=%s\n' "$homelab_test_password" >>"$initial_output/app.env"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
+    write_http_auth_user homelab-test "$homelab_test_password" proxy-prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" users-viewers
+    write_http_auth_user homelab-test "$homelab_test_password" users-admins
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
