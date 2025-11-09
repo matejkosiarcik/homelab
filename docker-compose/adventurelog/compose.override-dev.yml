@@ -8,6 +8,7 @@ services:
 
   app-backend:
     <<: *common-service-options
+    # Internet access required for downloading initial geo data
     networks:
       internal-network: {}
       external-network: {}

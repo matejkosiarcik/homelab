@@ -59,6 +59,9 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator:/homelab/logs:rw
     tmpfs:
       - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     networks:
       internal-network: {}
       external-network: {}

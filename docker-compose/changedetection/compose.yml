@@ -7,6 +7,7 @@ services:
       dockerfile: ./external/changedetection/Dockerfile
     volumes:
       - ./app-data/changedetection:/datastore:rw
+    # Internet access required for monitoring public websites
     networks:
       internal-network: {}
       external-network: {}
@@ -19,6 +20,7 @@ services:
     init: false
     build:
       dockerfile: ./external/sockpuppetbrowser/Dockerfile
+    # Internet access required for monitoring public websites
     networks:
       internal-network: {}
       external-network: {}

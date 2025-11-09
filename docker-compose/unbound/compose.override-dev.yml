@@ -5,6 +5,9 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
+    dns: # Use internal DNS
+      - 10.1.12.7
+      - 10.1.10.7
     networks:
       internal-network: {}
       external-network: {}

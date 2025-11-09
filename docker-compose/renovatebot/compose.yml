@@ -7,6 +7,7 @@ services:
       dockerfile: ./external/renovatebot/Dockerfile
     env_file:
       - ./app-secrets/app.env
+    # Internet access required for accessing github/gitlab and package registries
     networks:
       internal-network: {}
       external-network: {}

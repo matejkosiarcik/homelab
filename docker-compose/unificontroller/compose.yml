@@ -14,7 +14,7 @@ services:
     volumes:
       - ./app-data/unifi-network-application:/config:rw
       - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
-    # Public DNS required for downloading device firmware updates
+    # Internet access required for downloading device firmware updates
     networks:
       internal-network: {}
       external-network: {}

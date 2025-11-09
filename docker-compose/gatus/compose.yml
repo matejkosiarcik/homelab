@@ -9,6 +9,7 @@ services:
       - ./app-secrets/app.env
     volumes:
       - ./app-data/gatus:/data:rw
+    # Internet access required for monitoring public DNS
     networks:
       internal-network: {}
       external-network: {}

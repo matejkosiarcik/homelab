@@ -12,6 +12,7 @@ services:
       - ./app-data/certs:/homelab/certs:rw
       - ./app-logs/certbot:/homelab/logs:rw
       - ./app-logs/letsencrypt:/var/log/letsencrypt:rw
+    # Internet access required for getting new Let's encrypt certificate
     networks:
       internal-network: {}
       external-network: {}

@@ -12,7 +12,7 @@ services:
     volumes:
       - ./app-data/omada-controller:/opt/tplink/EAPController/data:rw
       - ./app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
-    # Public DNS required for downloading device firmware updates
+    # Internet access required for downloading device firmware updates
     networks:
       internal-network: {}
       external-network: {}

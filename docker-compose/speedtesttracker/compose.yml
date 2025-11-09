@@ -10,6 +10,7 @@ services:
       - ./app-secrets/app.env
     volumes:
       - ./app-data/speedtesttracker:/config:rw
+    # Internet access required for performing speed-tests
     networks:
       internal-network: {}
       external-network: {}
