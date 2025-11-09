@@ -3,6 +3,7 @@ theme: dark
 color: gray
 statusStyle: dot
 disableCollapse: true
+disableUpdateCheck: true
 
 layout:
   Network:
