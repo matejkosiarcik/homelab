@@ -83,11 +83,11 @@ sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbou
 unbound_guests_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_guests_1_ip';")"
 
 unbound_internal_1_ip='10.1.12.6'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_1_ip', 0, 0, 'Unbound 1 Guests');"
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_1_ip', 0, 0, 'Unbound 1 Internal');"
 unbound_internal_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_internal_1_ip';")"
 
 unbound_blackhole_1_ip='10.1.12.7'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_1_ip', 0, 0, 'Unbound 1 Guests');"
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_1_ip', 0, 0, 'Unbound 1 Blackhole');"
 unbound_blackhole_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_blackhole_1_ip';")"
 
 unbound_default_2_ip='10.1.10.1'
@@ -111,11 +111,11 @@ sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbou
 unbound_guests_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_guests_2_ip';")"
 
 unbound_internal_2_ip='10.1.10.6'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_2_ip', 0, 0, 'Unbound 2 Guests');"
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_2_ip', 0, 0, 'Unbound 2 Internal');"
 unbound_internal_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_internal_2_ip';")"
 
 unbound_blackhole_2_ip='10.1.10.7'
-sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_2_ip', 0, 0, 'Unbound 2 Guests');"
+sql "INSERT INTO client (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_2_ip', 0, 0, 'Unbound 2 Blackhole');"
 unbound_blackhole_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_blackhole_2_ip';")"
 
 # Assign clients to groups
