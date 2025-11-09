@@ -180,6 +180,18 @@
         ping: unbound-1-guests.matejhome.com
         icon: /icons/unbound.png
 
+    - Unbound 1 Internal:
+        description: Entrypoint DNS server
+        href: https://unbound-1-internal.matejhome.com
+        ping: unbound-1-internal.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 1 Blackhole:
+        description: Entrypoint DNS server
+        href: https://unbound-1-blackhole.matejhome.com
+        ping: unbound-1-blackhole.matejhome.com
+        icon: /icons/unbound.png
+
     - Unbound 2 Default:
         description: Entrypoint DNS server
         href: https://unbound-2-default.matejhome.com
@@ -208,6 +220,18 @@
         description: Entrypoint DNS server
         href: https://unbound-2-guests.matejhome.com
         ping: unbound-2-guests.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Internal:
+        description: Entrypoint DNS server
+        href: https://unbound-2-internal.matejhome.com
+        ping: unbound-2-internal.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound 2 Blackhole:
+        description: Entrypoint DNS server
+        href: https://unbound-2-blackhole.matejhome.com
+        ping: unbound-2-blackhole.matejhome.com
         icon: /icons/unbound.png
 
 - Smart Home:

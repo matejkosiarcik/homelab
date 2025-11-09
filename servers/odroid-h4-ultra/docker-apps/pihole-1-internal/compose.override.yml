@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/pihole-internal/compose.override-dev.yml
-    project_directory: .
