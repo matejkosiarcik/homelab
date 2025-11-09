@@ -30,8 +30,8 @@ server:
     {%- if env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
     interface: 0.0.0.0
     {%- else %}
-    interface: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}}
-    outgoing-interface: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}}
+    interface: {{- env["HOMELAB_APP_EXTERNAL_IP"] }}
+    outgoing-interface: {{- env["HOMELAB_APP_EXTERNAL_IP"] }}
     {%- endif %}
     username: ""
     access-control: 10.0.0.0/8 allow
