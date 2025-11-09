@@ -39,7 +39,7 @@ printf 'Database found\n'
 # Wait for database tables to be ready
 db_log='0'
 while true; do
-    count="$(sql "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='gravity';")"
+    count="$(sql "SELECT count(*) FROM [sqlite_master] WHERE type='table' AND name='gravity';")"
     if [ "$count" -gt '0' ]; then
         break
     fi
