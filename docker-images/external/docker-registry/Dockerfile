@@ -1,6 +1,6 @@
 FROM registry:3.0.0
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 RUN apk update --no-cache && \
     apk add --no-cache shadow && \
     if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \

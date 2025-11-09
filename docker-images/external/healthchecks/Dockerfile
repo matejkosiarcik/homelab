@@ -6,8 +6,8 @@ RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
 
 FROM healthchecks/healthchecks:v3.11.2
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 USER root
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \

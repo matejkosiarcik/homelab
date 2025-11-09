@@ -73,8 +73,8 @@ RUN apt-get update && \
         dnsutils libcap2-bin unbound >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     setcap 'cap_net_bind_service=+ep' "$(which unbound)"
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
         groupadd --gid "$GID" homelab && \
     true; else \

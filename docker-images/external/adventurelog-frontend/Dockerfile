@@ -1,8 +1,8 @@
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM ghcr.io/seanmorley15/adventurelog-frontend:v0.11.0
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 USER root
 RUN apk update --no-cache && \
     apk add --no-cache shadow && \

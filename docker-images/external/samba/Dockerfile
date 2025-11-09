@@ -38,8 +38,8 @@ COPY --from=samba-exporter-build /homelab/samba_exporter/bin ./bin
 
 FROM debian:13.1-slim
 WORKDIR /homelab
-ARG UID=1000
 ARG GID=1000
+ARG UID=1000
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
         gnutls-bin samba && \
