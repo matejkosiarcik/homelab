@@ -91,7 +91,8 @@ test.describe(apps.unbound.title, () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().endsWith(' blackhole') || instance.title.toLowerCase().endsWith(' internal')) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual('0.0.0.0');
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
+                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 expect(ips, `Domain example.com should be resolved`).not.toHaveLength(0);
                                 for (const ip of ips) {
@@ -132,7 +133,7 @@ test.describe(apps.unbound.title, () => {
                             const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().endsWith(' blackhole')) {
                                 expect(ips, `Domain ${instanceDomain} should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
                                 expect(ips[0], `Domain ${instanceDomain} should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 switch (ipVariant) {
@@ -165,8 +166,9 @@ test.describe(apps.unbound.title, () => {
                             const domain = `${faker.string.alpha(10)}.matejhome.com`;
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().endsWith(' blackhole')) {
-                                expect(ips, `Domain ${domain} should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain ${domain} should be resolved to no IP address`).toStrictEqual('0.0.0.0');
+                                expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
+                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 expect(ips, 'Domain should not be resolved').toHaveLength(0);
                             }
