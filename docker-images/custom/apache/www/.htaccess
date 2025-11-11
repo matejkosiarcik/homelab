@@ -124,16 +124,9 @@ RewriteRule ^ /admin [L,R=307]
 
 # TODO: Do this page handling better???
 # Custom rewrite to prevent 404 root errors
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot|unbound)$ [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot)$ [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /.apache/index.html [L]
-
-# Route all invalid unbound requests to 404
-RewriteCond %{ENV:HOMELAB_APP_TYPE} unbound [NC]
-RewriteCond %{REQUEST_URI} !^/favicon\.(?:ico|png)$ [NC]
-RewriteCond %{REQUEST_URI} !^/metrics$ [NC]
-RewriteCond %{REQUEST_URI} !^/\.apache(?:/.*)?$ [NC]
-RewriteRule ^ /.apache/not-found [L]
 
 # Protect Apache proxy prometheus endpoint
 <If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/\.apache/metrics$#">
