@@ -25,3 +25,6 @@ services:
 
   favicons:
     <<: *common-service-options
+
+  empty-server:
+    <<: *common-service-options
