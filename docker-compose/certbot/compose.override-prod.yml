@@ -6,6 +6,9 @@ services:
   app:
     <<: *common-service-options
 
+  file-server:
+    <<: *common-service-options
+
   apache:
     <<: *common-service-options
     ports:

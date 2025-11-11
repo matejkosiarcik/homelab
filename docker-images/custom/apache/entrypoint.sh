@@ -39,7 +39,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'adventurelog' ]; then
         exit 1
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'certbot' ]; then
-    PROXY_UPSTREAM_URL='http://not-found' # TODO: Replace with standin HTTP server ???
+    PROXY_UPSTREAM_URL='http://file-server:8080'
 elif [ "$HOMELAB_APP_TYPE" = 'changedetection' ]; then
     PROXY_UPSTREAM_URL='http://app:5000'
 elif [ "$HOMELAB_APP_TYPE" = 'dawarich' ]; then
