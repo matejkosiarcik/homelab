@@ -21,12 +21,18 @@ services:
       - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/letsencrypt:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
+  file-server:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: file-server
+    volumes:
+      - ./app-data/certbot:/homelab/www/download:rw
+
   apache:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-data/certbot:/homelab/www/download:rw
       - ./app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
       - ./app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
 

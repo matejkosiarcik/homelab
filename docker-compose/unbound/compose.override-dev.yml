@@ -33,5 +33,5 @@ services:
   favicons:
     <<: *common-service-options
 
-  empty-server:
+  file-server:
     <<: *common-service-options

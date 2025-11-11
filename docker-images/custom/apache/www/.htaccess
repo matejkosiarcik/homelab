@@ -122,12 +122,6 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
-# TODO: Do this page handling better???
-# Custom rewrite to prevent 404 root errors
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot)$ [NC]
-RewriteCond %{REQUEST_URI} ^/?$
-RewriteRule ^ /.apache/index.html [L]
-
 # Protect Apache proxy prometheus endpoint
 <If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/\.apache/metrics$#">
     AuthType Basic

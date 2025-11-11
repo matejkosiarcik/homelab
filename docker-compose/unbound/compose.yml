@@ -48,10 +48,10 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: favicons
 
-  empty-server:
+  file-server:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: empty-server
+      service: file-server
 
 networks:
   default:
