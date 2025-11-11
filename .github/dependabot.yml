@@ -22,9 +22,13 @@ updates:
       - /docker-images/custom/apache
       - /docker-images/custom/certbot
       - /docker-images/custom/certificator
+      - /docker-images/custom/data-optimization
       - /docker-images/custom/docker-build
       - /docker-images/custom/docker-setup
+      - /docker-images/custom/empty-server
       - /docker-images/custom/favicons
+      - /docker-images/custom/homepage-widgets
+      - /docker-images/custom/owntracks-decryptor
       - /docker-images/custom/web-automation
       - /docker-images/external/actualbudget
       - /docker-images/external/changedetection
@@ -53,6 +57,7 @@ updates:
       - /docker-images/external/sockpuppetbrowser
       - /docker-images/external/speedtesttracker
       - /docker-images/external/tvheadend
+      - /docker-images/external/unbound
       - /docker-images/external/unifi-network-application
       - /docker-images/external/vikunja
       - /other-apps/desklamp-left
@@ -74,6 +79,7 @@ updates:
     directories:
       - /docker-images/.shared/cron-utils/on-demand
       - /docker-images/custom/data-optimization
+      - /docker-images/custom/empty-server
       - /docker-images/custom/favicons
       - /docker-images/custom/homepage-widgets
       - /docker-images/custom/owntracks-decryptor
