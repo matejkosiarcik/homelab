@@ -132,12 +132,12 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
 
-  empty-server:
+  file-server:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-empty-server
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-file-server
     build:
-      dockerfile: ./custom/empty-server/Dockerfile
+      dockerfile: ./custom/file-server/Dockerfile
       args:
         UID: ${DOCKER_COMPOSE_UID}
         GID: ${DOCKER_COMPOSE_GID}

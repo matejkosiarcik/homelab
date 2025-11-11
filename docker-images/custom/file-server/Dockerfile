@@ -1,7 +1,7 @@
 FROM node:25.1.0-slim AS nodejs-build
 WORKDIR /homelab
-COPY ./custom/empty-server/package-lock.json ./custom/empty-server/package.json ./custom/empty-server/tsconfig.json ./
-COPY ./custom/empty-server/src/ ./src/
+COPY ./custom/file-server/package-lock.json ./custom/file-server/package.json ./custom/file-server/tsconfig.json ./
+COPY ./custom/file-server/src/ ./src/
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
@@ -40,7 +40,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
 WORKDIR /homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab/node_modules ./node_modules
 COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
-ENV HOMELAB_CONTAINER_NAME=empty-server \
+ENV HOMELAB_CONTAINER_NAME=file-server \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
