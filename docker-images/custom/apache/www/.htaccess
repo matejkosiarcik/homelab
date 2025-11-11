@@ -124,7 +124,7 @@ RewriteRule ^ /admin [L,R=307]
 
 # TODO: Do this page handling better???
 # Custom rewrite to prevent 404 root errors
-RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot|docker-stats|unbound)$ [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:certbot|unbound)$ [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /.apache/index.html [L]
 
@@ -207,13 +207,11 @@ RewriteCond %{REQUEST_URI} ^/metrics$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}%{REQUEST_URI}" [P,L]
-
-# Custom prometheus metrics for docker-stats
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:docker-stats)$ [NC]
 RewriteCond %{REQUEST_URI} ^/metrics$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
-RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL}/" [P,L]
+RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_PROMETHEUS}/" [P,L]
 
 # Custom owntracks decryptor for dawarich
 # RewriteCond %{ENV:HOMELAB_APP_TYPE} ^dawarich$ [NC]
