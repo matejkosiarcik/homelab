@@ -277,6 +277,9 @@ load_password() {
     printf 'RENOVATEBOT__PROXY_STATUS_PASSWORD=%s\n' "$(load_password renovatebot apache status)"
     printf 'RENOVATEBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password renovatebot apache prometheus)"
 
+    printf 'SAMBA_DATA__PROXY_STATUS_PASSWORD=%s\n' "$(load_password samba-data apache status)"
+    printf 'SAMBA_DATA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password samba-data apache prometheus)"
+
     printf 'SMTP4DEV__MATEJ_PASSWORD=%s\n' "$(load_password smtp4dev app matej)"
     printf 'SMTP4DEV__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password smtp4dev app homelab-viewer)"
     printf 'SMTP4DEV__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password smtp4dev app homelab-test)"
