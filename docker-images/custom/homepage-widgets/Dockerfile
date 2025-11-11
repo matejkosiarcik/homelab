@@ -1,4 +1,4 @@
-FROM node:24.11.0-slim AS nodejs-build
+FROM node:25.1.0-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./custom/homepage-widgets/package-lock.json ./custom/homepage-widgets/package.json ./custom/homepage-widgets/tsconfig.json ./
 COPY ./custom/homepage-widgets/src/ ./src/
@@ -6,13 +6,13 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM node:24.11.0-slim AS prefinal
+FROM node:25.1.0-slim AS prefinal
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
 
-FROM node:24.11.0-slim
+FROM node:25.1.0-slim
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
