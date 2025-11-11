@@ -47,7 +47,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'dawarich' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'docker-cache-proxy' ]; then
     PROXY_UPSTREAM_URL='http://app'
 elif [ "$HOMELAB_APP_TYPE" = 'docker-stats' ]; then
-    PROXY_UPSTREAM_URL='http://app:9487'
+    PROXY_UPSTREAM_URL='http://empty-server:8080'
 elif [ "$HOMELAB_APP_TYPE" = 'dozzle' ]; then
     PROXY_UPSTREAM_URL='http://app:8080'
 elif [ "$HOMELAB_APP_TYPE" = 'gatus' ]; then
@@ -115,7 +115,7 @@ elif [ "$HOMELAB_APP_TYPE" = 'speedtesttracker' ]; then
 elif [ "$HOMELAB_APP_TYPE" = 'tvheadend' ]; then
     PROXY_UPSTREAM_URL='http://app:9981'
 elif [ "$HOMELAB_APP_TYPE" = 'unbound' ]; then
-    PROXY_UPSTREAM_URL='http://not-found' # TODO: Replace with standin HTTP server ???
+    PROXY_UPSTREAM_URL='http://empty-server:8080'
 elif [ "$HOMELAB_APP_TYPE" = 'unificontroller' ]; then
     PROXY_UPSTREAM_URL='https://app:8443'
 elif [ "$HOMELAB_APP_TYPE" = 'uptimekuma' ]; then
@@ -193,6 +193,8 @@ export PROXY_REDIRECT_TO_HTTP_OR_HTTPS
 # Set PROXY_UPSTREAM_URL_PROMETHEUS
 if [ "$HOMELAB_APP_TYPE" = 'dawarich' ]; then
     PROXY_UPSTREAM_URL_PROMETHEUS='http://app:9394'
+elif [ "$HOMELAB_APP_TYPE" = 'docker-stats' ]; then
+    PROXY_UPSTREAM_URL_PROMETHEUS='http://app:9487'
 # elif [ "$HOMELAB_APP_TYPE" = 'glances' ]; then
 #     PROXY_UPSTREAM_URL_PROMETHEUS='http://app-prometheus:61208'
 elif [ "$HOMELAB_APP_TYPE" = 'pihole' ]; then
