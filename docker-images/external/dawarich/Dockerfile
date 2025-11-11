@@ -23,10 +23,13 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab && \
-    gem install foreman && \
     cp -R /var/app/db /var/app/db2 && \
     rm -rf /var/app/db && \
-    chown -R homelab:homelab /var/app
+    chown -R homelab:homelab /var/app && \
+    cd /var/app && \
+    bundle install --with development && \
+    find 'vendor/bundle/ruby' -path '*.*.*/cache/*.gem' -prune -exec rm -rf {} \; && \
+    rm -rf tmp/cache
 COPY --chown=homelab:homelab ./external/dawarich/entrypoint.sh /homelab/
 ENV APPLICATION_PROTOCOL=http \
     BACKGROUND_PROCESSING_CONCURRENCY=10 \
