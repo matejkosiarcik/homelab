@@ -416,6 +416,10 @@ apps:
       tcp:
         - 139
         - 445
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
 
   - name: Smtp4dev
     domain: smtp4dev.matejhome.com
