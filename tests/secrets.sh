@@ -277,6 +277,7 @@ load_password() {
     printf 'RENOVATEBOT__PROXY_STATUS_PASSWORD=%s\n' "$(load_password renovatebot apache status)"
     printf 'RENOVATEBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password renovatebot apache prometheus)"
 
+    printf 'SAMBA_DATA__PROMETHEUS_PASSWORD=%s\n' "$(load_password samba-data app prometheus)"
     printf 'SAMBA_DATA__PROXY_STATUS_PASSWORD=%s\n' "$(load_password samba-data apache status)"
     printf 'SAMBA_DATA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password samba-data apache prometheus)"
 

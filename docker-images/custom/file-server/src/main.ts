@@ -23,6 +23,11 @@ app.get('/.health', (_: Request, response: Response) => {
 
 app.use(async (request: Request, response: Response) => {
     try {
+        if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method)) {
+            response.sendStatus(404);
+            return;
+        }
+
         const root = path.join('/', 'homelab', 'www');
         const filepath = path.join(root, ...request.path.split(/\//));
         console.log(`Request filepath: ${filepath}`);
@@ -40,10 +45,14 @@ app.use(async (request: Request, response: Response) => {
         const extension = path.extname(filepath);
         const contentType = mime.lookup(extension) || 'application/octet-stream';
 
-        const content = await fsx.readFile(filepath);
         response.status(200);
         response.setHeader('Content-Type', contentType);
-        response.send(content);
+        if (request.method === 'GET') {
+            const content = await fsx.readFile(filepath);
+            response.send(content);
+        } else {
+            response.send();
+        }
     } catch (error) {
         console.error('Server error:', error);
         response.sendStatus(500);
