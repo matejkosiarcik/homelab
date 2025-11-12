@@ -8,7 +8,7 @@ find /homelab/defaults -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/homelab/defa
 if [ ! -e '/config/data/custom-certificates' ]; then
     original_dir="$pwd"
     mkdir -p /config/data/custom-certificates
-    cd /config/data/custom-certificates
+    cd /config/data/custom-certificates || exit 1
     # mv ../keystore "./keystore.bak.$(date +"%Y-%m-%d_%H-%M-%S")"
 
     # Create certificate signing request
@@ -28,5 +28,5 @@ if [ ! -e '/config/data/custom-certificates' ]; then
     keytool -import -noprompt -alias unifi -file unifi.crt -keystore keystore -storepass aircontrolenterprise
 
     cp ./keystore ../keystore
-    cd "$original_dir"
+    cd "$original_dir" || exit 1
 fi
