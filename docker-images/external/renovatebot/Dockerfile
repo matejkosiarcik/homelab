@@ -51,7 +51,7 @@ COPY --from=nodejs-server-build /homelab/package.json ./server/
 COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
 COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
-FROM renovate/renovate:42.6.1-full
+FROM renovate/renovate:42.6.2-full
 ARG GID=1000
 ARG UID=1000
 USER root
