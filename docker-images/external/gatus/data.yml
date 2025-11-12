@@ -124,32 +124,28 @@ apps:
 
   - name: Dozzle Agent - Odroid H3
     domain: dozzle-agent-odroid-h3.matejhome.com
-    type:
-      - tcp
+    type: [tcp]
     additional_ports:
       tcp:
         - 7007
 
   - name: Dozzle Agent - Odroid H4 Ultra
     domain: dozzle-agent-odroid-h4-ultra.matejhome.com
-    type:
-      - tcp
+    type: [tcp]
     additional_ports:
       tcp:
         - 7007
 
   - name: Dozzle Agent - Raspberry Pi 4B 2GB
     domain: dozzle-agent-raspberry-pi-4b-2g.matejhome.com
-    type:
-      - tcp
+    type: [tcp]
     additional_ports:
       tcp:
         - 7007
 
   - name: Dozzle Agent - Raspberry Pi 4B 4GB
     domain: dozzle-agent-raspberry-pi-4b-4g.matejhome.com
-    type:
-      - tcp
+    type: [tcp]
     additional_ports:
       tcp:
         - 7007
@@ -288,9 +284,7 @@ apps:
 
   - name: Ntfy
     domain: ntfy.matejhome.com
-    type:
-      - smtp
-      - http
+    type: [http, smtp]
     additional_ports:
       tcp:
         - 25
@@ -355,9 +349,7 @@ apps:
 
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -365,9 +357,7 @@ apps:
 
   - name: PiHole 1 Secondary
     domain: pihole-1-secondary.matejhome.com
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -375,9 +365,7 @@ apps:
 
   - name: PiHole 1 Blackhole
     domain: pihole-1-blackhole.matejhome.com
-    type:
-      - dns[blackhole]
-      - http
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -385,9 +373,7 @@ apps:
 
   - name: PiHole 2 Primary
     domain: pihole-2-primary.matejhome.com
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -395,9 +381,7 @@ apps:
 
   - name: PiHole 2 Secondary
     domain: pihole-2-secondary.matejhome.com
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -405,9 +389,7 @@ apps:
 
   - name: PiHole 2 Blackhole
     domain: pihole-2-blackhole.matejhome.com
-    type:
-      - dns[blackhole]
-      - http
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -429,7 +411,7 @@ apps:
 
   - name: Samba [data]
     domain: samba-data.matejhome.com
-    type: [smb]
+    type: [http, smb]
     additional_ports:
       tcp:
         - 139
@@ -437,7 +419,7 @@ apps:
 
   - name: Smtp4dev
     domain: smtp4dev.matejhome.com
-    type: [smtp, http]
+    type: [http, smtp]
     authentication:
       basic: homelab-viewer
     additional_ports:
@@ -474,9 +456,7 @@ apps:
     domain: unbound-1-default.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -486,9 +466,7 @@ apps:
     domain: unbound-1-guests.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -498,9 +476,7 @@ apps:
     domain: unbound-1-iot.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -510,9 +486,7 @@ apps:
     domain: unbound-1-matej.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -522,9 +496,7 @@ apps:
     domain: unbound-1-monika.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -534,9 +506,7 @@ apps:
     domain: unbound-1-internal.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns[blackhole]
-      - http
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -546,9 +516,7 @@ apps:
     domain: unbound-1-blackhole.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns[blackhole]
-      - http
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -558,9 +526,7 @@ apps:
     domain: unbound-2-default.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -570,9 +536,7 @@ apps:
     domain: unbound-2-guests.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -582,9 +546,7 @@ apps:
     domain: unbound-2-iot.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -594,9 +556,7 @@ apps:
     domain: unbound-2-matej.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -606,9 +566,7 @@ apps:
     domain: unbound-2-monika.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns
-      - http
+    type: [dns, http]
     endpoints:
       - path: /metrics
         authentication:
@@ -618,9 +576,7 @@ apps:
     domain: unbound-2-internal.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns[blackhole]
-      - http
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -630,9 +586,7 @@ apps:
     domain: unbound-2-blackhole.matejhome.com
     authentication:
       basic: homelab-viewer
-    type:
-      - dns[blackhole]
-      - http
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
