@@ -18,6 +18,7 @@ ENV DHCP_ACTIVE=false \
     FTLCONF_dns_rateLimit_count=9000 \
     FTLCONF_dns_replyWhenBusy=ALLOW \
     FTLCONF_dns_upstreams=1.1.1.1;8.8.8.8;9.9.9.9 \
+    FTLCONF_misc_dnsmasq_lines="local-ttl=600" \
     FTLCONF_misc_privacylevel=0 \
     FTLCONF_webserver_api_allow_destructive=false \
     FTLCONF_webserver_domain=pihole-placeholder \
