@@ -6,7 +6,7 @@ find /homelab/defaults -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/homelab/defa
 
 # Install custom certificate
 if [ ! -e '/config/data/custom-certificates' ]; then
-    original_dir="$pwd"
+    original_dir="$PWD"
     mkdir -p /config/data/custom-certificates
     cd /config/data/custom-certificates || exit 1
     # mv ../keystore "./keystore.bak.$(date +"%Y-%m-%d_%H-%M-%S")"
