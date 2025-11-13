@@ -35,7 +35,7 @@ COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
-FROM node:25.1.0-slim AS nodejs-server-build
+FROM node:25.2.0-slim AS nodejs-server-build
 WORKDIR /homelab
 COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
 COPY ./.shared/cron-utils/on-demand/src/ ./src/
