@@ -114,4 +114,4 @@
 
 ## Mischalenous ##
 
-10.1.12.31 unifi # Some UniFi devices require this
+unifi unificontroller.matejhome.com # Some UniFi devices require "unifi" record, so we CNAME it to our real domain
