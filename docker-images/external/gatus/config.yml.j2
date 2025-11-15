@@ -233,7 +233,8 @@ endpoints:
     name: HTTP{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: http://{{ item.domain }}
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if item.conditions is defined %}
     conditions:
       {%- for condition in item.conditions %}
@@ -254,7 +255,8 @@ endpoints:
     name: HTTPS{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if item.authentication is not defined %}
     alerts:
       - type: ntfy
@@ -284,7 +286,8 @@ endpoints:
     {%- else %}
     url: https://{{ item.domain }}
     {%- endif %}
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if item.conditions is defined %}
     conditions:
       {%- for condition in item.conditions %}
@@ -298,7 +301,8 @@ endpoints:
     name: HTTPS Proxy /metrics (noauth) - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/.apache/metrics
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     conditions:
       - "[CONNECTED] == true"
       - "[STATUS] == any(401,403)"
@@ -309,35 +313,40 @@ endpoints:
     name: HTTPS Proxy /metrics - {{ item.name }}
     group: App - {{ item.name }}
     url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
     name: HTTPS /favicon.ico - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/favicon.ico
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-http-infrequent
     name: HTTP /favicon.ico - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/favicon.ico
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
     name: HTTPS /favicon.png - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/favicon.png
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-http-infrequent
     name: HTTP /favicon.png - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}/favicon.png
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   {%- if item.endpoints is defined %}
@@ -347,7 +356,8 @@ endpoints:
     name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
-    {% if endpoint.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if endpoint.insecure == True%}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if endpoint.conditions is defined %}
     conditions:
       {%- for condition in endpoint.conditions %}
@@ -372,7 +382,8 @@ endpoints:
     {%- else %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     {%- endif %}
-    {% if endpoint.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if endpoint.insecure == True%}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if endpoint.conditions is defined %}
     conditions:
       {%- for condition in endpoint.conditions %}
@@ -429,7 +440,8 @@ endpoints:
     name: HTTP:{{ port }}{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: http://{{ item.domain }}:{{ port }}
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- conditions_http_401(item) -}}
     {{- is_enabled(item) }}
   {%- endfor %}
@@ -440,7 +452,8 @@ endpoints:
     name: HTTPS:{{ port }}{% if item.authentication is defined %} (noauth){% endif %} - {{ item.name }}
     group: App - {{ item.name }}
     url: https://{{ item.domain }}:{{ port }}
-    {% if item.insecure == True %}insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
+    {% if item.insecure == True %}client:
+      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- conditions_https_401(item) -}}
     {{- is_enabled(item) }}
   {%- endfor %}
