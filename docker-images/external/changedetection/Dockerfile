@@ -1,4 +1,4 @@
-FROM dgtlmoon/changedetection.io:0.50.43
+FROM dgtlmoon/changedetection.io:0.51.1
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
