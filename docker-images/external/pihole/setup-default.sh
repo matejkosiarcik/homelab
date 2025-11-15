@@ -136,8 +136,10 @@ sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='
 sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_blackhole_2_id';"
 
 # Set custom local domains
-custom_domains="[$(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g')]"
-pihole-FTL --config dns.hosts "$custom_domains"
+custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
+pihole-FTL --config dns.hosts "$custom_domains_a"
+custom_domains_cname="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^[a-zA-Z]' | sed -E 's~^(.*) (.*)$~"\1,\2"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
+pihole-FTL --config dns.cnameRecords "$custom_domains_cname"
 
 # Restart DNS
 pihole reloaddns
