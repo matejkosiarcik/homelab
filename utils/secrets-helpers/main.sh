@@ -1346,8 +1346,12 @@ case "$app_dirname" in
     ;;
 *vikunja*)
     # App
-    printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
-    printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'MATEJ_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME"
+    printf 'homelab-test,%s\n' "$homelab_test_password" app homelab-test)" >>"$initial_output/all-credentials.csv"
+    printf 'HOMELAB_TEST_PASSWORD=%s\n' "$homelab_test_password" >>"$initial_output/app.env"
     jwt_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" app jwt-secret)"
     printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/all-credentials.csv"
     printf 'VIKUNJA_SERVICE_JWTSECRET=%s\n' "$jwt_secret" >>"$initial_output/app.env"
