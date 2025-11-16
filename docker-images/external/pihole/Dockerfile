@@ -10,6 +10,7 @@ COPY --chown=pihole:pihole ./external/pihole/custom-domains.txt /homelab/
 COPY --chown=pihole:pihole ./external/pihole/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh
 ENV DHCP_ACTIVE=false \
     DNSMASQ_USER=root \
+    FTLCONF_dns_blockTTL=60 \
     FTLCONF_dns_domain=matejhome.com \
     FTLCONF_dns_domainNeeded=true \
     FTLCONF_dns_ignoreLocalhost=false \
@@ -17,7 +18,7 @@ ENV DHCP_ACTIVE=false \
     FTLCONF_dns_piholePTR=HOSTNAMEFQDN \
     FTLCONF_dns_rateLimit_count=0 \
     FTLCONF_dns_rateLimit_interval=0 \
-    FTLCONF_dns_replyWhenBusy=ALLOW \
+    FTLCONF_dns_replyWhenBusy=BLOCK \
     FTLCONF_dns_upstreams=1.1.1.1;8.8.8.8;9.9.9.9 \
     FTLCONF_misc_dnsmasq_lines="local-ttl=600" \
     FTLCONF_misc_nice=-999 \
