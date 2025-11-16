@@ -132,7 +132,8 @@ test.describe(apps.pihole.title, () => {
                     .split('\n')
                     .map((line: string) => line.replace(/#.*$/, '').trim())
                     .filter((line: string) => line !== '')
-                    .map((line: string) => ({ ip: line.split(/\s+/)[0], domain: line.split(/\s+/)[1] }));
+                    .map((line: string) => ({ ip: line.split(/\s+/)[0], domain: line.split(/\s+/)[1] }))
+                    .filter((entry) => /^[0-9]/.test(entry.ip));
 
                 for (const entry of domains) {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
