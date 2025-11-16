@@ -149,20 +149,11 @@
       changed_when: "'CHANGED' in shell_setup.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        touch "$HOME/.bashrc" "$HOME/.profile"
-
-        before_sha="$(shasum "$HOME/.bashrc" || true)$(shasum "$HOME/.profile" || true)$(shasum "$HOME/.custom.sh" || true)"
 
         # Ensure files exist
-        if [ ! -e "$HOME/.bashrc")" ]; then
-          touch "$HOME/.bashrc"
-        fi
-        if [ ! -e "$HOME/.profile")" ]; then
-          touch "$HOME/.profile"
-        fi
-        if [ ! -e "$HOME/.custom.sh")" ]; then
-          touch "$HOME/.custom.sh"
-        fi
+        touch "$HOME/.bashrc" "$HOME/.profile" "$HOME/.custom.sh"
+
+        before_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
 
         # Ensure files end with newline
         if [ "$(tail -c1 "$HOME/.bashrc")" != '\n' ]; then
