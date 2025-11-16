@@ -216,8 +216,9 @@ load_password() {
     printf 'OLLAMA_PRIVATE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password ollama-private apache status)"
     printf 'OLLAMA_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password ollama-private apache prometheus)"
 
-    printf 'OMADACONTROLLER__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password omadacontroller app homelab-viewer)"
+    printf 'OMADACONTROLLER__HOMELAB_ADMIN_PASSWORD=%s\n' "$(load_password omadacontroller app homelab-admin)"
     printf 'OMADACONTROLLER__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password omadacontroller app homelab-test)"
+    printf 'OMADACONTROLLER__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password omadacontroller app homelab-viewer)"
     printf 'OMADACONTROLLER__PROXY_STATUS_PASSWORD=%s\n' "$(load_password omadacontroller apache status)"
     printf 'OMADACONTROLLER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password omadacontroller apache prometheus)"
 
@@ -396,6 +397,7 @@ load_password() {
     printf 'UNBOUND_2_BLACKHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole apache status)"
     printf 'UNBOUND_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password unbound-2-blackhole apache prometheus)"
 
+    printf 'UNIFICONTROLLER__HOMELAB_ADMIN_PASSWORD=%s\n' "$(load_password unificontroller app homelab-admin)"
     printf 'UNIFICONTROLLER__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password unificontroller app homelab-viewer)"
     printf 'UNIFICONTROLLER__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password unificontroller app homelab-test)"
     printf 'UNIFICONTROLLER__PROXY_STATUS_PASSWORD=%s\n' "$(load_password unificontroller apache status)"

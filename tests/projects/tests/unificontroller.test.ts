@@ -37,6 +37,9 @@ test.describe(apps.unificontroller.title, () => {
 
             const validUsers = [
                 {
+                    username: 'homelab-admin',
+                },
+                {
                     username: 'homelab-test',
                 },
                 {

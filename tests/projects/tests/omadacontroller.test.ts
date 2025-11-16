@@ -51,6 +51,9 @@ test.describe(apps.omadacontroller.title, () => {
 
             const validUsers = [
                 {
+                    username: 'homelab-admin',
+                },
+                {
                     username: 'homelab-viewer',
                 },
                 {
