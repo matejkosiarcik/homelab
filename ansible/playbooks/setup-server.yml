@@ -149,15 +149,21 @@
       changed_when: "'CHANGED' in shell_setup.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
-        touch "$HOME/.bashrc" "$HOME/.profile"
 
-        before_sha="$(shasum "$HOME/.bashrc" || true)$(shasum "$HOME/.profile" || true)"
+        # Ensure files exist
+        touch "$HOME/.bashrc" "$HOME/.profile" "$HOME/.custom.sh"
 
+        before_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
+
+        # Ensure files end with newline
         if [ "$(tail -c1 "$HOME/.bashrc")" != '\n' ]; then
           printf '\n' >>"$HOME/.bashrc"
         fi
         if [ "$(tail -c1 "$HOME/.profile")" != '\n' ]; then
           printf '\n' >>"$HOME/.profile"
+        fi
+        if [ "$(tail -c1 "$HOME/.custom.sh")" != '\n' ]; then
+          printf '\n' >>"$HOME/.custom.sh"
         fi
 
         # Bash specific
@@ -165,30 +171,29 @@
           printf 'eval "$(task --completion bash)"\n' >>"$HOME/.bashrc"
         fi
 
-        # All shells
-        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.bashrc" >/dev/null; then
-          printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.bashrc"
+        # Import custom shell file
+        if ! grep '. "$HOME/.custom.sh"' <"$HOME/.bashrc" >/dev/null; then
+          printf '. "$HOME/.custom.sh"' >>"$HOME/.bashrc"
         fi
-        if ! grep 'export HOMELAB_ENV=prod' <"$HOME/.bashrc" >/dev/null; then
-          printf 'export HOMELAB_ENV=prod\n' >>"$HOME/.bashrc"
-        fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.bashrc" >/dev/null; then
-          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.bashrc"
-        fi
-        if ! grep 'export BW_SESSION=' <"$HOME/.bashrc" >/dev/null; then
-          printf 'export BW_SESSION="" ### Fill in! ###\n' >>"$HOME/.bashrc"
-        fi
-        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.profile" >/dev/null; then
-          printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.profile"
-        fi
-        if ! grep 'export HOMELAB_ENV=prod' <"$HOME/.profile" >/dev/null; then
-          printf 'export HOMELAB_ENV=prod\n' >>"$HOME/.profile"
-        fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.profile" >/dev/null; then
-          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.profile"
+        if ! grep '. "$HOME/.custom.sh"' <"$HOME/.profile" >/dev/null; then
+          printf '. "$HOME/.custom.sh"' >>"$HOME/.profile"
         fi
 
-        after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")"
+        # Custom shell file
+        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.custom.sh" >/dev/null; then
+          printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.custom.sh"
+        fi
+        if ! grep 'export HOMELAB_ENV=prod' <"$HOME/.custom.sh" >/dev/null; then
+          printf 'export HOMELAB_ENV=prod\n' >>"$HOME/.custom.sh"
+        fi
+        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.custom.sh" >/dev/null; then
+          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.custom.sh"
+        fi
+        if ! grep 'export BW_SESSION=' <"$HOME/.custom.sh" >/dev/null; then
+          printf '# BW_SESSION\n' >>"$HOME/.custom.sh"
+        fi
+
+        after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
         if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
