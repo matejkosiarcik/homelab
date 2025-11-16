@@ -190,7 +190,7 @@
           printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.custom.sh"
         fi
         if ! grep 'export BW_SESSION=' <"$HOME/.custom.sh" >/dev/null; then
-          printf '# BW_SESSION\n' >>"$HOME/.custom.sh"
+          printf '# export BW_SESSION=\n' >>"$HOME/.custom.sh"
         fi
 
         after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
