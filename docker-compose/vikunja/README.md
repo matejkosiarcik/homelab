@@ -17,6 +17,6 @@
 ## After initial installation
 
 - Create new users: `matej`, and `homelab-test` with commands:
-    - `docker exec -it vikunja-app ./vikunja user create --email matej@matejhome.com --username matej --password <password>`
-    - `docker exec -it vikunja-app ./vikunja user create --email homelab-test@homelab.matejhome.com --username homelab-test --password <password>`
+    - `docker exec -it vikunja-app sh -c './vikunja user create --email matej@matejhome.com --username matej --password "$MATEJ_PASSWORD"'`
+    - `docker exec -it vikunja-app sh -c './vikunja user create --email homelab-test@homelab.matejhome.com --username homelab-test --password "$HOMELAB_TEST_PASSWORD"'`
 - Create API key (readonly) and save in vaultwarden
