@@ -20,7 +20,6 @@ test.describe(apps.samba.title, () => {
                         username: 'prometheus',
                         password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                     },
-                    timeout: 10_000,
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
                 const content = response.data as string;
