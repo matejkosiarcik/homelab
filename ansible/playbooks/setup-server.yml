@@ -156,13 +156,13 @@
         before_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
 
         # Ensure files end with newline
-        if [ "$(tail -c1 "$HOME/.bashrc")" != '\n' ]; then
+        if [ "$(tail -c1 "$HOME/.bashrc")" != '\n' ] && [ "$(wc -c <"$HOME/.bashrc")" -gt '0' ]; then
           printf '\n' >>"$HOME/.bashrc"
         fi
-        if [ "$(tail -c1 "$HOME/.profile")" != '\n' ]; then
+        if [ "$(tail -c1 "$HOME/.profile")" != '\n' ] && [ "$(wc -c <"$HOME/.profile")" -gt '0' ]; then
           printf '\n' >>"$HOME/.profile"
         fi
-        if [ "$(tail -c1 "$HOME/.custom.sh")" != '\n' ]; then
+        if [ "$(tail -c1 "$HOME/.custom.sh")" != '\n' ] && [ "$(wc -c <"$HOME/.custom.sh")" -gt '0' ]; then
           printf '\n' >>"$HOME/.custom.sh"
         fi
 
@@ -190,7 +190,7 @@
           printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.custom.sh"
         fi
         if ! grep 'export BW_SESSION=' <"$HOME/.custom.sh" >/dev/null; then
-          printf '# BW_SESSION\n' >>"$HOME/.custom.sh"
+          printf '# export BW_SESSION=\n' >>"$HOME/.custom.sh"
         fi
 
         after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
