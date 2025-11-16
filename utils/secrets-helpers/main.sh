@@ -1160,7 +1160,7 @@ case "$app_dirname" in
     ;;
 *samba*)
     # App
-    smb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    smb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)"
     printf 'admin,%s\n' "$smb_password" >>"$initial_output/all-credentials.csv"
     printf 'SAMBA_PASSWORD=%s\n' "$smb_password" >>"$initial_output/app.env"
 
