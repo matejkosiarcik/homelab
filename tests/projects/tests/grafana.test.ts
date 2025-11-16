@@ -21,6 +21,9 @@ test.describe(apps.grafana.title, () => {
                 {
                     username: 'homelab-test',
                 },
+                {
+                    username: 'homelab-viewer',
+                },
             ];
             for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
