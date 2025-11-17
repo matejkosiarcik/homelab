@@ -1,4 +1,4 @@
-FROM binwiederhier/ntfy:v2.14.0
+FROM binwiederhier/ntfy:v2.15.0
 ARG GID=1000
 ARG UID=1000
 RUN apk update --no-cache && \
