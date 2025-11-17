@@ -57,29 +57,29 @@
 
     - Odroid H4 Ultra:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.4')
-        ping: "10.1.4.4"
+        href: javascript:copyUrl('ssh matej@10.1.4.2')
+        ping: "10.1.4.2"
         icon: /icons/odroid.png
         target: _self
 
     - Raspberry Pi 4B 2G:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.5')
-        ping: "10.1.4.5"
+        href: javascript:copyUrl('ssh matej@10.1.4.3')
+        ping: "10.1.4.3"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 4G:
         description: App server
-        href: javascript:copyUrl('ssh matej@10.1.4.6')
-        ping: "10.1.4.6"
+        href: javascript:copyUrl('ssh matej@10.1.4.4')
+        ping: "10.1.4.4"
         icon: /icons/raspberry-pi.png
         target: _self
 
     - MacBook Pro 2012:
         description: NAS
-        href: javascript:copyUrl('ssh matej@10.1.4.7')
-        ping: "10.1.4.7"
+        href: javascript:copyUrl('ssh matej@10.1.4.5')
+        ping: "10.1.4.5"
         icon: /icons/apple.png
         target: _self
 
