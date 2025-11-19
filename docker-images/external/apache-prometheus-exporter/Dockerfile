@@ -1,4 +1,4 @@
-FROM debian:13.1-slim
+FROM debian:13.2-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         prometheus-apache-exporter curl >/dev/null && \

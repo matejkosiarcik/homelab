@@ -28,7 +28,7 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:13.1-slim AS supercronic
+FROM debian:13.2-slim AS supercronic
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
@@ -43,7 +43,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm run build && \
     npm prune --production
 
-FROM debian:13.1-slim AS prefinal
+FROM debian:13.2-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./

@@ -30,13 +30,13 @@ COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
     sh validate-executable.sh ./samba_exporter/bin/samba_statusd
 
-FROM debian:13.1-slim AS prefinal
+FROM debian:13.2-slim AS prefinal
 WORKDIR /homelab
 COPY ./external/samba/config ./config
 COPY ./external/samba/entrypoint.sh ./
 COPY --from=samba-exporter-build /homelab/samba_exporter/bin ./bin
 
-FROM debian:13.1-slim
+FROM debian:13.2-slim
 WORKDIR /homelab
 ARG GID=1000
 ARG UID=1000

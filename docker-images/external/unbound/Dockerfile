@@ -1,6 +1,6 @@
 ### Dependencies ###
 
-FROM --platform=$BUILDPLATFORM debian:13.1-slim AS yq
+FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -11,7 +11,7 @@ RUN python3 -m pip install --requirement requirements.txt --target python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM --platform=$BUILDPLATFORM debian:13.1-slim AS jinja
+FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -24,7 +24,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### Config ###
 
-FROM --platform=$BUILDPLATFORM debian:13.1-slim AS config-1
+FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-1
 WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=unbound.example.com
 ARG HOMELAB_APP_EXTERNAL_IP=127.0.0.1
@@ -51,7 +51,7 @@ COPY --from=config-2 /homelab/data.json ./
 COPY ./external/unbound/unbound.conf.j2 ./
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
-FROM --platform=$BUILDPLATFORM debian:13.1-slim AS config-4
+FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-4
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -62,12 +62,12 @@ RUN cat -s unbound.conf | sponge unbound.conf
 
 # ### Final ###
 
-FROM --platform=$BUILDPLATFORM debian:13.1-slim AS prefinal
+FROM --platform=$BUILDPLATFORM debian:13.2-slim AS prefinal
 WORKDIR /homelab
 COPY ./external/unbound/entrypoint.sh ./
 COPY --from=config-4 /homelab/unbound.conf ./
 
-FROM debian:13.1-slim
+FROM debian:13.2-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         dnsutils libcap2-bin unbound >/dev/null && \
