@@ -29,10 +29,10 @@ export const apps = {
             { url: 'https://dawarich.matejhome.com', title: 'Dawarich' },
         ]
     },
-    'docker-proxy': {
-        title: 'Docker Proxy',
+    'docker-cache': {
+        title: 'Docker Cache',
         instances: [
-            { url: 'https://docker-cache-proxy-dockerhub.matejhome.com', title: 'DockerHub Proxy' },
+            { url: 'https://docker-cache-dockerhub.matejhome.com', title: 'Docker Cache - DockerHub' },
         ],
     },
     'docker-stats': {

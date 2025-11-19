@@ -301,7 +301,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*docker-cache-proxy*)
+*docker-cache*)
     # App
     http_secret="$(load_password "$DOCKER_COMPOSE_APP_NAME" app http-secret)"
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$http_secret" >>"$initial_output/app.env"
@@ -497,7 +497,7 @@ case "$app_dirname" in
     printf 'CERTBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$initial_output/app.env"
     printf 'CHANGEDETECTION__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token changedetection apache prometheus)" >>"$initial_output/app.env"
     printf 'DAWARICH__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich apache prometheus)" >>"$initial_output/app.env"
-    printf 'DOCKER_CACHE_PROXY_DOCKERHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-proxy-dockerhub apache prometheus)" >>"$initial_output/app.env"
+    printf 'DOCKER_CACHE_DOCKERHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-dockerhub apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
@@ -1049,7 +1049,7 @@ case "$app_dirname" in
     printf 'CERTBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token certbot apache prometheus)" >>"$initial_output/app.env"
     printf 'CHANGEDETECTION__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token changedetection apache prometheus)" >>"$initial_output/app.env"
     printf 'DAWARICH__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dawarich apache prometheus)" >>"$initial_output/app.env"
-    printf 'DOCKER_CACHE_PROXY_DOCKERHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-proxy-dockerhub apache prometheus)" >>"$initial_output/app.env"
+    printf 'DOCKER_CACHE_DOCKERHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-cache-dockerhub apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"

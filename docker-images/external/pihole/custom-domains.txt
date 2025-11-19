@@ -54,7 +54,7 @@
 10.1.12.32 omadacontroller.matejhome.com
 10.1.12.33 certbot.matejhome.com
 10.1.12.34 homeassistant.matejhome.com
-10.1.12.35 docker-cache-proxy-dockerhub.matejhome.com
+10.1.12.35 docker-cache-dockerhub.matejhome.com
 10.1.12.36 jellyfin.matejhome.com
 10.1.12.38 smtp4dev.matejhome.com
 10.1.12.39 healthchecks.matejhome.com

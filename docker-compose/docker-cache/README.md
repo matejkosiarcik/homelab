@@ -1,6 +1,6 @@
 # Docker cache proxy
 
-![diagram](../../docs/diagrams/out/apps/docker-cache-proxy.png)
+![diagram](../../docs/diagrams/out/apps/docker-cache.png)
 
 ## Docs
 
@@ -37,7 +37,7 @@ Generic resources:
 {
   ...
   "registry-mirrors": [
-    "https://docker-cache-proxy-dockerhub.matejhome.com"
+    "https://docker-cache-dockerhub.matejhome.com"
   ]
 }
 ```

@@ -119,7 +119,7 @@ proxies:
   - url: certbot.matejhome.com
   - url: changedetection.matejhome.com
   - url: dawarich.matejhome.com
-  - url: docker-cache-proxy-dockerhub.matejhome.com
+  - url: docker-cache-dockerhub.matejhome.com
   - url: docker-stats-odroid-h3.matejhome.com
   - url: docker-stats-odroid-h4-ultra.matejhome.com
   - url: docker-stats-raspberry-pi-4b-2g.matejhome.com

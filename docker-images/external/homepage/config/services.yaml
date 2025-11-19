@@ -450,8 +450,8 @@
 
     - Dockerhub proxy:
         description: Dockerhub transparent caching proxy
-        href: https://docker-cache-proxy-dockerhub.matejhome.com
-        ping: docker-cache-proxy-dockerhub.matejhome.com
+        href: https://docker-cache-dockerhub.matejhome.com
+        ping: docker-cache-dockerhub.matejhome.com
         icon: /icons/docker.png
 
     - Smtp4dev:

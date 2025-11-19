@@ -68,7 +68,7 @@ convert_image_full "$input_dir/other/smtp4dev-favicon.png" "$(git rev-parse --sh
 ## Other ##
 
 convert_image_full "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" "$tmpdir/docker.png"
-cp "$tmpdir/docker.png" "$output_dir/docker-cache-proxy.png"
+cp "$tmpdir/docker.png" "$output_dir/docker-cache.png"
 cp "$tmpdir/docker.png" "$output_dir/docker-stats.png"
 
 convert_image_full "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "$output_dir/nodeexporter.png"
