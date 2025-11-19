@@ -42,7 +42,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: docker:29.0.1
+      - image: docker:29.0.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -62,7 +62,7 @@ jobs:
       server:
         type: string
     docker:
-      - image: docker:29.0.1
+      - image: docker:29.0.2
     steps:
       - checkout
       - setup_remote_docker:
