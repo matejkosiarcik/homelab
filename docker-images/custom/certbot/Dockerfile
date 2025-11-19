@@ -28,19 +28,19 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./supercronic/supercronic
 
-FROM debian:13.1-slim AS supercronic
+FROM debian:13.2-slim AS supercronic
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
 ENV PATH="/homelab/bin:$PATH"
 
-FROM debian:13.1-slim AS prefinal
+FROM debian:13.2-slim AS prefinal
 WORKDIR /homelab
 COPY --from=supercronic /homelab/ ./
 COPY ./custom/certbot/crontab.cron ./custom/certbot/main.sh ./custom/certbot/certbot-hook-after.sh ./custom/certbot/certbot-hook-before.sh ./
 
-FROM debian:13.1-slim
+FROM debian:13.2-slim
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         ca-certificates certbot curl jq xz-utils >/dev/null && \
