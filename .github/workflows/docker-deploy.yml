@@ -20,7 +20,7 @@ jobs:
           - raspberry-pi-4b-4g
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.0
         with:
           persist-credentials: false
 
