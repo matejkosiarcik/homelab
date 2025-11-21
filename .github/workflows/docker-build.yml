@@ -13,7 +13,7 @@ jobs:
       components: ${{ steps.filter.outputs.changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.0
         with:
           persist-credentials: false
 
@@ -90,7 +90,7 @@ jobs:
         component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.0
         with:
           persist-credentials: false
 
