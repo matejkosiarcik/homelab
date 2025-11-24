@@ -87,6 +87,7 @@
 10.1.12.162 groceries.matejhome.com
 10.1.12.236 minio.matejhome.com
 10.1.12.237 minio-console.matejhome.com
+10.1.12.251 git-cache.matejhome.com
 
 ### Server - Raspberry Pi 4B 2GB ###
 
