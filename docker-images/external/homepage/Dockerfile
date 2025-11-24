@@ -4,7 +4,6 @@ FROM node:25.2.1-slim AS nodejs-build
 WORKDIR /homelab
 COPY ./external/homepage/package-lock.json ./external/homepage/package.json ./external/homepage/terser.json ./external/homepage/tsconfig.json ./external/homepage/vite.config.ts ./
 COPY ./external/homepage/src/ ./src/
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
