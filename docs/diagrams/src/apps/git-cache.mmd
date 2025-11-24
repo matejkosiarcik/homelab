@@ -25,7 +25,8 @@ flowchart LR
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| git_cache
-        git_cache -.->|store| redis & postgres
+        git_cache -.->|store metadata| redis
+        git_cache -.->|store data| postgres
     end
 
     subgraph others_1["Others"]
