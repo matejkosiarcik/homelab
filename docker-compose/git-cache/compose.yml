@@ -1,0 +1,71 @@
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    build:
+      dockerfile: ./external/git-cache/Dockerfile
+    env_file:
+      - ./app-secrets/app.env
+
+  redis:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
+    build:
+      dockerfile: ./external/redis/Dockerfile
+      args:
+        CONFIG_FILE: git-cache
+    volumes:
+      - ./app-data/redis:/data:rw
+
+  postgres:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
+    build:
+      dockerfile: ./external/postgres/Dockerfile
+    shm_size: 1G
+    environment:
+      POSTGRES_DB: gitcache
+      POSTGRES_USER: postgres
+    env_file:
+      - ./app-secrets/postgres.env
+    volumes:
+      - ./app-data/postgres:/var/lib/postgresql/data:rw
+    tmpfs:
+      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

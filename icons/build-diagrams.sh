@@ -57,6 +57,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/digital-o
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/fedora.svg" "$output_dir/fedora.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/files.svg" "$output_dir/files.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/filezilla.svg" "$output_dir/filezilla.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/git.svg" "$output_dir/git.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/gitea.svg" "$output_dir/gitea.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/gitlab.png" "$output_dir/gitlab.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/glances.svg" "$output_dir/glances.png"
@@ -98,6 +99,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vultr.svg
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "$output_dir/wikipedia.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/windows-11.png" "$output_dir/windows.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.svg" "$output_dir/zabbix.png"
+cp "$output_dir/git.png" "$output_dir/git-cache.png"
 
 ### Homer icons ###
 

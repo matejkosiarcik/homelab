@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@sequelize/postgres": "^7.0.0-alpha.47",
+    "@sequelize/sqlite3": "^7.0.0-alpha.47",
+    "async": "^3.2.6",
+    "axios": "^1.13.2",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "execa": "^9.6.0",
+    "express": "^5.1.0",
+    "fastq": "^1.19.1",
+    "ioredis": "^5.8.2",
+    "node-cron": "^4.2.1",
+    "pg": "^8.16.3",
+    "redis": "^5.10.0",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@tsconfig/strictest": "^2.0.8",
+    "@types/async": "^3.2.25",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
