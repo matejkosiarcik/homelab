@@ -7,13 +7,14 @@ import process from 'node:process';
 import stream from 'node:stream';
 import { faker } from '@faker-js/faker';
 import { DataTypes, Model, Sequelize } from '@sequelize/core';
+import { PostgresDialect } from '@sequelize/postgres';
+import { formatISO, subHours } from 'date-fns';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import fastq from 'fastq';
-import { createClient } from 'redis';
-import { PostgresDialect } from '@sequelize/postgres';
-import { Client as PostgresClient } from 'pg';
 import cron from 'node-cron';
+import { Client as PostgresClient } from 'pg';
+import { createClient } from 'redis';
 
 if (fs.existsSync('.env')) {
     dotenv.config();
@@ -188,8 +189,6 @@ CachedChunk.init(
 );
 await sequelize.sync();
 
-// TODO: Cron schedule to cleanup database from stale data
-// TODO: Is fastq queue still necessary?
 // TODO: Improve Postgres SSL - Provide custom CA certificate
 // TODO: Check if authorized and non-authorized queries are cached separately
 
@@ -216,7 +215,14 @@ for (const key of postgresKeys) {
         continue;
     }
     console.log(`Removing postgres rows with key: ${key}`);
-    await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(key)};`);
+    await sequelize.query(
+        'DELETE FROM "data" WHERE "key" = :key;',
+        {
+            replacements: {
+                key: key,
+            },
+        }
+    );
 }
 
 // Check integrity of data in postgres against redis metadata and remove it if necessary
@@ -225,11 +231,26 @@ for (const key of redisKeys) {
     if (!metadataRaw) {
         console.log(`Removing redis and postgres rows with key: ${key}`);
         await redis.del(key);
-        await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(key)};`);
+        await sequelize.query(
+            'DELETE FROM "data" WHERE "key" = :key',
+            {
+                replacements: {
+                    key: key,
+                },
+            },
+        );
         continue;
     }
     const metadata = JSON.parse(metadataRaw) as CachedMetadata;
-    await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(key)} AND "rand" != ${sequelize.escape(metadata.rand)};`);
+    await sequelize.query(
+        'DELETE FROM "data" WHERE "key" = :key AND "rand" != :rand;',
+        {
+            replacements: {
+                key: key,
+                rand: metadata.rand,
+            },
+        },
+    );
 
     const chunksLength = await CachedChunk.count({
         where: {
@@ -240,7 +261,14 @@ for (const key of redisKeys) {
     if (chunksLength !== metadata.parts) {
         console.log(`Removing redis and postgres rows with key: ${key}`);
         await redis.del(key);
-        await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(key)};`);
+        await sequelize.query(
+            'DELETE FROM "data" WHERE "key" = :key;',
+            {
+                replacements: {
+                    key: key,
+                },
+            },
+        );
         continue;
     } else {
         console.log(`Keeping redis and postgres rows with key: ${key}`);
@@ -253,7 +281,16 @@ for (const key of redisKeys) {
 const writeQueue = fastq.promise(writeQueueWorker, 1);
 
 async function writeQueueWorker(params: { key: string; index: number; rand: string; data: Buffer }) {
-    await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(params.key)} AND "index" = ${sequelize.escape(params.index)} AND "rand" = ${sequelize.escape(params.rand)};`);
+    await sequelize.query(
+        'DELETE FROM "data" WHERE "key" = :key AND "index" = :index AND "rand" = :rand;',
+        {
+            replacements: {
+                index: params.index,
+                key: params.key,
+                rand: params.rand,
+            }
+        }
+    );
     await CachedChunk.create({ key: params.key, index: params.index, rand: params.rand, data: params.data });
 }
 
@@ -508,7 +545,8 @@ process.on('SIGTERM', () => {
     process.exit(0);
 });
 
-cron.schedule('* * */4 * *', async () => {
+cron.schedule('0 30 */2 * * *', async () => {
+    const currentDate = new Date();
     console.log('Running cron cleanup');
 
     let redisKeys = await listRedisKeys();
@@ -520,7 +558,14 @@ cron.schedule('* * */4 * *', async () => {
             continue;
         }
         console.log(`Removing postgres rows with key: ${key}`);
-        await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(key)};`);
+        await sequelize.query(
+            'DELETE FROM "data" WHERE "key" = :key;',
+            {
+                replacements: {
+                    key: key,
+                },
+            },
+        );
     }
 
     // Delete rows for expired keys
@@ -529,10 +574,26 @@ cron.schedule('* * */4 * *', async () => {
         if (!metadataRaw) {
             console.log(`Removing redis and postgres rows with key: ${key}`);
             await redis.del(key);
-            await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(key)};`);
+            await sequelize.query(
+                'DELETE FROM "data" WHERE "key" = :key;',
+                {
+                    replacements: {
+                        key: key,
+                    },
+                },
+            );
             continue;
         }
         const metadata = JSON.parse(metadataRaw) as CachedMetadata;
-        await sequelize.query(`DELETE FROM "data" WHERE "key" = ${sequelize.escape(key)} AND "rand" != ${sequelize.escape(metadata.rand)};`);
+        await sequelize.query(
+            'DELETE FROM "data" WHERE "key" = :key AND "rand" != :rand AND "createdAt" <= :createdAt;',
+            {
+                replacements: {
+                    createdAt: formatISO(subHours(currentDate, 6)),
+                    key: key,
+                    rand: metadata.rand,
+                }
+            }
+        );
     }
 });
