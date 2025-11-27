@@ -4,7 +4,7 @@
 
 ## Docs
 
-This is a custom caching HTTP server for git repositories.
+This is a custom caching HTTP server for Git repositories.
 
 ## Before initial installation
 
