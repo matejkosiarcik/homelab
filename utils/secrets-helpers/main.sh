@@ -573,6 +573,25 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
+*git-cache*)
+    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+
+    # App
+    printf 'PGPASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
+
+    # Postgres
+    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgres.env"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
 *gotify*)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
