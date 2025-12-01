@@ -17,18 +17,18 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         decryptor("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Decryptor")
-        dawarich("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/dawarich.png' style='min-width:80px;max-width:80px' /></div>Dawarich")
-        class dawarich strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/dawarich.png' style='min-width:80px;max-width:80px' /></div>Dawarich")
+        class app strong_border;
         redis("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/redis.png' style='min-width:80px;max-width:80px' /></div>Redis")
         postgis("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/postgres.png' style='min-width:80px;max-width:80px' /></div>Postgis")
         sidekiq("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Sidekiq")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:3000| dawarich
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        inbound_interface -->|:80,443| apache_proxy -->|/*:3000| app
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/favicon.ico| favicons
-        dawarich -.->|use| redis & postgis & sidekiq
-        apache_proxy -->|/pub| decryptor -.->|send| dawarich
+        app -.->|use| redis & postgis & sidekiq
+        apache_proxy -->|/pub| decryptor -.->|send| app
     end
 
     subgraph others_1["Others"]

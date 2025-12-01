@@ -16,15 +16,15 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
-        class healthchecks strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        class app strong_border;
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8000| healthchecks
+        inbound_interface -->|:80,443| apache_proxy -->|/*:8000| app
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        healthchecks ~~~ db_sync -.->|fs| healthchecks
-        apache_proxy -->|/favicon.ico| favicons -.->|use| healthchecks
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        app ~~~ db_sync -.->|fs| app
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
     end
 
     subgraph others_1["Others"]
@@ -43,9 +43,9 @@ flowchart LR
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         s3_database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
 
-        healthchecks -->|send| s3_database
+        app -->|send| s3_database
         certificator -.->|download certificate| certbot
-        certificator -->|report status| healthchecks
+        certificator -->|report status| app
     end
 
     certificator & db_sync ~~~ others_2

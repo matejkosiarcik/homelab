@@ -16,15 +16,15 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
-        class motioneye strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
+        class app strong_border;
         webcamera("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/webcamera.png' style='min-width:80px;max-width:80px' /></div>USB<br/>webcam")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8765,9081| motioneye
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        inbound_interface -->|:80,443| apache_proxy -->|/*:8765,9081| app
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/favicon.ico| favicons -.->|use| motioneye
-        motioneye -.-|device| webcamera
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        app -.-|device| webcamera
     end
 
     subgraph others_1["Others"]

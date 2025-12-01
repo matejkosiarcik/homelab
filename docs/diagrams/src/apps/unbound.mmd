@@ -16,14 +16,14 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        unbound("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound")
-        class unbound strong_border;
-        unbound_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Unbound<br/>Prometheus<br/>Exporter")
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound")
+        class app strong_border;
+        prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Unbound<br/>Prometheus<br/>Exporter")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:80| unbound_prometheus_exporter
-        inbound_interface -->|:53| unbound
-        unbound_prometheus_exporter -.->|use| unbound
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        inbound_interface -->|:80,443| apache_proxy -->|/*:80| prometheus_exporter
+        inbound_interface -->|:53| app
+        prometheus_exporter -.->|use| app
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/favicon.ico| favicons
     end
@@ -41,9 +41,11 @@ flowchart LR
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
+        pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole(s)")
 
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
+        app -.->|use| pihole
     end
 
-    certificator & unbound ~~~ others_2
+    certificator & app ~~~ others_2

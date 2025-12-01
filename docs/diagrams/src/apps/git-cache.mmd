@@ -18,15 +18,15 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         postgres("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/postgres.png' style='min-width:80px;max-width:80px' /></div>Postgres")
         redis("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/redis.png' style='min-width:80px;max-width:80px' /></div>Redis")
-        git_cache("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/git-cache.png' style='min-width:80px;max-width:80px' /></div>Git Cache<br/>HTTP Server")
-        class git_cache strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/git-cache.png' style='min-width:80px;max-width:80px' /></div>Git Cache<br/>HTTP Server")
+        class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8080| git_cache
+        inbound_interface -->|:80,443| apache_proxy -->|/*:8080| app
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| git_cache
-        git_cache -.->|store metadata| redis
-        git_cache -.->|store data| postgres
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        app -.->|store metadata| redis
+        app -.->|store data| postgres
     end
 
     subgraph others_1["Others"]

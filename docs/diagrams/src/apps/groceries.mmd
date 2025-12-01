@@ -1,5 +1,5 @@
 ---
-title: Placeholder
+title: Groceries
 config:
     theme: dark
 ---
@@ -16,18 +16,18 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        groceries_frontend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/specifically-clementines.png' style='min-width:80px;max-width:80px' /></div>Groceries<br/>Frontend")
-        groceries_backend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/specifically-clementines.png' style='min-width:80px;max-width:80px' /></div>Groceries<br/>Backend")
+        app_frontend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/specifically-clementines.png' style='min-width:80px;max-width:80px' /></div>Groceries<br/>Frontend")
+        app_backend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/specifically-clementines.png' style='min-width:80px;max-width:80px' /></div>Groceries<br/>Backend")
         couchdb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/couchdb.png' style='min-width:80px;max-width:80px' /></div>Couchdb")
-        class groceries_frontend strong_border;
-        class groceries_backend strong_border;
+        class app_frontend strong_border;
+        class app_backend strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8100| groceries_frontend
-        apache_proxy -->|/api:3333| groceries_backend
+        inbound_interface -->|:80,443| apache_proxy -->|/*:8100| app_frontend
+        apache_proxy -->|/api:3333| app_backend
         apache_proxy -->|/couchdb:5984| couchdb
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| groceries_frontend
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app_frontend
     end
 
     subgraph others_1["Others"]
@@ -48,4 +48,4 @@ flowchart LR
         certificator -.->|download certificate| certbot
     end
 
-    groceries_frontend ~~~ others_2
+    app_frontend ~~~ others_2

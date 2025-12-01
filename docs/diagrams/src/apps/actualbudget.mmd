@@ -16,26 +16,26 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        actualbudget("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget")
-        class actualbudget strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget")
+        class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:5006| actualbudget
+        inbound_interface -->|:80,443| apache_proxy -->|/*:5006| app
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/favicon.ico| favicons -.-> actualbudget
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        actualbudget ~~~ certificator
+        apache_proxy -->|/favicon.ico| favicons -.-> app
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        app ~~~ certificator
     end
 
     subgraph others_1["Others"]
         home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
         gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        actualbudget_sdk("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget SDK")
+        app_sdk("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget SDK")
 
         home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
         gatus -->|monitor| inbound_interface
-        actualbudget_sdk -->|send data| inbound_interface
+        app_sdk -->|send data| inbound_interface
     end
 
     subgraph others_2["Others"]
@@ -47,4 +47,4 @@ flowchart LR
     end
 
     others_1 ~~~ app_wrapper
-    actualbudget ~~~ others_2
+    app ~~~ others_2
