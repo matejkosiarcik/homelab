@@ -16,14 +16,14 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        netalertx("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/netalertx.png' style='min-width:80px;max-width:80px' /></div>NetAlertX")
-        class netalertx strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/netalertx.png' style='min-width:80px;max-width:80px' /></div>NetAlertX")
+        class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:20211| netalertx
+        inbound_interface -->|:80,443| apache_proxy -->|/*:20211| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| netalertx
-        inbound_interface -->|:20211| netalertx
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        inbound_interface -->|:20211| app
     end
 
     subgraph others_1["Others"]
@@ -43,7 +43,7 @@ flowchart LR
 
         certificator -.->|report status| healthchecks
         certificator -.->|download certificate| certbot
-        netalertx <-->|scan| network
+        app <-->|scan| network
     end
 
-    certificator & netalertx ~~~ others_2
+    certificator & app ~~~ others_2

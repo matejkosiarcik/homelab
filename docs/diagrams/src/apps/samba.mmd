@@ -12,10 +12,10 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        samba("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba")
-        class samba strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba")
+        class app strong_border;
 
-        inbound_interface -->|:139,445| samba
+        inbound_interface -->|:139,445| app
     end
 
     subgraph others_1["Others"]

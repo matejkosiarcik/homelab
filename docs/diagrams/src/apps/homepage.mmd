@@ -16,16 +16,16 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        homepage("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
-        class homepage strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
+        class app strong_border;
         homepage_widgets("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Custom<br/>widgets")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:3000| homepage
+        inbound_interface -->|:80,443| apache_proxy -->|/*:3000| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
 
-        apache_proxy -->|/favicon.ico| favicons -.->|use| homepage
-        homepage -->|use| homepage_widgets
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        app -->|use| homepage_widgets
     end
 
     subgraph others_1["Others"]
@@ -43,10 +43,10 @@ flowchart LR
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
 
-        homepage -.->|navigate| other_apps
+        app -.->|navigate| other_apps
         homepage_widgets -.->|widgets| other_apps
         certificator -.->|report status| healthchecks
         certificator -.->|download certificate| certbot
     end
 
-    certificator & homepage ~~~ others_2
+    certificator & app ~~~ others_2

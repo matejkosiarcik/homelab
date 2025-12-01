@@ -16,17 +16,17 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
-        class jellyfin strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
+        class app strong_border;
         jellyfin_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Jellyfin<br/>Setup")
         gpu("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/graphics-card.png' style='min-width:80px;max-width:80px' /></div>iGPU")
 
-        inbound_interface -->|:80,443,8096| apache_proxy -->|/*:8096| jellyfin
+        inbound_interface -->|:80,443,8096| apache_proxy -->|/*:8096| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| jellyfin
-        jellyfin -.->|encode| gpu
-        jellyfin_setup -.->|fs| jellyfin
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        app -.->|encode| gpu
+        jellyfin_setup -.->|fs| app
     end
 
     subgraph others_1["Others"]
@@ -49,10 +49,10 @@ flowchart LR
         class iptv dashed_border
 
         gpu ~~~ tvheadend & iptv & healthchecks
-        jellyfin -.->|use| tvheadend
-        jellyfin -.->|use| iptv
+        app -.->|use| tvheadend
+        app -.->|use| iptv
         certificator -.->|report status| healthchecks
         certificator -.->|download certificate| certbot
     end
 
-    certificator & jellyfin ~~~ others_2
+    certificator & app ~~~ others_2

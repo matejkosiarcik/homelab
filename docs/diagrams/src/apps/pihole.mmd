@@ -16,22 +16,22 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
-        class pihole strong_border;
-        pihole_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
+        class app strong_border;
+        app_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
         pihole_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>PiHole<br/>Prometheus<br/>Exporter")
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:80| pihole
+        inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/metrics| pihole_prometheus_exporter -.->|use| pihole
+        apache_proxy -->|/metrics| pihole_prometheus_exporter -.->|use| app
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| pihole
-        inbound_interface -->|:53| pihole
-        pihole ~~~ socket_proxy ~~~ pihole_setup
-        pihole_setup -.->|docker tcp| socket_proxy
-        pihole_setup -.->|use| pihole
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        inbound_interface -->|:53| app
+        app ~~~ socket_proxy ~~~ app_setup
+        app_setup -.->|docker tcp| socket_proxy
+        app_setup -.->|use| app
         socket_proxy -.->|docker sock| docker
     end
 
@@ -51,9 +51,9 @@ flowchart LR
         public_dns("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/dns.png' style='min-width:40px;max-width:40px;position:absolute;bottom:10px;right:0' /></div>Public<br/>DNS")
         class public_dns dashed_border
 
-        pihole -.->|DNS queries| public_dns
+        app -.->|DNS queries| public_dns
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
     end
 
-    certificator & pihole_setup ~~~ others_2
+    certificator & app_setup ~~~ others_2

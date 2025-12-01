@@ -17,16 +17,16 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         renovatebot_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/api.png' style='min-width:80px;max-width:80px' /></div>RenovateBot<br/>controller<br/>*planned*")
-        renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>RenovateBot")
-        class renovatebot strong_border;
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>RenovateBot")
+        class app strong_border;
         socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
 
         inbound_interface -->|:80,443| apache_proxy --> |:8080| renovatebot_controller
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| renovatebot
-        renovatebot_controller -.->|docker tcp| socket_proxy -.->|docker sock| docker -.->|control| renovatebot
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        renovatebot_controller -.->|docker tcp| socket_proxy -.->|docker sock| docker -.->|control| app
     end
 
     subgraph others_2["Others"]
@@ -38,9 +38,9 @@ flowchart LR
         class gitlab dashed_border
 
         certificator -.->|report status| healthchecks
-        renovatebot -.->|update| github & gitlab
-        renovatebot -->|report status| healthchecks
+        app -.->|update| github & gitlab
+        app -->|report status| healthchecks
         certificator -.->|download certificate| certbot
     end
 
-    certificator & renovatebot ~~~ others_2
+    certificator & app ~~~ others_2
