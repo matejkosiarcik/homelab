@@ -41,9 +41,11 @@ flowchart LR
     subgraph others_2["Others"]
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
+        pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole(s)")
 
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
+        unbound -.->|use| pihole
     end
 
     certificator & unbound ~~~ others_2
