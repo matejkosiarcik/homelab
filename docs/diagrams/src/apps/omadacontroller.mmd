@@ -22,7 +22,7 @@ flowchart LR
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:443| omadacontroller
         inbound_interface -->|:8080,8443,27001,29810-29816| omadacontroller
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use status| apache_proxy
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter_1 -.->|use| apache_proxy
         apache_proxy -.-|fs| certificator
         omadacontroller ~~~ script_backup -.->|use| omadacontroller
         apache_proxy -->|/favicon.ico| favicons -.->|use| omadacontroller

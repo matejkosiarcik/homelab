@@ -23,7 +23,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|/*:80| unbound_prometheus_exporter
         inbound_interface -->|:53| unbound
         unbound_prometheus_exporter -.->|use| unbound
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/favicon.ico| favicons
     end

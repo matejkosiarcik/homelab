@@ -24,7 +24,7 @@ flowchart LR
 
         inbound_interface -->|:80,443| apache_proxy --> |:8080| renovatebot_controller
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| renovatebot
         renovatebot_controller -.->|docker tcp| socket_proxy -.->|docker sock| docker -.->|control| renovatebot
     end

@@ -26,7 +26,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|/*:80| pihole
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/metrics| pihole_prometheus_exporter -.->|use| pihole
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| pihole
         inbound_interface -->|:53| pihole
         pihole ~~~ socket_proxy ~~~ pihole_setup

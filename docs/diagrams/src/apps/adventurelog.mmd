@@ -24,8 +24,8 @@ flowchart LR
         class adventurelog_frontend strong_border;
         class adventurelog_backend strong_border;
 
-        apache_frontend_prometheus_exporter -.-> apache_proxy_frontend --> apache_frontend_prometheus_exporter
-        apache_backend_prometheus_exporter -.-> apache_proxy_backend --> apache_backend_prometheus_exporter
+        apache_frontend_prometheus_exporter -.->|use| apache_proxy_frontend -->|/.apache/metrics| apache_frontend_prometheus_exporter
+        apache_backend_prometheus_exporter -.->|use| apache_proxy_backend -->|/.apache/metrics| apache_backend_prometheus_exporter
         inbound_interface ~~~ apache_frontend_prometheus_exporter ~~~ apache_proxy_frontend
         inbound_interface ~~~ apache_backend_prometheus_exporter ~~~ apache_proxy_backend
         inbound_interface -->|:80,443| apache_proxy_frontend -->|/*:3000| adventurelog_frontend

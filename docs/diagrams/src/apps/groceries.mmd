@@ -26,7 +26,7 @@ flowchart LR
         apache_proxy -->|/api:3333| groceries_backend
         apache_proxy -->|/couchdb:5984| couchdb
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.-> apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|/favicon.ico| favicons -.->|use| groceries_frontend
     end
 
