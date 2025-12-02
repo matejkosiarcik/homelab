@@ -1,4 +1,4 @@
-FROM docker:29.0.4
+FROM docker:29.1.1
 ARG GID=1000
 ARG UID=1000
 RUN apk update --no-cache && \
