@@ -13,7 +13,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "execa": "^9.6.1",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "fastq": "^1.19.1",
     "ioredis": "^5.8.2",
     "node-cron": "^4.2.1",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
     "@types/async": "^3.2.25",
-    "@types/express": "^5.0.5",
+    "@types/express": "^5.0.6",
     "@types/node": "^24.10.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
