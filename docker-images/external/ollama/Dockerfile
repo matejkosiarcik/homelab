@@ -1,4 +1,4 @@
-FROM ollama/ollama:0.13.0
+FROM ollama/ollama:0.13.1
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
