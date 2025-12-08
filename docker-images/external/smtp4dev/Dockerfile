@@ -1,4 +1,4 @@
-FROM rnwood/smtp4dev:3.10.3
+FROM rnwood/smtp4dev:3.11.0
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
