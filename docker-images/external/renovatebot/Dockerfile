@@ -1,4 +1,4 @@
-FROM python:3.14.1-slim AS supercronic-gitman
+FROM python:3.15.0a2-slim AS supercronic-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
@@ -51,7 +51,7 @@ COPY --from=nodejs-server-build /homelab/package.json ./server/
 COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
 COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
-FROM renovate/renovate:42.39.2-full
+FROM renovate/renovate:42.40.2-full
 ARG GID=1000
 ARG UID=1000
 USER root
