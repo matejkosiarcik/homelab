@@ -1,4 +1,4 @@
-FROM python:3.14.1-slim AS minio-mc-gitman
+FROM python:3.15.0a2-slim AS minio-mc-gitman
 WORKDIR /homelab
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
