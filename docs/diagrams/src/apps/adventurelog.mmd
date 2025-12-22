@@ -32,7 +32,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy_backend -->|/*:80| app_backend
         apache_proxy_frontend & apache_proxy_backend -.-|fs| certificator
         apache_proxy_frontend & apache_proxy_backend ---> favicons -..->|use| app_frontend
-        app_frontend -->|use| app_backend -->|use| postgis
+        app_frontend -->|use| app_backend -->|data| postgis
     end
 
     subgraph others_1["Others"]
