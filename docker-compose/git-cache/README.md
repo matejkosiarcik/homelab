@@ -5,7 +5,7 @@
 ## Docs
 
 This server inspired by this blogpost: <https://info.varnish-software.com/blog/speeding-up-git-with-http-caching>.
-However I couldn't get Varnish or other off-the-shelf git caching proxies to work correctly.
+However I couldn't get Varnish or other off-the-shelf Git caching proxies to work correctly.
 So I've written this custom git-cache, which fulfills my requirements.
 
 Other considered off-the-shelf projects were:
