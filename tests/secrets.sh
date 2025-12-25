@@ -52,8 +52,8 @@ load_password() {
     printf 'DAWARICH__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password dawarich apache prometheus)"
     printf 'DAWARICH__PROMETHEUS_PASSWORD=%s\n' "$(load_password dawarich app prometheus)"
 
-    printf 'DOCKER_CACHE_DOCKERHUB__PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-cache-dockerhub apache status)"
-    printf 'DOCKER_CACHE_DOCKERHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-cache-dockerhub apache prometheus)"
+    printf 'DOCKER_CACHE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password docker-cache apache status)"
+    printf 'DOCKER_CACHE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password docker-cache apache prometheus)"
 
     printf 'DOCKER_STATS_ODROID_H3__MATEJ_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app matej)"
     printf 'DOCKER_STATS_ODROID_H3__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password docker-stats-odroid-h3 app homelab-viewer)"

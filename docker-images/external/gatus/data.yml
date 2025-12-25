@@ -75,7 +75,7 @@ apps:
     enabled: false
 
   - name: Docker Cache Proxy - DockerHub
-    domain: docker-cache-dockerhub.matejhome.com
+    domain: docker-cache.matejhome.com
     endpoints:
       - path: /v2/_catalog
         conditions:
