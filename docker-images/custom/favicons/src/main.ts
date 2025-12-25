@@ -34,7 +34,7 @@ const appAddress = (() => {
         case 'docker-stats': return ''; // http://app:9487
         case 'dozzle': return 'http://app:8080';
         case 'gatus': return 'http://app:8080';
-        case 'git-cache': return 'http://app:8080';
+        case 'git-cache': return ''; // http://app:8080
         // case 'glances': return 'http://app:61208';
         case 'gotify': return 'http://app:80';
         case 'grafana': return 'http://app:3000';
@@ -47,6 +47,7 @@ const appAddress = (() => {
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
         case 'nodeexporter': return ''; // http://app:9100
+        case 'npm-cache': return ''; // http://app:8080
         case 'ntfy': return 'http://app:80';
         case 'ollama': return ''; // http://app:11434
         case 'omadacontroller': return envMode === 'prod' ? 'https://app' : 'https://app:8443';
@@ -92,6 +93,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
         case 'nodeexporter': return `@/homelab/icons/${appType}.png`;
+        case 'npm-cache': return `@/homelab/icons/${appType}.png`;
         case 'ntfy': return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
         case 'ollama': return `@/homelab/icons/${appType}.png`;
         case 'omadacontroller': return '/favicon.ico';
