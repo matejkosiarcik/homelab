@@ -85,6 +85,8 @@ elif [ "$HOMELAB_APP_TYPE" = 'minio' ]; then
     fi
 elif [ "$HOMELAB_APP_TYPE" = 'nodeexporter' ]; then
     PROXY_UPSTREAM_URL='http://app:9100'
+elif [ "$HOMELAB_APP_TYPE" = 'npm-cache' ]; then
+    PROXY_UPSTREAM_URL='http://app:8080'
 elif [ "$HOMELAB_APP_TYPE" = 'ntfy' ]; then
     PROXY_UPSTREAM_URL='http://app'
 elif [ "$HOMELAB_APP_TYPE" = 'ollama' ]; then
