@@ -193,7 +193,35 @@
           printf '# export BW_SESSION=\n' >>"$HOME/.custom.sh"
         fi
 
+        # Report status
         after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
+
+    - name: Configure NPM
+      register: npm_config
+      changed_when: "'CHANGED' in npm_config.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+
+        # Ensure file exist
+        touch "$HOME/.npmrc"
+
+        before_sha="$(shasum "$HOME/.npmrc")"
+
+        # Ensure file ends with newline
+        if [ "$(tail -c1 "$HOME/.npmrc")" != '\n' ] && [ "$(wc -c <"$HOME/.npmrc")" -gt '0' ]; then
+          printf '\n' >>"$HOME/.npmrc"
+        fi
+
+        # NPM Config
+        if ! grep 'registry=https://npm-cache.matejhome.com' <"$HOME/.npmrc" >/dev/null; then
+          printf 'registry=https://npm-cache.matejhome.com\n' >>"$HOME/.npmrc"
+        fi
+
+        # Report status
+        after_sha="$(shasum "$HOME/.npmrc")"
         if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
