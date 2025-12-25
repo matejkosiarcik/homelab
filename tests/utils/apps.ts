@@ -32,7 +32,7 @@ export const apps = {
     'docker-cache': {
         title: 'Docker Cache',
         instances: [
-            { url: 'https://docker-cache-dockerhub.matejhome.com', title: 'Docker Cache - DockerHub' },
+            { url: 'https://docker-cache.matejhome.com', title: 'Docker Cache - DockerHub' },
         ],
     },
     'docker-stats': {

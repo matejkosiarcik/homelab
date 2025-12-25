@@ -13,6 +13,10 @@ http:
   #   Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS']
   #   Access-Control-Expose-Headers: ['Docker-Content-Digest']
 
+proxy:
+  remoteurl: https://registry-1.docker.io
+  ttl: 1h # TODO: Change to 1 week after debugging
+
 # Authentication cannot be enabled, because it doesn't work when configuring this proxy as a mirror on the docker client side
 # auth:
 #   htpasswd:

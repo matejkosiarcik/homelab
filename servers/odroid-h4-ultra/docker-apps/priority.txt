@@ -14,7 +14,7 @@ pihole-1-secondary
 pihole-1-blackhole
 
 # Caches
-docker-cache-dockerhub
+docker-cache
 
 # Network controllers
 omadacontroller
