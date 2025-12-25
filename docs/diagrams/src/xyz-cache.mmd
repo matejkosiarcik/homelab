@@ -1,0 +1,43 @@
+---
+title: Xyz Cache - How it works [or not] inside/outside of homelab (even without VPN)
+config:
+    theme: dark
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:6px;
+
+    remote_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Public remote registry<br/></i>")
+
+    subgraph home["Home"]
+        home_notebook("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/notebook.png' style='min-width:80px;max-width:80px' /></div>Personal<br/>Notebook")
+        home_servers("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Home Servers")
+
+        home_dns("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/dns.png' style='min-width:80px;max-width:80px' /></div>Private<br/>DNS Server")
+        xyz_cache("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Xyz Cache")
+
+        home_notebook & home_servers -.->|Resolve domain| home_dns
+        home_dns -.->|DNS entries for <i>xyzcache.matejhome.com</i>| xyz_cache
+        home_notebook & home_servers -->|Download packages| xyz_cache
+    end
+
+    subgraph outside["Outside"]
+        outside_notebook("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/notebook.png' style='min-width:80px;max-width:80px' /></div>Personal<br/>Notebook")
+        public_dns("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/dns.png' style='min-width:80px;max-width:80px' /></div>Public<br/>DNS Server")
+
+        subgraph vps["VPS"]
+            public_https_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/www.png' style='min-width:80px;max-width:80px' /></div>Placeholder HTTP(S) Server")
+        end
+
+        outside_notebook -.->|Resolve domain| public_dns
+        public_dns -.->|DNS entries for <i>xyzcache.matejhome.com</i>| public_https_server
+        outside_notebook -->|Connect| public_https_server
+    end
+
+    home & xyz_cache ~~~ remote_registry ~~~ outside_notebook & outside
+    xyz_cache -->|Download packages| remote_registry
+    public_https_server -->|Redirect| remote_registry
+    outside_notebook -->|Download packages| remote_registry
