@@ -77,6 +77,8 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.s
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nextcloud.svg" "$output_dir/nextcloud.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nginx.svg" "$output_dir/nginx.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nodejs.svg" "$output_dir/nodejs.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/npm.svg" "$output_dir/npm.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$output_dir/openspeedtest.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/opensuse.svg" "$output_dir/opensuse.png"
