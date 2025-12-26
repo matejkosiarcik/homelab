@@ -22,14 +22,14 @@ optimize_image() {
 
     if printf '%s' "$(basename "$1")" | grep -E '\.png$' >/dev/null 2>&1; then
         cp "$1" "$tmpfile2"
-        oxipng --opt max --strip safe --zopfli --force "$tmpfile2"
+        oxipng --opt max --strip safe --force "$tmpfile2"
         if [ "$(wc -c <"$tmpdir2/$(basename "$1")")" -lt "$(wc -c <"$1")" ]; then
             mv "$tmpfile2" "$1"
         fi
         rm -f "$tmpfile2"
 
         cp "$1" "$tmpfile2"
-        zopflipng --iterations=200 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$tmpfile2" "$tmpfile2"
+        zopflipng --iterations=20 --filters=01234mepb --lossy_8bit --lossy_transparent -y "$tmpfile2" "$tmpfile2"
         if [ "$(wc -c <"$tmpdir2/$(basename "$1")")" -lt "$(wc -c <"$1")" ]; then
             mv "$tmpfile2" "$1"
         fi
