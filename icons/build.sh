@@ -2,6 +2,9 @@
 set -euf
 
 # shellcheck disable=SC2068
+sh "$(dirname "$0")/prebuild.sh" $@
+
+# shellcheck disable=SC2068
 sh "$(dirname "$0")/build-diagrams.sh" $@
 
 # shellcheck disable=SC2068
