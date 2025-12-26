@@ -158,4 +158,21 @@ services:
     build:
       dockerfile: ./external/redis/Dockerfile
     volumes:
-      - ./app-data/redis:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis:/data:rw
+
+  postgres:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
+    build:
+      dockerfile: ./external/postgres/Dockerfile
+    shm_size: 1G
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.env
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgres:/var/lib/postgresql/data:rw
+    tmpfs:
+      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
