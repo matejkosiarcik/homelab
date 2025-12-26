@@ -35,7 +35,7 @@ tmpdir=''
 # shellcheck disable=SC2034
 default_image_size='64x64'
 # shellcheck disable=SC2034
-default_convert_options='magick -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 1200 OUTPUT_FILE'
+default_convert_options='magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 2000 OUTPUT_FILE'
 
 ### Custom Certbot ###
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/lets-encrypt-background.png"
