@@ -1,12 +1,13 @@
 x-definitions:
   common-service-options: &common-service-options
-    restart: "no"
+    restart: unless-stopped
 
 services:
   app:
     <<: *common-service-options
-    # ports:
-    #   # Fill in ports if necessary #
+
+  redis:
+    <<: *common-service-options
 
   certificator:
     <<: *common-service-options
@@ -14,8 +15,8 @@ services:
   apache:
     <<: *common-service-options
     ports:
-      - 127.0.0.1:8080:80
-      - 127.0.0.1:8443:443
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
 
   apache-prometheus-exporter:
     <<: *common-service-options
