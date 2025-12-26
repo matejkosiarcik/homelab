@@ -9,7 +9,7 @@ services:
       - ./app-data/dawarich-public:/var/app/public:rw
       - ./app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
       - ./app-data/dawarich-storage:/var/app/storage:rw
-      - ./app-data/dawarich-database:/dawarich_db_data:rw
+      # - ./app-data/dawarich-database:/dawarich_db_data:rw # TODO: Determine if necessary
     environment:
       MODE: app
     env_file:
@@ -45,16 +45,12 @@ services:
       # - /root/.cache/gem:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/app/tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
-  # TODO: Use redis from shared config
   redis:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
-    build:
-      dockerfile: ./external/redis/Dockerfile
-    volumes:
-      - ./app-data/dawarich-shared:/data:rw
+      service: redis
+    # volumes:
+    #   - ./app-data/dawarich-shared:/data:rw # TODO: Determine if necessary
 
   postgis:
     extends:
@@ -66,7 +62,7 @@ services:
     shm_size: 1G
     volumes:
       - ./app-data/dawarich-database:/var/lib/postgresql/data:rw
-      - ./app-data/dawarich-shared:/var/shared:rw
+      # - ./app-data/dawarich-shared:/var/shared:rw # TODO: Determine if necessary
     environment:
       POSTGRES_DB: dawarich
     env_file:
