@@ -168,6 +168,9 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: Git Cache
+    domain: git-cache.matejhome.com
+
   - name: Gotify
     domain: gotify.matejhome.com
 
@@ -281,6 +284,9 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+
+  - name: NPM Cache
+    domain: npm-cache.matejhome.com
 
   - name: Ntfy
     domain: ntfy.matejhome.com

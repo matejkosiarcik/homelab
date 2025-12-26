@@ -127,6 +127,7 @@ proxies:
   - url: dozzle.matejhome.com
   - url: gatus-1.matejhome.com
   - url: gatus-2.matejhome.com
+  - url: git-cache.matejhome.com
   - url: gotify.matejhome.com
   - url: grafana.matejhome.com
   - url: groceries.matejhome.com
@@ -141,6 +142,7 @@ proxies:
   - url: nodeexporter-odroid-h4-ultra.matejhome.com
   - url: nodeexporter-raspberry-pi-4b-2g.matejhome.com
   - url: nodeexporter-raspberry-pi-4b-4g.matejhome.com
+  - url: npm-cache.matejhome.com
   - url: ntfy.matejhome.com
   - url: ollama.matejhome.com
   # - url: ollama-private.matejhome.com
