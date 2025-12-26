@@ -48,7 +48,18 @@ convert_image_full "$tmpdir/cache.png" "$output_dir/cache.png"
 magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" -resize "1000x1000" -border 20 "$tmpdir/cloud.png"
 convert_image_full "$tmpdir/cloud.png" "$output_dir/cloud.png"
 
+# Prometheus
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize '1000x1000' -border 50 "$tmpdir/prometheus-background.png"
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize '1000x1000' -border 20 "$tmpdir/prometheus-alone.png"
+convert_image_full "$tmpdir/prometheus-alone.png" "$output_dir/prometheus.png"
+
+# Rounded Squid
+magick "$input_dir/other/squid.jpg" \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite "$tmpdir/squid.png"
+convert_image_full "$tmpdir/squid.png" "$output_dir/squid.png"
+
 ### Composite icons ###
+
+## Cache
 
 # APT cache proxy
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" -resize "450x450" "$tmpdir/debian.png"
@@ -57,7 +68,7 @@ magick "$tmpdir/cache.png" "$tmpdir/ubuntu.png" -gravity Center -geometry "+225+
 convert_image_full "$tmpdir/apt-cache.png" "$output_dir/apt-cache.png"
 
 # Docker cache proxy
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" -resize "700x700" "$tmpdir/docker.png"
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" -resize "700x700" "$tmpdir/docker.png"
 magick "$tmpdir/cache.png" "$tmpdir/docker.png" -gravity Center -geometry "+175+275" -composite "$tmpdir/docker-cache.png"
 convert_image_full "$tmpdir/docker-cache.png" "$output_dir/docker-cache.png"
 
@@ -80,6 +91,8 @@ convert_image_full "$tmpdir/pypi-cache.png" "$output_dir/pypi-cache.png"
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ruby.svg" -resize "500x500" "$tmpdir/ruby.png"
 magick "$tmpdir/cache.png" "$tmpdir/ruby.png" -gravity Center -geometry "+275+300" -composite "$tmpdir/rubygems-cache.png"
 convert_image_full "$tmpdir/rubygems-cache.png" "$output_dir/rubygems-cache.png"
+
+## Cloud
 
 # APT remote registry
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" -resize "400x400" "$tmpdir/debian.png"
@@ -111,6 +124,24 @@ convert_image_full "$tmpdir/pypi-cloud.png" "$output_dir/pypi-cloud.png"
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ruby.svg" -resize "400x400" "$tmpdir/ruby.png"
 magick "$tmpdir/cloud.png" "$tmpdir/ruby.png" -gravity Center -geometry "+275+150" -composite "$tmpdir/rubygems-cloud.png"
 convert_image_full "$tmpdir/rubygems-cloud.png" "$output_dir/rubygems-cloud.png"
+
+## Prometheus exporters
+
+# Apache prometheus exporter
+cp "$input_dir/other/apache.svg.bin" "$tmpdir/apache.svg"
+magick -density 2000 -background none -bordercolor transparent "$tmpdir/apache.svg" -resize '800x800' "$tmpdir/apache.png"
+magick "$tmpdir/prometheus-background.png" "$tmpdir/apache.png" -gravity Center -geometry '+325+150' -composite "$tmpdir/apache-prometheus-exporter.png"
+convert_image_full "$tmpdir/apache-prometheus-exporter.png" "$output_dir/apache-prometheus-exporter.png"
+
+# PiHole prometheus exporter
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" -resize '600x600' "$tmpdir/pihole.png"
+magick "$tmpdir/prometheus-background.png" "$tmpdir/pihole.png" -gravity Center -geometry '+325+225' -composite "$tmpdir/pihole-prometheus-exporter.png"
+convert_image_full "$tmpdir/pihole-prometheus-exporter.png" "$output_dir/pihole-prometheus-exporter.png"
+
+# Squid prometheus exporter
+magick -density 2000 -background none -bordercolor transparent "$output_dir/squid.png" -resize '425x425' "$tmpdir/squid.png"
+magick "$tmpdir/prometheus-background.png" "$tmpdir/squid.png" -gravity Center -geometry '+300+300' -composite "$tmpdir/squid-prometheus-exporter.png"
+convert_image_full "$tmpdir/squid-prometheus-exporter.png" "$output_dir/squid-prometheus-exporter.png"
 
 ### Cleanup ###
 

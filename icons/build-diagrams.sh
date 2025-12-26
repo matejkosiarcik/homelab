@@ -36,7 +36,7 @@ tmpdir=''
 # shellcheck disable=SC2034
 default_image_size='256x256'
 # shellcheck disable=SC2034
-default_convert_options='magick -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 1200 OUTPUT_FILE'
+default_convert_options='magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 2000 OUTPUT_FILE'
 
 ### Bash icon ###
 
@@ -227,8 +227,7 @@ magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-tmp.png" -gravity Center 
 convert_image_full "$tmpdir/ollama-final.png" "$output_dir/ollama.png"
 
 # Rounded Squid
-magick "$input_dir/other/squid.jpg" \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite "$tmpdir/squid.png"
-convert_image_full "$tmpdir/squid.png" "$output_dir/squid.png"
+convert_image_full "$input_dir/prebuild/squid.png" "$output_dir/squid.png"
 
 # Smtp4dev with custom background
 magick -size "$default_image_size" xc:#ffffffef "$tmpdir/smtp4dev-background.png"
@@ -270,32 +269,20 @@ magick -background none -bordercolor transparent "$input_dir/other/dwservice.png
 magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-tmp.png" -gravity Center -composite "$tmpdir/dwservice-final.png"
 convert_image_full "$tmpdir/dwservice-final.png" "$output_dir/dwservice.png"
 
-# Apache prometheus exporter
-cp "$input_dir/other/apache.svg.bin" "$tmpdir/apache.svg"
-magick -background none -bordercolor transparent "$tmpdir/apache.svg" -resize "$default_image_size" -border 16 "$tmpdir/apache-tmp.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" "$tmpdir/prometheus-tmp.png"
-magick "$tmpdir/prometheus-tmp.png" "$tmpdir/apache-tmp.png" -gravity Center -geometry "$default_image_size+70+30" -composite -resize "$default_image_size" "$tmpdir/apache-prometheus-exporter-final.png"
-convert_image_full "$tmpdir/apache-prometheus-exporter-final.png" "$output_dir/apache-prometheus-exporter.png"
-
-# PiHole prometheus exporter
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/organizr/plugins/images/tabs/pihole.png" -resize "$default_image_size" -border 96 "$tmpdir/pihole-tmp.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" "$tmpdir/prometheus-tmp.png"
-magick "$tmpdir/prometheus-tmp.png" "$tmpdir/pihole-tmp.png" -gravity Center -geometry "$default_image_size+75+55" -composite -resize "$default_image_size" "$tmpdir/pihole-prometheus-exporter-final.png"
-convert_image_full "$tmpdir/pihole-prometheus-exporter-final.png" "$output_dir/pihole-prometheus-exporter.png"
-
-# Squid prometheus exporter
-magick -background none -bordercolor transparent "$output_dir/squid.png" -resize "$default_image_size" -border 160 "$tmpdir/squid-tmp.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" -resize "$default_image_size" "$tmpdir/prometheus-tmp.png"
-magick "$tmpdir/prometheus-tmp.png" "$tmpdir/squid-tmp.png" -gravity Center -geometry "$default_image_size+70+70" -composite -resize "$default_image_size" "$tmpdir/squid-prometheus-exporter-final.png"
-convert_image_full "$tmpdir/squid-prometheus-exporter-final.png" "$output_dir/squid-prometheus-exporter.png"
-
 # Prebuilds
+
+# Remote repositories
 convert_image_full "$input_dir/prebuild/apt-cloud.png" "$output_dir/apt-cloud.png"
 convert_image_full "$input_dir/prebuild/docker-cloud.png" "$output_dir/docker-cloud.png"
 convert_image_full "$input_dir/prebuild/git-cloud.png" "$output_dir/git-cloud.png"
 convert_image_full "$input_dir/prebuild/npm-cloud.png" "$output_dir/npm-cloud.png"
 convert_image_full "$input_dir/prebuild/pypi-cloud.png" "$output_dir/pypi-cloud.png"
 convert_image_full "$input_dir/prebuild/rubygems-cloud.png" "$output_dir/rubygems-cloud.png"
+
+# Prometheus exporters
+convert_image_full "$input_dir/prebuild/apache-prometheus-exporter.png" "$output_dir/apache-prometheus-exporter.png"
+convert_image_full "$input_dir/prebuild/pihole-prometheus-exporter.png" "$output_dir/pihole-prometheus-exporter.png"
+convert_image_full "$input_dir/prebuild/squid-prometheus-exporter.png" "$output_dir/squid-prometheus-exporter.png"
 
 ### Cleanup ###
 
