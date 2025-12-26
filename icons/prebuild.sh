@@ -50,15 +50,36 @@ convert_image_full "$tmpdir/cloud.png" "$output_dir/cloud.png"
 
 ### Composite icons ###
 
-# Git remote registry
+# APT cache proxy
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" -resize "450x450" "$tmpdir/debian.png"
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ubuntu-linux.svg" -resize "450x450" "$tmpdir/ubuntu.png"
+magick "$tmpdir/cache.png" "$tmpdir/ubuntu.png" -gravity Center -geometry "+225+300" -composite "$tmpdir/debian.png" -gravity Center -geometry "-225+300" -composite "$tmpdir/apt-cache.png"
+convert_image_full "$tmpdir/apt-cache.png" "$output_dir/apt-cache.png"
+
+# Docker cache proxy
+magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" -resize "700x700" "$tmpdir/docker.png"
+magick "$tmpdir/cache.png" "$tmpdir/docker.png" -gravity Center -geometry "+175+275" -composite "$tmpdir/docker-cache.png"
+convert_image_full "$tmpdir/docker-cache.png" "$output_dir/docker-cache.png"
+
+# Git cache proxy
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/git.svg" -resize "500x500" "$tmpdir/git.png"
 magick "$tmpdir/cache.png" "$tmpdir/git.png" -gravity Center -geometry "+275+275" -composite "$tmpdir/git-cache.png"
 convert_image_full "$tmpdir/git-cache.png" "$output_dir/git-cache.png"
 
-# NPM remote registry
+# NPM cache proxy
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/npm.svg" -resize "750x750" "$tmpdir/npm.png"
 magick "$tmpdir/cache.png" "$tmpdir/npm.png" -gravity Center -geometry "+150+400" -composite "$tmpdir/npm-cache.png"
 convert_image_full "$tmpdir/npm-cache.png" "$output_dir/npm-cache.png"
+
+# PyPi cache proxy
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/python.svg" -resize "600x600" "$tmpdir/python.png"
+magick "$tmpdir/cache.png" "$tmpdir/python.png" -gravity Center -geometry "+225+225" -composite "$tmpdir/pypi-cache.png"
+convert_image_full "$tmpdir/pypi-cache.png" "$output_dir/pypi-cache.png"
+
+# RubyGems cache proxy
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ruby.svg" -resize "500x500" "$tmpdir/ruby.png"
+magick "$tmpdir/cache.png" "$tmpdir/ruby.png" -gravity Center -geometry "+275+300" -composite "$tmpdir/rubygems-cache.png"
+convert_image_full "$tmpdir/rubygems-cache.png" "$output_dir/rubygems-cache.png"
 
 # APT remote registry
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" -resize "400x400" "$tmpdir/debian.png"
@@ -66,15 +87,15 @@ magick -density 2000 -background none -bordercolor transparent "$input_dir/gitma
 magick "$tmpdir/cloud.png" "$tmpdir/ubuntu.png" -gravity Center -geometry "+250+175" -composite "$tmpdir/debian.png" -gravity Center -geometry "-150+175" -composite "$tmpdir/apt-cloud.png"
 convert_image_full "$tmpdir/apt-cloud.png" "$output_dir/apt-cloud.png"
 
-# Git remote registry
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/git.svg" -resize "500x500" "$tmpdir/git.png"
-magick "$tmpdir/cloud.png" "$tmpdir/git.png" -gravity Center -geometry "+200+200" -composite "$tmpdir/git-cloud.png"
-convert_image_full "$tmpdir/git-cloud.png" "$output_dir/git-cloud.png"
-
 # Docker remote registry
 magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" -resize "600x600" "$tmpdir/docker.png"
 magick "$tmpdir/cloud.png" "$tmpdir/docker.png" -gravity Center -geometry "+200+200" -composite "$tmpdir/docker-cloud.png"
 convert_image_full "$tmpdir/docker-cloud.png" "$output_dir/docker-cloud.png"
+
+# Git remote registry
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/git.svg" -resize "500x500" "$tmpdir/git.png"
+magick "$tmpdir/cloud.png" "$tmpdir/git.png" -gravity Center -geometry "+200+200" -composite "$tmpdir/git-cloud.png"
+convert_image_full "$tmpdir/git-cloud.png" "$output_dir/git-cloud.png"
 
 # NPM remote registry
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/npm.svg" -resize "750x750" "$tmpdir/npm.png"
