@@ -150,3 +150,12 @@ services:
       dockerfile: ./custom/script-setup/Dockerfile
     tmpfs:
       - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+
+  redis:
+    extends:
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
+    build:
+      dockerfile: ./external/redis/Dockerfile
+    volumes:
+      - ./app-data/redis:/data:rw

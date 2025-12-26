@@ -4,35 +4,17 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/git-cache/Dockerfile
-    env_file:
-      - ./app-secrets/app.env
+      dockerfile: ./external/npm-cache/Dockerfile
+    environment:
+      REDIS_ADDRESS: redis:6379
+    networks: # Internet access required for downloading packages
+      internal-network: {}
+      external-network: {}
 
   redis:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: redis
-    build:
-      args:
-        CONFIG_FILE: git-cache
-
-  postgres:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
-    build:
-      dockerfile: ./external/postgres/Dockerfile
-    shm_size: 1G
-    environment:
-      POSTGRES_DB: gitcache
-      POSTGRES_USER: postgres
-    env_file:
-      - ./app-secrets/postgres.env
-    volumes:
-      - ./app-data/postgres:/var/lib/postgresql/data:rw
-    tmpfs:
-      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

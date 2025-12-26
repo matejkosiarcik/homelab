@@ -190,7 +190,7 @@ CachedChunk.init(
 await sequelize.sync();
 
 // TODO: Improve Postgres SSL - Provide custom CA certificate
-// TODO: Check if authorized and non-authorized queries are cached separately
+// TODO: Check if authorized and non-authorized git queries are cached separately
 
 type CachedMetadata = {
     status: number;
