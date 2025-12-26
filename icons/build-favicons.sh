@@ -77,15 +77,9 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.s
 
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/pvc.svg" -resize "1000x1000" -border 50 "$tmpdir/cache.png"
 
-# Git remote registry
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/git.svg" -resize "500x500" "$tmpdir/git.png"
-magick "$tmpdir/cache.png" "$tmpdir/git.png" -gravity Center -geometry "+275+275" -composite "$tmpdir/git-cache.png"
-convert_image_full "$tmpdir/git-cache.png" "$output_dir/git-cache.png"
-
-# NPM remote registry
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/npm.svg" -resize "750x750" "$tmpdir/npm.png"
-magick "$tmpdir/cache.png" "$tmpdir/npm.png" -gravity Center -geometry "+150+400" -composite "$tmpdir/npm-cache.png"
-convert_image_full "$tmpdir/npm-cache.png" "$output_dir/npm-cache.png"
+# Prebuilds
+convert_image_full "$input_dir/prebuild/git-cache.png" "$output_dir/git-cache.png"
+convert_image_full "$input_dir/prebuild/npm-cache.png" "$output_dir/npm-cache.png"
 
 ### Cleanup ###
 

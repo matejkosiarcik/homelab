@@ -289,42 +289,13 @@ magick -background none -bordercolor transparent "$input_dir/gitman-repositories
 magick "$tmpdir/prometheus-tmp.png" "$tmpdir/squid-tmp.png" -gravity Center -geometry "$default_image_size+70+70" -composite -resize "$default_image_size" "$tmpdir/squid-prometheus-exporter-final.png"
 convert_image_full "$tmpdir/squid-prometheus-exporter-final.png" "$output_dir/squid-prometheus-exporter.png"
 
-# APT remote registry
-magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" -resize "1000x1000" -border 20 "$tmpdir/cloud.png"
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" -resize "400x400" "$tmpdir/debian.png"
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ubuntu-linux.svg" -resize "400x400" "$tmpdir/ubuntu.png"
-magick "$tmpdir/cloud.png" "$tmpdir/ubuntu.png" -gravity Center -geometry "+250+175" -composite "$tmpdir/debian.png" -gravity Center -geometry "-150+175" -composite "$tmpdir/apt-cloud.png"
-convert_image_full "$tmpdir/apt-cloud.png" "$output_dir/apt-cloud.png"
-
-# Git remote registry
-magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" -resize "1000x1000" -border 20 "$tmpdir/cloud.png"
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/git.svg" -resize "500x500" "$tmpdir/git.png"
-magick "$tmpdir/cloud.png" "$tmpdir/git.png" -gravity Center -geometry "+200+200" -composite "$tmpdir/git-cloud.png"
-convert_image_full "$tmpdir/git-cloud.png" "$output_dir/git-cloud.png"
-
-# Docker remote registry
-magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" -resize "1000x1000" -border 20 "$tmpdir/cloud.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/png/docker-moby.png" -resize "600x600" "$tmpdir/docker.png"
-magick "$tmpdir/cloud.png" "$tmpdir/docker.png" -gravity Center -geometry "+200+200" -composite "$tmpdir/docker-cloud.png"
-convert_image_full "$tmpdir/docker-cloud.png" "$output_dir/docker-cloud.png"
-
-# NPM remote registry
-magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" -resize "1000x1000" -border 20 "$tmpdir/cloud.png"
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/npm.svg" -resize "750x750" "$tmpdir/npm.png"
-magick "$tmpdir/cloud.png" "$tmpdir/npm.png" -gravity Center -geometry "+100+200" -composite "$tmpdir/npm-cloud.png"
-convert_image_full "$tmpdir/npm-cloud.png" "$output_dir/npm-cloud.png"
-
-# PyPi remote registry
-magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" -resize "1000x1000" -border 20 "$tmpdir/cloud.png"
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/python.svg" -resize "550x550" "$tmpdir/python.png"
-magick "$tmpdir/cloud.png" "$tmpdir/python.png" -gravity Center -geometry "+200+200" -composite "$tmpdir/pypi-cloud.png"
-convert_image_full "$tmpdir/pypi-cloud.png" "$output_dir/pypi-cloud.png"
-
-# RubyGems remote registry
-magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" -resize "1000x1000" -border 20 "$tmpdir/cloud.png"
-magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ruby.svg" -resize "400x400" "$tmpdir/ruby.png"
-magick "$tmpdir/cloud.png" "$tmpdir/ruby.png" -gravity Center -geometry "+275+150" -composite "$tmpdir/rubygems-cloud.png"
-convert_image_full "$tmpdir/rubygems-cloud.png" "$output_dir/rubygems-cloud.png"
+# Prebuilds
+convert_image_full "$input_dir/prebuild/apt-cloud.png" "$output_dir/apt-cloud.png"
+convert_image_full "$input_dir/prebuild/docker-cloud.png" "$output_dir/docker-cloud.png"
+convert_image_full "$input_dir/prebuild/git-cloud.png" "$output_dir/git-cloud.png"
+convert_image_full "$input_dir/prebuild/npm-cloud.png" "$output_dir/npm-cloud.png"
+convert_image_full "$input_dir/prebuild/pypi-cloud.png" "$output_dir/pypi-cloud.png"
+convert_image_full "$input_dir/prebuild/rubygems-cloud.png" "$output_dir/rubygems-cloud.png"
 
 ### Cleanup ###
 
