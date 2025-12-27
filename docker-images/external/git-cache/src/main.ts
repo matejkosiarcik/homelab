@@ -35,12 +35,6 @@ const config = {
     },
 };
 
-async function delay(timeout: number) {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve(undefined), timeout);
-    });
-}
-
 /**
  * Wait for redis
  */
@@ -375,52 +369,27 @@ async function streamFromCache(key: string, response: Response) {
 
     response.status(metadata.status);
 
-    // Stream all chunks
-    // for (let i = 1; i <= metadata.chunks; i++) {
-    //     const str = await redis.get(`${key}:chunk:${i.toFixed(0)}`);
-    //     if (!str) {
-    //         console.error(`Got error, chunk ${key}:chunk:${i.toFixed(0)} is empty`);
-    //         continue;
-    //     }
-    //     const buffer = Buffer.from(str, 'base64');
-    //     if (buffer) {
-    //         response.write(buf);
-    //     }
-    // }
-    let chunks = await CachedChunk.findAll({
-        where: {
-            key: key,
-            rand: metadata.rand,
-        },
-        order: [
-            ['index', 'ASC'],
-        ],
-    });
-
-    if (chunks.length !== metadata.parts) {
-        await delay(1000);
-        chunks = await CachedChunk.findAll({
+    for (let i = 1; i <= metadata.parts; i += 1) {
+        let chunk = await CachedChunk.findOne({
             where: {
                 key: key,
                 rand: metadata.rand,
+                index: i,
             },
-            order: [
-                ['index', 'ASC'],
-            ],
         });
-        if (chunks.length !== metadata.parts) {
-            console.error(`Saved chunks do not match expected parts ${chunks.length}:${metadata.parts}`);
-            throw new Error(`Saved chunks do not match expected parts ${chunks.length}:${metadata.parts}`);
+        if (!chunk) {
+            response.end();
+            throw new Error(`Chunk ${i} for ${key} ${metadata.rand} not found`);
         }
-    }
-
-    for (let chunk of chunks) {
         const buffer = chunk.data;
-        if (buffer) {
-            response.write(buffer);
+        if (!buffer) {
+            response.end();
+            throw new Error(`Chunk ${i} for ${key} ${metadata.rand} is empty`);
         }
+        response.write(buffer);
     }
 
+    console.log(`Response for ${key} sent`);
     response.end();
 }
 
@@ -433,31 +402,46 @@ async function saveStreamToCache(
     status: number,
     upstreamStream: IncomingMessage
 ) {
-    let part = 0;
-    let workBuffer = Buffer.alloc(0);
-    const chunkLength = 1024 * 1024;
+    const chunkLength = 10 * 1024 * 1024;
     const rand = faker.string.alphanumeric(16);
+    let part = 0;
+    let workBufferMaxLength = chunkLength;
+    let workBufferLength = 0;
+    let workBuffer = Buffer.allocUnsafe(workBufferMaxLength);
 
     await new Promise<void>((resolve, reject) => {
         upstreamStream.on('data', async (buffer: Buffer) => {
-            workBuffer = Buffer.concat([workBuffer, buffer]);
-            if (workBuffer.byteLength > chunkLength) {
+            if (workBufferLength + buffer.byteLength >= chunkLength) {
+                // We have reached the limit for a single chunk to save in DB
+
+                if (workBufferLength + buffer.byteLength > workBufferMaxLength) {
+                    // We have to enlarge the workBuffer a bit before we can copy into it
+                    workBufferMaxLength = workBufferLength + buffer.byteLength;
+                    const newWorkBuffer = Buffer.allocUnsafe(workBufferMaxLength);
+                    workBuffer.copy(newWorkBuffer, 0, 0, workBufferLength);
+                    workBuffer = newWorkBuffer;
+                }
+
+                buffer.copy(workBuffer, workBufferLength, 0, buffer.byteLength);
+                workBufferLength += buffer.byteLength;
+
                 part += 1;
-                const savingBuffer = Buffer.allocUnsafe(chunkLength);
-                workBuffer.copy(savingBuffer, 0, 0, chunkLength);
-                const tmpBuffer = Buffer.allocUnsafe(workBuffer.byteLength - chunkLength);
-                workBuffer.copy(tmpBuffer, 0, chunkLength, workBuffer.byteLength);
-                workBuffer = tmpBuffer;
-                await writeQueue.push({ key: key, index: part, rand: rand, data: savingBuffer });
+                upstreamStream.pause();
+                await writeQueue.push({ key: key, index: part, rand: rand, data: workBuffer.subarray(0, workBufferLength) });
+                upstreamStream.resume();
+                workBufferLength = 0;
+            } else {
+                // Just copy the buffer and continue
+                buffer.copy(workBuffer, workBufferLength, 0, buffer.byteLength);
+                workBufferLength += buffer.byteLength;
             }
         });
 
         upstreamStream.on('end', async () => {
-            if (workBuffer.byteLength > 0) {
+            if (workBufferLength > 0) {
                 part += 1;
-                const savingBuffer = Buffer.from(workBuffer);
-                workBuffer = Buffer.alloc(0);
-                await writeQueue.push({ key: key, index: part, rand: rand, data: savingBuffer });
+                await writeQueue.push({ key: key, index: part, rand: rand, data: workBuffer.subarray(0, workBufferLength) });
+                workBufferLength = 0;
             }
 
             await redis.set(key, JSON.stringify({
