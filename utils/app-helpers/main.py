@@ -20,6 +20,10 @@ start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 full_app_name = path.basename(app_dir).lstrip(".")
+app_type = full_app_name
+if path.exists(path.join(app_dir, 'config', 'app.txt')):
+    with open(path.join(app_dir, 'config', 'app.txt'), "r") as file:
+        app_type = file.read().strip()
 log_file = path.join(git_dir, ".logs", start_datestr, "docker-apps", f"{full_app_name}.txt")
 
 is_dryrun = False
@@ -71,7 +75,7 @@ def load_full_env():
     default_env_values = {
         "DOCKER_COMPOSE_APP_NAME": full_app_name,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
-        "DOCKER_COMPOSE_APP_TYPE": full_app_name,
+        "DOCKER_COMPOSE_APP_TYPE": app_type,
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
         "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
@@ -105,6 +109,16 @@ def load_full_env():
             domain = os.environ["DOCKER_COMPOSE_NETWORK_DOMAIN"]
             os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = f"{default_protocol}://{domain}"
             os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"] = domain
+
+
+def symlink_app():
+    compose_dir = path.join(git_dir, 'docker-compose', app_type)
+    for file in ['compose.yml', 'compose.override.yml', 'compose.prod.yml']:
+        if path.exists(file):
+            os.remove(file)
+    os.symlink(path.join(compose_dir, 'compose.yml'), 'compose.yml')
+    os.symlink(path.join(compose_dir, 'compose.override-dev.yml'), 'compose.override.yml')
+    os.symlink(path.join(compose_dir, 'compose.override-prod.yml'), 'compose.prod.yml')
 
 
 def get_docker_compose_config() -> str:
@@ -319,6 +333,7 @@ def main(argv):
         sys.exit(1)
 
     load_full_env()
+    symlink_app()
     run_main_command(command)
 
 
