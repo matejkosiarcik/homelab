@@ -185,6 +185,8 @@ CachedChunk.init(
         sequelize: sequelize,
         modelName: 'CacheChunk',
         tableName: 'data',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
     },
 );
 await sequelize.sync();
