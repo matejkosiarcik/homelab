@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/groceries/compose.override-dev.yml
-    project_directory: .

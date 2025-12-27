@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/adventurelog/compose.yml
-    project_directory: .

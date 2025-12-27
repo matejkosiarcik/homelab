@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/speedtesttracker/compose.yml
-    project_directory: .

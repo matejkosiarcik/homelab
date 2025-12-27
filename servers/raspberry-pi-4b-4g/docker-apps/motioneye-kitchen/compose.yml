@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/motioneye/compose.yml
-    project_directory: .

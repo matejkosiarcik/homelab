@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/homepage/compose.yml
-    project_directory: .

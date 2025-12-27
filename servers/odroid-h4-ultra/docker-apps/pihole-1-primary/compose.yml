@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/pihole/compose.yml
-    project_directory: .
