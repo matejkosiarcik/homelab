@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/kiwix/compose.yml
-    project_directory: .

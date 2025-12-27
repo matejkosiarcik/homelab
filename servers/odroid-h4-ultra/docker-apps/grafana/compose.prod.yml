@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/grafana/compose.override-prod.yml
-    project_directory: .

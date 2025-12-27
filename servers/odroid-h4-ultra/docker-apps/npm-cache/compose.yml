@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/npm-cache/compose.yml
-    project_directory: .

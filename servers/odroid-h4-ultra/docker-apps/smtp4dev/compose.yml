@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/smtp4dev/compose.yml
-    project_directory: .

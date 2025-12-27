@@ -185,6 +185,8 @@ CachedChunk.init(
         sequelize: sequelize,
         modelName: 'CacheChunk',
         tableName: 'data',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
     },
 );
 await sequelize.sync();
@@ -482,6 +484,12 @@ const app = express();
 // Healthcheck endpoint
 app.get('/.health', (_, res) => res.sendStatus(200));
 
+const upstreamUrl = process.env['UPSTREAM_URL'] || '';
+if (!upstreamUrl) {
+    console.error(`UPSTREAM_URL unset.`);
+    process.exit(1);
+}
+
 // Main endpoint
 app.use(async (mainRequest: Request, mainResponse: Response) => {
     const { key, postStream } = await computeStreamingKey(mainRequest);
@@ -496,16 +504,16 @@ app.use(async (mainRequest: Request, mainResponse: Response) => {
     console.log(`Cache MISS for ${key}`);
     mainResponse.set('X-Cache', 'MISS');
 
-    const upstreamUrl = new URL(mainRequest.originalUrl, 'https://github.com');
-    const httpClient = upstreamUrl.protocol === 'https:' ? https : http;
+    const requestUpstreamUrl = new URL(mainRequest.originalUrl, upstreamUrl);
+    const httpClient = requestUpstreamUrl.protocol === 'https:' ? https : http;
 
     const upstreamRequest = httpClient.request(
-        upstreamUrl,
+        requestUpstreamUrl,
         {
             method: mainRequest.method,
             headers: {
                 ...mainRequest.headers,
-                host: upstreamUrl.host,
+                host: requestUpstreamUrl.host,
                 'accept-encoding': '',
             },
         },

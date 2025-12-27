@@ -1,3 +1,0 @@
-include:
-  - path: ../../../../docker-compose/unificontroller/compose.override-dev.yml
-    project_directory: .
