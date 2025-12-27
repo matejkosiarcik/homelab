@@ -11,10 +11,12 @@ sources:
       -
     scripts:
       -
+    patches:
+      -
 sources_locked:
   - repo: https://github.com/aptible/supercronic.git
     name: supercronic
-    rev: 88d7bf3e205485dc5cf727558c7461274bb54c32
+    rev: ab5c3a7889aa461a204805ba9c728bb18e866b8e
     type: git
     params:
     sparse_paths:
@@ -22,6 +24,8 @@ sources_locked:
     links:
       -
     scripts:
+      -
+    patches:
       -
 default_group: ""
 groups:

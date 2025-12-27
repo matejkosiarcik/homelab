@@ -11,10 +11,12 @@ sources:
       -
     scripts:
       -
+    patches:
+      -
 sources_locked:
   - repo: https://github.com/letsencrypt/unbound_exporter.git
     name: unbound_exporter
-    rev: 1209ca8fa675c6c307af0a2b04c6c0b8ac93edcf
+    rev: e5bf497ac87f0cae910cb37f370a27e2dcfb85fa
     type: git
     params:
     sparse_paths:
@@ -22,6 +24,8 @@ sources_locked:
     links:
       -
     scripts:
+      -
+    patches:
       -
 default_group: ""
 groups:

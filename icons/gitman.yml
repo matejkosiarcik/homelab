@@ -11,6 +11,8 @@ sources:
       -
     scripts:
       -
+    patches:
+      -
   - repo: https://github.com/walkxcode/dashboard-icons.git
     name: dashboard-icons
     rev: main
@@ -21,6 +23,8 @@ sources:
     links:
       -
     scripts:
+      -
+    patches:
       -
   - repo: https://github.com/jb-stack/Dia-vrt-sheets.git
     name: dia-vrt-sheets
@@ -33,6 +37,8 @@ sources:
       -
     scripts:
       -
+    patches:
+      -
   - repo: https://github.com/NX211/homer-icons.git
     name: homer-icons
     rev: master
@@ -43,6 +49,8 @@ sources:
     links:
       -
     scripts:
+      -
+    patches:
       -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
@@ -55,6 +63,8 @@ sources:
       -
     scripts:
       -
+    patches:
+      -
   - repo: https://github.com/causefx/Organizr.git
     name: organizr
     rev: v2-master
@@ -65,6 +75,8 @@ sources:
     links:
       -
     scripts:
+      -
+    patches:
       -
 sources_locked:
   - repo: https://github.com/odb/official-bash-logo.git
@@ -78,9 +90,11 @@ sources_locked:
       -
     scripts:
       -
+    patches:
+      -
   - repo: https://github.com/walkxcode/dashboard-icons.git
     name: dashboard-icons
-    rev: 9ad3e48e6182485613de7e1f4c8c565f526a45b0
+    rev: 2471bc100fa6c33bb5ee6042591a4751b4e97da0
     type: git
     params:
     sparse_paths:
@@ -88,6 +102,8 @@ sources_locked:
     links:
       -
     scripts:
+      -
+    patches:
       -
   - repo: https://github.com/jb-stack/Dia-vrt-sheets.git
     name: dia-vrt-sheets
@@ -100,6 +116,8 @@ sources_locked:
       -
     scripts:
       -
+    patches:
+      -
   - repo: https://github.com/NX211/homer-icons.git
     name: homer-icons
     rev: 7f15a0ec749f4604b9f18e5bd4ee955002d8c896
@@ -111,9 +129,11 @@ sources_locked:
       -
     scripts:
       -
+    patches:
+      -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
-    rev: 915b978e0a82f466e8e9eb2b8bfb30108d75d9b7
+    rev: 920d919b9c30dd2eed761472345c8354280b6951
     type: git
     params:
     sparse_paths:
@@ -121,6 +141,8 @@ sources_locked:
     links:
       -
     scripts:
+      -
+    patches:
       -
   - repo: https://github.com/causefx/Organizr.git
     name: organizr
@@ -132,6 +154,8 @@ sources_locked:
     links:
       -
     scripts:
+      -
+    patches:
       -
 default_group: ""
 groups:

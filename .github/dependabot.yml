@@ -25,8 +25,8 @@ updates:
       - /docker-images/custom/data-optimization
       - /docker-images/custom/docker-build
       - /docker-images/custom/docker-setup
-      - /docker-images/custom/file-server
       - /docker-images/custom/favicons
+      - /docker-images/custom/file-server
       - /docker-images/custom/homepage-widgets
       - /docker-images/custom/owntracks-decryptor
       - /docker-images/custom/web-automation
@@ -79,11 +79,12 @@ updates:
     directories:
       - /docker-images/.shared/cron-utils/on-demand
       - /docker-images/custom/data-optimization
-      - /docker-images/custom/file-server
       - /docker-images/custom/favicons
+      - /docker-images/custom/file-server
       - /docker-images/custom/homepage-widgets
       - /docker-images/custom/owntracks-decryptor
       - /docker-images/custom/web-automation
+      - /docker-images/external/git-cache
       - /docker-images/external/homepage
       - /docs/diagrams
       - /icons
