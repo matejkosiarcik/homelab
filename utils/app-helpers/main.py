@@ -21,8 +21,8 @@ app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 full_app_name = path.basename(app_dir).lstrip(".")
 app_type = full_app_name
-if path.exists(path.join(app_dir, 'config', 'app.txt')):
-    with open(path.join(app_dir, 'config', 'app.txt'), "r") as file:
+if path.exists(path.join(app_dir, "config", "app.txt")):
+    with open(path.join(app_dir, "config", "app.txt"), "r") as file:
         app_type = file.read().strip()
 log_file = path.join(git_dir, ".logs", start_datestr, "docker-apps", f"{full_app_name}.txt")
 
