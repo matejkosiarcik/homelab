@@ -402,7 +402,7 @@ async function saveStreamToCache(
     status: number,
     upstreamStream: IncomingMessage
 ) {
-    const chunkLength = 10 * 1024 * 1024;
+    const chunkLength = 2 * 1024 * 1024;
     const rand = faker.string.alphanumeric(16);
     let part = 0;
     let workBufferMaxLength = chunkLength;
