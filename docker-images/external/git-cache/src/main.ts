@@ -8,12 +8,12 @@ import stream from 'node:stream';
 import { faker } from '@faker-js/faker';
 import { DataTypes, Model, Sequelize } from '@sequelize/core';
 import { PostgresDialect } from '@sequelize/postgres';
-import { formatISO, subHours } from 'date-fns';
+import { formatISO, subSeconds } from 'date-fns';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import fastq from 'fastq';
 import cron from 'node-cron';
-import { Client as PostgresClient } from 'pg';
+import { Client as PostgresClient, Query } from 'pg';
 import { createClient } from 'redis';
 
 if (fs.existsSync('.env')) {
@@ -33,6 +33,7 @@ const config = {
         port: 5432,
         user: 'postgres',
     },
+    expirationInterval: 43_200, // 12 hours in seconds
 };
 
 /**
@@ -369,28 +370,40 @@ async function streamFromCache(key: string, response: Response) {
 
     response.status(metadata.status);
 
-    for (let i = 1; i <= metadata.parts; i += 1) {
-        let chunk = await CachedChunk.findOne({
-            where: {
-                key: key,
-                rand: metadata.rand,
-                index: i,
-            },
-        });
-        if (!chunk) {
-            response.end();
-            throw new Error(`Chunk ${i} for ${key} ${metadata.rand} not found`);
-        }
-        const buffer = chunk.data;
-        if (!buffer) {
-            response.end();
-            throw new Error(`Chunk ${i} for ${key} ${metadata.rand} is empty`);
-        }
-        response.write(buffer);
-    }
+    const pgClient = new PostgresClient({
+        database: config.postgres.database,
+        user: config.postgres.user,
+        host: config.postgres.host,
+        password: config.postgres.password,
+        port: config.postgres.port,
+        ssl: { rejectUnauthorized: false }, // TODO: Pass in custom CA certificate
+    });
 
-    console.log(`Response for ${key} sent`);
-    response.end();
+    await pgClient.connect();
+
+    // Stream rows from Postgres using Query events
+    const query = new Query('SELECT "index", "data" FROM "data" WHERE "key" = $1 AND "rand" = $2 ORDER BY "index" ASC;', [key, metadata.rand]);
+
+    try {
+        await new Promise<void>((resolve, reject) => {
+            const queryStream = pgClient.query(query);
+
+            queryStream.on('row', (row: CachedChunk) => {
+                response.write(row.data);
+            });
+
+            queryStream.on('end', async () => {
+                resolve();
+            });
+
+            queryStream.on('error', async (err) => {
+                reject(err);
+            });
+        });
+    } finally {
+        await pgClient.end();
+        response.end();
+    }
 }
 
 /**
@@ -450,7 +463,7 @@ async function saveStreamToCache(
                 parts: part,
                 rand: rand,
             } satisfies CachedMetadata));
-            await redis.expire(key, 12 * 60 * 60); // 12 hours
+            await redis.expire(key, config.expirationInterval);
 
             console.log(`Saved ${part} chunks to Postgres for ${key} with rand ${rand}`);
             resolve();
@@ -578,10 +591,10 @@ cron.schedule('0 30 */2 * * *', async () => {
         }
         const metadata = JSON.parse(metadataRaw) as CachedMetadata;
         await sequelize.query(
-            'DELETE FROM "data" WHERE "key" = :key AND "rand" != :rand AND "createdAt" <= :createdAt;',
+            'DELETE FROM "data" WHERE "key" = :key AND "rand" != :rand AND "created_at" <= :createdAt;',
             {
                 replacements: {
-                    createdAt: formatISO(subHours(currentDate, 6)),
+                    createdAt: formatISO(subSeconds(currentDate, config.expirationInterval * 2)),
                     key: key,
                     rand: metadata.rand,
                 }
