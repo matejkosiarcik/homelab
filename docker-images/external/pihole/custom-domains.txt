@@ -117,3 +117,4 @@
 ## Mischalenous ##
 
 unifi unificontroller.matejhome.com # Some UniFi devices require "unifi" record, so we CNAME it to our real domain
+127.0.0.1 localhost.matejhome.com # For debugging with real certificates on main machine
