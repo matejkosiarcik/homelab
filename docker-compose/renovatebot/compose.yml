@@ -6,13 +6,13 @@ services:
     build:
       dockerfile: ./external/renovatebot/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     # Internet access required for accessing github/gitlab and package registries
     networks:
       internal-network: {}
       external-network: {}
     volumes:
-      - ./app-logs/renovatebot:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot:/homelab/logs:rw
     tmpfs:
       - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
@@ -26,8 +26,8 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
-      - ./app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

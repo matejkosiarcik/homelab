@@ -7,9 +7,9 @@ services:
     build:
       dockerfile: ./external/homeassistant/Dockerfile
     volumes:
-      - ./app-data/homeassistant:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant:/config:rw
       - /etc/localtime:/etc/localtime:ro
-      - ../../../../docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
     # cap_add:
     #   - NET_ADMIN
     #   - NET_RAW
@@ -55,13 +55,13 @@ services:
   #     app:
   #       condition: service_healthy
   #   env_file:
-  #     - ./app-secrets/web-backup.env
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/web-backup.env
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
   #   volumes:
-  #     - ./app-data/web-backup:/homelab/backup:rw
-  #     - ./app-logs/web-backup-errors:/homelab/errors:rw
-  #     - ./app-logs/web-backup:/homelab/logs:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/web-backup:/homelab/backup:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup-errors:/homelab/errors:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup:/homelab/logs:rw
   #   networks:
   #     internal-network: {}
   #     external-network: {}

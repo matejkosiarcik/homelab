@@ -6,11 +6,11 @@ services:
     build:
       dockerfile: ./external/ntfy/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ./app-data/ntfy-cache:/var/cache/ntfy:rw
-      - ./app-data/ntfy-lib:/var/lib/ntfy:rw
-      # - ./app-data/ntfy-etc:/etc/ntfy:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-cache:/var/cache/ntfy:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-lib:/var/lib/ntfy:rw
+      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-etc:/etc/ntfy:rw
     # Internet access requied for publishing notifications through firebase
     networks:
       internal-network: {}

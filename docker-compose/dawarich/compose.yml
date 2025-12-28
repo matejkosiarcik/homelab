@@ -6,14 +6,14 @@ services:
     build:
       dockerfile: ./external/dawarich/Dockerfile
     volumes:
-      - ./app-data/dawarich-public:/var/app/public:rw
-      - ./app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
-      - ./app-data/dawarich-storage:/var/app/storage:rw
-      # - ./app-data/dawarich-database:/dawarich_db_data:rw # TODO: Determine if necessary
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-public:/var/app/public:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-storage:/var/app/storage:rw
+      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-database:/dawarich_db_data:rw # TODO: Determine if necessary
     environment:
       MODE: app
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     tmpfs:
       - /home/homelab/.cache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/app/db:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -27,14 +27,14 @@ services:
     build:
       dockerfile: ./external/dawarich/Dockerfile
     volumes:
-      - ./app-data/dawarich-public:/var/app/public:rw
-      - ./app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
-      - ./app-data/dawarich-storage:/var/app/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-public:/var/app/public:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-storage:/var/app/storage:rw
     environment:
       MODE: sidekiq
       PROMETHEUS_EXPORTER_HOST: app
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     healthcheck:
       test: ["CMD-SHELL", "pgrep -f sidekiq"]
       interval: 10s
@@ -50,7 +50,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: redis
     # volumes:
-    #   - ./app-data/dawarich-shared:/data:rw # TODO: Determine if necessary
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-shared:/data:rw # TODO: Determine if necessary
 
   postgis:
     extends:
@@ -61,12 +61,12 @@ services:
       dockerfile: ./external/postgis/Dockerfile
     shm_size: 1G
     volumes:
-      - ./app-data/dawarich-database:/var/lib/postgresql/data:rw
-      # - ./app-data/dawarich-shared:/var/shared:rw # TODO: Determine if necessary
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-database:/var/lib/postgresql/data:rw
+      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-shared:/var/shared:rw # TODO: Determine if necessary
     environment:
       POSTGRES_DB: dawarich
     env_file:
-      - ./app-secrets/postgis.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
     tmpfs:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
@@ -78,7 +78,7 @@ services:
     build:
       dockerfile: ./custom/owntracks-decryptor/Dockerfile
     env_file:
-      - ./app-secrets/decryptor.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/decryptor.env
 
   certificator:
     extends:
@@ -90,7 +90,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

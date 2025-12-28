@@ -8,11 +8,11 @@ services:
     # Below are optional settings, only apply when necessary:
     # init: false
     # env_file:
-    #   - ./app-secrets/app.env
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     # environment:
     #   PLACEHOLDER: PLACEHOLDER
     # volumes:
-    #   - ./app-data/PLACEHOLDER:/homelab/PLACEHOLDER:ro
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER:/homelab/PLACEHOLDER:ro
     # networks:
     #   internal-network: {}
     #   external-network: {}

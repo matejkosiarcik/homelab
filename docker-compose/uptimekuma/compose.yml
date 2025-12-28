@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./external/uptimekuma/Dockerfile
     volumes:
-      - ./app-data/uptimekuma:/app/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/uptimekuma:/app/data:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

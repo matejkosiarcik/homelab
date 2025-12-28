@@ -7,8 +7,8 @@ services:
       dockerfile: ./external/motioneye/Dockerfile
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./app-data/motioneye-etc:/etc/motioneye:rw
-      - ./app-data/motioneye-lib:/var/lib/motioneye:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye-etc:/etc/motioneye:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye-lib:/var/lib/motioneye:rw
     tmpfs:
       - /run:rw # TODO: Finish TMPFS
       - /var/log/motioneye:rw # TODO: Finish TMPFS

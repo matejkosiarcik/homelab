@@ -6,11 +6,11 @@ services:
     build:
       dockerfile: ./external/healthchecks/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       SITE_NAME: Healthchecks
     volumes:
-      - ./app-data/healthchecks:/homelab/healthchecks:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/healthchecks:/homelab/healthchecks:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

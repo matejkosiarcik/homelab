@@ -9,9 +9,9 @@ services:
         SETUP_SCRIPT: blackhole
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ./app-data/pihole:/etc/pihole:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole:/etc/pihole:rw
     cap_add:
       - SYS_NICE
     dns: # Use internal DNS
@@ -42,7 +42,7 @@ services:
       PIHOLE_HOSTNAME: app
       PIHOLE_PORT: 80
     env_file:
-      - ./app-secrets/app-prometheus-exporter.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
 
   socket-proxy:
     extends:
@@ -64,7 +64,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./custom/data-optimization/Dockerfile
     volumes:
-      - ./app-logs/data-optimization:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/data-optimization:/homelab/logs:rw
     tmpfs:
       - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
