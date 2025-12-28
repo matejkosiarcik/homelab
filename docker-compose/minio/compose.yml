@@ -6,9 +6,9 @@ services:
     build:
       dockerfile: ./external/minio-server/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ./app-data/minio:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/minio:/data:rw
 
   app-setup:
     extends:
@@ -18,7 +18,7 @@ services:
     build:
       dockerfile: ./external/minio-client/Dockerfile
     env_file:
-      - ./app-secrets/app-setup.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
     tmpfs:
       - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /home/homelab/.mc:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -36,7 +36,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
-      - ./app-logs/apache-api:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-api:/homelab/logs:rw
 
   apache-prometheus-exporter-api:
     extends:
@@ -46,7 +46,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
-      - ./app-logs/apache-prometheus-exporter-api:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter-api:/homelab/logs:rw
 
   apache-console:
     extends:
@@ -56,7 +56,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: console
     volumes:
-      - ./app-logs/apache-console:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-console:/homelab/logs:rw
 
   apache-prometheus-exporter-console:
     extends:
@@ -66,7 +66,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: console
     volumes:
-      - ./app-logs/apache-prometheus-exporter-console:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter-console:/homelab/logs:rw
 
   favicons:
     extends:

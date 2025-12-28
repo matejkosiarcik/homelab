@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./external/actualbudget/Dockerfile
     volumes:
-      - ./app-data/actualbudget-data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/actualbudget-data:/data:rw
     init: false
 
   certificator:

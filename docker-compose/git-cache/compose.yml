@@ -6,8 +6,8 @@ services:
     build:
       dockerfile: ./external/git-cache/Dockerfile
     env_file:
-      - ./app-secrets/app.env
-      - ./config/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/config/app.env
 
   redis:
     extends:

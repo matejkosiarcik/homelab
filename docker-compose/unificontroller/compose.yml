@@ -12,8 +12,8 @@ services:
     environment:
       MONGO_HOST: mongodb
     volumes:
-      - ./app-data/unifi-network-application:/config:rw
-      - ./app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unifi-network-application:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
     # Internet access required for downloading device firmware updates
     networks:
       internal-network: {}
@@ -35,10 +35,10 @@ services:
       MONGO_DBNAME: unifi
       MONGO_USER: unifi
     env_file:
-      - ./app-secrets/mongodb.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb.env
     volumes:
-      - ./app-data/mongodb:/data/db:rw
-      - ../../../../docker-images/external/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/mongodb:/data/db:rw
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
 
   certificator:
     extends:
@@ -71,7 +71,7 @@ services:
   #     app:
   #       condition: service_healthy
   #   env_file:
-  #     - ./app-secrets/web-backup.env
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/web-backup.env
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
   #   volumes:

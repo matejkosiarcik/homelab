@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
     volumes:
-      - ./app-data/samba-data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/samba-data:/data:rw
     ports:
       - 127.0.0.1:8139:139
       - 127.0.0.1:8445:445

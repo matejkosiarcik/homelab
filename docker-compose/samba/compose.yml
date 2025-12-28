@@ -6,12 +6,12 @@ services:
     build:
       dockerfile: ./external/samba/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}
       SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
-      - ./app-logs/samba:/var/log/samba:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba:/var/log/samba:rw
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
@@ -35,7 +35,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

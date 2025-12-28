@@ -23,10 +23,10 @@ services:
       PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL_2}
       DEFAULT_FROM_EMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
     env_file:
-      - ./app-secrets/app-backend.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-backend.env
     volumes:
-      - ./app-data/adventurelog-media:/code/media:rw
-      - ./app-logs/adventurelog-backend-nginx:/var/log/nginx:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/adventurelog-media:/code/media:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/adventurelog-backend-nginx:/var/log/nginx:rw
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -47,9 +47,9 @@ services:
       POSTGRES_DB: adventurelog
       POSTGRES_USER: postgres
     env_file:
-      - ./app-secrets/postgis.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
     volumes:
-      - ./app-data/postgis-data:/var/lib/postgresql/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis-data:/var/lib/postgresql/data:rw
     tmpfs:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
@@ -66,7 +66,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: frontend
     volumes:
-      - ./app-logs/apache-frontend:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-frontend:/homelab/logs:rw
 
   apache-prometheus-exporter-frontend:
     extends:
@@ -76,7 +76,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: frontend
     volumes:
-      - ./app-logs/apache-prometheus-exporter-frontend:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter-frontend:/homelab/logs:rw
 
   apache-backend:
     extends:
@@ -86,7 +86,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: backend
     volumes:
-      - ./app-logs/apache-backend:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-backend:/homelab/logs:rw
 
   apache-prometheus-exporter-backend:
     extends:
@@ -96,7 +96,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: backend
     volumes:
-      - ./app-logs/apache-prometheus-exporter-backend:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter-backend:/homelab/logs:rw
 
   favicons:
     extends:

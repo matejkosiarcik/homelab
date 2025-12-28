@@ -6,11 +6,11 @@ services:
     build:
       dockerfile: ./external/openwebui/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       CORS_ALLOW_ORIGIN: "${DOCKER_COMPOSE_NETWORK_URL}"
     volumes:
-      - ./app-data/openwebui:/app/backend/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/openwebui:/app/backend/data:rw
     tmpfs:
       - /app/backend/open_webui/static:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     dns: # Use internal DNS

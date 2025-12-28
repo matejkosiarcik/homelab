@@ -8,12 +8,12 @@ import stream from 'node:stream';
 import { faker } from '@faker-js/faker';
 import { DataTypes, Model, Sequelize } from '@sequelize/core';
 import { PostgresDialect } from '@sequelize/postgres';
-import { formatISO, subHours } from 'date-fns';
+import { formatISO, subSeconds } from 'date-fns';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import fastq from 'fastq';
 import cron from 'node-cron';
-import { Client as PostgresClient } from 'pg';
+import { Client as PostgresClient, Query } from 'pg';
 import { createClient } from 'redis';
 
 if (fs.existsSync('.env')) {
@@ -33,13 +33,8 @@ const config = {
         port: 5432,
         user: 'postgres',
     },
+    expirationInterval: 43_200, // 12 hours in seconds
 };
-
-async function delay(timeout: number) {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve(undefined), timeout);
-    });
-}
 
 /**
  * Wait for redis
@@ -375,53 +370,40 @@ async function streamFromCache(key: string, response: Response) {
 
     response.status(metadata.status);
 
-    // Stream all chunks
-    // for (let i = 1; i <= metadata.chunks; i++) {
-    //     const str = await redis.get(`${key}:chunk:${i.toFixed(0)}`);
-    //     if (!str) {
-    //         console.error(`Got error, chunk ${key}:chunk:${i.toFixed(0)} is empty`);
-    //         continue;
-    //     }
-    //     const buffer = Buffer.from(str, 'base64');
-    //     if (buffer) {
-    //         response.write(buf);
-    //     }
-    // }
-    let chunks = await CachedChunk.findAll({
-        where: {
-            key: key,
-            rand: metadata.rand,
-        },
-        order: [
-            ['index', 'ASC'],
-        ],
+    const pgClient = new PostgresClient({
+        database: config.postgres.database,
+        user: config.postgres.user,
+        host: config.postgres.host,
+        password: config.postgres.password,
+        port: config.postgres.port,
+        ssl: { rejectUnauthorized: false }, // TODO: Pass in custom CA certificate
     });
 
-    if (chunks.length !== metadata.parts) {
-        await delay(1000);
-        chunks = await CachedChunk.findAll({
-            where: {
-                key: key,
-                rand: metadata.rand,
-            },
-            order: [
-                ['index', 'ASC'],
-            ],
+    await pgClient.connect();
+
+    // Stream rows from Postgres using Query events
+    const query = new Query('SELECT "index", "data" FROM "data" WHERE "key" = $1 AND "rand" = $2 ORDER BY "index" ASC;', [key, metadata.rand]);
+
+    try {
+        await new Promise<void>((resolve, reject) => {
+            const queryStream = pgClient.query(query);
+
+            queryStream.on('row', (row: CachedChunk) => {
+                response.write(row.data);
+            });
+
+            queryStream.on('end', async () => {
+                resolve();
+            });
+
+            queryStream.on('error', async (err) => {
+                reject(err);
+            });
         });
-        if (chunks.length !== metadata.parts) {
-            console.error(`Saved chunks do not match expected parts ${chunks.length}:${metadata.parts}`);
-            throw new Error(`Saved chunks do not match expected parts ${chunks.length}:${metadata.parts}`);
-        }
+    } finally {
+        await pgClient.end();
+        response.end();
     }
-
-    for (let chunk of chunks) {
-        const buffer = chunk.data;
-        if (buffer) {
-            response.write(buffer);
-        }
-    }
-
-    response.end();
 }
 
 /**
@@ -433,31 +415,46 @@ async function saveStreamToCache(
     status: number,
     upstreamStream: IncomingMessage
 ) {
-    let part = 0;
-    let workBuffer = Buffer.alloc(0);
-    const chunkLength = 1024 * 1024;
+    const chunkLength = 2 * 1024 * 1024;
     const rand = faker.string.alphanumeric(16);
+    let part = 0;
+    let workBufferMaxLength = chunkLength;
+    let workBufferLength = 0;
+    let workBuffer = Buffer.allocUnsafe(workBufferMaxLength);
 
     await new Promise<void>((resolve, reject) => {
         upstreamStream.on('data', async (buffer: Buffer) => {
-            workBuffer = Buffer.concat([workBuffer, buffer]);
-            if (workBuffer.byteLength > chunkLength) {
+            if (workBufferLength + buffer.byteLength >= chunkLength) {
+                // We have reached the limit for a single chunk to save in DB
+
+                if (workBufferLength + buffer.byteLength > workBufferMaxLength) {
+                    // We have to enlarge the workBuffer a bit before we can copy into it
+                    workBufferMaxLength = workBufferLength + buffer.byteLength;
+                    const newWorkBuffer = Buffer.allocUnsafe(workBufferMaxLength);
+                    workBuffer.copy(newWorkBuffer, 0, 0, workBufferLength);
+                    workBuffer = newWorkBuffer;
+                }
+
+                buffer.copy(workBuffer, workBufferLength, 0, buffer.byteLength);
+                workBufferLength += buffer.byteLength;
+
                 part += 1;
-                const savingBuffer = Buffer.allocUnsafe(chunkLength);
-                workBuffer.copy(savingBuffer, 0, 0, chunkLength);
-                const tmpBuffer = Buffer.allocUnsafe(workBuffer.byteLength - chunkLength);
-                workBuffer.copy(tmpBuffer, 0, chunkLength, workBuffer.byteLength);
-                workBuffer = tmpBuffer;
-                await writeQueue.push({ key: key, index: part, rand: rand, data: savingBuffer });
+                upstreamStream.pause();
+                await writeQueue.push({ key: key, index: part, rand: rand, data: workBuffer.subarray(0, workBufferLength) });
+                upstreamStream.resume();
+                workBufferLength = 0;
+            } else {
+                // Just copy the buffer and continue
+                buffer.copy(workBuffer, workBufferLength, 0, buffer.byteLength);
+                workBufferLength += buffer.byteLength;
             }
         });
 
         upstreamStream.on('end', async () => {
-            if (workBuffer.byteLength > 0) {
+            if (workBufferLength > 0) {
                 part += 1;
-                const savingBuffer = Buffer.from(workBuffer);
-                workBuffer = Buffer.alloc(0);
-                await writeQueue.push({ key: key, index: part, rand: rand, data: savingBuffer });
+                await writeQueue.push({ key: key, index: part, rand: rand, data: workBuffer.subarray(0, workBufferLength) });
+                workBufferLength = 0;
             }
 
             await redis.set(key, JSON.stringify({
@@ -466,7 +463,7 @@ async function saveStreamToCache(
                 parts: part,
                 rand: rand,
             } satisfies CachedMetadata));
-            await redis.expire(key, 12 * 60 * 60); // 12 hours
+            await redis.expire(key, config.expirationInterval);
 
             console.log(`Saved ${part} chunks to Postgres for ${key} with rand ${rand}`);
             resolve();
@@ -594,10 +591,10 @@ cron.schedule('0 30 */2 * * *', async () => {
         }
         const metadata = JSON.parse(metadataRaw) as CachedMetadata;
         await sequelize.query(
-            'DELETE FROM "data" WHERE "key" = :key AND "rand" != :rand AND "createdAt" <= :createdAt;',
+            'DELETE FROM "data" WHERE "key" = :key AND "rand" != :rand AND "created_at" <= :createdAt;',
             {
                 replacements: {
-                    createdAt: formatISO(subHours(currentDate, 6)),
+                    createdAt: formatISO(subSeconds(currentDate, config.expirationInterval * 2)),
                     key: key,
                     rand: metadata.rand,
                 }

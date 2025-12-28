@@ -10,7 +10,7 @@ services:
       couchdb:
         condition: service_healthy
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       COUCHDB_URL: ${DOCKER_COMPOSE_NETWORK_URL}/couchdb
       GROCERY_URL: ${DOCKER_COMPOSE_NETWORK_URL}
@@ -43,9 +43,9 @@ services:
       dockerfile: ./external/couchdb/Dockerfile
     init: false
     env_file:
-      - ./app-secrets/couchdb.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/couchdb.env
     volumes:
-      - ./app-data/couchdb-data:/opt/couchdb/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/couchdb-data:/opt/couchdb/data:rw
     tmpfs:
       - /opt/couchdb/etc/local.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 

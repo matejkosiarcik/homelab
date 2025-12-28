@@ -6,9 +6,9 @@ services:
     build:
       dockerfile: ./external/homepage/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ./app-logs/homepage:/app/config/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/homepage:/app/config/logs:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
@@ -29,8 +29,8 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
-      - ./app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:
@@ -50,7 +50,7 @@ services:
     build:
       dockerfile: ./custom/homepage-widgets/Dockerfile
     env_file:
-      - ./app-secrets/widgets.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/widgets.env
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

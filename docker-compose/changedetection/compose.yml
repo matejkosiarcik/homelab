@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./external/changedetection/Dockerfile
     volumes:
-      - ./app-data/changedetection:/datastore:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection:/datastore:rw
     # Internet access required for monitoring public websites
     networks:
       internal-network: {}

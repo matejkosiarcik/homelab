@@ -6,9 +6,9 @@ services:
     build:
       dockerfile: ./external/docker-registry/Dockerfile
     env_file:
-      - ./app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ./app-data/docker-registry:/var/lib/registry:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/docker-registry:/var/lib/registry:rw
     # Internet access required for reading remote registry data
     networks:
       internal-network: {}

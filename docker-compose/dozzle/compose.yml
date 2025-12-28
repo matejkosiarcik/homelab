@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./external/dozzle/Dockerfile
     volumes:
-      - ./app-secrets/dozzle-users.yml:/data/users.yml:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-users.yml:/data/users.yml:ro
       # Docker socket intentionally left out, as I want dozzle to use dozzle-agents always, even for current server
     secrets:
       - source: cert

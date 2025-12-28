@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./external/ollama/Dockerfile
     volumes:
-      - ./app-data/ollama:/homelab/ollama:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/ollama:/homelab/ollama:rw
 
   certificator:
     extends:
@@ -18,8 +18,8 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     volumes:
-      - ./app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
-      - ./app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:
