@@ -126,9 +126,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
     build:
       dockerfile: ./custom/favicons/Dockerfile
-      args:
-        UID: ${DOCKER_COMPOSE_UID}
-        GID: ${DOCKER_COMPOSE_GID}
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
 
@@ -138,9 +135,6 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-file-server
     build:
       dockerfile: ./custom/file-server/Dockerfile
-      args:
-        UID: ${DOCKER_COMPOSE_UID}
-        GID: ${DOCKER_COMPOSE_GID}
 
   script-app-setup:
     extends:
