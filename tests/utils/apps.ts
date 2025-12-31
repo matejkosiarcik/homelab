@@ -66,6 +66,12 @@ export const apps = {
             { url: 'https://gatus-2.matejhome.com', title: 'Gatus 2' },
         ],
     },
+    gitcache: {
+        title: 'Git Cache',
+        instances: [
+            { url: 'https://git-cache-github.matejhome.com', title: 'Git Cache - GitHub' },
+        ],
+    },
     gotify: {
         title: 'Gotify',
         instances: [
@@ -131,6 +137,12 @@ export const apps = {
         title: 'NetAlertX',
         instances: [
             { url: 'https://netalertx.matejhome.com', title: 'NetAlertX' },
+        ],
+    },
+    npmcache: {
+        title: 'NPM Cache',
+        instances: [
+            { url: 'https://npm-cache.matejhome.com', title: 'NPM Cache' },
         ],
     },
     ntfy: {
