@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_8: Must run as root
 
 FROM linuxserver/socket-proxy:3.2.10
 USER root
