@@ -3,7 +3,8 @@ USER root
 WORKDIR /homelab
 COPY ./external/git-cache/package-lock.json ./external/git-cache/package.json ./external/git-cache/tsconfig.json ./
 COPY ./external/git-cache/src/ ./src/
-RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+RUN --mount=type=cache,target=/root/.npm \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
 

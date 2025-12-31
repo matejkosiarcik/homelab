@@ -3,7 +3,8 @@ USER root
 WORKDIR /homelab
 COPY ./custom/file-server/package-lock.json ./custom/file-server/package.json ./custom/file-server/tsconfig.json ./
 COPY ./custom/file-server/src/ ./src/
-RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+RUN --mount=type=cache,target=/root/.npm \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
 
