@@ -102,6 +102,9 @@ load_password() {
     printf 'GATUS_2__PROXY_STATUS_PASSWORD=%s\n' "$(load_password gatus-2 apache status)"
     printf 'GATUS_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password gatus-2 apache prometheus)"
 
+    printf 'GIT_CACHE_GITHUB__PROXY_STATUS_PASSWORD=%s\n' "$(load_password git-cache-github apache status)"
+    printf 'GIT_CACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password git-cache-github apache prometheus)"
+
     printf 'GOTIFY__MATEJ_PASSWORD=%s\n' "$(load_password gotify app matej)"
     printf 'GOTIFY__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password gotify app homelab-test)"
     printf 'GOTIFY__PROXY_STATUS_PASSWORD=%s\n' "$(load_password gotify apache status)"
@@ -190,6 +193,9 @@ load_password() {
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-4g app prometheus)"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_STATUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-4g apache status)"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password nodeexporter-raspberry-pi-4b-4g apache prometheus)"
+
+    printf 'NPM_CACHE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password npm-cache apache status)"
+    printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password npm-cache apache prometheus)"
 
     printf 'NTFY__MATEJ_PASSWORD=%s\n' "$(load_password ntfy app matej)"
     printf 'NTFY__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password ntfy app homelab-test)"
