@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: USER can't be set directly, but it should be used after container initialized
+# checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
 FROM linuxserver/speedtest-tracker:1.13.3
 USER root

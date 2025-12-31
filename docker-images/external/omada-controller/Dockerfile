@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: USER can't be set directly, but it should be used after container initialized
+# checkov:skip=CKV_DOCKER_8: Must run as root initially, the image switches to nonroot after it starts
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
 FROM mbentley/omada-controller:6.0

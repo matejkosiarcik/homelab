@@ -1,4 +1,4 @@
-# checkov:skip=CKV_DOCKER_3: Cannot run as non-root initially, but we switch to another user later
+# checkov:skip=CKV_DOCKER_8: Must run as root initially, but we switch to non-root user in entrypoint
 
 FROM debian:13.2-slim AS prefinal
 USER root

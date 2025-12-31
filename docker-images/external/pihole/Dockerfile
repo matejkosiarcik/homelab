@@ -1,4 +1,5 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_8: Must run as root
+# TODO: Investigate if it is possible to run as non-root
 
 FROM pihole/pihole:2025.11.1
 USER root
