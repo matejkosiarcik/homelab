@@ -1,3 +1,16 @@
+FROM debian:13.2-slim AS gitconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        ca-certificates curl git >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/date.txt ./
+RUN printf '' >/root/.gitconfig && \
+    { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
+    git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
+
 FROM python:3.14.2-slim AS minio-mc-gitman
 USER root
 WORKDIR /homelab
@@ -13,6 +26,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./external/minio-client/gitman.yml ./
+COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
