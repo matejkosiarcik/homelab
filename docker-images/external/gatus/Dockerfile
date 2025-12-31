@@ -6,6 +6,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 ### Dependencies ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
@@ -19,6 +20,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
@@ -54,6 +56,7 @@ COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 FROM twinproduction/gatus:v5.33.1 AS gatus
 
 FROM debian:13.2-slim
+USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \

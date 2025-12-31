@@ -1,6 +1,7 @@
 ### Dependencies ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
@@ -14,6 +15,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
@@ -56,6 +58,7 @@ COPY ./external/unbound/unbound.conf.j2 ./
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-4
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
@@ -73,6 +76,7 @@ COPY ./external/unbound/entrypoint.sh ./
 COPY --from=config-4 /homelab/unbound.conf ./
 
 FROM debian:13.2-slim
+USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \

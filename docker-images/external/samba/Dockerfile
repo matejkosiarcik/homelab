@@ -20,6 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/git \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.25.5-bookworm AS samba-exporter-build
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
@@ -43,6 +44,7 @@ COPY ./external/samba/entrypoint.sh ./
 COPY --from=samba-exporter-build /homelab/samba_exporter/bin ./bin
 
 FROM debian:13.2-slim
+USER root
 WORKDIR /homelab
 ARG GID=1000
 ARG UID=1000

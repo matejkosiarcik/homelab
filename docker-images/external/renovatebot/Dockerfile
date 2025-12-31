@@ -18,6 +18,7 @@ RUN --mount=type=cache,target=/root/.cache/git \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.25.5-bookworm AS supercronic-build
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \

@@ -1,6 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM debian:13.2-slim
+USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \

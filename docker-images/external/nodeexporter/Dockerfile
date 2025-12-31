@@ -1,6 +1,7 @@
 FROM prom/node-exporter:v1.10.2 AS nodeexporter
 
 FROM debian:13.2-slim
+USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \

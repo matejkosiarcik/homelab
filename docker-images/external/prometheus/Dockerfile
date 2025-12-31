@@ -1,6 +1,7 @@
 ### Dependencies ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
@@ -14,6 +15,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
+USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
