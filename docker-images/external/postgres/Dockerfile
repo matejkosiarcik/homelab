@@ -1,7 +1,7 @@
 # hadolint ignore=DL3029
 FROM postgres:18.1
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         openssl && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

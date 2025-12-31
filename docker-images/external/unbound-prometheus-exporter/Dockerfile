@@ -3,7 +3,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/gitman/requirements.txt ./
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/git \
 FROM golang:1.25.5-bookworm AS build
 WORKDIR /homelab
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/gitman-repositories/unbound_exporter/ ./unbound_exporter/
@@ -39,7 +39,7 @@ COPY --from=build /homelab/unbound_exporter/unbound_exporter ./bin/
 
 FROM debian:13.2-slim
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

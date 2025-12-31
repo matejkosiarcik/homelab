@@ -15,7 +15,7 @@ COPY ./custom/favicons/icons ./icons
 
 FROM node:25.2.1-slim
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         imagemagick && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

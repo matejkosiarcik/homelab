@@ -5,7 +5,7 @@ FROM vikunja/vikunja:0.24.6 AS vikunja
 
 FROM debian:13.2-slim
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

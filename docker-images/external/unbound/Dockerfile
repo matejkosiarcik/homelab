@@ -3,7 +3,7 @@
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
 WORKDIR /homelab
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/yq/requirements.txt ./
@@ -14,7 +14,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
 WORKDIR /homelab
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/jinja/requirements.txt ./
@@ -54,7 +54,7 @@ RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-4
 WORKDIR /homelab
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=config-3 /homelab/unbound.conf ./
@@ -69,7 +69,7 @@ COPY --from=config-4 /homelab/unbound.conf ./
 
 FROM debian:13.2-slim
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         dnsutils libcap2-bin unbound >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     setcap 'cap_net_bind_service=+ep' "$(which unbound)"

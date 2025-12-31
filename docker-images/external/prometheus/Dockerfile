@@ -3,7 +3,7 @@
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
 WORKDIR /homelab
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/yq/requirements.txt ./
@@ -14,7 +14,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
 WORKDIR /homelab
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/jinja/requirements.txt ./

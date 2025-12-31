@@ -2,7 +2,7 @@ FROM prom/node-exporter:v1.10.2 AS nodeexporter
 
 FROM debian:13.2-slim
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates wget >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

@@ -43,7 +43,7 @@ jobs:
       - name: Install system dependencies
         run: |
           set -euf
-          sudo apt-get install --yes --no-install-recommends apache2-utils moreutils
+          sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils moreutils
           npm install -g @go-task/cli
 
       - name: Prepare secrets
