@@ -30,6 +30,8 @@ RUN apk update --no-cache && \
 COPY --chown=homelab:homelab ./external/docker-registry/config.yml /etc/distribution/config.yml
 ENV HOMELAB_CONTAINER_NAME=docker-registry \
     HOMELAB_CONTAINER_VARIANT=default \
+    OTEL_TRACES_EXPORTER=none \
     TZ=Europe/Bratislava
+# TODO: Eventually enable OpenTelemetry
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost || exit 1" ]
 USER homelab

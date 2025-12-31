@@ -29,7 +29,7 @@ export const apps = {
             { url: 'https://dawarich.matejhome.com', title: 'Dawarich' },
         ]
     },
-    'docker-cache': {
+    dockercache: {
         title: 'Docker Cache',
         instances: [
             { url: 'https://docker-cache-dockerhub.matejhome.com', title: 'Docker Cache - DockerHub' },
