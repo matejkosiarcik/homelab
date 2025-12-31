@@ -11,6 +11,20 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
+FROM debian:13.2-slim AS npmconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        ca-certificates curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/date.txt ./
+RUN printf '' >/root/.npmrc && \
+    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+    npm config set proxy https://npm-cache.matejhome.com && \
+    npm config set https-proxy https://npm-cache.matejhome.com
+
 FROM python:3.14.2-slim AS supercronic-gitman
 USER root
 WORKDIR /homelab
@@ -62,6 +76,7 @@ WORKDIR /homelab
 COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json ./
 COPY ./custom/web-automation/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \

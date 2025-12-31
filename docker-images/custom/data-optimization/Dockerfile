@@ -11,6 +11,20 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
+FROM debian:13.2-slim AS npmconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        ca-certificates curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/date.txt ./
+RUN printf '' >/root/.npmrc && \
+    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+    npm config set proxy https://npm-cache.matejhome.com && \
+    npm config set https-proxy https://npm-cache.matejhome.com
+
 FROM python:3.14.2-slim AS supercronic-gitman
 USER root
 WORKDIR /homelab
@@ -61,6 +75,7 @@ USER root
 WORKDIR /homelab
 COPY ./custom/data-optimization/package-lock.json ./custom/data-optimization/package.json ./custom/data-optimization/tsconfig.json ./
 COPY ./custom/data-optimization/src/ ./src/
+COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
@@ -71,6 +86,7 @@ USER root
 WORKDIR /homelab
 COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
 COPY ./.shared/cron-utils/on-demand/src/ ./src/
+COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
