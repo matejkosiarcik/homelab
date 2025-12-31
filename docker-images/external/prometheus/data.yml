@@ -127,7 +127,7 @@ proxies:
   - url: dozzle.matejhome.com
   - url: gatus-1.matejhome.com
   - url: gatus-2.matejhome.com
-  - url: git-cache.matejhome.com
+  - url: git-cache-github.matejhome.com
   - url: gotify.matejhome.com
   - url: grafana.matejhome.com
   - url: groceries.matejhome.com

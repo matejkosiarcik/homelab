@@ -168,8 +168,8 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Git Cache
-    domain: git-cache.matejhome.com
+  - name: Git Cache - GitHub
+    domain: git-cache-github.matejhome.com
 
   - name: Gotify
     domain: gotify.matejhome.com
