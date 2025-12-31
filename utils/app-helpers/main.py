@@ -44,6 +44,11 @@ log.addHandler(logging.StreamHandler())
 log.addHandler(logging.FileHandler(log_file))
 
 
+# Write current date.txt
+with open(path.join(git_dir, "docker-images", ".shared", "date.txt"), "w", encoding="utf-8") as datefile:
+    print(datetime.now().isoformat(), file=datefile)
+
+
 def tty_supports_color():
     return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
 

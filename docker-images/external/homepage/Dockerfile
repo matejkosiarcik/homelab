@@ -1,10 +1,25 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
+FROM debian:13.2-slim AS npmconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+        ca-certificates curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/date.txt ./
+RUN printf '' >/root/.npmrc && \
+    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+    npm config set proxy https://npm-cache.matejhome.com && \
+    npm config set https-proxy https://npm-cache.matejhome.com
+
 FROM node:25.2.1-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./external/homepage/package-lock.json ./external/homepage/package.json ./external/homepage/terser.json ./external/homepage/tsconfig.json ./external/homepage/vite.config.ts ./
 COPY ./external/homepage/src/ ./src/
+COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \

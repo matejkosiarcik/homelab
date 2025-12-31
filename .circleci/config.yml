@@ -53,6 +53,10 @@ jobs:
             apk update --no-cache
             apk add --no-cache make
       - run:
+          name: Set date-file
+          command: |
+            date +"%Y-%m-%d_%H-%M-%S" >./docker-images/.shared/date.txt
+      - run:
           name: Build docker
           command: |
             make docker-build
