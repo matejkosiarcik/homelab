@@ -1,4 +1,5 @@
 FROM amir20/dozzle:v8.14.12 AS dozzle
+USER root
 
 FROM debian:13.2-slim
 USER root

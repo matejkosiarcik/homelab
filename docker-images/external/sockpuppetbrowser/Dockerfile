@@ -1,4 +1,5 @@
 FROM dgtlmoon/sockpuppetbrowser:0.0.3
+USER root
 ENV ALLOW_CDP_LOG=no \
     CHROME_USER_DATA_DIR=/homelab/chrome-user-data \
     HOMELAB_CONTAINER_NAME=socket-proxy \

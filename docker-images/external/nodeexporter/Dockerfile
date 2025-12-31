@@ -1,4 +1,5 @@
 FROM prom/node-exporter:v1.10.2 AS nodeexporter
+USER root
 
 FROM debian:13.2-slim
 USER root

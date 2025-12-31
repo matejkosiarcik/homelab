@@ -38,6 +38,7 @@ RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
     sh validate-executable.sh ./samba_exporter/bin/samba_statusd
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY ./external/samba/config ./config
 COPY ./external/samba/entrypoint.sh ./

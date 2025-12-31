@@ -31,6 +31,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 ### Config ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-1
+USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=unbound.example.com
 ARG HOMELAB_APP_EXTERNAL_IP=127.0.0.1
@@ -47,11 +48,13 @@ RUN printf 'env:\n' >>data.yml && \
     printf '  HOMELAB_ENV: %s\n' "$HOMELAB_ENV" >>data.yml
 
 FROM --platform=$BUILDPLATFORM yq AS config-2
+USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.yml ./
 RUN yq . data.yml >data.json
 
 FROM --platform=$BUILDPLATFORM jinja AS config-3
+USER root
 WORKDIR /homelab
 COPY --from=config-2 /homelab/data.json ./
 COPY ./external/unbound/unbound.conf.j2 ./
@@ -71,6 +74,7 @@ RUN cat -s unbound.conf | sponge unbound.conf
 # ### Final ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY ./external/unbound/entrypoint.sh ./
 COPY --from=config-4 /homelab/unbound.conf ./

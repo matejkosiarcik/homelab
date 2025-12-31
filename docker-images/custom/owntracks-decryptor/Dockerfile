@@ -1,4 +1,5 @@
 FROM node:25.2.1-slim AS nodejs-build
+USER root
 WORKDIR /homelab
 COPY ./custom/owntracks-decryptor/package-lock.json ./custom/owntracks-decryptor/package.json ./custom/owntracks-decryptor/tsconfig.json ./
 COPY ./custom/owntracks-decryptor/src/ ./src/
@@ -7,6 +8,7 @@ RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress
     npm prune --production
 
 FROM node:25.2.1-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules

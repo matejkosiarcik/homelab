@@ -1,10 +1,11 @@
 # checkov:skip=CKV_DOCKER_3: No need for explicit user
 
 FROM pihole/pihole:2025.11.1
-RUN apk update --no-cache && \
-    apk add --no-cache shadow
+USER root
 ARG GID=1000
 ARG UID=1000
+RUN apk update --no-cache && \
+    apk add --no-cache shadow
 ARG SETUP_SCRIPT=default
 COPY --chown=pihole:pihole ./external/pihole/custom-domains.txt /homelab/
 COPY --chown=pihole:pihole ./external/pihole/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh

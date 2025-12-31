@@ -1,4 +1,5 @@
 FROM ekofr/pihole-exporter:v1.2.0 AS pihole-exporter
+USER root
 
 FROM debian:13.2-slim
 USER root

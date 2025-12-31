@@ -3,6 +3,7 @@
 
 # hadolint ignore=DL3007
 FROM linuxserver/tvheadend:latest
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN apk update --no-cache && \

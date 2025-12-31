@@ -35,6 +35,7 @@ COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./unbound_exporter/unbound_exporter
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY ./external/unbound-prometheus-exporter/entrypoint.sh ./entrypoint.sh
 COPY --from=build /homelab/unbound_exporter/unbound_exporter ./bin/

@@ -1,11 +1,13 @@
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
 
 FROM healthchecks/healthchecks:v3.13
+USER root
 ARG GID=1000
 ARG UID=1000
 USER root

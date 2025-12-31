@@ -1,6 +1,7 @@
 # checkov:skip=CKV_DOCKER_3: Cannot run as non-root initially, but we switch to another user later
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./custom/apache/www/ ./www/

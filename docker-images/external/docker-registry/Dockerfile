@@ -1,4 +1,5 @@
 FROM registry:3.0.0
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN apk update --no-cache && \

@@ -31,11 +31,13 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 ### Config ###
 
 FROM yq AS config-1
+USER root
 WORKDIR /homelab
 COPY ./external/prometheus/data.yml ./
 RUN yq . data.yml >data.json
 
 FROM jinja AS config-2
+USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json ./
 COPY ./external/prometheus/prometheus.yml.j2 ./
@@ -44,14 +46,15 @@ RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 ### Final ###
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/prometheus.yml
 
 FROM prom/prometheus:v3.8.1
+USER root
 ARG GID=1000
 ARG UID=1000
-USER root
 RUN addgroup -g "$GID" homelab && \
     nologinshell='' && \
     if [ -e /sbin/nologin ]; then \

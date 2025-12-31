@@ -1,7 +1,9 @@
 FROM debian:13.2-slim AS prefinal
+USER root
 RUN mkdir -p /homelab /homelab/logs
 
 FROM vikunja/vikunja:0.24.6 AS vikunja
+USER root
 
 FROM debian:13.2-slim
 USER root
