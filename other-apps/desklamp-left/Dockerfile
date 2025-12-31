@@ -1,7 +1,9 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_8: Must run as root
+# TODO: Investigate if it is possible to run as non-root
 # checkov:skip=CKV_DOCKER_2: No need for healthcheck
 
 FROM arduinoci/ci-arduino-cli:v1.4.0
+USER root
 WORKDIR /homelab
 RUN arduino-cli core update-index && \
     arduino-cli core install arduino:mbed_rp2040

@@ -1,30 +1,37 @@
 ### Dependencies ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/yq/requirements.txt ./
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/jinja/requirements.txt ./
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 ### Config ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-1
+USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=unbound.example.com
 ARG HOMELAB_APP_EXTERNAL_IP=127.0.0.1
@@ -41,20 +48,24 @@ RUN printf 'env:\n' >>data.yml && \
     printf '  HOMELAB_ENV: %s\n' "$HOMELAB_ENV" >>data.yml
 
 FROM --platform=$BUILDPLATFORM yq AS config-2
+USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.yml ./
 RUN yq . data.yml >data.json
 
 FROM --platform=$BUILDPLATFORM jinja AS config-3
+USER root
 WORKDIR /homelab
 COPY --from=config-2 /homelab/data.json ./
 COPY ./external/unbound/unbound.conf.j2 ./
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-4
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=config-3 /homelab/unbound.conf ./
@@ -63,13 +74,16 @@ RUN cat -s unbound.conf | sponge unbound.conf
 # ### Final ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY ./external/unbound/entrypoint.sh ./
 COPY --from=config-4 /homelab/unbound.conf ./
 
 FROM debian:13.2-slim
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         dnsutils libcap2-bin unbound >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     setcap 'cap_net_bind_service=+ep' "$(which unbound)"

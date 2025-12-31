@@ -1,9 +1,9 @@
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
 FROM ghcr.io/kiwix/kiwix-serve:3.8.1
+USER root
 ARG GID=1000
 ARG UID=1000
-USER root
 RUN apk update --no-cache && \
     apk add --no-cache shadow && \
     if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \

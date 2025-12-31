@@ -1,6 +1,7 @@
-# checkov:skip=CKV_DOCKER_3: USER can't be set directly, because of the way linuxserver.io image works, but it should be active anyway because we set PUID/PGID
+# checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
 FROM linuxserver/unifi-network-application:10.0.162
+USER root
 RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
     if [ ! -e './webapps/ROOT/app-unifi/angular/favicon.ico' ]; then \
         printf 'File "favicon.ico" not found\n' >&2 && \

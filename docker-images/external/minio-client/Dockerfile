@@ -1,22 +1,28 @@
 FROM python:3.14.2-slim AS minio-mc-gitman
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/gitman/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION=ignore
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./external/minio-client/gitman.yml ./
-RUN gitman install --quiet && \
+RUN --mount=type=cache,target=/root/.cache/git \
+    gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.25.5-bookworm AS minio-mc-build
+USER root
 WORKDIR /homelab
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=minio-mc-gitman /homelab/gitman-repositories/minio-mc/ ./minio-mc/
@@ -29,11 +35,13 @@ COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./minio-mc/mc
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY --from=minio-mc-build /homelab/minio-mc/mc ./bin/
 COPY ./external/minio-client/entrypoint.sh ./external/minio-client/main.sh ./external/minio-client/plain-buckets.txt ./external/minio-client/versioned-buckets.txt ./
 
 FROM debian:13.2-slim
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
@@ -59,8 +67,9 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
 WORKDIR /homelab
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal --chown=homelab:homelab /homelab/ ./

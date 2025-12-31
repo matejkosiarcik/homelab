@@ -1,11 +1,15 @@
 FROM debian:13.2-slim AS prefinal
+USER root
 RUN mkdir -p /homelab /homelab/logs
 
 FROM vikunja/vikunja:0.24.6 AS vikunja
+USER root
 
 FROM debian:13.2-slim
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

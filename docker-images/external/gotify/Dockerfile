@@ -1,6 +1,7 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
 FROM gotify/server:2.7.3
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \

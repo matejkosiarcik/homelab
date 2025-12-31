@@ -1,20 +1,25 @@
 FROM node:25.2.1-slim AS nodejs-build
+USER root
 WORKDIR /homelab
 COPY ./custom/owntracks-decryptor/package-lock.json ./custom/owntracks-decryptor/package.json ./custom/owntracks-decryptor/tsconfig.json ./
 COPY ./custom/owntracks-decryptor/src/ ./src/
-RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+RUN --mount=type=cache,target=/root/.npm \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
 
 FROM node:25.2.1-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
 
 FROM node:25.2.1-slim
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         imagemagick && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

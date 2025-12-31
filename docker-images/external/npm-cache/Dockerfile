@@ -1,4 +1,5 @@
 FROM pkgems/npm-cache-proxy:1.3.5
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN apk update --no-cache && \

@@ -1,4 +1,5 @@
 FROM golang:1.25.5-alpine AS healthcheck-builder
+USER root
 WORKDIR /homelab
 COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -6,35 +7,43 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 ### Dependencies ###
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/yq/requirements.txt ./
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/jinja/requirements.txt ./
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 ### Config ###
 
 FROM yq AS config-1
+USER root
 WORKDIR /homelab
 COPY ./external/gatus/data.yml ./
 RUN yq . data.yml >data.json
 
 FROM jinja AS config-2
+USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json ./
 COPY ./external/gatus/config.yml.j2 ./
@@ -43,15 +52,19 @@ RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 ### Final ###
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/config.yml
 COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 
 FROM twinproduction/gatus:v5.33.1 AS gatus
+USER root
 
 FROM debian:13.2-slim
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates libcap2-bin >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000

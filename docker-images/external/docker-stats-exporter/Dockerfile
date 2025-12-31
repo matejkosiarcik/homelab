@@ -1,4 +1,5 @@
 FROM wywywywy/docker_stats_exporter:20220516
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN apk update --no-cache && \

@@ -1,23 +1,30 @@
-# checkov:skip=CKV_DOCKER_3: No need for explicit user
+# checkov:skip=CKV_DOCKER_8: Must run as root
 
 FROM python:3.14.2-slim AS samba-exporter-gitman
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/gitman/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION=ignore
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./external/samba/prometheus-exporter/gitman.yml ./
-RUN gitman install --quiet
+RUN --mount=type=cache,target=/root/.cache/git \
+    gitman install --quiet && \
+    find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.25.5-bookworm AS samba-exporter-build
+USER root
 WORKDIR /homelab
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=samba-exporter-gitman /root/.gitcache /root/.gitcache
@@ -31,17 +38,20 @@ RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
     sh validate-executable.sh ./samba_exporter/bin/samba_statusd
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY ./external/samba/config ./config
 COPY ./external/samba/entrypoint.sh ./
 COPY --from=samba-exporter-build /homelab/samba_exporter/bin ./bin
 
 FROM debian:13.2-slim
+USER root
 WORKDIR /homelab
 ARG GID=1000
 ARG UID=1000
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         gnutls-bin samba && \
     rm -rf /var/lib/apt/lists/* && \
     if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \

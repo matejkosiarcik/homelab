@@ -1,4 +1,5 @@
 ignored:
+  - DL3002 # "root" as last user
   - DL3008 # apt-get exact versions
   - DL3013 # pip exact versions
   - DL3018 # apk exact versions

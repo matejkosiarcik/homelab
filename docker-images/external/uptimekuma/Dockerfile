@@ -1,6 +1,7 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
 FROM louislam/uptime-kuma:2.0.2
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \

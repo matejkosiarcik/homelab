@@ -1,18 +1,22 @@
 FROM node:25.2.1-slim AS nodejs-build
+USER root
 WORKDIR /homelab
 COPY ./custom/file-server/package-lock.json ./custom/file-server/package.json ./custom/file-server/tsconfig.json ./
 COPY ./custom/file-server/src/ ./src/
-RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+RUN --mount=type=cache,target=/root/.npm \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
 
 FROM node:25.2.1-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
 
 FROM node:25.2.1-slim
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \

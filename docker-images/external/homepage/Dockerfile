@@ -1,20 +1,24 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
 FROM node:25.2.1-slim AS nodejs-build
+USER root
 WORKDIR /homelab
 COPY ./external/homepage/package-lock.json ./external/homepage/package.json ./external/homepage/terser.json ./external/homepage/tsconfig.json ./external/homepage/vite.config.ts ./
 COPY ./external/homepage/src/ ./src/
-RUN NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+RUN --mount=type=cache,target=/root/.npm \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
 
 FROM debian:13.2-slim AS prefinal
+USER root
 WORKDIR /homelab
 COPY ./external/homepage/config/ ./config/
 COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
 COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
 
 FROM ghcr.io/gethomepage/homepage:v1.8.0
+USER root
 RUN mkdir -p /homelab/app-pages && \
     find /app/.next/server/pages -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/.next/server/pages/$(basename "$1")" "/homelab/app-pages/$(basename "$1")"' - {} \; && \
     rm -rf /app/.next/server/pages

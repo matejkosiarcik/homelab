@@ -1,4 +1,5 @@
 FROM freikin/dawarich:0.36.1
+USER root
 ARG GID=1000
 ARG UID=1000
 # hadolint ignore=DL3003

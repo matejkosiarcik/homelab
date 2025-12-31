@@ -75,7 +75,7 @@ apps:
     enabled: false
 
   - name: Docker Cache Proxy - DockerHub
-    domain: docker-cache.matejhome.com
+    domain: docker-cache-dockerhub.matejhome.com
     endpoints:
       - path: /v2/_catalog
         conditions:
@@ -168,8 +168,8 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Git Cache
-    domain: git-cache.matejhome.com
+  - name: Git Cache - GitHub
+    domain: git-cache-github.matejhome.com
 
   - name: Gotify
     domain: gotify.matejhome.com
