@@ -29,7 +29,7 @@ export const apps = {
             { url: 'https://dawarich.matejhome.com', title: 'Dawarich' },
         ]
     },
-    'docker-cache': {
+    dockercache: {
         title: 'Docker Cache',
         instances: [
             { url: 'https://docker-cache-dockerhub.matejhome.com', title: 'Docker Cache - DockerHub' },
@@ -64,6 +64,12 @@ export const apps = {
         instances: [
             { url: 'https://gatus-1.matejhome.com', title: 'Gatus 1' },
             { url: 'https://gatus-2.matejhome.com', title: 'Gatus 2' },
+        ],
+    },
+    gitcache: {
+        title: 'Git Cache',
+        instances: [
+            { url: 'https://git-cache-github.matejhome.com', title: 'Git Cache - GitHub' },
         ],
     },
     gotify: {
@@ -131,6 +137,12 @@ export const apps = {
         title: 'NetAlertX',
         instances: [
             { url: 'https://netalertx.matejhome.com', title: 'NetAlertX' },
+        ],
+    },
+    npmcache: {
+        title: 'NPM Cache',
+        instances: [
+            { url: 'https://npm-cache.matejhome.com', title: 'NPM Cache' },
         ],
     },
     ntfy: {

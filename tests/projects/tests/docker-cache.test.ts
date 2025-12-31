@@ -7,8 +7,8 @@ type DockerProxyCatalogResponse = {
     repositories: string[];
 };
 
-test.describe(apps['docker-cache'].title, () => {
-    for (const instance of apps['docker-cache'].instances) {
+test.describe(apps.dockercache.title, () => {
+    for (const instance of apps.dockercache.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

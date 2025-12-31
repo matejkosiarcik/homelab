@@ -8,6 +8,9 @@ services:
     environment:
       REGISTRY_HTTP_HOST: ${DOCKER_COMPOSE_NETWORK_URL}
 
+  redis:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 
