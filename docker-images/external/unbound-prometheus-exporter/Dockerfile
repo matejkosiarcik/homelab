@@ -1,16 +1,20 @@
 FROM python:3.14.0-slim AS gitman
+USER root
 WORKDIR /homelab
-RUN apt-get update -qq && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/gitman/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION=ignore
-RUN python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./external/unbound-prometheus-exporter/gitman.yml ./
-RUN gitman install --quiet && \
+RUN --mount=type=cache,target=/root/.cache/git \
+    gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.25.5-bookworm AS build
