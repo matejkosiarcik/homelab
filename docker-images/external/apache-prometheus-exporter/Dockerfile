@@ -1,5 +1,6 @@
 FROM debian:13.2-slim
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         prometheus-apache-exporter curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*

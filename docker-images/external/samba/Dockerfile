@@ -21,7 +21,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
 
 FROM golang:1.25.5-bookworm AS samba-exporter-build
 WORKDIR /homelab
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -45,7 +46,8 @@ FROM debian:13.2-slim
 WORKDIR /homelab
 ARG GID=1000
 ARG UID=1000
-RUN apt-get update -qq && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         gnutls-bin samba && \
     rm -rf /var/lib/apt/lists/* && \

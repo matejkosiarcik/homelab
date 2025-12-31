@@ -13,7 +13,8 @@ COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
 
 FROM node:25.2.1-slim
-# RUN apt-get update -qq && \
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#     apt-get update -qq && \
 #     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
 #         openssl && \
 #     rm -rf /var/lib/apt/lists/*

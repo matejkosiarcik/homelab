@@ -19,7 +19,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
 
 FROM golang:1.25.5-bookworm AS supercronic-build
 WORKDIR /homelab
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -67,7 +68,8 @@ COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
 COPY --from=nodejs-server-build /homelab/dist ./server/dist
 
 FROM node:25.2.1-slim
-RUN apt-get update -qq && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         ghostscript imagemagick jq libreoffice && \
     rm -rf /var/lib/apt/lists/*

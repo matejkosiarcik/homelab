@@ -7,7 +7,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
 WORKDIR /homelab
-RUN apt-get update -qq && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -18,7 +19,8 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
 WORKDIR /homelab
-RUN apt-get update -qq && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -50,7 +52,8 @@ COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
 FROM twinproduction/gatus:v5.33.1 AS gatus
 
 FROM debian:13.2-slim
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates libcap2-bin >/dev/null && \
     rm -rf /var/lib/apt/lists/*

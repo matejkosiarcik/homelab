@@ -7,7 +7,8 @@ COPY ./custom/apache/www/ ./www/
 COPY ./custom/apache/entrypoint.sh ./
 
 FROM debian:13.2-slim
-RUN apt-get update -qq && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
         apache2 curl inotify-tools && \
     rm -rf /var/lib/apt/lists/* && \

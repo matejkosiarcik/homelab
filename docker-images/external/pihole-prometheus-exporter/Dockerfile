@@ -1,7 +1,8 @@
 FROM ekofr/pihole-exporter:v1.2.0 AS pihole-exporter
 
 FROM debian:13.2-slim
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*

@@ -19,7 +19,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
 
 FROM golang:1.25.5-bookworm AS supercronic-build
 WORKDIR /homelab
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*

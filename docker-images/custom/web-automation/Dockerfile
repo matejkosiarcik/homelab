@@ -19,7 +19,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
 
 FROM golang:1.25.5-bookworm AS supercronic-build
 WORKDIR /homelab
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -55,7 +56,8 @@ COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 # Cache playwright browsers downloads between versions and rebuilds
 # We also have to remove older versions of playwright browsers, to only copy the latest browsers to keep the final size down
-RUN --mount=type=cache,target=/root/.cache/ms-playwright \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/root/.cache/ms-playwright \
     apt-get update && \
     npx --no-install playwright install-deps chromium && \
     npx --no-install playwright install chromium && \
@@ -98,7 +100,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     chown -R homelab:homelab /home/homelab /homelab
 WORKDIR /homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab/node_modules ./node_modules
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
 USER homelab
