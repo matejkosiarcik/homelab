@@ -1,6 +1,9 @@
 #!/bin/sh
 set -euf
 
+REDIS_URL="redis://:${REDIS_PASSWORD}@redis:6379"
+export REDIS_URL
+
 # Copy files to real "/var/app/db"
 mkdir -p /var/app/db
 cp -R /homelab/original/var/app/db/. /var/app/db
