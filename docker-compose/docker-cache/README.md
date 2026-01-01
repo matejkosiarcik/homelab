@@ -4,9 +4,10 @@
 
 ## Docs
 
-- Documentation: <https://docs.docker.com/docker-hub/mirror>
 - DockerHub: <https://hub.docker.com/_/registry>
-- Docker registry install guide: <https://distribution.github.io/distribution/about/deploying>
+- Documentation: <https://docs.docker.com/docker-hub/mirror>
+    - Configuration: <https://distribution.github.io/distribution/about/configuration/>
+    - Install guide: <https://distribution.github.io/distribution/about/deploying>
 
 Generic resources:
 
