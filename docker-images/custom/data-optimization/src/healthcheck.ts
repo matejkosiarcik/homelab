@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 
 void (async () => {
-    const filePath = '/homelab/.status/status.txt';
+    const filePath = '/homelab/tmpfs/status.txt';
     if (fs.existsSync(filePath)) {
         process.exit(1);
     }

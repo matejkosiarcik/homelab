@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-printf 'starting\n' >/homelab/.status/status.txt
+printf 'starting\n' >/homelab/tmpfs/status.txt
 
 # Wait for target container to start
 timeout 30s sh <<EOF
@@ -18,7 +18,7 @@ printf '%s - Starting setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 docker exec "$HOMELAB_SETUP_TARGET_CONTAINER" sh /homelab/setup.sh
 printf '%s - Finished setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 
-printf 'started\n' >/homelab/.status/status.txt
+printf 'started\n' >/homelab/tmpfs/status.txt
 while true; do
     sleep infinity
     printf '"sleep infinity" somehow exited?' >&2

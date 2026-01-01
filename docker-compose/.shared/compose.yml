@@ -29,7 +29,6 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   # General purpose service template
   template:
@@ -59,7 +58,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator:/homelab/logs:rw
     tmpfs:
-      - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
@@ -119,7 +118,7 @@ services:
       DOCKER_HOST: tcp://socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
     tmpfs:
-      - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   favicons:
     extends:
@@ -144,7 +143,7 @@ services:
     build:
       dockerfile: ./custom/script-setup/Dockerfile
     tmpfs:
-      - /homelab/.status:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   redis:
     extends:
@@ -157,6 +156,8 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-certs:/homelab/redis-certs:rw
+    tmpfs:
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   postgres:
     extends:
