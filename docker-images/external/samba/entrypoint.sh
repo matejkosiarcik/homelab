@@ -5,7 +5,7 @@ cat "/homelab/config/$SAMBA_CONFIG.conf" |
     sed "s~#smb-title#~$SAMBA_TITLE~g" |
     sed "s~#smb-user#~$SAMBA_USERNAME~g" |
     sed "s~#smb-group#~$SAMBA_GROUP~g" \
-    >/homelab/tmpfs/smb.conf
+        >/homelab/tmpfs/smb.conf
 
 if ! grep -Eq "^$SAMBA_GROUP:" /etc/group; then
     printf 'Group %s not available\n' "$SAMBA_GROUP" >&2
