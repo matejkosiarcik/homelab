@@ -26,9 +26,13 @@ RUN apk update --no-cache && \
     true; fi && \
     apk del --no-cache shadow && \
     mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+    chown -R homelab:homelab /home/homelab /homelab /srv/app && \
+    mv /srv/app/build /srv/app/ncp
+COPY --chown=homelab:homelab ./external/npm-cache/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=npm-cache \
     HOMELAB_CONTAINER_VARIANT=default \
+    PATH=/srv/app:$PATH \
     TZ=Europe/Bratislava
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost:8080 || exit 1" ]
 USER homelab
+ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]

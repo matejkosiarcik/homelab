@@ -884,6 +884,12 @@ case "$app_dirname" in
     touch "$initial_output/favicons.env"
     ;;
 *npm-cache*)
+    # Redis
+    redis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" redis user)"
+    printf 'REDIS_PASSWORD=%s\n' "$redis_password" >>"$initial_output/redis.env"
+    printf 'REDIS_PASSWORD=%s\n' "$redis_password" >>"$initial_output/app.env"
+    printf 'redis,%s\n' "$redis_password" >>"$initial_output/all-credentials.csv"
+
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
