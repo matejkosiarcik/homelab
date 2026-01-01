@@ -34,8 +34,8 @@ COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
 
 FROM ghcr.io/gethomepage/homepage:v1.8.0
 USER root
-RUN mkdir -p /homelab/app-pages && \
-    find /app/.next/server/pages -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/.next/server/pages/$(basename "$1")" "/homelab/app-pages/$(basename "$1")"' - {} \; && \
+RUN mkdir -p /homelab/original/app/.next/server/pages && \
+    cp -R /app/.next/server/pages/. /homelab/original/app/.next/server/pages && \
     rm -rf /app/.next/server/pages
 COPY ./external/homepage/entrypoint-extra.sh /homelab/
 RUN mkdir -p /homelab && \
@@ -68,7 +68,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab /app
 COPY --chown=homelab:homelab ./external/homepage/icons/ /app/public/icons/
-COPY --from=prefinal --chown=homelab:homelab /homelab/config/ /homelab/app-config/
+COPY --from=prefinal --chown=homelab:homelab /homelab/config/ /homelab/config/
 ENV HOMELAB_CONTAINER_NAME=homepage \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

@@ -10,6 +10,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/config/app.env
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/docker-registry:/var/lib/registry:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-certs:/homelab/redis-certs:ro
     # Internet access required for reading remote registry data
     networks:
       internal-network: {}

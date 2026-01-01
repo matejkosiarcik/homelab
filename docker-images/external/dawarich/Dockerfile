@@ -25,7 +25,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab && \
-    cp -R /var/app/db /var/app/db2 && \
+    mkdir -p /homelab/original/var/app/db && \
+    cp -R /var/app/db/. /homelab/original/var/app/db && \
     rm -rf /var/app/db && \
     chown -R homelab:homelab /var/app && \
     cd /var/app && \

@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-printf 'starting\n' >/homelab/.status/status.txt
+printf 'starting\n' >/homelab/tmpfs/status.txt
 
 # Setup Environment variables
 CRON='0'
@@ -14,7 +14,7 @@ fi
 
 # Run cron indefinitely
 CRON=1
-printf 'started\n' >/homelab/.status/status.txt
+printf 'started\n' >/homelab/tmpfs/status.txt
 
 # Determine cronfile
 cronfile=''

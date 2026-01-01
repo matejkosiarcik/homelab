@@ -30,8 +30,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 COPY ./external/samba/prometheus-exporter/gitman.yml ./
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git \
-    gitman install --quiet && \
-    find . -type d -name .git -prune -exec rm -rf {} \;
+    gitman install --quiet
 
 FROM golang:1.25.5-bookworm AS samba-exporter-build
 USER root

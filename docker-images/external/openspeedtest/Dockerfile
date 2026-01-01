@@ -1,7 +1,7 @@
 FROM openspeedtest/latest:v2.0.6
 USER root
-RUN mkdir -p /homelab/etc-nginx-conf.d && \
-    find /etc/nginx/conf.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/etc/nginx/conf.d/$(basename "$1")" "/homelab/etc-nginx-conf.d/$(basename "$1")"' - {} \; && \
+RUN mkdir -p /homelab/original/etc/nginx/conf.d && \
+    cp -R /etc/nginx/conf.d/. /homelab/original/etc/nginx/conf.d && \
     rm -rf /etc/nginx/conf.d
 COPY ./external/openspeedtest/entrypoint-extra.sh /homelab/
 RUN mkdir -p /homelab && \

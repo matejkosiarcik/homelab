@@ -1,8 +1,8 @@
 # shellcheck disable=SC2148
 
-# Copy everything from fake to real "default"
+# Copy files to real "default"
 mkdir -p /defaults
-find /homelab/defaults -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/homelab/defaults/$(basename "$1")" "/defaults/$(basename "$1")"' - {} \;
+cp -R /homelab/original/defaults/. /defaults
 
 # Install custom certificate - mostly inspered by https://community.ui.com/questions/UniFi-Controller-SSL-Certificate-installation/2e0bb632-bd9a-406f-b675-651e068de973
 if [ ! -e '/config/data/custom-certificates' ]; then
