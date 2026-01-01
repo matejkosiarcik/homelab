@@ -588,6 +588,12 @@ case "$app_dirname" in
     # Postgres
     printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgres.env"
 
+    # Redis
+    redis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" redis user)"
+    printf 'REDIS_PASSWORD=%s\n' "$redis_password" >>"$initial_output/redis.env"
+    printf 'REDIS_PASSWORD=%s\n' "$redis_password" >>"$initial_output/app.env"
+    printf 'redis,%s\n' "$redis_password" >>"$initial_output/all-credentials.csv"
+
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 

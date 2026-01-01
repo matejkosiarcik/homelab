@@ -25,6 +25,7 @@ const config = {
     redis: {
         host: 'redis',
         port: 6379,
+        password: process.env['REDIS_PASSWORD']!,
     },
     postgres: {
         database: 'gitcache',
@@ -72,6 +73,7 @@ await waitForRedisPort();
  */
 const redis = createClient({
     url: `redis://${config.redis.host}:${config.redis.port}`,
+    password: config.redis.password,
 });
 redis.on('error', (err) => console.error('Redis error:', err));
 await redis.connect();
