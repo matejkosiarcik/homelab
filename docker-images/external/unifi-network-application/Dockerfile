@@ -10,8 +10,8 @@ RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".
     ln -s /config/data /usr/lib/unifi/data && \
     ln -s /config/logs /usr/lib/unifi/logs && \
     ln -s /run/unifi /usr/lib/unifi/run && \
-    mkdir -p /homelab/defaults && \
-    find /defaults -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/defaults/$(basename "$1")" "/homelab/defaults/$(basename "$1")"' - {} \; && \
+    mkdir -p /homelab/original/defaults && \
+    cp -R /defaults/. /homelab/original/defaults && \
     rm -rf /defaults
 ARG GID=1000
 ARG UID=1000

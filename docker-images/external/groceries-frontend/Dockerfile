@@ -22,10 +22,10 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
         oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
         usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
     true; fi && \
-    mkdir -p /home/homelab /homelab /homelab/nginx-html && \
+    mkdir -p /home/homelab /homelab /homelab/original/usr/share/nginx/html && \
     chown -R homelab:homelab /home/homelab /homelab && \
-    find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/usr/share/nginx/html/$(basename "$1")" "/homelab/nginx-html/$(basename "$1")"' - {} \; && \
-    find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+    cp -R /usr/share/nginx/html/. /homelab/original/usr/share/nginx/html && \
+    rm -rf /usr/share/nginx/html
 COPY --chown=homelab:homelab ./external/groceries-frontend/entrypoint-extra.sh /homelab/
 RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
     tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \

@@ -1,7 +1,7 @@
 FROM ghcr.io/open-webui/open-webui:0.6.41
 USER root
-RUN mkdir -p /homelab/app-static && \
-    find /app/backend/open_webui/static -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/app/backend/open_webui/static/$(basename "$1")" "/homelab/app-static/$(basename "$1")"' - {} \; && \
+RUN mkdir -p /homelab/original/app/backend/open_webui/static && \
+    cp -R /app/backend/open_webui/static/. /homelab/original/app/backend/open_webui/static && \
     rm -rf /app/backend/open_webui/static
 COPY ./external/openwebui/entrypoint-extra.sh /homelab/
 RUN mkdir -p /homelab && \

@@ -50,23 +50,23 @@ process_template() {
     sed -E 's~^_~ ~g' <"$tmpfile" >"$output_file"
 }
 
-process_template /homelab/web.yml /homelab/config/web.yml
-process_template /homelab/prometheus.yml /homelab/config/prometheus.yml
+process_template /homelab/web.yml /homelab/tmpfs/web.yml
+process_template /homelab/prometheus.yml /homelab/tmpfs/prometheus.yml
 
-if [ "$(wc -l </homelab/config/web.yml)" -eq 0 ]; then
-    printf "Error: File /homelab/config/web.yml is empty" >&2
+if [ "$(wc -l </homelab/tmpfs/web.yml)" -eq 0 ]; then
+    printf "Error: File /homelab/tmpfs/web.yml is empty" >&2
     exit 1
 fi
-if [ "$(wc -l </homelab/config/prometheus.yml)" -eq 0 ]; then
-    printf "Error: File /homelab/config/prometheus.yml is empty" >&2
+if [ "$(wc -l </homelab/tmpfs/prometheus.yml)" -eq 0 ]; then
+    printf "Error: File /homelab/tmpfs/prometheus.yml is empty" >&2
     exit 1
 fi
 
-promtool check web-config /homelab/config/web.yml
-promtool check config /homelab/config/prometheus.yml
+promtool check web-config /homelab/tmpfs/web.yml
+promtool check config /homelab/tmpfs/prometheus.yml
 
 prometheus \
-    --config.file=/homelab/config/prometheus.yml \
+    --config.file=/homelab/tmpfs/prometheus.yml \
     --storage.tsdb.path=/prometheus \
     --storage.tsdb.retention.time=30d \
-    --web.config.file=/homelab/config/web.yml
+    --web.config.file=/homelab/tmpfs/web.yml

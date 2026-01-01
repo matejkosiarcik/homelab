@@ -22,9 +22,9 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
         oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
         usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
     true; fi && \
-    mkdir -p /home/homelab /homelab /homelab/local.d && \
+    mkdir -p /home/homelab /homelab /homelab/original/opt/couchdb/etc/local.d && \
     chown -R homelab:homelab /home/homelab /homelab && \
-    find /opt/couchdb/etc/local.d -mindepth 1 -maxdepth 1 -exec sh -c 'cp -R "/opt/couchdb/etc/local.d/$(basename "$1")" "/homelab/local.d/$(basename "$1")"' - {} \; && \
+    cp -R /opt/couchdb/etc/local.d/. /homelab/original/opt/couchdb/etc/local.d && \
     rm -rf /opt/couchdb/etc/local.d
 COPY --chown=homelab:homelab ./external/couchdb/jwt.ini /homelab/local.d/
 COPY --chown=homelab:homelab ./external/couchdb/entrypoint-extra.sh /homelab/
