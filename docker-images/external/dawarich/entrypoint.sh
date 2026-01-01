@@ -1,7 +1,9 @@
 #!/bin/sh
 set -euf
 
-find '/var/app/db2' -mindepth 1 -maxdepth 1 -exec sh -c 'cp -r "/var/app/db2/$(basename "$1")" "/var/app/db/$(basename "$1")"' - {} \;
+# Copy files to real "/var/app/db"
+mkdir -p /var/app/db
+cp -R /homelab/original/var/app/db/. /var/app/db
 
 if [ "$MODE" = app ]; then
     bash ./docker/web-entrypoint.sh bin/dev server -p 3000 -b ::
