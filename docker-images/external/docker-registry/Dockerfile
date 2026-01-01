@@ -27,7 +27,8 @@ RUN apk update --no-cache && \
     apk del --no-cache shadow && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
-COPY --chown=homelab:homelab ./external/docker-registry/config.yml /etc/distribution/config.yml
+COPY --chown=homelab:homelab ./external/docker-registry/config.yml /homelab/config.yml
+COPY --chown=homelab:homelab ./external/docker-registry/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=docker-registry \
     HOMELAB_CONTAINER_VARIANT=default \
     OTEL_TRACES_EXPORTER=none \
@@ -35,3 +36,4 @@ ENV HOMELAB_CONTAINER_NAME=docker-registry \
 # TODO: Eventually enable OpenTelemetry
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost || exit 1" ]
 USER homelab
+ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]

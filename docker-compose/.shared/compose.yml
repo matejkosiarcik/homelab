@@ -29,6 +29,7 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   # General purpose service template
   template:
@@ -151,8 +152,11 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
     build:
       dockerfile: ./external/redis/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/redis.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-certs:/homelab/redis-certs:rw
 
   postgres:
     extends:

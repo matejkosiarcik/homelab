@@ -25,7 +25,7 @@ proxy:
 redis:
   addrs: [redis:6379]
   db: 0
-  password: ""
+  password: ${REDIS_PASSWORD}
   dialtimeout: 250ms
   readtimeout: 250ms
   writetimeout: 250ms
@@ -59,6 +59,6 @@ health:
     threshold: 3
   tcp:
     - addr: redis:6379
-      timeout: 3s
-      interval: 10s
+      timeout: 2s
+      interval: 15s
       threshold: 3

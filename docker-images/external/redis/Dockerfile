@@ -1,5 +1,10 @@
 FROM redis:8.4.0
 USER root
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#     apt-get update -qq && \
+#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
+#         openssl && \
+#     rm -rf /var/lib/apt/lists/*
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
@@ -26,9 +31,11 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     chown -R homelab:homelab /home/homelab /homelab
 ARG CONFIG_FILE=default
 COPY --chown=homelab:homelab ./external/redis/${CONFIG_FILE}.conf /homelab/redis.conf
+COPY --chown=homelab:homelab ./external/redis/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=redis \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "redis-cli --raw incr ping || exit 1" ]
-CMD [ "redis-server", "/homelab/redis.conf" ]
 USER homelab
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "redis-cli --raw incr ping || exit 1" ]
+ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+CMD []
