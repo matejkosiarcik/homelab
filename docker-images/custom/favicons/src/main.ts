@@ -44,6 +44,7 @@ const appAddress = (() => {
         case 'homepage': return 'http://app:3000';
         case 'jellyfin': return 'http://app:8096';
         case 'kiwix': return 'http://app:8080';
+        case 'libretranslate': return 'http://app:5000';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
         case 'nodeexporter': return ''; // http://app:9100
@@ -90,6 +91,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'homepage': return '/apple-touch-icon.png';
         case 'jellyfin': return '/web/favicon.ico';
         case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
+        case 'libretranslate': return '/static/favicon.ico';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
         case 'nodeexporter': return `@/homelab/icons/${appType}.png`;

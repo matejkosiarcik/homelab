@@ -151,6 +151,9 @@ load_password() {
     printf 'JELLYFIN__PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin apache status)"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin apache prometheus)"
 
+    printf 'LIBRETRANSLATE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin apache status)"
+    printf 'LIBRETRANSLATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin apache prometheus)"
+
     printf 'MINIO__MATEJ_PASSWORD=%s\n' "$(load_password minio app matej)"
     printf 'MINIO__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password minio app homelab-viewer)"
     printf 'MINIO__HOMELAB_WRITER_PASSWORD=%s\n' "$(load_password minio app homelab-writer)"

@@ -816,6 +816,21 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
+*libretranslate*)
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$matej_password" proxy-prometheus
+    write_http_auth_user matej "$matej_password" users-viewers
+    write_http_auth_user matej "$matej_password" users-admins
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
 *minio*)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
