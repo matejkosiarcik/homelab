@@ -5,7 +5,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@faker-js/faker": "^10.1.0",
+    "@faker-js/faker": "^10.2.0",
     "@sequelize/postgres": "^7.0.0-alpha.47",
     "@sequelize/sqlite3": "^7.0.0-alpha.47",
     "async": "^3.2.6",
