@@ -59,7 +59,7 @@ ENV PATH="/homelab/bin:$PATH"
 FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
-COPY --from=supercronic /homelab/ ./
+COPY --from=supercronic /homelab /homelab
 COPY ./custom/certificator/crontab.cron ./custom/certificator/main.sh ./
 
 FROM debian:13.2-slim
@@ -93,8 +93,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
-COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=certificator \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \

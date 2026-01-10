@@ -1,5 +1,12 @@
 FROM ghcr.io/davideshay/groceries-client:1.1.9
 USER root
+COPY --chown=homelab:homelab ./external/groceries-frontend/entrypoint-extra.sh /homelab/
+RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
+
+FROM ghcr.io/davideshay/groceries-client:1.1.9
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
@@ -26,11 +33,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     chown -R homelab:homelab /home/homelab /homelab && \
     cp -R /usr/share/nginx/html/. /homelab/original/usr/share/nginx/html && \
     rm -rf /usr/share/nginx/html
-COPY --chown=homelab:homelab ./external/groceries-frontend/entrypoint-extra.sh /homelab/
-RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
 COPY --chown=homelab:homelab ./external/groceries-frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=entrypoint --chown=homelab:homelab /docker-entrypoint.sh /docker-entrypoint.sh
 ENV COUCHDB_USER=admin \
     DEFAULT_API_URL=https://placeholder.matejhome.com/api \
     HOMELAB_CONTAINER_NAME=groceries-frontend \

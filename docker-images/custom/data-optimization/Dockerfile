@@ -95,7 +95,7 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM node:25.2.1-slim AS prefinal
 USER root
 WORKDIR /homelab
-COPY --from=supercronic /homelab/ ./
+COPY --from=supercronic /homelab /homelab
 COPY ./external/data-optimization/crontab.cron ./external/data-optimization/main.sh ./
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
@@ -135,9 +135,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
-COPY --from=prefinal --chown=homelab:homelab /homelab/node_modules ./node_modules
-COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=homepage-widgets \
     HOMELAB_CONTAINER_VARIANT=default \
     HOMELAB_CRON_SKIP_INITIAL=1 \

@@ -49,7 +49,7 @@ FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
-COPY --from=config-2 ./homelab/prometheus.yml /homelab/prometheus.yml
+COPY --from=config-2 ./homelab/prometheus.yml /homelab/
 
 FROM prom/prometheus:v3.8.1
 USER root

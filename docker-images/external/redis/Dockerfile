@@ -1,3 +1,9 @@
+FROM debian:13.2-slim AS prefinal
+USER root
+ARG CONFIG_FILE=default
+COPY --chown=homelab:homelab ./external/redis/${CONFIG_FILE}.conf /homelab/redis.conf
+COPY --chown=homelab:homelab ./external/redis/entrypoint.sh /homelab/
+
 FROM redis:8.4.0
 USER root
 # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -29,9 +35,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
-ARG CONFIG_FILE=default
-COPY --chown=homelab:homelab ./external/redis/${CONFIG_FILE}.conf /homelab/redis.conf
-COPY --chown=homelab:homelab ./external/redis/entrypoint.sh /homelab/
+COPY --from=prefinal --chown=homelab:homelab /homelab homelab
 ENV HOMELAB_CONTAINER_NAME=redis \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

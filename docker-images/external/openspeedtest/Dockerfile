@@ -1,14 +1,15 @@
+FROM openspeedtest/latest:v2.0.6 AS entrypoint
+USER root
+COPY ./external/openspeedtest/entrypoint-extra.sh /homelab/
+RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/entrypoint.sh
+
 FROM openspeedtest/latest:v2.0.6
 USER root
 RUN mkdir -p /homelab/original/etc/nginx/conf.d && \
     cp -R /etc/nginx/conf.d/. /homelab/original/etc/nginx/conf.d && \
     rm -rf /etc/nginx/conf.d
-COPY ./external/openspeedtest/entrypoint-extra.sh /homelab/
-RUN mkdir -p /homelab && \
-    head -n 1 /entrypoint.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/entrypoint.sh && \
-    rm -rf /homelab/entrypoint-extra.sh
 ARG GID=1000
 ARG UID=1000
 RUN apk update --no-cache && \
@@ -37,6 +38,7 @@ RUN apk update --no-cache && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab /etc/nginx && \
     chmod a+x "$(which crond)"
+COPY --from=entrypoint --chown=homelab:homelab /entrypoint.sh /entrypoint.sh
 ENV ENABLE_LETSENCRYPT=False \
     HOMELAB_CONTAINER_NAME=openspeedtest \
     HOMELAB_CONTAINER_VARIANT=default \

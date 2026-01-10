@@ -1,5 +1,12 @@
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
+FROM linuxserver/unifi-network-application:10.0.162 AS entrypoint
+USER root
+COPY --chown=homelab:homelab ./external/unifi-network-application/entrypoint-extra.sh /homelab/
+RUN head -n 1 /init >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /init >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/init
+
 FROM linuxserver/unifi-network-application:10.0.162
 USER root
 RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
@@ -37,10 +44,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab /usr/lib/unifi
-COPY --chown=homelab:homelab ./external/unifi-network-application/entrypoint-extra.sh /homelab/
-RUN head -n 1 /init >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /init >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/init
+COPY --from=entrypoint --chown=homelab:homelab /init /init
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     HOMELAB_CONTAINER_NAME=unificontroller \
     HOMELAB_CONTAINER_VARIANT=default \

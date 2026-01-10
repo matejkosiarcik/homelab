@@ -1,7 +1,7 @@
 FROM golang:1.25.5-alpine AS healthcheck-builder
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthcheck-placeholder/main.go ./.shared/healthcheck-placeholder/go.mod ./
+COPY ./external/gatus/healthcheck/main.go ./external/gatus/healthcheck/go.mod ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Dependencies ###
@@ -47,15 +47,15 @@ USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json ./
 COPY ./external/gatus/config.yml.j2 ./
-RUN jinja2 config.yml.j2 data.json --format json -o config.yml
+RUN jinja2 config.yml.j2 data.json --format json -o config.yaml
 
 ### Final ###
 
 FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
-COPY --from=config-2 /homelab/config.yml /homelab/config.yml
-COPY --from=healthcheck-builder /homelab/healthcheck /homelab/healthcheck
+COPY --from=config-2 /homelab/config.yaml /homelab/
+COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
 
 FROM twinproduction/gatus:v5.33.1 AS gatus
 USER root
@@ -93,8 +93,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     chown -R homelab:homelab /home/homelab /homelab
 COPY --from=gatus --chown=homelab:homelab /gatus /gatus
 RUN setcap 'cap_net_raw+ep' /gatus
-COPY --from=prefinal --chown=homelab:homelab /homelab/healthcheck /homelab/healthcheck
-COPY --from=prefinal --chown=homelab:homelab /homelab/config.yml /config/config.yaml
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV GATUS_CONFIG_PATH="" \
     GATUS_DELAY_START_SECONDS=0 \
     GATUS_LOG_LEVEL=INFO \
@@ -103,8 +102,5 @@ ENV GATUS_CONFIG_PATH="" \
     PORT=8080 \
     TZ=Europe/Bratislava
 USER homelab
-
-# There isn't a way to do a real healthcheck inside this container, see: https://github.com/TwiN/gatus/issues/711
-# So instead we just "fake" it and provide a dummy placeholder healthcheck program
-HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/healthcheck" ]
+HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck" ]
 ENTRYPOINT [ "/gatus" ]
