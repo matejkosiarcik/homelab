@@ -207,70 +207,21 @@ convert_image_full "$input_dir/other/websupport.png" "$output_dir/websupport.png
 convert_image_full "$input_dir/other/wiktionary.svg.bin" "$output_dir/wiktionary.png"
 convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 
-### Combined icons ###
+### Prebuild ###
 
-# Ollama with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/openwebui-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/openwebui-background-mask.png"
-magick "$tmpdir/openwebui-background.png" "$tmpdir/openwebui-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/openwebui-background.png"
-magick "$tmpdir/openwebui-background.png" -define png:color-type=6 "$tmpdir/openwebui-background.png"
-magick -background none -bordercolor transparent "$input_dir/other/openwebui.png" -resize '112x112' -density 1200 "$tmpdir/openwebui-tmp.png"
-magick "$tmpdir/openwebui-background.png" "$tmpdir/openwebui-tmp.png" -gravity Center -composite "$tmpdir/openwebui-final.png"
-convert_image_full "$tmpdir/openwebui-final.png" "$output_dir/openwebui.png"
+# General prebuilds
 
-# Open WebUI with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/ollama-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/ollama-background-mask.png"
-magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/ollama-background.png"
-magick "$tmpdir/ollama-background.png" -define png:color-type=6 "$tmpdir/ollama-background.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ollama.svg" -resize '112x112' -density 1200 "$tmpdir/ollama-tmp.png"
-magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-tmp.png" -gravity Center -composite "$tmpdir/ollama-final.png"
-convert_image_full "$tmpdir/ollama-final.png" "$output_dir/ollama.png"
-
-# Rounded Squid
+convert_image_full "$input_dir/prebuild/personal-devices.png" "$output_dir/personal-devices.png"
+convert_image_full "$input_dir/prebuild/servers.png" "$output_dir/servers.png"
 convert_image_full "$input_dir/prebuild/squid.png" "$output_dir/squid.png"
 
-# Smtp4dev with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/smtp4dev-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/smtp4dev-background-mask.png"
-magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/smtp4dev-background.png"
-magick "$tmpdir/smtp4dev-background.png" -define png:color-type=6 "$tmpdir/smtp4dev-background.png"
-magick -background none -bordercolor transparent "$input_dir/other/smtp4dev-custom.png" -resize '224x224' -density 1200 "$tmpdir/smtp4dev-tmp.png"
-magick "$tmpdir/smtp4dev-background.png" "$tmpdir/smtp4dev-tmp.png" -gravity Center -composite "$tmpdir/smtp4dev-final.png"
-convert_image_full "$tmpdir/smtp4dev-final.png" "$output_dir/smtp4dev.png"
-
-# Let's Encrypt with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/lets-encrypt-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/lets-encrypt-background-mask.png"
-magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/lets-encrypt-background.png"
-magick "$tmpdir/lets-encrypt-background.png" -define png:color-type=6 "$tmpdir/lets-encrypt-background.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" -resize '224x224' -density 1200 "$tmpdir/lets-encrypt-tmp.png"
-magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-tmp.png" -gravity Center -composite "$tmpdir/lets-encrypt-final.png"
-convert_image_full "$tmpdir/lets-encrypt-final.png" "$output_dir/lets-encrypt.png"
-
-# Multiple servers icon
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/server-tmp-1.png"
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize 96x96 -border 32 -density 1200 "$tmpdir/server-tmp-2.png"
-magick "$tmpdir/server-tmp-1.png" "$tmpdir/server-tmp-2.png" -gravity Center -geometry "$default_image_size+50+80" -composite -resize "$default_image_size" "$tmpdir/servers-tmp.png"
-magick "$tmpdir/servers-tmp.png" "$tmpdir/server-tmp-2.png" -gravity Center -geometry "$default_image_size-50+40" -composite -resize "$default_image_size" "$tmpdir/servers-final.png"
-convert_image_full "$tmpdir/servers-final.png" "$output_dir/servers.png"
-
-# Combined personal devices icon
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_laptop.svg" -resize "$default_image_size" -border 32 -density 1200 "$tmpdir/laptop-tmp.png"
-magick -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_iPhone.svg" -resize 192x192 -border 32 -density 1200 "$tmpdir/phone-tmp.png"
-magick "$tmpdir/laptop-tmp.png" "$tmpdir/phone-tmp.png" -gravity Center -geometry "$default_image_size+70+30" -composite -resize "$default_image_size" "$tmpdir/personal-devices-final.png"
-convert_image_full "$tmpdir/personal-devices-final.png" "$output_dir/personal-devices.png"
-
-# DWService with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/dwservice-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/dwservice-background-mask.png"
-magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/dwservice-background.png"
-magick "$tmpdir/dwservice-background.png" -define png:color-type=6 "$tmpdir/dwservice-background.png"
-magick -background none -bordercolor transparent "$input_dir/other/dwservice.png" -resize '224x224' -density 1200 "$tmpdir/dwservice-tmp.png"
-magick "$tmpdir/dwservice-background.png" "$tmpdir/dwservice-tmp.png" -gravity Center -composite "$tmpdir/dwservice-final.png"
-convert_image_full "$tmpdir/dwservice-final.png" "$output_dir/dwservice.png"
-
-# Prebuilds
+# Custom background icons
+convert_image_full "$input_dir/prebuild/dwservice.png" "$output_dir/dwservice.png"
+convert_image_full "$input_dir/prebuild/lets-encrypt.png" "$output_dir/lets-encrypt.png"
+convert_image_full "$input_dir/prebuild/libretranslate.png" "$output_dir/libretranslate.png"
+convert_image_full "$input_dir/prebuild/ollama.png" "$output_dir/ollama.png"
+convert_image_full "$input_dir/prebuild/openwebui.png" "$output_dir/openwebui.png"
+convert_image_full "$input_dir/prebuild/smtp4dev.png" "$output_dir/smtp4dev.png"
 
 # Remote repositories
 convert_image_full "$input_dir/prebuild/apt-cloud.png" "$output_dir/apt-cloud.png"

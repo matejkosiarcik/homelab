@@ -125,34 +125,11 @@ convert_image_full "$input_dir/other/squid.jpg" "$output_dir/squid.jpg"
 convert_image_full "$input_dir/other/upc.svg.bin" "$output_dir/upc.png"
 convert_image_full "$input_dir/other/wiktionary.svg.bin" "$output_dir/wiktionary.png"
 
-### Combined icons ###
+### Prebuild Icons ###
 
-# Let's Encrypt with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/lets-encrypt-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/lets-encrypt-background-mask.png"
-magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/lets-encrypt-background.png"
-magick "$tmpdir/lets-encrypt-background.png" -define png:color-type=6 "$tmpdir/lets-encrypt-background.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" -resize '112x112' -density 1200 "$tmpdir/lets-encrypt-tmp.png"
-magick "$tmpdir/lets-encrypt-background.png" "$tmpdir/lets-encrypt-tmp.png" -gravity Center -composite "$tmpdir/lets-encrypt-final.png"
-convert_image_full "$tmpdir/lets-encrypt-final.png" "$output_dir/lets-encrypt.png"
-
-# Ollama with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/ollama-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/ollama-background-mask.png"
-magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/ollama-background.png"
-magick "$tmpdir/ollama-background.png" -define png:color-type=6 "$tmpdir/ollama-background.png"
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ollama.svg" -resize '112x112' -density 1200 "$tmpdir/ollama-tmp.png"
-magick "$tmpdir/ollama-background.png" "$tmpdir/ollama-tmp.png" -gravity Center -composite "$tmpdir/ollama-final.png"
-convert_image_full "$tmpdir/ollama-final.png" "$output_dir/ollama.png"
-
-# Open WebUI with custom background
-magick -size "$default_image_size" xc:#ffffffef "$tmpdir/openwebui-background.png"
-magick -size "$default_image_size" xc:black -fill white -draw "roundRectangle 0,0,$(printf '%s' "$default_image_size" | tr 'x' ',') 16,16" "$tmpdir/openwebui-background-mask.png"
-magick "$tmpdir/openwebui-background.png" "$tmpdir/openwebui-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/openwebui-background.png"
-magick "$tmpdir/openwebui-background.png" -define png:color-type=6 "$tmpdir/openwebui-background.png"
-magick -background none -bordercolor transparent "$input_dir/other/openwebui.png" -resize '112x112' -density 1200 "$tmpdir/openwebui-tmp.png"
-magick "$tmpdir/openwebui-background.png" "$tmpdir/openwebui-tmp.png" -gravity Center -composite "$tmpdir/openwebui-final.png"
-convert_image_full "$tmpdir/openwebui-final.png" "$output_dir/openwebui.png"
+convert_image_full "$input_dir/prebuild/lets-encrypt.png" "$output_dir/lets-encrypt.png"
+convert_image_full "$input_dir/prebuild/ollama.png" "$output_dir/ollama.png"
+convert_image_full "$input_dir/prebuild/openwebui.png" "$output_dir/openwebui.png"
 
 ### Cleanup ###
 
