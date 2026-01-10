@@ -30,5 +30,5 @@ RUN ln -sf /homelab/ollama ~/.ollama
 ENV HOMELAB_CONTAINER_NAME=ollama \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "sh", "-c", "bash -c ':> /dev/tcp/localhost/11434' || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "bash -c ':> /dev/tcp/localhost/11434' || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

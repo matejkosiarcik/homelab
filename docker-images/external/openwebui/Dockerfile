@@ -36,5 +36,5 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
 ENV HOMELAB_CONTAINER_NAME=openwebui \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=300s --timeout=5s --retries=1 CMD [ "sh", "-c", "curl --silent --fail http://localhost:8080/health | jq -ne 'input.status == true' || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=300s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "curl --silent --fail http://localhost:8080/health | jq -ne 'input.status == true' || exit 1" ]
 USER homelab

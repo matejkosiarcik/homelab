@@ -52,4 +52,4 @@ ENV APP_TIMEZONE=Etc/Utc \
 # TODO: Consider:
 # CACHE_STORE=file \
 # APP_DEBUG=true \
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/api/healthcheck || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --insecure --fail https://localhost/api/healthcheck || exit 1" ]

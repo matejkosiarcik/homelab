@@ -63,5 +63,5 @@ ENV HOMELAB_CONTAINER_NAME=homepage-widgets \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "/bin/sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
 ENTRYPOINT [ "node", "/homelab/dist/main.js" ]

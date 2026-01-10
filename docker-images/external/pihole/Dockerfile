@@ -34,4 +34,4 @@ ENV DHCP_ACTIVE=false \
     PIHOLE_UID=$UID \
     TZ=Europe/Bratislava
 # TODO: Remove DNSMASQ_USER=root override above
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost/admin || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost/admin || exit 1" ]

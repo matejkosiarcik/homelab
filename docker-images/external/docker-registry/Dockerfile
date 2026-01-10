@@ -34,6 +34,6 @@ ENV HOMELAB_CONTAINER_NAME=docker-registry \
     OTEL_TRACES_EXPORTER=none \
     TZ=Europe/Bratislava
 # TODO: Eventually enable OpenTelemetry
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "wget -O /dev/null http://localhost || exit 1" ]
 USER homelab
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

@@ -143,8 +143,8 @@ ENV HOMELAB_CONTAINER_NAME=homepage-widgets \
     HOMELAB_CRON_SKIP_INITIAL=1 \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=10m --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=10m --timeout=1s --retries=1 CMD [ "/bin/sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 # USER homelab
-# HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+# HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "/bin/sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
 # ENTRYPOINT [ "node", "/homelab/dist/main.js" ]

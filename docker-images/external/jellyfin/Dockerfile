@@ -44,4 +44,4 @@ ENV HOMELAB_CONTAINER_NAME=jellyfin \
     PGID=$GID \
     PUID=$UID \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:8096 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:8096 || exit 1" ]
