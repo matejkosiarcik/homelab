@@ -2,7 +2,7 @@ FROM redis:8.4.0
 USER root
 # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 #     apt-get update -qq && \
-#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
+#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
 #         openssl && \
 #     rm -rf /var/lib/apt/lists/*
 ARG GID=1000
