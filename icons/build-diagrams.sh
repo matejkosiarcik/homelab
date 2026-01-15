@@ -96,7 +96,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/samba-ser
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/specifically-clementines.svg" "$output_dir/specifically-clementines.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ubuntu-linux.svg" "$output_dir/ubuntu.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound.png"
-convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vaultwarden-light.svg" "$output_dir/vaultwarden.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/vaultwarden-light.png" "$output_dir/vaultwarden.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vikunja.svg" "$output_dir/vikunja.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vultr.svg" "$output_dir/vultr.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "$output_dir/wikipedia.png"
