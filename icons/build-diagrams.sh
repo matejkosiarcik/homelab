@@ -102,7 +102,6 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/vultr.svg
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "$output_dir/wikipedia.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/windows-11.png" "$output_dir/windows.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/zabbix.svg" "$output_dir/zabbix.png"
-cp "$output_dir/git.png" "$output_dir/git-cache.png"
 
 ### Homer icons ###
 
@@ -214,6 +213,7 @@ convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 convert_image_full "$input_dir/prebuild/personal-devices.png" "$output_dir/personal-devices.png"
 convert_image_full "$input_dir/prebuild/servers.png" "$output_dir/servers.png"
 convert_image_full "$input_dir/prebuild/squid.png" "$output_dir/squid.png"
+convert_image_full "$input_dir/prebuild/git-cache.png" "$output_dir/git-cache.png"
 
 # Custom background icons
 convert_image_full "$input_dir/prebuild/dwservice.png" "$output_dir/dwservice.png"
