@@ -69,7 +69,6 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/homepage.
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/immich.svg" "$output_dir/immich.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/jenkins.svg" "$output_dir/jenkins.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/kiwix-light.svg" "$output_dir/kiwix.png"
-convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/libretranslate.svg" "$output_dir/libretranslate.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/linode.svg" "$output_dir/linode.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/linux.svg" "$output_dir/linux.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/loki.svg" "$output_dir/loki.png"

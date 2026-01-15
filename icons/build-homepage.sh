@@ -53,7 +53,6 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/graylog.s
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$output_dir/homepage.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/immich.svg" "$output_dir/immich.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/jenkins.svg" "$output_dir/jenkins.png"
-convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/libretranslate.svg" "$output_dir/libretranslate.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/loki.svg" "$output_dir/loki.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.svg" "$output_dir/netdata.png"
@@ -128,6 +127,7 @@ convert_image_full "$input_dir/other/wiktionary.svg.bin" "$output_dir/wiktionary
 ### Prebuild Icons ###
 
 convert_image_full "$input_dir/prebuild/lets-encrypt.png" "$output_dir/lets-encrypt.png"
+convert_image_full "$input_dir/prebuild/libretranslate.png" "$output_dir/libretranslate.png"
 convert_image_full "$input_dir/prebuild/ollama.png" "$output_dir/ollama.png"
 convert_image_full "$input_dir/prebuild/openwebui.png" "$output_dir/openwebui.png"
 
