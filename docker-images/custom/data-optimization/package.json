@@ -15,7 +15,7 @@
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
     "@types/mime-types": "^3.0.1",
-    "@types/node": "^25.0.7",
+    "@types/node": "^25.0.8",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
