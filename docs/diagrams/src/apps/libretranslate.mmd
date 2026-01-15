@@ -1,5 +1,5 @@
 ---
-title: Docker Cache Proxy
+title: LibreTranslate
 config:
     theme: dark
 ---
@@ -16,40 +16,32 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.25em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>registry")
+        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/libretranslate.png' style='min-width:80px;max-width:80px' /></div>LibreTranslate")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
+        inbound_interface -->|:80,443| apache_proxy -->|/*:5000| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons
+        apache_proxy --->|/favicon.ico| favicons -.->|Use| app
     end
 
     subgraph others_1["Others"]
         home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
         gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        other_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Other<br/>Devices")
 
         home_network <--> inbound_interface
-        prometheus -->|collect metrics| inbound_interface
-        gatus -->|monitor| inbound_interface
-        other_devices -.->|use| inbound_interface
-    end
-
-    subgraph outside["Outside"]
-        docker_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div>Public<br/>container<br/>registry")
-        class docker_registry dashed_border
-
-        app -->|Git pull, etc...| docker_registry
+        prometheus -->|Collect metrics| inbound_interface
+        gatus -->|Monitor| inbound_interface
     end
 
     subgraph others_2["Others"]
-        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
-        certificator -->|report status| healthchecks
-        certificator -.->|download certificate| certbot
+        certificator -->|Report status| healthchecks
+        certificator -.->|Download certificate| certbot
     end
 
-    certificator & app ~~~ others_2 & outside
+    others_1 ~~~ app_wrapper
+    app_wrapper & app ~~~ others_2
