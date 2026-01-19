@@ -15,10 +15,10 @@
     "execa": "^9.6.1",
     "express": "^5.2.1",
     "fastq": "^1.20.1",
-    "ioredis": "^5.9.1",
+    "ioredis": "^5.9.2",
     "node-cron": "^4.2.1",
-    "pg": "^8.17.0",
-    "pg-query-stream": "^4.11.0",
+    "pg": "^8.17.1",
+    "pg-query-stream": "^4.11.1",
     "redis": "^5.10.0",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
@@ -27,7 +27,7 @@
     "@tsconfig/strictest": "^2.0.8",
     "@types/async": "^3.2.25",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.0.8",
+    "@types/node": "^25.0.9",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
