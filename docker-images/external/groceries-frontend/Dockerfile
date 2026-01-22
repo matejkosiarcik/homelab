@@ -1,4 +1,4 @@
-FROM ghcr.io/davideshay/groceries-client:1.1.9
+FROM ghcr.io/davideshay/groceries-client:1.1.9 AS entrypoint
 USER root
 COPY --chown=homelab:homelab ./external/groceries-frontend/entrypoint-extra.sh /homelab/
 RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
