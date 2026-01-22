@@ -17,8 +17,8 @@
     "fastq": "^1.20.1",
     "ioredis": "^5.9.2",
     "node-cron": "^4.2.1",
-    "pg": "^8.17.1",
-    "pg-query-stream": "^4.11.1",
+    "pg": "^8.17.2",
+    "pg-query-stream": "^4.11.2",
     "redis": "^5.10.0",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
