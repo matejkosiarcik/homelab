@@ -23,7 +23,11 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error performing healthcheck: %v\n", err)
 		os.Exit(1)
 	}
-	defer resp.Body.Close()
+
+	// Ensure body is closed before exiting, because os.Exit does not run defer
+	if resp.Body != nil {
+		_ = resp.Body.Close()
+	}
 
 	if resp.StatusCode == http.StatusOK {
 		os.Exit(0)
