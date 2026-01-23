@@ -5,7 +5,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/date.txt ./
@@ -25,24 +25,27 @@ RUN --mount=type=cache,target=/root/.npm \
     npm run build && \
     npm prune --production
 
+FROM ghcr.io/gethomepage/homepage:v1.8.0 AS entrypoint
+USER root
+COPY ./external/homepage/entrypoint-extra.sh /homelab/
+RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh
+
 FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
 COPY ./external/homepage/config/ ./config/
+COPY ./external/homepage/icons/ /app/public/icons/
 COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
 COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
+COPY --from=entrypoint /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 FROM ghcr.io/gethomepage/homepage:v1.8.0
 USER root
 RUN mkdir -p /homelab/original/app/.next/server/pages && \
     cp -R /app/.next/server/pages/. /homelab/original/app/.next/server/pages && \
-    rm -rf /app/.next/server/pages
-COPY ./external/homepage/entrypoint-extra.sh /homelab/
-RUN mkdir -p /homelab && \
-    head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh && \
-    rm -rf /app/config /homelab/entrypoint-extra.sh
+    rm -rf /app/.next/server/pages /app/config
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
@@ -67,8 +70,9 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab /app
-COPY --chown=homelab:homelab ./external/homepage/icons/ /app/public/icons/
-COPY --from=prefinal --chown=homelab:homelab /homelab/config/ /homelab/config/
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /app/public/icons/ /app/public/icons/
+COPY --from=prefinal --chown=homelab:homelab /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 ENV HOMELAB_CONTAINER_NAME=homepage \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

@@ -36,6 +36,10 @@ insert_final_newline = false
 [*{makefile,Makefile,.make}]
 indent_style = tab
 
+# Golang files must be indented using tabs
+[*.go]
+indent_style = tab
+
 # Trailing whitespace is generally permitted in markdown
 # But it is stupid, so left out
 # If you need it, just uncomment following line:

@@ -30,5 +30,5 @@ ENV POSTGRES_DB=database \
     HOMELAB_CONTAINER_NAME=postgis \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB || exit 1" ]
 USER homelab

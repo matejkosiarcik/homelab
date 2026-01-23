@@ -89,6 +89,7 @@
 10.1.12.237 minio-console.matejhome.com
 10.1.12.251 git-cache-github.matejhome.com
 10.1.12.252 npm-cache.matejhome.com
+10.1.12.253 libretranslate.matejhome.com
 
 ### Server - Raspberry Pi 4B 2GB ###
 

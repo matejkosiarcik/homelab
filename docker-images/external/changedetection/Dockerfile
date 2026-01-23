@@ -31,5 +31,5 @@ ENV FETCH_WORKERS=4 \
     LOGGER_LEVEL=WARNING \
     TZ=Europe/Bratislava \
     PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
 USER homelab

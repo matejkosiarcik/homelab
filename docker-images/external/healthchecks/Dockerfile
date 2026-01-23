@@ -5,6 +5,7 @@ USER root
 WORKDIR /homelab
 RUN mkdir -p ./healthchecks
 COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
+COPY ./external/healthchecks/icons/healthchecks.png /custom-healthchecks.png
 
 FROM healthchecks/healthchecks:v3.13
 USER root
@@ -34,7 +35,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-COPY --chown=homelab:homelab ./external/healthchecks/icons/healthchecks.png /opt/healthchecks/static-collected/img/custom-healthchecks.png
+COPY --from=prefinal --chown=homelab:homelab /custom-healthchecks.png /opt/healthchecks/static-collected/img/
 ENV DB=sqlite \
     DB_NAME=/homelab/healthchecks/database.db \
     DEBUG=False \
@@ -55,5 +56,5 @@ ENV DB=sqlite \
 # EMAIL_HOST_USER=
 # EMAIL_USE_SSL=False
 # EMAIL_USE_TLS=True
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
 USER homelab

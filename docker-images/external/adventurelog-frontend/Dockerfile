@@ -35,5 +35,5 @@ ENV BODY_SIZE_LIMIT=Infinity \
     HOMELAB_CONTAINER_VARIANT=default \
     PUBLIC_SERVER_URL=http://app-backend:8000 \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://localhost:3000 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "wget -O /dev/null http://localhost:3000 || exit 1" ]
 USER homelab

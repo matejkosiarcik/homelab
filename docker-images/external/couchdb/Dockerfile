@@ -1,3 +1,15 @@
+FROM couchdb:3.5.1 AS entrypoint
+USER root
+COPY ./external/couchdb/entrypoint-extra.sh /homelab/
+RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
+
+FROM debian:13.2-slim AS prefinal
+USER root
+COPY ./external/couchdb/jwt.ini /
+COPY --from=entrypoint /docker-entrypoint.sh /
+
 FROM couchdb:3.5.1
 USER root
 ARG GID=1000
@@ -26,14 +38,11 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     chown -R homelab:homelab /home/homelab /homelab && \
     cp -R /opt/couchdb/etc/local.d/. /homelab/original/opt/couchdb/etc/local.d && \
     rm -rf /opt/couchdb/etc/local.d
-COPY --chown=homelab:homelab ./external/couchdb/jwt.ini /homelab/local.d/
-COPY --chown=homelab:homelab ./external/couchdb/entrypoint-extra.sh /homelab/
-RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
+COPY --from=prefinal --chown=homelab:homelab /jwt.ini /homelab/original/opt/couchdb/etc/local.d/
+COPY --from=prefinal --chown=homelab:homelab /docker-entrypoint.sh /
 ENV COUCHDB_USER=admin \
     HOMELAB_CONTAINER_NAME=couchdb \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:5984/_up || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:5984/_up || exit 1" ]
 USER homelab

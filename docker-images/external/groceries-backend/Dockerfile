@@ -48,5 +48,5 @@ ENV ACCESS_TOKEN_EXPIRES=12h \
     SMTP_PORT=25 \
     SMTP_USER=sender \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "sh", "-c", "node /homelab/healthcheck.js || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "node /homelab/healthcheck.js || exit 1" ]
 USER homelab

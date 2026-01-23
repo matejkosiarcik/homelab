@@ -4,7 +4,7 @@ FROM debian:13.2-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000
@@ -36,6 +36,6 @@ COPY --chown=homelab:homelab ./custom/script-setup/entrypoint.sh /homelab/
 ENV HOMELAB_CONTAINER_NAME=script-setup \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=90s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=90s --timeout=1s --retries=1 CMD [ "/bin/sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 USER homelab

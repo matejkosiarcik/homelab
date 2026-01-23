@@ -57,9 +57,60 @@ convert_image_full "$tmpdir/prometheus-alone.png" "$output_dir/prometheus.png"
 magick "$input_dir/other/squid.jpg" \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite "$tmpdir/squid.png"
 convert_image_full "$tmpdir/squid.png" "$output_dir/squid.png"
 
-### Composite icons ###
+### Combined icons ###
 
-## Cache
+# Servers
+magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize '1000x1000' -border 10 -density 2000 "$tmpdir/server-1.png"
+magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize '650x650' -density 2000 "$tmpdir/server-2.png"
+magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_server.svg" -resize '550x550' -density 2000 "$tmpdir/server-3.png"
+magick "$tmpdir/server-1.png" "$tmpdir/server-2.png" -gravity Center -geometry '-200+175' -composite -resize '1000x1000' "$tmpdir/servers.png"
+magick "$tmpdir/servers.png" "$tmpdir/server-3.png" -gravity Center -geometry '+200+225' -composite -resize '1000x1000' "$tmpdir/servers.png"
+convert_image_full "$tmpdir/servers.png" "$output_dir/servers.png"
+
+# Personal devices
+magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_laptop.svg" -resize '1000x1000' -border 10 -density 2000 "$tmpdir/laptop.png"
+magick -density 2000 -background none -bordercolor transparent "$tmpdir/13_05_osa_icons_svg/osa_iPhone.svg" -resize '800x800' -density 2000 "$tmpdir/phone.png"
+magick "$tmpdir/laptop.png" "$tmpdir/phone.png" -gravity Center -geometry '+275+100' -composite -resize '1000x1000' "$tmpdir/personal-devices.png"
+convert_image_full "$tmpdir/personal-devices.png" "$output_dir/personal-devices.png"
+
+### Icons with background ###
+
+magick -size '1000x1000' xc:#ffffffef "$tmpdir/white-background.png"
+magick -size '1000x1000' xc:black -fill white -draw "roundRectangle 0,0,1000,1000 80,80" "$tmpdir/white-background-mask.png"
+magick "$tmpdir/white-background.png" "$tmpdir/white-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/white-background.png"
+magick "$tmpdir/white-background.png" -define png:color-type=6 "$tmpdir/white-background.png"
+
+# DWService with custom background
+magick -density 2000 -background none -bordercolor transparent "$input_dir/other/dwservice.png" -resize '900x900' -density 2000 "$tmpdir/dwservice-foreground.png"
+magick "$tmpdir/white-background.png" "$tmpdir/dwservice-foreground.png" -gravity Center -composite "$tmpdir/dwservice.png"
+convert_image_full "$tmpdir/dwservice.png" "$output_dir/dwservice.png"
+
+# Let's Encrypt
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" -resize '900x900' -density 2000 "$tmpdir/lets-encrypt-foreground.png"
+magick "$tmpdir/white-background.png" "$tmpdir/lets-encrypt-foreground.png" -gravity Center -geometry '+0+0' -composite "$tmpdir/lets-encrypt.png"
+convert_image_full "$tmpdir/lets-encrypt.png" "$output_dir/lets-encrypt.png"
+
+# LibreTranslate
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/libretranslate.svg" -resize '850x850' -density 2000 "$tmpdir/libretranslate-foreground.png"
+magick "$tmpdir/white-background.png" "$tmpdir/libretranslate-foreground.png" -gravity Center -geometry '+0+0' -composite "$tmpdir/libretranslate.png"
+convert_image_full "$tmpdir/libretranslate.png" "$output_dir/libretranslate.png"
+
+# Ollama
+magick -density 2000 -background none -bordercolor transparent "$input_dir/other/openwebui.png" -resize '1000x1000' -density 2000 "$tmpdir/openwebui-foreground.png"
+magick "$tmpdir/white-background.png" "$tmpdir/openwebui-foreground.png" -gravity Center -geometry '+0+0' -composite "$tmpdir/openwebui.png"
+convert_image_full "$tmpdir/openwebui.png" "$output_dir/openwebui.png"
+
+# Open WebUI
+magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/ollama.svg" -resize '850x850' -density 2000 "$tmpdir/ollama-foreground.png"
+magick "$tmpdir/white-background.png" "$tmpdir/ollama-foreground.png" -gravity Center -geometry '+0+0' -composite "$tmpdir/ollama.png"
+convert_image_full "$tmpdir/ollama.png" "$output_dir/ollama.png"
+
+# Smtp4dev with custom background
+magick -density 2000 -background none -bordercolor transparent "$input_dir/other/smtp4dev-custom.png" -resize '875x875' -density 2000 "$tmpdir/smtp4dev-foreground.png"
+magick "$tmpdir/white-background.png" "$tmpdir/smtp4dev-foreground.png" -gravity Center -composite "$tmpdir/smtp4dev.png"
+convert_image_full "$tmpdir/smtp4dev.png" "$output_dir/smtp4dev.png"
+
+### Cache ###
 
 # APT cache proxy
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" -resize "450x450" "$tmpdir/debian.png"
@@ -92,7 +143,7 @@ magick -density 2000 -background none -bordercolor transparent "$input_dir/gitma
 magick "$tmpdir/cache.png" "$tmpdir/ruby.png" -gravity Center -geometry "+275+300" -composite "$tmpdir/rubygems-cache.png"
 convert_image_full "$tmpdir/rubygems-cache.png" "$output_dir/rubygems-cache.png"
 
-## Cloud
+### Cloud ###
 
 # APT remote registry
 magick -density 2000 -background none -bordercolor transparent "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" -resize "400x400" "$tmpdir/debian.png"

@@ -3,7 +3,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/date.txt ./
@@ -85,12 +85,12 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
-COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=unbound-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:9167/metrics || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:9167/metrics || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

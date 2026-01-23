@@ -1,6 +1,6 @@
 ### Dependencies ###
 
-FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
+FROM debian:13.2-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
+FROM debian:13.2-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -30,7 +30,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### Config ###
 
-FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-1
+FROM debian:13.2-slim AS config-1
 USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=unbound.example.com
@@ -47,20 +47,20 @@ RUN printf 'env:\n' >>data.yml && \
     printf '  HOMELAB_APP_TYPE: %s\n' "$HOMELAB_APP_TYPE" >>data.yml && \
     printf '  HOMELAB_ENV: %s\n' "$HOMELAB_ENV" >>data.yml
 
-FROM --platform=$BUILDPLATFORM yq AS config-2
+FROM yq AS config-2
 USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.yml ./
 RUN yq . data.yml >data.json
 
-FROM --platform=$BUILDPLATFORM jinja AS config-3
+FROM jinja AS config-3
 USER root
 WORKDIR /homelab
 COPY --from=config-2 /homelab/data.json ./
 COPY ./external/unbound/unbound.conf.j2 ./
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
-FROM --platform=$BUILDPLATFORM debian:13.2-slim AS config-4
+FROM debian:13.2-slim AS config-4
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -73,7 +73,7 @@ RUN cat -s unbound.conf | sponge unbound.conf
 
 # ### Final ###
 
-FROM --platform=$BUILDPLATFORM debian:13.2-slim AS prefinal
+FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
 COPY ./external/unbound/entrypoint.sh ./
@@ -111,11 +111,11 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
-COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=unbound \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "dig @$HOMELAB_APP_EXTERNAL_IP +short placeholder.matejhome.com || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @$HOMELAB_APP_EXTERNAL_IP +short placeholder.matejhome.com || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

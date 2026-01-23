@@ -4,14 +4,15 @@ FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
-COPY ./custom/apache/www/ ./www/
+COPY ./custom/apache/www ./www
 COPY ./custom/apache/entrypoint.sh ./
+COPY ./custom/apache/apache.conf /apache.conf
 
 FROM debian:13.2-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         apache2 curl inotify-tools && \
     rm -rf /var/lib/apt/lists/* && \
     a2enmod auth_basic env headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
@@ -42,13 +43,13 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     mkdir -p /home/homelab /homelab /homelab/users && \
     chown -R homelab:homelab /home/homelab /homelab && \
     touch /homelab/users/empty.htpasswd
+COPY --from=prefinal --chown=homelab:homelab /apache.conf /etc/apache2/sites-enabled/apache.conf
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
-COPY --chown=homelab:homelab ./custom/apache/apache.conf /etc/apache2/sites-enabled/apache.conf
-COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=apache \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --insecure --fail https://localhost/.apache || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --insecure --fail https://localhost/.apache || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

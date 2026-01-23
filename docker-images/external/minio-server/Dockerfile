@@ -38,6 +38,6 @@ ENV HOMELAB_CONTAINER_NAME=minio-server \
     MINIO_ROOT_USER=matej \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:9000/minio/health/live || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:9000/minio/health/live || exit 1" ]
 ENTRYPOINT [ "minio" ]
 CMD [ "server", "/data", "--address", ":9000", "--console-address", ":9001" ]

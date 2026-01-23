@@ -1,6 +1,6 @@
 ### Dependencies ###
 
-FROM --platform=$BUILDPLATFORM debian:13.2-slim AS yq
+FROM debian:13.2-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM --platform=$BUILDPLATFORM debian:13.2-slim AS jinja
+FROM debian:13.2-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -49,7 +49,7 @@ FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
-COPY --from=config-2 ./homelab/prometheus.yml /homelab/prometheus.yml
+COPY --from=config-2 ./homelab/prometheus.yml /homelab/
 
 FROM prom/prometheus:v3.8.1
 USER root
@@ -71,7 +71,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "wget -O /dev/null http://homelab-viewer:$PROMETHEUS__HOMELAB_VIEWER_PASSWORD@localhost:9090 || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "wget -O /dev/null http://homelab-viewer:$PROMETHEUS__HOMELAB_VIEWER_PASSWORD@localhost:9090 || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []
 USER homelab

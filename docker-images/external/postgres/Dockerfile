@@ -3,7 +3,7 @@ FROM postgres:18.1
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         openssl && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000
@@ -41,6 +41,6 @@ ENV PGDATA=/var/lib/postgresql/data \
     HOMELAB_CONTAINER_NAME=postgres \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB || exit 1" ]
 USER homelab
 CMD [ "postgres", "-c", "config_file=/homelab/postgresql.conf", "-c", "hba_file=/homelab/pg_hba.conf" ]

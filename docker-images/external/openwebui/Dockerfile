@@ -1,14 +1,16 @@
+FROM ghcr.io/open-webui/open-webui:0.6.41 AS entrypoint
+USER root
+COPY ./external/openwebui/entrypoint-extra.sh /homelab/
+RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-shebang.sh && \
+    tail -n +2 /app/backend/start.sh >/homelab/entrypoint-without-shebang.sh && \
+    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/app/backend/start.sh
+
 FROM ghcr.io/open-webui/open-webui:0.6.41
 USER root
 RUN mkdir -p /homelab/original/app/backend/open_webui/static && \
     cp -R /app/backend/open_webui/static/. /homelab/original/app/backend/open_webui/static && \
-    rm -rf /app/backend/open_webui/static
-COPY ./external/openwebui/entrypoint-extra.sh /homelab/
-RUN mkdir -p /homelab && \
-    head -n 1 /app/backend/start.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /app/backend/start.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/app/backend/start.sh && \
-    rm -rf /app/config /homelab/entrypoint-extra.sh
+    rm -rf /app/backend/open_webui/static /app/config
+COPY --from=entrypoint --chown=homelab:homelab /app/backend/start.sh /app/backend/start.sh
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
@@ -36,5 +38,5 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
 ENV HOMELAB_CONTAINER_NAME=openwebui \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=300s --timeout=5s --retries=1 CMD [ "sh", "-c", "curl --silent --fail http://localhost:8080/health | jq -ne 'input.status == true' || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=300s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "curl --silent --fail http://localhost:8080/health | jq -ne 'input.status == true' || exit 1" ]
 USER homelab

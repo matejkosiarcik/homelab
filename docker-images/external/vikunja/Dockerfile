@@ -1,15 +1,17 @@
+FROM vikunja/vikunja:0.24.6 AS vikunja
+USER root
+
 FROM debian:13.2-slim AS prefinal
 USER root
 RUN mkdir -p /homelab /homelab/logs
-
-FROM vikunja/vikunja:0.24.6 AS vikunja
-USER root
+COPY ./external/vikunja/config.yml /config.yml
+COPY --from=vikunja /app /app
 
 FROM debian:13.2-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 ARG GID=1000
@@ -36,9 +38,9 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
-COPY --chown=homelab:homelab ./external/vikunja/config.yml /etc/vikunja/config.yml
+COPY --from=prefinal --chown=homelab:homelab /config.yml /etc/vikunja/config.yml
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-COPY --from=vikunja --chown=homelab:homelab /app /app
+COPY --from=prefinal --chown=homelab:homelab /app /app
 ENV HOMELAB_CONTAINER_NAME=vikunja \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

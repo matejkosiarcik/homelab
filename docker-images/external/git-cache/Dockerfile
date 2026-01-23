@@ -3,7 +3,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/date.txt ./
@@ -34,7 +34,7 @@ FROM node:25.2.1-slim
 USER root
 # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 #     apt-get update -qq && \
-#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -q --yes --no-install-recommends --no-install-suggests \
+#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
 #         openssl && \
 #     rm -rf /var/lib/apt/lists/*
 ARG GID=1000
@@ -61,12 +61,11 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
-COPY --from=prefinal --chown=homelab:homelab /homelab/node_modules ./node_modules
-COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
 ENV HOMELAB_CONTAINER_NAME=git-cache \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/bin/sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
 ENTRYPOINT [ "node", "/homelab/dist/main.js" ]

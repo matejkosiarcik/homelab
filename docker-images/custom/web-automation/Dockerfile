@@ -3,7 +3,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/date.txt ./
@@ -16,7 +16,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/date.txt ./
@@ -85,7 +85,7 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM node:25.2.1-slim AS prefinal
 USER root
 WORKDIR /homelab
-COPY --from=supercronic /homelab/ ./
+COPY --from=supercronic /homelab /homelab
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 # Cache playwright browsers downloads between versions and rebuilds
@@ -133,18 +133,17 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /root/.cache-ms-playwright /home/homelab/.cache/ms-playwright
 WORKDIR /homelab
-COPY --from=prefinal --chown=homelab:homelab /homelab/node_modules ./node_modules
+USER homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
-USER homelab
-COPY --from=prefinal --chown=homelab:homelab /homelab/ ./
-COPY --from=prefinal --chown=homelab:homelab /root/.cache-ms-playwright /home/homelab/.cache/ms-playwright
 ENV HOMELAB_CONTAINER_NAME=web-automation \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "/bin/sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

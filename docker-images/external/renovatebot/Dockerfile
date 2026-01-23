@@ -3,7 +3,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/date.txt ./
@@ -16,7 +16,7 @@ USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/date.txt ./
@@ -84,7 +84,8 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
-COPY --from=supercronic /homelab/ ./
+COPY ./external/renovatebot/config.js /config.js
+COPY --from=supercronic /homelab /homelab
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh ./
 COPY --from=nodejs-server-build /homelab/package.json ./server/
 COPY --from=nodejs-server-build /homelab/node_modules ./server/node_modules
@@ -116,8 +117,8 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; fi && \
     mkdir -p /home/homelab /homelab && \
     chown -R homelab:homelab /home/homelab /homelab /usr/src/app
-COPY --from=prefinal --chown=homelab:homelab /homelab/ /homelab/
-COPY  --chown=homelab:homelab ./external/renovatebot/config.js /usr/src/app/config.js
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /config.js /usr/src/app/config.js
 ENV HOMELAB_CONTAINER_NAME=renovatebot \
     HOMELAB_CONTAINER_VARIANT=default \
     HOMELAB_CRON_SKIP_INITIAL=1 \
@@ -125,5 +126,5 @@ ENV HOMELAB_CONTAINER_NAME=renovatebot \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
-ENTRYPOINT [ "sh", "/homelab/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "/bin/sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

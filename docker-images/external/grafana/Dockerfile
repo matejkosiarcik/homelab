@@ -35,5 +35,5 @@ ENV GF_PLUGINS_PREINSTALL= \
     HOMELAB_CONTAINER_NAME=grafana \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "sh", "-c", "curl --fail http://localhost:3000 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:3000 || exit 1" ]
 USER homelab
