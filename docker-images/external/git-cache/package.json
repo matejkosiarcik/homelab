@@ -27,7 +27,7 @@
     "@tsconfig/strictest": "^2.0.8",
     "@types/async": "^3.2.25",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.0.9",
+    "@types/node": "^25.0.10",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
