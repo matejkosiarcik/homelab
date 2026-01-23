@@ -20,7 +20,7 @@ jobs:
           - raspberry-pi-4b-4g
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
 
@@ -36,7 +36,7 @@ jobs:
           python-version: 3.x
 
       - name: Setup NodeJS
-        uses: actions/setup-node@v6.1.0
+        uses: actions/setup-node@v6.2.0
         with:
           node-version: latest
 
