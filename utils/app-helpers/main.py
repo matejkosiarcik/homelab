@@ -232,7 +232,7 @@ def docker_start():
             created = True
             os.chmod(volume, mode=0o755)  # TODO: Remove this line and uncomment code below
         if created or volume.startswith(app_dir):
-            pass  # TODO: Reenable code below
+            pass  # TODO: Re-enable code below
             # os.chown(volume, uid=current_user, gid=current_user_group)
             # os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
