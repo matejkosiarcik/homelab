@@ -306,7 +306,7 @@ apps:
     domain: ollama-private.matejhome.com
     authentication:
       basic: homelab-viewer
-    enabled: false # TODO: Reenable
+    enabled: false # TODO: Re-enable
 
   - name: Omada Controller
     domain: omadacontroller.matejhome.com
@@ -351,7 +351,7 @@ apps:
 
   - name: Open WebUI [private]
     domain: openwebui-private.matejhome.com
-    enabled: false # TODO: Reenable
+    enabled: false # TODO: Re-enable
 
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
