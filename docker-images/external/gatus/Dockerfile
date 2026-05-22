@@ -47,26 +47,33 @@ USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json ./
 COPY ./external/gatus/config.yml.j2 ./
-RUN jinja2 config.yml.j2 data.json --format json -o config.yaml
+RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
-### Final ###
+### User setup ###
 
-FROM debian:13.2-slim AS prefinal
-USER root
-WORKDIR /homelab
-COPY --from=config-2 /homelab/config.yaml /homelab/
-COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
-
-FROM twinproduction/gatus:v5.33.1 AS gatus
+FROM twinproduction/gatus:v5.35.0 AS gatus
 USER root
 
-FROM debian:13.2-slim
+FROM debian:13.2-slim AS gatus-setcap
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates libcap2-bin >/dev/null && \
+        libcap2-bin >/dev/null && \
     rm -rf /var/lib/apt/lists/*
+COPY --from=gatus /gatus /gatus
+RUN setcap 'cap_net_raw+ep' /gatus
+
+FROM debian:13.2-slim AS certificates
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+
+FROM debian:13.2-slim AS user-setup
+USER root
 ARG GID=1000
 ARG UID=1000
 RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
@@ -89,18 +96,32 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
         oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
         usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
     true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
-COPY --from=gatus --chown=homelab:homelab /gatus /gatus
-RUN setcap 'cap_net_raw+ep' /gatus
+    mkdir -p /home/homelab && \
+    chown -R homelab:homelab /home/homelab
+
+### Final ###
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/group
+COPY --from=user-setup /etc/passwd /etc/passwd
+COPY --from=user-setup /etc/shadow /etc/shadow
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=config-2 /homelab/config.yml /homelab/
+COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
+COPY --from=gatus-setcap /gatus /homelab/bin/
+
+FROM scratch
+COPY --from=prefinal /etc /etc
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-ENV GATUS_CONFIG_PATH="" \
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+USER homelab
+ENV GATUS_CONFIG_PATH=/homelab/config.yml \
     GATUS_DELAY_START_SECONDS=0 \
     GATUS_LOG_LEVEL=INFO \
     HOMELAB_CONTAINER_NAME=gatus \
     HOMELAB_CONTAINER_VARIANT=default \
     PORT=8080 \
     TZ=Europe/Bratislava
-USER homelab
 HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck" ]
-ENTRYPOINT [ "/gatus" ]
+ENTRYPOINT [ "/homelab/bin/gatus" ]
