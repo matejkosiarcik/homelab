@@ -11,27 +11,42 @@ else
     nologinshell='/bin/false'
 fi
 
-# Ensure all users use the nologin shell
-while IFS=":" read -r username _ _ _ _ _ _; do
-    usermod --shell "${nologinshell}" "${username}"
-done </etc/passwd
-
-# Create new "homelab" group
-if ! getent group "${GID}" >/dev/null 2>&1; then
+# Create new homelab group
+if ! getent group "${GID}" >'/dev/null' 2>&1; then
     groupadd --gid "${GID}" homelab
 else
     oldgroupname="$(getent group "${GID}" | cut -d: -f1)"
     groupmod --new-name homelab "${oldgroupname}"
 fi
 
-# Create new "homelab" user
-if ! getent passwd "$UID" >/dev/null 2>&1; then
-    useradd --no-log-init --home /home/homelab --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" homelab
+# Create new home directory
+mkdir -p /home/homelab
+chown -R "${UID}:${GID}" '/home/homelab'
+
+# Create new homelab user
+if ! getent passwd "$UID" >'/dev/null' 2>&1; then
+    useradd --no-log-init --home '/home/homelab' --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" homelab
 else
     oldusername="$(getent passwd "$UID" | cut -d: -f1)"
-    usermod --move-home --home /home/homelab --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" --login homelab "${oldusername}"
+    chown -R "${oldusername}:homelab" '/home/homelab'
+    usermod --move-home --home '/home/homelab' --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" --login homelab "${oldusername}"
 fi
 
-# Create "homelab" home directory
-mkdir -p /home/homelab
-chown -R homelab:homelab /home/homelab
+# Set correct permissions for home directory
+chown -R 'homelab:homelab' '/home/homelab'
+
+# Ensure all users use the nologin shell
+while IFS=":" read -r username _ _ _ _ _ _; do
+    usermod --shell "${nologinshell}" "${username}"
+done <'/etc/passwd'
+
+# Lock all accounts except the homelab user
+while IFS=":" read -r username _ _ _ _ _ _; do
+    if [ "${username}" = 'homelab' ]; then
+        continue;
+    fi
+    usermod --lock "${username}"
+    passwd -l "${username}"
+    chage -E 0 "${username}"
+    # pkill -u "${username}"
+done <'/etc/passwd'
