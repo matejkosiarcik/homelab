@@ -72,20 +72,21 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
 FROM debian:13.2-slim AS user-setup
 USER root
 WORKDIR /homelab
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh ./
-RUN sh create-user.sh
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
 
 ### Final ###
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/group
-COPY --from=user-setup /etc/passwd /etc/passwd
-COPY --from=user-setup /etc/shadow /etc/shadow
+COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=config-2 /homelab/config.yml /homelab/

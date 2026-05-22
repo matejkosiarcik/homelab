@@ -2,12 +2,9 @@
 set -euf
 
 # Determine nologin shell
-nologinshell=''
-if [ -e '/usr/sbin/nologin' ]; then
-    nologinshell='/usr/sbin/nologin'
-elif [ -e '/sbin/nologin' ]; then
-    nologinshell='/sbin/nologin'
-else
+nologinshell="$(getent passwd nobody | cut -d: -f7)"
+if printf '%s' "${nologinshell}" | grep -vE '/nologin$' >/dev/null 2>&1; then
+    printf 'Unknown nologin shell: %s\n' "${nologinshell}" >&2
     nologinshell='/bin/false'
 fi
 
@@ -38,15 +35,4 @@ chown -R 'homelab:homelab' '/home/homelab'
 # Ensure all users use the nologin shell
 while IFS=":" read -r username _ _ _ _ _ _; do
     usermod --shell "${nologinshell}" "${username}"
-done <'/etc/passwd'
-
-# Lock all accounts except the homelab user
-while IFS=":" read -r username _ _ _ _ _ _; do
-    if [ "${username}" = 'homelab' ]; then
-        continue;
-    fi
-    usermod --lock "${username}"
-    passwd -l "${username}"
-    chage -E 0 "${username}"
-    # pkill -u "${username}"
 done <'/etc/passwd'
