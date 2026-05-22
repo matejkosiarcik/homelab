@@ -11,6 +11,11 @@ else
     nologinshell='/bin/false'
 fi
 
+# Ensure all users use the nologin shell
+while IFS=":" read -r username _ _ _ _ _ _; do
+    usermod --shell "${nologinshell}" "${username}"
+done </etc/passwd
+
 # Create new "homelab" group
 if ! getent group "${GID}" >/dev/null 2>&1; then
     groupadd --gid "${GID}" homelab
