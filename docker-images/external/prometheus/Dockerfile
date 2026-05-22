@@ -57,10 +57,10 @@ ARG GID=1000
 ARG UID=1000
 RUN addgroup -g "$GID" homelab && \
     nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
+    if [ -e /usr/sbin/nologin ]; then \
         nologinshell='/usr/sbin/nologin' && \
+    true; elif [ -e /sbin/nologin ]; then \
+        nologinshell='/sbin/nologin' && \
     true; else \
         nologinshell='/bin/false' && \
     true; fi && \

@@ -13,10 +13,10 @@ RUN apk update --no-cache && \
         groupmod --new-name homelab "$oldgroupname" && \
     true; fi && \
     nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
+    if [ -e /usr/sbin/nologin ]; then \
         nologinshell='/usr/sbin/nologin' && \
+    true; elif [ -e /sbin/nologin ]; then \
+        nologinshell='/sbin/nologin' && \
     true; else \
         nologinshell='/bin/false' && \
     true; fi && \
