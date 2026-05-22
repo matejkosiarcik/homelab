@@ -42,6 +42,6 @@ ENV DEBUG=False \
     PGHOST=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava
+USER homelab
 # Startup period a bit longer for initial migration - downloads stuff from github and sets up locations database
 HEALTHCHECK --interval=10s --start-period=180s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
-USER homelab

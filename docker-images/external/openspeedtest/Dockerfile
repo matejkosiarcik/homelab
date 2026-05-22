@@ -45,5 +45,5 @@ ENV ENABLE_LETSENCRYPT=False \
     PGID=$GID \
     PUID=$UID \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:3000 || exit 1" ]
 USER homelab
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:3000 || exit 1" ]

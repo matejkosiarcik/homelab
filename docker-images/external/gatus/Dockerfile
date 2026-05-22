@@ -115,7 +115,6 @@ FROM scratch
 COPY --from=prefinal /etc /etc
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-USER homelab
 ENV GATUS_CONFIG_PATH=/homelab/config.yml \
     GATUS_DELAY_START_SECONDS=0 \
     GATUS_LOG_LEVEL=INFO \
@@ -123,5 +122,6 @@ ENV GATUS_CONFIG_PATH=/homelab/config.yml \
     HOMELAB_CONTAINER_VARIANT=default \
     PORT=8080 \
     TZ=Europe/Bratislava
+USER homelab
 HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck" ]
 ENTRYPOINT [ "/homelab/bin/gatus" ]

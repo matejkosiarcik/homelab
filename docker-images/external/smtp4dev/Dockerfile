@@ -44,6 +44,7 @@ ENV HOMELAB_CONTAINER_NAME=smtp4dev \
 # ServerOptions__TlsCertificate=/homelab/certs/server.pem
 # ServerOptions__AuthenticationRequired=true
 
+USER homelab
+
 # Note: curl/wget isn't available, so we have to resort to bash
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "bash -c ':> /dev/tcp/localhost/5000' || exit 1" ]
-USER homelab

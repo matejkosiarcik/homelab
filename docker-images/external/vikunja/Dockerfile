@@ -44,7 +44,7 @@ COPY --from=prefinal --chown=homelab:homelab /app /app
 ENV HOMELAB_CONTAINER_NAME=vikunja \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-USER homelab
 WORKDIR /app/vikunja
+USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "./vikunja", "user", "list" ]
 ENTRYPOINT [ "/app/vikunja/vikunja" ]

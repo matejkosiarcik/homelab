@@ -33,6 +33,6 @@ COPY --chown=homelab:homelab ./external/kiwix/entrypoint.sh /homelab/entrypoint.
 ENV HOMELAB_CONTAINER_NAME=kiwix \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
+USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "wget -O /dev/null http://localhost:8080 || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
-USER homelab

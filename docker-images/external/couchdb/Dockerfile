@@ -44,5 +44,5 @@ ENV COUCHDB_USER=admin \
     HOMELAB_CONTAINER_NAME=couchdb \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:5984/_up || exit 1" ]
 USER homelab
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:5984/_up || exit 1" ]
