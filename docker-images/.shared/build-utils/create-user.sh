@@ -17,19 +17,17 @@ else
 fi
 
 # Create new home directory
-mkdir -p /home/homelab
-chown -R "${UID}:${GID}" '/home/homelab'
 
 # Create new homelab user
 if ! getent passwd "$UID" >'/dev/null' 2>&1; then
     useradd --no-log-init --home '/home/homelab' --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" homelab
 else
     oldusername="$(getent passwd "$UID" | cut -d: -f1)"
-    chown -R "${oldusername}:homelab" '/home/homelab'
     usermod --move-home --home '/home/homelab' --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" --login homelab "${oldusername}"
 fi
 
 # Set correct permissions for home directory
+mkdir -p /home/homelab
 chown -R 'homelab:homelab' '/home/homelab'
 
 # Ensure all users use the nologin shell

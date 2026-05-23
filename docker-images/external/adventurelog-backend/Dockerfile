@@ -1,33 +1,28 @@
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
 USER root
 ARG GID=1000
 ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    ln -sf /run/supervisord.pid /code/supervisord.pid && \
+WORKDIR /homelab
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup --chown=homelab:homelab /home/homelab /home/homelab
+COPY ./external/adventurelog-backend/healthcheck.py /homelab/
+
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0
+USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+RUN ln -sf /run/supervisord.pid /code/supervisord.pid && \
     ln -sf /run/supervisord.log /code/supervisord.log && \
     ln -sf /run/scheduler.log /code/scheduler.log && \
-    chown -R homelab:homelab /code /home/homelab /homelab /var/log/nginx
-COPY --chown=homelab:homelab ./external/adventurelog-backend/healthcheck.py /homelab/
+    chown -R homelab:homelab /code /var/log/nginx
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV DEBUG=False \
     DISABLE_REGISTRATION=True \
     DJANGO_ADMIN_USERNAME=admin \
