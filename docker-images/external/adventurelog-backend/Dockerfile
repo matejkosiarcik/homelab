@@ -10,8 +10,9 @@ COPY ./.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 FROM scratch AS prefinal
+WORKDIR /homelab
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=user-setup /home/homelab /home/homelab
 COPY ./external/adventurelog-backend/healthcheck.py /homelab/
 
 FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0
