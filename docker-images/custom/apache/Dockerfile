@@ -1,5 +1,7 @@
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, but we switch to non-root user in entrypoint
 
+### Users ###
+
 FROM debian:13.2-slim AS user-setup-base
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -10,23 +12,29 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 FROM debian:13.2-slim AS user-setup
 USER root
-WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
-FROM debian:13.2-slim AS prefinal
+### Prefinal ###
+
+FROM debian:13.2-slim AS homelab-dir
 USER root
 WORKDIR /homelab
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
 RUN mkdir -p ./certs ./logs ./users && \
     touch ./users/empty.htpasswd
 COPY ./custom/apache/www ./www
 COPY ./custom/apache/entrypoint.sh ./
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
 COPY ./custom/apache/apache.conf /apache.conf
+
+### Final ###
 
 FROM debian:13.2-slim
 USER root

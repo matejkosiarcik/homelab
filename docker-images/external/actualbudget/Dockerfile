@@ -1,29 +1,33 @@
-### Users ###
+### App ###
+
+FROM actualbudget/actual-server:25.12.0 AS actualbudget
+
+# ### Users ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
-USER root
 
 FROM debian:13.2-slim AS user-setup
 USER root
-WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
-### App ###
+### Prefinal ###
 
-FROM actualbudget/actual-server:25.12.0 AS actualbudget
+FROM debian:13.2-slim AS homelab-dir
 USER root
-
-### Final ###
+WORKDIR /homelab
+COPY ./external/actualbudget/healthcheck.js ./
+COPY --from=actualbudget /app ./app
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
-COPY ./external/actualbudget/healthcheck.js /homelab/
-COPY --from=actualbudget /app /homelab/app
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM gcr.io/distroless/nodejs22-debian13
 USER root
