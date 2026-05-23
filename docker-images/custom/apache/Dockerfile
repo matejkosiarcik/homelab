@@ -3,7 +3,8 @@
 FROM debian:13.2-slim AS prefinal
 USER root
 WORKDIR /homelab
-RUN mkdir -p ./certs ./logs
+RUN mkdir -p ./certs ./logs ./users && \
+    touch ./users/empty.htpasswd
 COPY ./custom/apache/www ./www
 COPY ./custom/apache/entrypoint.sh ./
 COPY ./custom/apache/apache.conf /apache.conf
@@ -39,10 +40,7 @@ RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; the
     true; else \
         oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
         usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab /homelab/users && \
-    chown -R homelab:homelab /home/homelab /homelab && \
-    touch /homelab/users/empty.htpasswd
+    true; fi
 COPY --from=prefinal --chown=homelab:homelab /apache.conf /etc/apache2/sites-enabled/apache.conf
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab

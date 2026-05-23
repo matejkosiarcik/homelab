@@ -1,6 +1,7 @@
 ### Users ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
+USER root
 
 FROM debian:13.2-slim AS user-setup
 USER root

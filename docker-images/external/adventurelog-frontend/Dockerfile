@@ -1,4 +1,5 @@
 FROM ghcr.io/seanmorley15/adventurelog-frontend:v0.11.0 AS user-setup-base
+USER root
 
 FROM debian:13.2-slim AS user-setup
 USER root
