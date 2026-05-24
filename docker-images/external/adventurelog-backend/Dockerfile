@@ -1,20 +1,29 @@
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0 AS user-setup-base
-USER root
+### App ###
+
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0 AS adventurelog-backend
+
+### Users ###
 
 FROM debian:13.2-slim AS user-setup
 USER root
+COPY --from=adventurelog-backend /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-WORKDIR /homelab
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 COPY ./.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
-FROM scratch AS prefinal
+### Prefinal ###
+
+FROM scratch AS homelab-dir
 WORKDIR /homelab
+COPY ./external/adventurelog-backend/healthcheck.py ./
+
+FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
-COPY ./external/adventurelog-backend/healthcheck.py /homelab/
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0
 USER root
