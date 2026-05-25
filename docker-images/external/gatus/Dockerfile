@@ -1,8 +1,17 @@
-FROM golang:1.25.5-alpine AS healthcheck-builder
+### App ###
+
+FROM twinproduction/gatus:v5.35.0 AS gatus-app
 USER root
-WORKDIR /homelab
-COPY ./external/gatus/healthcheck/main.go ./external/gatus/healthcheck/go.mod ./
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+FROM debian:13.2-slim AS gatus-setcap
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        libcap2-bin >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=gatus-app /gatus /gatus
+RUN setcap 'cap_net_raw+ep' /gatus
 
 ### Dependencies ###
 
@@ -49,20 +58,13 @@ COPY --from=config-1 /homelab/data.json ./
 COPY ./external/gatus/config.yml.j2 ./
 RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
-### User setup ###
+### Other ###
 
-FROM twinproduction/gatus:v5.35.0 AS gatus
+FROM golang:1.25.5-alpine AS healthcheck-builder
 USER root
-
-FROM debian:13.2-slim AS gatus-setcap
-USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        libcap2-bin >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=gatus /gatus /gatus
-RUN setcap 'cap_net_raw+ep' /gatus
+WORKDIR /homelab
+COPY ./external/gatus/healthcheck/main.go ./external/gatus/healthcheck/go.mod ./
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 FROM debian:13.2-slim AS certificates
 USER root
@@ -71,6 +73,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
+
+### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
@@ -83,20 +87,29 @@ ARG UID=1000
 COPY ./.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
-### Final ###
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY --from=config-2 /homelab/config.yml /homelab/
+COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
+COPY --from=gatus-setcap /gatus /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=config-2 /homelab/config.yml /homelab/
-COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
-COPY --from=gatus-setcap /gatus /homelab/bin/
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM scratch
-COPY --from=prefinal /etc /etc
+USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+WORKDIR /homelab
 ENV GATUS_CONFIG_PATH=/homelab/config.yml \
     GATUS_DELAY_START_SECONDS=0 \
     GATUS_LOG_LEVEL=INFO \
