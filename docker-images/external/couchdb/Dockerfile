@@ -1,44 +1,52 @@
+### App ###
+
 FROM couchdb:3.5.1 AS entrypoint
 USER root
+WORKDIR /homelab
 COPY ./external/couchdb/entrypoint-extra.sh /homelab/
-RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
+RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-original-shebang.sh && \
+    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-original-rest.sh && \
+    cat /homelab/entrypoint-original-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-original-rest.sh >/docker-entrypoint.sh
 
-FROM debian:13.2-slim AS prefinal
+FROM couchdb:3.5.1 AS runtime-dirs
 USER root
-COPY ./external/couchdb/jwt.ini /
+RUN mkdir -p /homelab/original/opt/couchdb/etc/local.d && \
+    cp -R /opt/couchdb/etc/local.d/. /homelab/original/opt/couchdb/etc/local.d
+
+### Users ###
+
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
+USER root
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY --from=runtime-dirs /homelab/original /homelab/original
+COPY ./external/couchdb/jwt.ini /homelab/original/opt/couchdb/etc/local.d/
+
+FROM scratch AS prefinal
+WORKDIR /
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
 COPY --from=entrypoint /docker-entrypoint.sh /
+
+### Final ###
 
 FROM couchdb:3.5.1
 USER root
-ARG GID=1000
-ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab /homelab/original/opt/couchdb/etc/local.d && \
-    chown -R homelab:homelab /home/homelab /homelab && \
-    cp -R /opt/couchdb/etc/local.d/. /homelab/original/opt/couchdb/etc/local.d && \
-    rm -rf /opt/couchdb/etc/local.d
-COPY --from=prefinal --chown=homelab:homelab /jwt.ini /homelab/original/opt/couchdb/etc/local.d/
+RUN rm -rf /opt/couchdb/etc/local.d
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /docker-entrypoint.sh /
 ENV COUCHDB_USER=admin \
     HOMELAB_CONTAINER_NAME=couchdb \
