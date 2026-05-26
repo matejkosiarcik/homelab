@@ -60,36 +60,36 @@ RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
 ### Healthcheck ###
 
-# FROM golang:1.25.5-alpine AS healthcheck-builder
-# USER root
-# WORKDIR /homelab
-# COPY ./.shared/healthchecks/http-healthcheck-2/main.go ./.shared/healthchecks/http-healthcheck-2/go.mod ./
-# RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
-
-FROM rust:1.95-slim AS healthcheck-builder
+FROM golang:1.25.5-alpine AS healthcheck-builder
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        build-essential jq >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/cargo-cross/Cargo.toml ./.shared/dependencies/cargo-cross/Cargo.lock /homelab/cargo-cross-dependency/
-COPY ./.shared/dependencies/cargo-cross/src /homelab/cargo-cross-dependency/src
-WORKDIR /homelab/cargo-cross-dependency
-RUN version="$(cargo metadata --format-version 1 | jq -r '.packages[] | select(.name == "cargo-cross").version')" && \
-    cargo install "cargo-cross@${version}" && \
-    rustup target add "$(uname -m)-unknown-linux-musl"
-COPY ./.shared/healthchecks/http-healthcheck-1/Cargo.toml ./.shared/healthchecks/http-healthcheck-1/Cargo.lock /homelab/healthcheck/
-COPY ./.shared/healthchecks/http-healthcheck-1/src /homelab/healthcheck/src
-COPY ./.shared/healthchecks/http-healthcheck-1/.cargo /homelab/healthcheck/.cargo
-ENV OPENSSL_STATIC=1 \
-    PKG_CONFIG_ALLOW_CROSS=1 \
-    RUSTFLAGS="-C target-feature=+crt-static"
-WORKDIR /homelab/healthcheck
-RUN export PKG_CONFIG_SYSROOT_DIR="/opt/openssl-$(uname -m)-musl" && \
-    export PKG_CONFIG_PATH="${PKG_CONFIG_SYSROOT_DIR}/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/share/pkgconfig" && \
-    cargo cross build --release --target "$(uname -m)-unknown-linux-musl"
+COPY ./.shared/healthchecks/http-healthcheck-2/main.go ./.shared/healthchecks/http-healthcheck-2/go.mod ./.shared/healthchecks/http-healthcheck-2/go.sum ./
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+# FROM rust:1.95-slim AS healthcheck-builder
+# USER root
+# WORKDIR /homelab
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#     apt-get update && \
+#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+#         build-essential jq >/dev/null && \
+#     rm -rf /var/lib/apt/lists/*
+# COPY ./.shared/dependencies/cargo-cross/Cargo.toml ./.shared/dependencies/cargo-cross/Cargo.lock /homelab/cargo-cross-dependency/
+# COPY ./.shared/dependencies/cargo-cross/src /homelab/cargo-cross-dependency/src
+# WORKDIR /homelab/cargo-cross-dependency
+# RUN version="$(cargo metadata --format-version 1 | jq -r '.packages[] | select(.name == "cargo-cross").version')" && \
+#     cargo install "cargo-cross@${version}" && \
+#     rustup target add "$(uname -m)-unknown-linux-musl"
+# COPY ./.shared/healthchecks/http-healthcheck-1/Cargo.toml ./.shared/healthchecks/http-healthcheck-1/Cargo.lock /homelab/healthcheck/
+# COPY ./.shared/healthchecks/http-healthcheck-1/src /homelab/healthcheck/src
+# COPY ./.shared/healthchecks/http-healthcheck-1/.cargo /homelab/healthcheck/.cargo
+# ENV OPENSSL_STATIC=1 \
+#     PKG_CONFIG_ALLOW_CROSS=1 \
+#     RUSTFLAGS="-C target-feature=+crt-static"
+# WORKDIR /homelab/healthcheck
+# RUN export PKG_CONFIG_SYSROOT_DIR="/opt/openssl-$(uname -m)-musl" && \
+#     export PKG_CONFIG_PATH="${PKG_CONFIG_SYSROOT_DIR}/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/share/pkgconfig" && \
+#     cargo cross build --release --target "$(uname -m)-unknown-linux-musl"
 
 ### Other ###
 
@@ -120,9 +120,9 @@ FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/
 # Rust:
-COPY --from=healthcheck-builder /homelab/healthcheck/target/aarch64-unknown-linux-musl/release/healthcheck /homelab/bin/
+# COPY --from=healthcheck-builder /homelab/healthcheck/target/aarch64-unknown-linux-musl/release/healthcheck /homelab/bin/
 # Go:
-# COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
+COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
 COPY --from=gatus-setcap /gatus /homelab/bin/
 
 FROM scratch AS prefinal
