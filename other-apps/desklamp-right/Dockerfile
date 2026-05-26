@@ -7,9 +7,9 @@ USER root
 WORKDIR /homelab
 RUN arduino-cli core update-index && \
     arduino-cli core install arduino:mbed_rp2040
-COPY libraries.txt ./
+COPY libraries.txt /homelab/
 RUN xargs -n1 arduino-cli lib install <libraries.txt
-COPY desklamp-right.ino ./desklamp-right/
+COPY desklamp-right.ino /homelab/desklamp-right/
 RUN arduino-cli compile -b arduino:mbed_rp2040:pico desklamp-right
 ENTRYPOINT ["bash"]
 CMD []

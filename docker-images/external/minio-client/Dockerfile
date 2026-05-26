@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/date.txt ./
+COPY ./.shared/date.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
@@ -23,13 +23,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/gitman/requirements.txt ./
+COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./external/minio-client/gitman.yml ./
+COPY ./external/minio-client/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git \
     gitman install --quiet && \
@@ -49,7 +49,7 @@ WORKDIR /homelab/minio-mc
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all mc
 WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh ./
+COPY ./.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./minio-mc/mc
 
 ### Healthcheck ###
@@ -57,7 +57,7 @@ RUN sh validate-executable.sh ./minio-mc/mc
 FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum ./
+COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### User setup ###
@@ -79,7 +79,7 @@ FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./external/minio-client/entrypoint.sh ./external/minio-client/main.sh ./external/minio-client/plain-buckets.txt ./external/minio-client/versioned-buckets.txt /homelab/
 COPY --from=minio-mc-build /homelab/minio-mc/mc /homelab/bin/
-COPY --from=healthcheck-build /homelab/healthcheck ./bin/
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

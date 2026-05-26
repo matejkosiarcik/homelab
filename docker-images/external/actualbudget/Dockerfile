@@ -19,8 +19,8 @@ RUN sh /homelab/create-user.sh
 FROM debian:13.2-slim AS homelab-dir
 USER root
 WORKDIR /homelab
-COPY ./external/actualbudget/healthcheck.js ./
-COPY --from=actualbudget /app ./app
+COPY ./external/actualbudget/healthcheck.js /homelab/
+COPY --from=actualbudget /app /homelab/app
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

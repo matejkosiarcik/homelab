@@ -14,7 +14,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./external/changedetection/healthcheck.py ./
+COPY ./external/changedetection/healthcheck.py /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

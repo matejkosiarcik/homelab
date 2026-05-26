@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/date.txt ./
+COPY ./.shared/date.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/date.txt ./
+COPY ./.shared/date.txt /homelab/
 RUN printf '' >/root/.npmrc && \
     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
     npm config set proxy https://npm-cache.matejhome.com && \
@@ -37,13 +37,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/gitman/requirements.txt ./
+COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./.shared/dependencies/supercronic/gitman.yml ./
+COPY ./.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git \
     gitman install --quiet && \
@@ -63,7 +63,7 @@ WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
 WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh ./
+COPY ./.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
@@ -71,8 +71,8 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 FROM node:25.2.1-slim AS nodejs-server-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json ./
-COPY ./.shared/cron-utils/on-demand/src/ ./src/
+COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json /homelab/
+COPY ./.shared/cron-utils/on-demand/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
@@ -84,7 +84,7 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum ./
+COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###
@@ -108,7 +108,7 @@ RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /homelab/
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
-COPY --from=healthcheck-build /homelab/healthcheck ./bin/
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY --from=nodejs-server-build /homelab/package.json /homelab/server/
 COPY --from=nodejs-server-build /homelab/node_modules /homelab/server/node_modules
 COPY --from=nodejs-server-build /homelab/dist /homelab/server/dist

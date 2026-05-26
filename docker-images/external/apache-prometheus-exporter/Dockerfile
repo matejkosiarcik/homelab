@@ -15,7 +15,7 @@ RUN sh /homelab/create-user.sh
 FROM debian:13.2-slim AS homelab-dir
 USER root
 WORKDIR /homelab
-COPY ./external/apache-prometheus-exporter/entrypoint.sh ./
+COPY ./external/apache-prometheus-exporter/entrypoint.sh /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

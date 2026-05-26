@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/date.txt ./
+COPY ./.shared/date.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/date.txt ./
+COPY ./.shared/date.txt /homelab/
 RUN printf '' >/root/.npmrc && \
     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
     npm config set proxy https://npm-cache.matejhome.com && \
@@ -37,13 +37,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/gitman/requirements.txt ./
+COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./.shared/dependencies/supercronic/gitman.yml ./
+COPY ./.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git \
     gitman install --quiet && \
@@ -63,7 +63,7 @@ WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
 WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh ./
+COPY ./.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
@@ -71,7 +71,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 FROM node:25.2.1-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json ./
+COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json /homelab/
 COPY ./custom/web-automation/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
@@ -85,7 +85,7 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum ./
+COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###
@@ -105,8 +105,8 @@ RUN sh /homelab/create-user.sh
 FROM node:25.2.1-slim AS browsers
 USER root
 WORKDIR /homelab
-COPY --from=nodejs-build /homelab/package.json ./
-COPY --from=nodejs-build /homelab/node_modules ./node_modules
+COPY --from=nodejs-build /homelab/package.json /homelab/
+COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
 # Cache playwright browsers downloads between versions and rebuilds
 # We also have to remove older versions of playwright browsers, to only copy the latest browsers to keep the final size down
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -126,14 +126,14 @@ FROM debian:13.2-slim AS homelab-dir
 USER root
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
-COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
-COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
-COPY --from=healthcheck-build /homelab/healthcheck ./bin/
-COPY --from=nodejs-build /homelab/package.json ./
-COPY --from=nodejs-build /homelab/node_modules ./node_modules
-COPY --from=nodejs-build /homelab/dist ./dist
-COPY ./custom/web-automation/main.sh ./
-COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omadacontroller-backup.cron ./custom/web-automation/crontab-unificontroller-backup.cron ./
+COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /homelab/
+COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=nodejs-build /homelab/package.json /homelab/
+COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
+COPY --from=nodejs-build /homelab/dist /homelab/dist
+COPY ./custom/web-automation/main.sh /homelab/
+COPY ./custom/web-automation/crontab-homeassistant-backup.cron ./custom/web-automation/crontab-omadacontroller-backup.cron ./custom/web-automation/crontab-unificontroller-backup.cron /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

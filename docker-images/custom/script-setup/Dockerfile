@@ -3,7 +3,7 @@
 FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum ./
+COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###
@@ -24,7 +24,7 @@ FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
 COPY --chown=homelab:homelab ./custom/script-setup/entrypoint.sh /homelab/
-COPY --from=healthcheck-build /homelab/healthcheck ./bin/
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

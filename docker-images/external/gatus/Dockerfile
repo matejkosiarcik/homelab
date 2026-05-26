@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/yq/requirements.txt ./
+COPY ./.shared/dependencies/yq/requirements.txt /homelab/
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
@@ -37,7 +37,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/jinja/requirements.txt ./
+COPY ./.shared/dependencies/jinja/requirements.txt /homelab/
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
@@ -48,14 +48,14 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM yq AS config-1
 USER root
 WORKDIR /homelab
-COPY ./external/gatus/data.yml ./
+COPY ./external/gatus/data.yml /homelab/
 RUN yq . data.yml >data.json
 
 FROM jinja AS config-2
 USER root
 WORKDIR /homelab
-COPY --from=config-1 /homelab/data.json ./
-COPY ./external/gatus/config.yml.j2 ./
+COPY --from=config-1 /homelab/data.json /homelab/
+COPY ./external/gatus/config.yml.j2 /homelab/
 RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
 ### Healthcheck ###
@@ -63,7 +63,7 @@ RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum ./
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Other ###

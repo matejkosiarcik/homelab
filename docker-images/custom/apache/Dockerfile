@@ -26,7 +26,7 @@ WORKDIR /homelab
 RUN mkdir -p ./certs ./logs ./users && \
     touch ./users/empty.htpasswd
 COPY ./custom/apache/www ./www
-COPY ./custom/apache/entrypoint.sh ./
+COPY ./custom/apache/entrypoint.sh /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

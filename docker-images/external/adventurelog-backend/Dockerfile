@@ -16,7 +16,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./external/adventurelog-backend/healthcheck.py ./
+COPY ./external/adventurelog-backend/healthcheck.py /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
