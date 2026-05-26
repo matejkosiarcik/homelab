@@ -72,11 +72,15 @@ WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        build-essential ca-certificates clang cmake curl "gcc-$(uname -m)-linux-gnu" git libssl-dev musl-tools openssl pkg-config >/dev/null && \
-    rm -rf /var/lib/apt/lists/* && \
-    rustup target add "$(uname -m)-unknown-linux-musl" && \
-    cargo install cargo-cross
-COPY ./.shared/healthchecks/http-healthcheck-1/Cargo.toml /homelab/healthcheck/
+        build-essential jq >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/dependencies/cargo-cross/Cargo.toml ./.shared/dependencies/cargo-cross/Cargo.lock /homelab/cargo-cross-dependency/
+COPY ./.shared/dependencies/cargo-cross/src /homelab/cargo-cross-dependency/src
+WORKDIR /homelab/cargo-cross-dependency
+RUN version="$(cargo metadata --format-version 1 | jq -r '.packages[] | select(.name == "cargo-cross").version')" && \
+    cargo install "cargo-cross@${version}" && \
+    rustup target add "$(uname -m)-unknown-linux-musl"
+COPY ./.shared/healthchecks/http-healthcheck-1/Cargo.toml ./.shared/healthchecks/http-healthcheck-1/Cargo.lock /homelab/healthcheck/
 COPY ./.shared/healthchecks/http-healthcheck-1/src /homelab/healthcheck/src
 COPY ./.shared/healthchecks/http-healthcheck-1/.cargo /homelab/healthcheck/.cargo
 ENV OPENSSL_STATIC=1 \
