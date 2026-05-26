@@ -1,32 +1,38 @@
-FROM ollama/ollama:0.13.1
+### User setup ###
+
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
 USER root
+WORKDIR /homelab
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab /homelab/ollama && \
-    chown -R homelab:homelab /home/homelab /homelab
-COPY --chown=homelab:homelab ./external/ollama/entrypoint.sh /homelab/
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY ./external/ollama/entrypoint.sh /homelab/
+# RUN mkdir -p /homelab/ollama
+
+FROM debian:13.2-slim AS prefinal
+USER root
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+RUN ln -sf /homelab/ollama /home/homelab/.ollama
+
+### Final ###
+
+FROM ollama/ollama:0.13.1
+USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 USER homelab
-RUN ln -sf /homelab/ollama ~/.ollama
 ENV HOMELAB_CONTAINER_NAME=ollama \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

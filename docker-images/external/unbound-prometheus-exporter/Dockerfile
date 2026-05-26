@@ -1,3 +1,5 @@
+### Config ###
+
 FROM debian:13.2-slim AS gitconfig
 USER root
 WORKDIR /homelab
@@ -10,6 +12,8 @@ COPY ./.shared/date.txt ./
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
+
+### Dependencies ###
 
 FROM python:3.14.0-slim AS gitman
 USER root
@@ -31,6 +35,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
+### App ###
+
 FROM golang:1.25.5-bookworm AS build
 USER root
 WORKDIR /homelab
@@ -48,11 +54,32 @@ WORKDIR /homelab
 COPY ./.shared/build-utils/validate-executable.sh ./
 RUN sh validate-executable.sh ./unbound_exporter/unbound_exporter
 
-FROM debian:13.2-slim AS prefinal
+### User setup ###
+
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
 USER root
 WORKDIR /homelab
-COPY ./external/unbound-prometheus-exporter/entrypoint.sh ./entrypoint.sh
-COPY --from=build /homelab/unbound_exporter/unbound_exporter ./bin/
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY ./external/unbound-prometheus-exporter/entrypoint.sh /homelab/entrypoint.sh
+COPY --from=build /homelab/unbound_exporter/unbound_exporter /homelab/bin/
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM debian:13.2-slim
 USER root
@@ -61,30 +88,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-ARG GID=1000
-ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME=unbound-prometheus-exporter \

@@ -1,14 +1,59 @@
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
+### Other ###
+
 FROM linuxserver/unifi-network-application:10.0.162 AS entrypoint
 USER root
-COPY --chown=homelab:homelab ./external/unifi-network-application/entrypoint-extra.sh /homelab/
+COPY ./external/unifi-network-application/entrypoint-extra.sh /homelab/
 RUN head -n 1 /init >/homelab/entrypoint-shebang.sh && \
     tail -n +2 /init >/homelab/entrypoint-without-shebang.sh && \
     cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/init
 
+FROM linuxserver/unifi-network-application:10.0.162 AS runtime-dirs
+USER root
+WORKDIR /homelab
+RUN mkdir -p /homelab/original/defaults && \
+    cp -R /defaults/. /homelab/original/defaults
+
+### User setup ###
+
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        moreutils && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh && \
+    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/group && \
+    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~unifi~' | sponge --append /etc/group && \
+    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~unifi~' | sponge --append /etc/passwd
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY --from=runtime-dirs /homelab/original /homelab/original
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+COPY --from=entrypoint /init /init
+
+### Final ###
+
 FROM linuxserver/unifi-network-application:10.0.162
 USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
     if [ ! -e './webapps/ROOT/app-unifi/angular/favicon.ico' ]; then \
         printf 'File "favicon.ico" not found\n' >&2 && \
@@ -17,34 +62,13 @@ RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".
     ln -s /config/data /usr/lib/unifi/data && \
     ln -s /config/logs /usr/lib/unifi/logs && \
     ln -s /run/unifi /usr/lib/unifi/run && \
-    mkdir -p /homelab/original/defaults && \
-    cp -R /defaults/. /homelab/original/defaults && \
-    rm -rf /defaults
+    rm -rf /defaults && \
+    chown -R homelab:homelab /usr/lib/unifi
+COPY --from=prefinal --chown=homelab:homelab /init /init
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ARG GID=1000
 ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab /usr/lib/unifi
-COPY --from=entrypoint --chown=homelab:homelab /init /init
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
     HOMELAB_CONTAINER_NAME=unificontroller \
     HOMELAB_CONTAINER_VARIANT=default \

@@ -1,40 +1,51 @@
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
+### User setup ###
+
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        moreutils && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh && \
+    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/group && \
+    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~video123~' | sponge --append /etc/group && \
+    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~video123~' | sponge --append /etc/passwd && \
+    usermod --append --groups root abc && \
+    usermod --append --groups video123 abc
+# groupmod --gid 44 video123
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
+
 # hadolint ignore=DL3007
 FROM linuxserver/tvheadend:latest
 USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ARG GID=1000
 ARG UID=1000
-RUN apk update --no-cache && \
-    apk add --no-cache shadow && \
-    if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab && \
-    usermod --append --groups root abc && \
-    groupadd video123 && \
-    groupmod --gid 44 video123 && \
-    usermod --append --groups video123 abc && \
-    apk del --no-cache shadow
 ENV HOMELAB_CONTAINER_NAME=tvheadend \
     HOMELAB_CONTAINER_VARIANT=default \
     PGID=$GID \

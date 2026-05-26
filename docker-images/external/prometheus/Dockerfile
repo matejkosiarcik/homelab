@@ -43,31 +43,40 @@ COPY --from=config-1 /homelab/data.json ./
 COPY ./external/prometheus/prometheus.yml.j2 ./
 RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 
-### Final ###
+### User setup ###
 
-FROM debian:13.2-slim AS prefinal
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
 USER root
+WORKDIR /homelab
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM prom/prometheus:v3.8.1
 USER root
 ARG GID=1000
 ARG UID=1000
-RUN addgroup -g "$GID" homelab && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    adduser -D -h /home/homelab -u "$UID" -G homelab -s "$nologinshell" homelab && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
     PROMETHEUS__HOMELAB_VIEWER_USERNAME=homelab-viewer \

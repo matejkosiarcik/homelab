@@ -1,42 +1,46 @@
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
-FROM linuxserver/jellyfin:10.11.5
+### User setup ###
+
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
 USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        moreutils && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=jellyfin-app /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-RUN if [ ! -e '/usr/share/jellyfin/web' ]; then \
-        printf 'Jellyfin web directory not found\n' >&2 && \
-        exit 1 && \
-    true; fi && \
-    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
-        find '/usr/share/jellyfin/web' -name 'favicon.*.ico' -type f -mindepth 1 -maxdepth 1 -exec cp {} /usr/share/jellyfin/web/favicon.ico \; && \
-    true; fi && \
-    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
-        printf 'File "favicon.ico" not found\n' >&2 && \
-        exit 1 && \
-    true; fi && \
-    if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; elif [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh && \
+    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/group && \
+    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~jellyfin~' | sponge --append /etc/group && \
+    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~jellyfin~' | sponge --append /etc/passwd
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
+
+FROM linuxserver/jellyfin:10.11.5
+USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+ARG GID=1000
+ARG UID=1000
 ENV HOMELAB_CONTAINER_NAME=jellyfin \
     HOMELAB_CONTAINER_VARIANT=default \
     JELLYFIN_CACHE_DIR=/cache \
