@@ -90,6 +90,14 @@ RUN --mount=type=cache,target=/root/.npm \
     npm run build && \
     npm prune --production
 
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum ./
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### Users ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -111,6 +119,7 @@ RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh ./
 COPY ./external/data-optimization/crontab.cron ./external/data-optimization/main.sh ./
 COPY --from=supercronic-build /homelab/supercronic/supercronic ./bin/
+COPY --from=healthcheck-build /homelab/healthcheck ./bin/
 COPY --from=nodejs-build /homelab/package.json ./
 COPY --from=nodejs-build /homelab/node_modules ./node_modules
 COPY --from=nodejs-build /homelab/dist ./dist
@@ -141,8 +150,5 @@ ENV HOMELAB_CONTAINER_NAME=homepage-widgets \
     HOMELAB_CRON_SKIP_INITIAL=1 \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=10m --timeout=1s --retries=1 CMD [ "/bin/sh", "-c", "printf 'started\n' | cmp /homelab/tmpfs/status.txt /dev/stdin >/dev/null 2>&1 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=10m --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
-# USER homelab
-# HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "/bin/sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
-# ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
