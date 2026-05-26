@@ -58,13 +58,36 @@ COPY --from=config-1 /homelab/data.json ./
 COPY ./external/gatus/config.yml.j2 ./
 RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
-### Other ###
+### Healthcheck ###
 
-FROM golang:1.25.5-alpine AS healthcheck-builder
+# FROM golang:1.25.5-alpine AS healthcheck-builder
+# USER root
+# WORKDIR /homelab
+# COPY ./.shared/healthchecks/http-healthcheck-2/main.go ./.shared/healthchecks/http-healthcheck-2/go.mod ./
+# RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+FROM rust:1.95-slim AS healthcheck-builder
 USER root
 WORKDIR /homelab
-COPY ./external/gatus/healthcheck/main.go ./external/gatus/healthcheck/go.mod ./
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        build-essential ca-certificates clang cmake curl "gcc-$(uname -m)-linux-gnu" git libssl-dev musl-tools openssl pkg-config >/dev/null && \
+    rm -rf /var/lib/apt/lists/* && \
+    rustup target add "$(uname -m)-unknown-linux-musl" && \
+    cargo install cargo-cross
+COPY ./.shared/healthchecks/http-healthcheck-1/Cargo.toml /homelab/healthcheck/
+COPY ./.shared/healthchecks/http-healthcheck-1/src /homelab/healthcheck/src
+COPY ./.shared/healthchecks/http-healthcheck-1/.cargo /homelab/healthcheck/.cargo
+ENV OPENSSL_STATIC=1 \
+    PKG_CONFIG_ALLOW_CROSS=1 \
+    RUSTFLAGS="-C target-feature=+crt-static"
+WORKDIR /homelab/healthcheck
+RUN export PKG_CONFIG_SYSROOT_DIR="/opt/openssl-$(uname -m)-musl" && \
+    export PKG_CONFIG_PATH="${PKG_CONFIG_SYSROOT_DIR}/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/share/pkgconfig" && \
+    cargo cross build --release --target "$(uname -m)-unknown-linux-musl"
+
+### Other ###
 
 FROM debian:13.2-slim AS certificates
 USER root
@@ -92,7 +115,10 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/
-COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
+# Rust:
+COPY --from=healthcheck-builder /homelab/healthcheck/target/aarch64-unknown-linux-musl/release/healthcheck /homelab/bin/
+# Go:
+# COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
 COPY --from=gatus-setcap /gatus /homelab/bin/
 
 FROM scratch AS prefinal
@@ -118,5 +144,5 @@ ENV GATUS_CONFIG_PATH=/homelab/config.yml \
     PORT=8080 \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck" ]
+HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080" ]
 ENTRYPOINT [ "/homelab/bin/gatus" ]

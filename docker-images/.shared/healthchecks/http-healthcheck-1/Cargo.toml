@@ -1,0 +1,20 @@
+[package]
+name = "healthcheck"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+reqwest = { version = "0.11", features = ["blocking", "rustls-tls"] }
+# openssl = { version = "0.10", features = ["vendored"] }
+openssl-sys = { version = "0.9", features = ["vendored"] }
+
+[build-dependencies]
+cc = "1"
+
+[profile.release]
+strip = true  # Automatically strip symbols from the binary
+opt-level = "z"  # Optimize for size
+lto = true  # Enable link-time optimization
+codegen-units = 1  # Better optimizations, but slower compilation
+panic = "abort"  # Optimize for size

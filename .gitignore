@@ -46,3 +46,4 @@ gitman-repositories/
 node_modules/
 python-vendor/
 venv/
+target/
