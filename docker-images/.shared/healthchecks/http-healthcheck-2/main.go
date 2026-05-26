@@ -6,22 +6,20 @@ import (
 	"os"
 	"time"
 
-	"github.com/spf13/pflag"
+	"github.com/alexflint/go-arg"
 )
 
 func main() {
 	// Parse arguments
-	url := pflag.String("url", "", "URL to check (required)")
-	method := pflag.String("method", "GET", "HTTP method")
-	pflag.Parse()
-	if *url == "" {
-		fmt.Fprintln(os.Stderr, "--url is required")
-		os.Exit(1)
+	var args struct {
+		Url    string `arg:"--url,required" help:"URL to check"`
+		Method string `arg:"--method" default:"GET" help:"HTTP method"`
 	}
+	arg.MustParse(&args)
 
 	// Perform request
 	client := &http.Client{Timeout: 2 * time.Second}
-	request, err := http.NewRequest(*method, *url, nil)
+	request, err := http.NewRequest(args.Method, args.Url, nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating request: %v\n", err)
 		os.Exit(1)
