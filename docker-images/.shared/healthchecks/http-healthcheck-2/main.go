@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	// Parse arguments
 	url := pflag.String("url", "", "URL to check (required)")
 	method := pflag.String("method", "GET", "HTTP method")
 	pflag.Parse()
@@ -18,29 +19,28 @@ func main() {
 		os.Exit(1)
 	}
 
-	client := &http.Client{Timeout: 2 * time.Second}
-
 	// Perform request
-	req, err := http.NewRequest(*method, *url, nil)
+	client := &http.Client{Timeout: 2 * time.Second}
+	request, err := http.NewRequest(*method, *url, nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating request: %v\n", err)
 		os.Exit(1)
 	}
-	resp, err := client.Do(req)
+	response, err := client.Do(request)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error performing request: %v\n", err)
 		os.Exit(1)
 	}
 
 	// Ensure body is closed before exiting, because os.Exit does not run defer
-	if resp.Body != nil {
-		_ = resp.Body.Close()
+	if response.Body != nil {
+		_ = response.Body.Close()
 	}
 
-	if resp.StatusCode/100 == 2 {
+	if response.StatusCode/100 == 2 {
 		os.Exit(0)
 	}
 
-	fmt.Fprintf(os.Stderr, "Unexpected response status: %s\n", resp.Status)
+	fmt.Fprintf(os.Stderr, "Unexpected response status: %s\n", response.Status)
 	os.Exit(1)
 }
