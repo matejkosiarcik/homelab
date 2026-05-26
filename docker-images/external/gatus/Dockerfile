@@ -60,7 +60,7 @@ RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
 ### Healthcheck ###
 
-FROM golang:1.25.5-alpine AS healthcheck-builder
+FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum ./
@@ -94,7 +94,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY --from=config-2 /homelab/config.yml /homelab/
-COPY --from=healthcheck-builder /homelab/healthcheck /homelab/bin/
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY --from=gatus-setcap /gatus /homelab/bin/
 
 FROM scratch AS prefinal
