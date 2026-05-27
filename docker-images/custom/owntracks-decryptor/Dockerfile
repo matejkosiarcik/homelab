@@ -64,13 +64,8 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM node:25.2.1-slim
+FROM gcr.io/distroless/nodejs26-debian13
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        imagemagick && \
-    rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
@@ -80,4 +75,4 @@ ENV HOMELAB_CONTAINER_NAME=owntracks-decryptor \
     TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
-ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
+ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

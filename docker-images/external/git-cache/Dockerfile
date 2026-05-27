@@ -64,7 +64,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM node:25.2.1-slim
+FROM gcr.io/distroless/nodejs26-debian13
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
@@ -75,4 +75,4 @@ ENV HOMELAB_CONTAINER_NAME=git-cache \
     TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
-ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
+ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]
