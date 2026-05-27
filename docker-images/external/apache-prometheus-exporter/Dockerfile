@@ -38,7 +38,7 @@ USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        prometheus-apache-exporter curl >/dev/null && \
+        prometheus-apache-exporter >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /homelab
 COPY --from=prefinal /etc/group /etc/passwd /etc/
