@@ -117,7 +117,7 @@ USER root
 WORKDIR /homelab
 RUN mkdir -p ./certs ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /homelab/
-COPY ./external/data-optimization/crontab.cron ./external/data-optimization/main.sh /homelab/
+COPY ./custom/data-optimization/crontab.cron ./custom/data-optimization/main.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY --from=nodejs-build /homelab/package.json /homelab/

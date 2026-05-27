@@ -27,6 +27,14 @@ RUN --mount=type=cache,target=/root/.npm \
     npm run build && \
     npm prune --production
 
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### Users ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -48,6 +56,7 @@ COPY --from=nodejs-build /homelab/package.json /homelab/
 COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs-build /homelab/dist /homelab/dist
 COPY ./custom/favicons/icons /homelab/icons
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -71,5 +80,5 @@ ENV HOMELAB_CONTAINER_NAME=favicons \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/bin/sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
 ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
