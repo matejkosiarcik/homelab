@@ -1,4 +1,4 @@
-### App ###
+### Build config ###
 
 FROM debian:13.2-slim AS gitconfig
 USER root
@@ -12,6 +12,8 @@ COPY ./.shared/date.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
+
+### App ###
 
 FROM python:3.14.2-slim AS supercronic-gitman
 USER root
@@ -58,6 +60,16 @@ WORKDIR /homelab
 COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
+### Other ###
+
+FROM debian:13.2-slim AS certificates
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+
 ### Users ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -83,6 +95,7 @@ COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 
@@ -93,9 +106,10 @@ USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates certbot curl jq xz-utils >/dev/null && \
+        certbot curl jq xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab

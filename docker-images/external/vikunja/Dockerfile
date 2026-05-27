@@ -3,6 +3,16 @@
 FROM vikunja/vikunja:0.24.6 AS vikunja-app
 USER root
 
+### Other ###
+
+FROM debian:13.2-slim AS certificates
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -24,6 +34,7 @@ RUN mkdir -p /homelab/logs
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY ./external/vikunja/config.yml /etc/vikunja/config.yml
@@ -33,12 +44,8 @@ COPY --from=vikunja-app /app /app
 
 FROM debian:13.2-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /etc/vikunja/config.yml /etc/vikunja/config.yml

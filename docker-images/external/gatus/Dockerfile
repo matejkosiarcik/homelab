@@ -99,8 +99,8 @@ COPY --from=gatus-setcap /gatus /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
