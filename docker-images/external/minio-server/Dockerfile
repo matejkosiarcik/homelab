@@ -38,7 +38,7 @@ COPY --from=minio --chown=homelab:homelab /usr/bin/minio /usr/bin/minio
 
 ### Final ###
 
-FROM debian:13.2-slim
+FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

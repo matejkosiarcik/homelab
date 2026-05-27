@@ -38,7 +38,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.2-slim
+FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

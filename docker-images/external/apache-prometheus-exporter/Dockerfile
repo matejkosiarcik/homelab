@@ -1,3 +1,13 @@
+### App ###
+
+FROM debian:13.2-slim AS apache-prometheus-exporter
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        prometheus-apache-exporter >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+
 ### Healthcheck ###
 
 FROM golang:1.25.5-alpine AS healthcheck-build
@@ -25,6 +35,7 @@ USER root
 WORKDIR /homelab
 COPY ./external/apache-prometheus-exporter/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=apache-prometheus-exporter /usr/bin/prometheus-apache-exporter /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -35,17 +46,13 @@ COPY --from=homelab-dir /homelab /homelab
 
 FROM debian:13.2-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        prometheus-apache-exporter >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
 WORKDIR /homelab
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=apache-prometheus-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
+    PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
 USER homelab
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

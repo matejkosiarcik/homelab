@@ -38,7 +38,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.2-slim
+FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
@@ -48,6 +48,6 @@ ENV HOMELAB_CONTAINER_NAME=pihole-prometheus-exporter \
     PIHOLE_PROTOCOL=http \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9617" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9617/metrics" ]
 ENTRYPOINT [ "/homelab/bin/pihole-exporter" ]
 CMD []

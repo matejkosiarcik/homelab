@@ -42,7 +42,7 @@ COPY --from=vikunja-app /app /app
 
 ### Final ###
 
-FROM debian:13.2-slim
+FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal /etc/ssl/certs /etc/ssl/certs
