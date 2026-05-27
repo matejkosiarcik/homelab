@@ -3,6 +3,14 @@
 FROM ekofr/pihole-exporter:v1.2.0 AS pihole-exporter-app
 USER root
 
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -21,6 +29,7 @@ RUN sh /homelab/create-user.sh
 FROM debian:13.2-slim AS homelab-dir
 WORKDIR /homelab
 COPY --from=pihole-exporter-app /root/pihole-exporter /homelab/bin/
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -31,11 +40,6 @@ COPY --from=homelab-dir /homelab /homelab
 
 FROM debian:13.2-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
@@ -44,6 +48,6 @@ ENV HOMELAB_CONTAINER_NAME=pihole-prometheus-exporter \
     PIHOLE_PROTOCOL=http \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl http://localhost:9617 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9617" ]
 ENTRYPOINT [ "/homelab/bin/pihole-exporter" ]
 CMD []

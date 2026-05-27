@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_8: Must run as root
 
-### Config ###
+### Build config ###
 
 FROM debian:13.2-slim AS gitconfig
 USER root

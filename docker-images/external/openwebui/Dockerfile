@@ -1,3 +1,11 @@
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### Other ###
 
 FROM ghcr.io/open-webui/open-webui:0.6.41 AS entrypoint
@@ -31,6 +39,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY --from=runtime-dirs /homelab/original /homelab/original
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -52,4 +61,5 @@ ENV HOMELAB_CONTAINER_NAME=openwebui \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=300s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "curl --silent --fail http://localhost:8080/health | jq -ne 'input.status == true' || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=300s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/health" ]
+# TODO: Add validation for response 'input.status = "true"'

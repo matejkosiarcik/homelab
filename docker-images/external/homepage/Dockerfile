@@ -1,4 +1,6 @@
-### Config ###
+# checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
+
+### Build config ###
 
 FROM debian:13.2-slim AS npmconfig
 USER root
@@ -56,7 +58,7 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
 COPY ./external/homepage/config/ ./config/

@@ -1,3 +1,11 @@
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -16,7 +24,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./external/ollama/entrypoint.sh /homelab/
-# RUN mkdir -p /homelab/ollama
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM debian:13.2-slim AS prefinal
 USER root
@@ -36,5 +44,5 @@ USER homelab
 ENV HOMELAB_CONTAINER_NAME=ollama \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "bash -c ':> /dev/tcp/localhost/11434' || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:11434" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

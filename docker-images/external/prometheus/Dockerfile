@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-### Config ###
+### App config ###
 
 FROM yq AS config-1
 USER root
@@ -42,6 +42,14 @@ WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json /homelab/
 COPY ./external/prometheus/prometheus.yml.j2 /homelab/
 RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
+
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### User setup ###
 
@@ -62,6 +70,7 @@ FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./external/prometheus/web.yml ./external/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -82,6 +91,6 @@ ENV HOMELAB_CONTAINER_NAME=prometheus \
     PROMETHEUS__HOMELAB_VIEWER_USERNAME=homelab-viewer \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "wget -O /dev/null http://$PROMETHEUS__HOMELAB_VIEWER_USERNAME:$PROMETHEUS__HOMELAB_VIEWER_PASSWORD@localhost:9090 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9090", "--status", "401" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []

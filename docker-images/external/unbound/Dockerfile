@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-### Config ###
+### App config ###
 
 FROM debian:13.2-slim AS config-1
 USER root

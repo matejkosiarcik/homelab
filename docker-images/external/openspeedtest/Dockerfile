@@ -1,3 +1,11 @@
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### Other ###
 
 FROM openspeedtest/latest:v2.0.6 AS entrypoint
@@ -38,6 +46,7 @@ FROM debian:13.2-slim AS homelab-dir
 USER root
 WORKDIR /homelab
 COPY --from=runtime-dirs /homelab/original /homelab/original
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -63,6 +72,4 @@ ENV ENABLE_LETSENCRYPT=False \
     PGID=$GID \
     PUID=$UID \
     TZ=Europe/Bratislava
-# USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:3000 || exit 1" ]
-# ENTRYPOINT [ "/bin/sh", "/entrypoint.sh" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000" ]

@@ -1,3 +1,11 @@
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -17,7 +25,7 @@ FROM debian:13.2-slim AS homelab-dir
 USER root
 WORKDIR /homelab
 RUN mkdir -p ./healthchecks
-COPY ./external/healthchecks/healthcheck.py ./healthcheck.py
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -54,4 +62,4 @@ ENV DB=sqlite \
 # EMAIL_USE_SSL=False
 # EMAIL_USE_TLS=True
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000/api/v3/status/" ]

@@ -1,4 +1,4 @@
-### Config ###
+### Build config ###
 
 FROM debian:13.2-slim AS npmconfig
 USER root
@@ -27,6 +27,14 @@ RUN --mount=type=cache,target=/root/.npm \
     npm run build && \
     npm prune --production
 
+### Healthcheck ###
+
+FROM golang:1.25.5-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -47,6 +55,7 @@ WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json /homelab/
 COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs-build /homelab/dist /homelab/dist
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -57,11 +66,6 @@ COPY --from=homelab-dir /homelab /homelab
 
 FROM node:25.2.1-slim
 USER root
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#     apt-get update -qq && \
-#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-#         openssl && \
-#     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
@@ -70,5 +74,5 @@ ENV HOMELAB_CONTAINER_NAME=git-cache \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/bin/sh", "-c", "node /homelab/dist/healthcheck.js || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
 ENTRYPOINT [ "node", "/homelab/dist/main.js" ]

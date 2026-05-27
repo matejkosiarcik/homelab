@@ -1,4 +1,4 @@
-### Config ###
+### Build config ###
 
 FROM debian:13.2-slim AS gitconfig
 USER root
