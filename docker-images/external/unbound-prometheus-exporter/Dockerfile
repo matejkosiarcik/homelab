@@ -15,7 +15,7 @@ RUN printf '' >/root/.gitconfig && \
 
 ### Dependencies ###
 
-FROM python:3.14.0-slim AS gitman
+FROM python:3.14.0-slim AS unbound-prometheus-exporter-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -37,7 +37,7 @@ RUN --mount=type=cache,target=/root/.cache/git \
 
 ### App ###
 
-FROM golang:1.25.5-bookworm AS build
+FROM golang:1.25.5-bookworm AS unbound-prometheus-exporter-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -45,7 +45,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=gitman /homelab/gitman-repositories/unbound_exporter/ /homelab/unbound_exporter/
+COPY --from=unbound-prometheus-exporter-gitman /homelab/gitman-repositories/unbound_exporter/ /homelab/unbound_exporter/
 ENV CGO_ENABLED=0
 WORKDIR /homelab/unbound_exporter
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
@@ -80,7 +80,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./external/unbound-prometheus-exporter/entrypoint.sh /homelab/entrypoint.sh
-COPY --from=build /homelab/unbound_exporter/unbound_exporter /homelab/bin/
+COPY --from=unbound-prometheus-exporter-build /homelab/unbound_exporter/unbound_exporter /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
