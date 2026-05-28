@@ -122,7 +122,7 @@ RUN sh /homelab/create-user.sh
 FROM debian:13.2-slim AS homelab-dir
 USER root
 WORKDIR /homelab
-RUN mkdir -p ./certs ./logs
+RUN mkdir -p ./logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /homelab/
 COPY ./custom/data-optimization/crontab.cron ./custom/data-optimization/main.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
