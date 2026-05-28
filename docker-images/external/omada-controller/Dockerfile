@@ -29,7 +29,7 @@ RUN sh /homelab/create-user.sh && \
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 WORKDIR /homelab
 
 FROM scratch AS prefinal

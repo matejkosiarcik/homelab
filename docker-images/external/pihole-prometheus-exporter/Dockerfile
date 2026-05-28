@@ -26,7 +26,7 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY --from=pihole-exporter-app /root/pihole-exporter /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/

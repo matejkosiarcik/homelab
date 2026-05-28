@@ -1,3 +1,17 @@
+### Other ###
+
+FROM debian:13.2-slim AS openssl-certificates
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        openssl && \
+    rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /homelab/certs && \
+    openssl req -new -x509 -days 3650 -nodes -text -out '/homelab/certs/server.crt' -keyout '/homelab/certs/server.key' -subj '/CN=postgres' && \
+    chmod 600 '/homelab/certs/server.key' && \
+    chmod 644 '/homelab/certs/server.crt'
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -13,19 +27,11 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        openssl && \
-    rm -rf /var/lib/apt/lists/*
 COPY ./external/postgres/postgres.conf /homelab/postgresql.conf
 COPY ./external/postgres/pg_hba.conf /homelab/pg_hba.conf
-RUN mkdir -p /homelab/certs && \
-    openssl req -new -x509 -days 3650 -nodes -text -out '/homelab/certs/server.crt' -keyout '/homelab/certs/server.key' -subj '/CN=postgres' && \
-    chmod 600 '/homelab/certs/server.key' && \
-    chmod 644 '/homelab/certs/server.crt'
+COPY --from=openssl-certificates /homelab/certs /homelab/certs
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

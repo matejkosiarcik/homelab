@@ -42,7 +42,7 @@ RUN sh /homelab/create-user.sh && \
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
 COPY --from=runtime-dirs /homelab/original /homelab/original

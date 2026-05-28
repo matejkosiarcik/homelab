@@ -30,7 +30,7 @@ RUN sh /homelab/create-user.sh
 
 FROM debian:13.2-slim AS homelab-dir
 WORKDIR /homelab
-RUN mkdir -p /homelab/logs
+RUN mkdir -p ./logs
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
