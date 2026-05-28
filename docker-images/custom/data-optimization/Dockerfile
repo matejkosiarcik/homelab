@@ -27,7 +27,17 @@ RUN printf '' >/root/.npmrc && \
     npm config set proxy https://npm-cache.matejhome.com && \
     npm config set https-proxy https://npm-cache.matejhome.com
 
-### Supercronic ###
+### Dependencies ###
+
+FROM python:3.14.2-slim AS gitman
+USER root
+WORKDIR /homelab
+COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION=ignore
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+
+### App ###
 
 FROM python:3.14.2-slim AS supercronic-gitman
 USER root
@@ -37,10 +47,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./.shared/dependencies/supercronic/gitman.yml /homelab/
