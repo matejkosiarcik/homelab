@@ -189,7 +189,7 @@ def run_with_spinner(command: List[str], description_progress: str, description_
     spinner_thread.start()
 
     exit_code = 0
-    master_fd, slave_fd = pty.openpty()
+    master_fd, slave_fd = pty.openpty() # This is for making the subprocess think the output is a TTY and it enables colored output
     try:
         with open(command_log_file, "a", encoding="utf-8") as file:
             with subprocess.Popen(command, stdout=slave_fd, stderr=slave_fd, stdin=slave_fd, text=True, bufsize=1, close_fds=True) as process:
