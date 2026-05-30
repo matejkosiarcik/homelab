@@ -68,6 +68,10 @@ if tty_supports_color():
     ascii_cross = f"\033[31m{ascii_cross}\033[0m"
 
 
+last_exit_code: int = None
+last_process: type[subprocess.Popen] = None
+
+
 def load_env_file(env_path):
     """
     Loads environment variables from a .env file into current environment
@@ -156,12 +160,36 @@ def get_docker_images_shasum(config: str) -> str:
 
 
 def run_with_spinner(command: List[str], description_progress: str, description_done: str, command_log_file: str, print_output: bool):
+    global last_exit_code, last_process
     start_time = time.time()
     done = threading.Event()
     print_final = True
     global_exit = False
 
-    def spinner_main():
+    def subprocess_main():
+        global last_exit_code, last_process
+        master_fd, slave_fd = pty.openpty() # This is for making the subprocess think the output is a TTY and it enables colored output
+        with open(command_log_file, "a", encoding="utf-8") as file:
+            last_process = subprocess.Popen(command, stdout=slave_fd, stderr=slave_fd, stdin=slave_fd, text=True, bufsize=1, close_fds=True)
+            os.close(slave_fd)
+            while True:
+                try:
+                    output = os.read(master_fd, 1024).decode()
+                    if not output:
+                        break
+                    file.write(re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output).rstrip())
+                    file.flush()
+                    if print_output and not global_exit:
+                        sys.stdout.write(output)
+                except OSError:
+                    break
+            last_exit_code = last_process.wait()
+            done.set()
+
+    try:
+        subprocess_thread = threading.Thread(target=subprocess_main)
+        subprocess_thread.start()
+
         spinner_chars = "▖▘▝▗"
         spinner_index = 0
         last_line = ""
@@ -170,64 +198,42 @@ def run_with_spinner(command: List[str], description_progress: str, description_
             print(f"\r↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00")
 
         while not done.is_set():
-            if global_exit:
-                break
             elapsed = time.time() - start_time
             elapsed_mins = int(elapsed) // 60
             elapsed_secs = int(elapsed) % 60
             last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
+            if global_exit:
+                break
             if not print_output:
                 print(f"\r{last_line}", end="", flush=True)
             spinner_index += 1
             spinner_index %= len(spinner_chars)
             done.wait(0.1)
 
-        if print_final:
-            print(f"\r{' ' * len(last_line)}", end="", flush=True)
-
-    spinner_thread = threading.Thread(target=spinner_main)
-    spinner_thread.start()
-
-    exit_code = 0
-    master_fd, slave_fd = pty.openpty() # This is for making the subprocess think the output is a TTY and it enables colored output
-    try:
-        with open(command_log_file, "a", encoding="utf-8") as file:
-            with subprocess.Popen(command, stdout=slave_fd, stderr=slave_fd, stdin=slave_fd, text=True, bufsize=1, close_fds=True) as process:
-                os.close(slave_fd)
-                while True:
-                    try:
-                        output = os.read(master_fd, 1024).decode()
-                        if not output:
-                            break
-                        file.write(re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output).rstrip())
-                        file.flush()
-                        if print_output:
-                            sys.stdout.write(output)
-                    except OSError:
-                        break
-                exit_code = process.wait()
+        subprocess_thread.join()
     except KeyboardInterrupt:
         global_exit = True
         print_final = False
         done.set()
-        print("")
+        last_process.kill()
     finally:
         done.set()
-        spinner_thread.join()
         total_elapsed = time.time() - start_time
         total_elapsed_mins = int(total_elapsed) // 60
         total_elapsed_secs = int(total_elapsed) % 60
-        status_marker = ascii_checkmark if exit_code == 0 else ascii_cross
-        if print_final:
-            print(f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ", file=sys.stderr)
+        status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
+        print(f"\r{' ' * len(last_line)}", end="", flush=True)
+        print(f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ", file=sys.stderr)
 
-    if exit_code != 0 and print_final:
-        log.error("Partial process output:")
-        with open(command_log_file, "r", encoding="utf-8") as file:
-            for line in collections.deque(file, maxlen=20):
-                log.error(f">> {line.rstrip()}")
-        log.error(f"\nSee {path.basename(command_log_file)} for all details.")
-        sys.exit(exit_code)
+        if last_exit_code != 0 and print_final:
+            log.error(f"Process exit code: {last_exit_code}")
+            log.error(f"Process args: {" ".join(last_process.args)}")
+            log.error("Process output:")
+            with open(command_log_file, "r", encoding="utf-8") as file:
+                for line in collections.deque(file, maxlen=20):
+                    log.error(f">> {line.rstrip()}")
+            log.error(f"\nSee logfile \"{path.basename(command_log_file)}\" for all details.")
+            sys.exit(1)
 
     if global_exit:
         sys.exit(0)
