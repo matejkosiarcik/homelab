@@ -175,12 +175,12 @@ def run_with_spinner(command: List[str], description_progress: str, description_
             elapsed = time.time() - start_time
             elapsed_mins = int(elapsed) // 60
             elapsed_secs = int(elapsed) % 60
+            last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
             if not print_output:
-                last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
                 print(f"\r{last_line}", end="", flush=True)
-            time.sleep(0.1)
             spinner_index += 1
             spinner_index %= len(spinner_chars)
+            done.wait(0.1)
 
         if print_final:
             print(f"\r{' ' * len(last_line)}", end="", flush=True)
@@ -209,6 +209,8 @@ def run_with_spinner(command: List[str], description_progress: str, description_
     except KeyboardInterrupt:
         global_exit = True
         print_final = False
+        done.set()
+        print("")
     finally:
         done.set()
         spinner_thread.join()
