@@ -45,7 +45,7 @@ COPY --from=vikunja-app /app /app
 FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-COPY --from=prefinal /etc/ssl/certs /etc/ssl/certs
+COPY --from=prefinal --chown=homelab:homelab /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /etc/vikunja/config.yml /etc/vikunja/config.yml

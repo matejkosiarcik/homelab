@@ -116,7 +116,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         curl openssl xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-COPY --from=prefinal /etc/ssl/certs /etc/ssl/certs
+COPY --from=prefinal --chown=homelab:homelab /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
