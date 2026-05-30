@@ -23,7 +23,7 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
-### App ###
+### Supercronic ###
 
 FROM python:3.14.2-slim AS supercronic-gitman
 USER root
@@ -77,6 +77,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
+FROM debian:13.2-slim AS empty-dir
+USER root
+RUN mkdir /empty
+
 ### Users ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -91,10 +95,11 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
-RUN mkdir -p ./certs ./logs
+COPY --from=empty-dir /empty /homelab/certs
+COPY --from=empty-dir /empty /homelab/logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /homelab/
 COPY ./custom/certbot/crontab.cron ./custom/certbot/main.sh ./custom/certbot/certbot-hook-after.sh ./custom/certbot/certbot-hook-before.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/

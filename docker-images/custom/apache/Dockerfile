@@ -8,6 +8,13 @@ WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
+### Other ###
+
+FROM debian:13.2-slim AS empty-dir
+USER root
+RUN mkdir /empty && \
+    touch /empty.txt
+
 ### Users ###
 
 FROM debian:13.2-slim AS user-setup-base
@@ -28,11 +35,12 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
-RUN mkdir -p ./certs ./logs ./users && \
-    touch ./users/empty.htpasswd
+COPY --from=empty-dir /empty /homelab/certs
+COPY --from=empty-dir /empty /homelab/logs
+COPY --from=empty-dir /empty.txt /homelab/users/empty.htpasswd
 COPY ./custom/apache/www ./www
 COPY ./custom/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/

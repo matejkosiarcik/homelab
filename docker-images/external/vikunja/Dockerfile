@@ -13,6 +13,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
+FROM debian:13.2-slim AS empty-dir
+USER root
+RUN mkdir /empty
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -28,9 +32,9 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 WORKDIR /homelab
-RUN mkdir -p ./logs
+COPY --from=empty-dir /empty /homelab/logs
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

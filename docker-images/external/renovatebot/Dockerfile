@@ -37,7 +37,7 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
-### App ###
+### Supercronic ###
 
 FROM python:3.14.2-slim AS supercronic-gitman
 USER root
@@ -94,6 +94,12 @@ WORKDIR /homelab
 COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
+### Other ###
+
+FROM debian:13.2-slim AS empty-dir
+USER root
+RUN mkdir /empty
+
 ### Users ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
@@ -108,10 +114,10 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM debian:13.2-slim AS homelab-dir
+FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
-RUN mkdir -p ./logs
+COPY --from=empty-dir /empty /homelab/logs
 COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /homelab/
 COPY ./external/renovatebot/crontab.cron ./external/renovatebot/main.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/

@@ -2,6 +2,7 @@
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 
 ### App ###
+
 FROM mbentley/omada-controller:6.0 AS omadacontroller-app
 USER root
 
