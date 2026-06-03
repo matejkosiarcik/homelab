@@ -7,4 +7,4 @@ cat </homelab/config.yml |
         >/homelab/tmpfs/config.yml
 
 # Start
-/entrypoint.sh serve /homelab/tmpfs/config.yml
+registry serve /homelab/tmpfs/config.yml
