@@ -4,7 +4,7 @@
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/

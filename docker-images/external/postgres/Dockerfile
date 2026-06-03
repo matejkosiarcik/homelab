@@ -2,7 +2,7 @@
 
 ### Other ###
 
-FROM debian:13.2-slim AS openssl-certificates
+FROM debian:13.5-slim AS openssl-certificates
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=postgres-openssl-certificates-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=postgres-openssl-certificates-aptlibcache \
@@ -19,7 +19,7 @@ RUN mkdir -p /homelab/certs && \
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/

@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.2-slim AS npmconfig
+FROM debian:13.5-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage-npmconfig-aptcache \
@@ -49,7 +49,7 @@ RUN mkdir -p /homelab/original/app/.next/server/pages && \
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/

@@ -2,7 +2,7 @@
 
 ### Build config ###
 
-FROM debian:13.2-slim AS gitconfig
+FROM debian:13.5-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-gitconfig-aptcache \
@@ -16,7 +16,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
-FROM debian:13.2-slim AS npmconfig
+FROM debian:13.5-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-npmconfig-aptcache \
@@ -33,7 +33,7 @@ RUN printf '' >/root/.npmrc && \
 
 ### Dependencies ###
 
-FROM python:3.14.2-slim AS gitman
+FROM python:3.14.5-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
@@ -43,7 +43,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=web-automation-
 
 ### Supercronic ###
 
-FROM python:3.14.2-slim AS supercronic-gitman
+FROM python:3.14.5-slim AS supercronic-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-supercronic-gitman-aptcache \
@@ -61,7 +61,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=web-automation-
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.25.5-bookworm AS supercronic-build
+FROM golang:1.26.4-bookworm AS supercronic-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-supercronic-build-aptcache \
@@ -95,7 +95,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=web-automation-nodejs
 
 ### Healthcheck ###
 
-FROM golang:1.25.5-alpine AS healthcheck-build
+FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
@@ -105,7 +105,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=web-automation-healt
 
 ### Other ###
 
-FROM debian:13.2-slim AS empty-dir
+FROM debian:13.5-slim AS empty-dir
 USER root
 RUN mkdir /empty
 
@@ -113,7 +113,7 @@ RUN mkdir /empty
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000

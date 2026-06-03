@@ -7,7 +7,7 @@ USER root
 
 ### Other ###
 
-FROM debian:13.2-slim AS package-ca-certificates
+FROM debian:13.5-slim AS package-ca-certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=vikunja-package-ca-certificates-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=vikunja-package-ca-certificates-aptlibcache \
@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=vikunja-package-c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.2-slim AS empty-dir
+FROM debian:13.5-slim AS empty-dir
 USER root
 RUN mkdir /empty
 
@@ -24,7 +24,7 @@ RUN mkdir /empty
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/

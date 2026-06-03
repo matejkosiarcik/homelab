@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.2-slim AS gitconfig
+FROM debian:13.5-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-gitconfig-aptcache \
@@ -19,7 +19,7 @@ RUN printf '' >/root/.gitconfig && \
 
 ### Dependencies ###
 
-FROM python:3.14.2-slim AS gitman
+FROM python:3.14.5-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba-gitman-pi
 
 ### Samba exporter ###
 
-FROM python:3.14.2-slim AS samba-exporter-gitman
+FROM python:3.14.5-slim AS samba-exporter-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-gitman-aptcache \
@@ -46,7 +46,7 @@ COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=samba-exporter-gitman-gitcache \
     gitman install --quiet
 
-FROM golang:1.25.5-bookworm AS samba-exporter-build
+FROM golang:1.26.4-bookworm AS samba-exporter-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-build-aptcache \
@@ -69,7 +69,7 @@ RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
@@ -93,7 +93,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.2-slim
+FROM debian:13.5-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-final-aptlibcache \

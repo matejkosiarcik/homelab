@@ -2,7 +2,7 @@
 
 ### Other ###
 
-FROM debian:13.2-slim AS package-moreutils
+FROM debian:13.5-slim AS package-moreutils
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=script-setup-package-moreutils-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=script-setup-package-moreutils-aptlibcache \
@@ -18,7 +18,7 @@ RUN sh /homelab/busybox-copy.sh
 
 ### Healthcheck ###
 
-FROM golang:1.25.5-alpine AS healthcheck-build
+FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=script-setup-healthc
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000

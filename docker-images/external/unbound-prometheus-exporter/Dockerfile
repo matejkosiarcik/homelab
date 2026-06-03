@@ -2,7 +2,7 @@
 
 ### Build config ###
 
-FROM debian:13.2-slim AS gitconfig
+FROM debian:13.5-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-gitconfig-aptcache \
@@ -18,7 +18,7 @@ RUN printf '' >/root/.gitconfig && \
 
 ### Dependencies ###
 
-FROM python:3.14.2-slim AS gitman
+FROM python:3.14.5-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
@@ -26,7 +26,7 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-prometheus-exporter-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
-FROM python:3.14.2-slim AS unbound-prometheus-exporter-gitman
+FROM python:3.14.5-slim AS unbound-prometheus-exporter-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-gitman-aptcache \
@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometh
 
 ### App ###
 
-FROM golang:1.25.5-bookworm AS unbound-prometheus-exporter-build
+FROM golang:1.26.4-bookworm AS unbound-prometheus-exporter-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-build-aptcache \
@@ -66,7 +66,7 @@ RUN sh validate-executable.sh ./unbound_exporter/unbound_exporter
 
 ### Healthcheck ###
 
-FROM golang:1.25.5-alpine AS healthcheck-build
+FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -85,7 +85,7 @@ RUN sh /homelab/busybox-copy.sh
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/

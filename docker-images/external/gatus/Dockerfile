@@ -5,7 +5,7 @@
 FROM twinproduction/gatus:v5.35.0 AS gatus-app
 USER root
 
-FROM debian:13.2-slim AS gatus-setcap
+FROM debian:13.5-slim AS gatus-setcap
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-setcap-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-setcap-aptlibcache \
@@ -18,7 +18,7 @@ RUN setcap 'cap_net_raw+ep' /gatus
 
 ### Dependencies ###
 
-FROM debian:13.2-slim AS yq
+FROM debian:13.5-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-yq-aptcache \
@@ -34,7 +34,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependenc
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM debian:13.2-slim AS jinja
+FROM debian:13.5-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-jinja-aptcache \
@@ -67,7 +67,7 @@ RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
 ### Healthcheck ###
 
-FROM golang:1.25.5-alpine AS healthcheck-build
+FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -77,7 +77,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=gatus-healthcheck-bu
 
 ### Other ###
 
-FROM debian:13.2-slim AS package-ca-certificates
+FROM debian:13.5-slim AS package-ca-certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-package-ca-certificates-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-package-ca-certificates-aptlibcache \
@@ -90,7 +90,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-package-ca-
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base
 
-FROM debian:13.2-slim AS user-setup
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
