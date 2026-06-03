@@ -15,6 +15,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
     build:
       dockerfile: ./external/minio-client/Dockerfile
     env_file:
@@ -33,6 +34,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-api
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-api:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
@@ -43,6 +45,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
@@ -53,6 +56,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-console
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-console:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: console
     volumes:
@@ -63,6 +67,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: console
     volumes:

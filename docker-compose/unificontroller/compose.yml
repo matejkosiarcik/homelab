@@ -28,6 +28,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
+    image: ${DOCKER_COMPOSE_APP_NAME}-mongodb:1.0.0
     build:
       dockerfile: ./external/mongodb/Dockerfile
     environment:
@@ -65,6 +66,7 @@ services:
   #     file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
   #     service: template
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
+  #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
   #   build:
   #     dockerfile: ./custom/web-automation/Dockerfile
   #   depends_on:

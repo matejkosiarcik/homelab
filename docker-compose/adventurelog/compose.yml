@@ -4,6 +4,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
     build:
       dockerfile: ./external/adventurelog-frontend/Dockerfile
     environment:
@@ -14,6 +15,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
     build:
       dockerfile: ./external/adventurelog-backend/Dockerfile
     environment:
@@ -40,6 +42,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-database
+    image: ${DOCKER_COMPOSE_APP_NAME}-database:1.0.0
     build:
       dockerfile: ./external/postgis/Dockerfile
     shm_size: 1G
@@ -63,6 +66,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: frontend
     volumes:
@@ -73,6 +77,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: frontend
     volumes:
@@ -83,6 +88,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-backend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-backend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: backend
     volumes:
@@ -93,6 +99,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: backend
     volumes:
