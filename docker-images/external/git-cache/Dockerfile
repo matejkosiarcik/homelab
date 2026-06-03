@@ -25,7 +25,7 @@ WORKDIR /homelab
 COPY ./external/git-cache/package-lock.json ./external/git-cache/package.json ./external/git-cache/tsconfig.json /homelab/
 COPY ./external/git-cache/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked \
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=git-cache-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
