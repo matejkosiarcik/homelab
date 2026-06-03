@@ -1,5 +1,9 @@
 # syntax=docker/dockerfile:1
 
+### App ###
+
+FROM wywywywy/docker_stats_exporter:20220516 AS docker-stats-exporter-app
+
 ### Healthcheck ###
 
 FROM golang:1.25.5-alpine AS healthcheck-build
@@ -27,6 +31,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=docker-stats-exporter-app /usr/src/app /homelab/app/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -35,15 +40,16 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM wywywywy/docker_stats_exporter:20220516
+FROM gcr.io/distroless/nodejs26-debian13
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-# WORKDIR /homelab
+WORKDIR /homelab/app
 ENV DOCKERSTATS_INTERVAL=60 \
     HOMELAB_CONTAINER_NAME=docker-stats-exporter \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9487" ]
+ENTRYPOINT [ "/nodejs/bin/node", "/homelab/app/docker_stats_exporter.js" ]
