@@ -177,7 +177,7 @@ def run_with_spinner(command: List[str], description_progress: str, description_
                     output = os.read(master_fd, 1024).decode()
                     if not output:
                         break
-                    file.write(re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output).rstrip())
+                    file.write(re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
                     file.flush()
                     if print_output and not global_exit:
                         sys.stdout.write(output)
@@ -230,7 +230,7 @@ def run_with_spinner(command: List[str], description_progress: str, description_
             log.error(f"Process args: {" ".join(last_process.args)}")
             log.error("Process output:")
             with open(command_log_file, "r", encoding="utf-8") as file:
-                for line in collections.deque(file, maxlen=20):
+                for line in collections.deque(file, maxlen=30):
                     log.error(f">> {line.rstrip()}")
             log.error(f"\nSee logfile \"{path.basename(command_log_file)}\" for all details.")
             sys.exit(1)
@@ -296,7 +296,7 @@ def create_secrets():
 def run_main_command(command: str):
     global docker_compose_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml", "--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"], "--progress", "plain"]
-    docker_command_args = ["--dry-run"] if is_dryrun else []
+    docker_command_args = ["--dry-run", "--provenance=false"] if is_dryrun else []
 
     # Check if docker-compose stack exists
     compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
