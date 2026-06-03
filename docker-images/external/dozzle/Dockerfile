@@ -19,7 +19,7 @@ RUN sh /homelab/create-user.sh
 
 ### Other ###
 
-FROM debian:13.2-slim AS ca-certificates
+FROM debian:13.2-slim AS package-ca-certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
@@ -34,7 +34,7 @@ WORKDIR /homelab
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=ca-certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY --from=dozzle-app /dozzle /dozzle
