@@ -4,7 +4,8 @@
 
 FROM debian:13.2-slim AS package-moreutils
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=script-setup-package-moreutils-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=script-setup-package-moreutils-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
@@ -18,8 +19,8 @@ FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=private,id=script-setup-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=private,id=script-setup-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=script-setup-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=script-setup-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###

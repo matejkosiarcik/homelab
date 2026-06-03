@@ -10,8 +10,8 @@ FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=private,id=adventurelog-frontend-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=private,id=adventurelog-frontend-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=adventurelog-frontend-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=adventurelog-frontend-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###

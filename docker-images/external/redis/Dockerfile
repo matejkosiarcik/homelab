@@ -30,7 +30,8 @@ COPY --from=homelab-dir /homelab /homelab
 
 FROM redis:8.4.0
 USER root
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=redis-final-aptcache \
+#     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=redis-final-aptlibcache \
 #     apt-get update -qq && \
 #     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
 #         openssl && \

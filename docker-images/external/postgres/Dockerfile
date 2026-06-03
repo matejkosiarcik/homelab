@@ -4,7 +4,8 @@
 
 FROM debian:13.2-slim AS openssl-certificates
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=postgres-openssl-certificates-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=postgres-openssl-certificates-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         openssl && \
@@ -45,7 +46,8 @@ COPY --from=homelab-dir /homelab /homelab
 # hadolint ignore=DL3029
 FROM postgres:18.1
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=postgres-final-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=postgres-final-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         openssl && \

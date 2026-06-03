@@ -6,8 +6,8 @@ FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=private,id=docker-setup-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=private,id=docker-setup-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=docker-setup-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=docker-setup-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###

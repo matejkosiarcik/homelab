@@ -23,7 +23,8 @@ FROM gcr.io/distroless/static-debian13 AS user-setup-base
 FROM debian:13.2-slim AS user-setup
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unifi-network-application-user-setup-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unifi-network-application-user-setup-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \

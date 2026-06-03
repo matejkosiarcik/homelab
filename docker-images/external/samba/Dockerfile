@@ -6,7 +6,8 @@
 FROM debian:13.2-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-gitconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-gitconfig-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -31,7 +32,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 FROM python:3.14.2-slim AS samba-exporter-gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-gitman-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-prometheus-exporter-gitman-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -41,14 +43,15 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./external/samba/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked \
     gitman install --quiet
 
 FROM golang:1.25.5-bookworm AS samba-exporter-build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-build-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-prometheus-exporter-build-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -92,7 +95,8 @@ COPY --from=homelab-dir /homelab /homelab
 
 FROM debian:13.2-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-final-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-final-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         gnutls-bin samba && \

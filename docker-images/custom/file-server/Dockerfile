@@ -5,7 +5,8 @@
 FROM debian:13.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=file-server-npmconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=file-server-npmconfig-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -24,7 +25,7 @@ WORKDIR /homelab
 COPY ./custom/file-server/package-lock.json ./custom/file-server/package.json ./custom/file-server/tsconfig.json /homelab/
 COPY ./custom/file-server/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm \
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=file-server-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
@@ -35,8 +36,8 @@ FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=private,id=file-server-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=private,id=file-server-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=file-server-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=file-server-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###

@@ -21,8 +21,9 @@ RUN sh /homelab/create-user.sh
 
 FROM debian:13.2-slim AS package-ca-certificates
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-prometheus-exporter-package-ca-certificates-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-prometheus-exporter-package-ca-certificates-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*

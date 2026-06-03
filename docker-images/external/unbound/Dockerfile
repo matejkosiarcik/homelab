@@ -5,12 +5,14 @@
 FROM debian:13.2-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-yq-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-dependency-yq-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/yq/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
@@ -19,12 +21,14 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM debian:13.2-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-jinja-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-dependency-jinja-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./.shared/dependencies/jinja/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
@@ -65,7 +69,8 @@ RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 FROM debian:13.2-slim AS config-4
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-config-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-config-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils >/dev/null && \
@@ -102,8 +107,9 @@ COPY --from=homelab-dir /homelab /homelab
 
 FROM debian:13.2-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-final-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-final-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         dnsutils libcap2-bin unbound >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \

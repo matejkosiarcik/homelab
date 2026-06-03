@@ -5,7 +5,8 @@
 FROM debian:13.2-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-gitconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-prometheus-exporter-gitconfig-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -28,7 +29,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 FROM python:3.14.2-slim AS unbound-prometheus-exporter-gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-gitman-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-prometheus-exporter-gitman-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -38,7 +40,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./external/unbound-prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
@@ -47,8 +49,9 @@ RUN --mount=type=cache,target=/root/.cache/git \
 FROM golang:1.25.5-bookworm AS unbound-prometheus-exporter-build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-build-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-prometheus-exporter-build-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -67,8 +70,8 @@ FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=private,id=unbound-prometheus-exporter-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=private,id=unbound-prometheus-exporter-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=unbound-prometheus-exporter-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=unbound-prometheus-exporter-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Other ###

@@ -5,7 +5,8 @@
 FROM debian:13.2-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-gitconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio-client-gitconfig-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -29,16 +30,18 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 FROM debian:13.2-slim AS package-ca-certificates
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-package-ca-certificates-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio-client-package-ca-certificates-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.2-slim AS curl
+FROM debian:13.2-slim AS package-curl
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-package-curl-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio-client-package-curl-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -50,7 +53,8 @@ FROM busybox:1.35.0-uclibc AS busybox
 FROM python:3.14.2-slim AS minio-mc-gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-minio-cli-gitman-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio-client-minio-cli-gitman-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -60,15 +64,16 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 COPY ./external/minio-client/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.25.5-bookworm AS minio-mc-build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-minio-cli-build-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio-client-minio-cli-build-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
@@ -87,8 +92,8 @@ FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=private,id=minio-client-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=private,id=minio-client-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=minio-client-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=minio-client-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### User setup ###
@@ -116,8 +121,8 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY --from=curl /usr/bin/curl /build/usr-bin/
-COPY --from=curl /usr/lib/ /build/usr-lib/
+COPY --from=package-curl /usr/bin/curl /build/usr-bin/
+COPY --from=package-curl /usr/lib/ /build/usr-lib/
 COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /build/certs/
 COPY --from=busybox /bin/arch /bin/awk /bin/base64 /bin/basename /bin/bc /bin/cat /bin/cmp /bin/comm /bin/cp /bin/crc32 /bin/cut /bin/date /bin/dd /bin/diff /bin/dirname /bin/echo /bin/egrep /bin/env /bin/expand /bin/false /bin/fgrep /bin/find /bin/flock /bin/fsync /bin/getopt /bin/grep /bin/gunzip /bin/gzip /bin/head /bin/kill /bin/ln /bin/ls /bin/md5sum /bin/mkdir /bin/mkfifo /bin/mv /bin/nohup /bin/nproc /bin/patch /bin/printenv /bin/printf /bin/pwd /bin/realpath /bin/rm /bin/rmdir /bin/sed /bin/sed /bin/seq /bin/sh /bin/sha1sum /bin/sha256sum /bin/sha3sum /bin/sha512sum /bin/sleep /bin/sort /bin/tail /bin/tar /bin/tee /bin/time /bin/timeout /bin/touch /bin/tr /bin/true /bin/uname /bin/unexpand /bin/uniq /bin/unzip /bin/watch /bin/wc /bin/wc /bin/which /bin/xargs /bin/xz /bin/yes /build/bin/
 
