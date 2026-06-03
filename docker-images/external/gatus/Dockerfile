@@ -109,18 +109,18 @@ COPY --from=gatus-setcap /gatus /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
+COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
 
 ### Final ###
 
 FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-COPY --from=prefinal --chown=homelab:homelab /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 WORKDIR /homelab
 ENV GATUS_CONFIG_PATH=/homelab/config.yml \
     GATUS_DELAY_START_SECONDS=0 \

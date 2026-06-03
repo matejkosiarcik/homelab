@@ -35,22 +35,22 @@ WORKDIR /homelab
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY --from=dozzle-app /dozzle /dozzle
 COPY --from=dozzle-app /data /data
+COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
 
 ### Final ###
 
 FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-COPY --from=prefinal --chown=homelab:homelab /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /dozzle /dozzle
 COPY --from=prefinal --chown=homelab:homelab /data /data
+COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 ENV DOZZLE_AUTH_PROVIDER=simple \
     DOZZLE_ENABLE_ACTIONS=false \
     DOZZLE_HOSTNAME=Server \

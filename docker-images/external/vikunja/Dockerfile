@@ -41,22 +41,22 @@ COPY --from=empty-dir /empty /homelab/logs
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY ./external/vikunja/config.yml /etc/vikunja/config.yml
 COPY --from=vikunja-app /app /app
+COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
 
 ### Final ###
 
 FROM scratch
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-COPY --from=prefinal --chown=homelab:homelab /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /etc/vikunja/config.yml /etc/vikunja/config.yml
 COPY --from=prefinal --chown=homelab:homelab /app /app
+COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 ENV HOMELAB_CONTAINER_NAME=vikunja \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

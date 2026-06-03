@@ -124,11 +124,11 @@ COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY --from=package-curl /usr/bin/curl /build/usr-bin/
-COPY --from=package-curl /usr/lib/ /build/usr-lib/
+COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
+COPY --from=package-curl /usr/bin/curl /fsroot/usr-bin/
+COPY --from=package-curl /usr/lib/ /fsroot/usr-lib/
 
 ### Final ###
 
@@ -141,11 +141,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-final-apt
         certbot jq xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-COPY --from=prefinal --chown=homelab:homelab /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-COPY --from=prefinal --chown=homelab:homelab /build/usr-bin/ /usr/bin/
-COPY --from=prefinal --chown=homelab:homelab /build/usr-lib/ /usr/lib/
+COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
+COPY --from=prefinal --chown=homelab:homelab /fsroot/usr-bin/ /usr/bin/
+COPY --from=prefinal --chown=homelab:homelab /fsroot/usr-lib/ /usr/lib/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME=certbot \
     HOMELAB_CONTAINER_VARIANT=default \
