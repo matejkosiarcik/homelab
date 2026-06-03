@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_8: Ignore root user
 
 ### Healthcheck ###

@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM freikin/dawarich:0.36.1 AS app

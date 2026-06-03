@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### Build config ###
 
 FROM debian:13.2-slim AS gitconfig

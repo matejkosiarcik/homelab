@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### Other ###
 
 FROM debian:13.2-slim AS openssl-certificates

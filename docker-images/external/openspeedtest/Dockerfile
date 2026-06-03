@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### Healthcheck ###
 
 FROM golang:1.25.5-alpine AS healthcheck-build

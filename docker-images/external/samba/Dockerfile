@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_8: Must run as root
 
 ### Build config ###

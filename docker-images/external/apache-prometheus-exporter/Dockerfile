@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM debian:13.2-slim AS apache-prometheus-exporter

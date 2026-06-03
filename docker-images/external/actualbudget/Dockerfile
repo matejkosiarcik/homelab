@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM actualbudget/actual-server:26.5.2 AS actualbudget-app

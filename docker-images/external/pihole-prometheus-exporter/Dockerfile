@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM ekofr/pihole-exporter:v1.2.0 AS pihole-exporter-app

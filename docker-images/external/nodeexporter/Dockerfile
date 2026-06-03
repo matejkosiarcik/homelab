@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM prom/node-exporter:v1.10.2 AS nodeexporter-app

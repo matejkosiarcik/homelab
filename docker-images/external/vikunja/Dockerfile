@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM vikunja/vikunja:0.24.6 AS vikunja-app

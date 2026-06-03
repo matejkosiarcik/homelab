@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13 AS user-setup-base

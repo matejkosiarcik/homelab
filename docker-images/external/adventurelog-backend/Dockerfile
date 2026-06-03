@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0 AS adventurelog-backend

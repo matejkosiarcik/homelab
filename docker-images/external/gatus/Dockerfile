@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM twinproduction/gatus:v5.35.0 AS gatus-app

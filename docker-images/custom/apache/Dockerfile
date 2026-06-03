@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, but we switch to non-root user in entrypoint
 
 ### Healthcheck ###

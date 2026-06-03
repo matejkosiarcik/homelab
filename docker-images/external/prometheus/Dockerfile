@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### Dependencies ###
 
 FROM debian:13.2-slim AS yq

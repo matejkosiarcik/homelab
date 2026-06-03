@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ### App ###
 
 FROM amir20/dozzle:v8.14.12 AS dozzle-app
