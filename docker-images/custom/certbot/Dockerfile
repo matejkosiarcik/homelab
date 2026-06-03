@@ -85,6 +85,15 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-package-c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
+FROM debian:13.2-slim AS package-curl
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-package-curl-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-package-curl-aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+
 FROM debian:13.2-slim AS empty-dir
 USER root
 RUN mkdir /empty
@@ -118,6 +127,8 @@ COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
+COPY --from=package-curl /usr/bin/curl /build/usr-bin/
+COPY --from=package-curl /usr/lib/ /build/usr-lib/
 
 ### Final ###
 
@@ -127,12 +138,14 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-final-apt
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-final-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        certbot curl jq xz-utils >/dev/null && \
+        certbot jq xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /etc/ssl/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /build/usr-bin/ /usr/bin/
+COPY --from=prefinal --chown=homelab:homelab /build/usr-lib/ /usr/lib/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME=certbot \
     HOMELAB_CONTAINER_VARIANT=default \
