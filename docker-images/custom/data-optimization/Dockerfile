@@ -77,7 +77,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:25.2.1-slim AS nodejs-build
+FROM node:25.2.1-slim AS nodejs-main-build
 USER root
 WORKDIR /homelab
 COPY ./custom/data-optimization/package-lock.json ./custom/data-optimization/package.json ./custom/data-optimization/tsconfig.json /homelab/
@@ -137,9 +137,9 @@ COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /ho
 COPY ./custom/data-optimization/crontab.cron ./custom/data-optimization/main.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
-COPY --from=nodejs-build /homelab/package.json /homelab/
-COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
-COPY --from=nodejs-build /homelab/dist /homelab/dist
+COPY --from=nodejs-main-build /homelab/package.json /homelab/
+COPY --from=nodejs-main-build /homelab/node_modules /homelab/node_modules
+COPY --from=nodejs-main-build /homelab/dist /homelab/dist
 COPY --from=nodejs-server-build /homelab/package.json /homelab/server/
 COPY --from=nodejs-server-build /homelab/node_modules /homelab/server/node_modules
 COPY --from=nodejs-server-build /homelab/dist /homelab/server/dist
