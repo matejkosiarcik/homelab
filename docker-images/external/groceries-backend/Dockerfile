@@ -6,7 +6,9 @@ FROM golang:1.25.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=private,id=groceries-backend-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=private,id=groceries-backend-healthcheck-build-gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### User setup ###
 
