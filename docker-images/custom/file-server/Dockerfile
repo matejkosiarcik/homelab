@@ -19,7 +19,7 @@ RUN printf '' >/root/.npmrc && \
 
 ### App ###
 
-FROM node:25.2.1-slim AS nodejs-build
+FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./custom/file-server/package-lock.json ./custom/file-server/package.json ./custom/file-server/tsconfig.json /homelab/

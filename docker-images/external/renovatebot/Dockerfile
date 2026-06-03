@@ -61,7 +61,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=renovatebot-sup
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.26.4-bookworm AS supercronic-build
+FROM golang:1.26.4-trixie AS supercronic-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-supercronic-build-aptcache \
@@ -81,7 +81,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:25.2.1-slim AS nodejs-server-build
+FROM node:26.3.0-slim AS nodejs-server-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json /homelab/

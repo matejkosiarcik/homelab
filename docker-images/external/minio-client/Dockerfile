@@ -71,7 +71,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=minio-client-cl
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.26.4-bookworm AS minio-mc-build
+FROM golang:1.26.4-trixie AS minio-mc-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-minio-cli-build-aptcache \

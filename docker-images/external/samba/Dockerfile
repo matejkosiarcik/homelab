@@ -46,7 +46,7 @@ COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=samba-exporter-gitman-gitcache \
     gitman install --quiet
 
-FROM golang:1.26.4-bookworm AS samba-exporter-build
+FROM golang:1.26.4-trixie AS samba-exporter-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-build-aptcache \

@@ -61,7 +61,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=data-optimizer-
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.26.4-bookworm AS supercronic-build
+FROM golang:1.26.4-trixie AS supercronic-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-supercronic-build-aptcache \
@@ -81,7 +81,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:25.2.1-slim AS nodejs-main-build
+FROM node:26.3.0-slim AS nodejs-main-build
 USER root
 WORKDIR /homelab
 COPY ./custom/data-optimization/package-lock.json ./custom/data-optimization/package.json ./custom/data-optimization/tsconfig.json /homelab/
@@ -92,7 +92,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=data-optimizer-nodejs
     npm run build && \
     npm prune --production
 
-FROM node:25.2.1-slim AS nodejs-server-build
+FROM node:26.3.0-slim AS nodejs-server-build
 USER root
 WORKDIR /homelab
 COPY ./.shared/cron-utils/on-demand/package-lock.json ./.shared/cron-utils/on-demand/package.json ./.shared/cron-utils/on-demand/tsconfig.json /homelab/
@@ -155,7 +155,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM node:25.2.1-slim
+FROM node:26.3.0-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-final-aptlibcache \

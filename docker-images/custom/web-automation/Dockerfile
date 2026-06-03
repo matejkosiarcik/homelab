@@ -61,7 +61,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=web-automation-
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.26.4-bookworm AS supercronic-build
+FROM golang:1.26.4-trixie AS supercronic-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-supercronic-build-aptcache \
@@ -81,7 +81,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:25.2.1-slim AS nodejs-build
+FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./custom/web-automation/package-lock.json ./custom/web-automation/package.json ./custom/web-automation/postinstall.sh ./custom/web-automation/rollup.config.js ./custom/web-automation/tsconfig.json /homelab/
@@ -123,7 +123,7 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM node:25.2.1-slim AS browsers
+FROM node:26.3.0-slim AS browsers
 USER root
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json /homelab/
@@ -165,7 +165,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM node:25.2.1-slim
+FROM node:26.3.0-slim
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

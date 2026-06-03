@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot-supercr
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.26.4-bookworm AS supercronic-build
+FROM golang:1.26.4-trixie AS supercronic-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-build-aptcache \

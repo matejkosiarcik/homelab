@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometh
 
 ### App ###
 
-FROM golang:1.26.4-bookworm AS unbound-prometheus-exporter-build
+FROM golang:1.26.4-trixie AS unbound-prometheus-exporter-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-build-aptcache \
