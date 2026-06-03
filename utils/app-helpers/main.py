@@ -174,8 +174,8 @@ def run_with_spinner(command: List[str], description_progress: str, description_
             os.close(slave_fd)
             while True:
                 try:
-                    output = os.read(master_fd, 1024).decode()
-                    if not output:
+                    output = os.read(master_fd, 1024).decode("utf-8", errors="replace")
+                    if not output or len(output) == 0:
                         break
                     file.write(re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
                     file.flush()
