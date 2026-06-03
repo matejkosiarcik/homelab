@@ -23,7 +23,7 @@ USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-prometheus-exporter-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
 FROM python:3.14.2-slim AS unbound-prometheus-exporter-gitman
