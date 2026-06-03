@@ -20,22 +20,23 @@ RUN mkdir /empty && \
 
 ### Users ###
 
-FROM debian:13.2-slim AS user-setup-base
+FROM gcr.io/distroless/static-debian13 AS user-setup-base
+
+FROM debian:13.2-slim AS user-setup
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-user-setup-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-user-setup-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        apache2 && \
+        moreutils && \
     rm -rf /var/lib/apt/lists/*
-
-FROM debian:13.2-slim AS user-setup
-USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~www-data~' | sponge --append /etc/group && \
+    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~www-data~' | sponge --append /etc/passwd
 
 ### Prefinal ###
 
