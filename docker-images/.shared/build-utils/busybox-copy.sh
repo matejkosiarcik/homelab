@@ -1,9 +1,9 @@
 #!/bin/sh
 set -euf
 
-mkdir -p '/fsroot/bin'
+mkdir -p '/fsroot/bin' '/fsroot/usr-bin'
 
-# This script copies some binaries from "/bin/*" to "/fsroot/bin/"
+# This script copies some binaries from "/bin/*" to "/fsroot/bin/*"
 while read -r binary; do
     cp "${binary}" "/fsroot/bin/"
 done <<EOF
@@ -79,4 +79,11 @@ done <<EOF
 /bin/xargs
 /bin/xz
 /bin/yes
+EOF
+
+# This script copies some binaries from "/usr/bin/*" to "/fsroot/usr-bin/*"
+while read -r binary; do
+    cp "${binary}" "/fsroot/usr-bin/"
+done <<EOF
+/usr/bin/env
 EOF

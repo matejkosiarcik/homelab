@@ -92,7 +92,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-pack
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /homelab/usr-lib && \
+    find /usr/lib \( -name 'libbrotli*' -or -name 'libcom*' -or -name 'libcurl*' -or -name 'libffi*' -or -name 'libgnutls*' -or -name 'libgssapi*' -or -name 'libidn*' -or -name 'libk*crypto*' -or -name 'libkeyutils*' -or -name 'libkrb*' -or -name 'liblber*' -or -name 'libldap*' -or -name 'libnghttp*' -or -name 'libp*kit*' -or -name 'libpsl*' -or -name 'librtmp*' -or -name 'libsasl*' -or -name 'libssh*' -or -name 'libtasn*' -or -name 'libunistring*' \) -exec sh -c 'mkdir -p "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")" && cp "$0" "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")/$(basename "$0")"' {} \;
 
 FROM debian:13.5-slim AS empty-dir
 USER root
@@ -128,7 +130,7 @@ COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
 COPY --from=package-curl /usr/bin/curl /fsroot/usr-bin/
-COPY --from=package-curl /usr/lib/ /fsroot/usr-lib/
+COPY --from=package-curl /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
 
