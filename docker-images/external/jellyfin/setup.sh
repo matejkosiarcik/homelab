@@ -1,11 +1,8 @@
 #!/bin/sh
 set -euf
 
-while [ "$(find /homelab/data -maxdepth 1 -type f -name 'system.xml' | wc -l)" -eq 0 ]; do
-    sleep 1
-done
-
-while [ ! -e '/homelab/data/system.xml' ]; do
+# Wait for config file to be created (mostly relevant for initial setup)
+while [ ! -e '/homelab/data/system.xml' ] || [ "$(wc -l <'/homelab/data/system.xml')" -eq 0 ]; do
     sleep 1
 done
 
