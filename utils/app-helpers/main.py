@@ -244,7 +244,7 @@ def docker_build():
     if cpu_cores is None:
         cpu_cores = 1
     threads = math.ceil(cpu_cores // 2)
-    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
+    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
     docker_log_file = path.join("meta-logs", f"{datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")} - docker-build.log")
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
@@ -296,7 +296,7 @@ def create_secrets():
 def run_main_command(command: str):
     global docker_compose_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml", "--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"], "--progress", "plain"]
-    docker_command_args = ["--dry-run", "--provenance=false"] if is_dryrun else []
+    docker_command_args = ["--dry-run"] if is_dryrun else []
 
     # Check if docker-compose stack exists
     compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
