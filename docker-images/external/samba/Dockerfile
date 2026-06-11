@@ -20,7 +20,7 @@ RUN printf '' >/root/.gitconfig && \
 
 ### Dependencies ###
 
-FROM python:3.14.5-slim AS gitman
+FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba-gitman-pi
 
 ### Samba exporter ###
 
-FROM python:3.14.5-slim AS samba-exporter-gitman
+FROM python:3.14.6-slim AS samba-exporter-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-gitman-aptcache \

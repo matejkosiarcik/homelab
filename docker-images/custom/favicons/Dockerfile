@@ -34,7 +34,7 @@ RUN printf '' >/root/.npmrc && \
 
 ### Dependencies ###
 
-FROM python:3.14.5-slim AS gitman
+FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
@@ -42,7 +42,7 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=favicons-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
-FROM python:3.14.5-slim AS imagemagick-appimage-gitman
+FROM python:3.14.6-slim AS imagemagick-appimage-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-imagemagick-appimage-gitman-aptcache \

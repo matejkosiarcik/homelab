@@ -34,7 +34,7 @@ RUN printf '' >/root/.npmrc && \
 
 ### Dependencies ###
 
-FROM python:3.14.5-slim AS gitman
+FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=renovatebot-git
 
 ### Supercronic ###
 
-FROM python:3.14.5-slim AS supercronic-gitman
+FROM python:3.14.6-slim AS supercronic-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-supercronic-gitman-aptcache \

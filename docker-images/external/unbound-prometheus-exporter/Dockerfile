@@ -19,7 +19,7 @@ RUN printf '' >/root/.gitconfig && \
 
 ### Dependencies ###
 
-FROM python:3.14.5-slim AS gitman
+FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
@@ -27,7 +27,7 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-prometheus-exporter-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
-FROM python:3.14.5-slim AS unbound-prometheus-exporter-gitman
+FROM python:3.14.6-slim AS unbound-prometheus-exporter-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-gitman-aptcache \
