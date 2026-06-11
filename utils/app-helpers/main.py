@@ -176,6 +176,7 @@ def get_docker_images_shasum(config: str) -> str:
     return "\n".join(output)
 
 
+# pylint: disable=too-many-locals
 def run_with_spinner(
     command: List[str],
     description_progress: str,
@@ -277,19 +278,7 @@ def docker_build():
     if cpu_cores is None:
         cpu_cores = 1
     threads = math.ceil(cpu_cores // 2)
-    commands = (
-        ["docker", "compose"]
-        + docker_compose_args
-        + [
-            "--parallel",
-            f"{threads}",
-            "build",
-            "--with-dependencies",
-            "--provenance=false",
-        ]
-        + docker_command_args
-        + (["--pull"] if is_pull else [])
-    )
+    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
     docker_log_file = path.join(
         "meta-logs",
         f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-build.log",
