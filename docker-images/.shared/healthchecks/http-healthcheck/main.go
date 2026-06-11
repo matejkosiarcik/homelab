@@ -15,7 +15,7 @@ import (
 func main() {
 	// Parse arguments
 	var args struct {
-		Url      string `arg:"--url,required" help:"URL to check"`
+		URL      string `arg:"--url,required" help:"URL to check"`
 		Method   string `arg:"--method" default:"GET" help:"HTTP method"`
 		Body     string `arg:"--body" help:"Regex to validate response body against (optional)"`
 		Status   int    `arg:"--status" help:"Expected HTTP status code (optional)"`
@@ -31,10 +31,9 @@ func main() {
 				os.Exit(1)
 			}
 			return bodyRegex
-
-		} else {
-			return nil
 		}
+
+		return nil
 	}()
 
 	// Perform request
@@ -45,7 +44,7 @@ func main() {
 	}
 
 	client := &http.Client{Timeout: 2 * time.Second, Transport: transport}
-	request, err := http.NewRequest(args.Method, args.Url, nil)
+	request, err := http.NewRequest(args.Method, args.URL, nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating request: %v\n", err)
 		os.Exit(1)

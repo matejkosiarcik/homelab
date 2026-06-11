@@ -18,11 +18,7 @@ from datetime import datetime
 from os import path
 from typing import List
 
-start_datestr = (
-    os.environ["START_DATE"]
-    if os.environ.get("START_DATE") is not None
-    else datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
-)
+start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
 
 app_dir = path.abspath(path.curdir)
 git_dir = (
@@ -31,9 +27,7 @@ git_dir = (
 full_app_name = path.basename(app_dir).lstrip(".")
 app_type = full_app_name
 if path.exists(path.join(app_dir, "config", "app.txt")):
-    with open(
-        path.join(app_dir, "config", "app.txt"), "r", encoding="utf-8"
-    ) as appfile:
+    with open(path.join(app_dir, "config", "app.txt"), "r", encoding="utf-8") as appfile:
         app_type = appfile.read().strip()
 global_log_filepath = path.join(app_dir, "meta-logs", "main.log")
 
@@ -193,11 +187,11 @@ def run_with_spinner(
 ):
     start_time = time.time()
     done = threading.Event()
-    print_final = True
     global_exit = False
 
     def subprocess_main():
-        global last_exit_code
+        global last_exit_code  # pylint: disable=global-statement
+        last_exit_code = None
         master_fd, slave_fd = pty.openpty()  # This is for making the subprocess think the output is a TTY and it enables colored output
         with open(command_log_file, "a", encoding="utf-8") as file:
             with subprocess.Popen(
@@ -253,7 +247,6 @@ def run_with_spinner(
         subprocess_thread.join()
     except KeyboardInterrupt:
         global_exit = True
-        print_final = False
         done.set()
     finally:
         done.set()
@@ -267,7 +260,7 @@ def run_with_spinner(
             file=sys.stderr,
         )
 
-        if last_exit_code != 0 and print_final:
+        if last_exit_code != 0 and not global_exit:
             log.error("Process exit code: %s", last_exit_code)
             log.error("Process args: %s", " ".join(command))
             log.error("Process output:")
