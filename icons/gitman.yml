@@ -54,7 +54,7 @@ sources:
       -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
-    rev: master
+    rev: main
     type: git
     params: --depth=1
     sparse_paths:
@@ -94,7 +94,7 @@ sources_locked:
       -
   - repo: https://github.com/walkxcode/dashboard-icons.git
     name: dashboard-icons
-    rev: 67b0d6e9b7d418b70a47d8a4b0f1f767a0317216
+    rev: a709a30d8b839de9d8a6e67578294d8c15ab206f
     type: git
     params:
     sparse_paths:
@@ -120,7 +120,7 @@ sources_locked:
       -
   - repo: https://github.com/NX211/homer-icons.git
     name: homer-icons
-    rev: 7f15a0ec749f4604b9f18e5bd4ee955002d8c896
+    rev: c6f324b9aa104ac33ba7f63bcc39798e5ad8ba9a
     type: git
     params:
     sparse_paths:
@@ -133,7 +133,7 @@ sources_locked:
       -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
-    rev: 88bcd83f56e8b15637a8b422e2bf290c922640c3
+    rev: 1741bbc41ed0842219f7feebe038225486ebaf6f
     type: git
     params:
     sparse_paths:
@@ -146,7 +146,7 @@ sources_locked:
       -
   - repo: https://github.com/causefx/Organizr.git
     name: organizr
-    rev: 3de321a4b9ddd33569c6501188e588e9da4c4653
+    rev: 6b27515ff3bc6f4998ed83aca8c08be0998fd118
     type: git
     params:
     sparse_paths:

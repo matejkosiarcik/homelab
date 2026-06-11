@@ -1,33 +1,51 @@
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0
+# syntax=docker/dockerfile:1
+
+### App ###
+
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0 AS adventurelog-backend
+
+### Healthcheck ###
+
+FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=adventurelog-backend-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=adventurelog-backend-healthcheck-build-gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+### Users ###
+
+FROM debian:13.5-slim AS user-setup
+USER root
+COPY --from=adventurelog-backend /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    ln -sf /run/supervisord.pid /code/supervisord.pid && \
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
+
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0
+USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+RUN ln -sf /run/supervisord.pid /code/supervisord.pid && \
     ln -sf /run/supervisord.log /code/supervisord.log && \
     ln -sf /run/scheduler.log /code/scheduler.log && \
-    chown -R homelab:homelab /code /home/homelab /homelab /var/log/nginx
-COPY --chown=homelab:homelab ./external/adventurelog-backend/healthcheck.py /homelab/
+    chown -R homelab:homelab /code /var/log/nginx
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV DEBUG=False \
     DISABLE_REGISTRATION=True \
     DJANGO_ADMIN_USERNAME=admin \
@@ -42,6 +60,6 @@ ENV DEBUG=False \
     PGHOST=database \
     PGUSER=postgres \
     TZ=Europe/Bratislava
-# Startup period a bit longer for initial migration - downloads stuff from github and sets up locations database
-HEALTHCHECK --interval=10s --start-period=180s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "python3 /homelab/healthcheck.py || exit 1" ]
 USER homelab
+# Startup period a bit longer for initial migration - downloads stuff from github and sets up locations database
+HEALTHCHECK --interval=10s --start-period=180s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000" ]

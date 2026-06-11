@@ -1,0 +1,32 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/pkgforge-dev/ImageMagick-AppImage.git
+    name: imagemagick-appimage
+    rev: main
+    type: git
+    params: --depth=1
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+sources_locked:
+  - repo: https://github.com/pkgforge-dev/ImageMagick-AppImage.git
+    name: imagemagick-appimage
+    rev: f791c03e26994dd972025da063931ca1862cab2f
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+default_group: ""
+groups:
+  -

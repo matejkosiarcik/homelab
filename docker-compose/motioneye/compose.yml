@@ -10,8 +10,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye-etc:/etc/motioneye:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye-lib:/var/lib/motioneye:rw
     tmpfs:
-      - /run:rw # TODO: Finish TMPFS
-      - /var/log/motioneye:rw # TODO: Finish TMPFS
+      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/motioneye:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

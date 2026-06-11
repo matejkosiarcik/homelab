@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: ./external/ollama/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/ollama:/homelab/ollama:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/ollama:/home/homelab/.ollama:rw
 
   certificator:
     extends:

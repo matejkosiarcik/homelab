@@ -1,31 +1,38 @@
+# syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
+# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
+
+### User setup ###
+
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+
+FROM debian:13.5-slim AS user-setup
+USER root
+WORKDIR /homelab
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM louislam/uptime-kuma:2.0.2
 USER root
-ARG GID=1000
-ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=uptimekuma \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava

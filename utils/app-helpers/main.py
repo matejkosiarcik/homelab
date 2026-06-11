@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
 import argparse
+import collections
 import hashlib
 import json
 import logging
 import math
 import os
+import pty
 import re
+import shutil
 import subprocess
 import sys
 import threading
@@ -24,7 +27,7 @@ app_type = full_app_name
 if path.exists(path.join(app_dir, "config", "app.txt")):
     with open(path.join(app_dir, "config", "app.txt"), "r", encoding="utf-8") as appfile:
         app_type = appfile.read().strip()
-log_file = path.join(git_dir, ".logs", start_datestr, "docker-apps", f"{full_app_name}.txt")
+global_log_filepath = path.join(app_dir, "meta-logs", "main.log")
 
 is_dryrun = False
 is_online = True
@@ -36,17 +39,29 @@ include_secrets = False
 docker_compose_args = []
 docker_command_args = []
 
-os.makedirs(path.dirname(log_file), exist_ok=True)
+# Ensure logfile exists and is empty
+if path.exists(path.dirname(global_log_filepath)):
+    shutil.rmtree(path.dirname(global_log_filepath))
+os.makedirs(path.dirname(global_log_filepath), exist_ok=True)
+with open(global_log_filepath, "w", encoding="utf-8") as global_log_file:
+    pass
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
-log.addHandler(logging.FileHandler(log_file))
+log.addHandler(logging.FileHandler(global_log_filepath))
 
 
-# Write current date.txt
-with open(path.join(git_dir, "docker-images", ".shared", "date.txt"), "w", encoding="utf-8") as datefile:
-    print(datetime.now().isoformat(), file=datefile)
+# Write current anticache.txt
+with open(
+    path.join(git_dir, "docker-images", ".shared", "anticache.txt"),
+    "w",
+    encoding="utf-8",
+) as anticachefile:
+    print(
+        f"This file is for cache busting\nDatetime: {datetime.now().isoformat()}\n",
+        file=anticachefile,
+    )
 
 
 def tty_supports_color():
@@ -58,6 +73,9 @@ ascii_cross = "✘"
 if tty_supports_color():
     ascii_checkmark = f"\033[32m{ascii_checkmark}\033[0m"
     ascii_cross = f"\033[31m{ascii_cross}\033[0m"
+
+
+last_exit_code: int | None = None
 
 
 def load_env_file(env_path):
@@ -138,8 +156,19 @@ def get_docker_images_shasum(config: str) -> str:
     output = []
     for image in image_names:
         try:
-            inspect_output = subprocess.check_output(["docker", "image", "inspect", image, "--format", "json"], stderr=subprocess.DEVNULL).decode()
-            layers_output = subprocess.check_output(["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'], input=inspect_output.encode()).decode().replace("\n", " ").strip()
+            inspect_output = subprocess.check_output(
+                ["docker", "image", "inspect", image, "--format", "json"],
+                stderr=subprocess.DEVNULL,
+            ).decode()
+            layers_output = (
+                subprocess.check_output(
+                    ["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'],
+                    input=inspect_output.encode(),
+                )
+                .decode()
+                .replace("\n", " ")
+                .strip()
+            )
         except subprocess.CalledProcessError:
             layers_output = "N/A"
         sha = hashlib.sha1(layers_output.encode()).hexdigest()
@@ -147,55 +176,101 @@ def get_docker_images_shasum(config: str) -> str:
     return "\n".join(output)
 
 
-def run_with_spinner(command: List[str], description_progress: str, description_done: str, print_output: bool):
+# pylint: disable=too-many-locals
+def run_with_spinner(
+    command: List[str],
+    description_progress: str,
+    description_done: str,
+    command_log_file: str,
+    print_output: bool,
+):
     start_time = time.time()
-    output = b""
-    process = None
     done = threading.Event()
+    global_exit = False
+    last_output_line = ""
 
-    def spinner_main():
+    def subprocess_main():
+        global last_exit_code  # pylint: disable=global-statement
+        last_exit_code = None
+        master_fd, slave_fd = pty.openpty()  # This is for making the subprocess think the output is a TTY and it enables colored output
+        with open(command_log_file, "a", encoding="utf-8") as file:
+            with subprocess.Popen(
+                command,
+                stdout=slave_fd,
+                stderr=slave_fd,
+                stdin=slave_fd,
+                text=True,
+                bufsize=1,
+                close_fds=True,
+            ) as last_process:
+                os.close(slave_fd)
+                while True:
+                    try:
+                        output = os.read(master_fd, 1024).decode("utf-8", errors="replace")
+                        if not output or len(output) == 0:
+                            break
+                        file.write(re.sub(r"\x1B(?:[@-Z\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
+                        file.flush()
+                        if print_output and not global_exit:
+                            sys.stdout.write(output)
+                    except OSError:
+                        break
+                    if done.is_set():
+                        last_process.kill()
+                last_exit_code = last_process.wait()
+                done.set()
+
+    try:
+        subprocess_thread = threading.Thread(target=subprocess_main)
+        subprocess_thread.start()
+
         spinner_chars = "▖▘▝▗"
         spinner_index = 0
-        last_line = ""
 
         if print_output:
-            print(f"\r↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00")
+            print(f"↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00")
 
         while not done.is_set():
             elapsed = time.time() - start_time
             elapsed_mins = int(elapsed) // 60
             elapsed_secs = int(elapsed) % 60
+            last_output_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
+            if global_exit:
+                break
             if not print_output:
-                last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
-                print(f"\r{last_line}", end="", flush=True)
-            time.sleep(0.1)
+                print(f"\r{last_output_line}", end="", flush=True)
             spinner_index += 1
             spinner_index %= len(spinner_chars)
-        print(f"\r{' ' * len(last_line)}", end="", flush=True)
+            done.wait(0.1)
 
-    spinner_thread = threading.Thread(target=spinner_main)
-    spinner_thread.start()
-
-    exit_code = 0
-    try:
-        with subprocess.Popen(command, stdout=None if print_output else subprocess.PIPE, stderr=None if print_output else subprocess.STDOUT, stdin=None) as process:
-            output, _ = process.communicate()
-            exit_code = process.returncode
+        subprocess_thread.join()
+    except KeyboardInterrupt:
+        global_exit = True
+        done.set()
     finally:
         done.set()
-        spinner_thread.join()
-        output = b"N/A" if output is None else output
         total_elapsed = time.time() - start_time
         total_elapsed_mins = int(total_elapsed) // 60
         total_elapsed_secs = int(total_elapsed) % 60
-        status = ascii_checkmark if exit_code == 0 else ascii_cross
-        print(f"\r{status} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ")
+        status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
+        print(f"\r{' ' * len(last_output_line)}", end="", flush=True)
+        print(
+            f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
+            file=sys.stderr,
+        )
 
-    if exit_code != 0:
-        print(f'\n↓↓↓ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command "{" ".join(command)}" failed:', file=sys.stderr)
-        print(output.decode(errors="replace"), file=sys.stderr)
-        print(f'\n↑↑↑ {os.environ["DOCKER_COMPOSE_APP_NAME"]} - command "{" ".join(command)}" failed.', file=sys.stderr)
-        sys.exit(exit_code)
+        if last_exit_code != 0 and not global_exit:
+            log.error("Process exit code: %s", last_exit_code)
+            log.error("Process args: %s", " ".join(command))
+            log.error("Process output:")
+            with open(command_log_file, "r", encoding="utf-8") as file:
+                for line in collections.deque(file, maxlen=30):
+                    log.error(">> %s", line.rstrip())
+            log.error('See logfile "%s" for all details.', path.basename(command_log_file))
+            sys.exit(1)
+
+    if global_exit:
+        sys.exit(0)
 
 
 def docker_build():
@@ -203,13 +278,21 @@ def docker_build():
     if cpu_cores is None:
         cpu_cores = 1
     threads = math.ceil(cpu_cores // 2)
-    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies"] + docker_command_args + (["--pull"] if is_pull else [])
-    run_with_spinner(commands, "Building", "Build", False)
+    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
+    docker_log_file = path.join(
+        "meta-logs",
+        f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-build.log",
+    )
+    run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
 
 def docker_stop():
     commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
-    run_with_spinner(commands, "Stopping", "Stop", False)
+    docker_log_file = path.join(
+        "meta-logs",
+        f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-stop.log",
+    )
+    run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
 
 
 def docker_start():
@@ -237,20 +320,44 @@ def docker_start():
             # os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
-    run_with_spinner(commands, "Starting", "Start", env_mode == "dev")
+    docker_log_file = path.join(
+        "meta-logs",
+        f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-start.log",
+    )
+    run_with_spinner(commands, "Starting", "Start", docker_log_file, env_mode == "dev")
 
 
 def create_secrets():
+    docker_log_file = path.join("meta-logs", f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log")
     if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
-        precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-        run_with_spinner(precommands, "Preparing secrets", "Prepare secrets", False)
-    commands = ["sh", f"{git_dir}/utils/secrets-helpers/main.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-    run_with_spinner(commands, "Secrets", "Secrets", False)
+        precommands = [
+            "sh",
+            f"{git_dir}/utils/secrets-helpers/prepare.sh",
+            f"--{env_mode}",
+            "--online" if is_online else "--offline",
+        ]
+        run_with_spinner(precommands, "Preparing secrets", "Prepare secrets", docker_log_file, False)
+    commands = [
+        "sh",
+        f"{git_dir}/utils/secrets-helpers/main.sh",
+        f"--{env_mode}",
+        "--online" if is_online else "--offline",
+    ]
+    run_with_spinner(commands, "Secrets", "Secrets", docker_log_file, False)
 
 
 def run_main_command(command: str):
     global docker_compose_args, docker_command_args  # pylint: disable=global-statement
-    docker_compose_args = ["--file", "compose.yml", "--file", f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml", "--project-name", os.environ["DOCKER_COMPOSE_APP_NAME"]]
+    docker_compose_args = [
+        "--file",
+        "compose.yml",
+        "--file",
+        f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
+        "--project-name",
+        os.environ["DOCKER_COMPOSE_APP_NAME"],
+        "--progress",
+        "plain",
+    ]
     docker_command_args = ["--dry-run"] if is_dryrun else []
 
     # Check if docker-compose stack exists
@@ -300,19 +407,40 @@ def main(argv):
     ]
     for subcommand in subcommands:
         subcommand_name = subcommand.prog.split(" ")[-1]
-        subcommand.add_argument("--mode", type=str, choices=["dev", "prod"], help=f"Mode for {subcommand_name.capitalize()}. By default takes env variable HOMELAB_ENV")
+        subcommand.add_argument(
+            "--mode",
+            type=str,
+            choices=["dev", "prod"],
+            help=f"Mode for {subcommand_name.capitalize()}. By default takes env variable HOMELAB_ENV",
+        )
         subcommand.add_argument("--dry-run", action="store_true", help="Dry run")
         if subcommand_name == "deploy":
             deploy_when_group = subcommand.add_mutually_exclusive_group()
-            deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy app only when build changed. When there is no change, app is not restarted.")
-            deploy_when_group.add_argument("--always", action="store_true", help="Deploy app always, regardless if the build changed or not.")
+            deploy_when_group.add_argument(
+                "--onchange",
+                action="store_true",
+                help="Deploy app only when build changed. When there is no change, app is not restarted.",
+            )
+            deploy_when_group.add_argument(
+                "--always",
+                action="store_true",
+                help="Deploy app always, regardless if the build changed or not.",
+            )
             subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
-            subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
+            subcommand.add_argument(
+                "--pull",
+                action="store_true",
+                help="Pull latest docker image from upstream registry",
+            )
         if subcommand_name == "secrets":
             online_group = subcommand.add_mutually_exclusive_group()
             online_group.add_argument("--online", action="store_true", help="Access vaultwarden for secrets")
-            online_group.add_argument("--offline", action="store_true", help="Only generate secrets locally, do not access vaultwarden")
+            online_group.add_argument(
+                "--offline",
+                action="store_true",
+                help="Only generate secrets locally, do not access vaultwarden",
+            )
 
     args = parser.parse_args(argv)
 

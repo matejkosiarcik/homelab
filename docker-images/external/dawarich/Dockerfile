@@ -1,39 +1,66 @@
-FROM freikin/dawarich:0.36.1
+# syntax=docker/dockerfile:1
+# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
+
+### App ###
+
+FROM freikin/dawarich:0.36.1 AS app
 USER root
-ARG GID=1000
-ARG UID=1000
+WORKDIR /homelab
 # hadolint ignore=DL3003
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab && \
-    mkdir -p /homelab/original/var/app/db && \
+RUN mkdir -p /homelab/original/var/app/db && \
     cp -R /var/app/db/. /homelab/original/var/app/db && \
     rm -rf /var/app/db && \
-    chown -R homelab:homelab /var/app && \
     cd /var/app && \
     bundle install --with development && \
     find 'vendor/bundle/ruby' -path '*.*.*/cache/*.gem' -prune -exec rm -rf {} \; && \
-    rm -rf tmp/cache
-COPY --chown=homelab:homelab ./external/dawarich/entrypoint.sh /homelab/
+    rm -rf ./tmp/cache
+
+### Healthcheck ###
+
+FROM golang:1.26.4-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=dawarich-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=dawarich-healthcheck-build-gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+### Users ###
+
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+
+FROM debian:13.5-slim AS user-setup
+USER root
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY ./external/dawarich/entrypoint.sh /homelab/
+COPY --from=app /homelab/original /homelab/original
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+COPY --from=app /var/app /var/app
+
+### Final ###
+
+FROM freikin/dawarich:0.36.1
+USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+RUN rm -rf /var/app
+COPY --from=prefinal --chown=homelab:homelab /var/app /var/app
 ENV APPLICATION_PROTOCOL=http \
     BACKGROUND_PROCESSING_CONCURRENCY=10 \
     DATABASE_HOST=postgis \
@@ -52,7 +79,7 @@ ENV APPLICATION_PROTOCOL=http \
     STORE_GEODATA=true \
     TIME_ZONE=Europe/Bratislava \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "wget -q -O - http://localhost:3000/api/v1/health | grep -q '\"status\"\\s*:\\s*\"ok\"' || exit 1" ]
+USER homelab
+HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body", "\"status\"\\s*:\\s*\"ok\"" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []
-USER homelab

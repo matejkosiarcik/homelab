@@ -8,6 +8,8 @@ app-data-*/
 app-data/
 app-logs-*/
 app-logs/
+meta-logs-*/
+meta-logs/
 app-secrets-*/
 app-secrets/
 test-report/
@@ -46,3 +48,4 @@ gitman-repositories/
 node_modules/
 python-vendor/
 venv/
+target/

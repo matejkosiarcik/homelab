@@ -2,6 +2,7 @@ services:
   # This template should only be used for services which need host network
   template_no_network:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER
+    image: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER:1.0.0
     build:
       context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
       dockerfile: ./external/PLACEHOLDER/Dockerfile
@@ -45,11 +46,13 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
+    image: ${DOCKER_COMPOSE_APP_NAME}-app:1.0.0
 
   certificator:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
+    image: ${DOCKER_COMPOSE_APP_NAME}-certificator:1.0.0
     build:
       dockerfile: ./custom/certificator/Dockerfile
     env_file:
@@ -70,6 +73,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache:1.0.0
     build:
       dockerfile: ./custom/apache/Dockerfile
     volumes:
@@ -92,6 +96,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter:1.0.0
     build:
       dockerfile: ./external/apache-prometheus-exporter/Dockerfile
     env_file:
@@ -101,6 +106,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    image: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy:1.0.0
     build:
       dockerfile: ./external/socket-proxy/Dockerfile
     volumes:
@@ -112,6 +118,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
     build:
       dockerfile: ./custom/docker-setup/Dockerfile
     environment:
@@ -124,6 +131,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
+    image: ${DOCKER_COMPOSE_APP_NAME}-favicons:1.0.0
     build:
       dockerfile: ./custom/favicons/Dockerfile
     env_file:
@@ -133,6 +141,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-file-server
+    image: ${DOCKER_COMPOSE_APP_NAME}-file-server:1.0.0
     build:
       dockerfile: ./custom/file-server/Dockerfile
 
@@ -140,6 +149,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
     build:
       dockerfile: ./custom/script-setup/Dockerfile
     tmpfs:
@@ -149,6 +159,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
+    image: ${DOCKER_COMPOSE_APP_NAME}-redis:1.0.0
     build:
       dockerfile: ./external/redis/Dockerfile
     env_file:
@@ -163,6 +174,7 @@ services:
     extends:
       service: template
     container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
+    image: ${DOCKER_COMPOSE_APP_NAME}-postgres:1.0.0
     build:
       dockerfile: ./external/postgres/Dockerfile
     shm_size: 1G

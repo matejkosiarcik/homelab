@@ -1,29 +1,38 @@
+# syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
+# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
-FROM debian:13.2-slim AS npmconfig
+### Build config ###
+
+FROM debian:13.5-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage-npmconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homepage-npmconfig-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/date.txt ./
+COPY ./.shared/anticache.txt /homelab/
 RUN printf '' >/root/.npmrc && \
     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
     npm config set proxy https://npm-cache.matejhome.com && \
     npm config set https-proxy https://npm-cache.matejhome.com
 
-FROM node:25.2.1-slim AS nodejs-build
+### App ###
+
+FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./external/homepage/package-lock.json ./external/homepage/package.json ./external/homepage/terser.json ./external/homepage/tsconfig.json ./external/homepage/vite.config.ts ./
+COPY ./external/homepage/package-lock.json ./external/homepage/package.json ./external/homepage/terser.json ./external/homepage/tsconfig.json ./external/homepage/vite.config.ts /homelab/
 COPY ./external/homepage/src/ ./src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm \
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
     npm run build && \
     npm prune --production
+
+### Other ###
 
 FROM ghcr.io/gethomepage/homepage:v1.8.0 AS entrypoint
 USER root
@@ -32,46 +41,52 @@ RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-shebang.s
     tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
     cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/usr/local/bin/docker-entrypoint.sh
 
-FROM debian:13.2-slim AS prefinal
+FROM ghcr.io/gethomepage/homepage:v1.8.0 AS runtime-dirs
+USER root
+RUN mkdir -p /homelab/original/app/.next/server/pages && \
+    cp -R /app/.next/server/pages/. /homelab/original/app/.next/server/pages
+
+### User setup ###
+
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+
+FROM debian:13.5-slim AS user-setup
+USER root
+WORKDIR /homelab
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
 COPY ./external/homepage/config/ ./config/
-COPY ./external/homepage/icons/ /app/public/icons/
 COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
 COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
+COPY --from=runtime-dirs /homelab/original /homelab/original
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+COPY ./external/homepage/icons/ /app/public/icons/
 COPY --from=entrypoint /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+### Final ###
 
 FROM ghcr.io/gethomepage/homepage:v1.8.0
 USER root
-RUN mkdir -p /homelab/original/app/.next/server/pages && \
-    cp -R /app/.next/server/pages/. /homelab/original/app/.next/server/pages && \
-    rm -rf /app/.next/server/pages /app/config
-ARG GID=1000
-ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab /app
+RUN rm -rf /app/.next/server/pages /app/config
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+RUN chown -R homelab:homelab /app
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-COPY --from=prefinal --chown=homelab:homelab /app/public/icons/ /app/public/icons/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /app/public/icons /app/public/icons
 COPY --from=prefinal --chown=homelab:homelab /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 ENV HOMELAB_CONTAINER_NAME=homepage \
     HOMELAB_CONTAINER_VARIANT=default \

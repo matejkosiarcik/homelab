@@ -22,6 +22,12 @@
     },
     {
       "matchDatasources": [
+        "npm"
+      ],
+      "minimumReleaseAge": "2 days"
+    },
+    {
+      "matchDatasources": [
         "docker"
       ],
       "matchManagers": [

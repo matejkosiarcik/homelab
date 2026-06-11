@@ -1,39 +1,58 @@
-FROM amir20/dozzle:v8.14.12 AS dozzle
+# syntax=docker/dockerfile:1
+# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
+
+### App ###
+
+FROM amir20/dozzle:v8.14.12 AS dozzle-app
 USER root
 
-FROM debian:13.2-slim
+### Users ###
+
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+
+FROM debian:13.5-slim AS user-setup
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Other ###
+
+FROM debian:13.5-slim AS package-ca-certificates
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-prometheus-exporter-package-ca-certificates-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-prometheus-exporter-package-ca-certificates-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-ARG GID=1000
-ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
-COPY --from=dozzle --chown=homelab:homelab /dozzle /dozzle
-COPY --from=dozzle --chown=homelab:homelab /data /data
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+COPY --from=dozzle-app /dozzle /dozzle
+COPY --from=dozzle-app /data /data
+COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
+
+### Final ###
+
+FROM scratch
+USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /dozzle /dozzle
+COPY --from=prefinal --chown=homelab:homelab /data /data
+COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 ENV DOZZLE_AUTH_PROVIDER=simple \
     DOZZLE_ENABLE_ACTIONS=false \
     DOZZLE_HOSTNAME=Server \

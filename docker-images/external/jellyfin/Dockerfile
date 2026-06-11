@@ -1,42 +1,61 @@
+# syntax=docker/dockerfile:1
+# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
+
+### Healthcheck ###
+
+FROM golang:1.26.4-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=jellyfin-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=jellyfin-healthcheck-build-gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+### User setup ###
+
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+
+FROM debian:13.5-slim AS user-setup
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=jellyfin-user-setup-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=jellyfin-user-setup-aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        moreutils && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~jellyfin~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~jellyfin~' | sponge --append /etc/passwd
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM linuxserver/jellyfin:10.11.5
 USER root
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ARG GID=1000
 ARG UID=1000
-RUN if [ ! -e '/usr/share/jellyfin/web' ]; then \
-        printf 'Jellyfin web directory not found\n' >&2 && \
-        exit 1 && \
-    true; fi && \
-    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
-        find '/usr/share/jellyfin/web' -name 'favicon.*.ico' -type f -mindepth 1 -maxdepth 1 -exec cp {} /usr/share/jellyfin/web/favicon.ico \; && \
-    true; fi && \
-    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
-        printf 'File "favicon.ico" not found\n' >&2 && \
-        exit 1 && \
-    true; fi && \
-    if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
 ENV HOMELAB_CONTAINER_NAME=jellyfin \
     HOMELAB_CONTAINER_VARIANT=default \
     JELLYFIN_CACHE_DIR=/cache \
@@ -44,4 +63,4 @@ ENV HOMELAB_CONTAINER_NAME=jellyfin \
     PGID=$GID \
     PUID=$UID \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "curl --fail http://localhost:8096 || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8096" ]

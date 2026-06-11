@@ -1,36 +1,43 @@
+# syntax=docker/dockerfile:1
+# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
+
 ### Dependencies ###
 
-FROM debian:13.2-slim AS yq
+FROM debian:13.5-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-yq-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-dependency-yq-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/yq/requirements.txt ./
-RUN --mount=type=cache,target=/root/.cache/pip \
+COPY ./.shared/dependencies/yq/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION=ignore
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM debian:13.2-slim AS jinja
+FROM debian:13.5-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-jinja-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-dependency-jinja-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/jinja/requirements.txt ./
-RUN --mount=type=cache,target=/root/.cache/pip \
+COPY ./.shared/dependencies/jinja/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION=ignore
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-### Config ###
+### App config ###
 
-FROM debian:13.2-slim AS config-1
+FROM debian:13.5-slim AS config-1
 USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=unbound.example.com
@@ -50,72 +57,72 @@ RUN printf 'env:\n' >>data.yml && \
 FROM yq AS config-2
 USER root
 WORKDIR /homelab
-COPY --from=config-1 /homelab/data.yml ./
+COPY --from=config-1 /homelab/data.yml /homelab/
 RUN yq . data.yml >data.json
 
 FROM jinja AS config-3
 USER root
 WORKDIR /homelab
-COPY --from=config-2 /homelab/data.json ./
-COPY ./external/unbound/unbound.conf.j2 ./
+COPY --from=config-2 /homelab/data.json /homelab/
+COPY ./external/unbound/unbound.conf.j2 /homelab/
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
-FROM debian:13.2-slim AS config-4
+FROM debian:13.5-slim AS config-4
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-config-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-config-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=config-3 /homelab/unbound.conf ./
+COPY --from=config-3 /homelab/unbound.conf /homelab/
 RUN cat -s unbound.conf | sponge unbound.conf
 
-# ### Final ###
+### User setup ###
 
-FROM debian:13.2-slim AS prefinal
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+
+FROM debian:13.5-slim AS user-setup
 USER root
 WORKDIR /homelab
-COPY ./external/unbound/entrypoint.sh ./
-COPY --from=config-4 /homelab/unbound.conf ./
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
 
-FROM debian:13.2-slim
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY ./external/unbound/entrypoint.sh /homelab/
+COPY --from=config-4 /homelab/unbound.conf /homelab/
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
+
+FROM debian:13.5-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-final-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-final-aptlibcache \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         dnsutils libcap2-bin unbound >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
     setcap 'cap_net_bind_service=+ep' "$(which unbound)"
-ARG GID=1000
-ARG UID=1000
-RUN if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME=unbound \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @$HOMELAB_APP_EXTERNAL_IP +short placeholder.matejhome.com || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @127.0.0.1 +short placeholder.matejhome.com || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

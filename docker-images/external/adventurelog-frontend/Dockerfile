@@ -1,39 +1,51 @@
-# checkov:skip=CKV_DOCKER_8: Ignore root user
+# syntax=docker/dockerfile:1
+
+### App ###
+
+FROM ghcr.io/seanmorley15/adventurelog-frontend:v0.11.0 AS adventurelog-frontend
+
+### Healthcheck ###
+
+FROM golang:1.26.4-alpine AS healthcheck-build
+USER root
+WORKDIR /homelab
+COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=adventurelog-frontend-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=adventurelog-frontend-healthcheck-build-gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+### Users ###
+
+FROM debian:13.5-slim AS user-setup
+USER root
+COPY --from=adventurelog-frontend /etc/group /etc/passwd /etc/
+ARG GID=1000
+ARG UID=1000
+COPY ./.shared/build-utils/create-user.sh /homelab/
+RUN sh /homelab/create-user.sh
+
+### Prefinal ###
+
+FROM scratch AS homelab-dir
+WORKDIR /homelab
+COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+
+FROM scratch AS prefinal
+COPY --from=user-setup /etc/group /etc/passwd /etc/
+COPY --from=user-setup /home/homelab /home/homelab
+COPY --from=homelab-dir /homelab /homelab
+
+### Final ###
 
 FROM ghcr.io/seanmorley15/adventurelog-frontend:v0.11.0
 USER root
-ARG GID=1000
-ARG UID=1000
-RUN apk update --no-cache && \
-    apk add --no-cache shadow && \
-    if [ "$(getent group "$GID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        groupadd --gid "$GID" homelab && \
-    true; else \
-        oldgroupname="$(getent group "$GID" | cut -d: -f1)" && \
-        groupmod --new-name homelab "$oldgroupname" && \
-    true; fi && \
-    nologinshell='' && \
-    if [ -e /sbin/nologin ]; then \
-        nologinshell='/sbin/nologin' && \
-    true; elif [ -e /usr/sbin/nologin ]; then \
-        nologinshell='/usr/sbin/nologin' && \
-    true; else \
-        nologinshell='/bin/false' && \
-    true; fi && \
-    if [ "$(getent passwd "$UID" >/dev/null 2>&1; printf '%s' "$?")" -ne 0 ]; then \
-        useradd --no-log-init --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" homelab && \
-    true; else \
-        oldusername="$(getent passwd "$UID" | cut -d: -f1)" && \
-        usermod --move-home --home /home/homelab --uid "$UID" --gid "$GID" --shell "$nologinshell" --login homelab "$oldusername" && \
-    true; fi && \
-    apk del --no-cache shadow && \
-    mkdir -p /home/homelab /homelab && \
-    chown -R homelab:homelab /home/homelab /homelab
-COPY --chown=homelab:homelab ./external/actualbudget/healthcheck.js /homelab/
+COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV BODY_SIZE_LIMIT=Infinity \
     HOMELAB_CONTAINER_NAME=adventurelog \
     HOMELAB_CONTAINER_VARIANT=default \
     PUBLIC_SERVER_URL=http://app-backend:8000 \
     TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "wget -O /dev/null http://localhost:3000 || exit 1" ]
 USER homelab
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000" ]
