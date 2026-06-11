@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=docker-stats-exporte
 
 ### Users ###
 
-FROM gcr.io/distroless/static-debian13 AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
 FROM debian:13.5-slim AS user-setup
 USER root
@@ -40,7 +40,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM gcr.io/distroless/nodejs26-debian13
+FROM gcr.io/distroless/nodejs26-debian13:latest
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
