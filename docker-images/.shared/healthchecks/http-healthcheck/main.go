@@ -40,7 +40,7 @@ func main() {
 	// Configure transport to optionally skip TLS verification when requested
 	transport := &http.Transport{}
 	if args.Insecure {
-		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} // #nosec G402 -- health check against internal endpoint with self-signed cert
 	}
 
 	client := &http.Client{Timeout: 2 * time.Second, Transport: transport}
