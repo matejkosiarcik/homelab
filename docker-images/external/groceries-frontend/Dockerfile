@@ -26,6 +26,7 @@ RUN mkdir -p /homelab/original/usr/share/nginx/html && \
 
 ### User setup ###
 
+# hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
 FROM debian:13.5-slim AS user-setup

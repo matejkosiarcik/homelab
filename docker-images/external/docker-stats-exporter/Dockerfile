@@ -16,6 +16,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=docker-stats-exporte
 
 ### Users ###
 
+# hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
 FROM debian:13.5-slim AS user-setup
@@ -40,6 +41,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
+# hadolint ignore=DL3007
 FROM gcr.io/distroless/nodejs26-debian13:latest
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/

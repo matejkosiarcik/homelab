@@ -12,6 +12,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=npm-cache-healthchec
 
 ### User setup ###
 
+# hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
 FROM debian:13.5-slim AS user-setup
