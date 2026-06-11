@@ -75,7 +75,7 @@ if tty_supports_color():
     ascii_cross = f"\033[31m{ascii_cross}\033[0m"
 
 
-last_exit_code: int = None
+last_exit_code: int | None = None
 
 
 def load_env_file(env_path):
