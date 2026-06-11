@@ -1,6 +1,16 @@
 #!/bin/sh
 set -euf
 
+if [ -z "${GID+x}" ]; then
+    printf 'GID undefined\n' >&2
+    exit 1
+fi
+
+if [ -z "${UID+x}" ]; then
+    printf 'UID undefined\n' >&2
+    exit 1
+fi
+
 # Determine nologin shell
 nologinshell="$(getent passwd nobody | cut -d: -f7)"
 if printf '%s' "${nologinshell}" | grep -vE '/nologin$' >/dev/null 2>&1; then
