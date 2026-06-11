@@ -29,10 +29,10 @@ ARG GID=1000
 ARG UID=1000
 COPY ./.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
-    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/group && \
-    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
-    cat /etc/group | grep -E '^homelab:' | sed 's~^homelab~jellyfin~' | sponge --append /etc/group && \
-    cat /etc/passwd | grep -E '^homelab:' | sed 's~^homelab~jellyfin~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~jellyfin~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~jellyfin~' | sponge --append /etc/passwd
 
 ### Prefinal ###
 
