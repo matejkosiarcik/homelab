@@ -25,7 +25,7 @@ WORKDIR /homelab
 COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=minio-client-gitman-pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Other ###
 
