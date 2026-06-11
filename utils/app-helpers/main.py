@@ -187,6 +187,7 @@ def run_with_spinner(
     start_time = time.time()
     done = threading.Event()
     global_exit = False
+    last_output_line = ""
 
     def subprocess_main():
         global last_exit_code  # pylint: disable=global-statement
@@ -225,7 +226,6 @@ def run_with_spinner(
 
         spinner_chars = "▖▘▝▗"
         spinner_index = 0
-        last_line = ""
 
         if print_output:
             print(f"↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00")
@@ -234,11 +234,11 @@ def run_with_spinner(
             elapsed = time.time() - start_time
             elapsed_mins = int(elapsed) // 60
             elapsed_secs = int(elapsed) % 60
-            last_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
+            last_output_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
             if global_exit:
                 break
             if not print_output:
-                print(f"\r{last_line}", end="", flush=True)
+                print(f"\r{last_output_line}", end="", flush=True)
             spinner_index += 1
             spinner_index %= len(spinner_chars)
             done.wait(0.1)
@@ -253,7 +253,7 @@ def run_with_spinner(
         total_elapsed_mins = int(total_elapsed) // 60
         total_elapsed_secs = int(total_elapsed) % 60
         status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
-        print(f"\r{' ' * len(last_line)}", end="", flush=True)
+        print(f"\r{' ' * len(last_output_line)}", end="", flush=True)
         print(
             f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
             file=sys.stderr,
