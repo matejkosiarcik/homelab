@@ -21,9 +21,7 @@ from typing import List
 start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
 
 app_dir = path.abspath(path.curdir)
-git_dir = (
-    subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
-)
+git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 full_app_name = path.basename(app_dir).lstrip(".")
 app_type = full_app_name
 if path.exists(path.join(app_dir, "config", "app.txt")):
