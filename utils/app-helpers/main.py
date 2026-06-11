@@ -35,7 +35,7 @@ if path.exists(path.join(app_dir, "config", "app.txt")):
         path.join(app_dir, "config", "app.txt"), "r", encoding="utf-8"
     ) as appfile:
         app_type = appfile.read().strip()
-global_log_file = path.join(app_dir, "meta-logs", "main.log")
+global_log_filepath = path.join(app_dir, "meta-logs", "main.log")
 
 is_dryrun = False
 is_online = True
@@ -48,16 +48,16 @@ docker_compose_args = []
 docker_command_args = []
 
 # Ensure logfile exists and is empty
-if path.exists(path.dirname(global_log_file)):
-    shutil.rmtree(path.dirname(global_log_file))
-os.makedirs(path.dirname(global_log_file), exist_ok=True)
-with open(global_log_file, "w", encoding="utf-8") as file:
+if path.exists(path.dirname(global_log_filepath)):
+    shutil.rmtree(path.dirname(global_log_filepath))
+os.makedirs(path.dirname(global_log_filepath), exist_ok=True)
+with open(global_log_filepath, "w", encoding="utf-8") as global_log_file:
     pass
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
-log.addHandler(logging.FileHandler(global_log_file))
+log.addHandler(logging.FileHandler(global_log_filepath))
 
 
 # Write current anticache.txt
@@ -84,7 +84,6 @@ if tty_supports_color():
 
 
 last_exit_code: int = None
-last_process: type[subprocess.Popen] = None
 
 
 def load_env_file(env_path):
@@ -198,10 +197,10 @@ def run_with_spinner(
     global_exit = False
 
     def subprocess_main():
-        global last_exit_code, last_process
+        global last_exit_code
         master_fd, slave_fd = pty.openpty()  # This is for making the subprocess think the output is a TTY and it enables colored output
         with open(command_log_file, "a", encoding="utf-8") as file:
-            last_process = subprocess.Popen(
+            with subprocess.Popen(
                 command,
                 stdout=slave_fd,
                 stderr=slave_fd,
@@ -209,21 +208,23 @@ def run_with_spinner(
                 text=True,
                 bufsize=1,
                 close_fds=True,
-            )
-            os.close(slave_fd)
-            while True:
-                try:
-                    output = os.read(master_fd, 1024).decode("utf-8", errors="replace")
-                    if not output or len(output) == 0:
+            ) as last_process:
+                os.close(slave_fd)
+                while True:
+                    try:
+                        output = os.read(master_fd, 1024).decode("utf-8", errors="replace")
+                        if not output or len(output) == 0:
+                            break
+                        file.write(re.sub(r"\x1B(?:[@-Z\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
+                        file.flush()
+                        if print_output and not global_exit:
+                            sys.stdout.write(output)
+                    except OSError:
                         break
-                    file.write(re.sub(r"\x1B(?:[@-Z\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
-                    file.flush()
-                    if print_output and not global_exit:
-                        sys.stdout.write(output)
-                except OSError:
-                    break
-            last_exit_code = last_process.wait()
-            done.set()
+                    if done.is_set():
+                        last_process.kill()
+                last_exit_code = last_process.wait()
+                done.set()
 
     try:
         subprocess_thread = threading.Thread(target=subprocess_main)
@@ -254,7 +255,6 @@ def run_with_spinner(
         global_exit = True
         print_final = False
         done.set()
-        last_process.kill()
     finally:
         done.set()
         total_elapsed = time.time() - start_time
@@ -268,13 +268,13 @@ def run_with_spinner(
         )
 
         if last_exit_code != 0 and print_final:
-            log.error(f"Process exit code: {last_exit_code}")
-            log.error(f"Process args: {' '.join(last_process.args)}")
+            log.error("Process exit code: %s", last_exit_code)
+            log.error("Process args: %s", " ".join(command))
             log.error("Process output:")
             with open(command_log_file, "r", encoding="utf-8") as file:
                 for line in collections.deque(file, maxlen=30):
-                    log.error(f">> {line.rstrip()}")
-            log.error(f'See logfile "{path.basename(command_log_file)}" for all details.')
+                    log.error(">> %s", line.rstrip())
+            log.error('See logfile "%s" for all details.', path.basename(command_log_file))
             sys.exit(1)
 
     if global_exit:
