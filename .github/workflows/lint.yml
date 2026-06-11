@@ -81,6 +81,7 @@ jobs:
           VALIDATE_BIOME_LINT: false
           VALIDATE_CSS: false
           VALIDATE_DOCKERFILE_HADOLINT: false
+          VALIDATE_GO: false # False positives with multiple directories
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_JAVASCRIPT_PRETTIER: false
           VALIDATE_JSCPD: false
