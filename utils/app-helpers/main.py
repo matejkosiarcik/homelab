@@ -319,19 +319,7 @@ def docker_start():
             # os.chown(volume, uid=current_user, gid=current_user_group)
             # os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
-    commands = (
-        ["docker", "compose"]
-        + docker_compose_args
-        + [
-            "up",
-            "--force-recreate",
-            "--always-recreate-deps",
-            "--remove-orphans",
-            "--no-build",
-        ]
-        + docker_command_args
-        + (["--detach", "--wait"] if env_mode == "prod" else [])
-    )
+    commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
     docker_log_file = path.join(
         "meta-logs",
         f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-start.log",
