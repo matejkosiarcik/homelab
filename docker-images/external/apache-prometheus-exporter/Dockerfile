@@ -58,7 +58,8 @@ COPY --from=busybox /fsroot/bin /fsroot/bin
 
 ### Final ###
 
-FROM gcr.io/distroless/base-debian13
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/base-debian13:latest
 USER root
 WORKDIR /homelab
 COPY --from=prefinal /etc/group /etc/passwd /etc/
