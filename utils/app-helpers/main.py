@@ -109,13 +109,9 @@ def load_full_env():
         "DOCKER_COMPOSE_APP_PATH": app_dir,
         "DOCKER_COMPOSE_APP_TYPE": app_type,
         "DOCKER_COMPOSE_ENV": env_mode,
-        "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com"
-        if env_mode == "prod"
-        else "localhost",
+        "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
         "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
-        "DOCKER_COMPOSE_NETWORK_URL": f"{default_protocol}://{full_app_name}.matejhome.com"
-        if env_mode == "prod"
-        else f"{default_protocol}://localhost:8443",
+        "DOCKER_COMPOSE_NETWORK_URL": f"{default_protocol}://{full_app_name}.matejhome.com" if env_mode == "prod" else f"{default_protocol}://localhost:8443",
         "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
         "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "1000",
         "DOCKER_COMPOSE_GID": str(os.getgid()) if env_mode == "prod" else "1000",
@@ -138,19 +134,12 @@ def load_full_env():
             os.environ[key] = default_value
 
     for i in range(2, 10):
-        if (
-            os.environ.get(f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}") is not None
-            and os.environ.get(f"DOCKER_COMPOSE_NETWORK_URL_{i}") is None
-        ):
+        if os.environ.get(f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}") is not None and os.environ.get(f"DOCKER_COMPOSE_NETWORK_URL_{i}") is None:
             domain = os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"]
-            os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = (
-                f"{default_protocol}://{domain}"
-            )
+            os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = f"{default_protocol}://{domain}"
         elif os.environ.get(f"DOCKER_COMPOSE_NETWORK_URL_{i}") is None:
             domain = os.environ["DOCKER_COMPOSE_NETWORK_DOMAIN"]
-            os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = (
-                f"{default_protocol}://{domain}"
-            )
+            os.environ[f"DOCKER_COMPOSE_NETWORK_URL_{i}"] = f"{default_protocol}://{domain}"
             os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"] = domain
 
 
@@ -162,26 +151,17 @@ def symlink_app():
         except OSError:
             pass
     os.symlink(path.join(compose_dir, "compose.yml"), "compose.yml")
-    os.symlink(
-        path.join(compose_dir, "compose.override-dev.yml"), "compose.override.yml"
-    )
+    os.symlink(path.join(compose_dir, "compose.override-dev.yml"), "compose.override.yml")
     os.symlink(path.join(compose_dir, "compose.override-prod.yml"), "compose.prod.yml")
 
 
 def get_docker_compose_config() -> str:
-    return subprocess.check_output(
-        ["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]
-    ).decode()
+    return subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
 
 
 def get_docker_images_shasum(config: str) -> str:
     config_obj = json.loads(config)
-    image_names = sorted(
-        [
-            config_obj["services"][service]["container_name"]
-            for service in config_obj["services"]
-        ]
-    )
+    image_names = sorted([config_obj["services"][service]["container_name"] for service in config_obj["services"]])
     output = []
     for image in image_names:
         try:
@@ -219,9 +199,7 @@ def run_with_spinner(
 
     def subprocess_main():
         global last_exit_code, last_process
-        master_fd, slave_fd = (
-            pty.openpty()
-        )  # This is for making the subprocess think the output is a TTY and it enables colored output
+        master_fd, slave_fd = pty.openpty()  # This is for making the subprocess think the output is a TTY and it enables colored output
         with open(command_log_file, "a", encoding="utf-8") as file:
             last_process = subprocess.Popen(
                 command,
@@ -238,9 +216,7 @@ def run_with_spinner(
                     output = os.read(master_fd, 1024).decode("utf-8", errors="replace")
                     if not output or len(output) == 0:
                         break
-                    file.write(
-                        re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output)
-                    )
+                    file.write(re.sub(r"\x1B(?:[@-Z\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
                     file.flush()
                     if print_output and not global_exit:
                         sys.stdout.write(output)
@@ -258,9 +234,7 @@ def run_with_spinner(
         last_line = ""
 
         if print_output:
-            print(
-                f"\r↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00"
-            )
+            print(f"↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00")
 
         while not done.is_set():
             elapsed = time.time() - start_time
@@ -286,9 +260,7 @@ def run_with_spinner(
         total_elapsed = time.time() - start_time
         total_elapsed_mins = int(total_elapsed) // 60
         total_elapsed_secs = int(total_elapsed) % 60
-        status_marker = (
-            ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
-        )
+        status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
         print(f"\r{' ' * len(last_line)}", end="", flush=True)
         print(
             f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
@@ -302,9 +274,7 @@ def run_with_spinner(
             with open(command_log_file, "r", encoding="utf-8") as file:
                 for line in collections.deque(file, maxlen=30):
                     log.error(f">> {line.rstrip()}")
-            log.error(
-                f'\nSee logfile "{path.basename(command_log_file)}" for all details.'
-            )
+            log.error(f'See logfile "{path.basename(command_log_file)}" for all details.')
             sys.exit(1)
 
     if global_exit:
@@ -337,9 +307,7 @@ def docker_build():
 
 
 def docker_stop():
-    commands = (
-        ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
-    )
+    commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
     docker_log_file = path.join(
         "meta-logs",
         f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-stop.log",
@@ -365,9 +333,7 @@ def docker_start():
         if not path.exists(volume):
             os.makedirs(volume, exist_ok=True)
             created = True
-            os.chmod(
-                volume, mode=0o755
-            )  # TODO: Remove this line and uncomment code below
+            os.chmod(volume, mode=0o755)  # TODO: Remove this line and uncomment code below
         if created or volume.startswith(app_dir):
             pass  # TODO: Re-enable code below
             # os.chown(volume, uid=current_user, gid=current_user_group)
@@ -394,9 +360,7 @@ def docker_start():
 
 
 def create_secrets():
-    docker_log_file = path.join(
-        "meta-logs", f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log"
-    )
+    docker_log_file = path.join("meta-logs", f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log")
     if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
         precommands = [
             "sh",
@@ -404,9 +368,7 @@ def create_secrets():
             f"--{env_mode}",
             "--online" if is_online else "--offline",
         ]
-        run_with_spinner(
-            precommands, "Preparing secrets", "Prepare secrets", docker_log_file, False
-        )
+        run_with_spinner(precommands, "Preparing secrets", "Prepare secrets", docker_log_file, False)
     commands = [
         "sh",
         f"{git_dir}/utils/secrets-helpers/main.sh",
@@ -431,13 +393,9 @@ def run_main_command(command: str):
     docker_command_args = ["--dry-run"] if is_dryrun else []
 
     # Check if docker-compose stack exists
-    compose_path = path.join(
-        git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"]
-    )
+    compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
     if not path.isdir(compose_path):
-        print(
-            f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found"
-        )
+        print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
         sys.exit(1)
 
     # Execute commands
@@ -450,9 +408,7 @@ def run_main_command(command: str):
         shasum_before = get_docker_images_shasum(config)
         docker_build()
         shasum_after = get_docker_images_shasum(config)
-        if when_mode == "always" or (
-            when_mode == "onchange" and shasum_before != shasum_after
-        ):
+        if when_mode == "always" or (when_mode == "onchange" and shasum_before != shasum_after):
             docker_stop()
             docker_start()
     elif command == "restart":
@@ -502,9 +458,7 @@ def main(argv):
                 action="store_true",
                 help="Deploy app always, regardless if the build changed or not.",
             )
-            subcommand.add_argument(
-                "--with-secrets", action="store_true", help="Also regenerate secrets"
-            )
+            subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument(
                 "--pull",
@@ -513,9 +467,7 @@ def main(argv):
             )
         if subcommand_name == "secrets":
             online_group = subcommand.add_mutually_exclusive_group()
-            online_group.add_argument(
-                "--online", action="store_true", help="Access vaultwarden for secrets"
-            )
+            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for secrets")
             online_group.add_argument(
                 "--offline",
                 action="store_true",
@@ -528,27 +480,17 @@ def main(argv):
     is_dryrun = args.dry_run
 
     if command == "deploy":
-        when_mode = (
-            "onchange"
-            if (hasattr(args, "onchange") and args.onchange is True)
-            else "always"
-            if (hasattr(args, "always") and args.always is True)
-            else "always"
-        )
+        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always" if (hasattr(args, "always") and args.always is True) else "always"
         include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
     if command == "secrets":
-        is_online = (hasattr(args, "online") and args.online is True) or (
-            not hasattr(args, "offline") or args.offline is False
-        )
+        is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
     is_pull = hasattr(args, "pull") and args.pull is True
 
     env_mode = args.mode
     if env_mode is None:
         env_mode = os.environ["HOMELAB_ENV"]
     if env_mode is None:
-        print(
-            "Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`"
-        )
+        print("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
     if env_mode not in ["dev", "prod"]:
         print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
         sys.exit(1)
