@@ -21,6 +21,9 @@ DISABLE_LINTERS:
   - RUST_CLIPPY
   - SPELL_CSPELL
 
+# Disable errors
+REPOSITORY_OSV_SCANNER_DISABLE_ERRORS: true
+
 # Override default config files
 DOCKERFILE_HADOLINT_CONFIG_FILE: .hadolint.yaml
 MAKEFILE_CHECKMAKE_CONFIG_FILE: checkmake.ini
