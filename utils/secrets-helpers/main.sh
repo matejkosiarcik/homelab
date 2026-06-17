@@ -434,6 +434,7 @@ case "$app_dirname" in
     printf 'GATUS_2__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token gatus-2 app homelab-viewer)" >>"$initial_output/app.env"
     printf 'GOTIFY__TOKEN=%s\n' "$(load_token gotify app gatus-token)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token homepage app homelab-viewer)" >>"$initial_output/app.env"
+    printf 'LIBRETRANSLATE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token libretranslate app homelab-viewer)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD=%s\n' "$(load_token motioneye-kitchen app homelab-stream)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H3__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 app homelab-viewer)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h4-ultra app homelab-viewer)" >>"$initial_output/app.env"
@@ -475,6 +476,7 @@ case "$app_dirname" in
     printf 'HEALTHCHECKS__PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT__PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
     printf 'JELLYFIN__PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin app prometheus)" >>"$initial_output/app.env"
+    printf 'LIBRETRANSLATE__PROMETHEUS_PASSWORD=%s\n' "$(load_token libretranslate app prometheus)" >>"$initial_output/app.env"
     printf 'MINIO__PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H3__PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 app prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
@@ -819,10 +821,30 @@ case "$app_dirname" in
 *libretranslate*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    write_http_auth_user matej "$matej_password" prometheus
     write_http_auth_user matej "$matej_password" proxy-prometheus
     write_http_auth_user matej "$matej_password" users-viewers
     write_http_auth_user matej "$matej_password" users-admins
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+
+    monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
+    write_http_auth_user monika "$monika_password" users-viewers
+    write_http_auth_user monika "$monika_password" users-admins
+    printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
+
+    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users-viewers
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+
+    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
+    write_http_auth_user homelab-test "$homelab_test_password" users-viewers
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
+
+    prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
+    write_http_auth_user prometheus "$prometheus_password" prometheus
+    printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Certificator
     write_certificator_users
@@ -1085,6 +1107,7 @@ case "$app_dirname" in
     printf 'HEALTHCHECKS__PROMETHEUS_TOKEN=%s\n' "$(load_token healthchecks app api-key-readonly)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT__PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
     printf 'JELLYFIN__PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin app prometheus)" >>"$initial_output/app.env"
+    printf 'LIBRETRANSLATE__PROMETHEUS_PASSWORD=%s\n' "$(load_token libretranslate app prometheus)" >>"$initial_output/app.env"
     printf 'MINIO__PROMETHEUS_TOKEN=%s\n' "$(load_token minio app prometheus-token)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H3__PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 app prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h4-ultra app prometheus)" >>"$initial_output/app.env"
@@ -1135,6 +1158,7 @@ case "$app_dirname" in
     printf 'HOMEASSISTANT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homeassistant apache prometheus)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homepage apache prometheus)" >>"$initial_output/app.env"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin apache prometheus)" >>"$initial_output/app.env"
+    printf 'LIBRETRANSLATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token libretranslate apache prometheus)" >>"$initial_output/app.env"
     printf 'MINIO_CONSOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
     printf 'MINIO__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token motioneye-kitchen apache prometheus)" >>"$initial_output/app.env"

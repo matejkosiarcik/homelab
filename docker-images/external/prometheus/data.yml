@@ -29,6 +29,9 @@ apps:
   - url: jellyfin.matejhome.com
     auth: basic
     path: /metrics
+  - url: libretranslate.matejhome.com
+    auth: basic
+    path: /metrics
   - url: minio.matejhome.com
     auth: bearer
     path: /minio/v2/metrics/cluster
@@ -135,6 +138,7 @@ proxies:
   - url: homeassistant.matejhome.com
   - url: homepage.matejhome.com
   - url: jellyfin.matejhome.com
+  - url: libretranslate.matejhome.com
   - url: minio-console.matejhome.com
   - url: minio.matejhome.com
   - url: motioneye-kitchen.matejhome.com
