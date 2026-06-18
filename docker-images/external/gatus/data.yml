@@ -214,6 +214,15 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: LibreTranslate
+    domain: libretranslate.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
   - name: MinIO API
     domain: minio.matejhome.com
     authentication: True

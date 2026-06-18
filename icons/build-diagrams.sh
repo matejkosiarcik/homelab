@@ -69,6 +69,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/homepage.
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/immich.svg" "$output_dir/immich.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/jenkins.svg" "$output_dir/jenkins.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/kiwix-light.svg" "$output_dir/kiwix.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/koffan.png" "$output_dir/koffan.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/linode.svg" "$output_dir/linode.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/linux.svg" "$output_dir/linux.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/loki.svg" "$output_dir/loki.png"
@@ -86,6 +87,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/owncloud.
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/owntracks.svg" "$output_dir/owntracks.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/pagerduty.svg" "$output_dir/pagerduty.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/planka.svg" "$output_dir/planka.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/podman.svg" "$output_dir/podman.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/portainer.svg" "$output_dir/portainer.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/postgres.svg" "$output_dir/postgres.png"
@@ -203,6 +205,7 @@ convert_image_full "$input_dir/other/renovatebot.png" "$output_dir/renovatebot.p
 convert_image_full "$input_dir/other/webcamera.png" "$output_dir/webcamera.png"
 convert_image_full "$input_dir/other/websupport.png" "$output_dir/websupport.png"
 convert_image_full "$input_dir/other/wiktionary.svg.bin" "$output_dir/wiktionary.png"
+convert_image_full "$input_dir/other/windshift.svg.bin" "$output_dir/windshift.png"
 convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 
 ### Prebuild ###

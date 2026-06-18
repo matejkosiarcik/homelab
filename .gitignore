@@ -8,8 +8,6 @@ app-data-*/
 app-data/
 app-logs-*/
 app-logs/
-meta-logs-*/
-meta-logs/
 app-secrets-*/
 app-secrets/
 test-report/
@@ -18,6 +16,7 @@ tmp/
 # For deployment
 /servers/.current
 /.deployment/
+/worktree-*
 
 # OS stuff
 ._*

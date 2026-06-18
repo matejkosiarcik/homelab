@@ -56,7 +56,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY ./custom/apache/apache.conf /apache.conf
+COPY ./custom/apache/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
@@ -74,7 +74,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-final-aptc
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-COPY --from=prefinal --chown=homelab:homelab /apache.conf /etc/apache2/sites-enabled/apache.conf
+COPY --from=prefinal --chown=homelab:homelab /fsroot/apache.conf /etc/apache2/sites-enabled/apache.conf
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently

@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=prometheus-depend
 COPY ./.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=prometheus-dependency-yq-pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=prometheus-depend
 COPY ./.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=prometheus-dependency-yq-pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
