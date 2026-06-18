@@ -9,7 +9,7 @@
     "@sequelize/postgres": "^7.0.0-alpha.48",
     "@sequelize/sqlite3": "^7.0.0-alpha.48",
     "async": "^3.2.6",
-    "axios": "^1.17.0",
+    "axios": "^1.18.0",
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "execa": "^9.6.1",
@@ -27,7 +27,7 @@
     "@tsconfig/strictest": "^2.0.8",
     "@types/async": "^3.2.25",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.9.2",
+    "@types/node": "^25.9.3",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }
