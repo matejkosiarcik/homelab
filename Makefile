@@ -25,6 +25,8 @@ bootstrap:
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
 	true; done
 
+	npm run postinstall --prefix "$(PROJECT_DIR)/icons/node_modules/zopflipng-bin" --loglevel=error
+
 	printf '%s' "$(PYTHON_COMPONENTS)" | tr -d ' ' | base64 -d | while read -r component; do \
 		cd "$(PROJECT_DIR)/$$component" && \
 		python3 -m venv venv && \
