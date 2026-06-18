@@ -60,7 +60,8 @@ RUN mkdir /empty
 
 ### User setup ###
 
-FROM gcr.io/distroless/static-debian13 AS user-setup-base
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
 FROM debian:13.5-slim AS user-setup
 USER root
@@ -87,7 +88,8 @@ COPY --from=package-libsentencepiece /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
 
-FROM gcr.io/distroless/python3-debian13
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/python3-debian13:latest
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
