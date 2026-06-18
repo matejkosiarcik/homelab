@@ -16,7 +16,7 @@
     "express": "^5.2.1",
     "fastq": "^1.20.1",
     "ioredis": "^5.11.1",
-    "node-cron": "^4.2.1",
+    "node-cron": "^4.3.0",
     "pg": "^8.21.0",
     "pg-query-stream": "^4.15.0",
     "redis": "^6.0.0",
