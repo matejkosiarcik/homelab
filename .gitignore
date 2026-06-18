@@ -18,6 +18,7 @@ tmp/
 # For deployment
 /servers/.current
 /.deployment/
+/worktree-*
 
 # OS stuff
 ._*
