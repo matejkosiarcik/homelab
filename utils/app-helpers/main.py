@@ -27,7 +27,7 @@ app_type = full_app_name
 if path.exists(path.join(app_dir, "config", "app.txt")):
     with open(path.join(app_dir, "config", "app.txt"), "r", encoding="utf-8") as appfile:
         app_type = appfile.read().strip()
-global_log_filepath = path.join(app_dir, "meta-logs", "main.log")
+global_log_filepath = path.join(app_dir, "app-logs", ".meta", "main.log")
 
 is_dryrun = False
 is_online = True
@@ -280,7 +280,8 @@ def docker_build():
     threads = math.ceil(cpu_cores // 2)
     commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
     docker_log_file = path.join(
-        "meta-logs",
+        "app-logs",
+        ".meta",
         f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-build.log",
     )
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
@@ -289,7 +290,8 @@ def docker_build():
 def docker_stop():
     commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
     docker_log_file = path.join(
-        "meta-logs",
+        "app-logs",
+        ".meta",
         f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-stop.log",
     )
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
@@ -321,14 +323,15 @@ def docker_start():
 
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
     docker_log_file = path.join(
-        "meta-logs",
+        "app-logs",
+        ".meta",
         f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-start.log",
     )
     run_with_spinner(commands, "Starting", "Start", docker_log_file, env_mode == "dev")
 
 
 def create_secrets():
-    docker_log_file = path.join("meta-logs", f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log")
+    docker_log_file = path.join("app-logs", ".meta", f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log")
     if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
         precommands = [
             "sh",
