@@ -454,6 +454,12 @@
         ping: docker-cache-dockerhub.matejhome.com
         icon: /icons/docker.png
 
+    - LibreTranslate:
+        description: Open Source Language Translation
+        href: https://libretranslate.matejhome.com
+        ping: libretranslate.matejhome.com
+        icon: /icons/libretranslate.png
+
     - Smtp4dev:
         description: Simple Email Server
         href: https://smtp4dev.matejhome.com
