@@ -6,7 +6,7 @@
 
 - Homepage: <https://libretranslate.com>
 - Docs: <https://docs.libretranslate.com>
-  - Install guide: <https://docs.libretranslate.com/guides/installation>
+    - Install guide: <https://docs.libretranslate.com/guides/installation>
 - GitHub: <https://github.com/LibreTranslate/LibreTranslate>
 - DockerHub: <https://hub.docker.com/r/libretranslate/libretranslate>
 
