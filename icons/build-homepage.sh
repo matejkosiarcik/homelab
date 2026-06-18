@@ -53,6 +53,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/graylog.s
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/homepage.png" "$output_dir/homepage.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/immich.svg" "$output_dir/immich.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/jenkins.svg" "$output_dir/jenkins.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/koffan.png" "$output_dir/koffan.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/loki.svg" "$output_dir/loki.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.svg" "$output_dir/netdata.png"
@@ -63,6 +64,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/owncloud.
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/owntracks.svg" "$output_dir/owntracks.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/pi-alert.png" "$output_dir/pialert.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/portainer.svg" "$output_dir/portainer.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/planka.svg" "$output_dir/planka.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/samba-server.svg" "$output_dir/samba.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/specifically-clementines.svg" "$output_dir/specifically-clementines.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/unbound.svg" "$output_dir/unbound.png"
@@ -123,6 +125,7 @@ convert_image_full "$input_dir/other/smtp4dev-custom.png" "$output_dir/smtp4dev.
 convert_image_full "$input_dir/other/squid.jpg" "$output_dir/squid.jpg"
 convert_image_full "$input_dir/other/upc.svg.bin" "$output_dir/upc.png"
 convert_image_full "$input_dir/other/wiktionary.svg.bin" "$output_dir/wiktionary.png"
+convert_image_full "$input_dir/other/windshift.svg.bin" "$output_dir/windshift.png"
 
 ### Prebuild Icons ###
 
