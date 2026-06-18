@@ -1,0 +1,2 @@
+libretranslate==1.8.3
+standard-distutils==3.11.9
