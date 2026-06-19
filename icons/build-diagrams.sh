@@ -73,6 +73,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/koffan.pn
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/linode.svg" "$output_dir/linode.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/linux.svg" "$output_dir/linux.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/loki.svg" "$output_dir/loki.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/lubelogger.png" "$output_dir/lubelogger.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nagios.svg" "$output_dir/nagios.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.svg" "$output_dir/netdata.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
