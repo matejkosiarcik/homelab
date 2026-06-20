@@ -5,7 +5,7 @@ set -euf
 trap 'exit 0' TERM
 
 apache_host='apache'
-if [ "${HOMELAB_CONTAINER_VARIANT-}" != '' ] && [ "$HOMELAB_CONTAINER_VARIANT" != default ]; then
+if [ "${HOMELAB_CONTAINER_VARIANT-}" != '' ] && [ "$HOMELAB_CONTAINER_VARIANT" != 'default' ]; then
     apache_host="$apache_host-$HOMELAB_CONTAINER_VARIANT"
 fi
 
