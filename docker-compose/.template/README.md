@@ -4,7 +4,11 @@
 
 ## Docs
 
-- _Fill in docs and useful links here_
+- _Fill in useful links below_
+- GitHub: <https://example.com>
+- Home: <https://example.com>
+- Docs: <https://example.com>
+    - Install guide: <https://example.com>
 
 ## Before initial installation
 
@@ -12,4 +16,4 @@
 
 ## After initial installation
 
-Empty
+_Fill this section_
