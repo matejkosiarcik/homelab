@@ -818,6 +818,22 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
+*koffan*)
+    # App
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'APP_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app.env"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
 *libretranslate*)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"

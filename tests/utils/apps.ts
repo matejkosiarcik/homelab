@@ -121,6 +121,12 @@ export const apps = {
             { url: 'https://wiktionary.matejhome.com', title: 'Wiktionary' },
         ],
     },
+    koffan: {
+        title: 'Koffan',
+        instances: [
+            { url: 'https://koffan.matejhome.com', title: 'Main' },
+        ],
+    },
     libretranslate: {
         title: 'LibreTranslate',
         instances: [

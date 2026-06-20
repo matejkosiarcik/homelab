@@ -151,8 +151,17 @@ load_password() {
     printf 'JELLYFIN__PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin apache status)"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin apache prometheus)"
 
-    printf 'LIBRETRANSLATE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password jellyfin apache status)"
-    printf 'LIBRETRANSLATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin apache prometheus)"
+    printf 'KOFFAN__APP_PASSWORD=%s\n' "$(load_password koffan app admin)"
+    printf 'KOFFAN__PROXY_STATUS_PASSWORD=%s\n' "$(load_password koffan apache status)"
+    printf 'KOFFAN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password koffan apache prometheus)"
+
+    printf 'LIBRETRANSLATE__MATEJ_PASSWORD=%s\n' "$(load_password libretranslate app matej)"
+    printf 'LIBRETRANSLATE__MONIKA_PASSWORD=%s\n' "$(load_password libretranslate app monika)"
+    printf 'LIBRETRANSLATE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password libretranslate app homelab-viewer)"
+    printf 'LIBRETRANSLATE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_password libretranslate app homelab-test)"
+    printf 'LIBRETRANSLATE__PROMETHEUS_PASSWORD=%s\n' "$(load_password libretranslate app prometheus)"
+    printf 'LIBRETRANSLATE__PROXY_STATUS_PASSWORD=%s\n' "$(load_password libretranslate apache status)"
+    printf 'LIBRETRANSLATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_password libretranslate apache prometheus)"
 
     printf 'MINIO__MATEJ_PASSWORD=%s\n' "$(load_password minio app matej)"
     printf 'MINIO__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_password minio app homelab-viewer)"

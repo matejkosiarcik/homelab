@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe(apps.libretranslate.title, () => {
-    for (const instance of apps.libretranslate.instances) {
+test.describe(apps.koffan.title, () => {
+    for (const instance of apps.koffan.instances) {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

@@ -168,6 +168,9 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: Koffan
+    domain: koffan.matejhome.com
+
   - name: Git Cache - GitHub
     domain: git-cache-github.matejhome.com
 

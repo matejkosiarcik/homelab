@@ -130,6 +130,7 @@ async function addHealthcheck(healthcheck: Healthcheck): Promise<void> {
         'Jellyfin',
         'Kiwix - Wikipedia',
         'Kiwix - Wiktionary',
+        'Koffan',
         'LibreTranslate',
         'Minio',
         'MotionEye - Kitchen',
