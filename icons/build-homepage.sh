@@ -55,6 +55,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/immich.sv
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/jenkins.svg" "$output_dir/jenkins.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/koffan.png" "$output_dir/koffan.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/loki.svg" "$output_dir/loki.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/lubelogger.png" "$output_dir/lubelogger.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.svg" "$output_dir/netdata.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nextcloud.svg" "$output_dir/nextcloud.png"
