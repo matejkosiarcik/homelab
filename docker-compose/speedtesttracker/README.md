@@ -22,7 +22,7 @@ LinuxServer (unofficial):
 
 ## After initial installation
 
-- Setup speed tresholds
+- Setup speed thresholds
 - Add (always) webhook to healthchecks
     - `https://healthchecks.matejhome.com/ping/<ping-key>/speedtesttracker-app`
 - Add readonly API token for other services and save it in Vaultwarden

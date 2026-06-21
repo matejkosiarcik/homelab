@@ -125,7 +125,7 @@ const fileCache: Record<string, Buffer> = {};
 
 /**
  * Converts PNG to PNG
- * Usualy just passes the PNG as is
+ * Usually just passes the PNG as is
  * But if the source is too big, it downsizes it to 64x64 px
  */
 async function convertPngToPng(pngImage: Buffer): Promise<Buffer> {
@@ -143,7 +143,7 @@ async function convertPngToPng(pngImage: Buffer): Promise<Buffer> {
 
 /**
  * Converts ICO to PNG
- * Usualy just passes the PNG as is
+ * Usually just passes the PNG as is
  * But if the source is too big, it downsizes it to 64x64 px
  */
 async function convertIcoToPng(icoImage: Buffer): Promise<Buffer> {
@@ -190,7 +190,7 @@ async function convertPngToIco(pngImage: Buffer): Promise<Buffer> {
     }
 
     if (pngs.length === 0) {
-        // Falback in case the source PNG is too small for predefined sizes
+        // Fallback in case the source PNG is too small for predefined sizes
         pngs.push(pngImage);
     }
 
