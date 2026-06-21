@@ -10,7 +10,7 @@ _Fill in useful links below:_
 - Docs: <https://example.com>
     - Install guide: <https://example.com>
 - GitHub: <https://example.com>
-- DokcerHub: <https://example.com>
+- DockerHub: <https://example.com>
 
 ## Before initial installation
 
