@@ -5,7 +5,7 @@
 ## Docs
 
 - Homepage: <https://filebrowser.org>
-- Documentation: <https://filebrowser.org/installation.html>
+- Docs: <https://filebrowser.org/installation.html>
 - GitHub: <https://github.com/filebrowser/filebrowser>
 - DockerHub: <https://hub.docker.com/r/filebrowser/filebrowser>
 

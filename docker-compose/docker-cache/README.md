@@ -4,7 +4,7 @@
 
 ## Docs
 
-- Documentation: <https://docs.docker.com/docker-hub/mirror>
+- Docs: <https://docs.docker.com/docker-hub/mirror>
     - Configuration: <https://distribution.github.io/distribution/about/configuration/>
     - Install guide: <https://distribution.github.io/distribution/about/deploying>
 - DockerHub: <https://hub.docker.com/_/registry>
