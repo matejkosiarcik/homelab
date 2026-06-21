@@ -33,6 +33,7 @@ const appAddress = (() => {
         case 'docker-cache': return ''; // http://app
         case 'docker-stats': return ''; // http://app:9487
         case 'dozzle': return 'http://app:8080';
+        case 'filebrowser': return 'http://app';
         case 'gatus': return 'http://app:8080';
         case 'git-cache': return ''; // http://app:8080
         // case 'glances': return 'http://app:61208';
@@ -44,6 +45,7 @@ const appAddress = (() => {
         case 'homepage': return 'http://app:3000';
         case 'jellyfin': return 'http://app:8096';
         case 'kiwix': return 'http://app:8080';
+        case 'koffan': return 'http://app:8080';
         case 'libretranslate': return 'http://app:5000';
         case 'minio': return 'http://app:9001';
         case 'motioneye': return 'http://app:8765';
@@ -80,6 +82,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'docker-cache': return `@/homelab/icons/${appType}.png`;
         case 'docker-stats': return `@/homelab/icons/${appType}.png`;
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
+        case 'filebrowser': return '/static/img/icons/favicon.svg';
         case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
         case 'git-cache': return `@/homelab/icons/${appType}.png`;
         // case 'glances': return '/static/favicon.ico';
@@ -91,6 +94,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'homepage': return '/apple-touch-icon.png';
         case 'jellyfin': return '/web/favicon.ico';
         case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
+        case 'koffan': return imageType === 'ico' ? '/favicon.ico' : '/static/icon-192.png';
         case 'libretranslate': return '/static/favicon.ico';
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
         case 'motioneye': return '/static/img/motioneye-logo.svg';
@@ -121,7 +125,7 @@ const fileCache: Record<string, Buffer> = {};
 
 /**
  * Converts PNG to PNG
- * Usualy just passes the PNG as is
+ * Usually just passes the PNG as is
  * But if the source is too big, it downsizes it to 64x64 px
  */
 async function convertPngToPng(pngImage: Buffer): Promise<Buffer> {
@@ -139,7 +143,7 @@ async function convertPngToPng(pngImage: Buffer): Promise<Buffer> {
 
 /**
  * Converts ICO to PNG
- * Usualy just passes the PNG as is
+ * Usually just passes the PNG as is
  * But if the source is too big, it downsizes it to 64x64 px
  */
 async function convertIcoToPng(icoImage: Buffer): Promise<Buffer> {
@@ -186,7 +190,7 @@ async function convertPngToIco(pngImage: Buffer): Promise<Buffer> {
     }
 
     if (pngs.length === 0) {
-        // Falback in case the source PNG is too small for predefined sizes
+        // Fallback in case the source PNG is too small for predefined sizes
         pngs.push(pngImage);
     }
 

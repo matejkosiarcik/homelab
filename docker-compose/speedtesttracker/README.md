@@ -6,7 +6,7 @@
 
 Speedtest Tracker (official):
 
-- Main page: <https://speedtest-tracker.dev>
+- Homepage: <https://speedtest-tracker.dev>
 - Docs: <https://docs.speedtest-tracker.dev>
 - GitHub: <https://github.com/alexjustesen/speedtest-tracker>
 
@@ -22,7 +22,7 @@ LinuxServer (unofficial):
 
 ## After initial installation
 
-- Setup speed tresholds
+- Setup speed thresholds
 - Add (always) webhook to healthchecks
     - `https://healthchecks.matejhome.com/ping/<ping-key>/speedtesttracker-app`
 - Add readonly API token for other services and save it in Vaultwarden

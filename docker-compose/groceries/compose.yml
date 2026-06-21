@@ -1,3 +1,5 @@
+x-definitions: {}
+
 services:
   app-backend:
     extends:

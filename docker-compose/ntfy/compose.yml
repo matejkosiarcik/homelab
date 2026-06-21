@@ -1,3 +1,5 @@
+x-definitions: {}
+
 services:
   app:
     extends:
@@ -11,7 +13,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-cache:/var/cache/ntfy:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-lib:/var/lib/ntfy:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-etc:/etc/ntfy:rw
-    # Internet access requied for publishing notifications through firebase
+    # Internet access required for publishing notifications through firebase
     networks:
       internal-network: {}
       external-network: {}

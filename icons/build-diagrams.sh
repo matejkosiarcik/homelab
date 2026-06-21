@@ -181,6 +181,10 @@ perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-
 convert_image_full "$tmpdir/server-small.png" "$output_dir/server-small.png"
 rm -f "$tmpdir/server-small.png"
 
+perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Energy Management/Single-phase Energy Meter (DIN).svg" >"$tmpdir/elecricity-meter.png"
+convert_image_full "$tmpdir/elecricity-meter.png" "$output_dir/elecricity-meter.png"
+rm -f "$tmpdir/elecricity-meter.png"
+
 ## Other Icons ###
 
 convert_image_full "$input_dir/other/actualbudget.png" "$output_dir/actualbudget.png"

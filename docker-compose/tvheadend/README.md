@@ -6,8 +6,8 @@
 
 Tvheadend (official):
 
-- Official docs: <https://docs.tvheadend.org/documentation>
-- Official repository: <https://github.com/tvheadend/tvheadend>
+- Docs: <https://docs.tvheadend.org/documentation>
+- GitHub: <https://github.com/tvheadend/tvheadend>
 
 LinuxServer (unofficial):
 

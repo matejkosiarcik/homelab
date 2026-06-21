@@ -128,6 +128,7 @@ proxies:
   - url: docker-stats-raspberry-pi-4b-2g.matejhome.com
   - url: docker-stats-raspberry-pi-4b-4g.matejhome.com
   - url: dozzle.matejhome.com
+  - url: filebrowser.matejhome.com
   - url: gatus-1.matejhome.com
   - url: gatus-2.matejhome.com
   - url: git-cache-github.matejhome.com
@@ -137,6 +138,7 @@ proxies:
   - url: healthchecks.matejhome.com
   - url: homeassistant.matejhome.com
   - url: homepage.matejhome.com
+  - url: koffan.matejhome.com
   - url: jellyfin.matejhome.com
   - url: libretranslate.matejhome.com
   - url: minio-console.matejhome.com

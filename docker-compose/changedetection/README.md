@@ -6,9 +6,9 @@
 
 Changedetection:
 
+- Homepage: <https://changedetection.io>
 - GitHub: <https://github.com/dgtlmoon/changedetection.io>
 - DockerHub: <https://hub.docker.com/r/dgtlmoon/changedetection.io>
-- Homepage: <https://changedetection.io>
 
 SockPuppetBrowser (used for opening \[web\] sites):
 

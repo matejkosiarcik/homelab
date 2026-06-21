@@ -4,12 +4,12 @@
 
 ## Docs
 
-- GitHub: <https://github.com/renovatebot/renovate>
-- DockerHub: <https://hub.docker.com/r/renovate/renovate>
 - Docs: <https://docs.renovatebot.com>
     - Self hosted examples: <https://docs.renovatebot.com/examples/self-hosting>
     - Self hosted config docs: <https://docs.renovatebot.com/self-hosted-configuration>
     - Running guide: <https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/running.md>
+- GitHub: <https://github.com/renovatebot/renovate>
+- DockerHub: <https://hub.docker.com/r/renovate/renovate>
 
 ## Before initial installation
 

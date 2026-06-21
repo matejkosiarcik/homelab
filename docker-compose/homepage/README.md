@@ -4,10 +4,10 @@
 
 ## Docs
 
+- Homepage: <https://gethomepage.dev>
+    - Widgets guide: <https://gethomepage.dev/widgets>
 - GitHub: <https://github.com/gethomepage/homepage>
-- DockerHub: N/A
-- Docs: <https://gethomepage.dev>
-    - Widgets: <https://gethomepage.dev/widgets>
+- GHCR registry: <https://github.com/gethomepage/homepage/pkgs/container/homepage>
 
 ## Before initial installation
 

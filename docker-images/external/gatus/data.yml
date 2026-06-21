@@ -150,6 +150,9 @@ apps:
       tcp:
         - 7007
 
+  - name: FileBrowser
+    domain: filebrowser.matejhome.com
+
   - name: Gatus 1
     domain: gatus-1.matejhome.com
     authentication:
@@ -167,6 +170,9 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+
+  - name: Koffan
+    domain: koffan.matejhome.com
 
   - name: Git Cache - GitHub
     domain: git-cache-github.matejhome.com
@@ -225,7 +231,7 @@ apps:
 
   - name: MinIO API
     domain: minio.matejhome.com
-    authentication: True
+    authentication: true
     conditions:
       - "[CONNECTED] == true"
       - "[STATUS] < 500"

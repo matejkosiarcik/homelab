@@ -4,13 +4,13 @@
 
 ## Docs
 
+- Docs: <https://docs.ntfy.sh>
+    - Install guide: <https://docs.ntfy.sh/install>
+    - <!-- textlint-disable -->
+      Install guide - Docker: <https://docs.ntfy.sh/install/#docker>
+      <!-- textlint-enable -->
 - GitHub: <https://github.com/binwiederhier/ntfy>
 - DockerHub: <https://hub.docker.com/r/binwiederhier/ntfy>
-- Docs: <https://docs.ntfy.sh>
-- Install guide: <https://docs.ntfy.sh/install>
-- <!-- textlint-disable -->
-  Install guide - Docker: <https://docs.ntfy.sh/install/#docker>
-  <!-- textlint-enable -->
 
 ## Before initial installation
 

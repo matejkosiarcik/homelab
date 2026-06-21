@@ -4,11 +4,12 @@
 
 ## Docs
 
+- Docs:
+    - General: <https://healthchecks.io/docs/self_hosted_docker>
+    - Server configuration: <https://healthchecks.io/docs/self_hosted_configuration>
+    - Running in Docker: <https://healthchecks.io/docs/self_hosted_docker>
 - GitHub: <https://github.com/healthchecks/healthchecks>
 - DockerHub: <https://hub.docker.com/r/healthchecks/healthchecks>
-- Docs - General: <https://healthchecks.io/docs/self_hosted_docker>
-- Docs - Server configuration: <https://healthchecks.io/docs/self_hosted_configuration>
-- Docs - Running in Docker: <https://healthchecks.io/docs/self_hosted_docker>
 
 ## Before initial installation
 

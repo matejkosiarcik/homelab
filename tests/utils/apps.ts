@@ -59,6 +59,12 @@ export const apps = {
             { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
         ],
     },
+    filebrowser: {
+        title: 'FileBrowser',
+        instances: [
+            { url: 'https://filebrowser.matejhome.com', title: 'Main' },
+        ],
+    },
     gatus: {
         title: 'Gatus',
         instances: [
@@ -119,6 +125,12 @@ export const apps = {
         instances: [
             { url: 'https://wikipedia.matejhome.com', title: 'Wikipedia' },
             { url: 'https://wiktionary.matejhome.com', title: 'Wiktionary' },
+        ],
+    },
+    koffan: {
+        title: 'Koffan',
+        instances: [
+            { url: 'https://koffan.matejhome.com', title: 'Main' },
         ],
     },
     libretranslate: {

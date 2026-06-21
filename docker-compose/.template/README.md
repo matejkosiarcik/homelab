@@ -4,12 +4,20 @@
 
 ## Docs
 
-- _Fill in docs and useful links here_
+<!-- Fill in useful links -->
+
+- Homepage: <https://example.com>
+- Docs: <https://example.com>
+    - Install guide: <https://example.com>
+- GitHub: <https://example.com>
+- DockerHub: <https://example.com>
 
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
+<!-- Fill other steps here -->
+
 ## After initial installation
 
-Empty
+<!-- Fill other steps here -->

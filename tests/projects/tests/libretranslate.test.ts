@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
@@ -11,7 +11,10 @@ test.describe(apps.libretranslate.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            // TODO: Finish tests
+            test('PLACEHOLDER', async () => {
+                // TODO: Finish tests
+                expect(false, 'Tests unfinished').toStrictEqual(true);
+            });
         });
     }
 });

@@ -4,10 +4,10 @@
 
 ## Docs
 
-- DockerHub: <https://hub.docker.com/r/grafana/grafana>
-- GitHub: <https://github.com/grafana/grafana>
 - Docs: <https://grafana.com/docs>
     - ENV config: <https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana>
+- DockerHub: <https://hub.docker.com/r/grafana/grafana>
+- GitHub: <https://github.com/grafana/grafana>
 
 ## Before initial installation
 
