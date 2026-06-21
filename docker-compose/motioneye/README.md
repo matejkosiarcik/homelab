@@ -14,7 +14,7 @@ MotionEye:
 - GitHub: <https://github.com/motioneye-project/motioneye>
     - WiKi: <https://github.com/motioneye-project/motioneye/wiki>
     - Install guide: <https://github.com/motioneye-project/motioneye/wiki/Install-In-Docker#build-instructions>
-- GHCR registry: https://github.com/motioneye-project/motioneye/pkgs/container/motioneye
+- GHCR registry: <https://github.com/motioneye-project/motioneye/pkgs/container/motioneye>
 - HomeAssistant plugin: <https://www.home-assistant.io/integrations/motioneye>
 
 Notes:
