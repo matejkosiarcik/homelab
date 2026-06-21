@@ -31,6 +31,7 @@ The Icons are obtained from following locations:
     - Playwright: <https://playwright.dev>
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (server down)
     - RenovateBot: <https://docs.renovatebot.com>
+    - Reportportal: <https://reportportal.io>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
     - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - Squid: <https://github.com/squid-cache>
@@ -39,4 +40,5 @@ The Icons are obtained from following locations:
     - UPC: <https://www.upc.sk>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>
     - Wiktionary: <https://en.wiktionary.org/wiki/Wiktionary:Main_Page>
+    - Windshift: <https://windshift.sh>
     - WWW: <https://www.flaticon.com/free-icon/www_4357944>
