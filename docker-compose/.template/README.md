@@ -4,7 +4,7 @@
 
 ## Docs
 
-_Fill in useful links below:_
+<!-- Fill in useful links -->
 
 - Homepage: <https://example.com>
 - Documentation: <https://example.com>
@@ -16,6 +16,8 @@ _Fill in useful links below:_
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
 
+<!-- Fill other steps here -->
+
 ## After initial installation
 
-_Fill this section_
+<!-- Fill other steps here -->
