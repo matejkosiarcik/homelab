@@ -33,6 +33,7 @@ const appAddress = (() => {
         case 'docker-cache': return ''; // http://app
         case 'docker-stats': return ''; // http://app:9487
         case 'dozzle': return 'http://app:8080';
+        case 'filebrowser': return 'http://app';
         case 'gatus': return 'http://app:8080';
         case 'git-cache': return ''; // http://app:8080
         // case 'glances': return 'http://app:61208';
@@ -81,6 +82,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'docker-cache': return `@/homelab/icons/${appType}.png`;
         case 'docker-stats': return `@/homelab/icons/${appType}.png`;
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
+        case 'filebrowser': return '/static/img/icons/favicon.svg';
         case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
         case 'git-cache': return `@/homelab/icons/${appType}.png`;
         // case 'glances': return '/static/favicon.ico';
