@@ -16,5 +16,5 @@
 ## After initial installation
 
 - Login and change admin's _username_ (matej) and _password_ (custom)
-    - The initial password is randomly generated and displayed in container logs
+    - Default username is `admin` and initial password is randomly generated and displayed in container logs
 - Add other users (monika, homelab-test, homelab-viewer)
