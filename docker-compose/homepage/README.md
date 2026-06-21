@@ -4,10 +4,9 @@
 
 ## Docs
 
+- Homepage: <https://gethomepage.dev>
+    - Widgets guide: <https://gethomepage.dev/widgets>
 - GitHub: <https://github.com/gethomepage/homepage>
-- DockerHub: N/A
-- Docs: <https://gethomepage.dev>
-    - Widgets: <https://gethomepage.dev/widgets>
 
 ## Before initial installation
 

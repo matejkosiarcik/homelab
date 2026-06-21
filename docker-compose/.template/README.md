@@ -6,8 +6,8 @@
 
 _Fill in useful links below:_
 
-- Home: <https://example.com>
-- Docs: <https://example.com>
+- Homepage: <https://example.com>
+- Documentation: <https://example.com>
     - Install guide: <https://example.com>
 - GitHub: <https://example.com>
 - DockerHub: <https://example.com>

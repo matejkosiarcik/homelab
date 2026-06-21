@@ -6,7 +6,7 @@
 
 Speedtest Tracker (official):
 
-- Main page: <https://speedtest-tracker.dev>
+- Homepage: <https://speedtest-tracker.dev>
 - Docs: <https://docs.speedtest-tracker.dev>
 - GitHub: <https://github.com/alexjustesen/speedtest-tracker>
 

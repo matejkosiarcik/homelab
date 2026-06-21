@@ -6,7 +6,8 @@
 
 UniFi (official):
 
-- Open Ports overview: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
+- Docs:
+    - Open ports guide: <https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference>
 
 LinuxServer (unofficial):
 

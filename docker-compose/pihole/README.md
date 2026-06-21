@@ -6,13 +6,13 @@
 
 PiHole:
 
+- Docs: <https://docs.pi-hole.net>
+    - <!-- textlint-disable -->
+      Docker: <https://docs.pi-hole.net/docker>
+      <!-- textlint-enable -->
+    - FTL Configuration: <https://docs.pi-hole.net/ftldns/configfile>
 - GitHub: <https://github.com/pi-hole/docker-pi-hole>
 - DockerHub: <https://hub.docker.com/r/pihole/pihole>
-- Docs: <https://docs.pi-hole.net>
-- <!-- textlint-disable -->
-  Docs - Docker: <https://docs.pi-hole.net/docker>
-  <!-- textlint-enable -->
-- Docs - FTL Configuration: <https://docs.pi-hole.net/ftldns/configfile>
 
 Prometheus exporter:
 

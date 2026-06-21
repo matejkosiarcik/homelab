@@ -11,7 +11,7 @@
 
 ---
 
-Note: LinuxServer unused
+\(Note: LinuxServer unused\)
 
 - LinuxServer docs: <https://docs.linuxserver.io/images/docker-homeassistant>
 - LinuxServer GitHub: <https://github.com/linuxserver/docker-homeassistant>

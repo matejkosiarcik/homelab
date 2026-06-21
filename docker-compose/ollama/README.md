@@ -4,10 +4,10 @@
 
 ## Docs
 
-- DockerHub: <https://hub.docker.com/r/ollama/ollama>
 - Docs:
     - Install instructions: <https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image>
     - Models: <https://ollama.com/search>
+- DockerHub: <https://hub.docker.com/r/ollama/ollama>
 
 ## Before initial installation
 

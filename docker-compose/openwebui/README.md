@@ -5,8 +5,8 @@
 ## Docs
 
 - Homepage: <https://openwebui.com>
-- GitHub: <https://github.com/open-webui/open-webui>
 - Docs: <https://docs.openwebui.com>
+- GitHub: <https://github.com/open-webui/open-webui>
 
 ## Before initial installation
 

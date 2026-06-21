@@ -4,8 +4,8 @@
 
 ## Docs
 
-- GitHub: <https://github.com/PanSalut/Koffan>
 - Docs: <https://github.com/PanSalut/Koffan/wiki>
+- GitHub: <https://github.com/PanSalut/Koffan>
 
 ## Before initial installation
 

@@ -7,10 +7,10 @@
 PiHole:
 
 - Docs: <https://prometheus.io/docs/introduction/overview>
+    - Installation: <https://prometheus.io/docs/prometheus/latest/installation>
+    - Configuration: <https://prometheus.io/docs/prometheus/latest/configuration/configuration>
 - GitHub: <https://github.com/prometheus/prometheus>
 - DockerHub: <https://hub.docker.com/r/prom/prometheus>
-- Docs - Installation: <https://prometheus.io/docs/prometheus/latest/installation>
-- Docs - Configuration: <https://prometheus.io/docs/prometheus/latest/configuration/configuration>
 
 ## Before initial installation
 

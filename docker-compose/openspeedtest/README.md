@@ -5,9 +5,8 @@
 ## Docs
 
 - Docs: `https://openspeedtest.com` <!-- website down -->
-- Installation guide: `https://openspeedtest.com/selfhosted-speedtest` <!-- website down -->
-- GitHub: <https://github.com/openspeedtest/Speed-Test>
-- GitHub: <https://github.com/openspeedtest/Docker-Image>
+    - Installation guide: `https://openspeedtest.com/selfhosted-speedtest` <!-- website down -->
+- GitHub: <https://github.com/openspeedtest/Speed-Test> and <https://github.com/openspeedtest/Docker-Image>
 - DockerHub: <https://hub.docker.com/r/openspeedtest/latest>
 
 ## Before initial installation
