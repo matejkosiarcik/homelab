@@ -5,8 +5,9 @@
 ## Docs
 
 - Home: <https://filebrowser.org>
-- GitHub: <https://github.com/filebrowser/filebrowser>
 - Docs: <https://filebrowser.org/installation.html>
+- GitHub: <https://github.com/filebrowser/filebrowser>
+- DockerHub: <https://hub.docker.com/r/filebrowser/filebrowser>
 
 ## Before initial installation
 

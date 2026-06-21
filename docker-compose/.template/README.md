@@ -4,11 +4,13 @@
 
 ## Docs
 
-- _Fill in useful links below_
-- GitHub: <https://example.com>
+_Fill in useful links below:_
+
 - Home: <https://example.com>
 - Docs: <https://example.com>
     - Install guide: <https://example.com>
+- GitHub: <https://example.com>
+- DokcerHub: <https://example.com>
 
 ## Before initial installation
 
