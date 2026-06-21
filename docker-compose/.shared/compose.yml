@@ -1,3 +1,5 @@
+x-definitions: {}
+
 services:
   # This template should only be used for services which need host network
   template_no_network:
