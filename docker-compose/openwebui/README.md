@@ -7,6 +7,7 @@
 - Homepage: <https://openwebui.com>
 - Docs: <https://docs.openwebui.com>
 - GitHub: <https://github.com/open-webui/open-webui>
+- GHCR registry: <https://github.com/open-webui/open-webui/pkgs/container/open-webui>
 
 ## Before initial installation
 

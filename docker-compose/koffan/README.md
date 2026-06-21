@@ -6,6 +6,7 @@
 
 - Docs: <https://github.com/PanSalut/Koffan/wiki>
 - GitHub: <https://github.com/PanSalut/Koffan>
+- GHCR registry: <https://github.com/pansalut/Koffan/pkgs/container/koffan>
 
 ## Before initial installation
 

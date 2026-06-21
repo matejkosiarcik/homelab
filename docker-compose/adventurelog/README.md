@@ -8,6 +8,14 @@
 - Docs: <https://adventurelog.app/docs/intro/adventurelog_overview.html>
 - GitHub: <https://github.com/seanmorley15/AdventureLog>
 
+Backend:
+
+- GHCR registry: <https://github.com/seanmorley15/AdventureLog/pkgs/container/adventurelog-backend>
+
+Frontend:
+
+- GHCR registry: <https://github.com/seanmorley15/AdventureLog/pkgs/container/adventurelog-frontend>
+
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)

@@ -11,6 +11,14 @@
     - <https://www.reddit.com/r/selfhosted/comments/14p754g/groceries_is_now_specifically_clementines>
 - GitHub: <https://github.com/davideshay/groceries>
 
+Backend:
+
+- GHCR registry: <https://github.com/davideshay/groceries/pkgs/container/groceries-server>
+
+Frontend:
+
+- GHCR registry: <https://github.com/davideshay/groceries/pkgs/container/groceries-client>
+
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
