@@ -231,7 +231,7 @@ apps:
 
   - name: MinIO API
     domain: minio.matejhome.com
-    authentication: True
+    authentication: true
     conditions:
       - "[CONNECTED] == true"
       - "[STATUS] < 500"
