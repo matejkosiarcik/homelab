@@ -209,11 +209,17 @@ case "$app_dirname" in
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app-backend.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
-    # Database
+    # Postgis
     database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
     printf 'PGPASSWORD=%s\n' "$database_password" >>"$initial_output/app-backend.env"
     printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
     printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -285,11 +291,17 @@ case "$app_dirname" in
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/decryptor.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
-    # Database
+    # Postgis
     database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
     printf 'DATABASE_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
     printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
     printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
 
     # Redis
     redis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" redis user)"
@@ -616,6 +628,12 @@ case "$app_dirname" in
 
     # Postgres
     printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgres.env"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
 
     # Redis
     redis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" redis user)"
@@ -681,7 +699,7 @@ case "$app_dirname" in
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'SMTP_PASSWORD=\n' >>"$initial_output/app.env" # Placeholder
 
-    # Database
+    # CouchDB
     database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb admin)"
     printf 'COUCHDB_ADMIN_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
     printf 'COUCHDB_PASSWORD=%s\n' "$database_password" >>"$initial_output/couchdb.env"
@@ -1350,7 +1368,7 @@ case "$app_dirname" in
         matej_email='matej@localhost'
         app_key="$(printf 'base64:' && openssl rand -base64 32)"
     else
-        matej_email="matej@matejhome.com"
+        matej_email='matej@matejhome.com'
         app_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app app-key)"
     fi
     printf '%s,%s\n' "$matej_email" "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -1424,7 +1442,7 @@ case "$app_dirname" in
     printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-viewer,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)" >>"$initial_output/all-credentials.csv"
 
-    # Database
+    # MongoDB
     mongodb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
     printf 'mongodb,%s\n' "$mongodb_password" >>"$initial_output/all-credentials.csv"
     printf 'MONGO_PASSWORD=%s\n' "$mongodb_password" >>"$initial_output/mongodb.env"
@@ -1508,8 +1526,8 @@ case "$app_dirname" in
     ;;
 esac
 
-# TODO: Switch to 0400 permissions eventually after unifying container users
-find "$initial_output" -type f -exec chmod 0444 {} \;
+# Lower permissions for all secret files
+find "$initial_output" -type f -exec chmod 0400 {} \;
 
 output='app-secrets'
 if [ -e "$output" ]; then

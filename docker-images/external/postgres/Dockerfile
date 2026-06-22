@@ -1,21 +1,6 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
-### Other ###
-
-FROM debian:13.5-slim AS openssl-certificates
-WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=postgres-openssl-certificates-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=postgres-openssl-certificates-aptlibcache \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        openssl && \
-    rm -rf /var/lib/apt/lists/*
-RUN mkdir -p /homelab/certs && \
-    openssl req -new -x509 -days 3650 -nodes -text -out '/homelab/certs/server.crt' -keyout '/homelab/certs/server.key' -subj '/CN=postgres' && \
-    chmod 600 '/homelab/certs/server.key' && \
-    chmod 644 '/homelab/certs/server.crt'
-
 ### User setup ###
 
 # hadolint ignore=DL3007
@@ -36,7 +21,6 @@ FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./external/postgres/postgres.conf /homelab/postgresql.conf
 COPY ./external/postgres/pg_hba.conf /homelab/pg_hba.conf
-COPY --from=openssl-certificates /homelab/certs /homelab/certs
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
@@ -58,7 +42,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV PGDATA=/var/lib/postgresql/data \
-    POSTGRES_DB=database \
+    POSTGRES_DB=postgres \
     POSTGRES_USER=postgres \
     HOMELAB_CONTAINER_NAME=postgres \
     HOMELAB_CONTAINER_VARIANT=default \

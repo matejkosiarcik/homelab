@@ -11,7 +11,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-public:/var/app/public:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-storage:/var/app/storage:rw
-      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-database:/dawarich_db_data:rw # TODO: Determine if necessary
+      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis:/dawarich_db_data:rw # TODO: Determine if necessary
     environment:
       MODE: app
     env_file:
@@ -59,21 +59,9 @@ services:
   postgis:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgis
-    image: ${DOCKER_COMPOSE_APP_NAME}-postgis:1.0.0
-    build:
-      dockerfile: ./external/postgis/Dockerfile
-    shm_size: 1G
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-database:/var/lib/postgresql/data:rw
-      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-shared:/var/shared:rw # TODO: Determine if necessary
+      service: postgis
     environment:
       POSTGRES_DB: dawarich
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
-    tmpfs:
-      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   decryptor:
     extends:

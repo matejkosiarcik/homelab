@@ -28,12 +28,13 @@ COPY --from=homelab-dir /homelab /homelab
 ### Final ###
 
 # hadolint ignore=DL3029
-FROM --platform=linux/amd64 postgis/postgis:17-3.5
+FROM --platform=linux/amd64 postgis/postgis:18-3.6
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-ENV POSTGRES_DB=database \
+ENV PGDATA=/var/lib/postgresql/data \
+    POSTGRES_DB=postgis \
     POSTGRES_USER=postgres \
     HOMELAB_CONTAINER_NAME=postgis \
     HOMELAB_CONTAINER_VARIANT=default \
