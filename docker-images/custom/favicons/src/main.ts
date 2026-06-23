@@ -101,7 +101,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'koffan': return imageType === 'ico' ? '/favicon.ico' : '/static/icon-192.png';
         case 'libretranslate': return '/static/favicon.ico'; // Checked
         case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
-        case 'motioneye': return '/static/img/motioneye-logo.svg';
+        case 'motioneye': return '/static/img/motioneye-logo.svg'; // Checked
         case 'nodeexporter': return `@/homelab/icons/${appType}.png`;
         case 'npm-cache': return `@/homelab/icons/${appType}.png`;
         case 'ntfy': return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
