@@ -54,6 +54,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/datadog.s
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dawarich.svg" "$output_dir/dawarich.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/debian-linux.svg" "$output_dir/debian.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/digital-ocean.svg" "$output_dir/digitalocean.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/donetick.svg" "$output_dir/donetick.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/fedora.svg" "$output_dir/fedora.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/files.svg" "$output_dir/files.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/filezilla.svg" "$output_dir/filezilla.png"
