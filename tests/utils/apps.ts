@@ -240,6 +240,12 @@ export const apps = {
             { url: 'https://renovatebot.matejhome.com', title: 'Main' },
         ],
     },
+    reportportal: {
+        title: 'ReportPortal',
+        instances: [
+            { url: 'https://reportportal.matejhome.com', title: 'Main' },
+        ],
+    },
     samba: {
         title: 'SMB',
         instances: [

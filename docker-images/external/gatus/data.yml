@@ -436,6 +436,9 @@ apps:
     authentication:
       basic: homelab-viewer
 
+  - name: ReportPortal
+    domain: reportportal.matejhome.com
+
   - name: Samba [data]
     domain: samba-data.matejhome.com
     type: [http, smb]

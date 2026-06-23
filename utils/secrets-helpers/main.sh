@@ -1373,6 +1373,22 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
+*reportportal*)
+    # App
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'RP_INITIAL_ADMIN_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
 *samba*)
     # App
     smb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)"

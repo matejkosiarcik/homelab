@@ -164,6 +164,7 @@ proxies:
   - url: planka.matejhome.com
   - url: prometheus.matejhome.com
   - url: renovatebot.matejhome.com
+  - url: reportportal.matejhome.com
   - url: smtp4dev.matejhome.com
   - url: tvheadend.matejhome.com
   - url: unbound-1-default.matejhome.com

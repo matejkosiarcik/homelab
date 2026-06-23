@@ -61,6 +61,7 @@ const appAddress = (() => {
         case 'planka': return 'http://app:1337';
         case 'prometheus': return 'http://app:9090';
         case 'renovatebot': return '' // http://app:8080
+        case 'reportportal': return 'http://app:8080';
         case 'samba': return '';
         case 'smtp4dev': return 'http://app:5000';
         case 'speedtesttracker': return 'https://app';
@@ -112,6 +113,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'planka': return imageType === 'ico' ? '/favicon.ico' : '/logo192.png';
         case 'prometheus': return '/favicon.svg';
         case 'renovatebot': return `@/homelab/icons/${appType}.png`;
+        case 'reportportal': return '/ui/favicon.ico'; // Checked
         case 'samba': return `@/homelab/icons/${appType}.png`;
         case 'smtp4dev': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'speedtesttracker': return '/favicon.ico';

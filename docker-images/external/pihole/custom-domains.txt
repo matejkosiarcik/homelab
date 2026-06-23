@@ -92,6 +92,7 @@
 10.1.12.253 libretranslate.matejhome.com
 10.1.12.254 koffan.matejhome.com
 10.1.12.255 filebrowser.matejhome.com
+10.1.12.190 reportportal.matejhome.com
 10.1.12.191 planka.matejhome.com
 10.1.12.192 donetick.matejhome.com
 
