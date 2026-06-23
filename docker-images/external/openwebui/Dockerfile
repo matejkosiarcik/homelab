@@ -16,9 +16,10 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=openwebui-healthchec
 FROM ghcr.io/open-webui/open-webui:0.6.41 AS entrypoint
 USER root
 COPY ./external/openwebui/entrypoint-extra.sh /homelab/
-RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /app/backend/start.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/app/backend/start.sh
+RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && \
+    tail -n +2 /app/backend/start.sh >/homelab/entrypoint-upstream-rest.sh && \
+    cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
+    chmod u=rx,go= /homelab/entrypoint-final.sh
 
 FROM ghcr.io/open-webui/open-webui:0.6.41 AS runtime-dirs
 USER root
@@ -51,7 +52,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY --from=entrypoint /app/backend/start.sh /app/backend/start.sh
+COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/start.sh
 
 ### Final ###
 
@@ -60,7 +61,7 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-COPY --from=prefinal --chown=homelab:homelab /app/backend/start.sh /app/backend/start.sh
+COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/start.sh /app/backend/
 RUN chown -R homelab:homelab /app && \
     rm -rf /app/backend/open_webui/static /app/config
 ENV HOMELAB_CONTAINER_NAME=openwebui \
