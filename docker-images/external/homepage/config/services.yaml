@@ -595,25 +595,25 @@
         description: Resource Monitoring
         href: https://nodeexporter-odroid-h3.matejhome.com
         ping: nodeexporter-odroid-h3.matejhome.com
-        icon: /icons/placeholder.png
+        icon: /icons/nodeexporter.png
 
     - NodeExporter - Odroid H4 Ultra:
         description: Resource Monitoring
         href: https://nodeexporter-odroid-h4-ultra.matejhome.com
         ping: nodeexporter-odroid-h4-ultra.matejhome.com
-        icon: /icons/placeholder.png
+        icon: /icons/nodeexporter.png
 
     - NodeExporter - Raspberry Pi 4B 2GB:
         description: Resource Monitoring
         href: https://nodeexporter-raspberry-pi-4b-2g.matejhome.com
         ping: nodeexporter-raspberry-pi-4b-2g.matejhome.com
-        icon: /icons/placeholder.png
+        icon: /icons/nodeexporter.png
 
     - NodeExporter - Raspberry Pi 4B 4GB:
         description: Resource Monitoring
         href: https://nodeexporter-raspberry-pi-4b-4g.matejhome.com
         ping: nodeexporter-raspberry-pi-4b-4g.matejhome.com
-        icon: /icons/placeholder.png
+        icon: /icons/nodeexporter.png
 
     - Docker Stats - Odroid H3:
         description: Docker Usage Monitoring
