@@ -2,6 +2,16 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
+### App ###
+
+FROM linuxserver/jellyfin:10.11.5 AS favicon
+USER root
+RUN find '/usr/share/jellyfin/web' -name 'favicon.*.ico' -type f -maxdepth 1 -exec cp {} '/usr/share/jellyfin/web/favicon.ico' \; && \
+    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
+        printf 'File "favicon.ico" not found\n' >&2 && \
+        exit 1 && \
+    true; fi
+
 ### Healthcheck ###
 
 FROM golang:1.26.4-alpine AS healthcheck-build
@@ -46,6 +56,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
+COPY --from=favicon /usr/share/jellyfin/web/favicon.ico /fsroot/favicon/favicon.ico
 
 ### Final ###
 
@@ -54,6 +65,7 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal /fsroot/favicon/favicon.ico /usr/share/jellyfin/web/favicon.ico
 ARG GID=1000
 ARG UID=1000
 ENV HOMELAB_CONTAINER_NAME=jellyfin \
