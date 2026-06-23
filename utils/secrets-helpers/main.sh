@@ -1105,7 +1105,11 @@ case "$app_dirname" in
     # App
     ollama_openwebui_password="$(load_token ollama app openwebui)"
     printf 'OLLAMA_BASE_URL=%s\n' "https://openwebui:$ollama_openwebui_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
-    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    if [ "$mode" = 'dev' ]; then
+        secret_key="$(openssl rand -hex 16)"
+    else
+        secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    fi
     printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"

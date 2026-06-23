@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=openwebui-healthchec
 
 ### Other ###
 
-FROM ghcr.io/open-webui/open-webui:0.6.41 AS entrypoint
+FROM openwebui/open-webui:0.9.6 AS entrypoint
 USER root
 COPY ./external/openwebui/entrypoint-extra.sh /homelab/
 RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -21,7 +21,7 @@ RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && 
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM ghcr.io/open-webui/open-webui:0.6.41 AS runtime-dirs
+FROM openwebui/open-webui:0.9.6 AS runtime-dirs
 USER root
 WORKDIR /homelab
 RUN mkdir -p /homelab/original/app/backend/open_webui/static && \
@@ -56,7 +56,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/start.sh
 
 ### Final ###
 
-FROM ghcr.io/open-webui/open-webui:0.6.41
+FROM openwebui/open-webui:0.9.6
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
