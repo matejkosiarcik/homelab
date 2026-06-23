@@ -3,6 +3,7 @@ set -euf
 # shellcheck disable=SC2248
 
 mode=''
+only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
     mode="$HOMELAB_ENV"
 fi
@@ -15,6 +16,10 @@ while [ "$#" -gt 0 ]; do
     -p | --prod)
         mode='prod'
         shift
+        ;;
+    --only)
+        only_pattern="$2"
+        shift 2
         ;;
     *)
         printf 'Unknown argument %s\n' "$1"

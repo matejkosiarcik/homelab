@@ -3,6 +3,7 @@ set -euf
 # shellcheck disable=SC2248
 
 mode=''
+only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
     mode="$HOMELAB_ENV"
 fi
@@ -15,6 +16,10 @@ while [ "$#" -gt 0 ]; do
     -p | --prod)
         mode='prod'
         shift
+        ;;
+    --only)
+        only_pattern="$2"
+        shift 2
         ;;
     *)
         printf 'Unknown argument %s\n' "$1"
@@ -127,8 +132,9 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/png/tvheadend.png
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/unifi.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/uptime-kuma.svg" "$output_dir/uptimekuma.png"
 
-magick -background none -bordercolor transparent "$input_dir/gitman-repositories/homer-icons/svg/github.svg" -resize "$default_image_size" -density 1200 -fill black -colorize 100% "$tmpdir/github-tmp.png"
-convert_image_full "$tmpdir/github-tmp.png" "$output_dir/github.png"
+convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize "$default_image_size" -density 1200 -fill black -colorize 100% OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/github.svg" "$tmpdir/github.png"
+convert_image_full "$tmpdir/github.png" "$output_dir/github.png"
+rm -f "$tmpdir/github.png"
 
 ### Kubernetes Icons ###
 
@@ -158,33 +164,33 @@ convert_image_full "$tmpdir/13_05_osa_icons_svg/osa_device-usb-wifi.svg" "$outpu
 
 ## VRT Icons ##
 
-perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Clients & Peripherals/Laptop 3.svg" >"$tmpdir/notebook.svg"
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Clients & Peripherals/Laptop 3.svg" "$tmpdir/notebook.svg"
 convert_image_full "$tmpdir/notebook.svg" "$output_dir/notebook.png"
 rm -f "$tmpdir/notebook.svg"
 
-perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" >"$tmpdir/router.png"
-convert_image_full "$tmpdir/router.png" "$output_dir/router.png"
-rm -f "$tmpdir/router.png"
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Router.svg" "$tmpdir/router.svg"
+convert_image_full "$tmpdir/router.svg" "$output_dir/router.png"
+rm -f "$tmpdir/router.svg"
 
-perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" >"$tmpdir/switch.png"
-convert_image_full "$tmpdir/switch.png" "$output_dir/switch.png"
-rm -f "$tmpdir/switch.png"
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Switch 2.svg" "$tmpdir/switch.svg"
+convert_image_full "$tmpdir/switch.svg" "$output_dir/switch.png"
+rm -f "$tmpdir/switch.svg"
 
-perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Wireless Access Point 2.svg" >"$tmpdir/wifi-ap.png"
-convert_image_full "$tmpdir/wifi-ap.png" "$output_dir/wifi-ap.png"
-rm -f "$tmpdir/wifi-ap.png"
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Wireless Access Point 2.svg" "$tmpdir/wifi-ap.svg"
+convert_image_full "$tmpdir/wifi-ap.svg" "$output_dir/wifi-ap.png"
+rm -f "$tmpdir/wifi-ap.svg"
 
-perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Tower Server 1.svg" >"$tmpdir/server-big.png"
-convert_image_full "$tmpdir/server-big.png" "$output_dir/server-big.png"
-rm -f "$tmpdir/server-big.png"
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Tower Server 1.svg" "$tmpdir/server-big.svg"
+convert_image_full "$tmpdir/server-big.svg" "$output_dir/server-big.png"
+rm -f "$tmpdir/server-big.svg"
 
-perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Appliance 1.svg" >"$tmpdir/server-small.png"
-convert_image_full "$tmpdir/server-small.png" "$output_dir/server-small.png"
-rm -f "$tmpdir/server-small.png"
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Appliance 1.svg" "$tmpdir/server-small.svg"
+convert_image_full "$tmpdir/server-small.svg" "$output_dir/server-small.png"
+rm -f "$tmpdir/server-small.svg"
 
-perl -0pe 's~<g id="id3">.+?</g>~~gms' <"$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Energy Management/Single-phase Energy Meter (DIN).svg" >"$tmpdir/elecricity-meter.png"
-convert_image_full "$tmpdir/elecricity-meter.png" "$output_dir/elecricity-meter.png"
-rm -f "$tmpdir/elecricity-meter.png"
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "$input_dir/gitman-repositories/dia-vrt-sheets/SVG/VRT Energy Management/Single-phase Energy Meter (DIN).svg" "$tmpdir/elecricity-meter.svg"
+convert_image_full "$tmpdir/elecricity-meter.svg" "$output_dir/elecricity-meter.png"
+rm -f "$tmpdir/elecricity-meter.svg"
 
 ## Other Icons ###
 
@@ -218,7 +224,6 @@ convert_image_full "$input_dir/other/www.png" "$output_dir/www.png"
 ### Prebuild ###
 
 # General prebuilds
-
 convert_image_full "$input_dir/prebuild/personal-devices.png" "$output_dir/personal-devices.png"
 convert_image_full "$input_dir/prebuild/servers.png" "$output_dir/servers.png"
 convert_image_full "$input_dir/prebuild/squid.png" "$output_dir/squid.png"
