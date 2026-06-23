@@ -6,6 +6,7 @@
 
 - Homepage: <https://adventurelog.app>
 - Docs: <https://adventurelog.app/docs/intro/adventurelog_overview.html>
+    - Install guide: <https://adventurelog.app/docs/install/docker.html>
 - GitHub: <https://github.com/seanmorley15/AdventureLog>
 
 Backend:

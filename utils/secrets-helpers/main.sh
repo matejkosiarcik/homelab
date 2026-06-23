@@ -287,7 +287,12 @@ case "$app_dirname" in
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Decryptor
-    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    if [ "$mode" = 'dev' ]; then
+        secret_key="$(openssl rand -hex 16)"
+    else
+        secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    fi
+    printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/decryptor.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
