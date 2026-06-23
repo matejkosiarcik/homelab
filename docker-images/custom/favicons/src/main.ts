@@ -78,25 +78,25 @@ const appAddress = (() => {
 function getFaviconPath(imageType: 'ico' | 'png'): string {
     switch (appType) {
         case 'actualbudget': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
-        case 'adventurelog': return '/favicon.png';
+        case 'adventurelog': return '/favicon.png'; // Checked
         case 'certbot': return `@/homelab/icons/${appType}.png`;
-        case 'changedetection': return '/static/favicons/apple-touch-icon.png';
-        case 'dawarich': return `/assets/favicon/apple-touch-icon.png`;
+        case 'changedetection': return imageType === 'ico' ? '/static/favicons/favicon-32x32.png' : '/static/favicons/apple-touch-icon.png';
+        case 'dawarich': return imageType === 'ico' ? '/assets/favicon/favicon.ico' : '/assets/favicon/apple-touch-icon.png';
         case 'docker-cache': return `@/homelab/icons/${appType}.png`;
         case 'docker-stats': return `@/homelab/icons/${appType}.png`;
         case 'donetick': return imageType === 'ico' ? '/favicon-32x32.png' : '/apple-touch-icon.png';
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
-        case 'filebrowser': return '/static/img/icons/favicon.svg';
+        case 'filebrowser': return '/static/img/icons/favicon.svg'; // Checked
         case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
         case 'git-cache': return `@/homelab/icons/${appType}.png`;
         // case 'glances': return '/static/favicon.ico';
-        case 'gotify': return '/static/favicon-196x196.png';
-        case 'grafana': return '/public/img/grafana_icon.svg';
-        case 'groceries': return '/assets/icon/favicon.svg';
-        case 'healthchecks': return '/static/img/favicon.svg';
+        case 'gotify': return imageType === 'ico' ? '/static/favicon-32x32.png' : '/static/favicon-196x196.png';
+        case 'grafana': return imageType === 'ico' ? '/public/img/fav32.png' : '/public/img/grafana_icon.svg';
+        case 'groceries': return '/assets/icon/favicon.svg'; // Checked
+        case 'healthchecks': return '/static/img/favicon.svg'; // Checked
         case 'homeassistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
-        case 'homepage': return '/apple-touch-icon.png';
-        case 'jellyfin': return '/web/favicon.ico';
+        case 'homepage': return imageType === 'ico' ? '/favicon-32x32.png' : '/apple-touch-icon.png';
+        case 'jellyfin': return '/web/favicon.ico'; // Checked
         case 'kiwix': return '/skin/favicon/apple-touch-icon.png';
         case 'koffan': return imageType === 'ico' ? '/favicon.ico' : '/static/icon-192.png';
         case 'libretranslate': return '/static/favicon.ico';
