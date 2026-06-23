@@ -46,6 +46,7 @@ default_convert_options='magick -density 2000 -background none -bordercolor tran
 ### Dashboard Icons ###
 
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/adventure-log.svg" "$output_dir/adventurelog.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/beszel.svg" "$output_dir/beszel.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dawarich.svg" "$output_dir/dawarich.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/donetick.svg" "$output_dir/donetick.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/files.svg" "$output_dir/files.png"
@@ -65,6 +66,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/lubelogge
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.svg" "$output_dir/netdata.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nextcloud.svg" "$output_dir/nextcloud.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "$output_dir/nodeexporter.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$output_dir/openspeedtest.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/owncloud.svg" "$output_dir/owncloud.png"
