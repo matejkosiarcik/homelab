@@ -49,6 +49,8 @@ COPY --from=empty-dir /empty /homelab/certs
 COPY --from=empty-dir /empty /homelab/logs
 COPY --from=empty-dir /empty.txt /homelab/users/empty.htpasswd
 COPY ./custom/apache/www /homelab/www
+# TODO: Add build stage for building all error pages
+COPY ./custom/apache/errors /homelab/www/.apache/errors
 COPY ./custom/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
