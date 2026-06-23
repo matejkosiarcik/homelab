@@ -124,20 +124,32 @@ RewriteRule ^ /admin [L,R=307]
 
 # Protect Apache proxy prometheus endpoint
 <If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/\.apache(?:/.*)?$#">
-    AuthType Basic
-    AuthName Protected
-    AuthBasicProvider file
-    Require valid-user
     <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/\.apache/metrics$#">
         # Allow readonly methods for proxy prometheus handler
+        AuthType Basic
+        AuthName Protected
+        AuthBasicProvider file
+        Require valid-user
         AuthUserFile /homelab/users/proxy-prometheus.htpasswd
     </If>
     <ElseIf "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/\.apache/status$#">
         # Allow readonly methods for proxy status handler
+        AuthType Basic
+        AuthName Protected
+        AuthBasicProvider file
+        Require valid-user
         AuthUserFile /homelab/users/proxy-status.htpasswd
+    </ElseIf>
+    <ElseIf "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/\.apache/errors/[0-9]+\.html$#">
+        # Allow unprotected access to error pages for all readonly methods
+        AuthType None
     </ElseIf>
     <Else>
         # Deny non-readonly methods
+        AuthType Basic
+        AuthName Protected
+        AuthBasicProvider file
+        Require valid-user
         AuthUserFile /homelab/users/empty.htpasswd
     </Else>
 </If>

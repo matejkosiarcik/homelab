@@ -48,7 +48,7 @@ WORKDIR /homelab
 COPY --from=empty-dir /empty /homelab/certs
 COPY --from=empty-dir /empty /homelab/logs
 COPY --from=empty-dir /empty.txt /homelab/users/empty.htpasswd
-COPY ./custom/apache/www ./www
+COPY ./custom/apache/www /homelab/www
 COPY ./custom/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
