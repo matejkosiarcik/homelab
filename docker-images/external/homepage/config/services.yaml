@@ -442,6 +442,18 @@
         ping: adventurelog.matejhome.com
         icon: /icons/adventurelog.png
 
+    - Planka:
+        description: Homelab Project Management
+        href: https://planka.matejhome.com
+        ping: planka.matejhome.com
+        icon: /icons/planka.png
+
+    - DoneTick:
+        description: ToDo App for periodic home tasks
+        href: https://donetick.matejhome.com
+        ping: donetick.matejhome.com
+        icon: /icons/donetick.png
+
     - Certbot:
         description: Let's Encrypt Certificates
         href: https://certbot.matejhome.com

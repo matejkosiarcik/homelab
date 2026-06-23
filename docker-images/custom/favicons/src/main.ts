@@ -32,6 +32,7 @@ const appAddress = (() => {
         case 'dawarich': return 'http://app:3000';
         case 'docker-cache': return ''; // http://app
         case 'docker-stats': return ''; // http://app:9487
+        case 'donetick': return 'http://app:2021';
         case 'dozzle': return 'http://app:8080';
         case 'filebrowser': return 'http://app';
         case 'gatus': return 'http://app:8080';
@@ -57,6 +58,7 @@ const appAddress = (() => {
         case 'openwebui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'pihole': return 'http://app:80';
+        case 'planka': return 'http://app:1337';
         case 'prometheus': return 'http://app:9090';
         case 'renovatebot': return '' // http://app:8080
         case 'samba': return '';
@@ -81,6 +83,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'dawarich': return `/assets/favicon/apple-touch-icon.png`;
         case 'docker-cache': return `@/homelab/icons/${appType}.png`;
         case 'docker-stats': return `@/homelab/icons/${appType}.png`;
+        case 'donetick': return imageType === 'ico' ? '/favicon-32x32.png' : '/apple-touch-icon.png';
         case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
         case 'filebrowser': return '/static/img/icons/favicon.svg';
         case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
@@ -106,6 +109,7 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
         case 'openwebui': return '/static/favicon.svg';
         case 'openspeedtest': return '/assets/images/icons/apple-touch-icon.png';
         case 'pihole': return '/admin/img/favicons/apple-touch-icon.png';
+        case 'planka': return imageType === 'ico' ? '/favicon.ico' : '/logo192.png';
         case 'prometheus': return '/favicon.svg';
         case 'renovatebot': return `@/homelab/icons/${appType}.png`;
         case 'samba': return `@/homelab/icons/${appType}.png`;

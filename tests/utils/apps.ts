@@ -44,6 +44,12 @@ export const apps = {
             { url: 'https://docker-stats-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
         ],
     },
+    donetick: {
+        title: 'DoneTick',
+        instances: [
+            { url: 'https://donetick.matejhome.com', title: 'Main' },
+        ],
+    },
     dozzle: {
         title: 'Dozzle',
         instances: [
@@ -214,6 +220,12 @@ export const apps = {
             { url: 'https://pihole-2-blackhole.matejhome.com', title: 'Blackhole' },
             { url: 'https://pihole-2-primary.matejhome.com', title: 'Primary' },
             { url: 'https://pihole-2-secondary.matejhome.com', title: 'Secondary' },
+        ],
+    },
+    planka: {
+        title: 'Planka',
+        instances: [
+            { url: 'https://planka.matejhome.com', title: 'Main' },
         ],
     },
     prometheus: {

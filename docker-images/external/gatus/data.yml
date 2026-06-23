@@ -119,6 +119,9 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: DoneTick
+    domain: donetick.matejhome.com
+
   - name: Dozzle
     domain: dozzle.matejhome.com
 
@@ -415,6 +418,9 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+
+  - name: Planka
+    domain: planka.matejhome.com
 
   - name: Prometheus
     domain: prometheus.matejhome.com

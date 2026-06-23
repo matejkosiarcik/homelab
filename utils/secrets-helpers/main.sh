@@ -374,6 +374,26 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
+*donetick*)
+    # App
+    if [ "$mode" = 'dev' ]; then
+        jwt_secret="$(openssl rand -base64 32 | base64)"
+    else
+        jwt_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" app jwt-secret)"
+    fi
+    printf 'DT_JWT_SECRET=%s\n' "$jwt_secret" >>"$initial_output/app.env"
+    printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
 *dozzle-agent*)
     # App
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
@@ -1115,6 +1135,50 @@ case "$app_dirname" in
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
+*planka*)
+    # App
+    if [ "$mode" = 'dev' ]; then
+        secret_key="$(openssl rand -hex 64)"
+    else
+        secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    fi
+    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
+    printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
+
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    if [ "$mode" = 'dev' ]; then
+        matej_email='matej@localhost'
+    else
+        matej_email='matej@matejhome.com'
+    fi
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'DEFAULT_ADMIN_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
+    printf 'DEFAULT_ADMIN_EMAIL=%s\n' "$matej_email" >>"$initial_output/app.env"
+    printf 'DEFAULT_ADMIN_USERNAME=%s\n' "$(printf '%s' "$matej_email" | cut -d '@' -f 1)" >>"$initial_output/app.env"
+    printf 'DEFAULT_ADMIN_NAME=%s\n' "$(printf '%s' "$matej_email" | cut -d '@' -f 1 | awk '{print toupper(substr($0,0,1))substr($0,2)}')" >>"$initial_output/app.env"
+
+    # Postgres
+    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" postgres user)"
+    printf 'DATABASE_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgres.env"
+    printf 'postgres,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
