@@ -2,6 +2,37 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, but we switch to non-root user in entrypoint
 
+### Build config ###
+
+FROM debian:13.5-slim AS npmconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-npmconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-npmconfig-aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./.shared/anticache.txt /homelab/
+RUN printf '' >/root/.npmrc && \
+    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+    npm config set proxy https://npm-cache.matejhome.com && \
+    npm config set https-proxy https://npm-cache.matejhome.com
+
+### Error pages ###
+
+FROM node:26.3.0-slim AS errors-build
+USER root
+WORKDIR /homelab
+COPY --from=npmconfig /root/.npmrc /root/.npmrc
+COPY ./custom/apache/errors/package-lock.json ./custom/apache/errors/package.json /homelab/
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=apache-errors-nodejs-build-npmcache \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error
+COPY ./custom/apache/errors/eleventy.config.js /homelab/
+COPY ./custom/apache/errors/src/ /homelab/src/
+RUN npm run build && \
+    npm prune --production
+
 ### Healthcheck ###
 
 FROM golang:1.26.4-alpine AS healthcheck-build
@@ -49,8 +80,7 @@ COPY --from=empty-dir /empty /homelab/certs
 COPY --from=empty-dir /empty /homelab/logs
 COPY --from=empty-dir /empty.txt /homelab/users/empty.htpasswd
 COPY ./custom/apache/www /homelab/www
-# TODO: Add build stage for building all error pages
-COPY ./custom/apache/errors /homelab/www/.apache/errors
+COPY --from=errors-build /homelab/dist /homelab/www/.apache/errors
 COPY ./custom/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 

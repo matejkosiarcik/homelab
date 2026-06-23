@@ -140,7 +140,7 @@ RewriteRule ^ /admin [L,R=307]
         Require valid-user
         AuthUserFile /homelab/users/proxy-status.htpasswd
     </ElseIf>
-    <ElseIf "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/\.apache/errors/[0-9]+\.html$#">
+    <ElseIf "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/\.apache/errors/[0-9]+(?:/index\.html)?$#">
         # Allow unprotected access to error pages for all readonly methods
         AuthType None
     </ElseIf>
