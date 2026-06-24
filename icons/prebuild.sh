@@ -48,23 +48,19 @@ default_convert_options='magick -density 2000 -background none -bordercolor tran
 # Cache
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize "1000x1000" -border 50 OUTPUT_FILE' "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/pvc.svg" "$tmpdir/cache.png"
 convert_image_full "$tmpdir/cache.png" "$output_dir/cache.png"
-rm -f "$tmpdir/cache.png"
 
 # Cloud
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize "1000x1000" -border 20 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$tmpdir/cloud.png"
 convert_image_full "$tmpdir/cloud.png" "$output_dir/cloud.png"
-rm -f "$tmpdir/cloud.png"
 
 # Prometheus
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize "1000x1000" -border 50 OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$tmpdir/prometheus-background.png"
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize "1000x1000" -border 20 OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$tmpdir/prometheus-alone.png"
 convert_image_full "$tmpdir/prometheus-alone.png" "$output_dir/prometheus.png"
-rm -f "$tmpdir/prometheus-background.png" "$tmpdir/prometheus-alone.png"
 
 # Rounded Squid
 convert_image_draft 'magick INPUT_FILE \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite OUTPUT_FILE' "$input_dir/other/squid.jpg" "$tmpdir/squid.png"
 convert_image_full "$tmpdir/squid.png" "$output_dir/squid.png"
-rm -f "$tmpdir/squid.png"
 
 ### Combined icons ###
 
@@ -217,6 +213,9 @@ convert_image_full "$tmpdir/pihole-prometheus-exporter.png" "$output_dir/pihole-
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize "425x425" OUTPUT_FILE' "$output_dir/squid.png" "$tmpdir/squid.png"
 convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry "+300+300" -composite OUTPUT_FILE' "$tmpdir/prometheus-background.png" "$tmpdir/squid.png" "$tmpdir/squid-prometheus-exporter.png"
 convert_image_full "$tmpdir/squid-prometheus-exporter.png" "$output_dir/squid-prometheus-exporter.png"
+
+# Cleanup reused icons
+rm -f "$tmpdir/cache.png" "$tmpdir/cloud.png" "$tmpdir/prometheus-background.png" "$tmpdir/prometheus-alone.png" "$tmpdir/squid.png"
 
 ### Cleanup ###
 
