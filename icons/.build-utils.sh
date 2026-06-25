@@ -127,7 +127,5 @@ convert_ico() {
     mkdir -p "$(dirname "$2")"
     rm -f "$2"
     # shellcheck disable=SC2086
-    png2ico "$2" --colors 16 "$1"
-    # shellcheck disable=SC2086
-    rm -f "$1"
+    png2ico "$2" --colors 16 $1
 }
