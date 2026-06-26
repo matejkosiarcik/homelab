@@ -5,10 +5,9 @@ x-definitions:
 services:
   app-backend:
     <<: *common-service-options
-    environment:
-      PLACEHOLDER: placeholder
-      # Uncomment for initial setup (signups):
-      # DISABLE_ACCOUNT_CREATION: "0"
+    # Uncomment for initial setup (signups):
+    # environment:
+    #   DISABLE_ACCOUNT_CREATION: "0"
 
   app-frontend:
     <<: *common-service-options

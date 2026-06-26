@@ -12,6 +12,9 @@ services:
     # environment:
     #   DISABLE_REGISTRATION: False
 
+  postgis:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

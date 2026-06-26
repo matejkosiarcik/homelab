@@ -209,11 +209,17 @@ case "$app_dirname" in
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app-backend.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
-    # Database
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
-    printf 'PGPASSWORD=%s\n' "$database_password" >>"$initial_output/app-backend.env"
-    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
-    printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    # Postgis
+    postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    printf 'PGPASSWORD=%s\n' "$postgres_password" >>"$initial_output/app-backend.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/postgis.env"
+    printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/all-credentials.csv"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -281,15 +287,26 @@ case "$app_dirname" in
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
 
     # Decryptor
-    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    if [ "$mode" = 'dev' ]; then
+        secret_key="$(openssl rand -hex 16)"
+    else
+        secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    fi
+    printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
     printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/decryptor.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
-    # Database
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
-    printf 'DATABASE_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
-    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
-    printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    # Postgis
+    postgis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    printf 'DATABASE_PASSWORD=%s\n' "$postgis_password" >>"$initial_output/app.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgis_password" >>"$initial_output/postgis.env"
+    printf 'postgis,%s\n' "$postgis_password" >>"$initial_output/all-credentials.csv"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
 
     # Redis
     redis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" redis user)"
@@ -351,6 +368,26 @@ case "$app_dirname" in
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
+*donetick*)
+    # App
+    if [ "$mode" = 'dev' ]; then
+        jwt_secret="$(openssl rand -base64 32 | base64)"
+    else
+        jwt_secret="$(load_token "$DOCKER_COMPOSE_APP_NAME" app jwt-secret)"
+    fi
+    printf 'DT_JWT_SECRET=%s\n' "$jwt_secret" >>"$initial_output/app.env"
+    printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -537,7 +574,9 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
+    printf 'DONETICK__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token donetick apache prometheus)" >>"$initial_output/app.env"
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
+    printf 'FILEBROWSER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token filebrowser apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
     printf 'GOTIFY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gotify apache prometheus)" >>"$initial_output/app.env"
@@ -547,46 +586,50 @@ case "$app_dirname" in
     printf 'HOMEASSISTANT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homeassistant apache prometheus)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homepage apache prometheus)" >>"$initial_output/app.env"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin apache prometheus)" >>"$initial_output/app.env"
-    printf 'MINIO_CONSOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
+    printf 'KOFFAN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token koffan apache prometheus)" >>"$initial_output/app.env"
+    printf 'LIBRETRANSLATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token libretranslate apache prometheus)" >>"$initial_output/app.env"
     printf 'MINIO__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
+    printf 'MINIO_CONSOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token motioneye-kitchen apache prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ntfy apache prometheus)" >>"$initial_output/app.env"
-    printf 'OLLAMA_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama apache prometheus)" >>"$initial_output/app.env"
+    printf 'OLLAMA_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OMADACONTROLLER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omadacontroller apache prometheus)" >>"$initial_output/app.env"
     printf 'OPENSPEEDTEST__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$initial_output/app.env"
-    printf 'OPENWEBUI_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OPENWEBUI__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui apache prometheus)" >>"$initial_output/app.env"
+    printf 'OPENWEBUI_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui-private apache prometheus)" >>"$initial_output/app.env"
+    printf 'PIHOLE_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_PRIMARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary apache prometheus)" >>"$initial_output/app.env"
-    printf 'PIHOLE_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-blackhole apache prometheus)" >>"$initial_output/app.env"
+    printf 'PIHOLE_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_PRIMARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary apache prometheus)" >>"$initial_output/app.env"
-    printf 'PIHOLE_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-blackhole apache prometheus)" >>"$initial_output/app.env"
+    printf 'PLANKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token planka apache prometheus)" >>"$initial_output/app.env"
     printf 'PROMETHEUS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus apache prometheus)" >>"$initial_output/app.env"
     printf 'RENOVATEBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token renovatebot apache prometheus)" >>"$initial_output/app.env"
+    printf 'REPORTPORTAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token reportportal apache prometheus)" >>"$initial_output/app.env"
     printf 'SAMBA_DATA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token samba-data apache prometheus)" >>"$initial_output/app.env"
     printf 'SMTP4DEV__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token smtp4dev apache prometheus)" >>"$initial_output/app.env"
     printf 'SPEEDTESTTRACKER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token speedtesttracker apache prometheus)" >>"$initial_output/app.env"
     printf 'TVHEADEND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token tvheadend apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_DEFAULT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-default apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_GUESTS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-guests apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-internal apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_IOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-iot apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_MATEJ__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-matej apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_MONIKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-monika apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_1_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-internal apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-blackhole apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_DEFAULT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-default apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_GUESTS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-guests apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-internal apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_IOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-iot apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_MATEJ__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-matej apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_MONIKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-monika apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_2_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-internal apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'UNIFICONTROLLER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unificontroller apache prometheus)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma-2 apache prometheus)" >>"$initial_output/app.env"
@@ -609,13 +652,19 @@ case "$app_dirname" in
     touch "$initial_output/favicons.env"
     ;;
 *git-cache*)
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
 
     # App
-    printf 'PGPASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
+    printf 'PGPASSWORD=%s\n' "$postgres_password" >>"$initial_output/app.env"
 
     # Postgres
-    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgres.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/postgres.env"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
 
     # Redis
     redis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" redis user)"
@@ -681,11 +730,11 @@ case "$app_dirname" in
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
     printf 'SMTP_PASSWORD=\n' >>"$initial_output/app.env" # Placeholder
 
-    # Database
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb admin)"
-    printf 'COUCHDB_ADMIN_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
-    printf 'COUCHDB_PASSWORD=%s\n' "$database_password" >>"$initial_output/couchdb.env"
-    printf 'couchdb-admin,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    # CouchDB
+    couchdb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb admin)"
+    printf 'COUCHDB_ADMIN_PASSWORD=%s\n' "$couchdb_password" >>"$initial_output/app.env"
+    printf 'COUCHDB_PASSWORD=%s\n' "$couchdb_password" >>"$initial_output/couchdb.env"
+    printf 'couchdb,%s\n' "$couchdb_password" >>"$initial_output/all-credentials.csv"
     hmac_key="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb hmac-key)"
     printf 'COUCHDB_HMAC_KEY=%s\n' "$hmac_key" >>"$initial_output/app.env"
     printf 'HMAC_KEY=%s\n' "$hmac_key" >>"$initial_output/couchdb.env"
@@ -1067,7 +1116,11 @@ case "$app_dirname" in
     # App
     ollama_openwebui_password="$(load_token ollama app openwebui)"
     printf 'OLLAMA_BASE_URL=%s\n' "https://openwebui:$ollama_openwebui_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
-    secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    if [ "$mode" = 'dev' ]; then
+        secret_key="$(openssl rand -hex 16)"
+    else
+        secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    fi
     printf 'WEBUI_SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
@@ -1097,6 +1150,50 @@ case "$app_dirname" in
     prometheus_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app prometheus)"
     write_http_auth_user prometheus "$prometheus_password" prometheus
     printf 'prometheus,%s\n' "$prometheus_password" >>"$initial_output/all-credentials.csv"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
+*planka*)
+    # App
+    if [ "$mode" = 'dev' ]; then
+        secret_key="$(openssl rand -hex 64)"
+    else
+        secret_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app secret-key)"
+    fi
+    printf 'SECRET_KEY=%s\n' "$secret_key" >>"$initial_output/app.env"
+    printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
+
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    if [ "$mode" = 'dev' ]; then
+        matej_email='matej@localhost'
+    else
+        matej_email='matej@matejhome.com'
+    fi
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'DEFAULT_ADMIN_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
+    printf 'DEFAULT_ADMIN_EMAIL=%s\n' "$matej_email" >>"$initial_output/app.env"
+    printf 'DEFAULT_ADMIN_USERNAME=%s\n' "$(printf '%s' "$matej_email" | cut -d '@' -f 1)" >>"$initial_output/app.env"
+    printf 'DEFAULT_ADMIN_NAME=%s\n' "$(printf '%s' "$matej_email" | cut -d '@' -f 1 | awk '{print toupper(substr($0,0,1))substr($0,2)}')" >>"$initial_output/app.env"
+
+    # Postgres
+    postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" postgres user)"
+    printf 'DATABASE_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/app.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/postgres.env"
+    printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/all-credentials.csv"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
     # Certificator
     write_certificator_users
@@ -1184,7 +1281,9 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-odroid-h4-ultra apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-2g apache prometheus)" >>"$initial_output/app.env"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
+    printf 'DONETICK__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token donetick apache prometheus)" >>"$initial_output/app.env"
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
+    printf 'FILEBROWSER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token filebrowser apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
     printf 'GIT_CACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token git-cache-github apache prometheus)" >>"$initial_output/app.env"
@@ -1195,9 +1294,10 @@ case "$app_dirname" in
     printf 'HOMEASSISTANT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homeassistant apache prometheus)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token homepage apache prometheus)" >>"$initial_output/app.env"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token jellyfin apache prometheus)" >>"$initial_output/app.env"
+    printf 'KOFFAN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token koffan apache prometheus)" >>"$initial_output/app.env"
     printf 'LIBRETRANSLATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token libretranslate apache prometheus)" >>"$initial_output/app.env"
-    printf 'MINIO_CONSOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
     printf 'MINIO__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
+    printf 'MINIO_CONSOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token minio apache prometheus)" >>"$initial_output/app.env"
     printf 'MOTIONEYE_KITCHEN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token motioneye-kitchen apache prometheus)" >>"$initial_output/app.env"
     printf 'NETALERTX__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token netalertx apache prometheus)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_ODROID_H3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-odroid-h3 apache prometheus)" >>"$initial_output/app.env"
@@ -1206,38 +1306,40 @@ case "$app_dirname" in
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token nodeexporter-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token npm-cache apache prometheus)" >>"$initial_output/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ntfy apache prometheus)" >>"$initial_output/app.env"
-    printf 'OLLAMA_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama apache prometheus)" >>"$initial_output/app.env"
+    printf 'OLLAMA_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token ollama-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OMADACONTROLLER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token omadacontroller apache prometheus)" >>"$initial_output/app.env"
     printf 'OPENSPEEDTEST__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openspeedtest apache prometheus)" >>"$initial_output/app.env"
-    printf 'OPENWEBUI_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui-private apache prometheus)" >>"$initial_output/app.env"
     printf 'OPENWEBUI__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui apache prometheus)" >>"$initial_output/app.env"
+    printf 'OPENWEBUI_PRIVATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token openwebui-private apache prometheus)" >>"$initial_output/app.env"
+    printf 'PIHOLE_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_PRIMARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-primary apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_1_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-secondary apache prometheus)" >>"$initial_output/app.env"
-    printf 'PIHOLE_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-1-blackhole apache prometheus)" >>"$initial_output/app.env"
+    printf 'PIHOLE_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_PRIMARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-primary apache prometheus)" >>"$initial_output/app.env"
     printf 'PIHOLE_2_SECONDARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-secondary apache prometheus)" >>"$initial_output/app.env"
-    printf 'PIHOLE_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token pihole-2-blackhole apache prometheus)" >>"$initial_output/app.env"
+    printf 'PLANKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token planka apache prometheus)" >>"$initial_output/app.env"
     printf 'PROMETHEUS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus apache prometheus)" >>"$initial_output/app.env"
     printf 'RENOVATEBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token renovatebot apache prometheus)" >>"$initial_output/app.env"
+    printf 'REPORTPORTAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token reportportal apache prometheus)" >>"$initial_output/app.env"
     printf 'SAMBA_DATA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token samba-data apache prometheus)" >>"$initial_output/app.env"
     printf 'SMTP4DEV__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token smtp4dev apache prometheus)" >>"$initial_output/app.env"
     printf 'SPEEDTESTTRACKER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token speedtesttracker apache prometheus)" >>"$initial_output/app.env"
     printf 'TVHEADEND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token tvheadend apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_DEFAULT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-default apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_GUESTS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-guests apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_1_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-internal apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_IOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-iot apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_MATEJ__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-matej apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_1_MONIKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-monika apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_1_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-internal apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_1_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-1-blackhole apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_DEFAULT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-default apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_GUESTS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-guests apache prometheus)" >>"$initial_output/app.env"
+    printf 'UNBOUND_2_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-internal apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_IOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-iot apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_MATEJ__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-matej apache prometheus)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_MONIKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-monika apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_2_INTERNAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-internal apache prometheus)" >>"$initial_output/app.env"
-    printf 'UNBOUND_2_BLACKHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unbound-2-blackhole apache prometheus)" >>"$initial_output/app.env"
     printf 'UNIFICONTROLLER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token unificontroller apache prometheus)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'UPTIMEKUMA_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token uptimekuma-2 apache prometheus)" >>"$initial_output/app.env"
@@ -1280,6 +1382,22 @@ case "$app_dirname" in
     write_http_auth_user homelab-test "$homelab_test_password" proxy-prometheus
     write_http_auth_user homelab-test "$homelab_test_password" users-viewers
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
+
+    # Apache
+    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
+
+    # Certificator
+    write_certificator_users
+    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
+
+    # Favicons
+    touch "$initial_output/favicons.env"
+    ;;
+*reportportal*)
+    # App
+    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
+    printf 'RP_INITIAL_ADMIN_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
@@ -1350,7 +1468,7 @@ case "$app_dirname" in
         matej_email='matej@localhost'
         app_key="$(printf 'base64:' && openssl rand -base64 32)"
     else
-        matej_email="matej@matejhome.com"
+        matej_email='matej@matejhome.com'
         app_key="$(load_token "$DOCKER_COMPOSE_APP_NAME" app app-key)"
     fi
     printf '%s,%s\n' "$matej_email" "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -1424,7 +1542,7 @@ case "$app_dirname" in
     printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-viewer,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)" >>"$initial_output/all-credentials.csv"
 
-    # Database
+    # MongoDB
     mongodb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" mongodb admin)"
     printf 'mongodb,%s\n' "$mongodb_password" >>"$initial_output/all-credentials.csv"
     printf 'MONGO_PASSWORD=%s\n' "$mongodb_password" >>"$initial_output/mongodb.env"
@@ -1508,8 +1626,8 @@ case "$app_dirname" in
     ;;
 esac
 
-# TODO: Switch to 0400 permissions eventually after unifying container users
-find "$initial_output" -type f -exec chmod 0444 {} \;
+# Lower permissions for all secret files
+find "$initial_output" -type f -exec chmod 0400 {} \;
 
 output='app-secrets'
 if [ -e "$output" ]; then

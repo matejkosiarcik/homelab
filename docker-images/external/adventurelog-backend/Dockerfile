@@ -57,7 +57,7 @@ ENV DEBUG=False \
     HOMELAB_CONTAINER_NAME=adventurelog \
     HOMELAB_CONTAINER_VARIANT=default \
     PGDATABASE=adventurelog \
-    PGHOST=database \
+    PGHOST=postgis \
     PGUSER=postgres \
     TZ=Europe/Bratislava
 USER homelab

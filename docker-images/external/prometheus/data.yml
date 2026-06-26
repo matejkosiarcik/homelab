@@ -127,6 +127,7 @@ proxies:
   - url: docker-stats-odroid-h4-ultra.matejhome.com
   - url: docker-stats-raspberry-pi-4b-2g.matejhome.com
   - url: docker-stats-raspberry-pi-4b-4g.matejhome.com
+  - url: donetick.matejhome.com
   - url: dozzle.matejhome.com
   - url: filebrowser.matejhome.com
   - url: gatus-1.matejhome.com
@@ -160,8 +161,10 @@ proxies:
   - url: pihole-1-secondary.matejhome.com
   - url: pihole-2-primary.matejhome.com
   - url: pihole-2-secondary.matejhome.com
+  - url: planka.matejhome.com
   - url: prometheus.matejhome.com
   - url: renovatebot.matejhome.com
+  - url: reportportal.matejhome.com
   - url: smtp4dev.matejhome.com
   - url: tvheadend.matejhome.com
   - url: unbound-1-default.matejhome.com

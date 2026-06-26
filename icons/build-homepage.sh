@@ -3,6 +3,7 @@ set -euf
 # shellcheck disable=SC2248
 
 mode=''
+only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
     mode="$HOMELAB_ENV"
 fi
@@ -16,6 +17,10 @@ while [ "$#" -gt 0 ]; do
         mode='prod'
         shift
         ;;
+    --only)
+        only_pattern="$2"
+        shift 2
+        ;;
     *)
         printf 'Unknown argument %s\n' "$1"
         exit 1
@@ -26,7 +31,9 @@ HOMELAB_ENV="$mode"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/external/homepage/icons"
-rm -rf "$output_dir"
+if [ "${only_pattern:-}" = '' ]; then
+    rm -rf "$output_dir"
+fi
 mkdir -p "$output_dir"
 
 tmpdir=''
@@ -41,7 +48,9 @@ default_convert_options='magick -density 2000 -background none -bordercolor tran
 ### Dashboard Icons ###
 
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/adventure-log.svg" "$output_dir/adventurelog.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/beszel.svg" "$output_dir/beszel.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/dawarich.svg" "$output_dir/dawarich.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/donetick.svg" "$output_dir/donetick.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/files.svg" "$output_dir/files.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/git.svg" "$output_dir/git-cache.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/gitea.svg" "$output_dir/gitea.png"
@@ -59,6 +68,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/lubelogge
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/netalertx.png" "$output_dir/netalertx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/netdata.svg" "$output_dir/netdata.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nextcloud.svg" "$output_dir/nextcloud.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "$output_dir/nodeexporter.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/png/openspeedtest.png" "$output_dir/openspeedtest.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/owncloud.svg" "$output_dir/owncloud.png"

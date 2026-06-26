@@ -16,9 +16,10 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=groceries-frontend-h
 FROM ghcr.io/davideshay/groceries-client:1.1.9 AS entrypoint
 USER root
 COPY ./external/groceries-frontend/entrypoint-extra.sh /homelab/
-RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/docker-entrypoint.sh
+RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
+    tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
+    cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
+    chmod u=rx,go= /homelab/entrypoint-final.sh
 
 FROM ghcr.io/davideshay/groceries-client:1.1.9 AS runtime-dirs
 USER root
@@ -51,7 +52,7 @@ COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY ./external/groceries-frontend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY --from=entrypoint /docker-entrypoint.sh /docker-entrypoint.sh
+COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-entrypoint.sh
 
 ### Final ###
 
@@ -62,7 +63,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-COPY --from=prefinal --chown=homelab:homelab /docker-entrypoint.sh /docker-entrypoint.sh
+COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoint.sh /
 # WORKDIR /homelab
 ENV COUCHDB_USER=admin \
     DEFAULT_API_URL=https://placeholder.matejhome.com/api \

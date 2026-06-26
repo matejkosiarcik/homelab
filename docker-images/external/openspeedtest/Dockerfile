@@ -17,9 +17,10 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=openspeedtest-health
 FROM openspeedtest/latest:v2.0.6 AS entrypoint
 USER root
 COPY ./external/openspeedtest/entrypoint-extra.sh /homelab/
-RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /entrypoint.sh >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/entrypoint.sh
+RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
+    tail -n +2 /entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
+    cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
+    chmod u=rx,go= /homelab/entrypoint-final.sh
 
 FROM openspeedtest/latest:v2.0.6 AS runtime-dirs
 USER root
@@ -60,7 +61,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
+COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoint.sh
 
 ### Final ###
 
@@ -71,7 +72,7 @@ RUN chown -R homelab:homelab /etc/nginx && \
     chmod a+x "$(which crond)"
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-COPY --from=prefinal --chown=homelab:homelab /entrypoint.sh /entrypoint.sh
+COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/entrypoint.sh /
 ARG GID=1000
 ARG UID=1000
 ENV ENABLE_LETSENCRYPT=False \

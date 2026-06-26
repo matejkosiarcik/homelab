@@ -2,6 +2,7 @@
 set -euf
 
 mode=''
+only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
     mode="$HOMELAB_ENV"
 fi
@@ -15,6 +16,10 @@ while [ "$#" -gt 0 ]; do
         mode='prod'
         shift
         ;;
+    --only)
+        only_pattern="$2"
+        shift 2
+        ;;
     *)
         printf 'Unknown argument %s\n' "$1"
         exit 1
@@ -25,7 +30,9 @@ HOMELAB_ENV="$mode"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/external/healthchecks/icons"
-rm -rf "$output_dir"
+if [ "${only_pattern:-}" = '' ]; then
+    rm -rf "$output_dir"
+fi
 mkdir -p "$output_dir"
 
 tmpdir=''

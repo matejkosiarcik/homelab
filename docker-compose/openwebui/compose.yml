@@ -18,7 +18,7 @@ services:
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
-    networks:
+    networks: # Necessary to connect to ollama
       internal-network: {}
       external-network: {}
 
