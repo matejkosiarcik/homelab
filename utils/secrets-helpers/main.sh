@@ -210,10 +210,10 @@ case "$app_dirname" in
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
     # Postgis
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
-    printf 'PGPASSWORD=%s\n' "$database_password" >>"$initial_output/app-backend.env"
-    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
-    printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    printf 'PGPASSWORD=%s\n' "$postgres_password" >>"$initial_output/app-backend.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/postgis.env"
+    printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/all-credentials.csv"
     if [ "$mode" = 'dev' ]; then
         openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
     else
@@ -297,10 +297,10 @@ case "$app_dirname" in
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/all-credentials.csv"
 
     # Postgis
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
-    printf 'DATABASE_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
-    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgis.env"
-    printf 'database,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    postgis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    printf 'DATABASE_PASSWORD=%s\n' "$postgis_password" >>"$initial_output/app.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgis_password" >>"$initial_output/postgis.env"
+    printf 'postgis,%s\n' "$postgis_password" >>"$initial_output/all-credentials.csv"
     if [ "$mode" = 'dev' ]; then
         openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
     else
@@ -652,13 +652,13 @@ case "$app_dirname" in
     touch "$initial_output/favicons.env"
     ;;
 *git-cache*)
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
+    postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
 
     # App
-    printf 'PGPASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
+    printf 'PGPASSWORD=%s\n' "$postgres_password" >>"$initial_output/app.env"
 
     # Postgres
-    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgres.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/postgres.env"
     if [ "$mode" = 'dev' ]; then
         openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
     else
@@ -731,10 +731,10 @@ case "$app_dirname" in
     printf 'SMTP_PASSWORD=\n' >>"$initial_output/app.env" # Placeholder
 
     # CouchDB
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb admin)"
-    printf 'COUCHDB_ADMIN_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
-    printf 'COUCHDB_PASSWORD=%s\n' "$database_password" >>"$initial_output/couchdb.env"
-    printf 'couchdb-admin,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    couchdb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb admin)"
+    printf 'COUCHDB_ADMIN_PASSWORD=%s\n' "$couchdb_password" >>"$initial_output/app.env"
+    printf 'COUCHDB_PASSWORD=%s\n' "$couchdb_password" >>"$initial_output/couchdb.env"
+    printf 'couchdb,%s\n' "$couchdb_password" >>"$initial_output/all-credentials.csv"
     hmac_key="$(load_password "$DOCKER_COMPOSE_APP_NAME" couchdb hmac-key)"
     printf 'COUCHDB_HMAC_KEY=%s\n' "$hmac_key" >>"$initial_output/app.env"
     printf 'HMAC_KEY=%s\n' "$hmac_key" >>"$initial_output/couchdb.env"
@@ -1181,10 +1181,10 @@ case "$app_dirname" in
     printf 'DEFAULT_ADMIN_NAME=%s\n' "$(printf '%s' "$matej_email" | cut -d '@' -f 1 | awk '{print toupper(substr($0,0,1))substr($0,2)}')" >>"$initial_output/app.env"
 
     # Postgres
-    database_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" postgres user)"
-    printf 'DATABASE_PASSWORD=%s\n' "$database_password" >>"$initial_output/app.env"
-    printf 'POSTGRES_PASSWORD=%s\n' "$database_password" >>"$initial_output/postgres.env"
-    printf 'postgres,%s\n' "$database_password" >>"$initial_output/all-credentials.csv"
+    postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" postgres user)"
+    printf 'DATABASE_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/app.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/postgres.env"
+    printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/all-credentials.csv"
     if [ "$mode" = 'dev' ]; then
         openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres'
     else
