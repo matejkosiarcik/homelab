@@ -30,7 +30,9 @@ HOMELAB_ENV="$mode"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/custom/favicons/icons"
-rm -rf "$output_dir"
+if [ "${only_pattern:-}" = '' ]; then
+    rm -rf "$output_dir"
+fi
 mkdir -p "$output_dir"
 
 tmpdir=''
@@ -54,6 +56,7 @@ convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1
 optimize_image "$tmpdir/smtp4dev-favicon-32.png"
 convert_ico "$tmpdir/smtp4dev-favicon-16.png $tmpdir/smtp4dev-favicon-32.png" "$(git rev-parse --show-toplevel)/docker-images/external/smtp4dev/icons/favicon.ico"
 convert_image_full "$input_dir/other/smtp4dev-favicon.png" "$(git rev-parse --show-toplevel)/docker-images/external/smtp4dev/icons/favicon.png"
+rm -f "$tmpdir/smtp4dev-favicon-16.png" "$tmpdir/smtp4dev-favicon-32.png"
 
 ## Other ##
 

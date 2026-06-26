@@ -110,6 +110,7 @@ convert_image_full() {
         return 0
     fi
 
+    mkdir -p "$(dirname "$2")"
     convert_image_draft "$default_convert_options" "$1" "$2"
     convert_image_draft 'magick INPUT_FILE -background none -bordercolor transparent -gravity center -extent RESOLUTION OUTPUT_FILE' "$2" "$2"
     optimize_image "$2"
@@ -123,9 +124,8 @@ convert_ico() {
         return 0
     fi
 
+    mkdir -p "$(dirname "$2")"
     rm -f "$2"
     # shellcheck disable=SC2086
     png2ico "$2" --colors 16 $1
-    # shellcheck disable=SC2086
-    rm -f $1
 }
