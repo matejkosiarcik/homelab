@@ -167,8 +167,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/redis.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-data:/data:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-certs:/homelab/redis-certs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:rw
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
@@ -183,7 +183,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgres:/var/lib/postgresql/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgres/data:/var/lib/postgresql/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
     tmpfs:
@@ -198,7 +198,7 @@ services:
       dockerfile: ./external/postgis/Dockerfile
     shm_size: 1G
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis:/var/lib/postgresql/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis/data:/var/lib/postgresql/data:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-shared:/var/shared:rw # TODO: Determine if necessary
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
