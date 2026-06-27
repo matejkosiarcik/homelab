@@ -15,8 +15,8 @@ should_generate_icon() {
         return 0  # Generate everything if no filter is set
     fi
 
-    printf '%s' "${1}" | tr '|' '\n' | while read -r filepart; do
-        if printf '%s' "$filepart" | grep -qE "$only_pattern" >/dev/null; then
+    printf '%s\n' "${1}" | tr '/' '\n' | while read -r filepart; do
+        if printf '%s\n' "$filepart" | grep -qE ".*(?:${only_pattern}).*" >/dev/null; then
             return 0
         fi
     done
