@@ -12,7 +12,7 @@ default_convert_options='magick INPUT_FILE OUTPUT_FILE'
 # Check if an icon should be generated based on the --only filter
 should_generate_icon() {
     if [ -z "${only_pattern:-}" ]; then
-        return 0  # Generate everything if no filter is set
+        return 0 # Generate everything if no filter is set
     fi
 
     printf '%s\n' "${1}" | tr '/' '\n' | while read -r filepart; do
@@ -21,7 +21,7 @@ should_generate_icon() {
         fi
     done
 
-    return 1;
+    return 1
 }
 
 optimize_image() {
