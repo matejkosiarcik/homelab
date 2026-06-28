@@ -7,5 +7,6 @@
   "id-class-style": "dash",
   "indent-width": 2,
   "spec-char-escape": false,
+  "style-tag": false,
   "title-no-dup": false
 }
