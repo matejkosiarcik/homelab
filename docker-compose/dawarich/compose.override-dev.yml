@@ -23,6 +23,11 @@ services:
 
   postgis:
     <<: *common-service-options
+    ports:
+      - 127.0.0.1:5432:5432
+    networks:
+      internal-network: {}
+      external-network: {}
 
   decryptor:
     <<: *common-service-options

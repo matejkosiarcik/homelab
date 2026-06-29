@@ -14,7 +14,8 @@ services:
     # environment:
     #   PLACEHOLDER: PLACEHOLDER
     # volumes:
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER:/homelab/PLACEHOLDER:ro
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER:/PLACEHOLDER:rw
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER:/PLACEHOLDER:ro
     # networks:
     #   internal-network: {}
     #   external-network: {}

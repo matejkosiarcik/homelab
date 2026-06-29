@@ -7,3 +7,7 @@ exclude = [
   '^https?://.*\.matejhome\.com', # Private domain
   '^https?://.*', # Everything else
 ]
+exclude_path = [
+    "^/.*", # skip local URLs
+]
+root_dir = "/"

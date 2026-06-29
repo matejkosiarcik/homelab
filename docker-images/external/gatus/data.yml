@@ -119,6 +119,9 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: DoneTick
+    domain: donetick.matejhome.com
+
   - name: Dozzle
     domain: dozzle.matejhome.com
 
@@ -416,6 +419,9 @@ apps:
         authentication:
           basic: prometheus
 
+  - name: Planka
+    domain: planka.matejhome.com
+
   - name: Prometheus
     domain: prometheus.matejhome.com
     authentication:
@@ -429,6 +435,9 @@ apps:
     domain: renovatebot.matejhome.com
     authentication:
       basic: homelab-viewer
+
+  - name: ReportPortal
+    domain: reportportal.matejhome.com
 
   - name: Samba [data]
     domain: samba-data.matejhome.com

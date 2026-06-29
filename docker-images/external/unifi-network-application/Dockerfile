@@ -7,9 +7,10 @@
 FROM linuxserver/unifi-network-application:10.0.162 AS entrypoint
 USER root
 COPY ./external/unifi-network-application/entrypoint-extra.sh /homelab/
-RUN head -n 1 /init >/homelab/entrypoint-shebang.sh && \
-    tail -n +2 /init >/homelab/entrypoint-without-shebang.sh && \
-    cat /homelab/entrypoint-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-without-shebang.sh >/init
+RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
+    tail -n +2 /init >/homelab/entrypoint-upstream-rest.sh && \
+    cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
+    chmod u=rx,go= /homelab/entrypoint-final.sh
 
 FROM linuxserver/unifi-network-application:10.0.162 AS runtime-dirs
 USER root
@@ -51,7 +52,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY --from=entrypoint /init /init
+COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 
 ### Final ###
 
@@ -68,9 +69,9 @@ RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".
     ln -s /run/unifi /usr/lib/unifi/run && \
     rm -rf /defaults && \
     chown -R homelab:homelab /usr/lib/unifi
-COPY --from=prefinal --chown=homelab:homelab /init /init
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/init /
 ARG GID=1000
 ARG UID=1000
 ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \

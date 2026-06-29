@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Error page {{ title }} - {{ subtitle }}" />
+    <meta name="keywords" content="error" />
+    <title>Error {{ title }} — {{ subtitle }}</title>
+    <style>
+      {% include "../../../dist/css/main.css" %}
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      {{ content | safe }}
+      <p>&nbsp;</p>
+      <a href="/">Go home</a>
+      <a id="backlink">Go back</a>
+    </main>
+    <script async defer>
+      {% include "../../../dist/js/main.js" %}
+    </script>
+  </body>
+</html>

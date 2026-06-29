@@ -10,7 +10,10 @@ services:
     <<: *common-service-options
     # Uncomment for initial setup (signups):
     # environment:
-    #   DISABLE_REGISTRATION: False
+    #   DISABLE_REGISTRATION: "False"
+
+  postgis:
+    <<: *common-service-options
 
   certificator:
     <<: *common-service-options

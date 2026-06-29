@@ -1,0 +1,3 @@
+[codespell]
+ignore-words-list = aNULL
+skip = */package-lock.json

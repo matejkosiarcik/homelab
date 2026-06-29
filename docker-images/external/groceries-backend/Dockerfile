@@ -29,7 +29,6 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./external/groceries-backend/healthcheck.js /homelab/healthcheck.js
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
@@ -70,4 +69,4 @@ ENV ACCESS_TOKEN_EXPIRES=12h \
     SMTP_USER=sender \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3333" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3333/isavailable" ]
