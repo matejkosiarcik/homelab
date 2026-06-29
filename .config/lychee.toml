@@ -10,3 +10,4 @@ exclude = [
 exclude_path = [
     "^/.*", # skip local URLs
 ]
+root_dir = "/"
