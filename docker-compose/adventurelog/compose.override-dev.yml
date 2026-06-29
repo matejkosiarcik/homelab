@@ -10,7 +10,7 @@ services:
     <<: *common-service-options
     # Internet access required for downloading initial geo data
     environment:
-      DISABLE_REGISTRATION: False
+      DISABLE_REGISTRATION: "False"
 
   postgis:
     <<: *common-service-options
