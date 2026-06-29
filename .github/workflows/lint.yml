@@ -26,7 +26,7 @@ jobs:
         run: |
           ln -s -f "$(which true)" "$(which python)" # TODO: Re-enable python and pip checks
           ln -s -f "$(which true)" "$(which python3)" # TODO: Re-enable python and pip checks
-          ln -s -f "$(which true)" "$(which prettier)" # TODO: Re-enable prettier formatting
+          ln -s -f "$(which true)" '/app/linters/node_modules/.bin/prettier' # TODO: Re-enable prettier formatting
           ln -s -f "$(which true)" '/app/linters/node_modules/.bin/markdown-link-check' # TODO: Re-enable markdown-link-check
           if [ "$GITHUB_REF_NAME" = main ]; then
             azlint
