@@ -136,7 +136,7 @@ convert_image_full "$input_dir/gitman-repositories/homer-icons/png/tvheadend.png
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/ubiquiti.svg" "$output_dir/unifi.png"
 convert_image_full "$input_dir/gitman-repositories/homer-icons/svg/uptime-kuma.svg" "$output_dir/uptimekuma.png"
 
-convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize "$default_image_size" -density 1200 -fill black -colorize 100% OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/github.svg" "$tmpdir/github.png"
+convert_image_draft 'magick -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 1200 -fill black -colorize 100% OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/github.svg" "$tmpdir/github.png"
 convert_image_full "$tmpdir/github.png" "$output_dir/github.png"
 rm -f "$tmpdir/github.png"
 
