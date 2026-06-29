@@ -28,7 +28,7 @@ COPY --from=npmconfig /root/.npmrc /root/.npmrc
 COPY ./custom/apache/errors/package-lock.json ./custom/apache/errors/package.json /homelab/
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=apache-errors-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error
-COPY ./custom/apache/errors/eleventy.config.js /homelab/
+COPY ./custom/apache/errors/eleventy.config.js ./custom/apache/errors/postcss.config.js ./custom/apache/errors/terser.json ./custom/apache/errors/vite.config.ts ./custom/apache/errors/tsconfig.json /homelab/
 COPY ./custom/apache/errors/src/ /homelab/src/
 RUN npm run build && \
     npm prune --production
@@ -80,7 +80,7 @@ COPY --from=empty-dir /empty /homelab/certs
 COPY --from=empty-dir /empty /homelab/logs
 COPY --from=empty-dir /empty.txt /homelab/users/empty.htpasswd
 COPY ./custom/apache/www /homelab/www
-COPY --from=errors-build /homelab/dist /homelab/www/.apache/errors
+COPY --from=errors-build /homelab/dist/out /homelab/www/.apache/errors
 COPY ./custom/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
