@@ -11,17 +11,18 @@ default_convert_options='magick INPUT_FILE OUTPUT_FILE'
 
 # Check if an icon should be generated based on the --only filter
 should_generate_icon() {
+    # $1 - filepath
+
     if [ -z "${only_pattern:-}" ]; then
-        return 0  # Generate everything if no filter is set
+        return 0 # Return yes, if no "--only" pattern
     fi
 
-    printf '%s\n' "${1}" | tr '/' '\n' | while read -r filepart; do
-        if printf '%s\n' "$filepart" | grep -qE ".*(?:${only_pattern}).*" >/dev/null; then
-            return 0
-        fi
-    done
+    if printf '%s\n' "${1}" | grep -qE ".*(?:${only_pattern}).*" >/dev/null; then
+        return 0 # The file matches
+    fi
 
-    return 1;
+    # No match
+    return 1
 }
 
 optimize_image() {
