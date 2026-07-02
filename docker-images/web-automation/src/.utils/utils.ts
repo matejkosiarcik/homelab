@@ -41,7 +41,7 @@ export function getTargetUrl(): string {
                 return process.env['HOMELAB_ENV'] === 'dev' ? 'https://unifi-network-application:8443' : 'https://unifi-network-application:8443';
             }
             default: {
-                throw new Error(`Unknow app: ${getAppName()}`);
+                throw new Error(`Unknown app: ${getAppName()}`);
             }
         }
     }
