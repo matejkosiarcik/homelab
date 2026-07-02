@@ -15,6 +15,8 @@ pihole-1-blackhole
 
 # Caches
 docker-cache-dockerhub
+# git-cache-github
+# npm-cache
 
 # Network controllers
 omadacontroller
@@ -30,6 +32,7 @@ gotify
 
 # Storage services
 minio
+filebrowser
 
 # Misc
 homepage
@@ -43,6 +46,11 @@ dawarich
 kiwix-wikipedia
 kiwix-wiktionary
 groceries
+donetick
+koffan
+planka
+reportportal
+libretranslate
 
 # AI
 ollama
