@@ -256,7 +256,39 @@ RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteCond %{ENV:PROXY_UPSTREAM_URL_STREAM} !^$ [NC]
 RewriteRule ^ "%{ENV:PROXY_UPSTREAM_URL_STREAM}/" [P,L]
 
-# Proxy regular requests upstream
+# Proxy ReportPortal requests upstream - UI
+RewriteCond %{ENV:HOMELAB_APP_TYPE} reportportal [NC]
+RewriteCond %{REQUEST_URI} ^/ui(?:/.*)?$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
+RewriteRule ^/?ui(?:/(.*))?$ "http://app-ui:8080/$1" [P,L]
+
+# Proxy ReportPortal requests upstream - API
+RewriteCond %{ENV:HOMELAB_APP_TYPE} reportportal [NC]
+RewriteCond %{REQUEST_URI} ^/api(?:/.*)?$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
+RewriteRule ^/?api(?:/(.*))?$ "http://app-api:8585/$1" [P,L]
+
+# Proxy ReportPortal requests upstream - UAT (Authorization)
+RewriteCond %{ENV:HOMELAB_APP_TYPE} reportportal [NC]
+RewriteCond %{REQUEST_URI} ^/uat(?:/.*)?$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
+RewriteRule ^/?uat(?:/(.*))?$ "http://app-uat:9999/$1" [P,L]
+
+# Proxy ReportPortal requests upstream - Jobs
+RewriteCond %{ENV:HOMELAB_APP_TYPE} reportportal [NC]
+RewriteCond %{REQUEST_URI} ^/jobs(?:/.*)?$ [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
+RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteCond %{ENV:PROXY_UPSTREAM_URL} !^$ [NC]
+RewriteRule ^/?jobs(?:/(.*))?$ "http://app-jobs:8686/$1" [P,L]
+
+# Proxy regular requests upstream - All other requests
 RewriteCond %{REQUEST_URI} !^/\.apache(?:/.*)?$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]

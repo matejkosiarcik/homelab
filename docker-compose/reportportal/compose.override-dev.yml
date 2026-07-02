@@ -1,0 +1,71 @@
+x-definitions:
+  common-service-options: &common-service-options
+    restart: "no"
+
+
+services:
+  app-migrations:
+    <<: *common-service-options
+    restart: on-failure
+
+  app-index:
+    <<: *common-service-options
+
+  app-ui:
+    <<: *common-service-options
+
+  app-api:
+    <<: *common-service-options
+
+  app-uat:
+    <<: *common-service-options
+
+  app-jobs:
+    <<: *common-service-options
+
+  app-analyzer:
+    <<: *common-service-options
+
+  postgres:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:5432:5432
+    networks:
+      - internal-network
+      - external-network
+
+  rabbitmq:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:5672:5672
+      - 127.0.0.1:15672:15672
+    networks:
+      - internal-network
+      - external-network
+
+  opensearch:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:9200:9200
+      - 127.0.0.1:9600:9600
+    networks:
+      - internal-network
+      - external-network
+    environment:
+      # _JAVA_OPTIONS is(?) required to run OpenSearch on Apple Silicon
+      _JAVA_OPTIONS: "-XX:UseSVE=0"
+
+  certificator:
+    <<: *common-service-options
+
+  apache:
+    <<: *common-service-options
+    ports:
+      - 127.0.0.1:8080:80
+      - 127.0.0.1:8443:443
+
+  apache-prometheus-exporter:
+    <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options

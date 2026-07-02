@@ -1,0 +1,50 @@
+x-definitions:
+  common-service-options: &common-service-options
+    restart: unless-stopped
+
+services:
+  app-migrations:
+    <<: *common-service-options
+    restart: on-failure
+
+  app-index:
+    <<: *common-service-options
+
+  app-ui:
+    <<: *common-service-options
+
+  app-api:
+    <<: *common-service-options
+
+  app-uat:
+    <<: *common-service-options
+
+  app-jobs:
+    <<: *common-service-options
+
+  app-analyzer:
+    <<: *common-service-options
+
+  postgres:
+    <<: *common-service-options
+
+  rabbitmq:
+    <<: *common-service-options
+
+  opensearch:
+    <<: *common-service-options
+
+  certificator:
+    <<: *common-service-options
+
+  apache:
+    <<: *common-service-options
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
+      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+
+  apache-prometheus-exporter:
+    <<: *common-service-options
+
+  favicons:
+    <<: *common-service-options

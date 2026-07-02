@@ -1394,10 +1394,40 @@ case "$app_dirname" in
     touch "$initial_output/favicons.env"
     ;;
 *reportportal*)
-    # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
+    admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
+    postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" postgres user)"
+    rabbitmq_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" rabbitmq user)"
+
+    # App
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
-    printf 'RP_INITIAL_ADMIN_PASSWORD=%s\n' "$matej_password" >>"$initial_output/app.env"
+    printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
+    printf 'RP_INITIAL_ADMIN_PASSWORD=%s\n' "$admin_password" >>"$initial_output/app-uat.env"
+    printf 'RP_DB_PASS=%s\n' "$postgres_password" >>"$initial_output/app-api.env"
+    printf 'RP_AMQP_PASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-api.env"
+    printf 'RP_AMQP_APIPASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-api.env"
+    printf 'RP_DB_PASS=%s\n' "$postgres_password" >>"$initial_output/app-uat.env"
+    printf 'RP_AMQP_PASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-uat.env"
+    printf 'RP_AMQP_APIPASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-uat.env"
+    printf 'RP_DB_PASS=%s\n' "$postgres_password" >>"$initial_output/app-jobs.env"
+    printf 'RP_AMQP_PASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-jobs.env"
+    printf 'RP_AMQP_APIPASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-jobs.env"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/app-migrations.env"
+    printf 'AMQP_URL=amqp://rabbitmq:%s@rabbitmq:5672\n' "$rabbitmq_password" >>"$initial_output/app-analyzer.env"
+
+    # Postgres
+    printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/all-credentials.csv"
+    printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/postgres.env"
+    if [ "$mode" = 'dev' ]; then
+        openssl req -new -x509 -days 3650 -nodes -text -out "$initial_output/postgres.crt" -keyout "$initial_output/postgres.key" -subj '/CN=postgres' -addext "subjectAltName=DNS:postgres,DNS:reportportal-postgres,DNS:localhost"
+    else
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-certificate)" >>"$initial_output/postgres.crt"
+        printf '%s\n' "$(load_token "$DOCKER_COMPOSE_APP_NAME" postgres ca-private-key)" >>"$initial_output/postgres.key"
+    fi
+
+    # RabbitMQ
+    printf 'rabbitmq,%s\n' "$rabbitmq_password" >>"$initial_output/all-credentials.csv"
+    printf 'RABBITMQ_DEFAULT_PASS=%s\n' "$rabbitmq_password" >>"$initial_output/rabbitmq.env"
 
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
