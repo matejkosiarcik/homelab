@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/docker-registry/Dockerfile
+      dockerfile: ./docker-registry/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
       - ${DOCKER_COMPOSE_APP_PATH}/config/app.env

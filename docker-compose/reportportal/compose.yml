@@ -8,7 +8,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-migrations
     image: ${DOCKER_COMPOSE_APP_NAME}-app-migrations:1.0.0
     build:
-      dockerfile: ./external/reportportal/migrations/Dockerfile
+      dockerfile: ./reportportal/migrations/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -22,7 +22,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-index
     image: ${DOCKER_COMPOSE_APP_NAME}-app-index:1.0.0
     build:
-      dockerfile: ./external/reportportal/index/Dockerfile
+      dockerfile: ./reportportal/index/Dockerfile
 
   app-ui:
     extends:
@@ -31,7 +31,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-ui
     image: ${DOCKER_COMPOSE_APP_NAME}-app-ui:1.0.0
     build:
-      dockerfile: ./external/reportportal/ui/Dockerfile
+      dockerfile: ./reportportal/ui/Dockerfile
     tmpfs:
       - /etc/nginx/conf.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -43,7 +43,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-api
     image: ${DOCKER_COMPOSE_APP_NAME}-app-api:1.0.0
     build:
-      dockerfile: ./external/reportportal/api/Dockerfile
+      dockerfile: ./reportportal/api/Dockerfile
     depends_on:
       app-jobs:
         condition: service_healthy
@@ -64,7 +64,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-uat
     image: ${DOCKER_COMPOSE_APP_NAME}-app-uat:1.0.0
     build:
-      dockerfile: ./external/reportportal/uat/Dockerfile
+      dockerfile: ./reportportal/uat/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-uat.env
     volumes:
@@ -80,7 +80,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-jobs
     image: ${DOCKER_COMPOSE_APP_NAME}-app-jobs:1.0.0
     build:
-      dockerfile: ./external/reportportal/jobs/Dockerfile
+      dockerfile: ./reportportal/jobs/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -98,7 +98,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-analyzer
     image: ${DOCKER_COMPOSE_APP_NAME}-app-analyzer:1.0.0
     build:
-      dockerfile: ./external/reportportal/analyzer/Dockerfile
+      dockerfile: ./reportportal/analyzer/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
     depends_on:
@@ -123,7 +123,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-rabbitmq
     image: ${DOCKER_COMPOSE_APP_NAME}-rabbitmq:1.0.0
     build:
-      dockerfile: ./external/reportportal/rabbitmq/Dockerfile
+      dockerfile: ./reportportal/rabbitmq/Dockerfile
     tmpfs:
       - /opt/bitnami/rabbitmq/etc/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -139,7 +139,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-opensearch
     image: ${DOCKER_COMPOSE_APP_NAME}-opensearch:1.0.0
     build:
-      dockerfile: ./external/reportportal/opensearch/Dockerfile
+      dockerfile: ./reportportal/opensearch/Dockerfile
     ulimits:
       memlock:
         soft: -1

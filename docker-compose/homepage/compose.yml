@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/homepage/Dockerfile
+      dockerfile: ./homepage/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
@@ -51,7 +51,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-widgets
     image: ${DOCKER_COMPOSE_APP_NAME}-widgets:1.0.0
     build:
-      dockerfile: ./custom/homepage-widgets/Dockerfile
+      dockerfile: ./homepage-widgets/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/widgets.env
     dns: # Use internal DNS

@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/jellyfin/Dockerfile
+      dockerfile: ./jellyfin/Dockerfile
     init: false
     hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
     volumes:

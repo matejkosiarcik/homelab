@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/omada-controller/Dockerfile
+      dockerfile: ./omada-controller/Dockerfile
     ulimits:
       nofile:
         soft: 4096
@@ -49,7 +49,7 @@ services:
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
   #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
   #   build:
-  #     dockerfile: ./custom/web-automation/Dockerfile
+  #     dockerfile: ./web-automation/Dockerfile
   #   depends_on:
   #     app:
   #       condition: service_healthy

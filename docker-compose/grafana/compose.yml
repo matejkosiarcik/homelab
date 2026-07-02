@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/grafana/Dockerfile
+      dockerfile: ./grafana/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/grafana/data:/var/lib/grafana:rw
     env_file:

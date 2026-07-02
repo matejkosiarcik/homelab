@@ -8,7 +8,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
     image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
     build:
-      dockerfile: ./external/groceries/backend/Dockerfile
+      dockerfile: ./groceries/backend/Dockerfile
     depends_on:
       couchdb:
         condition: service_healthy
@@ -30,7 +30,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
     build:
-      dockerfile: ./external/groceries/frontend/Dockerfile
+      dockerfile: ./groceries/frontend/Dockerfile
     environment:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
     tmpfs:
@@ -45,7 +45,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-couchdb
     image: ${DOCKER_COMPOSE_APP_NAME}-couchdb:1.0.0
     build:
-      dockerfile: ./external/couchdb/Dockerfile
+      dockerfile: ./couchdb/Dockerfile
     init: false
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/couchdb.env

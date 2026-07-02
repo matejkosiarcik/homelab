@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/uptimekuma/Dockerfile
+      dockerfile: ./uptimekuma/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/uptimekuma/data:/app/data:rw
     dns: # Use internal DNS

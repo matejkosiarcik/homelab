@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/npm-cache/Dockerfile
+      dockerfile: ./npm-cache/Dockerfile
     environment:
       REDIS_ADDRESS: redis:6379
     env_file:

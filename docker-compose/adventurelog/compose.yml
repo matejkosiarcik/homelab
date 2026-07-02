@@ -8,7 +8,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
     build:
-      dockerfile: ./external/adventurelog/frontend/Dockerfile
+      dockerfile: ./adventurelog/frontend/Dockerfile
     environment:
       ORIGIN: ${DOCKER_COMPOSE_NETWORK_URL}
 
@@ -19,7 +19,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
     image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
     build:
-      dockerfile: ./external/adventurelog/backend/Dockerfile
+      dockerfile: ./adventurelog/backend/Dockerfile
     environment:
       CSRF_TRUSTED_ORIGINS: ${DOCKER_COMPOSE_NETWORK_URL},${DOCKER_COMPOSE_NETWORK_URL_2}
       DJANGO_ADMIN_EMAIL: django@${DOCKER_COMPOSE_NETWORK_DOMAIN}

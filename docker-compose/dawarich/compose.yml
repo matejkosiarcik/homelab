@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/dawarich/Dockerfile
+      dockerfile: ./dawarich/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
@@ -28,7 +28,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-sidekiq
     image: ${DOCKER_COMPOSE_APP_NAME}-sidekiq:1.0.0
     build:
-      dockerfile: ./external/dawarich/Dockerfile
+      dockerfile: ./dawarich/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
@@ -70,7 +70,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-decryptor
     image: ${DOCKER_COMPOSE_APP_NAME}-decryptor:1.0.0
     build:
-      dockerfile: ./custom/owntracks-decryptor/Dockerfile
+      dockerfile: ./owntracks-decryptor/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/decryptor.env
 

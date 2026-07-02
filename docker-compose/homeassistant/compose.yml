@@ -7,7 +7,7 @@ services:
       service: app
     init: false # Can't run with PID other than 1
     build:
-      dockerfile: ./external/homeassistant/Dockerfile
+      dockerfile: ./homeassistant/Dockerfile
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant/data:/config:rw
@@ -53,7 +53,7 @@ services:
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
   #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
   #   build:
-  #     dockerfile: ./custom/web-automation/Dockerfile
+  #     dockerfile: ./web-automation/Dockerfile
   #   depends_on:
   #     app:
   #       condition: service_healthy

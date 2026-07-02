@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/filebrowser/Dockerfile
+      dockerfile: ./filebrowser/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/filebrowser/srv:/srv:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/filebrowser/database:/database:rw

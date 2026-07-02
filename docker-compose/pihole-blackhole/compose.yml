@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/pihole/Dockerfile
+      dockerfile: ./pihole/Dockerfile
       args:
         SETUP_SCRIPT: blackhole
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header
@@ -40,7 +40,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
     image: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter:1.0.0
     build:
-      dockerfile: ./external/pihole-prometheus-exporter/Dockerfile
+      dockerfile: ./pihole-prometheus-exporter/Dockerfile
     environment:
       PIHOLE_HOSTNAME: app
       PIHOLE_PORT: 80

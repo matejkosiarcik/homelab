@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/PLACEHOLDER/Dockerfile
+      dockerfile: ./PLACEHOLDER/Dockerfile
     # Below are optional settings, only apply when necessary:
     # init: false
     # env_file:

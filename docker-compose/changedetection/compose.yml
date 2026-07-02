@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/changedetection/Dockerfile
+      dockerfile: ./changedetection/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection/data:/datastore:rw
     # Internet access required for monitoring public websites
@@ -22,7 +22,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser:1.0.0
     init: false
     build:
-      dockerfile: ./external/sockpuppetbrowser/Dockerfile
+      dockerfile: ./sockpuppetbrowser/Dockerfile
     # Internet access required for monitoring public websites
     networks:
       internal-network: {}

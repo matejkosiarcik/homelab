@@ -6,7 +6,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     build:
-      dockerfile: ./external/nodeexporter/Dockerfile
+      dockerfile: ./nodeexporter/Dockerfile
     # cap_add:
     #   - SYS_TIME
     pid: host
