@@ -31,8 +31,8 @@ services:
       PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL_2}
     image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
     networks: # Internet access necessary for downloading data from raw.githubusercontent.com
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/adventurelog/data:/code/media:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/adventurelog/backend/nginx:/var/log/nginx:rw

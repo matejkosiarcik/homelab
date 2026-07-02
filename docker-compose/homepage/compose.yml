@@ -14,8 +14,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     tmpfs:
       - /app/.next/server/pages:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /app/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -61,8 +61,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/widgets.env
     image: ${DOCKER_COMPOSE_APP_NAME}-widgets:1.0.0
     networks: # Network access is necessary for accessing other services via HTTPS
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
 
 networks:
   default:

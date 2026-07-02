@@ -16,8 +16,8 @@ services:
       - 10.1.12.6
       - 10.1.10.6
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     stop_grace_period: 30s
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/healthchecks/data:/homelab/healthchecks:rw

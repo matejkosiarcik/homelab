@@ -11,8 +11,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks: # Internet access required for publishing notifications through firebase
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy/cache:/var/cache/ntfy:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy/lib:/var/lib/ntfy:rw

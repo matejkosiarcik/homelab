@@ -19,8 +19,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     stop_grace_period: 30s
     tmpfs:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

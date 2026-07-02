@@ -9,8 +9,8 @@ services:
     build:
       dockerfile: ./changedetection/Dockerfile
     networks: # Internet access required for monitoring public websites
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection/data:/datastore:rw
 
@@ -25,8 +25,8 @@ services:
     image: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser:1.0.0
     init: false
     networks: # Internet access required for monitoring public websites
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     tmpfs:
       - /home/chrome:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /homelab/chrome-user-data:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

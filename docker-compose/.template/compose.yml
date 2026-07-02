@@ -14,8 +14,8 @@ services:
     #   PLACEHOLDER: PLACEHOLDER
     # init: false
     # networks:
-    #   internal-network: {}
-    #   external-network: {}
+    #   - external-network
+    #   - internal-network
     # stop_grace_period: 30s
     # volumes:
     #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER/data:/PLACEHOLDER:rw

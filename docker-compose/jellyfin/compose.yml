@@ -14,8 +14,8 @@ services:
     hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
     init: false
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     read_only: false # TODO: Enable readonly mode
     tmpfs:
       - /app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

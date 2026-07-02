@@ -14,8 +14,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks: # Network access necessary for sending notifications
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/gotify/data:/app/data:rw
 

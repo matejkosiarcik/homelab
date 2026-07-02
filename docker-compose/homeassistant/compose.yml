@@ -16,8 +16,8 @@ services:
       - 10.1.10.6
     init: false # Can't run with PID other than 1
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     # privileged: true
     stop_grace_period: 30s
     tmpfs:
@@ -64,8 +64,8 @@ services:
   #     HOMELAB_CONTAINER_VARIANT: backup
   #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
   #   networks:
-  #     internal-network: {}
-  #     external-network: {}
+  #     - external-network
+  #     - internal-network
   #   volumes:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/web-backup:/homelab/backup:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup-errors:/homelab/errors:rw

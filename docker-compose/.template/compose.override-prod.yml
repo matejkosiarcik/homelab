@@ -6,8 +6,8 @@ services:
   app:
     <<: *common-service-options
     # networks: # Uncomment networks when adding ports
-    #   internal-network: {}
-    #   external-network: {}
+    #   - external-network
+    #   - internal-network
     # ports:
     # - 127.0.0.1:12345:12345 # Fill in ports as necessary
 

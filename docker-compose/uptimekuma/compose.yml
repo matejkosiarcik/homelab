@@ -12,8 +12,8 @@ services:
       - 10.1.12.6
       - 10.1.10.6
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/uptimekuma/data:/app/data:rw
 

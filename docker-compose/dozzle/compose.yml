@@ -12,8 +12,8 @@ services:
       - 10.1.12.6
       - 10.1.10.6
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     secrets:
       - source: cert
         target: /dozzle_cert.pem

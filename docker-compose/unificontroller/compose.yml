@@ -15,8 +15,8 @@ services:
       MONGO_HOST: mongodb
     init: false
     networks: # Internet access required for downloading device firmware updates
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     stop_grace_period: 30s
     tmpfs:
       - /defaults:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

@@ -39,7 +39,7 @@ services:
       service: template_no_network
     # Override:
     networks:
-      internal-network: {}
+      - internal-network
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
       net.ipv6.conf.all.disable_ipv6: 1
@@ -66,8 +66,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
     image: ${DOCKER_COMPOSE_APP_NAME}-certificator:1.0.0
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
@@ -86,8 +86,8 @@ services:
       - 10.1.10.7
     image: ${DOCKER_COMPOSE_APP_NAME}-apache:1.0.0
     networks:
-      internal-network: {}
-      external-network: {} # TODO: Connect to external world via socat instead
+      - external-network # TODO: Connect to external world via socat instead
+      - internal-network
     tmpfs:
       - /var/lock:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

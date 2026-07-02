@@ -17,8 +17,8 @@ services:
       VIKUNJA_SERVICE_PUBLICURL: ${DOCKER_COMPOSE_NETWORK_URL}/
       VIKUNJA_MAILER_FROMEMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja/files:/app/vikunja/files:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja/db:/db:rw

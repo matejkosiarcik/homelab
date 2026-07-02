@@ -9,8 +9,8 @@ services:
     build:
       dockerfile: ./omada-controller/Dockerfile
     networks: # Internet access required for downloading device firmware updates
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     stop_grace_period: 60s
     tmpfs:
       - /opt/tplink/EAPController/properties:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

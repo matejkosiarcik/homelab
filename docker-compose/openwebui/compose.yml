@@ -16,8 +16,8 @@ services:
     environment:
       CORS_ALLOW_ORIGIN: "${DOCKER_COMPOSE_NETWORK_URL}"
     networks: # Necessary to connect to ollama
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     tmpfs:
       - /app/backend/open_webui/static:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:

@@ -14,8 +14,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     stop_grace_period: 30s
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/smtp4dev/data:/smtp4dev:rw

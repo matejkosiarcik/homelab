@@ -11,8 +11,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks: # Internet access required for monitoring public DNS
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     security_opt:
       - no-new-privileges:false # Must be unset to allow ICMP monitoring
     stop_grace_period: 30s

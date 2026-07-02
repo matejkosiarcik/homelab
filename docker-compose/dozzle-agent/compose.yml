@@ -19,8 +19,8 @@ services:
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
       DOCKER_HOST: tcp://socket-proxy:2375
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     secrets:
       - source: cert
         target: /dozzle_cert.pem
