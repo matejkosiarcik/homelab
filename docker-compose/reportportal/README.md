@@ -37,7 +37,7 @@ Subservices:
     - Provides the visual interface for test reports
     - Routed via Traefik under path `/ui`
 - ReportPortal API:
-    - api ReportPortal backend API service
+    - ReportPortal backend API service
     - Hosts core business logic and background processing
     - Requires database, RabbitMQ, and gateway to be available
     - Exposes a REST API and internal job coordination endpoints

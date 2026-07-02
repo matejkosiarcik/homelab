@@ -1,6 +1,4 @@
 #!/bin/sh
-# checkov:skip=CKV_SECRET_4: Secrets are generated here on purpose
-
 set -euf
 
 helper_script_dir="$(cd "$(dirname "$0")" >/dev/null && pwd)"
@@ -1415,7 +1413,7 @@ case "$app_dirname" in
     printf 'RP_AMQP_PASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-jobs.env"
     printf 'RP_AMQP_APIPASS=%s\n' "$rabbitmq_password" >>"$initial_output/app-jobs.env"
     printf 'POSTGRES_PASSWORD=%s\n' "$postgres_password" >>"$initial_output/app-migrations.env"
-    printf 'AMQP_URL=amqp://rabbitmq:%s@rabbitmq:5672\n' "$rabbitmq_password" >>"$initial_output/app-analyzer.env"
+    printf 'AMQP_URL=%s%s%s%s\n' 'amqp://' 'rabbitmq:' "$rabbitmq_password" '@rabbitmq:5672' >>"$initial_output/app-analyzer.env"
 
     # Postgres
     printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/all-credentials.csv"

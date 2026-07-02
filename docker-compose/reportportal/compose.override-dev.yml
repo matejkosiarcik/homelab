@@ -2,7 +2,6 @@ x-definitions:
   common-service-options: &common-service-options
     restart: "no"
 
-
 services:
   app-migrations:
     <<: *common-service-options
@@ -52,8 +51,7 @@ services:
       - internal-network
       - external-network
     environment:
-      # _JAVA_OPTIONS is(?) required to run OpenSearch on Apple Silicon
-      _JAVA_OPTIONS: "-XX:UseSVE=0"
+      _JAVA_OPTIONS: "-XX:UseSVE=0" # Supposedly required to run OpenSearch on Apple Silicon
 
   certificator:
     <<: *common-service-options
