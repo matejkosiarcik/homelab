@@ -1,25 +1,25 @@
 x-definitions: {}
 
 services:
-  app:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+  app: # Uncomment settings as needed
     build:
       dockerfile: ./PLACEHOLDER/Dockerfile
-    # Below are optional settings, only apply when necessary:
-    # init: false
     # env_file:
     #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     # environment:
     #   PLACEHOLDER: PLACEHOLDER
-    # volumes:
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER:/PLACEHOLDER:rw
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER:/PLACEHOLDER:ro
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    # init: false
     # networks:
     #   internal-network: {}
     #   external-network: {}
     # stop_grace_period: 30s
+    # volumes:
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER/data:/PLACEHOLDER:rw
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-logs/PLACEHOLDER/default:/PLACEHOLDER:rw
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER/default:/PLACEHOLDER:ro
 
   certificator:
     extends:
