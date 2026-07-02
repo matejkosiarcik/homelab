@@ -1,4 +1,6 @@
 #!/bin/sh
+# checkov:skip=CKV_SECRET_4: Secrets are generated here on purpose
+
 set -euf
 
 helper_script_dir="$(cd "$(dirname "$0")" >/dev/null && pwd)"

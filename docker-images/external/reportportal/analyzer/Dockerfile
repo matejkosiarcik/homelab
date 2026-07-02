@@ -46,7 +46,6 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 USER homelab
 
 ENV AMQP_EXCHANGE_NAME="app-analyzer-default" \
-    AMQP_URL="amqp://rabbitmq:PLACEHOLDER@rabbitmq:5672" \
     AMQP_VIRTUAL_HOST="app-analyzer" \
     ANALYZER_BINARYSTORE_TYPE="filesystem" \
     DATASTORE_TYPE="filesystem" \
