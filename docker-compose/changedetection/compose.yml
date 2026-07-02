@@ -5,28 +5,28 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/changedetection/Dockerfile
+      dockerfile: ./changedetection/Dockerfile
+    networks: # Internet access required for monitoring public websites
+      - external-network
+      - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection:/datastore:rw
-    # Internet access required for monitoring public websites
-    networks:
-      internal-network: {}
-      external-network: {}
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection/data:/datastore:rw
 
   sockpuppetbrowser:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
+    # Override:
+    build:
+      dockerfile: ./sockpuppetbrowser/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser
     image: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser:1.0.0
     init: false
-    build:
-      dockerfile: ./external/sockpuppetbrowser/Dockerfile
-    # Internet access required for monitoring public websites
-    networks:
-      internal-network: {}
-      external-network: {}
+    networks: # Internet access required for monitoring public websites
+      - external-network
+      - internal-network
     tmpfs:
       - /home/chrome:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /homelab/chrome-user-data:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -54,11 +54,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

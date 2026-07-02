@@ -5,15 +5,16 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/npm-cache/Dockerfile
-    environment:
-      REDIS_ADDRESS: redis:6379
+      dockerfile: ./npm-cache/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+    environment:
+      REDIS_ADDRESS: redis:6379
     networks: # Internet access required for downloading packages
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
 
   redis:
     extends:
@@ -43,11 +44,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

@@ -5,28 +5,30 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template_no_network
+    # Override:
+    build:
+      dockerfile: ./unbound/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     image: ${DOCKER_COMPOSE_APP_NAME}-app:1.0.0
-    build:
-      dockerfile: ./external/unbound/Dockerfile
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound-sock:/homelab/sock:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/unbound:/homelab/logs:rw
-    tmpfs:
-      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     security_opt:
       - no-new-privileges:false
+    tmpfs:
+      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound/sock:/homelab/sock:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/unbound/default:/homelab/logs:rw
 
   app-prometheus-exporter:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
+    # Override:
+    build:
+      dockerfile: ./unbound-prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
     image: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter:1.0.0
-    build:
-      dockerfile: ./external/unbound-prometheus-exporter/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound-sock:/homelab/sock:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound/sock:/homelab/sock:rw
 
   certificator:
     extends:
@@ -37,6 +39,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
@@ -60,11 +63,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

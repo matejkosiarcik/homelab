@@ -5,9 +5,9 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    hostname: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     devices:
       - ${DOCKER_COMPOSE_VIDEO_DEVICE}:${DOCKER_COMPOSE_VIDEO_DEVICE}
+    hostname: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   certificator:
     <<: *common-service-options

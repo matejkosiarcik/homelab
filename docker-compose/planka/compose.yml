@@ -5,16 +5,17 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/planka/Dockerfile
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/planka:/app/logs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
+      dockerfile: ./planka/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/planka/default:/app/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
 
   certificator:
     extends:
@@ -40,6 +41,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: postgres
+    # Override:
     environment:
       POSTGRES_DB: planka
       # POSTGRES_HOST_AUTH_METHOD: trust
@@ -47,11 +49,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

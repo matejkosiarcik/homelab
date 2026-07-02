@@ -5,26 +5,27 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
-    init: false # Can't run with PID other than 1
+    # Override:
     build:
-      dockerfile: ./external/homeassistant/Dockerfile
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant:/config:rw
-      - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
+      dockerfile: ./homeassistant/Dockerfile
     # cap_add:
     #   - NET_ADMIN
     #   - NET_RAW
-    # privileged: true
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
+    init: false # Can't run with PID other than 1
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
+    # privileged: true
     stop_grace_period: 30s
     tmpfs:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant/data:/config:rw
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
 
   certificator:
     extends:
@@ -50,10 +51,10 @@ services:
   #   extends:
   #     file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
   #     service: template
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
-  #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
+  #   # Override:
   #   build:
-  #     dockerfile: ./custom/web-automation/Dockerfile
+  #     dockerfile: ./web-automation/Dockerfile
+  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
   #   depends_on:
   #     app:
   #       condition: service_healthy
@@ -61,22 +62,23 @@ services:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/web-backup.env
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
+  #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
+  #   networks:
+  #     - external-network
+  #     - internal-network
   #   volumes:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/web-backup:/homelab/backup:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup-errors:/homelab/errors:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup:/homelab/logs:rw
-  #   networks:
-  #     internal-network: {}
-  #     external-network: {}
 
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

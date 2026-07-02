@@ -1,25 +1,26 @@
 x-definitions: {}
 
 services:
-  app:
+  app: # Uncomment settings as needed
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/PLACEHOLDER/Dockerfile
-    # Below are optional settings, only apply when necessary:
-    # init: false
+      dockerfile: ./PLACEHOLDER/Dockerfile
     # env_file:
     #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     # environment:
     #   PLACEHOLDER: PLACEHOLDER
-    # volumes:
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER:/PLACEHOLDER:rw
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER:/PLACEHOLDER:ro
+    # init: false
     # networks:
-    #   internal-network: {}
-    #   external-network: {}
+    #   - external-network
+    #   - internal-network
     # stop_grace_period: 30s
+    # volumes:
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER/data:/PLACEHOLDER:rw
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-logs/PLACEHOLDER/default:/PLACEHOLDER:rw
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER/default:/PLACEHOLDER:ro
 
   certificator:
     extends:
@@ -44,11 +45,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

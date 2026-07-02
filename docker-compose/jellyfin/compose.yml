@@ -5,19 +5,17 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/jellyfin/Dockerfile
-    init: false
-    hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin:/config:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/jellyfin:/logs:rw
+      dockerfile: ./jellyfin/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
+    hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
+    init: false
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     read_only: false # TODO: Enable readonly mode
     tmpfs:
       - /app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -27,14 +25,18 @@ services:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /transcode:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /tmp/jellyfin:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},size=4G
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/jellyfin/default:/logs:rw
 
   app-setup:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: script-app-setup
+    # Override:
     volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin/data:/homelab/data:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin:/homelab/data:rw
 
   certificator:
     extends:
@@ -45,6 +47,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
 
@@ -61,11 +64,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

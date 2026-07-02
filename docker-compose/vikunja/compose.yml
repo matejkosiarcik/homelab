@@ -5,23 +5,24 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/vikunja/Dockerfile
+      dockerfile: ./vikunja/Dockerfile
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       VIKUNJA_SERVICE_PUBLICURL: ${DOCKER_COMPOSE_NETWORK_URL}/
       VIKUNJA_MAILER_FROMEMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja-files:/app/vikunja/files:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja-db:/db:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/vikunja:/homelab/logs:rw
-    dns: # Use internal DNS
-      - 10.1.12.6
-      - 10.1.10.6
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja/files:/app/vikunja/files:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja/db:/db:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/vikunja/default:/homelab/logs:rw
 
   certificator:
     extends:
@@ -46,11 +47,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

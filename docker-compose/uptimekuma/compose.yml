@@ -5,16 +5,17 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/uptimekuma/Dockerfile
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/uptimekuma:/app/data:rw
+      dockerfile: ./uptimekuma/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/uptimekuma/data:/app/data:rw
 
   certificator:
     extends:
@@ -39,11 +40,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

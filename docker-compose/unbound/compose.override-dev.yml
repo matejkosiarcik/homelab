@@ -9,8 +9,8 @@ services:
       - 10.1.12.7
       - 10.1.10.7
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     ports:
       - 127.0.0.1:8053:53/tcp
       - 127.0.0.1:8053:53/udp

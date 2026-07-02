@@ -5,21 +5,21 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/docker-registry/Dockerfile
+      dockerfile: ./docker-registry/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
       - ${DOCKER_COMPOSE_APP_PATH}/config/app.env
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/docker-registry:/var/lib/registry:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis-certs:/homelab/redis-certs:ro
+    networks: # Internet access required for reading remote registry data
+      - external-network
+      - internal-network
+    stop_grace_period: 30s
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    # Internet access required for reading remote registry data
-    networks:
-      internal-network: {}
-      external-network: {}
-    stop_grace_period: 30s
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/docker-registry/data:/var/lib/registry:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:ro
 
   redis:
     extends:
@@ -49,11 +49,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

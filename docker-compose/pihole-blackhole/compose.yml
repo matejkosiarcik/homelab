@@ -5,28 +5,29 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/pihole/Dockerfile
+      dockerfile: ./pihole/Dockerfile
       args:
         SETUP_SCRIPT: blackhole
-    hostname: pihole-placeholder # This fixes random container hostname in dashboard header
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole:/etc/pihole:rw
     cap_add:
       - SYS_NICE
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+    hostname: pihole-placeholder # This fixes random container hostname in dashboard header
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     stop_grace_period: 30s
     tmpfs:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/pihole:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/spool:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole/data:/etc/pihole:rw
 
   app-setup:
     extends:
@@ -37,20 +38,22 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter:1.0.0
+    # Override:
     build:
-      dockerfile: ./external/pihole-prometheus-exporter/Dockerfile
+      dockerfile: ./pihole-prometheus-exporter/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
     environment:
       PIHOLE_HOSTNAME: app
       PIHOLE_PORT: 80
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter:1.0.0
 
   socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: socket-proxy
+    # Override:
     environment:
       CONTAINERS: 1
       EXEC: 1
@@ -66,6 +69,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
 
@@ -82,11 +86,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

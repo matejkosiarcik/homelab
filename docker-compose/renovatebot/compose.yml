@@ -5,18 +5,18 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/renovatebot/Dockerfile
+      dockerfile: ./renovatebot/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
-    # Internet access required for accessing github/gitlab and package registries
-    networks:
-      internal-network: {}
-      external-network: {}
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot:/homelab/logs:rw
+    networks: # Internet access required for accessing github/gitlab and package registries
+      - external-network
+      - internal-network
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot/default:/homelab/logs:rw
 
   certificator:
     extends:
@@ -27,6 +27,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
@@ -44,11 +45,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

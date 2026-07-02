@@ -5,8 +5,9 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/docker-stats-exporter/Dockerfile
+      dockerfile: ./docker-stats-exporter/Dockerfile
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
 
@@ -14,6 +15,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: socket-proxy
+    # Override:
     environment:
       CONTAINERS: 1
 
@@ -26,6 +28,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
@@ -49,11 +52,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

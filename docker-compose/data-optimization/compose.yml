@@ -5,12 +5,13 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./custom/data-optimization/Dockerfile
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/data-optimization:/homelab/logs:rw
+      dockerfile: ./data-optimization/Dockerfile
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/data-optimization/default:/homelab/logs:rw
 
   certificator:
     extends:
@@ -35,11 +36,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

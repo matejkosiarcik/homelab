@@ -5,27 +5,28 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/samba/Dockerfile
+      dockerfile: ./samba/Dockerfile
+    dns: # Use blackhole DNS
+      - 10.1.12.7
+      - 10.1.10.7
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}
       SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba:/var/log/samba:rw
-    dns: # Use blackhole DNS
-      - 10.1.12.7
-      - 10.1.10.7
     networks:
-      internal-network: {}
-      external-network: {}
+      - external-network
+      - internal-network
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/samba/private:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/default:/var/log/samba:rw
 
   certificator:
     extends:
@@ -57,11 +58,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

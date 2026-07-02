@@ -5,22 +5,23 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
-      dockerfile: ./external/openwebui/Dockerfile
+      dockerfile: ./openwebui/Dockerfile
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       CORS_ALLOW_ORIGIN: "${DOCKER_COMPOSE_NETWORK_URL}"
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/openwebui:/app/backend/data:rw
+    networks: # Necessary to connect to ollama
+      - external-network
+      - internal-network
     tmpfs:
       - /app/backend/open_webui/static:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    dns: # Use internal DNS
-      - 10.1.12.6
-      - 10.1.10.6
-    networks: # Necessary to connect to ollama
-      internal-network: {}
-      external-network: {}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/openwebui/data:/app/backend/data:rw
 
   certificator:
     extends:
@@ -45,11 +46,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
