@@ -5,40 +5,41 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./unifi-network-application/Dockerfile
-    init: false
     depends_on:
       mongodb:
         condition: service_healthy
     environment:
       MONGO_HOST: mongodb
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unifi/data:/config:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
-    # Internet access required for downloading device firmware updates
-    networks:
+    init: false
+    networks: # Internet access required for downloading device firmware updates
       internal-network: {}
       external-network: {}
     stop_grace_period: 30s
     tmpfs:
       - /defaults:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unifi/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
 
   mongodb:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
-    image: ${DOCKER_COMPOSE_APP_NAME}-mongodb:1.0.0
+    # Override:
     build:
       dockerfile: ./mongodb/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb.env
     environment:
       MONGO_AUTHSOURCE: admin
       MONGO_DBNAME: unifi
       MONGO_USER: unifi
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-mongodb:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/mongodb/data:/data/db:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
@@ -67,10 +68,10 @@ services:
   #   extends:
   #     file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
   #     service: template
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
-  #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
+  #   # Override:
   #   build:
   #     dockerfile: ./web-automation/Dockerfile
+  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
   #   depends_on:
   #     app:
   #       condition: service_healthy
@@ -78,6 +79,7 @@ services:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/web-backup.env
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
+  #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
   #   volumes:
   #     - ./app-data/web-backup:/homelab/backup:rw
   #     - ./app-logs/web-backup-errors:/homelab/errors:rw
@@ -86,11 +88,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

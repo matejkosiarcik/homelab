@@ -5,14 +5,13 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./healthchecks/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       SITE_NAME: Healthchecks
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/healthchecks/data:/homelab/healthchecks:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
@@ -20,6 +19,8 @@ services:
       internal-network: {}
       external-network: {}
     stop_grace_period: 30s
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/healthchecks/data:/homelab/healthchecks:rw
 
   certificator:
     extends:
@@ -44,11 +45,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

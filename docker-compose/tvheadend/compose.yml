@@ -5,22 +5,23 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./tvheadend/Dockerfile
-    init: false # Can't run with PID other than 1
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/tvheadend/data:/config:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/config/groupadd.txt:/groupadd:ro
-      # - ./app-data/tvheadend-recordings:/recordings
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
+    init: false # Can't run with PID other than 1
     networks:
       internal-network: {}
       external-network: {}
     tmpfs:
       - /app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/tvheadend/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/config/groupadd.txt:/groupadd:ro
+      # - ./app-data/tvheadend-recordings:/recordings
 
   certificator:
     extends:
@@ -45,11 +46,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

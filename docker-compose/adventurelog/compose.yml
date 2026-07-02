@@ -5,6 +5,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
     build:
@@ -16,33 +17,34 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
+    # Override:
     build:
       dockerfile: ./adventurelog/backend/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-backend.env
     environment:
       CSRF_TRUSTED_ORIGINS: ${DOCKER_COMPOSE_NETWORK_URL},${DOCKER_COMPOSE_NETWORK_URL_2}
+      DEFAULT_FROM_EMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DJANGO_ADMIN_EMAIL: django@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       FRONTEND_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL_2}
-      DEFAULT_FROM_EMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-backend.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
+    networks: # Internet access necessary for downloading data from raw.githubusercontent.com
+      internal-network: {}
+      external-network: {}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/adventurelog/data:/code/media:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/adventurelog/backend/nginx:/var/log/nginx:rw
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    # Internet access necessary for downloading data from raw.githubusercontent.com
-    networks:
-      internal-network: {}
-      external-network: {}
 
   postgis:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: postgis
+    # Override:
     environment:
       POSTGRES_DB: adventurelog
 
@@ -55,10 +57,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: frontend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/frontend:/homelab/logs:rw
 
@@ -66,10 +69,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: frontend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/frontend:/homelab/logs:rw
 
@@ -77,10 +81,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-backend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-backend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: backend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-backend:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/backend:/homelab/logs:rw
 
@@ -88,10 +93,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: backend
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/backend:/homelab/logs:rw
 
@@ -103,11 +109,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

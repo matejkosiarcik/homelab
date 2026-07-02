@@ -5,18 +5,18 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./ntfy/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+    networks: # Internet access required for publishing notifications through firebase
+      internal-network: {}
+      external-network: {}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy/cache:/var/cache/ntfy:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy/lib:/var/lib/ntfy:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-etc:/etc/ntfy:rw
-    # Internet access required for publishing notifications through firebase
-    networks:
-      internal-network: {}
-      external-network: {}
 
   app-setup:
     extends:
@@ -27,6 +27,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: socket-proxy
+    # Override:
     environment:
       CONTAINERS: 1
       EXEC: 1
@@ -56,11 +57,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

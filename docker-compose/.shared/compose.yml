@@ -3,11 +3,7 @@ x-definitions: {}
 services:
   # This template should only be used for services which need host network
   template_no_network:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER
-    image: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER:1.0.0
     build:
-      context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
-      dockerfile: ./PLACEHOLDER/Dockerfile
       args:
         GID: ${DOCKER_COMPOSE_GID}
         HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
@@ -17,7 +13,11 @@ services:
         HOMELAB_APP_TYPE: ${DOCKER_COMPOSE_APP_TYPE}
         HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
         UID: ${DOCKER_COMPOSE_UID}
-    init: true
+      context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
+      dockerfile: ./PLACEHOLDER/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER
+    dns_opt:
+      - single-request
     environment:
       HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
@@ -25,11 +25,11 @@ services:
       HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
       HOMELAB_APP_TYPE: ${DOCKER_COMPOSE_APP_TYPE}
       HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-    dns_opt:
-      - single-request
+    image: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER:1.0.0
+    init: true
+    read_only: true
     security_opt:
       - no-new-privileges:true
-    read_only: true
     tmpfs:
       - /tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
@@ -37,6 +37,7 @@ services:
   template:
     extends:
       service: template_no_network
+    # Override:
     networks:
       internal-network: {}
     sysctls:
@@ -47,162 +48,174 @@ services:
   app:
     extends:
       service: template
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     image: ${DOCKER_COMPOSE_APP_NAME}-app:1.0.0
 
   certificator:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
-    image: ${DOCKER_COMPOSE_APP_NAME}-certificator:1.0.0
+    # Override:
     build:
       dockerfile: ./certificator/Dockerfile
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/default:/homelab/logs:rw
-    tmpfs:
-      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-certificator:1.0.0
     networks:
       internal-network: {}
       external-network: {}
+    tmpfs:
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/default:/homelab/logs:rw
 
   apache:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache:1.0.0
+    # Override:
     build:
       dockerfile: ./apache/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
+    dns: # Use blackhole DNS
+      - 10.1.12.7
+      - 10.1.10.7
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache:1.0.0
+    networks:
+      internal-network: {}
+      external-network: {} # TODO: Connect to external world via socat instead
+    tmpfs:
+      - /var/lock:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/run/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/default:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/users/proxy-prometheus.htpasswd:ro
-    tmpfs:
-      - /var/lock:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/log/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/run/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    dns: # Use blackhole DNS
-      - 10.1.12.7
-      - 10.1.10.7
-    networks:
-      internal-network: {}
-      external-network: {} # TODO: Connect to external world via socat instead
 
   apache-prometheus-exporter:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter:1.0.0
+    # Override:
     build:
       dockerfile: ./apache-prometheus-exporter/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter:1.0.0
 
   socket-proxy:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    image: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy:1.0.0
+    # Override:
     build:
       dockerfile: ./socket-proxy/Dockerfile
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
+    image: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy:1.0.0
     tmpfs:
       - /run:rw,uid=0,gid=0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   docker-app-setup:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
+    # Override:
     build:
       dockerfile: ./docker-setup/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   favicons:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
-    image: ${DOCKER_COMPOSE_APP_NAME}-favicons:1.0.0
+    # Override:
     build:
       dockerfile: ./favicons/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-favicons:1.0.0
 
   file-server:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-file-server
-    image: ${DOCKER_COMPOSE_APP_NAME}-file-server:1.0.0
+    # Override:
     build:
       dockerfile: ./file-server/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-file-server
+    image: ${DOCKER_COMPOSE_APP_NAME}-file-server:1.0.0
 
   script-app-setup:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
+    # Override:
     build:
       dockerfile: ./script-setup/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   redis:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
-    image: ${DOCKER_COMPOSE_APP_NAME}-redis:1.0.0
+    # Override:
     build:
       dockerfile: ./redis/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/redis.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-redis:1.0.0
+    tmpfs:
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:rw
-    tmpfs:
-      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   postgres:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
-    image: ${DOCKER_COMPOSE_APP_NAME}-postgres:1.0.0
+    # Override:
     build:
       dockerfile: ./postgres/Dockerfile
-    shm_size: 1G
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-postgres:1.0.0
+    shm_size: 1G
+    tmpfs:
+      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgres/data:/var/lib/postgresql/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
-    tmpfs:
-      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   postgis:
     extends:
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgis
-    image: ${DOCKER_COMPOSE_APP_NAME}-postgis:1.0.0
+    # Override:
     build:
       dockerfile: ./postgis/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgis
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-postgis:1.0.0
     shm_size: 1G
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis/data:/var/lib/postgresql/data:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/shared:/var/shared:rw # TODO: Determine if necessary
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
     tmpfs:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

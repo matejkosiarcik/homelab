@@ -5,19 +5,19 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./gatus/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/gatus/data:/data:rw
-    # Internet access required for monitoring public DNS
-    networks:
+    networks: # Internet access required for monitoring public DNS
       internal-network: {}
       external-network: {}
-    stop_grace_period: 30s
     security_opt:
       - no-new-privileges:false # Must be unset to allow ICMP monitoring
+    stop_grace_period: 30s
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/gatus/data:/data:rw
 
   certificator:
     extends:
@@ -28,6 +28,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
@@ -46,11 +47,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

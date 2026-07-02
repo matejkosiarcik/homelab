@@ -2,15 +2,16 @@ x-definitions: {}
 
 services:
   app: # Uncomment settings as needed
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    # Override:
     build:
       dockerfile: ./PLACEHOLDER/Dockerfile
     # env_file:
     #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     # environment:
     #   PLACEHOLDER: PLACEHOLDER
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
     # init: false
     # networks:
     #   internal-network: {}
@@ -44,11 +45,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

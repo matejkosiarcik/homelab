@@ -5,10 +5,10 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
+    # Override:
     build:
       dockerfile: ./groceries/backend/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
     depends_on:
       couchdb:
         condition: service_healthy
@@ -16,9 +16,10 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       COUCHDB_URL: ${DOCKER_COMPOSE_NETWORK_URL}/couchdb
-      GROCERY_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       GROCERY_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
+      GROCERY_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       SMTP_FROM: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -27,12 +28,13 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
+    # Override:
     build:
       dockerfile: ./groceries/frontend/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     environment:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /usr/share/nginx/html:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -42,17 +44,18 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-couchdb
-    image: ${DOCKER_COMPOSE_APP_NAME}-couchdb:1.0.0
+    # Override:
     build:
       dockerfile: ./couchdb/Dockerfile
-    init: false
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-couchdb
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/couchdb.env
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/couchdb/data:/opt/couchdb/data:rw
+    image: ${DOCKER_COMPOSE_APP_NAME}-couchdb:1.0.0
+    init: false
     tmpfs:
       - /opt/couchdb/etc/local.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/couchdb/data:/opt/couchdb/data:rw
 
   certificator:
     extends:
@@ -77,11 +80,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

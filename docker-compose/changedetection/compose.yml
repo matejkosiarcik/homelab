@@ -5,26 +5,26 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./changedetection/Dockerfile
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection/data:/datastore:rw
-    # Internet access required for monitoring public websites
-    networks:
+    networks: # Internet access required for monitoring public websites
       internal-network: {}
       external-network: {}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection/data:/datastore:rw
 
   sockpuppetbrowser:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
+    # Override:
+    build:
+      dockerfile: ./sockpuppetbrowser/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser
     image: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser:1.0.0
     init: false
-    build:
-      dockerfile: ./sockpuppetbrowser/Dockerfile
-    # Internet access required for monitoring public websites
-    networks:
+    networks: # Internet access required for monitoring public websites
       internal-network: {}
       external-network: {}
     tmpfs:
@@ -54,11 +54,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

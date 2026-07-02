@@ -5,8 +5,15 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./omada-controller/Dockerfile
+    networks: # Internet access required for downloading device firmware updates
+      internal-network: {}
+      external-network: {}
+    stop_grace_period: 60s
+    tmpfs:
+      - /opt/tplink/EAPController/properties:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     ulimits:
       nofile:
         soft: 4096
@@ -14,13 +21,6 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/omada/data:/opt/tplink/EAPController/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/omada/default:/opt/tplink/EAPController/logs:rw
-    # Internet access required for downloading device firmware updates
-    networks:
-      internal-network: {}
-      external-network: {}
-    stop_grace_period: 60s
-    tmpfs:
-      - /opt/tplink/EAPController/properties:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:
@@ -65,11 +65,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

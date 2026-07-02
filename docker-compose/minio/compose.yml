@@ -5,6 +5,7 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./minio-server/Dockerfile
     env_file:
@@ -16,12 +17,13 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
+    # Override:
     build:
       dockerfile: ./minio-client/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /home/homelab/.mc:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -35,10 +37,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-api
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-api:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: api
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-api:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/api:/homelab/logs:rw
 
@@ -46,10 +49,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: api
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/api:/homelab/logs:rw
 
@@ -57,10 +61,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-console
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-console:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: console
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-console:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/console:/homelab/logs:rw
 
@@ -68,10 +73,11 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
+    # Override:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console:1.0.0
     environment:
       HOMELAB_CONTAINER_VARIANT: console
+    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/console:/homelab/logs:rw
 
@@ -83,11 +89,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true

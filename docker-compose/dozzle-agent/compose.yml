@@ -5,31 +5,33 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./dozzle/Dockerfile
     command: agent
-    environment:
-      DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
-      DOCKER_HOST: tcp://socket-proxy:2375
-    secrets:
-      - source: cert
-        target: /dozzle_cert.pem
-      - source: key
-        target: /dozzle_key.pem
     depends_on:
       socket-proxy:
         condition: service_started
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
+    environment:
+      DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
+      DOCKER_HOST: tcp://socket-proxy:2375
     networks:
       internal-network: {}
       external-network: {}
+    secrets:
+      - source: cert
+        target: /dozzle_cert.pem
+      - source: key
+        target: /dozzle_key.pem
 
   socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: socket-proxy
+    # Override:
     environment:
       CONTAINERS: 1
       EVENTS: 1
@@ -39,14 +41,14 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
 
 secrets:
   cert:

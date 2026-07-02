@@ -5,16 +5,17 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
+    # Override:
     build:
       dockerfile: ./grafana/Dockerfile
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/grafana/data:/var/lib/grafana:rw
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       GF_LOG_LEVEL: error
       GF_SECURITY_ADMIN_EMAIL: matej@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       GF_SERVER_ROOT_URL: ${DOCKER_COMPOSE_NETWORK_URL}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/grafana/data:/var/lib/grafana:rw
 
   certificator:
     extends:
@@ -39,11 +40,11 @@ services:
 networks:
   default:
     driver: none
-  internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
-    driver: bridge
-    internal: true
   external-network:
     name: ${DOCKER_COMPOSE_APP_NAME}-external-network
     driver: bridge
     internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
