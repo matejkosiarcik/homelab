@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=groceries-frontend-h
 
 FROM ghcr.io/davideshay/groceries-client:1.1.9 AS entrypoint
 USER root
-COPY ./external/groceries-frontend/entrypoint-extra.sh /homelab/
+COPY ./external/groceries/frontend/entrypoint-extra.sh /homelab/
 RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
     tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
@@ -49,7 +49,7 @@ COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY ./external/groceries-frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./external/groceries/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-entrypoint.sh
