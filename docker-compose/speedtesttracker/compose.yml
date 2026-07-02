@@ -11,7 +11,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/speedtesttracker:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/speedtesttracker/data:/config:rw
     # Internet access required for performing speed-tests
     networks:
       internal-network: {}

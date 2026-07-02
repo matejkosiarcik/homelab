@@ -8,9 +8,9 @@ services:
     build:
       dockerfile: ./external/dawarich/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-public:/var/app/public:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-storage:/var/app/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis:/dawarich_db_data:rw # TODO: Determine if necessary
     environment:
       MODE: app
@@ -30,9 +30,9 @@ services:
     build:
       dockerfile: ./external/dawarich/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-public:/var/app/public:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-watched:/var/app/tmp/imports/watched:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-storage:/var/app/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
     environment:
       MODE: sidekiq
       PROMETHEUS_EXPORTER_HOST: app
@@ -54,7 +54,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: redis
     # volumes:
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-shared:/data:rw # TODO: Determine if necessary
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/shared:/data:rw # TODO: Determine if necessary
 
   postgis:
     extends:

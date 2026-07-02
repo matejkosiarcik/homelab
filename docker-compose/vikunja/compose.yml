@@ -13,9 +13,9 @@ services:
       VIKUNJA_SERVICE_PUBLICURL: ${DOCKER_COMPOSE_NETWORK_URL}/
       VIKUNJA_MAILER_FROMEMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja-files:/app/vikunja/files:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja-db:/db:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/vikunja:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja/files:/app/vikunja/files:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vikunja/db:/db:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/vikunja/default:/homelab/logs:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

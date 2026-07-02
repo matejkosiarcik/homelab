@@ -10,7 +10,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/gatus:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/gatus/data:/data:rw
     # Internet access required for monitoring public DNS
     networks:
       internal-network: {}

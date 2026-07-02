@@ -11,7 +11,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole:/etc/pihole:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole/data:/etc/pihole:rw
     cap_add:
       - SYS_NICE
     # Hard-coded DNS is necessary because of bootstrapping problem

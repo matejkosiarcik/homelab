@@ -12,8 +12,8 @@ services:
         soft: 4096
         hard: 8192
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/omada-controller:/opt/tplink/EAPController/data:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/omada-controller:/opt/tplink/EAPController/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/omada/data:/opt/tplink/EAPController/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/omada/default:/opt/tplink/EAPController/logs:rw
     # Internet access required for downloading device firmware updates
     networks:
       internal-network: {}

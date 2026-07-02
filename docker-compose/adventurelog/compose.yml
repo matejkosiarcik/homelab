@@ -29,7 +29,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-backend.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/adventurelog/backend/data:/code/media:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/adventurelog/data:/code/media:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/adventurelog/backend/nginx:/var/log/nginx:rw
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

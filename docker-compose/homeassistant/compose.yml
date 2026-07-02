@@ -9,8 +9,8 @@ services:
     build:
       dockerfile: ./external/homeassistant/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant:/config:rw
       - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant/data:/config:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
     # cap_add:
     #   - NET_ADMIN

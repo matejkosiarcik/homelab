@@ -10,7 +10,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/homepage:/app/config/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/homepage/default:/app/config/logs:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

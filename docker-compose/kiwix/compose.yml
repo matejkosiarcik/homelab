@@ -8,7 +8,7 @@ services:
     build:
       dockerfile: ./external/kiwix/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/kiwix:/data:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/kiwix/data:/data:ro
 
   certificator:
     extends:

@@ -10,7 +10,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/minio:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/minio/data:/data:rw
 
   app-setup:
     extends:
@@ -40,7 +40,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-api:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/api:/homelab/logs:rw
 
   apache-prometheus-exporter-api:
     extends:
@@ -51,7 +51,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: api
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter-api:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/api:/homelab/logs:rw
 
   apache-console:
     extends:
@@ -62,7 +62,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: console
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-console:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/console:/homelab/logs:rw
 
   apache-prometheus-exporter-console:
     extends:
@@ -73,7 +73,7 @@ services:
     environment:
       HOMELAB_CONTAINER_VARIANT: console
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter-console:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/console:/homelab/logs:rw
 
   favicons:
     extends:

@@ -14,7 +14,7 @@ services:
       internal-network: {}
       external-network: {}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot/default:/homelab/logs:rw
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 

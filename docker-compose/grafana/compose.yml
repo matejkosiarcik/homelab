@@ -8,7 +8,7 @@ services:
     build:
       dockerfile: ./external/grafana/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/grafana:/var/lib/grafana:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/grafana/data:/var/lib/grafana:rw
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:

@@ -10,10 +10,10 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot:/homelab/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot/data:/homelab/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot:/homelab/logs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/letsencrypt:/var/log/letsencrypt:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot/default:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot/letsencrypt:/var/log/letsencrypt:rw
     # Internet access required for getting new Let's encrypt certificate
     networks:
       internal-network: {}
@@ -28,7 +28,7 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: file-server
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot:/homelab/www/download:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot/data:/homelab/www/download:rw
 
   apache:
     extends:

@@ -10,8 +10,8 @@ services:
     init: false
     hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin:/config:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/jellyfin:/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/jellyfin/default:/logs:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
@@ -33,8 +33,8 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: script-app-setup
     volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin/data:/homelab/data:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/jellyfin/setup.sh:/homelab/setup.sh:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin:/homelab/data:rw
 
   certificator:
     extends:

@@ -146,7 +146,7 @@ services:
         hard: -1
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/opensearch/data:/usr/share/opensearch/data:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/opensearch:/usr/share/opensearch/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/opensearch/default:/usr/share/opensearch/logs:rw
     tmpfs:
       - /usr/share/opensearch/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 

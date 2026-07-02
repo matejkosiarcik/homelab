@@ -8,8 +8,8 @@ services:
     build:
       dockerfile: ./external/vaultwarden/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vaultwarden:/data
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/vaultwarden:/homelab/logs
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vaultwarden/data:/data
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/vaultwarden/default:/homelab/logs
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
 

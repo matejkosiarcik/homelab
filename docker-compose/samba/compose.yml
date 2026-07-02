@@ -13,7 +13,7 @@ services:
       SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}
       SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba:/var/log/samba:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/default:/var/log/samba:rw
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7

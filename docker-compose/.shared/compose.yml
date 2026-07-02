@@ -61,7 +61,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/default:/homelab/logs:rw
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     dns: # Use internal DNS
@@ -80,7 +80,7 @@ services:
       dockerfile: ./custom/apache/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/default:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/users/proxy-prometheus.htpasswd:ro
     tmpfs:
@@ -199,7 +199,7 @@ services:
     shm_size: 1G
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis/data:/var/lib/postgresql/data:rw
-      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich-shared:/var/shared:rw # TODO: Determine if necessary
+      # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/shared:/var/shared:rw # TODO: Determine if necessary
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
     env_file:

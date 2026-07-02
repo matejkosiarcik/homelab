@@ -12,7 +12,7 @@ services:
     environment:
       SITE_NAME: Healthchecks
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/healthchecks:/homelab/healthchecks:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/healthchecks/data:/homelab/healthchecks:rw
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
