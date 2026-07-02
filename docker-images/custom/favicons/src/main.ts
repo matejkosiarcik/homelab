@@ -61,7 +61,7 @@ const appAddress = (() => {
         case 'planka': return 'http://app:1337';
         case 'prometheus': return 'http://app:9090';
         case 'renovatebot': return '' // http://app:8080
-        case 'reportportal': return 'http://app:8080';
+        case 'reportportal': return 'http://app-ui:8080';
         case 'samba': return '';
         case 'smtp4dev': return 'http://app:5000';
         case 'speedtesttracker': return 'https://app';

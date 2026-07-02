@@ -1,0 +1,183 @@
+x-definitions: {}
+
+services:
+  app-migrations:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-migrations
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-migrations:1.0.0
+    build:
+      dockerfile: ./external/reportportal/migrations/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-migrations.env
+
+  app-index:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-index
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-index:1.0.0
+    build:
+      dockerfile: ./external/reportportal/index/Dockerfile
+
+  app-ui:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-ui
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-ui:1.0.0
+    build:
+      dockerfile: ./external/reportportal/ui/Dockerfile
+    tmpfs:
+      - /etc/nginx/conf.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/cache/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+
+  app-api:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-api
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-api:1.0.0
+    build:
+      dockerfile: ./external/reportportal/api/Dockerfile
+    depends_on:
+      app-jobs:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/reportportal/api:/var/log/reportportal:rw
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-api.env
+
+  app-uat:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-uat
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-uat:1.0.0
+    build:
+      dockerfile: ./external/reportportal/uat/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-uat.env
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  app-jobs:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-jobs
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-jobs:1.0.0
+    build:
+      dockerfile: ./external/reportportal/jobs/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-jobs.env
+
+  app-analyzer:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-analyzer
+    image: ${DOCKER_COMPOSE_APP_NAME}-app-analyzer:1.0.0
+    build:
+      dockerfile: ./external/reportportal/analyzer/Dockerfile
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+    depends_on:
+      opensearch:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-analyzer.env
+
+  postgres:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: postgres
+    environment:
+      POSTGRES_DB: reportportal
+
+  rabbitmq:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-rabbitmq
+    image: ${DOCKER_COMPOSE_APP_NAME}-rabbitmq:1.0.0
+    build:
+      dockerfile: ./external/reportportal/rabbitmq/Dockerfile
+    tmpfs:
+      - /opt/bitnami/rabbitmq/etc/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /opt/bitnami/rabbitmq/.rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /opt/bitnami/rabbitmq/.rabbitmq/mnesia:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rabbitmq.env
+
+  opensearch:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    container_name: ${DOCKER_COMPOSE_APP_NAME}-opensearch
+    image: ${DOCKER_COMPOSE_APP_NAME}-opensearch:1.0.0
+    build:
+      dockerfile: ./external/reportportal/opensearch/Dockerfile
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/opensearch/data:/usr/share/opensearch/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/opensearch:/usr/share/opensearch/logs:rw
+    tmpfs:
+      - /usr/share/opensearch/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    driver: bridge
+    internal: true
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    driver: bridge
+    internal: false

@@ -1,0 +1,79 @@
+---
+title: ReportPortal
+config:
+    theme: dark
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:6px;
+
+    subgraph app_wrapper["App"]
+        inbound_interface(" ")
+        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
+        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
+        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
+        favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
+        postgres("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/postgres.png' style='min-width:80px;max-width:80px' /></div>Postgres")
+        rabbitmq("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/rabbitmq.png' style='min-width:80px;max-width:80px' /></div>RabbitMQ")
+        opensearch("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/opensearch.png' style='min-width:80px;max-width:80px' /></div>Opensearch")
+        app_index("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>Index")
+        class app_index strong_border;
+        app_ui("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>UI")
+        class app_ui strong_border;
+        app_api("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>API")
+        class app_api strong_border;
+        app_uat("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>UAT(Authorization)")
+        class app_uat strong_border;
+        app_jobs("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>Jobs")
+        class app_jobs strong_border;
+        app_analyzer("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>Analyzer")
+        class app_analyzer strong_border;
+        app_migrations("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/bash.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/reportportal.png' style='min-width:65px;max-width:65px;position:absolute;top:20px' /></div>ReportPortal<br/>Migrations")
+        class app_migrations strong_border;
+
+        %% app_index ~~~ app_ui & app_api & app_uat ~~~ app_jobs & app_analyzer & app_migrations
+
+        postgres & rabbitmq & opensearch ~~~ app_analyzer & app_migrations
+
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|/:8080| app_index
+        apache_proxy -->|/ui:8080| app_ui
+        apache_proxy -->|/api:8585| app_api
+        apache_proxy -->|/uat:9999| app_uat
+        apache_proxy -->|/jobs:8686| app_jobs
+        app_migrations -->|use| postgres
+        app_api -->|use| postgres & rabbitmq
+        app_uat -->|use| postgres & rabbitmq
+        app_jobs -->|use| postgres & rabbitmq
+        app_analyzer -->|use| opensearch & rabbitmq
+        apache_proxy -.-|fs| certificator
+        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter & app_index & app_ui & app_api & favicons ~~~ certificator
+        apache_proxy -->|/favicon.ico| favicons -.->|use| app_ui
+    end
+
+    subgraph others_1["Others"]
+        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
+        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        playwright_tests("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/playwright.png' style='min-width:80px;max-width:80px' /></div>Playwright Tests")
+
+        home_network <--> inbound_interface
+        prometheus -->|collect metrics| inbound_interface
+        gatus -->|monitor| inbound_interface
+        playwright_tests -->|send data| inbound_interface
+    end
+
+    subgraph others_2["Others"]
+        certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+
+        certificator -->|report status| healthchecks
+        certificator -.->|download certificate| certbot
+    end
+
+    others_1 ~~~ app_wrapper
+    app_migrations & favicons ~~~ others_2
