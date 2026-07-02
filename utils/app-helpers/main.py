@@ -152,7 +152,7 @@ def get_docker_compose_config() -> str:
 
 def get_docker_images_shasum(config: str) -> str:
     config_obj = json.loads(config)
-    image_names = sorted([config_obj["services"][service]["container_name"] for service in config_obj["services"]])
+    image_names = sorted([config_obj["services"][service]["image"] for service in config_obj["services"]])
     output = []
     for image in image_names:
         try:
