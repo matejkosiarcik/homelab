@@ -173,12 +173,12 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
-USER homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=web-automation-final-aptlibcache \
     apt-get update -qq && \
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
+USER homelab
 ENV HOMELAB_CONTAINER_NAME=web-automation \
     HOMELAB_CONTAINER_VARIANT=default \
     PATH="/homelab/bin:$PATH" \
