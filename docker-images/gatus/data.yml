@@ -153,9 +153,6 @@ apps:
       tcp:
         - 7007
 
-  - name: FileBrowser
-    domain: filebrowser.matejhome.com
-
   - name: Gatus 1
     domain: gatus-1.matejhome.com
     authentication:

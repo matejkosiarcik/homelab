@@ -32,7 +32,6 @@ gotify
 
 # Storage services
 minio
-filebrowser
 
 # Misc
 homepage
