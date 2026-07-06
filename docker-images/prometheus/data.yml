@@ -129,7 +129,6 @@ proxies:
   - url: docker-stats-raspberry-pi-4b-4g.matejhome.com
   - url: donetick.matejhome.com
   - url: dozzle.matejhome.com
-  - url: filebrowser.matejhome.com
   - url: gatus-1.matejhome.com
   - url: gatus-2.matejhome.com
   - url: git-cache-github.matejhome.com

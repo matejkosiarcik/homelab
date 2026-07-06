@@ -439,27 +439,6 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*filebrowser*)
-    # App
-    matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
-    printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
-    monika_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)"
-    printf 'monika,%s\n' "$monika_password" >>"$initial_output/all-credentials.csv"
-    homelab_test_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)"
-    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
-    homelab_viewer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-viewer)"
-    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
-
-    # Apache
-    write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
-
-    # Certificator
-    write_certificator_users
-    write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" certificator "$healthcheck_ping_key"
-
-    # Favicons
-    touch "$initial_output/favicons.env"
-    ;;
 *gatus*)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
@@ -576,7 +555,6 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'DONETICK__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token donetick apache prometheus)" >>"$initial_output/app.env"
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
-    printf 'FILEBROWSER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token filebrowser apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
     printf 'GOTIFY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gotify apache prometheus)" >>"$initial_output/app.env"
@@ -1283,7 +1261,6 @@ case "$app_dirname" in
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token docker-stats-raspberry-pi-4b-4g apache prometheus)" >>"$initial_output/app.env"
     printf 'DONETICK__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token donetick apache prometheus)" >>"$initial_output/app.env"
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token dozzle apache prometheus)" >>"$initial_output/app.env"
-    printf 'FILEBROWSER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token filebrowser apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-1 apache prometheus)" >>"$initial_output/app.env"
     printf 'GATUS_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token gatus-2 apache prometheus)" >>"$initial_output/app.env"
     printf 'GIT_CACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_token git-cache-github apache prometheus)" >>"$initial_output/app.env"

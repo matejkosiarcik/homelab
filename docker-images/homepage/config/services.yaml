@@ -472,12 +472,6 @@
         ping: koffan.matejhome.com
         icon: /icons/koffan.png
 
-    - FileBrowser:
-        description: File Browser
-        href: https://filebrowser.matejhome.com
-        ping: filebrowser.matejhome.com
-        icon: /icons/filebrowser.png
-
     - LibreTranslate:
         description: Open Source Language Translation
         href: https://libretranslate.matejhome.com
