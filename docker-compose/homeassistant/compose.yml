@@ -25,7 +25,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant/data:/config:rw
-      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/homeassistant/configuration.yaml:/config/configuration.yaml:ro
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/homeassistant/configuration.yaml:/config/configuration.yaml:ro
 
   certificator:
     extends:

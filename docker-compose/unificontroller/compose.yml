@@ -42,7 +42,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_NAME}-mongodb:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/mongodb/data:/data/db:rw
-      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/external/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
 
   certificator:
     extends:
