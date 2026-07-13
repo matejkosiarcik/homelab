@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./kiwix/Dockerfile
+      dockerfile: ./docker-images/kiwix/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/kiwix/data:/data:ro
 

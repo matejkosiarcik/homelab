@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage-npmconfi
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.npmrc && \
     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
     npm config set proxy https://npm-cache.matejhome.com && \
@@ -24,8 +24,8 @@ RUN printf '' >/root/.npmrc && \
 FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./homepage/package-lock.json ./homepage/package.json ./homepage/terser.json ./homepage/tsconfig.json ./homepage/vite.config.ts /homelab/
-COPY ./homepage/src/ ./src/
+COPY ./docker-images/homepage/package-lock.json ./docker-images/homepage/package.json ./docker-images/homepage/terser.json ./docker-images/homepage/tsconfig.json ./docker-images/homepage/vite.config.ts /homelab/
+COPY ./docker-images/homepage/src/ ./src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage-nodejs-build
 
 FROM ghcr.io/gethomepage/homepage:v1.8.0 AS entrypoint
 USER root
-COPY ./homepage/entrypoint-extra.sh /homelab/
+COPY ./docker-images/homepage/entrypoint-extra.sh /homelab/
 RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
     tail -n +2 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
@@ -58,7 +58,7 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
@@ -66,7 +66,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
-COPY ./homepage/config/ ./config/
+COPY ./docker-images/homepage/config/ ./config/
 COPY --from=nodejs-build /homelab/dist/main.js ./config/custom.js
 COPY --from=nodejs-build /homelab/dist/main.css ./config/custom.css
 COPY --from=runtime-dirs /homelab/original /homelab/original
@@ -75,7 +75,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY ./homepage/icons/ /app/public/icons/
+COPY ./docker-images/homepage/icons/ /app/public/icons/
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-entrypoint.sh
 
 ### Final ###

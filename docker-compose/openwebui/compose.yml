@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./openwebui/Dockerfile
+      dockerfile: ./docker-images/openwebui/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

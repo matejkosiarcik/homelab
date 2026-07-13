@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./actualbudget/Dockerfile
+      dockerfile: ./docker-images/actualbudget/Dockerfile
     init: false
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/actualbudget/data:/data:rw

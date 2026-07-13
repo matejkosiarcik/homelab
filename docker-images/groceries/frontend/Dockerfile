@@ -6,7 +6,7 @@
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=groceries-frontend-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=groceries-frontend-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=groceries-frontend-h
 
 FROM ghcr.io/davideshay/groceries-client:1.1.9 AS entrypoint
 USER root
-COPY ./groceries/frontend/entrypoint-extra.sh /homelab/
+COPY ./docker-images/groceries/frontend/entrypoint-extra.sh /homelab/
 RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
     tail -n +2 /docker-entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
@@ -37,7 +37,7 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
@@ -49,7 +49,7 @@ COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY ./groceries/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./docker-images/groceries/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-entrypoint.sh

@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./docker-stats-exporter/Dockerfile
+      dockerfile: ./docker-images/docker-stats-exporter/Dockerfile
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
 

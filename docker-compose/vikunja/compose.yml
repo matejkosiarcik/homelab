@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./vikunja/Dockerfile
+      dockerfile: ./docker-images/vikunja/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

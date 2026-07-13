@@ -9,7 +9,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
     build:
-      dockerfile: ./adventurelog/frontend/Dockerfile
+      dockerfile: ./docker-images/adventurelog/frontend/Dockerfile
     environment:
       ORIGIN: ${DOCKER_COMPOSE_NETWORK_URL}
 
@@ -19,7 +19,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./adventurelog/backend/Dockerfile
+      dockerfile: ./docker-images/adventurelog/backend/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-backend.env

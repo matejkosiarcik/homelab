@@ -6,7 +6,7 @@
 
 FROM linuxserver/unifi-network-application:10.0.162 AS entrypoint
 USER root
-COPY ./unifi-network-application/entrypoint-extra.sh /homelab/
+COPY ./docker-images/unifi-network-application/entrypoint-extra.sh /homelab/
 RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
     tail -n +2 /init >/homelab/entrypoint-upstream-rest.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
@@ -35,7 +35,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unifi-network-app
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \

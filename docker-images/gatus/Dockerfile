@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/yq/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/jinja/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -56,14 +56,14 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM yq AS config-1
 USER root
 WORKDIR /homelab
-COPY ./gatus/data.yml /homelab/
+COPY ./docker-images/gatus/data.yml /homelab/
 RUN yq . data.yml >data.json
 
 FROM jinja AS config-2
 USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json /homelab/
-COPY ./gatus/config.yml.j2 /homelab/
+COPY ./docker-images/gatus/config.yml.j2 /homelab/
 RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 
 ### Healthcheck ###
@@ -71,7 +71,7 @@ RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=gatus-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=gatus-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -98,7 +98,7 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###

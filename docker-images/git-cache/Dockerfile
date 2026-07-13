@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=git-cache-npmconf
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.npmrc && \
     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
     npm config set proxy https://npm-cache.matejhome.com && \
@@ -23,8 +23,8 @@ RUN printf '' >/root/.npmrc && \
 FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./git-cache/package-lock.json ./git-cache/package.json ./git-cache/tsconfig.json /homelab/
-COPY ./git-cache/src/ /homelab/src/
+COPY ./docker-images/git-cache/package-lock.json ./git-cache/package.json ./git-cache/tsconfig.json /homelab/
+COPY ./docker-images/git-cache/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=git-cache-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=git-cache-nodejs-buil
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=git-cache-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=git-cache-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -52,7 +52,7 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###

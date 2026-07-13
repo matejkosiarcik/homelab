@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./vaultwarden/Dockerfile
+      dockerfile: ./docker-images/vaultwarden/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:

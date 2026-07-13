@@ -7,7 +7,7 @@ services:
     <<: *common-service-options
     build:
       context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
-      dockerfile: ./external/unifi-network-application/Dockerfile
+      dockerfile: ./docker-images/external/unifi-network-application/Dockerfile
       args:
         HOMELAB_BUILD_ENV: prod
     ports:

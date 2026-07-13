@@ -7,7 +7,7 @@ services:
       service: template_no_network
     # Override:
     build:
-      dockerfile: ./unbound/Dockerfile
+      dockerfile: ./docker-images/unbound/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app
     image: ${DOCKER_COMPOSE_APP_NAME}-app:1.0.0
     security_opt:
@@ -24,7 +24,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./unbound-prometheus-exporter/Dockerfile
+      dockerfile: ./docker-images/unbound-prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
     image: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter:1.0.0
     volumes:

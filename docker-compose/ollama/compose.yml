@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./ollama/Dockerfile
+      dockerfile: ./docker-images/ollama/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ollama/data:/home/homelab/.ollama:rw
 

@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./gatus/Dockerfile
+      dockerfile: ./docker-images/gatus/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks: # Internet access required for monitoring public DNS

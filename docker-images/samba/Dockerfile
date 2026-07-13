@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-gitconfig-a
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
@@ -23,7 +23,7 @@ RUN printf '' >/root/.gitconfig && \
 FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
-COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./samba/prometheus-exporter/gitman.yml /homelab/
+COPY ./docker-images/samba/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=samba-exporter-gitman-gitcache \
     gitman install --quiet
@@ -62,7 +62,7 @@ ENV CGO_ENABLED=0
 WORKDIR /homelab/samba_exporter
 RUN ./build.sh build
 WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh /homelab/
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
     sh validate-executable.sh ./samba_exporter/bin/samba_statusd
 
@@ -77,15 +77,15 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./samba/config /homelab/config
-COPY ./samba/entrypoint.sh /homelab/
+COPY ./docker-images/samba/config /homelab/config
+COPY ./docker-images/samba/entrypoint.sh /homelab/
 COPY --from=samba-exporter-build /homelab/samba_exporter/bin /homelab/bin
 
 FROM scratch AS prefinal

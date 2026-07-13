@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependenc
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/yq/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependenc
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/jinja/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -64,7 +64,7 @@ FROM jinja AS config-3
 USER root
 WORKDIR /homelab
 COPY --from=config-2 /homelab/data.json /homelab/
-COPY ./unbound/unbound.conf.j2 /homelab/
+COPY ./docker-images/unbound/unbound.conf.j2 /homelab/
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
 FROM debian:13.5-slim AS config-4
@@ -90,14 +90,14 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./unbound/entrypoint.sh /homelab/
+COPY ./docker-images/unbound/entrypoint.sh /homelab/
 COPY --from=config-4 /homelab/unbound.conf /homelab/
 
 FROM scratch AS prefinal

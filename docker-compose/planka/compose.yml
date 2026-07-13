@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./planka/Dockerfile
+      dockerfile: ./docker-images/planka/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy

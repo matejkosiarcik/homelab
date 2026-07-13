@@ -7,7 +7,7 @@
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=openspeedtest-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=openspeedtest-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=openspeedtest-health
 
 FROM openspeedtest/latest:v2.0.6 AS entrypoint
 USER root
-COPY ./openspeedtest/entrypoint-extra.sh /homelab/
+COPY ./docker-images/openspeedtest/entrypoint-extra.sh /homelab/
 RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
     tail -n +2 /entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=openspeedtest-use
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~nginx~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~nginx~' | sponge --append /etc/passwd

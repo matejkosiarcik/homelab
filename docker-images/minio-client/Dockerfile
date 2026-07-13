@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-gitc
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
@@ -22,7 +22,7 @@ RUN printf '' >/root/.gitconfig && \
 FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
-COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=minio-client-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -51,7 +51,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-pack
 
 FROM busybox:1.35.0-uclibc AS busybox
 USER root
-COPY ./.shared/build-utils/busybox-copy.sh /homelab/
+COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
 RUN sh /homelab/busybox-copy.sh
 
 ### App ###
@@ -68,7 +68,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-mini
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./minio-client/gitman.yml /homelab/
+COPY ./docker-images/minio-client/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=minio-client-cli-gitman-gitcache \
     gitman install --quiet && \
@@ -89,7 +89,7 @@ WORKDIR /homelab/minio-mc
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all mc
 WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh /homelab/
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./minio-mc/mc
 
 ### Healthcheck ###
@@ -97,7 +97,7 @@ RUN sh validate-executable.sh ./minio-mc/mc
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=minio-client-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=minio-client-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -113,14 +113,14 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./minio-client/entrypoint.sh ./minio-client/main.sh ./minio-client/plain-buckets.txt ./minio-client/versioned-buckets.txt /homelab/
+COPY ./docker-images/minio-client/entrypoint.sh ./minio-client/main.sh ./minio-client/plain-buckets.txt ./minio-client/versioned-buckets.txt /homelab/
 COPY --from=minio-mc-build /homelab/minio-mc/mc /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 

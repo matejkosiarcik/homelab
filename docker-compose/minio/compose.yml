@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./minio-server/Dockerfile
+      dockerfile: ./docker-images/minio-server/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
@@ -19,7 +19,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./minio-client/Dockerfile
+      dockerfile: ./docker-images/minio-client/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env

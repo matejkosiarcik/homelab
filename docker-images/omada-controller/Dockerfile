@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=omadacontroller-u
 COPY --from=omadacontroller-app /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~omada~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~omada~' | sponge --append /etc/passwd && \

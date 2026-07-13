@@ -6,7 +6,7 @@
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=smtp4dev-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=smtp4dev-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -22,7 +22,7 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
@@ -35,7 +35,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY ./smtp4dev/icons/favicon.ico ./smtp4dev/icons/favicon.png /app/wwwroot/
+COPY ./docker-images/smtp4dev/icons/favicon.ico ./smtp4dev/icons/favicon.png /app/wwwroot/
 
 ### Final ###
 

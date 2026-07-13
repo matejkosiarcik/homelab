@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./changedetection/Dockerfile
+      dockerfile: ./docker-images/changedetection/Dockerfile
     networks: # Internet access required for monitoring public websites
       - external-network
       - internal-network
@@ -20,7 +20,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./sockpuppetbrowser/Dockerfile
+      dockerfile: ./docker-images/sockpuppetbrowser/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser
     image: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser:1.0.0
     init: false

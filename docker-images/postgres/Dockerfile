@@ -12,15 +12,15 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./postgres/postgres.conf /homelab/postgresql.conf
-COPY ./postgres/pg_hba.conf /homelab/pg_hba.conf
+COPY ./docker-images/postgres/postgres.conf /homelab/postgresql.conf
+COPY ./docker-images/postgres/pg_hba.conf /homelab/pg_hba.conf
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

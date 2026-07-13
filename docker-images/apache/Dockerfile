@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-np
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.npmrc && \
     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
     npm config set proxy https://npm-cache.matejhome.com && \
@@ -25,11 +25,11 @@ FROM node:26.3.0-slim AS errors-build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-COPY ./apache/errors/package-lock.json ./apache/errors/package.json /homelab/
+COPY ./docker-images/apache/errors/package-lock.json ./docker-images/apache/errors/package.json /homelab/
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=apache-errors-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error
-COPY ./apache/errors/eleventy.config.js ./apache/errors/postcss.config.js ./apache/errors/terser.json ./apache/errors/vite.config.ts ./apache/errors/tsconfig.json /homelab/
-COPY ./apache/errors/src/ /homelab/src/
+COPY ./docker-images/apache/errors/eleventy.config.js ./docker-images/apache/errors/postcss.config.js ./docker-images/apache/errors/terser.json ./docker-images/apache/errors/vite.config.ts ./docker-images/apache/errors/tsconfig.json /homelab/
+COPY ./docker-images/apache/errors/src/ /homelab/src/
 RUN npm run build && \
     npm prune --production
 
@@ -38,7 +38,7 @@ RUN npm run build && \
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=apache-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=apache-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -66,7 +66,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-user-setup
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~www-data~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~www-data~' | sponge --append /etc/passwd
@@ -79,16 +79,16 @@ WORKDIR /homelab
 COPY --from=empty-dir /empty /homelab/certs
 COPY --from=empty-dir /empty /homelab/logs
 COPY --from=empty-dir /empty.txt /homelab/users/empty.htpasswd
-COPY ./apache/www /homelab/www
+COPY ./docker-images/apache/www /homelab/www
 COPY --from=errors-build /homelab/dist/out /homelab/www/.apache/errors
-COPY ./apache/entrypoint.sh /homelab/
+COPY ./docker-images/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY ./apache/apache.conf /fsroot/apache.conf
+COPY ./docker-images/apache/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
