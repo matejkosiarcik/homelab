@@ -1,0 +1,16 @@
+# App data
+**/app-data-*/
+**/app-data/
+**/app-logs-*/
+**/app-logs/
+**/app-secrets-*/
+**/app-secrets/
+**/compose*.yml
+**/Taskfile.yml
+
+# OS stuff
+**/._*
+**/.DS_Store
+**/[Dd]esktop.ini
+**/*~
+**/Thumbs.db
