@@ -54,7 +54,7 @@ build:
 docker-build:
 	printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 		printf 'Building %s\n' "$$component" && \
-		docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
+		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/docker-images/$$component/Dockerfile" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
 		printf '\n\n' && \
 	true; done
 
@@ -70,7 +70,7 @@ docker-build-multiarch:
 	printf '%s' "$(DOCKER_ARCHS)" | tr -d ' ' | base64 -d | while read -r arch; do \
 		printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 			printf 'Building %s for linux/%s:\n' "$$component" "$$arch" && \
-			docker build "$(PROJECT_DIR)/docker-images" --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$$arch" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/docker-images/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$$arch" | tr '/' '-')" && \
 			printf '\n\n' && \
 		true; done && \
 	true; done
