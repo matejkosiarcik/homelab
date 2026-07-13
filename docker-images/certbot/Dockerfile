@@ -122,7 +122,7 @@ WORKDIR /homelab
 COPY --from=empty-dir /empty /homelab/certs
 COPY --from=empty-dir /empty /homelab/logs
 COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/.shared/cron-utils/entrypoint.sh /homelab/
-COPY ./docker-images/certbot/crontab.cron ./certbot/main.sh ./certbot/certbot-hook-after.sh ./certbot/certbot-hook-before.sh /homelab/
+COPY ./docker-images/certbot/crontab.cron ./docker-images/certbot/main.sh ./docker-images/certbot/certbot-hook-after.sh ./docker-images/certbot/certbot-hook-before.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 

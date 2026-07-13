@@ -35,7 +35,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY ./docker-images/smtp4dev/icons/favicon.ico ./smtp4dev/icons/favicon.png /app/wwwroot/
+COPY ./docker-images/smtp4dev/icons/favicon.ico ./docker-images/smtp4dev/icons/favicon.png /app/wwwroot/
 
 ### Final ###
 

@@ -23,7 +23,7 @@ RUN printf '' >/root/.npmrc && \
 FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/owntracks-decryptor/package-lock.json ./owntracks-decryptor/package.json ./owntracks-decryptor/tsconfig.json /homelab/
+COPY ./docker-images/owntracks-decryptor/package-lock.json ./docker-images/owntracks-decryptor/package.json ./docker-images/owntracks-decryptor/tsconfig.json /homelab/
 COPY ./docker-images/owntracks-decryptor/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=owntracks-decryptor-nodejs-build-npmcache \

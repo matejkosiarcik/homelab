@@ -40,7 +40,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/docker-registry/config.yml ./docker-registry/entrypoint.sh /homelab/
+COPY ./docker-images/docker-registry/config.yml ./docker-images/docker-registry/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal

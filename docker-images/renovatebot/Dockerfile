@@ -129,7 +129,7 @@ USER root
 WORKDIR /homelab
 COPY --from=empty-dir /empty /homelab/logs
 COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/.shared/cron-utils/entrypoint.sh /homelab/
-COPY ./docker-images/renovatebot/crontab.cron ./renovatebot/main.sh /homelab/
+COPY ./docker-images/renovatebot/crontab.cron ./docker-images/renovatebot/main.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY --from=nodejs-server-build /homelab/package.json /homelab/server/

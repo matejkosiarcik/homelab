@@ -78,7 +78,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/prometheus/web.yml ./prometheus/entrypoint.sh /homelab/
+COPY ./docker-images/prometheus/web.yml ./docker-images/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 

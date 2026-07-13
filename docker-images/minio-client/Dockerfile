@@ -120,7 +120,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/minio-client/entrypoint.sh ./minio-client/main.sh ./minio-client/plain-buckets.txt ./minio-client/versioned-buckets.txt /homelab/
+COPY ./docker-images/minio-client/entrypoint.sh ./docker-images/minio-client/main.sh ./docker-images/minio-client/plain-buckets.txt ./docker-images/minio-client/versioned-buckets.txt /homelab/
 COPY --from=minio-mc-build /homelab/minio-mc/mc /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
