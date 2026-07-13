@@ -29,7 +29,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
-COPY --chown=homelab:homelab ./docker-setup/entrypoint.sh /homelab/
+COPY --chown=homelab:homelab ./docker-images/docker-setup/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
