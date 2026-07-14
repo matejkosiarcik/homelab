@@ -6,8 +6,6 @@ services:
   app:
     <<: *common-service-options
     build:
-      context: ${DOCKER_COMPOSE_REPOROOT_PATH}/
-      dockerfile: ./docker-images/unifi-network-application/Dockerfile
       args:
         HOMELAB_BUILD_ENV: prod
     ports:
