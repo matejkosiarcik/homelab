@@ -5,9 +5,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    build:
-      args:
-        HOMELAB_BUILD_ENV: prod
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:1900:1900/udp
       - ${DOCKER_COMPOSE_NETWORK_IP}:3478:3478/udp

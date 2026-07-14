@@ -5,9 +5,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    build:
-      args:
-        HOMELAB_BUILD_ENV: dev
     ports:
       - 127.0.0.1:1900:1900/udp
       - 127.0.0.1:3478:3478/udp
