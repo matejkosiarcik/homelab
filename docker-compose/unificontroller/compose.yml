@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./unifi-network-application/Dockerfile
+      dockerfile: ./docker-images/unifi-network-application/Dockerfile
     depends_on:
       mongodb:
         condition: service_healthy
@@ -31,7 +31,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./mongodb/Dockerfile
+      dockerfile: ./docker-images/mongodb/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb.env
@@ -70,7 +70,7 @@ services:
   #     service: template
   #   # Override:
   #   build:
-  #     dockerfile: ./web-automation/Dockerfile
+  #     dockerfile: ./docker-images/web-automation/Dockerfile
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
   #   depends_on:
   #     app:

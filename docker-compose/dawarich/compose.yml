@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./dawarich/Dockerfile
+      dockerfile: ./docker-images/dawarich/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
@@ -28,7 +28,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./dawarich/Dockerfile
+      dockerfile: ./docker-images/dawarich/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-sidekiq
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
@@ -73,7 +73,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./owntracks-decryptor/Dockerfile
+      dockerfile: ./docker-images/owntracks-decryptor/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-decryptor
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/decryptor.env

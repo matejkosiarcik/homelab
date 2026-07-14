@@ -12,7 +12,7 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
@@ -20,8 +20,8 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 ARG CONFIG_FILE=default
-COPY ./redis/${CONFIG_FILE}.conf /homelab/redis.conf
-COPY ./redis/entrypoint.sh /homelab/
+COPY ./docker-images/redis/${CONFIG_FILE}.conf /homelab/redis.conf
+COPY ./docker-images/redis/entrypoint.sh /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

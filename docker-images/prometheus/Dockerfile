@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=prometheus-depend
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/yq/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=prometheus-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=prometheus-depend
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/dependencies/jinja/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=prometheus-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -40,14 +40,14 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM yq AS config-1
 USER root
 WORKDIR /homelab
-COPY ./prometheus/data.yml /homelab/
+COPY ./docker-images/prometheus/data.yml /homelab/
 RUN yq . data.yml >data.json
 
 FROM jinja AS config-2
 USER root
 WORKDIR /homelab
 COPY --from=config-1 /homelab/data.json /homelab/
-COPY ./prometheus/prometheus.yml.j2 /homelab/
+COPY ./docker-images/prometheus/prometheus.yml.j2 /homelab/
 RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 
 ### Healthcheck ###
@@ -55,7 +55,7 @@ RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=prometheus-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=prometheus-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -71,14 +71,14 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./prometheus/web.yml ./prometheus/entrypoint.sh /homelab/
+COPY ./docker-images/prometheus/web.yml ./docker-images/prometheus/entrypoint.sh /homelab/
 COPY --from=config-2 ./homelab/prometheus.yml /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 

@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./omada-controller/Dockerfile
+      dockerfile: ./docker-images/omada-controller/Dockerfile
     networks: # Internet access required for downloading device firmware updates
       - external-network
       - internal-network
@@ -49,7 +49,7 @@ services:
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
   #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
   #   build:
-  #     dockerfile: ./web-automation/Dockerfile
+  #     dockerfile: ./docker-images/web-automation/Dockerfile
   #   depends_on:
   #     app:
   #       condition: service_healthy

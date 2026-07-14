@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./homeassistant/Dockerfile
+      dockerfile: ./docker-images/homeassistant/Dockerfile
     # cap_add:
     #   - NET_ADMIN
     #   - NET_RAW
@@ -53,7 +53,7 @@ services:
   #     service: template
   #   # Override:
   #   build:
-  #     dockerfile: ./web-automation/Dockerfile
+  #     dockerfile: ./docker-images/web-automation/Dockerfile
   #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
   #   depends_on:
   #     app:

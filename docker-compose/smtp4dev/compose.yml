@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./smtp4dev/Dockerfile
+      dockerfile: ./docker-images/smtp4dev/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.7
       - 10.1.10.7

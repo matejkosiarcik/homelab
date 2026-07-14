@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./nodeexporter/Dockerfile
+      dockerfile: ./docker-images/nodeexporter/Dockerfile
     # cap_add:
     #   - SYS_TIME
     pid: host

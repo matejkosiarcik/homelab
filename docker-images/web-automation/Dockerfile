@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-gi
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-np
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.npmrc && \
     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
     npm config set proxy https://npm-cache.matejhome.com && \
@@ -37,7 +37,7 @@ RUN printf '' >/root/.npmrc && \
 FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
-COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=web-automation-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-su
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./.shared/dependencies/supercronic/gitman.yml /homelab/
+COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=web-automation-supercronic-gitman-gitcache \
     gitman install --quiet && \
@@ -77,7 +77,7 @@ WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
 WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh /homelab/
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
@@ -85,8 +85,8 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./web-automation/package-lock.json ./web-automation/package.json ./web-automation/postinstall.sh ./web-automation/rollup.config.js ./web-automation/tsconfig.json /homelab/
-COPY ./web-automation/src/ ./src/
+COPY ./docker-images/web-automation/package-lock.json ./web-automation/package.json ./web-automation/postinstall.sh ./web-automation/rollup.config.js ./web-automation/tsconfig.json /homelab/
+COPY ./docker-images/web-automation/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=web-automation-nodejs-build-npmcache \
@@ -99,7 +99,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=web-automation-nodejs
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/filecmp-healthcheck/main.go ./.shared/healthchecks/filecmp-healthcheck/go.mod ./.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=web-automation-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=web-automation-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -120,7 +120,7 @@ USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
@@ -150,14 +150,14 @@ FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
 COPY --from=empty-dir /empty /homelab/logs
-COPY ./.shared/cron-utils/cron-wrapper.sh ./.shared/cron-utils/entrypoint.sh /homelab/
+COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/.shared/cron-utils/entrypoint.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY --from=nodejs-build /homelab/package.json /homelab/
 COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs-build /homelab/dist /homelab/dist
-COPY ./web-automation/main.sh /homelab/
-COPY ./web-automation/crontab-homeassistant-backup.cron ./web-automation/crontab-omadacontroller-backup.cron ./web-automation/crontab-unificontroller-backup.cron /homelab/
+COPY ./docker-images/web-automation/main.sh /homelab/
+COPY ./docker-images/web-automation/crontab-homeassistant-backup.cron ./web-automation/crontab-omadacontroller-backup.cron ./web-automation/crontab-unificontroller-backup.cron /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

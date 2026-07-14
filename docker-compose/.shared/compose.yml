@@ -13,8 +13,8 @@ services:
         HOMELAB_APP_TYPE: ${DOCKER_COMPOSE_APP_TYPE}
         HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
         UID: ${DOCKER_COMPOSE_UID}
-      context: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/
-      dockerfile: ./PLACEHOLDER/Dockerfile
+      context: ${DOCKER_COMPOSE_REPOROOT_PATH}/
+      dockerfile: ./docker-images/PLACEHOLDER/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER
     dns_opt:
       - single-request
@@ -57,7 +57,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./certificator/Dockerfile
+      dockerfile: ./docker-images/certificator/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
     dns: # Use internal DNS
       - 10.1.12.6
@@ -79,7 +79,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./apache/Dockerfile
+      dockerfile: ./docker-images/apache/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
     dns: # Use blackhole DNS
       - 10.1.12.7
@@ -103,7 +103,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./apache-prometheus-exporter/Dockerfile
+      dockerfile: ./docker-images/apache-prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
@@ -114,7 +114,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./socket-proxy/Dockerfile
+      dockerfile: ./docker-images/socket-proxy/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
     image: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy:1.0.0
     tmpfs:
@@ -127,7 +127,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./docker-setup/Dockerfile
+      dockerfile: ./docker-images/docker-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
@@ -141,7 +141,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./favicons/Dockerfile
+      dockerfile: ./docker-images/favicons/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
@@ -152,7 +152,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./file-server/Dockerfile
+      dockerfile: ./docker-images/file-server/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-file-server
     image: ${DOCKER_COMPOSE_APP_NAME}-file-server:1.0.0
 
@@ -161,7 +161,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./script-setup/Dockerfile
+      dockerfile: ./docker-images/script-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
     tmpfs:
@@ -172,7 +172,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./redis/Dockerfile
+      dockerfile: ./docker-images/redis/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/redis.env
@@ -188,7 +188,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./postgres/Dockerfile
+      dockerfile: ./docker-images/postgres/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.env
@@ -206,7 +206,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./postgis/Dockerfile
+      dockerfile: ./docker-images/postgis/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-postgis
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env

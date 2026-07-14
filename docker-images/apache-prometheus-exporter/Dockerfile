@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-prometheus
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=apache-prometheus-exporter-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=apache-prometheus-exporter-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=apache-prometheus-ex
 
 FROM busybox:1.35.0-uclibc AS busybox
 USER root
-COPY ./.shared/build-utils/busybox-copy.sh /homelab/
+COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
 RUN sh /homelab/busybox-copy.sh
 
 ### Users ###
@@ -39,7 +39,7 @@ USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
@@ -47,7 +47,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 USER root
 WORKDIR /homelab
-COPY ./apache-prometheus-exporter/entrypoint.sh /homelab/
+COPY ./docker-images/apache-prometheus-exporter/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY --from=apache-prometheus-exporter /usr/bin/prometheus-apache-exporter /homelab/bin/
 

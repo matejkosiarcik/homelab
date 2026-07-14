@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./certbot/Dockerfile
+      dockerfile: ./docker-images/certbot/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks: # Internet access required for getting new Let's Encrypt certificate

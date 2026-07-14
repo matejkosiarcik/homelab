@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./git-cache/Dockerfile
+      dockerfile: ./docker-images/git-cache/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
       - ${DOCKER_COMPOSE_APP_PATH}/config/app.env

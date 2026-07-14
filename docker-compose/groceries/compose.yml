@@ -7,7 +7,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./groceries/backend/Dockerfile
+      dockerfile: ./docker-images/groceries/backend/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
     depends_on:
       couchdb:
@@ -30,7 +30,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./groceries/frontend/Dockerfile
+      dockerfile: ./docker-images/groceries/frontend/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
     environment:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
@@ -46,7 +46,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./couchdb/Dockerfile
+      dockerfile: ./docker-images/couchdb/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-couchdb
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/couchdb.env

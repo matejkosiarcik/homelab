@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./dozzle/Dockerfile
+      dockerfile: ./docker-images/dozzle/Dockerfile
     command: agent
     depends_on:
       socket-proxy:

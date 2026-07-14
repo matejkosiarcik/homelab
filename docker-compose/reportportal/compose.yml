@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./reportportal/migrations/Dockerfile
+      dockerfile: ./docker-images/reportportal/migrations/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-migrations
     depends_on:
       postgres:
@@ -22,7 +22,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./reportportal/index/Dockerfile
+      dockerfile: ./docker-images/reportportal/index/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-index
     image: ${DOCKER_COMPOSE_APP_NAME}-app-index:1.0.0
 
@@ -32,7 +32,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./reportportal/ui/Dockerfile
+      dockerfile: ./docker-images/reportportal/ui/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-ui
     image: ${DOCKER_COMPOSE_APP_NAME}-app-ui:1.0.0
     tmpfs:
@@ -45,7 +45,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./reportportal/api/Dockerfile
+      dockerfile: ./docker-images/reportportal/api/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-api
     depends_on:
       app-jobs:
@@ -67,7 +67,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./reportportal/uat/Dockerfile
+      dockerfile: ./docker-images/reportportal/uat/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-uat
     depends_on:
       postgres:
@@ -84,7 +84,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./reportportal/jobs/Dockerfile
+      dockerfile: ./docker-images/reportportal/jobs/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-jobs
     depends_on:
       postgres:
@@ -103,7 +103,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./reportportal/analyzer/Dockerfile
+      dockerfile: ./docker-images/reportportal/analyzer/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-analyzer
     depends_on:
       opensearch:
@@ -130,7 +130,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./reportportal/rabbitmq/Dockerfile
+      dockerfile: ./docker-images/reportportal/rabbitmq/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-rabbitmq
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rabbitmq.env
@@ -147,7 +147,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./reportportal/opensearch/Dockerfile
+      dockerfile: ./docker-images/reportportal/opensearch/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-opensearch
     image: ${DOCKER_COMPOSE_APP_NAME}-opensearch:1.0.0
     tmpfs:

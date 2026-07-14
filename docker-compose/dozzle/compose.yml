@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./dozzle/Dockerfile
+      dockerfile: ./docker-images/dozzle/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

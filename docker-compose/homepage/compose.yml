@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./homepage/Dockerfile
+      dockerfile: ./docker-images/homepage/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
@@ -52,7 +52,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./homepage-widgets/Dockerfile
+      dockerfile: ./docker-images/homepage-widgets/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-widgets
     dns: # Use internal DNS
       - 10.1.12.6

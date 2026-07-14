@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./ntfy/Dockerfile
+      dockerfile: ./docker-images/ntfy/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     networks: # Internet access required for publishing notifications through firebase

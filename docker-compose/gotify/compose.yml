@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./gotify/Dockerfile
+      dockerfile: ./docker-images/gotify/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6

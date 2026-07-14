@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheu
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./.shared/anticache.txt /homelab/
+COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
@@ -22,7 +22,7 @@ RUN printf '' >/root/.gitconfig && \
 FROM python:3.14.6-slim AS gitman
 USER root
 WORKDIR /homelab
-COPY ./.shared/dependencies/gitman/requirements.txt /homelab/
+COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-prometheus-exporter-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheu
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./unbound-prometheus-exporter/gitman.yml /homelab/
+COPY ./docker-images/unbound-prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometheus-exporter-gitman-gitcache \
     gitman install --quiet && \
@@ -62,7 +62,7 @@ WORKDIR /homelab/unbound_exporter
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all unbound_exporter
 WORKDIR /homelab
-COPY ./.shared/build-utils/validate-executable.sh /homelab/
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./unbound_exporter/unbound_exporter
 
 ### Healthcheck ###
@@ -70,7 +70,7 @@ RUN sh validate-executable.sh ./unbound_exporter/unbound_exporter
 FROM golang:1.26.4-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./.shared/healthchecks/http-healthcheck/main.go ./.shared/healthchecks/http-healthcheck/go.mod ./.shared/healthchecks/http-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=unbound-prometheus-exporter-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=unbound-prometheus-exporter-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
@@ -79,7 +79,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=unbound-prometheus-e
 
 FROM busybox:1.35.0-uclibc AS busybox
 USER root
-COPY ./.shared/build-utils/busybox-copy.sh /homelab/
+COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
 RUN sh /homelab/busybox-copy.sh
 
 ### User setup ###
@@ -93,14 +93,14 @@ WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
-COPY ./.shared/build-utils/create-user.sh /homelab/
+COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./unbound-prometheus-exporter/entrypoint.sh /homelab/entrypoint.sh
+COPY ./docker-images/unbound-prometheus-exporter/entrypoint.sh /homelab/entrypoint.sh
 COPY --from=unbound-prometheus-exporter-build /homelab/unbound_exporter/unbound_exporter /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
