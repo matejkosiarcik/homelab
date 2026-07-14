@@ -5,11 +5,6 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    build:
-      context: ${DOCKER_COMPOSE_REPOROOT_PATH}/
-      dockerfile: ./docker-images/unifi-network-application/Dockerfile
-      args:
-        HOMELAB_BUILD_ENV: dev
     ports:
       - 127.0.0.1:1900:1900/udp
       - 127.0.0.1:3478:3478/udp
@@ -21,8 +16,8 @@ services:
 
   mongodb:
     <<: *common-service-options
-    # ports: # Only for local debugging
-    #   - 127.0.0.1:27017:27017
+    ports: # Only for local debugging
+      - 127.0.0.1:27017:27017
 
   certificator:
     <<: *common-service-options
