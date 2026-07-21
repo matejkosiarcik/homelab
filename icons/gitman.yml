@@ -94,7 +94,7 @@ sources_locked:
       -
   - repo: https://github.com/walkxcode/dashboard-icons.git
     name: dashboard-icons
-    rev: 00c43aa6857e2905b1d59bfceddfca7bc145f44a
+    rev: 46b860c70e866212311aef2f98da3775c17f5068
     type: git
     params:
     sparse_paths:
@@ -120,7 +120,7 @@ sources_locked:
       -
   - repo: https://github.com/NX211/homer-icons.git
     name: homer-icons
-    rev: c6f324b9aa104ac33ba7f63bcc39798e5ad8ba9a
+    rev: 5b761f0bc34aa49325084332b0fd3dbcd9eb4195
     type: git
     params:
     sparse_paths:
@@ -133,7 +133,7 @@ sources_locked:
       -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
-    rev: fd611c4904ec98c0de68ee988975d9f1f4844a6a
+    rev: 2acc280c188ecbaa31bd425258a13cc4dc1652d5
     type: git
     params:
     sparse_paths:
