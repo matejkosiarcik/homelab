@@ -22,7 +22,7 @@
     "sharp-ico": "^0.1.5",
     "tar": "^7.5.20",
     "tslib": "^2.8.1",
-    "user-agents": "^2.1.127"
+    "user-agents": "^2.1.128"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
