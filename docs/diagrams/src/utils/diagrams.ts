@@ -158,7 +158,7 @@ export class DiagramEdge implements DiagramElement {
         end: '',
     };
 
-    constructor(start: { node: DiagramAbstractNode, location: DiagramEdgeLocation, offset?: Point | Point[] | undefined, connector?: 'none' | 'arrow' | undefined }, end:  { node: DiagramAbstractNode, location: DiagramEdgeLocation, offset?: Point | Point[] | undefined, connector?: 'none' | 'arrow' | undefined  }, midPoint?: Point | Point[] | undefined) {
+    constructor(start: { node: DiagramAbstractNode, location: DiagramEdgeLocation, offset?: Point | Point[] | undefined, connector?: 'none' | 'arrow' | undefined }, end:  { node: DiagramAbstractNode, location: DiagramEdgeLocation, offset?: Point | Point[] | undefined, connector?: 'none' | 'arrow' | undefined }, midPoint?: Point | Point[] | undefined) {
         this.id = faker.string.alpha(12);
         const startPoint = (() => {
             switch (start.location) {
