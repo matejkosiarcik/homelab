@@ -1,0 +1,9 @@
+{%- for item in apache["upstream-url"] -%}
+{%- if item.path == "/" %}
+    ProxyPassReverse "{{ item.path }}" "{{ item.target }}/"
+{%- elif item.path.endswith("/") %}
+    ProxyPassReverse "{{ item.path }}" "{{ item.target }}/"
+{%- else %}
+    ProxyPassReverse "{{ item.path }}" "{{ item.target }}"
+{%- endif %}
+{% endfor -%}

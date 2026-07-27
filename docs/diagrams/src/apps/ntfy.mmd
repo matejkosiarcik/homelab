@@ -28,7 +28,7 @@ flowchart LR
         apache_proxy -->|/favicon.ico| favicons -.->|use| app
         inbound_interface -->|:25| app
         app ~~~ socket_proxy ~~~ app_setup
-        app_setup  -.->|use| app
+        app_setup -.->|use| app
         app_setup -.->|docker tcp| socket_proxy
         socket_proxy -.->|docker sock| docker
     end

@@ -1,0 +1,6 @@
+apache:
+  upstream-url:
+    - path: /api/
+      target: http://example.com:12345
+    - path: /
+      target: http://example.com:12345

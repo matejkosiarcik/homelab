@@ -1,0 +1,6 @@
+apache:
+  upstream-url:
+    - path: /metrics
+      target: http://app-prometheus-exporter:9617/metrics
+    - path: /
+      target: http://app:80

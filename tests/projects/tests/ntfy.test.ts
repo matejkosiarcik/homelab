@@ -116,7 +116,7 @@ test.describe(apps.ntfy.title, () => {
                 },
             ];
             for (const user of invalidPublisherUsers2) {
-                test(`API: Unsuccessful send notification  - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                test(`API: Unsuccessful send notification - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     await delay(2500); // Must delay tests a bit
                     const response = await axios.request({
                         auth: {

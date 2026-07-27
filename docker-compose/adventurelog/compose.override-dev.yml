@@ -18,22 +18,13 @@ services:
   certificator:
     <<: *common-service-options
 
-  apache-frontend:
+  apache:
     <<: *common-service-options
     ports:
       - 127.0.0.1:8080:80
       - 127.0.0.1:8443:443
 
-  apache-prometheus-exporter-frontend:
-    <<: *common-service-options
-
-  apache-backend:
-    <<: *common-service-options
-    ports:
-      - 127.0.0.1:8081:80
-      - 127.0.0.1:8444:443
-
-  apache-prometheus-exporter-backend:
+  apache-prometheus-exporter:
     <<: *common-service-options
 
   favicons:

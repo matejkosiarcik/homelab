@@ -1,0 +1,6 @@
+apache:
+  upstream-url:
+    - path: /api/
+      target: http://app-backend:80
+    - path: /
+      target: http://app-frontend:3000

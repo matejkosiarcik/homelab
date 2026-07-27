@@ -1,0 +1,8 @@
+apache:
+  upstream-url:
+    - path: /
+      env: prod
+      target: https://app:443
+    - path: /
+      env: dev
+      target: https://app:8443

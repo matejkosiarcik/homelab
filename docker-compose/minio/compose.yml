@@ -8,6 +8,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/minio-server/Dockerfile
+    environment:
+      MINIO_BROWSER_REDIRECT_URL: ${DOCKER_COMPOSE_NETWORK_URL}/ui
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
@@ -33,53 +35,15 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: certificator
 
-  apache-api:
+  apache:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-api
-    environment:
-      HOMELAB_CONTAINER_VARIANT: api
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-api:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/api:/homelab/logs:rw
 
-  apache-prometheus-exporter-api:
+  apache-prometheus-exporter:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api
-    environment:
-      HOMELAB_CONTAINER_VARIANT: api
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-api:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/api:/homelab/logs:rw
-
-  apache-console:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: apache
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-console
-    environment:
-      HOMELAB_CONTAINER_VARIANT: console
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-console:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/console:/homelab/logs:rw
-
-  apache-prometheus-exporter-console:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: apache-prometheus-exporter
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console
-    environment:
-      HOMELAB_CONTAINER_VARIANT: console
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-console:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/console:/homelab/logs:rw
 
   favicons:
     extends:

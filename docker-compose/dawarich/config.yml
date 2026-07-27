@@ -1,0 +1,10 @@
+apache:
+  upstream-url:
+    - path: /metrics
+      target: http://app:9394/metrics
+    # - path: /api/v1/owntracks/points
+    #   target: http://decryptor:8080/api/v1/owntracks/points
+    # - path: /pub
+    #   target: http://decryptor:8080/pub
+    - path: /
+      target: http://app:3000

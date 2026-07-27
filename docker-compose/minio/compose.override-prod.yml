@@ -5,34 +5,20 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    environment:
-      MINIO_BROWSER_REDIRECT_URL: https://${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
 
   app-setup:
     <<: *common-service-options
 
   certificator:
     <<: *common-service-options
-    environment:
-      HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN},${DOCKER_COMPOSE_NETWORK_DOMAIN_CONSOLE}
-      HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP},${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}
 
-  apache-api:
+  apache:
     <<: *common-service-options
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
       - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
 
-  apache-prometheus-exporter-api:
-    <<: *common-service-options
-
-  apache-console:
-    <<: *common-service-options
-    ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP_CONSOLE}:443:443
-
-  apache-prometheus-exporter-console:
+  apache-prometheus-exporter:
     <<: *common-service-options
 
   favicons:

@@ -20,7 +20,7 @@ services:
     # volumes:
     #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER/data:/PLACEHOLDER:rw
     #   - ${DOCKER_COMPOSE_APP_PATH}/app-logs/PLACEHOLDER/default:/PLACEHOLDER:rw
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER/default:/PLACEHOLDER:ro
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER:/PLACEHOLDER:ro
 
   certificator:
     extends:
