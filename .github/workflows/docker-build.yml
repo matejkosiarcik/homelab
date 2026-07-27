@@ -39,7 +39,7 @@ jobs:
             matrix_json="{\"path\":\"$app_path\",\"label\":\"$app_label\"},"
           done
 
-          printf 'matrix=[%s]\n' "$(cat "$tmpfile" | sed 's~,$~~')" | tee -a "$GITHUB_OUTPUT"
+          printf 'matrix=[%s]\n' "$(cat "$tmpfile" | sed -E 's~,$~~')" | tee -a "$GITHUB_OUTPUT"
 
   build:
     name: Build - ${{ matrix.label }}
