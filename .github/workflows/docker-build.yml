@@ -25,10 +25,6 @@ jobs:
           tmpfile="$(mktemp)"
           trap 'rm -f "$tmpfile"' EXIT HUP INT TERM
 
-          pwd
-          ls -lah
-          find . -type d -path './servers/*/docker-apps/*' -mindepth 4 -maxdepth 4
-
           find . -type d -path './servers/*/docker-apps/*' -mindepth 4 -maxdepth 4 | while read -r path; do
             if basename "$path" | grep -qE '^\.' >/dev/null 2>&1; then
               continue
@@ -36,8 +32,7 @@ jobs:
             server_name="$(basename "$(dirname "$(dirname "$path")")")"
             app_name="$(basename "$path")"
             app_label="$server_name - $app_name"
-            app_path="$path"
-            matrix_json="{\"path\":\"$app_path\",\"label\":\"$app_label\"},"
+            printf '{"path":"$app_path","label":"$app_label"},' "$path" "$app_label" >>"$tmpfile"
           done
 
           printf 'matrix=[%s]\n' "$(cat "$tmpfile" | sed -E 's~,$~~')" | tee -a "$GITHUB_OUTPUT"
