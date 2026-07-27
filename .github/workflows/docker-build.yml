@@ -6,88 +6,33 @@ on:
   pull_request:
 
 jobs:
-  paths-filter:
-    name: Filter changed components
+  discovery:
+    name: Discover docker apps
     runs-on: ubuntu-latest
     outputs:
-      components: ${{ steps.filter.outputs.changes }}
+      matrix: ${{ steps.discovery.outputs.matrix }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
 
-      - name: Filter paths
-        uses: dorny/paths-filter@v4.0.2
-        id: filter
-        with:
-          filters: |
-            actualbudget:
-              - '**/actualbudget*/**'
-            changedetection:
-              - '**/changedetection*/**'
-            docker-cache:
-              - '**/docker-cache*/**'
-              - '**/docker-registry*/**'
-            dozzle-agent:
-              - '**/dozzle-agent*/**'
-              - '**/dozzle*/**'
-            dozzle-server:
-              - '**/dozzle-server*/**'
-              - '**/dozzle*/**'
-            gatus:
-              - '**/gatus*/**'
-            healthchecks:
-              - '**/healthchecks*/**'
-            homeassistant:
-              - '**/homeassistant*/**'
-            homepage:
-              - '**/homepage*/**'
-            jellyfin:
-              - '**/jellyfin*/**'
-            minio:
-              - '**/minio*/**'
-            motioneye:
-              - '**/motion*/**'
-              - '**/motioneye*/**'
-            netalertx:
-              - '**/netalertx*/**'
-            nodeexporter:
-              - '**/nodeexporter*/**'
-            ntfy:
-              - '**/ntfy*/**'
-            omadacontroller:
-              - '**/omadacontroller*/**'
-              - '**/omada-controller*/**'
-            openspeedtest:
-              - '**/openspeedtest*/**'
-            pihole:
-              - '**/pihole*/**'
-            samba:
-              - '**/samba*/**'
-              - '**/smb*/**'
-            smtp4dev:
-              - '**/smtp4dev*/**'
-            speedtesttracker:
-              - '**/speedtesttracker*/**'
-            tvheadend:
-              - '**/tvheadend*/**'
-            unbound:
-              - '**/unbound*/**'
-            unificontroller:
-              - '**/unificontroller*/**'
-              - '**/unifi-network-application*/**'
-            uptimekuma:
-              - '**/uptimekuma*/**'
+      - name: Discover app directories
+        id: discovery
+        shell: bash
+        run: |
+          set -euf
+          docker_apps="$(find . -type d -path 'servers/*/docker-apps/*' | sed 's~^~"~;s~$~"~' | tr '\n' ',')"
+          printf 'matrix=[%s]' "$docker_apps" | tee -a "$GITHUB_OUTPUT"
 
   build:
-    name: Build - ${{ matrix.component }}
+    name: Build - ${{ matrix.app }}
     runs-on: ubuntu-latest
-    needs: paths-filter
+    needs: discovery
     strategy:
       fail-fast: false
       matrix:
-        component: ${{ fromJSON(needs.paths-filter.outputs.components) }}
+        app: ${{ fromJSON(needs.discovery.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
@@ -95,7 +40,7 @@ jobs:
           persist-credentials: false
 
       - name: Install APT dependencies
-        run: sudo apt-get install --yes moreutils
+        run: sudo apt-get update && sudo apt-get install --yes moreutils
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v4.2.0
@@ -103,45 +48,70 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v4.2.0
 
-      - name: Deploy
-        run: |
-          {
-            printf '%s ' '{'
-            printf '%s ' '"actualbudget": ["/servers/odroid-h4-ultra/docker-apps/actualbudget"],'
-            printf '%s ' '"changedetection": ["/servers/odroid-h4-ultra/docker-apps/changedetection"],'
-            printf '%s ' '"docker-cache": ["/servers/odroid-h4-ultra/docker-apps/docker-cache"],'
-            printf '%s %s' \
-              '"dozzle-agent":' \
-              '["/servers/odroid-h4-ultra/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-2g/docker-apps/dozzle-agent", "/servers/raspberry-pi-4b-4g/docker-apps/dozzle-agent"],'
-            printf '%s ' '"dozzle-server": ["/servers/odroid-h4-ultra/docker-apps/dozzle"],'
-            printf '%s ' '"gatus": ["/servers/odroid-h4-ultra/docker-apps/gatus-1", "/servers/odroid-h3/docker-apps/gatus-2"],'
-            printf '%s ' '"healthchecks": ["/servers/odroid-h4-ultra/docker-apps/healthchecks"],'
-            printf '%s ' '"homeassistant": ["/servers/odroid-h4-ultra/docker-apps/homeassistant"],'
-            printf '%s ' '"homepage": ["/servers/odroid-h4-ultra/docker-apps/homepage"],'
-            printf '%s ' '"jellyfin": ["/servers/odroid-h4-ultra/docker-apps/jellyfin"],'
-            printf '%s ' '"minio": ["/servers/odroid-h4-ultra/docker-apps/minio"],'
-            printf '%s ' '"motioneye": ["/servers/raspberry-pi-4b-4g/docker-apps/motioneye-kitchen"],'
-            printf '%s ' '"netalertx": ["/servers/odroid-h4-ultra/docker-apps/netalertx"],'
-            printf '%s ' '"nodeexporter": ["/servers/odroid-h4-ultra/docker-apps/nodeexporter"],'
-            printf '%s ' '"ntfy": ["/servers/odroid-h4-ultra/docker-apps/ntfy"],'
-            printf '%s ' '"omadacontroller": ["/servers/odroid-h4-ultra/docker-apps/omadacontroller"],'
-            printf '%s ' '"openspeedtest": ["/servers/odroid-h4-ultra/docker-apps/openspeedtest"],'
-            printf '%s %s %s' \
-              '"pihole":' \
-              '["/servers/odroid-h4-ultra/docker-apps/pihole-1-primary", "/servers/odroid-h4-ultra/docker-apps/pihole-1-secondary",' \
-              '"/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-primary", "/servers/raspberry-pi-4b-4g/docker-apps/pihole-2-secondary"],'
-            printf '%s ' '"samba": ["/servers/macbook-pro-2012/docker-apps/samba-data"],'
-            printf '%s ' '"smtp4dev": ["/servers/odroid-h4-ultra/docker-apps/smtp4dev"],'
-            printf '%s ' '"speedtesttracker": ["/servers/odroid-h4-ultra/docker-apps/speedtesttracker"],'
-            printf '%s ' '"tvheadend": ["/servers/raspberry-pi-4b-2g/docker-apps/tvheadend"],'
-            printf '%s ' '"unbound": ["/servers/odroid-h4-ultra/docker-apps/unbound", "/servers/raspberry-pi-4b-4g/docker-apps/unbound-2"],'
-            printf '%s ' '"unificontroller": ["/servers/raspberry-pi-4b-4g/docker-apps/unificontroller"]'
-            printf '%s ' '}'
-          } | jq ".${{ matrix.component }}" | sponge 'components.txt'
-          cat 'components.txt'
+      - name: Setup Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: 3.x
 
-          # export DOCKER_COMPOSE_APP_NAME=placeholder
-          # cd docker-images
-          # docker build . \
-          #   --file ./external/${{ matrix.component }}/Dockerfile \
-          #   --tag 'homelab/${{ matrix.component }}:dev'
+      - name: Setup NodeJS
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: latest
+
+      - name: Install system dependencies
+        run: |
+          set -euf
+          sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils moreutils
+          npm install -g @go-task/cli
+
+      - name: Log
+        run: |
+          echo "Building ${{ matrix.app }}"
+          test -d "${{ matrix.app }}"
+
+      - name: Setup secrets
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        working-directory: ${{ matrix.app }}
+        run: |
+          task secrets -- --mode dev --offline
+
+      - name: Docker build
+        working-directory: ${{ matrix.app }}
+        run: |
+          task build -- --mode dev
+
+      - name: Docker start
+        working-directory: ${{ matrix.app }}
+        run: |
+          task start -- --mode dev --dry-run
+
+      - name: Docker stop
+        working-directory: ${{ matrix.app }}
+        run: |
+          task stop -- --mode dev --dry-run
+
+  status:
+    name: Aggregate build status
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs:
+      - discovery
+      - build
+    steps:
+      - name: Aggregate build status
+        run: |
+          printf 'Discovery: %s\n' "${{ needs.discovery.result }}"
+          printf 'Build: %s\n' "${{ needs.build.result }}"
+
+          if [ "${{ needs.discovery.result }}" != 'success' ]; then
+            printf 'Discovery job failed or was cancelled.\n'
+            exit 1
+          fi
+
+          if [ "${{ needs.build.result }}" != 'success' ]; then
+            printf 'One or more matrix build jobs failed or was cancelled.\n'
+            exit 1
+          fi
+
+          printf 'All docker app build jobs completed successfully.\n'
