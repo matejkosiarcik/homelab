@@ -85,11 +85,6 @@ jobs:
         with:
           version: latest
 
-      - name: Log docker compose --help
-        run: |
-          set -euf
-          docker compose build --help
-
       - name: Install APT dependencies
         run: |
           set -euf
@@ -110,13 +105,6 @@ jobs:
         run: |
           set -euf
           npm install -g @go-task/cli
-
-      - name: Show Docker versions again
-        run: |
-          set -euf
-          docker version
-          docker compose version
-          docker buildx version
 
       - name: Setup secrets
         run: |
