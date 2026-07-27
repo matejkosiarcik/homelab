@@ -76,6 +76,9 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v4.2.0
 
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v2.3.0
+
       - name: Install APT dependencies
         run: |
           set -euf
