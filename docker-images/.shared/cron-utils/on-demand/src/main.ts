@@ -45,7 +45,7 @@ app.post('/run', async (_: Request, response: Response) => {
             });
 
             internalStream.on('error', reject);
-            subprocess.on('error', reject);
+            subprocess.nodeChildProcess.on('error', reject);
         });
 
         response.status(200);

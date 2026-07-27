@@ -157,7 +157,7 @@ COPY --from=nodejs-build /homelab/package.json /homelab/
 COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs-build /homelab/dist /homelab/dist
 COPY ./docker-images/web-automation/main.sh /homelab/
-COPY ./docker-images/web-automation/crontab-homeassistant-backup.cron ./web-automation/crontab-omadacontroller-backup.cron ./web-automation/crontab-unificontroller-backup.cron /homelab/
+COPY ./docker-images/web-automation/crontab-homeassistant-backup.cron ./docker-images/web-automation/crontab-omadacontroller-backup.cron ./docker-images/web-automation/crontab-unificontroller-backup.cron /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/

@@ -23,7 +23,7 @@ RUN printf '' >/root/.npmrc && \
 FROM node:26.3.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/git-cache/package-lock.json ./git-cache/package.json ./git-cache/tsconfig.json /homelab/
+COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json ./docker-images/git-cache/tsconfig.json /homelab/
 COPY ./docker-images/git-cache/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=git-cache-nodejs-build-npmcache \
