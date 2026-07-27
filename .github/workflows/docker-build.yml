@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
           set -euf
-          docker_apps="$(find . -type d -path 'servers/*/docker-apps/*' | sed 's~^~"~;s~$~"~' | tr '\n' ',')"
+          docker_apps="$(find . -type d -path './servers/*/docker-apps/*' | sed 's~^~"~;s~$~"~' | tr '\n' ',')"
           printf 'matrix=[%s]' "$docker_apps" | tee -a "$GITHUB_OUTPUT"
 
   build:
