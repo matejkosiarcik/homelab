@@ -1,0 +1,12 @@
+apache:
+  upstream-url:
+    - path: /api/
+      target: http://app-api:8585
+    - path: /jobs/
+      target: http://app-jobs:8686
+    - path: /uat/
+      target: http://app-uat:9999
+    - path: /ui/
+      target: http://app-ui:8080
+    - path: /
+      target: http://app-index:8080

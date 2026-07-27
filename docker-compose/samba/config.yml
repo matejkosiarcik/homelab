@@ -1,0 +1,6 @@
+apache:
+  upstream-url:
+    - path: /metrics
+      target: http://app:9922/metrics
+    - path: /
+      target: http://file-server:8080

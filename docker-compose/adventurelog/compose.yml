@@ -24,11 +24,11 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-backend.env
     environment:
-      CSRF_TRUSTED_ORIGINS: ${DOCKER_COMPOSE_NETWORK_URL},${DOCKER_COMPOSE_NETWORK_URL_2}
+      CSRF_TRUSTED_ORIGINS: ${DOCKER_COMPOSE_NETWORK_URL}
       DEFAULT_FROM_EMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
-      DJANGO_ADMIN_EMAIL: django@${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      DJANGO_ADMIN_EMAIL: django-admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       FRONTEND_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-      PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL_2}
+      PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
     image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
     networks: # Internet access necessary for downloading data from raw.githubusercontent.com
       - external-network
@@ -53,53 +53,15 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: certificator
 
-  apache-frontend:
+  apache:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend
-    environment:
-      HOMELAB_CONTAINER_VARIANT: frontend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-frontend:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/frontend:/homelab/logs:rw
 
-  apache-prometheus-exporter-frontend:
+  apache-prometheus-exporter:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache-prometheus-exporter
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend
-    environment:
-      HOMELAB_CONTAINER_VARIANT: frontend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-frontend:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/frontend:/homelab/logs:rw
-
-  apache-backend:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: apache
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-backend
-    environment:
-      HOMELAB_CONTAINER_VARIANT: backend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-backend:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/backend:/homelab/logs:rw
-
-  apache-prometheus-exporter-backend:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: apache-prometheus-exporter
-    # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend
-    environment:
-      HOMELAB_CONTAINER_VARIANT: backend
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter-backend:1.0.0
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/backend:/homelab/logs:rw
 
   favicons:
     extends:

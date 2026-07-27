@@ -1,0 +1,6 @@
+apache:
+  upstream-url:
+    - path: /ui/
+      target: http://app:9001
+    - path: /
+      target: http://app:9000

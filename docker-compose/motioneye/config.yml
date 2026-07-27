@@ -1,0 +1,6 @@
+apache:
+  upstream-url:
+    - path: /
+      target: http://app:8765
+    - path: /stream
+      target: http://app:9081
