@@ -52,6 +52,7 @@ jobs:
         working-directory: ${{ matrix.path }}
     env:
       COMPOSE_BAKE: "true"
+      COMPOSE_DOCKER_CLI_BUILD: "1"
       DOCKER_BUILDKIT: "1"
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
     strategy:
@@ -76,6 +77,8 @@ jobs:
         uses: docker/setup-buildx-action@v4.2.0
         with:
           version: latest
+          # cache-from: type=gha,scope=${{ github.workflow }}-${{ matrix.path }}
+          # cache-to: type=gha,mode=max,scope=${{ github.workflow }}-${{ matrix.path }}
 
       - name: Setup Docker Compose
         uses: docker/setup-compose-action@v2.3.0
