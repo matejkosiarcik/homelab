@@ -40,11 +40,11 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM debian:13.5-slim AS config-1
 USER root
 WORKDIR /homelab
-ARG HOMELAB_APP_EXTERNAL_DOMAIN=unbound.example.com
+ARG HOMELAB_APP_EXTERNAL_DOMAIN=placeholder.example.com
 ARG HOMELAB_APP_EXTERNAL_IP=127.0.0.1
-ARG HOMELAB_APP_EXTERNAL_URL=https://unbound.example.com
-ARG HOMELAB_APP_NAME=unbound-default
-ARG HOMELAB_APP_TYPE=unbound
+ARG HOMELAB_APP_EXTERNAL_URL=https://placeholder.example.com
+ARG HOMELAB_APP_NAME=placeholder
+ARG HOMELAB_APP_TYPE=placeholder
 ARG HOMELAB_ENV=dev
 RUN printf 'env:\n' >>data.yml && \
     printf '  HOMELAB_APP_EXTERNAL_DOMAIN: %s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >>data.yml && \
