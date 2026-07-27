@@ -67,10 +67,6 @@ jobs:
       - name: Log
         run: |
           printf 'Building %s\n' "${{ matrix.label }}"
-          if [ ! -d "${{ matrix.path }}" ]; then
-            printf 'App %s not found.\n' "${{ matrix.path }}" >&2
-            exit 1
-          fi
           docker compose build --help
 
       - name: Setup QEMU
