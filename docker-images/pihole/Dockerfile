@@ -39,8 +39,8 @@ RUN sh /homelab/create-user.sh && \
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 ARG SETUP_SCRIPT=default
-COPY --chown=pihole:pihole ./pihole/custom-domains.txt /homelab/
-COPY --chown=pihole:pihole ./pihole/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh
+COPY ./docker-images/pihole/custom-domains.txt /homelab/
+COPY ./docker-images/pihole/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
