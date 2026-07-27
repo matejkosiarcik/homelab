@@ -25,7 +25,13 @@ jobs:
           tmpfile="$(mktemp)"
           trap 'rm -f "$tmpfile"' EXIT HUP INT TERM
 
+          pwd
+          ls -lah
+
           find . -type d -path './servers/*/docker-apps/*' -mindepth 4 -maxdepth 4 | while read -r path; do
+            if basename "$path" | grep -qE '^\.' >/dev/null 2>&1; then
+              continue
+            fi
             server_name="$(basename "$(dirname "$(dirname "$path")")")"
             app_name="$(basename "$path")"
             app_label="$server_name - $app_name"
