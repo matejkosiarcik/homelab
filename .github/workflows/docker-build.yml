@@ -108,16 +108,25 @@ jobs:
 
       - name: Docker build
         working-directory: ${{ matrix.path }}
+        env:
+          DOCKER_BUILDKIT: "1"
+          COMPOSE_BAKE: "true"
         run: |
           task build -- --mode dev
 
       - name: Docker start
         working-directory: ${{ matrix.path }}
+        env:
+          DOCKER_BUILDKIT: "1"
+          COMPOSE_BAKE: "true"
         run: |
           task start -- --mode dev --dry-run
 
       - name: Docker stop
         working-directory: ${{ matrix.path }}
+        env:
+          DOCKER_BUILDKIT: "1"
+          COMPOSE_BAKE: "true"
         run: |
           task stop -- --mode dev --dry-run
 
