@@ -37,6 +37,12 @@ jobs:
 
           printf 'matrix=[%s]\n' "$(cat "$tmpfile" | sed -E 's~,$~~')" | tee -a "$GITHUB_OUTPUT"
 
+      - name: Show Docker versions
+        run: |
+          docker version
+          docker compose version
+          docker buildx version
+
   build:
     name: Build - ${{ matrix.label }}
     runs-on: ubuntu-latest
