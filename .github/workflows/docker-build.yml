@@ -32,7 +32,7 @@ jobs:
             server_name="$(basename "$(dirname "$(dirname "$path")")")"
             app_name="$(basename "$path")"
             app_label="$server_name - $app_name"
-            printf '{"path":"$app_path","label":"$app_label"},' "$path" "$app_label" >>"$tmpfile"
+            printf '{"path":"%s","label":"%s"},' "$path" "$app_label" >>"$tmpfile"
           done
 
           printf 'matrix=[%s]\n' "$(cat "$tmpfile" | sed -E 's~,$~~')" | tee -a "$GITHUB_OUTPUT"
