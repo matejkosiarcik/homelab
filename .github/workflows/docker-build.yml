@@ -66,6 +66,7 @@ jobs:
 
       - name: Log
         run: |
+          set -euf
           printf 'Building %s\n' "${{ matrix.label }}"
           docker compose build --help
 
@@ -98,24 +99,29 @@ jobs:
 
       - name: Show Docker versions again
         run: |
+          set -euf
           docker version
           docker compose version
           docker buildx version
 
       - name: Setup secrets
         run: |
+          set -euf
           task secrets -- --mode dev --offline
 
       - name: Docker build
         run: |
+          set -euf
           task build -- --mode dev
 
       - name: Docker start
         run: |
+          set -euf
           task start -- --mode dev --dry-run
 
       - name: Docker stop
         run: |
+          set -euf
           task stop -- --mode dev --dry-run
 
   status:
@@ -128,6 +134,8 @@ jobs:
     steps:
       - name: Aggregate build status
         run: |
+          set -euf
+
           printf 'Discovery: %s\n' "${{ needs.discovery.result }}"
           printf 'Build: %s\n' "${{ needs.build.result }}"
 
