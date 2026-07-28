@@ -67,6 +67,9 @@ jobs:
         type: string
     docker:
       - image: docker:29.1.2
+    environment:
+      PATH: "$CIRCLE_WORKING_DIRECTORY/venv/bin:$PATH"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
     steps:
       - checkout
       - setup_remote_docker:
