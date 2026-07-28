@@ -54,7 +54,6 @@ jobs:
       COMPOSE_BAKE: "true"
       COMPOSE_DOCKER_CLI_BUILD: "1"
       DOCKER_BUILDKIT: "1"
-      PATH: "${{ github.workspace }}/venv/bin:${{ env.PATH }}"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
     strategy:
@@ -117,16 +116,22 @@ jobs:
           task secrets -- --mode dev --offline
 
       - name: Docker build
+        env:
+          PATH: "${{ github.workspace }}/venv/bin:${{ env.PATH }}"
         run: |
           set -euf
           task build -- --mode dev
 
       - name: Docker start
+        env:
+          PATH: "${{ github.workspace }}/venv/bin:${{ env.PATH }}"
         run: |
           set -euf
           task start -- --mode dev --dry-run
 
       - name: Docker stop
+        env:
+          PATH: "${{ github.workspace }}/venv/bin:${{ env.PATH }}"
         run: |
           set -euf
           task stop -- --mode dev --dry-run
