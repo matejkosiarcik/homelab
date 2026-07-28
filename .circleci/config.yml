@@ -67,6 +67,8 @@ jobs:
         type: string
     docker:
       - image: docker:29.1.2
+    environment:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
     steps:
       - checkout
       - setup_remote_docker:
@@ -76,25 +78,31 @@ jobs:
           command: |
             set -euf
             apk update --no-cache
-            apk add --no-cache apache2-utils bash git moreutils nodejs npm python3
+            apk add --no-cache apache2-utils bash git jq moreutils nodejs npm python3
             NODE_OPTIONS=--dns-result-order=ipv4first npm install --prefer-offline --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --global @go-task/cli
+            python3 -m venv ./venv
+            export PATH="$PWD/venv/bin:$PATH"
+            python3 -m pip install --requirement ./requirements.txt --quiet --upgrade
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
             set -euf
+            export PATH="$PWD/venv/bin:$PATH"
             cd './servers/<< parameters.server >>'
             task secrets -- --mode dev --offline
       - run:
           name: Build apps on << parameters.server >>
           command: |
             set -euf
+            export PATH="$PWD/venv/bin:$PATH"
             cd './servers/<< parameters.server >>'
             task build -- --mode dev --dry-run
       - run:
           name: Run dry-run deployment on << parameters.server >>
           command: |
             set -euf
+            export PATH="$PWD/venv/bin:$PATH"
             cd './servers/<< parameters.server >>'
             task start -- --mode dev --dry-run

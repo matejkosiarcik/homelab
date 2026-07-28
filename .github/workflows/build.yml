@@ -1,0 +1,94 @@
+name: Raw Build
+
+permissions: {}
+
+on:
+  pull_request:
+
+jobs:
+  make-build:
+    name: Native Build
+    runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install APT dependencies
+        run: |
+          set -euf
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils moreutils
+
+      - name: Setup Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: 3.x
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: latest
+
+      - name: Bootstrap dependencies
+        run: |
+          set -euf
+          make bootstrap
+
+      - name: Build
+        run: |
+          set -euf
+          make build
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_BAKE: "true"
+      COMPOSE_DOCKER_CLI_BUILD: "1"
+      DOCKER_BUILDKIT: "1"
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v4.2.0
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v4.2.0
+        with:
+          version: latest
+          cache-from: type=gha,scope=${{ github.workflow }}
+          cache-to: type=gha,mode=max,scope=${{ github.workflow }}
+
+      - name: Setup Docker Compose
+        uses: docker/setup-compose-action@v2.3.0
+        with:
+          version: latest
+
+      - name: Install APT dependencies
+        run: |
+          set -euf
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils jq moreutils
+
+      - name: Setup Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: 3.x
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: latest
+
+      - name: Docker build
+        run: |
+          set -euf
+          make docker-build

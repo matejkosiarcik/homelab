@@ -21,21 +21,30 @@ all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
+	#
+	## NodeJS ##
+	#
+
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | tr -d ' ' | base64 -d | while read -r component; do \
 		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
 	true; done
 
+	# Must run postinstall script for zopfli-png, otherwise zopfli binaries are unavailable
 	npm run postinstall --prefix "$(PROJECT_DIR)/icons/node_modules/zopflipng-bin" --loglevel=error
+
+	#
+	## Python ##
+	#
 
 	printf '%s' "$(PYTHON_COMPONENTS)" | tr -d ' ' | base64 -d | while read -r component; do \
 		cd "$(PROJECT_DIR)/$$component" && \
-		python3 -m venv venv && \
+		if [ -e ./venv ]; then true; else python3 -m venv ./venv; fi && \
 		PATH="$(PROJECT_DIR)/$$component/venv/bin:$$PATH" \
 		PIP_DISABLE_PIP_VERSION_CHECK=1 \
-			python3 -m pip install --requirement requirements.txt --quiet --upgrade && \
+			python3 -m pip install --requirement ./requirements.txt --quiet --upgrade && \
 	true; done
 
-	PATH="$(PROJECT_DIR)/icons/venv/bin:$$PATH" \
+	PATH="$(PROJECT_DIR)/venv/bin:$$PATH" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --root icons
 	# --quiet --force

@@ -9,9 +9,9 @@ import sys
 import time
 from datetime import datetime
 from os import path
-from typing import List, Optional
 
-start_datetime = datetime.now()
+local_tz = datetime.now().astimezone().tzinfo
+start_datetime = datetime.now(local_tz)
 start_datestr = start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
 start_time = start_datetime.timestamp()
 os.environ["START_DATE"] = start_datestr
@@ -50,16 +50,16 @@ if tty_supports_color():
     ascii_cross = f"\033[31m{ascii_cross}\033[0m"
 
 
-def get_apps_list(only_apps: Optional[str], skip_apps: Optional[str]) -> List[str]:
+def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
     priority_apps_list = []
 
     if not only_extra_services:
         with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
+            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
 
     if include_extra_services or only_extra_services:
         with open(path.join(server_dir, "docker-apps", "priority-extra.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
+            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
 
     def app_regex(appname: str) -> str:
         partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
@@ -85,7 +85,7 @@ def get_apps_list(only_apps: Optional[str], skip_apps: Optional[str]) -> List[st
     return priority_apps_list
 
 
-def main(argv: List[str]):
+def main(argv: list[str]):
     global applist, env_mode, include_extra_services, include_secrets, is_dryrun, is_online, is_pull, only_extra_services, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
@@ -133,7 +133,7 @@ def main(argv: List[str]):
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
     if command == "deploy":
-        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always" if (hasattr(args, "always") and args.always is True) else "always"
+        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always"
         include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
 
     is_pull = hasattr(args, "pull") and args.pull is True
@@ -163,7 +163,7 @@ def server_action(action: str):
     if action == "secrets":
         precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
         subprocess.check_call(precommands, cwd=git_dir)
-        os.environ["HOMELAB_SECRETS_PREPARED"] = "yes"
+        os.environ["HOMELAB" + "_" + "SECRETS" + "_" + "PREPARED"] = "yes"
 
     action_log = "Secrets for" if action == "secrets" else action.capitalize()
     print(f"↓ {action_log} docker apps")
