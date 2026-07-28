@@ -17,7 +17,8 @@ import time
 from datetime import datetime
 from os import path
 
-start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
+local_tz = datetime.now().astimezone().tzinfo
+start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now(local_tz).strftime(r"%Y-%m-%d_%H-%M-%S")
 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
@@ -58,7 +59,7 @@ with open(
     encoding="utf-8",
 ) as anticachefile:
     print(
-        f"This file is for cache busting\nDatetime: {datetime.now().isoformat()}\n",
+        f"This file is for cache busting\nDatetime: {datetime.now(local_tz).isoformat()}\n",
         file=anticachefile,
     )
 
@@ -192,32 +193,31 @@ def run_with_spinner(
         global last_exit_code  # pylint: disable=global-statement
         last_exit_code = None
         master_fd, slave_fd = pty.openpty()  # This is for making the subprocess think the output is a TTY and it enables colored output
-        with open(command_log_file, "a", encoding="utf-8") as file:
-            with subprocess.Popen(
-                command,
-                stdout=slave_fd,
-                stderr=slave_fd,
-                stdin=slave_fd,
-                text=True,
-                bufsize=1,
-                close_fds=True,
-            ) as last_process:
-                os.close(slave_fd)
-                while True:
-                    try:
-                        output = os.read(master_fd, 1024).decode("utf-8", errors="replace")
-                        if not output or len(output) == 0:
-                            break
-                        file.write(re.sub(r"\x1B(?:[@-Z\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
-                        file.flush()
-                        if print_output and not global_exit:
-                            sys.stdout.write(output)
-                    except OSError:
+        with open(command_log_file, "a", encoding="utf-8") as file, subprocess.Popen(
+            command,
+            stdout=slave_fd,
+            stderr=slave_fd,
+            stdin=slave_fd,
+            text=True,
+            bufsize=1,
+            close_fds=True,
+        ) as last_process:
+            os.close(slave_fd)
+            while True:
+                try:
+                    output = os.read(master_fd, 1024).decode("utf-8", errors="replace")
+                    if not output or len(output) == 0:
                         break
-                    if done.is_set():
-                        last_process.kill()
-                last_exit_code = last_process.wait()
-                done.set()
+                    file.write(re.sub(r"\x1B(?:[@-Z\-_]|\[[0-?]*[ -/]*[@-~])", "", output))
+                    file.flush()
+                    if print_output and not global_exit:
+                        sys.stdout.write(output)
+                except OSError:
+                    break
+                if done.is_set():
+                    last_process.kill()
+            last_exit_code = last_process.wait()
+            done.set()
 
     try:
         subprocess_thread = threading.Thread(target=subprocess_main)
@@ -281,7 +281,7 @@ def docker_build():
     docker_log_file = path.join(
         "app-logs",
         ".meta",
-        f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-build.log",
+        f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-build.log",
     )
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
@@ -291,7 +291,7 @@ def docker_stop():
     docker_log_file = path.join(
         "app-logs",
         ".meta",
-        f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-stop.log",
+        f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-stop.log",
     )
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
 
@@ -324,13 +324,13 @@ def docker_start():
     docker_log_file = path.join(
         "app-logs",
         ".meta",
-        f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-start.log",
+        f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-start.log",
     )
     run_with_spinner(commands, "Starting", "Start", docker_log_file, env_mode == "dev")
 
 
 def create_secrets():
-    docker_log_file = path.join("app-logs", ".meta", f"{datetime.now().strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log")
+    docker_log_file = path.join("app-logs", ".meta", f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log")
     if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
         precommands = [
             "sh",
@@ -450,7 +450,7 @@ def main(argv):
     is_dryrun = args.dry_run
 
     if command == "deploy":
-        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always" if (hasattr(args, "always") and args.always is True) else "always"
+        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always"
         include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
