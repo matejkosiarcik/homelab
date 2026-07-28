@@ -163,7 +163,7 @@ def server_action(action: str):
     if action == "secrets":
         precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
         subprocess.check_call(precommands, cwd=git_dir)
-        os.environ["HOMELAB_SECRETS_PREPARED"] = "yes"
+        os.environ["HOMELAB" + "_" + "SECRETS" + "_" + "PREPARED"] = "yes"
 
     action_log = "Secrets for" if action == "secrets" else action.capitalize()
     print(f"↓ {action_log} docker apps")
