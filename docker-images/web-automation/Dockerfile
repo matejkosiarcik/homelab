@@ -62,7 +62,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=web-automation-
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.26.4-trixie AS supercronic-build
+FROM golang:1.26.5-trixie AS supercronic-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-supercronic-build-aptcache \
@@ -96,7 +96,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=web-automation-nodejs
 
 ### Healthcheck ###
 
-FROM golang:1.26.4-alpine AS healthcheck-build
+FROM golang:1.26.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
