@@ -55,11 +55,11 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
 
     if not only_extra_services:
         with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
+            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
 
     if include_extra_services or only_extra_services:
         with open(path.join(server_dir, "docker-apps", "priority-extra.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [x for x in [re.sub(r"#.*$", "", x).strip() for x in file.readlines()] if len(x) > 0]
+            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
 
     def app_regex(appname: str) -> str:
         partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
