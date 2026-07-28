@@ -23,7 +23,7 @@ start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 full_app_name = path.basename(app_dir).lstrip(".")
-app_type = ''
+app_type = ""
 global_log_filepath = path.join(app_dir, "app-logs", ".meta", "main.log")
 
 is_dryrun = False
@@ -76,7 +76,7 @@ last_exit_code: int | None = None
 
 
 def load_app_config():
-    global app_type
+    global app_type  # pylint: disable=global-statement
 
     config_path = path.join(app_dir, "config", "config.yml")
     if not path.exists(config_path):
