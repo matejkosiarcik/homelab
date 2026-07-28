@@ -22,7 +22,7 @@ all: clean bootstrap build docker-build docker-build-multiarch
 .PHONY: bootstrap
 bootstrap:
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | tr -d ' ' | base64 -d | while read -r component; do \
-		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error && \
+		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
 	true; done
 
 	npm run postinstall --prefix "$(PROJECT_DIR)/icons/node_modules/zopflipng-bin" --loglevel=error

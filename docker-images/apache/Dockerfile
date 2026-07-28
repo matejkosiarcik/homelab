@@ -100,7 +100,7 @@ WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 COPY ./docker-images/apache/errors/package-lock.json ./docker-images/apache/errors/package.json /homelab/
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=apache-errors-nodejs-build-npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/apache/errors/eleventy.config.js ./docker-images/apache/errors/postcss.config.js ./docker-images/apache/errors/terser.json ./docker-images/apache/errors/vite.config.ts ./docker-images/apache/errors/tsconfig.json /homelab/
 COPY ./docker-images/apache/errors/src/ /homelab/src/
 RUN npm run build && \

@@ -27,7 +27,7 @@ COPY ./docker-images/owntracks-decryptor/package-lock.json ./docker-images/owntr
 COPY ./docker-images/owntracks-decryptor/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=owntracks-decryptor-nodejs-build-npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
 
