@@ -23,10 +23,7 @@ start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 full_app_name = path.basename(app_dir).lstrip(".")
-app_type = full_app_name
-if path.exists(path.join(app_dir, "config", "app.txt")):
-    with open(path.join(app_dir, "config", "app.txt"), "r", encoding="utf-8") as appfile:
-        app_type = appfile.read().strip()
+app_type = ''
 global_log_filepath = path.join(app_dir, "app-logs", ".meta", "main.log")
 
 is_dryrun = False
@@ -76,6 +73,20 @@ if tty_supports_color():
 
 
 last_exit_code: int | None = None
+
+
+def load_app_config():
+    global app_type
+
+    config_path = path.join(app_dir, "config", "config.yml")
+    if not path.exists(config_path):
+        raise FileNotFoundError("App config.yml not found")
+
+    config_app = subprocess.check_output(["yq", "--raw-output", ".app", config_path], text=True).strip()
+    if config_app not in ["", "null", "undefined"]:
+        app_type = config_app
+    else:
+        app_type = full_app_name
 
 
 def load_env_file(env_path):
@@ -469,6 +480,7 @@ def main(argv):
         print(f"Unrecognized command: {command}")
         sys.exit(1)
 
+    load_app_config()
     load_full_env()
     symlink_app()
     run_main_command(command)
