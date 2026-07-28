@@ -115,8 +115,6 @@ jobs:
         run: |
           set -euf
           export PATH="${{ github.workspace }}/venv/bin:$PATH"
-          echo "$PATH"
-          env
           task secrets -- --mode dev --offline
 
       - name: Docker build
