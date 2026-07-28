@@ -107,10 +107,12 @@ jobs:
       - name: Install Python dependencies
         run: |
           set -euf
-          python3 -m venv ./venv
-          python3 -m pip install --requirement ./requirements.txt --quiet --upgrade
+          python3 -m venv "${{ github.workspace }}/venv"
+          python3 -m pip install --requirement "${{ github.workspace }}/requirements.txt" --quiet --upgrade
 
       - name: Setup secrets
+        env:
+          PATH: "${{ github.workspace }}/venv/bin:${{ env.PATH }}"
         run: |
           set -euf
           task secrets -- --mode dev --offline
