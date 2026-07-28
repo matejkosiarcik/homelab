@@ -1,4 +1,4 @@
-name: Make Build
+name: Raw Build
 
 permissions: {}
 
@@ -7,7 +7,7 @@ on:
 
 jobs:
   make-build:
-    name: Native Make Build
+    name: Native Build
     runs-on: ubuntu-latest
     env:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
@@ -44,7 +44,7 @@ jobs:
           make build
 
   docker-build:
-    name: Native Docker Build
+    name: Docker Build
     runs-on: ubuntu-latest
     env:
       COMPOSE_BAKE: "true"
