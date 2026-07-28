@@ -16,7 +16,6 @@ import threading
 import time
 from datetime import datetime
 from os import path
-from typing import List
 
 start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now().strftime(r"%Y-%m-%d_%H-%M-%S")
 
@@ -178,7 +177,7 @@ def get_docker_images_shasum(config: str) -> str:
 
 # pylint: disable=too-many-locals
 def run_with_spinner(
-    command: List[str],
+    command: list[str],
     description_progress: str,
     description_done: str,
     command_log_file: str,
@@ -302,7 +301,7 @@ def docker_start():
     config_obj = json.loads(config_json)
 
     # Extract all volumes from docker-compose yaml
-    volumes: List[str] = []
+    volumes: list[str] = []
     for service in config_obj["services"]:
         if "volumes" not in config_obj["services"][service]:
             continue
