@@ -7,7 +7,7 @@ on:
 
 jobs:
   discovery:
-    name: Discover docker apps
+    name: Discover Docker Apps
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.discovery.outputs.matrix }}
@@ -124,7 +124,7 @@ jobs:
           task stop -- --mode dev --dry-run
 
   status:
-    name: Aggregate build status
+    name: Docker Build Status
     runs-on: ubuntu-latest
     if: ${{ always() }}
     needs:
