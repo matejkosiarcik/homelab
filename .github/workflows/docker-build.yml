@@ -105,6 +105,8 @@ jobs:
           NODE_OPTIONS=--dns-result-order=ipv4first npm install --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline --global @go-task/cli
 
       - name: Install Python dependencies
+        env:
+          PATH: "${{ github.workspace }}/venv/bin:${{ env.PATH }}"
         run: |
           set -euf
           python3 -m venv "${{ github.workspace }}/venv"
