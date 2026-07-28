@@ -293,6 +293,26 @@
     #     name: semver
     #     global: true
 
+    - name: NPM config
+      register: npm_config
+      changed_when: "'CHANGED' in npm_config.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        new_config='
+          fetch-retries=5
+          fetch-retry-factor=10
+          fetch-retry-maxtimeout=60000
+          fetch-retry-mintimeout=1000
+          ignore-scripts=true
+          min-release-age=1
+        '
+        before_sha="$(shasum "$HOME/.npmrc" || true)"
+        printf '%s\n' "$new_config" >"$HOME/.npmrc"
+        after_sha="$(shasum "$HOME/.npmrc")"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
+
     - name: Install Task runner
       become: true
       community.general.npm:
