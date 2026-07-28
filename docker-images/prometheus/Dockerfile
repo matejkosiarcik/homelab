@@ -52,7 +52,7 @@ RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
 
 ### Healthcheck ###
 
-FROM golang:1.26.4-alpine AS healthcheck-build
+FROM golang:1.26.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/

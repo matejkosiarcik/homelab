@@ -47,7 +47,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometh
 
 ### App ###
 
-FROM golang:1.26.4-trixie AS unbound-prometheus-exporter-build
+FROM golang:1.26.5-trixie AS unbound-prometheus-exporter-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-build-aptcache \
@@ -67,7 +67,7 @@ RUN sh validate-executable.sh ./unbound_exporter/unbound_exporter
 
 ### Healthcheck ###
 
-FROM golang:1.26.4-alpine AS healthcheck-build
+FROM golang:1.26.5-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
