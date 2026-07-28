@@ -77,7 +77,7 @@ jobs:
             set -euf
             apk update --no-cache
             apk add --no-cache apache2-utils bash git moreutils nodejs npm python3
-            npm install -g @go-task/cli
+            NODE_OPTIONS=--dns-result-order=ipv4first npm install --prefer-offline --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --global @go-task/cli
       - run:
           name: Prepare secrets on << parameters.server >>
           environment:

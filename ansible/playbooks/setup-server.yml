@@ -293,6 +293,26 @@
     #     name: semver
     #     global: true
 
+    - name: NPM config
+      register: npm_config
+      changed_when: "'CHANGED' in npm_config.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        before_sha="$(shasum "$HOME/.npmrc" || true)"
+        new_config="$(printf '
+          fetch-retries=5
+          fetch-retry-factor=10
+          fetch-retry-maxtimeout=60000
+          fetch-retry-mintimeout=1000
+          ignore-scripts=true
+          min-release-age=1
+        ' | sed -E 's~^  ~~' | tail -n +2)"
+        printf '%s' "$new_config" >"$HOME/.npmrc"
+        after_sha="$(shasum "$HOME/.npmrc")"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
+
     - name: Install Task runner
       become: true
       community.general.npm:
@@ -381,6 +401,7 @@
       changed_when: "'CHANGED' in docker_config.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        before_sha="$(shasum /etc/docker/daemon.json || true)"
         new_config='{
           "log-driver": "local",
           "log-opts": {
@@ -396,7 +417,6 @@
             }
           ]
         }'
-        before_sha="$(shasum /etc/docker/daemon.json || true)"
         printf '%s\n' "$new_config" | sudo tee '/etc/docker/daemon.json' >/dev/null
         after_sha="$(shasum /etc/docker/daemon.json)"
         if [ "$before_sha" != "$after_sha" ]; then

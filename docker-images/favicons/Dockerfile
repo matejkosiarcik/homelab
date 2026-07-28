@@ -86,7 +86,7 @@ COPY ./docker-images/favicons/package-lock.json ./docker-images/favicons/package
 COPY ./docker-images/favicons/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=favicons-nodejs-build-npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error && \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
 
