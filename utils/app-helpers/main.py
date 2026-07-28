@@ -204,15 +204,7 @@ def run_with_spinner(
         global last_exit_code  # pylint: disable=global-statement
         last_exit_code = None
         master_fd, slave_fd = pty.openpty()  # This is for making the subprocess think the output is a TTY and it enables colored output
-        with open(command_log_file, "a", encoding="utf-8") as file, subprocess.Popen(
-            command,
-            stdout=slave_fd,
-            stderr=slave_fd,
-            stdin=slave_fd,
-            text=True,
-            bufsize=1,
-            close_fds=True,
-        ) as last_process:
+        with open(command_log_file, "a", encoding="utf-8") as file, subprocess.Popen(command, stdout=slave_fd, stderr=slave_fd, stdin=slave_fd, text=True, bufsize=1, close_fds=True) as last_process:
             os.close(slave_fd)
             while True:
                 try:
