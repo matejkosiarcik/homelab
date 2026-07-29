@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.5-slim AS gitconfig
+FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-gitconfig-aptcache \
@@ -77,7 +77,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=certificator-healthc
 
 ### Other ###
 
-FROM debian:13.5-slim AS package-ca-certificates
+FROM debian:13.6-slim AS package-ca-certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-healthcheck-build-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certificator-healthcheck-build-aptlibcache \
@@ -86,7 +86,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-heal
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.5-slim AS package-curl
+FROM debian:13.6-slim AS package-curl
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-package-curl-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certificator-package-curl-aptlibcache \
@@ -97,7 +97,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-pack
     mkdir -p /homelab/usr-lib && \
     find /usr/lib \( -name 'libbrotli*' -or -name 'libcom*' -or -name 'libcurl*' -or -name 'libffi*' -or -name 'libgnutls*' -or -name 'libgssapi*' -or -name 'libidn*' -or -name 'libk*crypto*' -or -name 'libkeyutils*' -or -name 'libkrb*' -or -name 'liblber*' -or -name 'libldap*' -or -name 'libnghttp*' -or -name 'libp*kit*' -or -name 'libpsl*' -or -name 'librtmp*' -or -name 'libsasl*' -or -name 'libssh*' -or -name 'libtasn*' -or -name 'libunistring*' \) -exec sh -c 'mkdir -p "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")" && cp "$0" "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")/$(basename "$0")"' {} \;
 
-FROM debian:13.5-slim AS empty-dir
+FROM debian:13.6-slim AS empty-dir
 USER root
 RUN mkdir /empty
 
@@ -106,7 +106,7 @@ RUN mkdir /empty
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -136,7 +136,7 @@ COPY --from=package-curl /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
 
-FROM debian:13.5-slim
+FROM debian:13.6-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certificator-final-aptlibcache \

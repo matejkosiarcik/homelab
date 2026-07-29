@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=adventurelog-backend
 
 ### Users ###
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 COPY --from=adventurelog-backend /etc/group /etc/passwd /etc/
 ARG GID=1000

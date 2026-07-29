@@ -4,7 +4,7 @@
 
 ### Build config ###
 
-FROM debian:13.5-slim AS npmconfig
+FROM debian:13.6-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage-npmconfig-aptcache \
@@ -21,7 +21,7 @@ RUN printf '' >/root/.npmrc && \
 
 ### App ###
 
-FROM node:26.3.0-slim AS nodejs-build
+FROM node:26.5.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/homepage/package-lock.json ./docker-images/homepage/package.json ./docker-images/homepage/terser.json ./docker-images/homepage/tsconfig.json ./docker-images/homepage/vite.config.ts /homelab/
@@ -52,7 +52,7 @@ RUN mkdir -p /homelab/original/app/.next/server/pages && \
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/

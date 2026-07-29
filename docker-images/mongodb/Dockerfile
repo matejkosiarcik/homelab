@@ -6,7 +6,7 @@
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/

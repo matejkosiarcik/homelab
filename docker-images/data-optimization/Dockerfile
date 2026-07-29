@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.5-slim AS gitconfig
+FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-gitconfig-aptcache \
@@ -17,7 +17,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
-FROM debian:13.5-slim AS npmconfig
+FROM debian:13.6-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-npmconfig-aptcache \
@@ -82,7 +82,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:26.3.0-slim AS nodejs-main-build
+FROM node:26.5.0-slim AS nodejs-main-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/data-optimization/package-lock.json ./data-optimization/package.json ./data-optimization/tsconfig.json /homelab/
@@ -93,7 +93,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=data-optimizer-nodejs
     npm run build && \
     npm prune --production
 
-FROM node:26.3.0-slim AS nodejs-server-build
+FROM node:26.5.0-slim AS nodejs-server-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
@@ -116,7 +116,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=data-optimizer-healt
 
 ### Other ###
 
-FROM debian:13.5-slim AS empty-dir
+FROM debian:13.6-slim AS empty-dir
 USER root
 RUN mkdir /empty
 
@@ -125,7 +125,7 @@ RUN mkdir /empty
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -157,7 +157,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM node:26.3.0-slim
+FROM node:26.5.0-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-final-aptlibcache \
