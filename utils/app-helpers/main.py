@@ -24,6 +24,7 @@ app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 full_app_name = path.basename(app_dir).lstrip(".")
 app_type = ""
+app_ip = ""
 global_log_filepath = path.join(app_dir, "app-logs", ".meta", "main.log")
 
 is_dryrun = False
@@ -76,7 +77,7 @@ last_exit_code: int | None = None
 
 
 def load_app_config():
-    global app_type  # pylint: disable=global-statement
+    global app_ip, app_type  # pylint: disable=global-statement
 
     config_path = path.join(app_dir, "config", "config.yml")
     if not path.exists(config_path):
@@ -87,6 +88,12 @@ def load_app_config():
         app_type = config_app
     else:
         app_type = full_app_name
+
+    config_ip = subprocess.check_output(["yq", "--raw-output", ".ip", config_path], text=True).strip()
+    if config_ip not in ["", "null", "undefined"] and env_mode == "prod":
+        app_ip = config_ip
+    else:
+        app_ip = "127.0.0.1"
 
 
 def load_env_file(env_path):
@@ -112,7 +119,7 @@ def load_full_env():
         "DOCKER_COMPOSE_APP_TYPE": app_type,
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
-        "DOCKER_COMPOSE_NETWORK_IP": "127.0.0.1",
+        "DOCKER_COMPOSE_NETWORK_IP": app_ip,
         "DOCKER_COMPOSE_NETWORK_URL": f"{default_protocol}://{full_app_name}.matejhome.com" if env_mode == "prod" else f"{default_protocol}://localhost:8443",
         "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
         "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "1000",
