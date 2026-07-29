@@ -1,2 +1,3 @@
 app: openwebui
-ip: 10.1.12.159
+network:
+  ip: 10.1.12.159

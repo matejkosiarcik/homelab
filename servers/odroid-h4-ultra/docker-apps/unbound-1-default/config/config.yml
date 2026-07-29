@@ -1,2 +1,3 @@
 app: unbound
-ip: 10.1.12.1
+network:
+  ip: 10.1.12.1

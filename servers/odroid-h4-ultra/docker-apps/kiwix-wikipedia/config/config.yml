@@ -1,3 +1,4 @@
 app: kiwix
-domain: wikipedia.matejhome.com
-ip: 10.1.12.155
+network:
+  domain: wikipedia.matejhome.com
+  ip: 10.1.12.155

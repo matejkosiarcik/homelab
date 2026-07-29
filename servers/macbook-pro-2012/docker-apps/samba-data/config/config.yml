@@ -1,2 +1,3 @@
 app: samba
-ip: 10.1.18.31
+network:
+  ip: 10.1.18.31

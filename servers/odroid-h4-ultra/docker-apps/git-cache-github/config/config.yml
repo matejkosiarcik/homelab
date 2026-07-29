@@ -1,2 +1,3 @@
 app: git-cache
-ip: 10.1.12.251
+network:
+  ip: 10.1.12.251

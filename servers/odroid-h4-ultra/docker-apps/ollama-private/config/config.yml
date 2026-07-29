@@ -1,2 +1,3 @@
 app: ollama
-ip: 10.1.12.158
+network:
+  ip: 10.1.12.158

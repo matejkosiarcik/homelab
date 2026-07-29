@@ -104,7 +104,7 @@ def load_app_config():
         app_config.app_type = app_config.full_app_name
 
     # Set domain
-    config_domain = subprocess.check_output(["yq", "--raw-output", ".domain", config_path], text=True).strip()
+    config_domain = subprocess.check_output(["yq", "--raw-output", ".network.domain", config_path], text=True).strip()
     if env_mode == "prod":
         if config_domain not in ["", "null", "undefined"]:
             app_config.app_domain = config_domain
@@ -114,7 +114,7 @@ def load_app_config():
         app_config.app_domain = "localhost"
 
     # Set IP
-    config_ip = subprocess.check_output(["yq", "--raw-output", ".ip", config_path], text=True).strip()
+    config_ip = subprocess.check_output(["yq", "--raw-output", ".network.ip", config_path], text=True).strip()
     if config_ip not in ["", "null", "undefined"] and env_mode == "prod":
         app_config.app_ip = config_ip
     else:
