@@ -3,7 +3,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.5-slim AS yq
+FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-yq-aptcache \
@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-depende
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM debian:13.5-slim AS jinja
+FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-jinja-aptcache \
@@ -37,7 +37,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### App config ###
 
-FROM debian:13.5-slim AS config-1
+FROM debian:13.6-slim AS config-1
 USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=placeholder.example.com
@@ -67,7 +67,7 @@ COPY --from=config-2 /homelab/data.json /homelab/
 COPY ./docker-images/unbound/unbound.conf.j2 /homelab/
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
-FROM debian:13.5-slim AS config-4
+FROM debian:13.6-slim AS config-4
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-config-aptcache \
@@ -84,7 +84,7 @@ RUN cat -s unbound.conf | sponge unbound.conf
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
@@ -107,7 +107,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.5-slim
+FROM debian:13.6-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-final-aptlibcache \

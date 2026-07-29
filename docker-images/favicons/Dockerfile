@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.5-slim AS gitconfig
+FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-gitconfig-aptcache \
@@ -17,7 +17,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
-FROM debian:13.5-slim AS npmconfig
+FROM debian:13.6-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-npmconfig-aptcache \
@@ -59,7 +59,7 @@ COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=favicons-imagemagick-appimage-gitman-gitcache \
     gitman install --quiet
 
-FROM debian:13.5-slim AS imagemagick-final
+FROM debian:13.6-slim AS imagemagick-final
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-imagemagick-final-aptcache \
@@ -79,7 +79,7 @@ RUN version="$(cat LATEST_VERSION)" && \
 
 ### App ###
 
-FROM node:26.3.0-slim AS nodejs-build
+FROM node:26.5.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/favicons/package-lock.json ./docker-images/favicons/package.json ./docker-images/favicons/tsconfig.json /homelab/
@@ -105,7 +105,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=favicons-healthcheck
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000

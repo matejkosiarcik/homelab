@@ -11,7 +11,7 @@ USER root
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -21,7 +21,7 @@ RUN sh /homelab/create-user.sh
 
 ### Other ###
 
-FROM debian:13.5-slim AS package-ca-certificates
+FROM debian:13.6-slim AS package-ca-certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-prometheus-exporter-package-ca-certificates-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-prometheus-exporter-package-ca-certificates-aptlibcache \

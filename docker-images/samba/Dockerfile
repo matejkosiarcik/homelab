@@ -4,7 +4,7 @@
 
 ### Build config ###
 
-FROM debian:13.5-slim AS gitconfig
+FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-gitconfig-aptcache \
@@ -71,7 +71,7 @@ RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 WORKDIR /homelab
 COPY --from=user-setup-base /etc/group /etc/passwd /etc/
@@ -95,7 +95,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.5-slim
+FROM debian:13.6-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-final-aptlibcache \

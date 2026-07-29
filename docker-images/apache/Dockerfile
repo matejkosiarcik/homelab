@@ -4,7 +4,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.5-slim AS yq
+FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-yq-aptcache \
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependenc
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
-FROM debian:13.5-slim AS jinja
+FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-jinja-aptcache \
@@ -38,7 +38,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### Build config ###
 
-FROM debian:13.5-slim AS npmconfig
+FROM debian:13.6-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-npmconfig-aptcache \
@@ -69,7 +69,7 @@ COPY --from=apache-htaccess-config-1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/htaccess/.htaccess-extra.j2 /homelab/
 RUN jinja2 ./.htaccess-extra.j2 ./data.json --format json -o ./.htaccess-extra
 
-FROM debian:13.5-slim AS htaccess-config-3
+FROM debian:13.6-slim AS htaccess-config-3
 USER root
 WORKDIR /homelab
 COPY --from=htaccess-config-2 /homelab/.htaccess-extra /homelab/
@@ -84,7 +84,7 @@ COPY --from=apache-htaccess-config-1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/apache.conf-extra.j2 /homelab/
 RUN jinja2 ./apache.conf-extra.j2 ./data.json --format json -o ./apache.conf-extra
 
-FROM debian:13.5-slim AS apache-config-3
+FROM debian:13.6-slim AS apache-config-3
 USER root
 WORKDIR /homelab
 COPY --from=apache-config-2 /homelab/apache.conf-extra /homelab/
@@ -94,7 +94,7 @@ RUN sed -e '/## INSERT_EXTRA_REVERSE_PROXY ##/{' -e 'r /homelab/apache.conf-extr
 
 ### Error pages ###
 
-FROM node:26.3.0-slim AS errors-build
+FROM node:26.5.0-slim AS errors-build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
@@ -118,7 +118,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=apache-healthcheck-b
 
 ### Other ###
 
-FROM debian:13.5-slim AS empty-dir
+FROM debian:13.6-slim AS empty-dir
 USER root
 RUN mkdir /empty && \
     touch /empty.txt
@@ -128,7 +128,7 @@ RUN mkdir /empty && \
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
 
-FROM debian:13.5-slim AS user-setup
+FROM debian:13.6-slim AS user-setup
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-user-setup-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-user-setup-aptlibcache \
@@ -166,7 +166,7 @@ COPY --from=apache-config-3 /homelab/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
-FROM debian:13.5-slim
+FROM debian:13.6-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-final-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-final-aptlibcache \
