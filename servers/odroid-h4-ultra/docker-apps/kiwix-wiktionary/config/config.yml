@@ -1,1 +1,5 @@
 app: kiwix
+
+network:
+  domain: wiktionary.matejhome.com
+  ip: 10.1.12.156

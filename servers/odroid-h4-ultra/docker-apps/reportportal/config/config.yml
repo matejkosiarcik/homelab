@@ -1,1 +1,2 @@
-# placeholder
+network:
+  ip: 10.1.12.190

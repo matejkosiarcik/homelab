@@ -1,1 +1,3 @@
-# placeholder
+network:
+  domain: docker-stats-odroid-h4-ultra.matejhome.com
+  ip: 10.1.12.21

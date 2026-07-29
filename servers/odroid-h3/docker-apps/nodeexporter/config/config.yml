@@ -1,1 +1,3 @@
-# placeholder
+network:
+  domain: nodeexporter-odroid-h3.matejhome.com
+  ip: 10.1.10.24

@@ -1,1 +1,3 @@
-# placeholder
+network:
+  domain: docker-stats-raspberry-pi-4b-2g.matejhome.com
+  ip: 10.1.14.21
