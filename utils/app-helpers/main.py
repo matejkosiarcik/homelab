@@ -14,6 +14,7 @@ import subprocess
 import sys
 import threading
 import time
+from dataclasses import dataclass
 from datetime import datetime
 from os import path
 
@@ -22,10 +23,24 @@ start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not 
 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
-full_app_name = path.basename(app_dir).lstrip(".")
-app_type = ""
-app_ip = ""
 global_log_filepath = path.join(app_dir, "app-logs", ".meta", "main.log")
+
+
+@dataclass
+class AppConfig:
+    full_app_name: str
+    app_type: str
+    app_ip: str
+    app_domain: str
+
+
+app_config = AppConfig(
+    full_app_name=path.basename(app_dir).lstrip("."),
+    app_type="",
+    app_ip="",
+    app_domain="",
+)
+
 
 is_dryrun = False
 is_online = True
@@ -77,23 +92,33 @@ last_exit_code: int | None = None
 
 
 def load_app_config():
-    global app_ip, app_type  # pylint: disable=global-statement
-
     config_path = path.join(app_dir, "config", "config.yml")
     if not path.exists(config_path):
         raise FileNotFoundError("App config.yml not found")
 
+    # Set App name
     config_app = subprocess.check_output(["yq", "--raw-output", ".app", config_path], text=True).strip()
     if config_app not in ["", "null", "undefined"]:
-        app_type = config_app
+        app_config.app_type = config_app
     else:
-        app_type = full_app_name
+        app_config.app_type = app_config.full_app_name
 
+    # Set domain
+    config_domain = subprocess.check_output(["yq", "--raw-output", ".domain", config_path], text=True).strip()
+    if env_mode == "prod":
+        if config_domain not in ["", "null", "undefined"]:
+            app_config.app_domain = config_domain
+        else:
+            app_config.app_domain = f"{app_config.full_app_name}.matejhome.com"
+    else:
+        app_config.app_domain = "localhost"
+
+    # Set IP
     config_ip = subprocess.check_output(["yq", "--raw-output", ".ip", config_path], text=True).strip()
     if config_ip not in ["", "null", "undefined"] and env_mode == "prod":
-        app_ip = config_ip
+        app_config.app_ip = config_ip
     else:
-        app_ip = "127.0.0.1"
+        app_config.app_ip = "127.0.0.1"
 
 
 def load_env_file(env_path):
@@ -112,15 +137,17 @@ def load_env_file(env_path):
 
 
 def load_full_env():
-    default_protocol = "smb" if "samba" in full_app_name else "https"
+    default_protocol = "smb" if "samba" in app_config.full_app_name else "https"
+    default_port = "8443" if env_mode == "dev" else ""
+    port_delimiter = ":" if default_port != "" else ""
     default_env_values = {
-        "DOCKER_COMPOSE_APP_NAME": full_app_name,
+        "DOCKER_COMPOSE_APP_NAME": app_config.full_app_name,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
-        "DOCKER_COMPOSE_APP_TYPE": app_type,
+        "DOCKER_COMPOSE_APP_TYPE": app_config.app_type,
         "DOCKER_COMPOSE_ENV": env_mode,
-        "DOCKER_COMPOSE_NETWORK_DOMAIN": f"{full_app_name}.matejhome.com" if env_mode == "prod" else "localhost",
-        "DOCKER_COMPOSE_NETWORK_IP": app_ip,
-        "DOCKER_COMPOSE_NETWORK_URL": f"{default_protocol}://{full_app_name}.matejhome.com" if env_mode == "prod" else f"{default_protocol}://localhost:8443",
+        "DOCKER_COMPOSE_NETWORK_DOMAIN": app_config.app_domain,
+        "DOCKER_COMPOSE_NETWORK_IP": app_config.app_ip,
+        "DOCKER_COMPOSE_NETWORK_URL": f"{default_protocol}://{app_config.app_domain}{port_delimiter}{default_port}",
         "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
         "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "1000",
         "DOCKER_COMPOSE_GID": str(os.getgid()) if env_mode == "prod" else "1000",
@@ -153,7 +180,7 @@ def load_full_env():
 
 
 def symlink_app():
-    compose_dir = path.join(git_dir, "docker-compose", app_type)
+    compose_dir = path.join(git_dir, "docker-compose", app_config.app_type)
     for file in ["compose.yml", "compose.override.yml", "compose.prod.yml"]:
         try:
             os.remove(file)
