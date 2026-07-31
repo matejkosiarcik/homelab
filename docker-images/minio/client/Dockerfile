@@ -68,7 +68,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-mini
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./docker-images/minio-client/gitman.yml /homelab/
+COPY ./docker-images/minio/client/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=minio-client-cli-gitman-gitcache \
     gitman install --quiet && \
@@ -120,7 +120,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/minio-client/entrypoint.sh ./docker-images/minio-client/main.sh ./docker-images/minio-client/plain-buckets.txt ./docker-images/minio-client/versioned-buckets.txt /homelab/
+COPY ./docker-images/minio/client/entrypoint.sh ./docker-images/minio/client/main.sh ./docker-images/minio/client/plain-buckets.txt ./docker-images/minio/client/versioned-buckets.txt /homelab/
 COPY --from=minio-mc-build /homelab/minio-mc/mc /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 

@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./docker-images/minio-server/Dockerfile
+      dockerfile: ./docker-images/minio/server/Dockerfile
     environment:
       MINIO_BROWSER_REDIRECT_URL: ${DOCKER_COMPOSE_NETWORK_URL}/ui
     env_file:
@@ -21,7 +21,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./docker-images/minio-client/Dockerfile
+      dockerfile: ./docker-images/minio/client/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
