@@ -2,6 +2,24 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root
 
+### Dependencies ###
+
+FROM debian:13.6-slim AS yq
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=pihole-dependency-yq-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=pihole-dependency-yq-aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        jq python3 python3-pip >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION=ignore
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
+ENV PATH="/homelab/python-vendor/bin:$PATH" \
+    PYTHONPATH=/homelab/python-vendor
+
 ### Healthcheck ###
 
 FROM golang:1.26.5-alpine AS healthcheck-build
@@ -11,6 +29,17 @@ COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-imag
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=pihole-healthcheck-build-gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=pihole-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+
+### App config ###
+
+FROM yq AS dns_entries
+USER root
+WORKDIR /homelab
+COPY ./servers/ /homelab/servers/
+COPY ./docker-images/pihole/parse-app-entry.sh /homelab/
+COPY ./docker-images/pihole/extra-domains.txt /homelab/
+RUN find /homelab/servers -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -n1 sh -c 'sh "/homelab/parse-app-entry.sh" "$1" "/homelab/app-domains.txt"' - && \
+    cat '/homelab/app-domains.txt' '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sort --version-sort >'/homelab/custom-domains.txt'
 
 ### User setup ###
 
@@ -39,8 +68,8 @@ RUN sh /homelab/create-user.sh && \
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 ARG SETUP_SCRIPT=default
-COPY ./docker-images/pihole/custom-domains.txt /homelab/
 COPY ./docker-images/pihole/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh
+COPY --from=dns_entries /homelab/custom-domains.txt /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal

@@ -1,0 +1,17 @@
+### Servers ###
+
+10.1.4.1 server-odroid-h3.matejhome.com
+10.1.4.2 server-odroid-h4-ultra.matejhome.com
+10.1.4.3 server-raspberry-pi-4b-2g.matejhome.com
+10.1.4.4 server-raspberry-pi-4b-4g.matejhome.com
+10.1.4.5 server-macbook-pro-2012.matejhome.com
+
+### IoT Devices ###
+
+10.1.4.201 desklamp-left.matejhome.com
+10.1.4.202 desklamp-right.matejhome.com
+
+## Mischalenous ##
+
+unifi unificontroller.matejhome.com # Some UniFi devices require "unifi" record, so we CNAME it to our real domain
+127.0.0.1 localhost.matejhome.com # For debugging with real certificates on main machine
