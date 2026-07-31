@@ -81,10 +81,10 @@ EOF
 
 if [ "$HOMELAB_ENV" = 'prod' ]; then
     # Get production certificate if available, otherwise create temporary development certificate
-    if check_certbot_availability(); then
-        get_prod_certificate()
+    if check_certbot_availability; then
+        get_prod_certificate
     else
-        get_dev_certificate()
+        get_dev_certificate
     fi
 else
     printf 'Creating self-signed certificates\n' >&2
