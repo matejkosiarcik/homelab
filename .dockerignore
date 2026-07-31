@@ -1,10 +1,13 @@
 # App data
-**/app-data-*/
 **/app-data/
-**/app-logs-*/
+**/app-data.*/
+**/app-data-*/
 **/app-logs/
-**/app-secrets-*/
+**/app-logs.*/
+**/app-logs-*/
 **/app-secrets/
+**/app-secrets.*/
+**/app-secrets-*/
 **/compose*.yml
 **/Taskfile.yml
 
