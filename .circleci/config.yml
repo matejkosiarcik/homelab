@@ -78,7 +78,7 @@ jobs:
           command: |
             set -euf
             apk update --no-cache
-            apk add --no-cache apache2-utils bash git jq moreutils nodejs npm python3
+            apk add --no-cache apache2-utils bash git jq moreutils nodejs npm py3-pip python3
             NODE_OPTIONS=--dns-result-order=ipv4first npm install --prefer-offline --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --global @go-task/cli
             python3 -m pip install yq
       - run:
