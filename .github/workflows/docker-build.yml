@@ -104,35 +104,29 @@ jobs:
           printf 'fetch-retries=5\nfetch-retry-factor=10\nfetch-retry-maxtimeout=60000\nfetch-retry-mintimeout=1000\nignore-scripts=true\nmin-release-age=1\n' >>"$HOME/.npmrc"
           NODE_OPTIONS=--dns-result-order=ipv4first npm install --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline --global @go-task/cli
 
-      - name: Install Python dependencies
+      - name: Install Pip dependencies
         run: |
           set -euf
-          python3 -m venv "${{ github.workspace }}/venv"
-          export PATH="${{ github.workspace }}/venv/bin:$PATH"
-          python3 -m pip install --requirement "${{ github.workspace }}/requirements.txt" --quiet --upgrade
+          python3 -m pip install yq
 
       - name: Setup secrets
         run: |
           set -euf
-          export PATH="${{ github.workspace }}/venv/bin:$PATH"
           task secrets -- --mode dev --offline
 
       - name: Docker build
         run: |
           set -euf
-          export PATH="${{ github.workspace }}/venv/bin:$PATH"
           task build -- --mode dev
 
       - name: Docker start
         run: |
           set -euf
-          export PATH="${{ github.workspace }}/venv/bin:$PATH"
           task start -- --mode dev --dry-run
 
       - name: Docker stop
         run: |
           set -euf
-          export PATH="${{ github.workspace }}/venv/bin:$PATH"
           task stop -- --mode dev --dry-run
 
   status:
