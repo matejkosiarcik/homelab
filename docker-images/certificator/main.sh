@@ -88,5 +88,5 @@ if [ "$HOMELAB_ENV" = 'prod' ]; then
     fi
 else
     printf 'Creating self-signed certificates\n' >&2
-    get_dev_certificate()
+    get_dev_certificate
 fi
