@@ -19,7 +19,7 @@ workflows:
 jobs:
   local_build:
     docker:
-      - image: debian:13.2
+      - image: debian:13.6
     steps:
       - checkout
       - run:
@@ -42,7 +42,7 @@ jobs:
 
   docker_build:
     docker:
-      - image: docker:29.1.2
+      - image: docker:29.6.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -66,7 +66,7 @@ jobs:
       server:
         type: string
     docker:
-      - image: docker:29.1.2
+      - image: docker:29.6.2
     environment:
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
     steps:
