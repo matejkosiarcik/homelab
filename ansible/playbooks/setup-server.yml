@@ -18,6 +18,7 @@
       become: true
       ansible.builtin.apt:
         pkg:
+          - age
           - apache2-utils # Maybe remove this in the future
           - argon2
           - bash
@@ -29,6 +30,7 @@
           - dnsutils
           - firmware-linux-nonfree
           - git
+          - golang
           - htop
           - jq
           - lm-sensors
@@ -41,6 +43,8 @@
           - psmisc
           - python-is-python3
           - python3
+          - python3-pip
+          - python3-venv
           - rfkill
           - rsync
           - smartmontools
@@ -109,7 +113,6 @@
           printf 'CHANGED\n'
         fi
 
-    # This prevents problems with inotify and open file descriptors
     - name: Allow docker memory monitoring
       register: docker_memory_monitoring
       when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
@@ -336,6 +339,13 @@
         fi
         bw config server "$target"
         printf 'CHANGED\n'
+
+    ## Python ##
+
+    - name: Install pip packages
+      become: true
+      ansible.builtin.pip:
+        name: yq
 
     ## Docker ##
 
