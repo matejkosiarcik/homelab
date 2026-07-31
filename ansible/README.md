@@ -5,12 +5,18 @@
 Before launching Ansible, make sure you have dependencies installed:
 
 ```sh
-make clean bootstrap # In repository root
-. ./venv/bin/activate # In this directory
+cd "$(git rev-parse --show-toplevel)" # Go to repository root
+make clean bootstrap                  # Install dependencies
+cd ./ansible                          # Go here
+. ./venv/bin/activate                 # Activate Python virtualenv
 ```
 
 Then you can launch a playbook with:
 
 ```sh
-ansible-playbook playbooks/<playbook>.yml
+# Run playbook on all servers:
+ansible-playbook ./playbooks/<playbook>.yml
+
+# Or run playbook only on specified servers
+ansible-playbook --limit <server> ./playbooks/setup-server.yml
 ```
