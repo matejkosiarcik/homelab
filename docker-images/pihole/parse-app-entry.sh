@@ -1,4 +1,5 @@
 #!/bin/sh
+set -euf
 
 apppath="$(realpath "$1")"
 output="$(realpath "$2")"
