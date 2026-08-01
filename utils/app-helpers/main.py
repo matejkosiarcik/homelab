@@ -23,8 +23,11 @@ start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not 
 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
-global_log_filepath = path.join(app_dir, "app-logs", ".meta", "main.log")
+log_dir = path.join(app_dir, "app-logs", ".meta")
 
+if path.exists(log_dir):
+    shutil.rmtree(log_dir)
+os.makedirs(log_dir, exist_ok=True)
 
 @dataclass
 class AppConfig:
@@ -52,17 +55,9 @@ include_secrets = False
 docker_compose_args = []
 docker_command_args = []
 
-# Ensure logfile exists and is empty
-if path.exists(path.dirname(global_log_filepath)):
-    shutil.rmtree(path.dirname(global_log_filepath))
-os.makedirs(path.dirname(global_log_filepath), exist_ok=True)
-with open(global_log_filepath, "w", encoding="utf-8") as global_log_file:
-    pass
-
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
-log.addHandler(logging.FileHandler(global_log_filepath))
 
 
 # Write current anticache.txt
@@ -328,13 +323,13 @@ def docker_build():
         cpu_cores = 1
     threads = math.ceil(cpu_cores // 2)
     commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
-    docker_log_file = path.join("app-logs", ".meta", "docker-build.log")
+    docker_log_file = path.join(log_dir, "docker-build.log")
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
 
 def docker_stop():
     commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
-    docker_log_file = path.join("app-logs", ".meta", "docker-stop.log")
+    docker_log_file = path.join(log_dir, "docker-stop.log")
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
 
 
@@ -363,12 +358,12 @@ def docker_start():
             # os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
-    docker_log_file = path.join("app-logs", ".meta", "docker-start.log")
+    docker_log_file = path.join(log_dir, "docker-start.log")
     run_with_spinner(commands, "Starting", "Start", docker_log_file, env_mode == "dev")
 
 
 def create_secrets():
-    docker_log_file = path.join("app-logs", ".meta", "secrets.log")
+    docker_log_file = path.join(log_dir, "secrets.log")
     if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
         precommands = [
             "sh",
