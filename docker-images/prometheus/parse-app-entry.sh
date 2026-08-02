@@ -4,7 +4,7 @@ set -euf
 apppath="$(realpath "$1")"
 output="$(realpath "$2")"
 
-## Get config valus for this specific app ##
+## Get config values for this specific app ##
 
 app_short_name="$(basename "$apppath")"
 
@@ -21,7 +21,7 @@ fi
 app_full_name="$(printf '%s' "$domain" | sed -E 's~\..*$~~')"
 app_full_name_uppercase="$(printf '%s' "$app_full_name" | tr '[:lower:]' '[:upper:]')"
 
-## Get config valus for this generic app-type ##
+## Get config values for this generic app-type ##
 
 prometheus_config="$(yq --raw-output --compact-output .prometheus "/homelab//docker-compose/$app_type/config.yml")"
 if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
