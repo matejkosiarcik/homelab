@@ -3,27 +3,29 @@ global:
 
 scrape_configs:
 {%- for app in apps %}
-  - job_name: {{ app.url | replace(".matejhome.com", "") }}-app
+{%- if app.prometheus.enabled -%}
+{%- for endpoint in app.prometheus.endpoints -%}
+
+{%- if endpoint.path == "/.apache/metrics" %}
+  {%- set endpoint_name_suffix = "proxy" %}
+{%- else %}
+  {%- set endpoint_name_suffix = "app" %}
+{%- endif %}
+
+  - job_name: {{ app.full_name }}-{{ endpoint_name_suffix }}
     scheme: https
-    metrics_path: {{ app.path }}
-    {%- if app.auth == "basic" %}
+    metrics_path: {{ endpoint.path }}
+    {%- if endpoint.auth.type == "basic" %}
+    {%- set endpoint_auth_user = endpoint.auth.user or "prometheus" %}
     basic_auth:
-      username: {{ "matej" if app.url.startswith("uptimekuma") else "prometheus" }}
-      password: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}__PROMETHEUS_PASSWORD{{ "}" }}
-    {%- elif app.auth == "bearer" %}
+      username: {{ endpoint_auth_user }}
+      password: ${{ "{" }}{{ app.full_name | replace("-", "_") | upper() }}__{{ endpoint_auth_user | replace("-", "_") | upper() }}_PASSWORD{{ "}" }}
+    {%- elif endpoint.auth.type == "bearer" %}
     authorization:
-      credentials: ${{ "{" }}{{ app.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}__PROMETHEUS_TOKEN{{ "}" }}
+      credentials: Bearer ${{ "{" }}{{ app.full_name | replace("-", "_") | upper() }}__PROMETHEUS_TOKEN{{ "}" }}
     {%- endif %}
     static_configs:
-      - targets: [{{ app.url }}]
+      - targets: [{{ app.domain }}]
 {%- endfor %}
-{%- for proxy in proxies %}
-  - job_name: {{ proxy.url | replace(".matejhome.com", "") }}-proxy
-    scheme: https
-    metrics_path: /.apache/metrics
-    basic_auth:
-      username: proxy-prometheus
-      password: ${{ "{" }}{{ proxy.url | replace(".matejhome.com", "") | replace("-", "_") | upper() }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}
-    static_configs:
-      - targets: [{{ proxy.url }}]
+{%- endif %}
 {%- endfor %}

@@ -30,25 +30,32 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=prometheus-depend
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION=ignore
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=prometheus-dependency-yq-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=prometheus-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 
 ### App config ###
 
-FROM yq AS config-1
+FROM yq AS monitoring_entries
 USER root
 WORKDIR /homelab
-COPY ./docker-images/prometheus/data.yml /homelab/
-RUN yq . data.yml >data.json
+COPY ./servers/ /homelab/servers/
+COPY ./docker-compose/ /homelab/docker-compose/
+COPY ./docker-images/prometheus/parse-app-entry.sh /homelab/
+RUN printf 'apps:\n' >'/homelab/app-entries.yml' && \
+    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
+    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name)' '/homelab/app-entries.yml' && \
+    yq '.' '/homelab/app-entries.yml' >'/homelab/app-entries.json' && \
+    printf 'Prometheus data:\n' && \
+    cat './app-entries.json'
 
-FROM jinja AS config-2
+FROM jinja AS prometheus_config
 USER root
 WORKDIR /homelab
-COPY --from=config-1 /homelab/data.json /homelab/
+COPY --from=monitoring_entries /homelab/app-entries.json /homelab/
 COPY ./docker-images/prometheus/prometheus.yml.j2 /homelab/
-RUN jinja2 prometheus.yml.j2 data.json --format json -o prometheus.yml
+RUN jinja2 './prometheus.yml.j2' './app-entries.json' --format json -o './prometheus.yml'
 
 ### Healthcheck ###
 
@@ -79,7 +86,7 @@ RUN sh /homelab/create-user.sh
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./docker-images/prometheus/web.yml ./docker-images/prometheus/entrypoint.sh /homelab/
-COPY --from=config-2 ./homelab/prometheus.yml /homelab/
+COPY --from=prometheus_config ./homelab/prometheus.yml /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
