@@ -3,7 +3,6 @@ set -euf
 
 apppath="$(realpath "$1")"
 output="$(realpath "$2")"
-currdir="$(realpath "$PWD")"
 
 ## Get config valus for this specific app ##
 
@@ -19,8 +18,8 @@ if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; 
     domain="$app_short_name.matejhome.com"
 fi
 
-app_full_name="$(printf "$domain" | sed -E 's~\..*$~~')"
-app_full_name_uppercase="$(printf "$app_full_name" | tr '[:lower:]' '[:upper:]')"
+app_full_name="$(printf '%s' "$domain" | sed -E 's~\..*$~~')"
+app_full_name_uppercase="$(printf '%s' "$app_full_name" | tr '[:lower:]' '[:upper:]')"
 
 ## Get config valus for this generic app-type ##
 
