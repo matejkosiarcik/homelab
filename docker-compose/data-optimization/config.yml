@@ -2,3 +2,10 @@ apache:
   upstream-url:
     - path: /
       target: http://app:8080 # This is just a temporary placeholder
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic

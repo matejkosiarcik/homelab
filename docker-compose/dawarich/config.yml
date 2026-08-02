@@ -8,3 +8,13 @@ apache:
     #   target: http://decryptor:8080/pub
     - path: /
       target: http://app:3000
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /metrics
+      auth:
+        type: basic

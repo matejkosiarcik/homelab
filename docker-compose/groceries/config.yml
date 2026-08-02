@@ -6,3 +6,10 @@ apache:
       target: http://couchdb:5984
     - path: /
       target: http://app-frontend:8100
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic

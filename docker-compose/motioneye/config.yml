@@ -4,3 +4,10 @@ apache:
       target: http://app:8765
     - path: /stream
       target: http://app:9081
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic

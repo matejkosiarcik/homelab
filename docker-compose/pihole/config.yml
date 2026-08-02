@@ -4,3 +4,13 @@ apache:
       target: http://app-prometheus-exporter:9617/metrics
     - path: /
       target: http://app:80
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /metrics
+      auth:
+        type: basic

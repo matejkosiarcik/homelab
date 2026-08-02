@@ -2,3 +2,10 @@ apache:
   upstream-url:
     - path: /
       target: http://app:3000 # HTTPS endpoint is also available, but plain HTTP results in better performance
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
