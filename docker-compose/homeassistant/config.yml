@@ -6,6 +6,9 @@ apache:
 prometheus:
   enabled: true
   endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
     - path: /api/prometheus
       auth:
         type: bearer
