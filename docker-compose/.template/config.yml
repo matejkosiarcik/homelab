@@ -16,5 +16,5 @@ prometheus:
     - path: /metrics
       auth: # Optional, default: no authentication
         type: placeholder # Optional, default: "none", valid values: "basic", "bearer", or "none"
-        user: placeholder # Optional, only valid for basic-auth, default: "prometheus"
-        token: placeholder # Optional, only valid for bearer-auth
+        # user: placeholder # Optional, only valid for basic-auth, default: "prometheus"
+        # token: placeholder # Optional, only valid for bearer-auth
