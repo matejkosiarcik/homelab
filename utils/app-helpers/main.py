@@ -23,7 +23,11 @@ start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not 
 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
-global_log_filepath = path.join(app_dir, "app-logs", ".meta", "main.log")
+log_dir = path.join(app_dir, "app-logs", ".meta")
+
+if path.exists(log_dir):
+    shutil.rmtree(log_dir)
+os.makedirs(log_dir, exist_ok=True)
 
 
 @dataclass
@@ -52,17 +56,9 @@ include_secrets = False
 docker_compose_args = []
 docker_command_args = []
 
-# Ensure logfile exists and is empty
-if path.exists(path.dirname(global_log_filepath)):
-    shutil.rmtree(path.dirname(global_log_filepath))
-os.makedirs(path.dirname(global_log_filepath), exist_ok=True)
-with open(global_log_filepath, "w", encoding="utf-8") as global_log_file:
-    pass
-
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
-log.addHandler(logging.FileHandler(global_log_filepath))
 
 
 # Write current anticache.txt
@@ -89,6 +85,16 @@ if tty_supports_color():
 
 
 last_exit_code: int | None = None
+
+
+def write_log_file_header(command_log_file: str):
+    with open(command_log_file, "w", encoding="utf-8") as file:
+        file.write(f"Start date: {start_datestr}\n\n")
+
+
+def write_log_file_footer(command_log_file: str):
+    with open(command_log_file, "a", encoding="utf-8") as file:
+        file.write(f"\nEnd date: {start_datestr}\n")
 
 
 def load_app_config():
@@ -234,6 +240,8 @@ def run_with_spinner(
     global_exit = False
     last_output_line = ""
 
+    write_log_file_header(command_log_file)
+
     def subprocess_main():
         global last_exit_code  # pylint: disable=global-statement
         last_exit_code = None
@@ -294,6 +302,7 @@ def run_with_spinner(
             f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
             file=sys.stderr,
         )
+        write_log_file_footer(command_log_file)
 
         if last_exit_code != 0 and not global_exit:
             log.error("Process exit code: %s", last_exit_code)
@@ -315,21 +324,13 @@ def docker_build():
         cpu_cores = 1
     threads = math.ceil(cpu_cores // 2)
     commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
-    docker_log_file = path.join(
-        "app-logs",
-        ".meta",
-        f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-build.log",
-    )
+    docker_log_file = path.join(log_dir, "docker-build.log")
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
 
 def docker_stop():
     commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
-    docker_log_file = path.join(
-        "app-logs",
-        ".meta",
-        f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-stop.log",
-    )
+    docker_log_file = path.join(log_dir, "docker-stop.log")
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
 
 
@@ -358,16 +359,12 @@ def docker_start():
             # os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
     commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
-    docker_log_file = path.join(
-        "app-logs",
-        ".meta",
-        f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - docker-start.log",
-    )
+    docker_log_file = path.join(log_dir, "docker-start.log")
     run_with_spinner(commands, "Starting", "Start", docker_log_file, env_mode == "dev")
 
 
 def create_secrets():
-    docker_log_file = path.join("app-logs", ".meta", f"{datetime.now(local_tz).strftime(r'%Y-%m-%d_%H-%M-%S')} - secrets.log")
+    docker_log_file = path.join(log_dir, "secrets.log")
     if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
         precommands = [
             "sh",

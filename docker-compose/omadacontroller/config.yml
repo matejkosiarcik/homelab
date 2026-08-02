@@ -6,3 +6,10 @@ apache:
     - path: /
       env: dev
       target: https://app:8443
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic

@@ -2,3 +2,13 @@ apache:
   upstream-url:
     - path: /
       target: http://app:8000
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /projects/${<<APP>>__PROMETHEUS_PROJECT}/metrics
+      auth:
+        type: bearer

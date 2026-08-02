@@ -171,9 +171,6 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Koffan
-    domain: koffan.matejhome.com
-
   - name: Git Cache - GitHub
     domain: git-cache-github.matejhome.com
 
@@ -219,6 +216,9 @@ apps:
       - path: /metrics
         authentication:
           basic: prometheus
+
+  - name: Koffan
+    domain: koffan.matejhome.com
 
   - name: LibreTranslate
     domain: libretranslate.matejhome.com
@@ -368,6 +368,14 @@ apps:
     domain: openwebui-private.matejhome.com
     enabled: false # TODO: Re-enable
 
+  - name: PiHole 1 Blackhole
+    domain: pihole-1-blackhole.matejhome.com
+    type: ["dns[blackhole]", http]
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
   - name: PiHole 1 Primary
     domain: pihole-1-primary.matejhome.com
     type: [dns, http]
@@ -384,8 +392,8 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: PiHole 1 Blackhole
-    domain: pihole-1-blackhole.matejhome.com
+  - name: PiHole 2 Blackhole
+    domain: pihole-2-blackhole.matejhome.com
     type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
@@ -403,14 +411,6 @@ apps:
   - name: PiHole 2 Secondary
     domain: pihole-2-secondary.matejhome.com
     type: [dns, http]
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
-  - name: PiHole 2 Blackhole
-    domain: pihole-2-blackhole.matejhome.com
-    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -483,6 +483,16 @@ apps:
           - "has([BODY].api_version) == true"
           - "has([BODY].name) == true"
 
+  - name: Unbound 1 Blackhole
+    domain: unbound-1-blackhole.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type: ["dns[blackhole]", http]
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
   - name: Unbound 1 Default
     domain: unbound-1-default.matejhome.com
     authentication:
@@ -498,6 +508,16 @@ apps:
     authentication:
       basic: homelab-viewer
     type: [dns, http]
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 1 Internal
+    domain: unbound-1-internal.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -533,18 +553,8 @@ apps:
         authentication:
           basic: prometheus
 
-  - name: Unbound 1 Internal
-    domain: unbound-1-internal.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    type: ["dns[blackhole]", http]
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
-  - name: Unbound 1 Blackhole
-    domain: unbound-1-blackhole.matejhome.com
+  - name: Unbound 2 Blackhole
+    domain: unbound-2-blackhole.matejhome.com
     authentication:
       basic: homelab-viewer
     type: ["dns[blackhole]", http]
@@ -568,6 +578,16 @@ apps:
     authentication:
       basic: homelab-viewer
     type: [dns, http]
+    endpoints:
+      - path: /metrics
+        authentication:
+          basic: prometheus
+
+  - name: Unbound 2 Internal
+    domain: unbound-2-internal.matejhome.com
+    authentication:
+      basic: homelab-viewer
+    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:
@@ -598,26 +618,6 @@ apps:
     authentication:
       basic: homelab-viewer
     type: [dns, http]
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
-  - name: Unbound 2 Internal
-    domain: unbound-2-internal.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    type: ["dns[blackhole]", http]
-    endpoints:
-      - path: /metrics
-        authentication:
-          basic: prometheus
-
-  - name: Unbound 2 Blackhole
-    domain: unbound-2-blackhole.matejhome.com
-    authentication:
-      basic: homelab-viewer
-    type: ["dns[blackhole]", http]
     endpoints:
       - path: /metrics
         authentication:

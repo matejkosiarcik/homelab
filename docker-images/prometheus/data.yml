@@ -68,12 +68,6 @@ apps:
   - url: prometheus.matejhome.com
     auth: basic
     path: /metrics
-  - url: uptimekuma-1.matejhome.com
-    auth: basic
-    path: /metrics
-  - url: uptimekuma-2.matejhome.com
-    auth: basic
-    path: /metrics
   - url: unbound-1-default.matejhome.com
     auth: basic
     path: /metrics
@@ -114,6 +108,12 @@ apps:
     auth: basic
     path: /metrics
   - url: unbound-2-blackhole.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: uptimekuma-1.matejhome.com
+    auth: basic
+    path: /metrics
+  - url: uptimekuma-2.matejhome.com
     auth: basic
     path: /metrics
 

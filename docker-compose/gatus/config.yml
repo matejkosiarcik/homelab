@@ -2,3 +2,13 @@ apache:
   upstream-url:
     - path: /
       target: http://app:8080
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /metrics
+      auth:
+        type: basic

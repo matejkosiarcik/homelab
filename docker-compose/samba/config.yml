@@ -4,3 +4,10 @@ apache:
       target: http://app:9922/metrics
     - path: /
       target: http://file-server:8080
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
