@@ -5,7 +5,7 @@
 
 ## How to connect to macvlan container from Host
 
-Unfortunetely you can't connect to container running via macvlan directly from the running Host.
+Unfortunately you can't connect to container running via macvlan directly from the running Host.
 At least not without a special (pricy) network equipment.
 You can connect to them from other devices on your network though.
 
