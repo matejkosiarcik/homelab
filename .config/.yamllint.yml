@@ -21,7 +21,7 @@ rules:
     present: false
 
   line-length:
-    max: 250
+    max: 300
 
   # prettier does only 1 space between content and comment
   comments:

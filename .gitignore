@@ -17,6 +17,9 @@ tmp/
 /servers/.current
 /.deployment/
 /worktree-*
+/secrets/age-key.txt
+/secrets/secrets.*
+!/secrets/secrets.enc.*
 
 # OS stuff
 ._*
