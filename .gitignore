@@ -17,6 +17,8 @@ tmp/
 /servers/.current
 /.deployment/
 /worktree-*
+/secrets/*
+!/secrets/.gitkeep
 
 # OS stuff
 ._*
