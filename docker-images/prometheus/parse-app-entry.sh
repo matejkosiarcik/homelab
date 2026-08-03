@@ -6,7 +6,7 @@ output="$(realpath "$2")"
 
 ## Get config values for this specific app ##
 
-app_short_name="$(basename "$apppath")"
+app_short_name="$(basename "$apppath" | sed -E 's~^\.~~')"
 
 app_type="$(yq --raw-output .app "$apppath/config/config.yml")"
 if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then

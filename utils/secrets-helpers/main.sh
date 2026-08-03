@@ -42,8 +42,21 @@ done
 initial_output="$(mktemp -d)"
 printf 'user,password\n' >"$initial_output/all-credentials.csv"
 
-app_dir="$PWD"
-app_dirname="$(basename "$app_dir" | sed -E 's~^\.~~')"
+app_dir_path="$PWD"
+app_short_name="$(basename "$app_dir_path" | sed -E 's~^\.~~')"
+
+app_type="$(yq --raw-output .app "$app_dir_path/config/config.yml")"
+if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
+    app_type="$app_short_name"
+fi
+
+domain="$(yq --raw-output .network.domain "$app_dir_path/config/config.yml")"
+if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
+    domain="$app_short_name.matejhome.com"
+fi
+
+app_full_name="$(printf '%s' "$domain" | sed -E 's~\..*$~~')"
+
 tmpdir="$(mktemp -d)"
 
 if [ "$mode" = 'prod' ]; then
@@ -182,8 +195,8 @@ write_certificator_users() {
     printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$certbot_homelab_viewer_password" >>"$initial_output/certificator.env"
 }
 
-case "$app_dirname" in
-*actualbudget*)
+case "$app_type" in
+actualbudget)
     # App
     printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)" >>"$initial_output/all-credentials.csv"
 
@@ -197,7 +210,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*adventurelog*)
+adventurelog)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
@@ -231,7 +244,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*changedetection*)
+changedetection)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
@@ -246,7 +259,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*certbot*)
+certbot)
     # App
     certbot_matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$certbot_matej_password" proxy-prometheus
@@ -277,7 +290,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*dawarich*)
+dawarich)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
@@ -324,7 +337,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*docker-cache*)
+docker-cache)
     # App
     http_secret="$(load_password "$DOCKER_COMPOSE_APP_NAME" app http-secret)"
     printf 'REGISTRY_HTTP_SECRET=%s\n' "$http_secret" >>"$initial_output/app.env"
@@ -347,7 +360,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*docker-stats*)
+docker-stats)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$matej_password" prometheus
@@ -379,7 +392,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*donetick*)
+donetick)
     # App
     if [ "$mode" = 'dev' ]; then
         jwt_secret="$(openssl rand -base64 32 | base64)"
@@ -399,7 +412,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*dozzle-agent*)
+dozzle-agent)
     # App
     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
         app_key="$(load_notes dozzle app key)"
@@ -410,7 +423,7 @@ case "$app_dirname" in
         sh "$helper_script_dir/dozzle/main.sh" "$initial_output"
     fi
     ;;
-*dozzle*)
+dozzle)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -439,7 +452,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*gatus*)
+gatus)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -591,7 +604,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*git-cache*)
+git-cache)
     postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" database user)"
 
     # App
@@ -622,7 +635,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*gotify*)
+gotify)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -640,7 +653,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*grafana*)
+grafana)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -660,7 +673,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*groceries*)
+groceries)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -693,7 +706,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*healthchecks*)
+healthchecks)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-test,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-test)" >>"$initial_output/all-credentials.csv"
@@ -710,7 +723,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*homeassistant*)
+homeassistant)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
@@ -728,7 +741,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*homepage*)
+homepage)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$matej_password" proxy-prometheus
@@ -779,7 +792,7 @@ case "$app_dirname" in
     printf 'PROMETHEUS_PASSWORD=%s\n' "$(load_token prometheus app homelab-viewer)" >>"$initial_output/widgets.env"
     printf 'SMTP4DEV_PASSWORD=%s\n' "$(load_token smtp4dev app homelab-viewer)" >>"$initial_output/widgets.env"
     ;;
-*jellyfin*)
+jellyfin)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'monika,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app monika)" >>"$initial_output/all-credentials.csv"
@@ -800,7 +813,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*kiwix*)
+kiwix)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
@@ -828,7 +841,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*koffan*)
+koffan)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
@@ -844,7 +857,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*libretranslate*)
+libretranslate)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
@@ -879,7 +892,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*minio*)
+minio)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     homelab_writer_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-writer)"
@@ -907,7 +920,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*motioneye*)
+motioneye)
     # App
     printf 'admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)" >>"$initial_output/all-credentials.csv"
     printf 'stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-stream)" >>"$initial_output/all-credentials.csv"
@@ -922,7 +935,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*nodeexporter*)
+nodeexporter)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
@@ -952,7 +965,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*npm-cache*)
+npm-cache)
     # Redis
     redis_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" redis user)"
     printf 'REDIS_PASSWORD=%s\n' "$redis_password" >>"$initial_output/redis.env"
@@ -969,7 +982,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*ntfy*)
+ntfy)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -994,7 +1007,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*ollama*)
+ollama)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     write_http_auth_user matej "$matej_password" proxy-prometheus
@@ -1024,7 +1037,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*omadacontroller*)
+omadacontroller)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-admin)" >>"$initial_output/all-credentials.csv"
@@ -1041,7 +1054,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*openspeedtest*)
+openspeedtest)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
 
@@ -1052,7 +1065,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*openwebui*)
+openwebui)
     # App
     ollama_openwebui_password="$(load_token ollama app openwebui)"
     printf 'OLLAMA_BASE_URL=%s\n' "https://openwebui:$ollama_openwebui_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
@@ -1076,7 +1089,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*pihole*)
+pihole)
     # App
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/all-credentials.csv"
@@ -1098,7 +1111,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*planka*)
+planka)
     # App
     if [ "$mode" = 'dev' ]; then
         secret_key="$(openssl rand -hex 64)"
@@ -1142,7 +1155,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*prometheus*)
+prometheus)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -1263,7 +1276,7 @@ case "$app_dirname" in
     # Favicons
     printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
     ;;
-*renovatebot*)
+renovatebot)
     # App
     write_healthcheck_url "$DOCKER_COMPOSE_APP_NAME" app "$healthcheck_ping_key"
     renovate_token="$(load_token "$DOCKER_COMPOSE_APP_NAME" app renovate-token)" # PAT specific for each git host
@@ -1296,7 +1309,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*reportportal*)
+reportportal)
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     admin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app admin)"
     postgres_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" postgres user)"
@@ -1342,7 +1355,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*samba*)
+samba)
     # App
     smb_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab)"
     printf 'admin,%s\n' "$smb_password" >>"$initial_output/all-credentials.csv"
@@ -1361,7 +1374,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*smtp4dev*)
+smtp4dev)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'ServerOptions__Users__0__Password=%s\n' "$matej_password" >>"$initial_output/app.env"
@@ -1392,7 +1405,7 @@ case "$app_dirname" in
     # Favicons
     printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
     ;;
-*speedtesttracker*)
+speedtesttracker)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     matej_email=''
@@ -1422,7 +1435,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*tvheadend*)
+tvheadend)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-stream,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-stream)" >>"$initial_output/all-credentials.csv"
@@ -1438,7 +1451,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*unbound*)
+unbound)
     # Apache
     write_default_proxy_users "$DOCKER_COMPOSE_APP_NAME"
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
@@ -1468,7 +1481,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*unificontroller*)
+unificontroller)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
     printf 'homelab-admin,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app homelab-admin)" >>"$initial_output/all-credentials.csv"
@@ -1494,7 +1507,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*uptimekuma*)
+uptimekuma)
     # App
     printf 'matej,%s\n' "$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)" >>"$initial_output/all-credentials.csv"
 
@@ -1508,7 +1521,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*vaultwarden*)
+vaultwarden)
     # App
     superadmin_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app superadmin)"
     superadmin_password_hashed="$(printf '%s' "$superadmin_password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4 | sed 's~\$~$$~g')"
@@ -1528,7 +1541,7 @@ case "$app_dirname" in
     # Favicons
     touch "$initial_output/favicons.env"
     ;;
-*vikunja*)
+vikunja)
     # App
     matej_password="$(load_password "$DOCKER_COMPOSE_APP_NAME" app matej)"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/all-credentials.csv"
@@ -1554,7 +1567,7 @@ case "$app_dirname" in
     touch "$initial_output/favicons.env"
     ;;
 *)
-    printf 'Unknown app directory name: %s\n' "$app_dir" >&2
+    printf 'Unknown app "%s" at "%s"\n' "$app_type" "$app_dir_path" >&2
     exit 1
     ;;
 esac
