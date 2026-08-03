@@ -8,7 +8,6 @@ exclude = [
   '^https?://.*', # Everything else
 ]
 exclude_path = [
-  "^/.*", # Skip local URLs
-  "*/*.enc.*", # Skip encrypted files
+  ".+\\.enc\\.+", # Skip encrypted files
 ]
 root_dir = "/"
