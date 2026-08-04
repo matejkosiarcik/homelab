@@ -108,72 +108,71 @@ load_secret() {
 
 healthchecks_ping_key="$(load_secret .healthchecks.tokens.ping_key dev=empty)"
 
-load_password() {
-    # $1 - app name
-    # $2 - container name
-    # $3 - account name
+# load_password() {
+#     # $1 - app name
+#     # $2 - container name
+#     # $3 - account name
 
-    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
-    if [ "$mode" = 'prod' ]; then
-        {
-            bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.password"
-        } || {
-            printf 'Could not load %s\n' "$itemname" >&2
-            exit 1
-        }
-    else
-        printf 'Password123.\n'
-    fi
-}
+#     itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
+#     if [ "$mode" = 'prod' ]; then
+#         {
+#             bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.password"
+#         } || {
+#             printf 'Could not load %s\n' "$itemname" >&2
+#             exit 1
+#         }
+#     else
+#         printf 'Password123.\n'
+#     fi
+# }
 
-load_token() {
-    # $1 - app name
-    # $2 - container name
-    # $3 - account name
+# load_token() {
+#     # $1 - app name
+#     # $2 - container name
+#     # $3 - account name
 
-    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
-    if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        {
-            bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.password"
-        } || {
-            printf 'Could not load %s\n' "$itemname" >&2
-            exit 1
-        }
-    else
-        printf '\n'
-    fi
-}
+#     itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
+#     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
+#         {
+#             bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").login.password"
+#         } || {
+#             printf 'Could not load %s\n' "$itemname" >&2
+#             exit 1
+#         }
+#     else
+#         printf '\n'
+#     fi
+# }
 
-load_notes() {
-    # $1 - app name
-    # $2 - container name
-    # $3 - account name
+# load_notes() {
+#     # $1 - app name
+#     # $2 - container name
+#     # $3 - account name
 
-    itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
-    if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
-        {
-            bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").notes"
-        } || {
-            printf 'Could not load %s\n' "$itemname" >&2
-            exit 1
-        }
-    else
-        printf '\n'
-    fi
-}
+#     itemname="$(printf '%s--%s--%s' "$1" "$2" "$3" | tr '-' '_')"
+#     if [ "$mode" = 'prod' ] || [ "$online_mode" = 'online' ]; then
+#         {
+#             bw list items --search "$itemname" | jq -er ".[] | select(.name == \"$itemname\").notes"
+#         } || {
+#             printf 'Could not load %s\n' "$itemname" >&2
+#             exit 1
+#         }
+#     else
+#         printf '\n'
+#     fi
+# }
 
 write_healthcheck_url() {
     # $1 - app name
     # $2 - container name
-    # $3 - healthchecks ping key
 
-    if [ "$3" = '' ]; then
+    if [ "$healthchecks_ping_key" = '' ]; then
         healthcheck_url=''
     else
-        healthcheck_url="https://healthchecks.matejhome.com/ping/$3/$1-$2"
+        healthcheck_url="https://healthchecks.matejhome.com/ping/$healthchecks_ping_key/$1-$2"
     fi
     printf 'HOMELAB_HEALTHCHECK_URL=%s\n' "$healthcheck_url" >>"$initial_output/$2.env"
-    printf '%s-healthcheck,%s\n' "$2" "$healthcheck_url" >>"$initial_output/all-credentials.csv"
+    printf '%s-healthcheck-url,%s\n' "$2" "$healthcheck_url" >>"$initial_output/all-credentials.csv"
 }
 
 write_http_auth_user() {
@@ -195,25 +194,25 @@ hash_password_bcrypt() {
 
 write_default_proxy_users() {
     # $1 - app name
-    proxy_status_password="$(load_password "$1" apache status)"
+    proxy_status_password="$(load_secret ".$1.users.proxy_status" dev=default)"
     write_http_auth_user proxy-status "$proxy_status_password" proxy-status
     printf 'PROXY_STATUS_PASSWORD=%s\n' "$proxy_status_password" >>"$initial_output/apache-prometheus-exporter.env"
     printf 'proxy-status,%s\n' "$proxy_status_password" >>"$initial_output/all-credentials.csv"
-    proxy_prometheus_password="$(load_password "$1" general prometheus)"
+    proxy_prometheus_password="$(load_secret ".$1.users.prometheus" dev=default)"
     write_http_auth_user prometheus "$proxy_prometheus_password" proxy-prometheus
     printf 'prometheus,%s\n' "$proxy_prometheus_password" >>"$initial_output/all-credentials.csv"
 }
 
 write_certificator_users() {
     # No arguments
-    certbot_homelab_viewer_password="$(load_token certbot app homelab-viewer)"
+    certbot_homelab_viewer_password="$(load_secret '.certbot.users.homelab_viewer' dev=real)"
     printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD=%s\n' "$certbot_homelab_viewer_password" >>"$initial_output/certificator.env"
 }
 
 case "$app_type" in
 actualbudget)
     # App
-    printf 'admin,%s\n' "$(load_password "$app_fullname" app admin)" >>"$initial_output/all-credentials.csv"
+    printf 'admin,%s\n' "$(load_secret '.actualbudget.users.admin' dev=default)" >>"$initial_output/all-credentials.csv"
 
     # Apache
     write_default_proxy_users "$app_fullname"
