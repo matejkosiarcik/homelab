@@ -1210,6 +1210,8 @@ prometheus)
     printf 'HOMEASSISTANT__PROMETHEUS_TOKEN=%s\n' "$(load_token homeassistant app homelab-viewer-api-key)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__PROMETHEUS_PASSWORD=%s\n' "$(load_password homepage general prometheus)" >>"$initial_output/app.env"
     printf 'JELLYFIN__PROMETHEUS_PASSWORD=%s\n' "$(load_password jellyfin general prometheus)" >>"$initial_output/app.env"
+    printf 'KIWIX_WIKIPEDIA__PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia general prometheus)" >>"$initial_output/app.env"
+    printf 'KIWIX_WIKTIONARY__PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary general prometheus)" >>"$initial_output/app.env"
     printf 'KOFFAN__PROMETHEUS_PASSWORD=%s\n' "$(load_password koffan general prometheus)" >>"$initial_output/app.env"
     printf 'LIBRETRANSLATE__PROMETHEUS_PASSWORD=%s\n' "$(load_password libretranslate general prometheus)" >>"$initial_output/app.env"
     printf 'MINIO__PROMETHEUS_PASSWORD=%s\n' "$(load_password minio general prometheus)" >>"$initial_output/app.env"
@@ -1264,8 +1266,6 @@ prometheus)
     printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD=%s\n' "$(load_password uptimekuma-2 general prometheus)" >>"$initial_output/app.env"
     printf 'VAULTWARDEN__PROMETHEUS_PASSWORD=%s\n' "$(load_password vaultwarden general prometheus)" >>"$initial_output/app.env"
     printf 'VIKUNJA__PROMETHEUS_PASSWORD=%s\n' "$(load_password vikunja general prometheus)" >>"$initial_output/app.env"
-    printf 'WIKIPEDIA__PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wikipedia general prometheus)" >>"$initial_output/app.env"
-    printf 'WIKTIONARY__PROMETHEUS_PASSWORD=%s\n' "$(load_password kiwix-wiktionary general prometheus)" >>"$initial_output/app.env"
     # printf 'DESKLAMP_LEFT__PROMETHEUS_PASSWORD=%s\n' "$(load_password desklamp-left general prometheus)" >>"$initial_output/app.env"
     # printf 'DESKLAMP_RIGHT__PROMETHEUS_PASSWORD=%s\n' "$(load_password desklamp-right general prometheus)" >>"$initial_output/app.env"
 
