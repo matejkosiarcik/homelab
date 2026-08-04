@@ -13,7 +13,6 @@ export LC_ALL
 LC_CTYPE=en_US.UTF-8
 export LC_CTYPE
 
-online_mode='online'
 mode=''
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -23,14 +22,6 @@ while [ "$#" -gt 0 ]; do
         ;;
     -p | --prod)
         mode='prod'
-        shift
-        ;;
-    --online)
-        online_mode='online'
-        shift
-        ;;
-    --offline)
-        online_mode='offline'
         shift
         ;;
     *)

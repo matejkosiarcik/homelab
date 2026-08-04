@@ -115,10 +115,6 @@ def main(argv: list[str]):
             subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
-        if subcommand_name == "secrets":
-            online_group = subcommand.add_mutually_exclusive_group()
-            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for secrets")
-            online_group.add_argument("--offline", action="store_true", help="Only generate secrets locally, do not access vaultwarden")
 
     args = parser.parse_args(argv)
 
@@ -160,11 +156,6 @@ def main(argv: list[str]):
 
 
 def server_action(action: str):
-    if action == "secrets":
-        precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-        subprocess.check_call(precommands, cwd=git_dir)
-        os.environ["HOMELAB" + "_" + "SECRETS" + "_" + "PREPARED"] = "yes"
-
     action_log = "Secrets for" if action == "secrets" else action.capitalize()
     print(f"↓ {action_log} docker apps")
     print("\n---\n")
@@ -174,8 +165,6 @@ def server_action(action: str):
         cli_args.append("--dry-run")
     if is_pull:
         cli_args.append("--pull")
-    if action == "secrets":
-        cli_args.append("--online" if is_online else "--offline")
     if action == "deploy" and include_secrets is True:
         cli_args.append("--with-secrets")
     if action == "deploy":
