@@ -1,3 +1,6 @@
+app:
+  type: docker-stats
+  fullname: docker-stats-odroid-h3
+
 network:
-  domain: docker-stats-odroid-h3.matejhome.com
   ip: 10.1.10.21

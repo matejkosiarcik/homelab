@@ -1,3 +1,6 @@
+app:
+  type: nodeexporter
+  fullname: nodeexporter-odroid-h3
+
 network:
-  domain: nodeexporter-odroid-h3.matejhome.com
   ip: 10.1.10.24

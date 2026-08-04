@@ -8,8 +8,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/unbound/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    image: ${DOCKER_COMPOSE_APP_NAME}-app:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
     security_opt:
       - no-new-privileges:false
     tmpfs:
@@ -25,8 +25,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/unbound-prometheus-exporter/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound/sock:/homelab/sock:rw
 
@@ -64,10 +64,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

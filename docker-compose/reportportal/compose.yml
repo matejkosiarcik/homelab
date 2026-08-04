@@ -8,13 +8,13 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/migrations/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-migrations
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations
     depends_on:
       postgres:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-migrations.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-migrations:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations:1.0.0
 
   app-index:
     extends:
@@ -23,8 +23,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/index/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-index
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-index:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index:1.0.0
 
   app-ui:
     extends:
@@ -33,8 +33,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/ui/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-ui
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-ui:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui:1.0.0
     tmpfs:
       - /etc/nginx/conf.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -46,7 +46,7 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/api/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-api
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api
     depends_on:
       app-jobs:
         condition: service_healthy
@@ -56,7 +56,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-api.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-api:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/reportportal/api:/var/log/reportportal:rw
@@ -68,13 +68,13 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/uat/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-uat
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat
     depends_on:
       postgres:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-uat.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-uat:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
 
@@ -85,7 +85,7 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/jobs/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-jobs
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs
     depends_on:
       postgres:
         condition: service_healthy
@@ -93,7 +93,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-jobs.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-jobs:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
 
@@ -104,7 +104,7 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/analyzer/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-analyzer
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-analyzer
     depends_on:
       opensearch:
         condition: service_healthy
@@ -112,7 +112,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-analyzer.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-analyzer:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-analyzer:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
 
@@ -131,10 +131,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/rabbitmq/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-rabbitmq
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rabbitmq.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-rabbitmq:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq:1.0.0
     tmpfs:
       - /opt/bitnami/rabbitmq/etc/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -148,8 +148,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/reportportal/opensearch/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-opensearch
-    image: ${DOCKER_COMPOSE_APP_NAME}-opensearch:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch:1.0.0
     tmpfs:
       - /usr/share/opensearch/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     ulimits:
@@ -184,10 +184,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

@@ -29,7 +29,7 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/dawarich/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-sidekiq
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-sidekiq
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
@@ -41,7 +41,7 @@ services:
       retries: 1
       start_period: 60s
       timeout: 5s
-    image: ${DOCKER_COMPOSE_APP_NAME}-sidekiq:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sidekiq:1.0.0
     tmpfs:
       # - /root/.cache/gem:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/app/db:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -74,10 +74,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/owntracks-decryptor/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-decryptor
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-decryptor
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/decryptor.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-decryptor:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-decryptor:1.0.0
 
   certificator:
     extends:
@@ -106,10 +106,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

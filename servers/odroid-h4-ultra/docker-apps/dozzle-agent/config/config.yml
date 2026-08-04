@@ -1,3 +1,6 @@
+app:
+  type: dozzle-agent
+  fullname: dozzle-agent-odroid-h4-ultra
+
 network:
-  domain: dozzle-agent-odroid-h4-ultra.matejhome.com
   ip: 10.1.12.22

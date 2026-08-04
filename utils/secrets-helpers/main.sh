@@ -43,16 +43,21 @@ initial_output="$(mktemp -d)"
 printf 'user,password\n' >"$initial_output/all-credentials.csv"
 
 app_dir_path="$PWD"
-app_short_name="$(basename "$app_dir_path" | sed -E 's~^\.~~')"
+app_shortname="$(basename "$app_dir_path" | sed -E 's~^\.~~')"
 
-app_type="$(yq --raw-output .app "$app_dir_path/config/config.yml")"
+app_type="$(yq --raw-output .app.type "$app_dir_path/config/config.yml")"
 if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-    app_type="$app_short_name"
+    app_type="$app_shortname"
+fi
+
+app_fullname="$(yq --raw-output .app.fullname "$app_dir_path/config/config.yml")"
+if [ "$app_fullname" = '' ] || [ "$app_fullname" = 'null' ] || [ "$app_fullname" = 'undefined' ]; then
+    app_fullname="$app_shortname"
 fi
 
 domain="$(yq --raw-output .network.domain "$app_dir_path/config/config.yml")"
 if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
-    domain="$app_short_name.matejhome.com"
+    domain="$app_fullname.matejhome.com"
 fi
 
 app_full_name="$(printf '%s' "$domain" | sed -E 's~\..*$~~')"

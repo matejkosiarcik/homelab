@@ -11,7 +11,7 @@ services:
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
-    hostname: ${DOCKER_COMPOSE_APP_NAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
+    hostname: ${DOCKER_COMPOSE_APP_FULLNAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
     init: false
     networks:
       - external-network
@@ -65,10 +65,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

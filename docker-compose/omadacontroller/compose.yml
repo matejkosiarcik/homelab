@@ -46,8 +46,8 @@ services:
   #   extends:
   #     file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
   #     service: template
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
-  #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
+  #   container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup
+  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
   #   build:
   #     dockerfile: ./docker-images/web-automation/Dockerfile
   #   depends_on:
@@ -66,10 +66,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

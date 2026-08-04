@@ -32,14 +32,14 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/mongodb/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-mongodb
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-mongodb
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb.env
     environment:
       MONGO_AUTHSOURCE: admin
       MONGO_DBNAME: unifi
       MONGO_USER: unifi
-    image: ${DOCKER_COMPOSE_APP_NAME}-mongodb:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-mongodb:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/mongodb/data:/data/db:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
@@ -71,7 +71,7 @@ services:
   #   # Override:
   #   build:
   #     dockerfile: ./docker-images/web-automation/Dockerfile
-  #   container_name: ${DOCKER_COMPOSE_APP_NAME}-web-backup
+  #   container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup
   #   depends_on:
   #     app:
   #       condition: service_healthy
@@ -79,7 +79,7 @@ services:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/web-backup.env
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
-  #   image: ${DOCKER_COMPOSE_APP_NAME}-web-backup:1.0.0
+  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
   #   volumes:
   #     - ./app-data/web-backup:/homelab/backup:rw
   #     - ./app-logs/web-backup-errors:/homelab/errors:rw
@@ -89,10 +89,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

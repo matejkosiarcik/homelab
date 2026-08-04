@@ -1,4 +1,6 @@
-app: kiwix
+app:
+  type: kiwix
+  fullname: kiwix-wikipedia
 
 network:
   domain: wikipedia.matejhome.com

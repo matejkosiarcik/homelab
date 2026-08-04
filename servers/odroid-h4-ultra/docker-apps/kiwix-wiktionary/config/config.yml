@@ -1,4 +1,6 @@
-app: kiwix
+app:
+  type: kiwix
+  fullname: kiwix-wiktionary
 
 network:
   domain: wiktionary.matejhome.com

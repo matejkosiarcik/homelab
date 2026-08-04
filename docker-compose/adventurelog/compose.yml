@@ -6,8 +6,8 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:1.0.0
     build:
       dockerfile: ./docker-images/adventurelog/frontend/Dockerfile
     environment:
@@ -20,7 +20,7 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/adventurelog/backend/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-backend.env
     environment:
@@ -29,7 +29,7 @@ services:
       DJANGO_ADMIN_EMAIL: django-admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       FRONTEND_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend:1.0.0
     networks: # Internet access necessary for downloading data from raw.githubusercontent.com
       - external-network
       - internal-network
@@ -72,10 +72,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

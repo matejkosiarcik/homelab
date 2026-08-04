@@ -32,14 +32,16 @@ os.makedirs(log_dir, exist_ok=True)
 
 @dataclass
 class AppConfig:
-    full_app_name: str
+    app_fullname: str
+    app_shortname: str
     app_type: str
     app_ip: str
     app_domain: str
 
 
 app_config = AppConfig(
-    full_app_name=path.basename(app_dir).lstrip("."),
+    app_fullname="",
+    app_shortname="",
     app_type="",
     app_ip="",
     app_domain="",
@@ -102,12 +104,23 @@ def load_app_config():
     if not path.exists(config_path):
         raise FileNotFoundError("App config.yml not found")
 
-    # Set App name
-    config_app = subprocess.check_output(["yq", "--raw-output", ".app", config_path], text=True).strip()
-    if config_app not in ["", "null", "undefined"]:
-        app_config.app_type = config_app
+    # Set App shortname
+    app_config.app_shortname = path.basename(app_dir).lstrip(".")
+
+    # Set App type
+    config_app_type = subprocess.check_output(["yq", "--raw-output", ".app.type", config_path], text=True).strip()
+    if config_app_type not in ["", "null", "undefined"]:
+        app_config.app_type = config_app_type
     else:
-        app_config.app_type = app_config.full_app_name
+        app_config.app_type = app_config.app_shortname
+
+
+    # Set App fullname
+    config_app_fullname = subprocess.check_output(["yq", "--raw-output", ".app.fullname", config_path], text=True).strip()
+    if config_app_fullname not in ["", "null", "undefined"]:
+        app_config.app_fullname = config_app_fullname
+    else:
+        app_config.app_fullname = app_config.app_shortname
 
     # Set domain
     config_domain = subprocess.check_output(["yq", "--raw-output", ".network.domain", config_path], text=True).strip()
@@ -115,7 +128,7 @@ def load_app_config():
         if config_domain not in ["", "null", "undefined"]:
             app_config.app_domain = config_domain
         else:
-            app_config.app_domain = f"{app_config.full_app_name}.matejhome.com"
+            app_config.app_domain = f"{app_config.app_fullname}.matejhome.com"
     else:
         app_config.app_domain = "localhost"
 
@@ -143,11 +156,12 @@ def load_env_file(env_path):
 
 
 def load_full_env():
-    default_protocol = "smb" if "samba" in app_config.full_app_name else "https"
+    default_protocol = "smb" if "samba" in app_config.app_fullname else "https"
     default_port = "8443" if env_mode == "dev" else ""
     port_delimiter = ":" if default_port != "" else ""
     default_env_values = {
-        "DOCKER_COMPOSE_APP_NAME": app_config.full_app_name,
+        "DOCKER_COMPOSE_APP_FULLNAME": app_config.app_fullname,
+        "DOCKER_COMPOSE_APP_SHORTNAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
         "DOCKER_COMPOSE_APP_TYPE": app_config.app_type,
         "DOCKER_COMPOSE_ENV": env_mode,
@@ -272,13 +286,13 @@ def run_with_spinner(
         spinner_index = 0
 
         if print_output:
-            print(f"↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} 00:00")
+            print(f"↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_SHORTNAME']} 00:00")
 
         while not done.is_set():
             elapsed = time.time() - start_time
             elapsed_mins = int(elapsed) // 60
             elapsed_secs = int(elapsed) % 60
-            last_output_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_NAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
+            last_output_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_SHORTNAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
             if global_exit:
                 break
             if not print_output:
@@ -299,7 +313,7 @@ def run_with_spinner(
         status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
         print(f"\r{' ' * len(last_output_line)}", end="", flush=True)
         print(
-            f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_NAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
+            f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_SHORTNAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
             file=sys.stderr,
         )
         write_log_file_footer(command_log_file)
@@ -390,7 +404,7 @@ def run_main_command(command: str):
         "--file",
         f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
         "--project-name",
-        os.environ["DOCKER_COMPOSE_APP_NAME"],
+        os.environ["DOCKER_COMPOSE_APP_SHORTNAME"],
         "--progress",
         "plain",
     ]
