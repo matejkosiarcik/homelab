@@ -6,20 +6,24 @@ output="$(realpath "$2")"
 
 ## Get config values for this specific app ##
 
-app_short_name="$(basename "$apppath" | sed -E 's~^\.~~')"
+app_shortname="$(basename "$apppath" | sed -E 's~^\.~~')"
 
-app_type="$(yq --raw-output .app "$apppath/config/config.yml")"
+app_type="$(yq --raw-output .app.type "$apppath/config/config.yml")"
 if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-    app_type="$app_short_name"
+    app_type="$app_shortname"
+fi
+
+app_fullname="$(yq --raw-output .app.fullname "$apppath/config/config.yml")"
+if [ "$app_fullname" = '' ] || [ "$app_fullname" = 'null' ] || [ "$app_fullname" = 'undefined' ]; then
+    app_fullname="$app_shortname"
 fi
 
 domain="$(yq --raw-output .network.domain "$apppath/config/config.yml")"
 if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
-    domain="$app_short_name.matejhome.com"
+    domain="$app_fullname.matejhome.com"
 fi
 
-app_full_name="$(printf '%s' "$domain" | sed -E 's~\..*$~~')"
-app_full_name_uppercase="$(printf '%s' "$app_full_name" | tr '[:lower:]' '[:upper:]')"
+app_fullname_uppercase="$(printf '%s' "$app_fullname" | tr '[:lower:]' '[:upper:]')"
 
 ## Get config values for this generic app-type ##
 
@@ -33,11 +37,11 @@ fi
 tmpfile="$(mktemp)"
 cat >>"$tmpfile" <<EOF
     - app: "$app_type"
-        short_name: "$app_short_name"
-        full_name: "$app_full_name"
+        short_name: "$app_shortname"
+        full_name: "$app_fullname"
         domain: "$domain"
         prometheus: $prometheus_config
 EOF
 
-unexpand -t 4 <"$tmpfile" | expand -t 2 | sed -E "s~<<app>>~$app_full_name~g;s~<<APP>>~$app_full_name_uppercase~g" >>"$output"
+unexpand -t 4 <"$tmpfile" | expand -t 2 | sed -E "s~<<app>>~$app_fullname~g;s~<<APP>>~$app_fullname_uppercase~g" >>"$output"
 rm -f "$tmpfile"
