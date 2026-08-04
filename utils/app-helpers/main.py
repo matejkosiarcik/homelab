@@ -114,7 +114,6 @@ def load_app_config():
     else:
         app_config.app_type = app_config.app_shortname
 
-
     # Set App fullname
     config_app_fullname = subprocess.check_output(["yq", "--raw-output", ".app.fullname", config_path], text=True).strip()
     if config_app_fullname not in ["", "null", "undefined"]:
