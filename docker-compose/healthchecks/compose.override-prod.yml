@@ -7,7 +7,7 @@ services:
     <<: *common-service-options
     environment:
       ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
-      DEFAULT_FROM_EMAIL: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
+      DEFAULT_FROM_EMAIL: ${DOCKER_COMPOSE_APP_FULLNAME}@matejhome.com
       SITE_ROOT: ${DOCKER_COMPOSE_NETWORK_URL}
       # Uncomment for initial setup (signups):
       # REGISTRATION_OPEN: "True"

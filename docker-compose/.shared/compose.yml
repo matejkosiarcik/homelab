@@ -9,24 +9,26 @@ services:
         HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
         HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
         HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-        HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
+        HOMELAB_APP_FULLNAME: ${DOCKER_COMPOSE_APP_FULLNAME}
+        HOMELAB_APP_SHORTNAME: ${DOCKER_COMPOSE_APP_SHORTNAME}
         HOMELAB_APP_TYPE: ${DOCKER_COMPOSE_APP_TYPE}
         HOMELAB_BUILD_ENV: ${DOCKER_COMPOSE_ENV}
         HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
         UID: ${DOCKER_COMPOSE_UID}
       context: ${DOCKER_COMPOSE_REPOROOT_PATH}/
       dockerfile: ./docker-images/PLACEHOLDER/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-PLACEHOLDER
     dns_opt:
       - single-request
     environment:
       HOMELAB_APP_EXTERNAL_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       HOMELAB_APP_EXTERNAL_IP: ${DOCKER_COMPOSE_NETWORK_IP}
       HOMELAB_APP_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-      HOMELAB_APP_NAME: ${DOCKER_COMPOSE_APP_NAME}
+      HOMELAB_APP_FULLNAME: ${DOCKER_COMPOSE_APP_FULLNAME}
+      HOMELAB_APP_SHORTNAME: ${DOCKER_COMPOSE_APP_SHORTNAME}
       HOMELAB_APP_TYPE: ${DOCKER_COMPOSE_APP_TYPE}
       HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-    image: ${DOCKER_COMPOSE_APP_NAME}-PLACEHOLDER:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-PLACEHOLDER:1.0.0
     init: true
     read_only: true
     security_opt:
@@ -50,8 +52,8 @@ services:
     extends:
       service: template
     # Override:
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app
-    image: ${DOCKER_COMPOSE_APP_NAME}-app:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
 
   certificator:
     extends:
@@ -59,13 +61,13 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/certificator/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-certificator
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-certificator
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-certificator:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-certificator:1.0.0
     networks:
       - external-network
       - internal-network
@@ -81,11 +83,11 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/apache/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache:1.0.0
     networks:
       - external-network # TODO: Connect to external world via socat instead
       - internal-network
@@ -105,10 +107,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/apache-prometheus-exporter/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-apache-prometheus-exporter:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter:1.0.0
 
   socket-proxy:
     extends:
@@ -116,8 +118,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/socket-proxy/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy
-    image: ${DOCKER_COMPOSE_APP_NAME}-socket-proxy:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-socket-proxy
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-socket-proxy:1.0.0
     tmpfs:
       - /run:rw,uid=0,gid=0
     volumes:
@@ -129,11 +131,11 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/docker-setup/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
-      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_NAME}-app
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
+      HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
@@ -143,10 +145,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/favicons/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-favicons
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-favicons:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons:1.0.0
 
   file-server:
     extends:
@@ -154,8 +156,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/file-server/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-file-server
-    image: ${DOCKER_COMPOSE_APP_NAME}-file-server:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server:1.0.0
 
   script-app-setup:
     extends:
@@ -163,8 +165,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/script-setup/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
@@ -174,10 +176,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/redis/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-redis
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-redis
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/redis.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-redis:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-redis:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
@@ -190,10 +192,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/postgres/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgres
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgres
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-postgres:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgres:1.0.0
     shm_size: 1G
     tmpfs:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -208,10 +210,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/postgis/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-postgis
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-postgis:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis:1.0.0
     shm_size: 1G
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis/data:/var/lib/postgresql/data:rw

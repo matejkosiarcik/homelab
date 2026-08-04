@@ -1,4 +1,5 @@
-app: uptimekuma
+app:
+  type: uptimekuma
 
 network:
   ip: 10.1.12.148

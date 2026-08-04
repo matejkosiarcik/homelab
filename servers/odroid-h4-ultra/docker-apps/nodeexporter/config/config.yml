@@ -1,3 +1,6 @@
+app:
+  type: nodeexporter
+  fullname: nodeexporter-odroid-h4-ultra
+
 network:
-  domain: nodeexporter-odroid-h4-ultra.matejhome.com
   ip: 10.1.12.24

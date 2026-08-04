@@ -1,2 +1,7 @@
-app: placeholder # PLACEHOLDER
-ip: 127.0.0.1 # PLACEHOLDER
+app:
+  type: placeholder # PLACEHOLDER
+  fullname: placeholder # PLACEHOLDER
+
+network:
+  domain: placeholder.matejhome.com # PLACEHOLDER
+  ip: 127.0.0.1 # PLACEHOLDER

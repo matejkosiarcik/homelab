@@ -1,4 +1,5 @@
-app: git-cache
+app:
+  type: git-cache
 
 network:
   ip: 10.1.12.251

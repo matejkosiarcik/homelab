@@ -22,10 +22,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/minio/client/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-setup
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-setup:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /home/homelab/.mc:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -54,10 +54,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

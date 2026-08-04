@@ -1,4 +1,5 @@
-app: pihole
+app:
+  type: pihole
 
 network:
   ip: 10.1.12.19

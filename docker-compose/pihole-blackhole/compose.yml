@@ -41,13 +41,13 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/pihole-prometheus-exporter/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
     environment:
       PIHOLE_HOSTNAME: app
       PIHOLE_PORT: 80
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-prometheus-exporter:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
 
   socket-proxy:
     extends:
@@ -87,10 +87,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

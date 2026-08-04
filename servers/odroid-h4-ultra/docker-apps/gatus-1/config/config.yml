@@ -1,4 +1,5 @@
-app: gatus
+app:
+  type: gatus
 
 network:
   ip: 10.1.12.130

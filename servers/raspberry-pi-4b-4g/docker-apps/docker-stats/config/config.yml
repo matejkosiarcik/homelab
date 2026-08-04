@@ -1,3 +1,6 @@
+app:
+  type: docker-stats
+  fullname: docker-stats-raspberry-pi-4b-4g
+
 network:
-  domain: docker-stats-raspberry-pi-4b-4g.matejhome.com
   ip: 10.1.16.21

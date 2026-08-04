@@ -21,8 +21,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/sockpuppetbrowser/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser
-    image: ${DOCKER_COMPOSE_APP_NAME}-sockpuppetbrowser:1.0.0
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-sockpuppetbrowser
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sockpuppetbrowser:1.0.0
     init: false
     networks: # Internet access required for monitoring public websites
       - external-network
@@ -55,10 +55,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

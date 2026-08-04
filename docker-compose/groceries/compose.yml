@@ -8,7 +8,7 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/groceries/backend/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-backend
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend
     depends_on:
       couchdb:
         condition: service_healthy
@@ -18,8 +18,8 @@ services:
       COUCHDB_URL: ${DOCKER_COMPOSE_NETWORK_URL}/couchdb
       GROCERY_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
       GROCERY_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-      SMTP_FROM: ${DOCKER_COMPOSE_APP_NAME}@matejhome.com
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-backend:1.0.0
+      SMTP_FROM: ${DOCKER_COMPOSE_APP_FULLNAME}@matejhome.com
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend:1.0.0
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -31,10 +31,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/groceries/frontend/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-app-frontend
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend
     environment:
       DEFAULT_API_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
-    image: ${DOCKER_COMPOSE_APP_NAME}-app-frontend:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:1.0.0
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /usr/share/nginx/html:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -47,10 +47,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/couchdb/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-couchdb
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-couchdb
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/couchdb.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-couchdb:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-couchdb:1.0.0
     init: false
     tmpfs:
       - /opt/couchdb/etc/local.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -81,10 +81,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true

@@ -53,13 +53,13 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/homepage-widgets/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_NAME}-widgets
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-widgets
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/widgets.env
-    image: ${DOCKER_COMPOSE_APP_NAME}-widgets:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-widgets:1.0.0
     networks: # Network access is necessary for accessing other services via HTTPS
       - external-network
       - internal-network
@@ -68,10 +68,10 @@ networks:
   default:
     driver: none
   external-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-external-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
     driver: bridge
     internal: false
   internal-network:
-    name: ${DOCKER_COMPOSE_APP_NAME}-internal-network
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true
