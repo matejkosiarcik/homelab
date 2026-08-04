@@ -76,6 +76,11 @@ load_secret() {
     # $1 - yq query
     # $2 - behaviour for dev environment
 
+    if [ "$#" -lt 2 ]; then
+        printf 'Missing arguments for load_secret() function, got: %s\n' "$#" >&2
+        exit 1
+    fi
+
     main_secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yaml" "$git_root_dir/secrets/secrets.enc.yml" | yq "$1")"
     if [ "$main_secret" = '' ] || [ "$main_secret" = 'null' ] || [ "$main_secret" = 'undefined' ]; then
         printf 'Could not load secret "%s"\n' "$1" >&2
@@ -215,7 +220,7 @@ actualbudget)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -249,7 +254,7 @@ adventurelog)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -264,7 +269,7 @@ changedetection)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -342,7 +347,7 @@ dawarich)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -365,7 +370,7 @@ docker-cache)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -397,7 +402,7 @@ docker-stats)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -417,7 +422,7 @@ donetick)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -457,7 +462,7 @@ dozzle)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -609,7 +614,7 @@ gatus)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -640,7 +645,7 @@ git-cache)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -658,7 +663,7 @@ gotify)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -678,7 +683,7 @@ grafana)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -711,7 +716,7 @@ groceries)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -728,7 +733,7 @@ healthchecks)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -746,7 +751,7 @@ homeassistant)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -793,7 +798,7 @@ homepage)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
@@ -818,7 +823,7 @@ jellyfin)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -846,7 +851,7 @@ kiwix)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -862,7 +867,7 @@ koffan)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -897,7 +902,7 @@ libretranslate)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -925,7 +930,7 @@ minio)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -940,7 +945,7 @@ motioneye)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -970,7 +975,7 @@ nodeexporter)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -987,7 +992,7 @@ npm-cache)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1012,7 +1017,7 @@ ntfy)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1042,7 +1047,7 @@ ollama)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1059,7 +1064,7 @@ omadacontroller)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1070,7 +1075,7 @@ openspeedtest)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1094,7 +1099,7 @@ openwebui)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1116,7 +1121,7 @@ pihole)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1160,7 +1165,7 @@ planka)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1281,7 +1286,7 @@ prometheus)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
@@ -1314,7 +1319,7 @@ renovatebot)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1360,7 +1365,7 @@ reportportal)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1379,7 +1384,7 @@ samba)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1410,7 +1415,7 @@ smtp4dev)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
@@ -1440,7 +1445,7 @@ speedtesttracker)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1456,7 +1461,7 @@ tvheadend)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1486,7 +1491,7 @@ unbound)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1512,7 +1517,7 @@ unificontroller)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1526,7 +1531,7 @@ uptimekuma)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1546,7 +1551,7 @@ vaultwarden)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
@@ -1571,7 +1576,7 @@ vikunja)
 
     # Certificator
     write_certificator_users
-    write_healthcheck_url "$app_fullname" certificator "$healthchecks_ping_key"
+    write_healthcheck_url "$app_fullname" certificator
 
     # Favicons
     touch "$initial_output/favicons.env"
