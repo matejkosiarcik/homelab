@@ -378,19 +378,10 @@ def docker_start():
 
 def create_secrets():
     docker_log_file = path.join(log_dir, "secrets.log")
-    if os.environ.get("HOMELAB_SECRETS_PREPARED") != "yes":
-        precommands = [
-            "sh",
-            f"{git_dir}/utils/secrets-helpers/prepare.sh",
-            f"--{env_mode}",
-            "--online" if is_online else "--offline",
-        ]
-        run_with_spinner(precommands, "Preparing secrets", "Prepare secrets", docker_log_file, False)
     commands = [
         "sh",
         f"{git_dir}/utils/secrets-helpers/main.sh",
         f"--{env_mode}",
-        "--online" if is_online else "--offline",
     ]
     run_with_spinner(commands, "Secrets", "Secrets", docker_log_file, False)
 
@@ -481,14 +472,6 @@ def main(argv):
                 "--pull",
                 action="store_true",
                 help="Pull latest docker image from upstream registry",
-            )
-        if subcommand_name == "secrets":
-            online_group = subcommand.add_mutually_exclusive_group()
-            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for secrets")
-            online_group.add_argument(
-                "--offline",
-                action="store_true",
-                help="Only generate secrets locally, do not access vaultwarden",
             )
 
     args = parser.parse_args(argv)

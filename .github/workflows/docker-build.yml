@@ -112,7 +112,7 @@ jobs:
       - name: Setup secrets
         run: |
           set -euf
-          task secrets -- --mode dev --offline
+          task secrets -- --mode dev
 
       - name: Docker build
         run: |

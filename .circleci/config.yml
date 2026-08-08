@@ -88,7 +88,7 @@ jobs:
           command: |
             set -euf
             cd './servers/<< parameters.server >>'
-            task secrets -- --mode dev --offline
+            task secrets -- --mode dev
       - run:
           name: Build apps on << parameters.server >>
           command: |
