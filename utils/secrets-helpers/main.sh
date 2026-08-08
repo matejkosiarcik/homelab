@@ -1804,7 +1804,7 @@ vikunja)
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
     homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
     jwt_secret="$(load_secret ".$app_fullname.app.jwt_secret" "dev=value=$(openssl rand -hex 32)")"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.apache.prometheus_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1839,11 +1839,11 @@ esac
 # Lower permissions for all secret files
 find "$initial_output" -type f -exec chmod 0400 {} \;
 
-output='app-secrets'
-if [ -e "$output" ]; then
-    rm -rf "$output"
+final_output='app-secrets'
+if [ -e "$final_output" ]; then
+    rm -rf "$final_output"
 fi
-cp -R "$initial_output" "$output"
+cp -R "$initial_output" "$final_output"
 # mkdir "$output"
 # find "$initial_output" -mindepth 1 -maxdepth 1 -exec sh -c 'mv "$initial_output/$(basename "$1")" "$output/$(basename "$1")"' - \;
 
