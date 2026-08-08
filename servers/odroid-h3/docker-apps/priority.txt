@@ -1,4 +1,4 @@
-# DNS first
+# DNS
 pihole-2-primary
 unbound-2-guests
 unbound-2-iot
@@ -8,13 +8,3 @@ unbound-2-monika
 unbound-2-internal
 unbound-2-blackhole
 pihole-2-secondary
-pihole-2-blackhole
-
-# Misc monitoring
-dozzle-agent
-nodeexporter
-docker-stats
-
-# App Monitoring
-gatus-2
-uptimekuma-2

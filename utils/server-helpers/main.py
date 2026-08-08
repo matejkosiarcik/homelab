@@ -3,6 +3,7 @@
 import argparse
 import logging
 import os
+import pathlib
 import re
 import subprocess
 import sys
@@ -49,33 +50,39 @@ if tty_supports_color():
 
 
 def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
-    priority_apps_list = []
+    apps_list_output = []
 
-    with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
-        priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
+    priority_file = path.join(server_dir, "docker-apps", "priority.txt")
+    if path.exists(priority_file):
+        with open(priority_file, "r", encoding="utf-8") as file:
+            apps_list_output += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
+
+    for item in sorted(pathlib.Path(path.join(server_dir, "docker-apps")).iterdir()):
+        if item.is_dir() and not item.name.startswith(".") and not item.name in apps_list_output:
+            apps_list_output.append(item.name)
 
     def app_regex(appname: str) -> str:
         partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
         return f".*{partial_regex}.*"
 
     if only_apps is not None and len(only_apps) > 0:
-        only_list = [x for x in only_apps.split(",") if len(x) > 0]
-        priority_apps_list_2 = []
-        for app in only_list:
-            matched_apps = sorted([x for x in priority_apps_list if re.match(app_regex(app), x)])
-            priority_apps_list_2.extend(matched_apps)
-        priority_apps_list = priority_apps_list_2
+        args_only_list = [x for x in only_apps.split(",") if len(x) > 0]
+        apps_list_filtered = []
+        for app in args_only_list:
+            matched_apps = sorted([x for x in apps_list_output if re.match(app_regex(app), x)])
+            apps_list_filtered.extend(matched_apps)
+        apps_list_output = apps_list_filtered
 
     if skip_apps is not None and len(skip_apps) > 0:
-        skip_list = [x for x in skip_apps.split(",") if len(x) > 0]
-        priority_apps_list_2 = priority_apps_list
-        for app in skip_list:
-            matched_apps = sorted([x for x in priority_apps_list if re.match(app_regex(app), x)])
+        args_skip_list = [x for x in skip_apps.split(",") if len(x) > 0]
+        apps_list_filtered = apps_list_output
+        for app in args_skip_list:
+            matched_apps = sorted([x for x in apps_list_output if re.match(app_regex(app), x)])
             for matched_app in matched_apps:
-                priority_apps_list_2.remove(matched_app)
-        priority_apps_list = priority_apps_list_2
+                apps_list_filtered.remove(matched_app)
+        apps_list_output = apps_list_filtered
 
-    return priority_apps_list
+    return apps_list_output
 
 
 def main(argv: list[str]):
