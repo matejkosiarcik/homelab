@@ -59,7 +59,7 @@ tmpdir="$(mktemp -d)"
 SOPS_AGE_KEY_FILE="$git_root_dir/secrets/age-key.txt"
 export SOPS_AGE_KEY_FILE
 
-if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CI:-}" = '1' ]; then
+if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
     true # Check skipped on CI
 elif [ ! -e "$SOPS_AGE_KEY_FILE" ]; then
     printf 'SOPS_AGE_KEY_FILE not found\n' >&2
@@ -85,7 +85,7 @@ load_secret() {
         exit 1
     fi
 
-    if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CI:-}" = '1' ]; then
+    if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
         main_secret='N/A'
     else
         main_secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yaml" "$git_root_dir/secrets/secrets.enc.yml" | yq -r "$1")"
