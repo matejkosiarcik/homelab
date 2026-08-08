@@ -448,8 +448,8 @@ dozzle)
     openssl genpkey -algorithm RSA -out "$tmpdir/key.pem" -pkeyopt rsa_keygen_bits:2048
     openssl req -new -key "$tmpdir/key.pem" -out "$tmpdir/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"
     openssl x509 -req -in "$tmpdir/request.csr" -signkey "$tmpdir/key.pem" -out "$tmpdir/cert.pem" -days 3650
-    load_secret ".$app_fullname_key.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 --decode >"$initial_output/dozzle-key.pem"
-    load_secret ".$app_fullname_key.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 --decode >"$initial_output/dozzle-cert.pem"
+    load_secret ".$app_fullname_key.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 -d >"$initial_output/dozzle-key.pem"
+    load_secret ".$app_fullname_key.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 -d >"$initial_output/dozzle-cert.pem"
     rm -f "$tmpdir/key.pem" "$tmpdir/request.csr" "$tmpdir/cert.pem"
 
     # Apache #
@@ -468,8 +468,8 @@ dozzle-agent)
     openssl genpkey -algorithm RSA -out "$tmpdir/key.pem" -pkeyopt rsa_keygen_bits:2048
     openssl req -new -key "$tmpdir/key.pem" -out "$tmpdir/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"
     openssl x509 -req -in "$tmpdir/request.csr" -signkey "$tmpdir/key.pem" -out "$tmpdir/cert.pem" -days 3650
-    load_secret ".dozzle.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 --decode >"$initial_output/dozzle-key.pem"
-    load_secret ".dozzle.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 --decode >"$initial_output/dozzle-cert.pem"
+    load_secret ".dozzle.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 -d >"$initial_output/dozzle-key.pem"
+    load_secret ".dozzle.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 -d >"$initial_output/dozzle-cert.pem"
     rm -f "$tmpdir/key.pem" "$tmpdir/request.csr" "$tmpdir/cert.pem"
     ;;
 
