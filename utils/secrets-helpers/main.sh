@@ -662,7 +662,6 @@ gatus)
     printf 'VAULTWARDEN__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vaultwarden.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
 
-
     # Apache #
     write_default_proxy_users "$app_fullname_key"
 
