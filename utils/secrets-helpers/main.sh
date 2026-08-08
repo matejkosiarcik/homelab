@@ -58,7 +58,10 @@ tmpdir="$(mktemp -d)"
 # Set SOPS decryption key file
 SOPS_AGE_KEY_FILE="$git_root_dir/secrets/age-key.txt"
 export SOPS_AGE_KEY_FILE
-if [ ! -e "$SOPS_AGE_KEY_FILE" ]; then
+
+if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CI:-}" = '1' ]; then
+    true # Check skipped on CI
+elif [ ! -e "$SOPS_AGE_KEY_FILE" ]; then
     printf 'SOPS_AGE_KEY_FILE not found\n' >&2
     exit 1
 fi
@@ -82,10 +85,14 @@ load_secret() {
         exit 1
     fi
 
-    main_secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yaml" "$git_root_dir/secrets/secrets.enc.yml" | yq -r "$1")"
-    if [ "$main_secret" = '' ] || [ "$main_secret" = 'null' ] || [ "$main_secret" = 'undefined' ]; then
-        printf 'Could not load secret "%s"\n' "$1" >&2
-        exit 1
+    if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CI:-}" = '1' ]; then
+        main_secret='N/A'
+    else
+        main_secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yaml" "$git_root_dir/secrets/secrets.enc.yml" | yq -r "$1")"
+        if [ "$main_secret" = '' ] || [ "$main_secret" = 'null' ] || [ "$main_secret" = 'undefined' ]; then
+            printf 'Could not load secret "%s"\n' "$1" >&2
+            exit 1
+        fi
     fi
 
     if [ "$mode" = 'dev' ] && [ "$2" = 'dev=empty' ]; then
