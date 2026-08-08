@@ -1,7 +1,6 @@
 #!/bin/sh
 set -euf
 
-helper_script_dir="$(cd "$(dirname "$0")" >/dev/null && pwd)"
 git_root_dir="$(git rev-parse --show-toplevel)"
 
 LANG=en_US.UTF-8
