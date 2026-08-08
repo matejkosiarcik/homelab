@@ -50,6 +50,7 @@ koffan
 planka
 reportportal
 libretranslate
+jellyfin
 
 # AI
 ollama

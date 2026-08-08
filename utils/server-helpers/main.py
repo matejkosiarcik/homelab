@@ -30,8 +30,6 @@ is_pull = False
 env_mode = ""
 when_mode = ""
 include_secrets = False
-include_extra_services = False
-only_extra_services = False
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -53,13 +51,8 @@ if tty_supports_color():
 def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
     priority_apps_list = []
 
-    if not only_extra_services:
-        with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
-
-    if include_extra_services or only_extra_services:
-        with open(path.join(server_dir, "docker-apps", "priority-extra.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
+    with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
+        priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
 
     def app_regex(appname: str) -> str:
         partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
@@ -86,7 +79,7 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
 
 
 def main(argv: list[str]):
-    global applist, env_mode, include_extra_services, include_secrets, is_dryrun, is_online, is_pull, only_extra_services, when_mode  # pylint: disable=global-statement
+    global applist, env_mode, include_secrets, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -105,9 +98,6 @@ def main(argv: list[str]):
         subcommand.add_argument("--only", type=str, help=f"{subcommand_name.capitalize()} only these apps")
         subcommand.add_argument("--skip", type=str, help=f"{subcommand_name.capitalize()} all apps except these")
         subcommand.add_argument("--jobs", type=int, default=1, help="A number of simultaneous actions to perform")
-        extra_group = subcommand.add_mutually_exclusive_group()
-        extra_group.add_argument("--with-extra", action="store_true", help="Include extra services")
-        extra_group.add_argument("--only-extra", action="store_true", help="Only deploy extra services")
         if subcommand_name == "deploy":
             deploy_when_group = subcommand.add_mutually_exclusive_group()
             deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy apps only when build changed. When there is no change, app is not restarted.")
@@ -120,9 +110,6 @@ def main(argv: list[str]):
 
     command = args.subcommand
     is_dryrun = args.dry_run
-
-    include_extra_services = args.with_extra
-    only_extra_services = args.only_extra
 
     applist = get_apps_list(args.only, args.skip)
 
