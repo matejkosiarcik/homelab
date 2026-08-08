@@ -1,5 +1,5 @@
 #!/bin/sh
-# checkov:skip=CKV_SECRET_6: Too many false positives
+# checkov:skip=CKV_SECRET_6
 
 set -euf
 
