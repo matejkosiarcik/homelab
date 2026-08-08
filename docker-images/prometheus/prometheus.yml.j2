@@ -16,7 +16,12 @@ scrape_configs:
     scheme: https
     metrics_path: {{ endpoint.path }}
     {%- if endpoint.auth.type == "basic" %}
-    {%- set endpoint_auth_user = endpoint.auth.user or "prometheus" %}
+    {%- if endpoint.path.startswith("/.apache/") %}
+      {%- set endpoint_auth_default_user = "proxy-prometheus" %}
+    {%- else %}
+      {%- set endpoint_auth_default_user = "prometheus" %}
+    {%- endif %}
+    {%- set endpoint_auth_user = endpoint.auth.user or endpoint_auth_default_user %}
     basic_auth:
       username: {{ endpoint_auth_user }}
       password: ${{ "{" }}{{ app.full_name | replace("-", "_") | upper() }}__{{ endpoint_auth_user | replace("-", "_") | upper() }}_PASSWORD{{ "}" }}
