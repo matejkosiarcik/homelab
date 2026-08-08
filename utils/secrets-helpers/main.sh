@@ -1,6 +1,4 @@
 #!/bin/sh
-# checkov:skip=CKV_SECRET_6
-
 set -euf
 
 git_root_dir="$(git rev-parse --show-toplevel)"
