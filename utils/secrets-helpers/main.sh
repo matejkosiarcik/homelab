@@ -1,6 +1,8 @@
 #!/bin/sh
 set -euf
 
+# checkov:skip=CKV_SECRET_6: Too many false positives
+
 git_root_dir="$(git rev-parse --show-toplevel)"
 
 LANG=en_US.UTF-8
