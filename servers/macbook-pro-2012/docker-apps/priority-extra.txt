@@ -1,2 +1,0 @@
-# Data
-samba-data

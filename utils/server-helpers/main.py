@@ -3,6 +3,7 @@
 import argparse
 import logging
 import os
+import pathlib
 import re
 import subprocess
 import sys
@@ -30,8 +31,6 @@ is_pull = False
 env_mode = ""
 when_mode = ""
 include_secrets = False
-include_extra_services = False
-only_extra_services = False
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
@@ -51,42 +50,43 @@ if tty_supports_color():
 
 
 def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
-    priority_apps_list = []
+    apps_list_output = []
 
-    if not only_extra_services:
-        with open(path.join(server_dir, "docker-apps", "priority.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
+    priority_file = path.join(server_dir, "docker-apps", "priority.txt")
+    if path.exists(priority_file):
+        with open(priority_file, "r", encoding="utf-8") as file:
+            apps_list_output += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
 
-    if include_extra_services or only_extra_services:
-        with open(path.join(server_dir, "docker-apps", "priority-extra.txt"), "r", encoding="utf-8") as file:
-            priority_apps_list += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
+    for item in sorted(pathlib.Path(path.join(server_dir, "docker-apps")).iterdir()):
+        if item.is_dir() and not item.name.startswith(".") and item.name not in apps_list_output:
+            apps_list_output.append(item.name)
 
     def app_regex(appname: str) -> str:
         partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
         return f".*{partial_regex}.*"
 
     if only_apps is not None and len(only_apps) > 0:
-        only_list = [x for x in only_apps.split(",") if len(x) > 0]
-        priority_apps_list_2 = []
-        for app in only_list:
-            matched_apps = sorted([x for x in priority_apps_list if re.match(app_regex(app), x)])
-            priority_apps_list_2.extend(matched_apps)
-        priority_apps_list = priority_apps_list_2
+        args_only_list = [x for x in only_apps.split(",") if len(x) > 0]
+        apps_list_filtered = []
+        for app in args_only_list:
+            matched_apps = sorted([x for x in apps_list_output if re.match(app_regex(app), x)])
+            apps_list_filtered.extend(matched_apps)
+        apps_list_output = apps_list_filtered
 
     if skip_apps is not None and len(skip_apps) > 0:
-        skip_list = [x for x in skip_apps.split(",") if len(x) > 0]
-        priority_apps_list_2 = priority_apps_list
-        for app in skip_list:
-            matched_apps = sorted([x for x in priority_apps_list if re.match(app_regex(app), x)])
+        args_skip_list = [x for x in skip_apps.split(",") if len(x) > 0]
+        apps_list_filtered = apps_list_output
+        for app in args_skip_list:
+            matched_apps = sorted([x for x in apps_list_output if re.match(app_regex(app), x)])
             for matched_app in matched_apps:
-                priority_apps_list_2.remove(matched_app)
-        priority_apps_list = priority_apps_list_2
+                apps_list_filtered.remove(matched_app)
+        apps_list_output = apps_list_filtered
 
-    return priority_apps_list
+    return apps_list_output
 
 
 def main(argv: list[str]):
-    global applist, env_mode, include_extra_services, include_secrets, is_dryrun, is_online, is_pull, only_extra_services, when_mode  # pylint: disable=global-statement
+    global applist, env_mode, include_secrets, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -105,9 +105,6 @@ def main(argv: list[str]):
         subcommand.add_argument("--only", type=str, help=f"{subcommand_name.capitalize()} only these apps")
         subcommand.add_argument("--skip", type=str, help=f"{subcommand_name.capitalize()} all apps except these")
         subcommand.add_argument("--jobs", type=int, default=1, help="A number of simultaneous actions to perform")
-        extra_group = subcommand.add_mutually_exclusive_group()
-        extra_group.add_argument("--with-extra", action="store_true", help="Include extra services")
-        extra_group.add_argument("--only-extra", action="store_true", help="Only deploy extra services")
         if subcommand_name == "deploy":
             deploy_when_group = subcommand.add_mutually_exclusive_group()
             deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy apps only when build changed. When there is no change, app is not restarted.")
@@ -115,18 +112,11 @@ def main(argv: list[str]):
             subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
-        if subcommand_name == "secrets":
-            online_group = subcommand.add_mutually_exclusive_group()
-            online_group.add_argument("--online", action="store_true", help="Access vaultwarden for secrets")
-            online_group.add_argument("--offline", action="store_true", help="Only generate secrets locally, do not access vaultwarden")
 
     args = parser.parse_args(argv)
 
     command = args.subcommand
     is_dryrun = args.dry_run
-
-    include_extra_services = args.with_extra
-    only_extra_services = args.only_extra
 
     applist = get_apps_list(args.only, args.skip)
 
@@ -160,11 +150,6 @@ def main(argv: list[str]):
 
 
 def server_action(action: str):
-    if action == "secrets":
-        precommands = ["sh", f"{git_dir}/utils/secrets-helpers/prepare.sh", f"--{env_mode}", "--online" if is_online else "--offline"]
-        subprocess.check_call(precommands, cwd=git_dir)
-        os.environ["HOMELAB" + "_" + "SECRETS" + "_" + "PREPARED"] = "yes"
-
     action_log = "Secrets for" if action == "secrets" else action.capitalize()
     print(f"↓ {action_log} docker apps")
     print("\n---\n")
@@ -174,8 +159,6 @@ def server_action(action: str):
         cli_args.append("--dry-run")
     if is_pull:
         cli_args.append("--pull")
-    if action == "secrets":
-        cli_args.append("--online" if is_online else "--offline")
     if action == "deploy" and include_secrets is True:
         cli_args.append("--with-secrets")
     if action == "deploy":

@@ -11,65 +11,8 @@ unbound-1-monika
 unbound-1-internal
 unbound-1-blackhole
 pihole-1-secondary
-pihole-1-blackhole
 
 # Caches
 docker-cache-dockerhub
 # git-cache-github
 # npm-cache
-
-# Network controllers
-omadacontroller
-unificontroller
-
-# Home automation
-homeassistant
-
-# Notifications
-smtp4dev
-ntfy
-gotify
-
-# Storage services
-minio
-
-# Misc
-homepage
-vaultwarden
-adventurelog
-actualbudget
-openspeedtest
-speedtesttracker
-vikunja
-dawarich
-kiwix-wikipedia
-kiwix-wiktionary
-groceries
-donetick
-koffan
-planka
-reportportal
-libretranslate
-
-# AI
-ollama
-openwebui
-# ollama-private
-# openwebui-private
-# stable-diffusion
-
-# Misc Monitoring
-dozzle-agent
-dozzle
-changedetection
-healthchecks
-# netalertx
-nodeexporter
-docker-stats
-prometheus
-grafana
-renovatebot
-
-# App Monitoring
-gatus-1
-uptimekuma-1

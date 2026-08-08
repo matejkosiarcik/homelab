@@ -28,7 +28,7 @@
     "@types/async": "^3.2.25",
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.2",
-    "tsx": "^4.23.1",
+    "tsx": "^4.23.11",
     "typescript": "^7.0.2"
   }
 }

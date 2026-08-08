@@ -1,5 +1,0 @@
-# Monitoring
-docker-stats
-dozzle-agent
-# glances
-nodeexporter
