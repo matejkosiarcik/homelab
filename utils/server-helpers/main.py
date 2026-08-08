@@ -58,7 +58,7 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
             apps_list_output += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
 
     for item in sorted(pathlib.Path(path.join(server_dir, "docker-apps")).iterdir()):
-        if item.is_dir() and not item.name.startswith(".") and not item.name in apps_list_output:
+        if item.is_dir() and not item.name.startswith(".") and item.name not in apps_list_output:
             apps_list_output.append(item.name)
 
     def app_regex(appname: str) -> str:
