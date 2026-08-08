@@ -1346,10 +1346,11 @@ prometheus)
     printf 'UNBOUND_2_MONIKA__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.unbound_2_monika.app.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_INTERNAL__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.unbound_2_internal.app.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'UNBOUND_2_BLACKHOLE__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.unbound_2_blackhole.app.prometheus_user' dev=real)" >>"$initial_output/app.env"
-    printf 'UPTIMEKUMA_1__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_1.app.matej_user' dev=real)" >>"$initial_output/app.env"
-    printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_2.app.matej_user' dev=real)" >>"$initial_output/app.env"
+    printf 'UPTIMEKUMA_1__MATEJ_PASSWORD=%s\n' "$(load_secret '.uptimekuma_1.app.matej_user' dev=real)" >>"$initial_output/app.env"
+    printf 'UPTIMEKUMA_2__MATEJ_PASSWORD=%s\n' "$(load_secret '.uptimekuma_2.app.matej_user' dev=real)" >>"$initial_output/app.env"
     # Other apps proxy metrics credentials #
     printf 'ACTUALBUDGET__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.actualbudget.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
+    printf 'ADVENTURELOG__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.adventurelog.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'CERTBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.certbot.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'CHANGEDETECTION__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.changedetection.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'DAWARICH__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dawarich.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
@@ -1370,6 +1371,8 @@ prometheus)
     printf 'HOMEASSISTANT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.homeassistant.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.homepage.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.jellyfin.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
+    printf 'KIWIX_WIKIPEDIA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
+    printf 'KIWIX_WIKTIONARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'KOFFAN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.koffan.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'LIBRETRANSLATE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.libretranslate.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'MINIO__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.minio.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
@@ -1421,8 +1424,6 @@ prometheus)
     printf 'UPTIMEKUMA_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_2.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'VAULTWARDEN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vaultwarden.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
-    printf 'WIKIPEDIA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
-    printf 'WIKTIONARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
 
     # Apache #
     write_default_proxy_users "$app_fullname_key"
