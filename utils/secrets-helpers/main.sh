@@ -241,6 +241,8 @@ certbot)
     # Preload #
     certbot_matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
     certbot_certificator_password="$(load_secret ".$app_fullname_key.app.certificator_user" dev=default)"
+    certbot_homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
+    certbot_homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
     certbot_public_email="$(load_secret ".$app_fullname_key.websupport.public_email" dev=empty)"
     websupport_api_key="$(load_secret ".$app_fullname_key.websupport.api_key" dev=empty)"
     websupport_api_secret="$(load_secret ".$app_fullname_key.websupport.api_secret" dev=empty)"
@@ -256,6 +258,14 @@ certbot)
 
     write_http_auth_user certificator "$certbot_certificator_password" users-viewers
     printf 'certificator,%s\n' "$certbot_certificator_password" >>"$initial_output/.secrets.csv"
+
+    write_http_auth_user homelab-viewer "$certbot_homelab_viewer_password" proxy-prometheus
+    write_http_auth_user homelab-viewer "$certbot_homelab_viewer_password" users-viewers
+    printf 'homelab-viewer,%s\n' "$certbot_homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+
+    write_http_auth_user homelab-test "$certbot_homelab_test_password" proxy-prometheus
+    write_http_auth_user homelab-test "$certbot_homelab_test_password" users-viewers
+    printf 'homelab-test,%s\n' "$certbot_homelab_test_password" >>"$initial_output/all-credentials.csv"
 
     printf 'CERTBOT_PUBLIC_EMAIL=%s\n' "$certbot_public_email" >>"$initial_output/app.env"
     printf 'public-email,%s\n' "$certbot_public_email" >>"$initial_output/.secrets.csv"
@@ -352,6 +362,8 @@ docker-cache)
 docker-stats)
     # Preload #
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
     app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
 
     # App #
@@ -360,6 +372,16 @@ docker-stats)
     write_http_auth_user matej "$matej_password" users-viewers
     write_http_auth_user matej "$matej_password" users-admins
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
+
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" proxy-prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users-viewers
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+
+    write_http_auth_user homelab-test "$homelab_test_password" prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" proxy-prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" users-viewers
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
 
     write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
@@ -376,8 +398,10 @@ docker-stats)
     ;;
 
 donetick)
-    # App #
+    # Preload #
     jwt_secret="$(load_secret ".$app_fullname_key.app.jwt_secret" "dev=value=$(openssl rand -base64 32 | base64)")"
+
+    # App #
     printf 'DT_JWT_SECRET=%s\n' "$jwt_secret" >>"$initial_output/app.env"
     printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/.secrets.csv"
 
@@ -393,22 +417,32 @@ donetick)
     ;;
 
 dozzle)
-    # App #
+    # Preload #
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     hash_password_bcrypt "$matej_password" >"$tmpdir/matej-password-encrypted.txt"
+    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    hash_password_bcrypt "$homelab_test_password" >"$tmpdir/homelab-test-password-encrypted.txt"
+
+    # App #
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
+
     printf 'users:\n' >>"$initial_output/dozzle-users.yml"
     printf '    matej:\n' >>"$initial_output/dozzle-users.yml"
     printf '        email: matej@%s\n' "$domain" >>"$initial_output/dozzle-users.yml"
     printf '        name: matej\n' >>"$initial_output/dozzle-users.yml"
     printf '        password: %s\n' "$(cat "$tmpdir/matej-password-encrypted.txt")" >>"$initial_output/dozzle-users.yml"
+    printf '    homelab-test:\n' >>"$initial_output/dozzle-users.yml"
+    printf '        email: homelab-test@homelab.%s\n' "$domain" >>"$initial_output/dozzle-users.yml"
+    printf '        name: homelab-test\n' >>"$initial_output/dozzle-users.yml"
+    printf '        password: %s\n' "$(cat "$tmpdir/homelab-test-password-encrypted.txt")" >>"$initial_output/dozzle-users.yml"
 
     # Dozzle-agent key
     openssl genpkey -algorithm RSA -out "$tmpdir/key.pem" -pkeyopt rsa_keygen_bits:2048
     openssl req -new -key "$tmpdir/key.pem" -out "$tmpdir/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"
     openssl x509 -req -in "$tmpdir/request.csr" -signkey "$tmpdir/key.pem" -out "$tmpdir/cert.pem" -days 3650
-    load_secret ".$app_fullname_key.app.key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 --decode >"$initial_output/dozzle-key.pem"
-    load_secret ".$app_fullname_key.app.cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 --decode >"$initial_output/dozzle-cert.pem"
+    load_secret ".$app_fullname_key.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 --decode >"$initial_output/dozzle-key.pem"
+    load_secret ".$app_fullname_key.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 --decode >"$initial_output/dozzle-cert.pem"
     rm -f "$tmpdir/key.pem" "$tmpdir/request.csr" "$tmpdir/cert.pem"
 
     # Apache #
@@ -427,14 +461,19 @@ dozzle-agent)
     openssl genpkey -algorithm RSA -out "$tmpdir/key.pem" -pkeyopt rsa_keygen_bits:2048
     openssl req -new -key "$tmpdir/key.pem" -out "$tmpdir/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"
     openssl x509 -req -in "$tmpdir/request.csr" -signkey "$tmpdir/key.pem" -out "$tmpdir/cert.pem" -days 3650
-    load_secret ".dozzle.app.key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 --decode >"$initial_output/dozzle-key.pem"
-    load_secret ".dozzle.app.cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 --decode >"$initial_output/dozzle-cert.pem"
+    load_secret ".dozzle.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 --decode >"$initial_output/dozzle-key.pem"
+    load_secret ".dozzle.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 --decode >"$initial_output/dozzle-cert.pem"
     rm -f "$tmpdir/key.pem" "$tmpdir/request.csr" "$tmpdir/cert.pem"
     ;;
 
 gatus)
-    # App #
+    # Preload #
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+
+    # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'PASSWORD_ENCRYPTED=%s\n' "$(hash_password_bcrypt "$matej_password" | base64 | tr -d '\n')" >>"$initial_output/app.env"
     write_http_auth_user matej "$matej_password" prometheus
@@ -442,9 +481,18 @@ gatus)
     write_http_auth_user matej "$matej_password" users-viewers
     write_http_auth_user matej "$matej_password" users-admins
 
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
     write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
+
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" proxy-prometheus
+    write_http_auth_user homelab-viewer "$homelab_viewer_password" users-viewers
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/all-credentials.csv"
+
+    write_http_auth_user homelab-test "$homelab_test_password" prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" proxy-prometheus
+    write_http_auth_user homelab-test "$homelab_test_password" users-viewers
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/all-credentials.csv"
 
     # Main credentials
     printf 'CERTBOT__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.certbot.app.homelab_viewer' dev=real)" >>"$initial_output/app.env"
