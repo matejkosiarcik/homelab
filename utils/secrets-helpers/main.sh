@@ -453,7 +453,7 @@ dozzle)
     rm -f "$tmpdir/key.pem" "$tmpdir/request.csr" "$tmpdir/cert.pem"
 
     # Apache #
-    write_default_proxy_users dozzle
+    write_default_proxy_users "$app_fullname_key"
 
     # Certificator #
     write_certificator_users
