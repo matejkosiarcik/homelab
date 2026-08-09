@@ -34,7 +34,7 @@ RUN printf '' >/root/.npmrc && \
 
 ### Dependencies ###
 
-FROM python:3.14.6-slim AS gitman
+FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=web-automation-
 
 ### Supercronic ###
 
-FROM python:3.14.6-slim AS supercronic-gitman
+FROM python:3.14.7-slim AS supercronic-gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-supercronic-gitman-aptcache \
@@ -82,7 +82,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:26.5.0-slim AS nodejs-build
+FROM node:26.7.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/web-automation/package-lock.json ./web-automation/package.json ./web-automation/postinstall.sh ./web-automation/rollup.config.js ./web-automation/tsconfig.json /homelab/
@@ -125,7 +125,7 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM node:26.5.0-slim AS browsers
+FROM node:26.7.0-slim AS browsers
 USER root
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json /homelab/
@@ -167,7 +167,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM node:26.5.0-slim
+FROM node:26.7.0-slim
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

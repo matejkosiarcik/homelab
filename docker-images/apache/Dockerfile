@@ -94,7 +94,7 @@ RUN sed -e '/## INSERT_EXTRA_REVERSE_PROXY ##/{' -e 'r /homelab/apache.conf-extr
 
 ### Error pages ###
 
-FROM node:26.5.0-slim AS errors-build
+FROM node:26.7.0-slim AS errors-build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
