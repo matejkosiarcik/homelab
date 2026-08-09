@@ -21,7 +21,7 @@ RUN printf '' >/root/.npmrc && \
 
 ### App ###
 
-FROM node:26.5.0-slim AS nodejs-build
+FROM node:26.7.0-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/homepage/package-lock.json ./docker-images/homepage/package.json ./docker-images/homepage/terser.json ./docker-images/homepage/tsconfig.json ./docker-images/homepage/vite.config.ts /homelab/
