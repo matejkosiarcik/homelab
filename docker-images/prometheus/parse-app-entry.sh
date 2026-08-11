@@ -35,13 +35,11 @@ fi
 ## Output ##
 
 tmpfile="$(mktemp)"
-cat >>"$tmpfile" <<EOF
-    - app: "$app_type"
-        short_name: "$app_shortname"
-        full_name: "$app_fullname"
-        domain: "$domain"
-        prometheus: $prometheus_config
-EOF
+printf '  - app: "%s"\n' "$app_type" >>"$tmpfile"
+printf '    short_name: "%s"\n' "$app_shortname" >>"$tmpfile"
+printf '    full_name: "%s"\n' "$app_fullname" >>"$tmpfile"
+printf '    domain: "%s"\n' "$domain" >>"$tmpfile"
+printf '    prometheus: %s\n' "$prometheus_config" >>"$tmpfile"
 
-unexpand -t 4 <"$tmpfile" | expand -t 2 | sed -E "s~<<app>>~$app_fullname~g;s~<<APP>>~$app_fullname_uppercase~g" >>"$output"
+sed -E "s~<<app>>~$app_fullname~g;s~<<APP>>~$app_fullname_uppercase~g" <"$tmpfile" >>"$output"
 rm -f "$tmpfile"
