@@ -5,7 +5,7 @@ apache:
 
 gatus:
   enabled: true
-  # TODO: Add some endponts
+  # TODO: Add some endpoints
 
 prometheus:
   enabled: true
