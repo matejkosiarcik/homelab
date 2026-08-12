@@ -98,11 +98,14 @@ jobs:
         with:
           node-version: latest
 
-      - name: Install NodeJS dependencies
-        run: |
-          set -euf
-          printf 'fetch-retries=5\nfetch-retry-factor=10\nfetch-retry-maxtimeout=60000\nfetch-retry-mintimeout=1000\nignore-scripts=true\nmin-release-age=1\n' >>"$HOME/.npmrc"
-          NODE_OPTIONS=--dns-result-order=ipv4first npm install --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline --global @go-task/cli
+      - name: Install Task dependency
+        uses: go-task/setup-task@v1
+
+      # - name: Install NodeJS dependencies
+      #   run: |
+      #     set -euf
+      #     printf 'fetch-retries=5\nfetch-retry-factor=10\nfetch-retry-maxtimeout=60000\nfetch-retry-mintimeout=1000\nignore-scripts=true\nmin-release-age=1\n' >>"$HOME/.npmrc"
+      #     NODE_OPTIONS=--dns-result-order=ipv4first npm install --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline --global @go-task/cli
 
       - name: Install Pip dependencies
         run: |
