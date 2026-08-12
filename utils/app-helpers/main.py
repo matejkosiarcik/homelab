@@ -25,6 +25,8 @@ app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 log_dir = path.join(app_dir, "app-logs", ".meta")
 
+is_ci = bool(os.environ["GITHUB_ACTIONS"] == "true" or os.environ["CIRCLECI"] == "true" or os.environ["CI"] in ["1", "true"])
+
 if path.exists(log_dir):
     shutil.rmtree(log_dir)
 os.makedirs(log_dir, exist_ok=True)
@@ -280,6 +282,7 @@ def run_with_spinner(
     try:
         subprocess_thread = threading.Thread(target=subprocess_main)
         subprocess_thread.start()
+        spin_timeout = 5 if is_ci else 0.1
 
         spinner_chars = "▖▘▝▗"
         spinner_index = 0
@@ -298,7 +301,7 @@ def run_with_spinner(
                 print(f"\r{last_output_line}", end="", flush=True)
             spinner_index += 1
             spinner_index %= len(spinner_chars)
-            done.wait(0.1)
+            done.wait(spin_timeout)
 
         subprocess_thread.join()
     except KeyboardInterrupt:
