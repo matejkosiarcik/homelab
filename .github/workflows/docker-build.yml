@@ -99,7 +99,7 @@ jobs:
           node-version: latest
 
       - name: Install Task dependency
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2.2.0
 
       # - name: Install NodeJS dependencies
       #   run: |
