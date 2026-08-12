@@ -8,17 +8,17 @@ output="$(realpath "$2")"
 
 app_shortname="$(basename "$apppath" | sed -E 's~^\.~~')"
 
-app_type="$(yq --raw-output .app.type "$apppath/config/config.yml")"
+app_type="$(yq --raw-output '.app.type' "$apppath/config/config.yml")"
 if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
     app_type="$app_shortname"
 fi
 
-app_fullname="$(yq --raw-output .app.fullname "$apppath/config/config.yml")"
+app_fullname="$(yq --raw-output '.app.fullname' "$apppath/config/config.yml")"
 if [ "$app_fullname" = '' ] || [ "$app_fullname" = 'null' ] || [ "$app_fullname" = 'undefined' ]; then
     app_fullname="$app_shortname"
 fi
 
-domain="$(yq --raw-output .network.domain "$apppath/config/config.yml")"
+domain="$(yq --raw-output '.network.domain' "$apppath/config/config.yml")"
 if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
     domain="$app_fullname.matejhome.com"
 fi
@@ -27,9 +27,9 @@ app_fullname_uppercase="$(printf '%s' "$app_fullname" | tr '[:lower:]' '[:upper:
 
 ## Get config values for this generic app-type ##
 
-prometheus_config="$(yq --raw-output --compact-output .prometheus "/homelab/docker-compose/$app_type/config.yml")"
+prometheus_config="$(yq --raw-output --compact-output '.prometheus' "/homelab/docker-compose/$app_type/config.yml")"
 if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-    prometheus_config="{}"
+    prometheus_config='{}'
 fi
 
 ## Output ##
