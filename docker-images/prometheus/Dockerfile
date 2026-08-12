@@ -103,7 +103,6 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
-    PROMETHEUS__HOMELAB_VIEWER_USERNAME=homelab-viewer \
     TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9090", "--status", "401" ]
