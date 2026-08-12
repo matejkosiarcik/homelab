@@ -7,6 +7,9 @@ apache:
     - path: /
       target: http://app-frontend:8100
 
+gatus:
+  enabled: true
+
 prometheus:
   enabled: true
   endpoints:

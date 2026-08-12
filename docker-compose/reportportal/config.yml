@@ -11,6 +11,9 @@ apache:
     - path: /
       target: http://app-index:8080
 
+gatus:
+  enabled: true
+
 prometheus:
   enabled: true
   endpoints:

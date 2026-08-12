@@ -3,6 +3,19 @@ apache:
     - path: /
       target: http://app:8096
 
+gatus:
+  enabled: true
+  additional_ports:
+    http:
+      - 8096
+  endpoints:
+    - path: /health
+      body:
+        - "[BODY] == Healthy"
+    - path: /metrics
+      authentication:
+        basic: prometheus
+
 prometheus:
   enabled: true
   endpoints:

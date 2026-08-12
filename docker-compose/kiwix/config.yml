@@ -3,6 +3,11 @@ apache:
     - path: /
       target: http://app:8080
 
+gatus:
+  enabled: false
+  authentication:
+    basic: homelab-viewer
+
 prometheus:
   enabled: true
   endpoints:

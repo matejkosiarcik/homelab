@@ -5,6 +5,14 @@ apache:
     - path: /
       target: http://app:80
 
+gatus:
+  enabled: true
+  type: [dns, http]
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
+
 prometheus:
   enabled: true
   endpoints:

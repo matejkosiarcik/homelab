@@ -7,6 +7,38 @@ apache:
       env: dev
       target: https://app:8443
 
+gatus:
+  enabled: true
+  additional_ports:
+    tcp:
+      - 29811
+      - 29812
+      - 29813
+      - 29814
+      - 29815
+      - 29816
+  endpoints:
+    - path: /api/v2/anon/info
+      conditions:
+        - "[CONNECTED] == true"
+        - "[STATUS] == 200"
+        - "[BODY].errorCode == 0"
+        - "has([BODY].msg) == true"
+        - "has([BODY].result) == true"
+        - "has([BODY].result.apiVer) == true"
+        - "has([BODY].result.controllerVer) == true"
+        - "[BODY].result.configured == true"
+    # - path: :8080
+    #   insecure: true
+    #   conditions:
+    #     - "[CONNECTED] == true"
+    #     - "[STATUS] == 200"
+    # - path: :8443
+    #   insecure: true
+    #   conditions:
+    #     - "[CONNECTED] == true"
+    #     - "[STATUS] == 200"
+
 prometheus:
   enabled: true
   endpoints:

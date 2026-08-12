@@ -3,6 +3,11 @@ apache:
     - path: /
       target: http://app:3456
 
+gatus:
+  enabled: false
+  endpoints:
+    - path: /api/v1/metrics
+
 prometheus:
   enabled: true
   endpoints:

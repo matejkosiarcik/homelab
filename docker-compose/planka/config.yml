@@ -3,6 +3,10 @@ apache:
     - path: /
       target: http://app:1337
 
+gatus:
+  enabled: true
+  # TODO: Add some endponts
+
 prometheus:
   enabled: true
   endpoints:

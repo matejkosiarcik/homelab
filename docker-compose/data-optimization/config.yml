@@ -3,6 +3,10 @@ apache:
     - path: /
       target: http://app:8080 # This is just a temporary placeholder
 
+gatus:
+  enabled: true
+  # TODO: Finish gatus config
+
 prometheus:
   enabled: true
   endpoints:

@@ -3,6 +3,15 @@ apache:
     - path: /
       target: http://app:9090
 
+gatus:
+  enabled: true
+  authentication:
+    basic: homelab-viewer
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
+
 prometheus:
   enabled: true
   endpoints:

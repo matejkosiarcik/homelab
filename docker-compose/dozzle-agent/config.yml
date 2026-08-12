@@ -1,4 +1,11 @@
 apache: {}
 
+gatus:
+  enabled: true
+  type: [tcp]
+  additional_ports:
+    tcp:
+      - 7007
+
 prometheus:
   enabled: false

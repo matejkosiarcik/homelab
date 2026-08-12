@@ -5,6 +5,13 @@ apache:
     - path: /stream
       target: http://app:9081
 
+gatus:
+  enabled: true
+  endpoints:
+    - path: /stream
+      authentication:
+        basic: homelab-stream
+
 prometheus:
   enabled: true
   endpoints:

@@ -3,6 +3,25 @@ apache:
     - path: /
       target: https://app:8443
 
+gatus:
+  enabled: true
+  additional_ports:
+    tcp:
+      - 6789
+  endpoints:
+    - path: /status
+    - path: :8080
+      protocol: http
+      insecure: true
+      conditions:
+        - "[CONNECTED] == true"
+        - "[STATUS] == 200"
+    - path: :8443
+      insecure: true
+      conditions:
+        - "[CONNECTED] == true"
+        - "[STATUS] == 200"
+
 prometheus:
   enabled: true
   endpoints:

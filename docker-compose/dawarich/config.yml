@@ -9,6 +9,13 @@ apache:
     - path: /
       target: http://app:3000
 
+gatus:
+  enabled: true
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
+
 prometheus:
   enabled: true
   endpoints:

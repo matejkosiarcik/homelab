@@ -3,6 +3,15 @@ apache:
     - path: /
       target: http://app:8000
 
+gatus:
+  enabled: true
+  endpoints:
+    - path: /api/v3/status
+    - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics
+      authentication:
+        bearer: PROMETHEUS_TOKEN
+    - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS__PROMETHEUS_TOKEN}
+
 prometheus:
   enabled: true
   endpoints:

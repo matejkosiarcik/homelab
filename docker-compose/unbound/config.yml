@@ -5,6 +5,16 @@ apache:
     - path: /
       target: http://file-server:8080
 
+gatus:
+  enabled: true
+  authentication:
+    basic: homelab-viewer
+  type: ["dns[blackhole]", http]
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
+
 prometheus:
   enabled: true
   endpoints:

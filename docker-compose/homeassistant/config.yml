@@ -3,6 +3,13 @@ apache:
     - path: /
       target: http://app:8123
 
+gatus:
+  enabled: true
+  endpoints:
+    - path: /api/prometheus
+      authentication:
+        bearer: PROMETHEUS_TOKEN
+
 prometheus:
   enabled: true
   endpoints:

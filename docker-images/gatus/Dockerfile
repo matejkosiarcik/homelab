@@ -53,16 +53,26 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### App config ###
 
-FROM yq AS config-1
+FROM yq AS monitoring_entries
 USER root
 WORKDIR /homelab
-COPY ./docker-images/gatus/data.yml /homelab/
-RUN yq . data.yml >data.json
+COPY ./servers/ /homelab/servers/
+COPY ./docker-compose/ /homelab/docker-compose/
+COPY ./docker-images/gatus/parse-app-entry.sh ./docker-images/gatus/extra-data.yml /homelab/
+RUN printf 'apps:\n' >'/homelab/app-data.yml' && \
+    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-data.yml' && \
+    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-data.yml' && \
+    printf 'Gatus2 apps:\n' && \
+    cat './app-data.yml' && \
+    cat '/homelab/extra-data.yml' '/homelab/app-data.yml' >'/homelab/data.yml' && \
+    yq '.' '/homelab/data.yml' >'/homelab/data.json' && \
+    printf 'Gatus2 data:\n' && \
+    cat './data.json'
 
 FROM jinja AS config-2
 USER root
 WORKDIR /homelab
-COPY --from=config-1 /homelab/data.json /homelab/
+COPY --from=monitoring_entries /homelab/data.json /homelab/
 COPY ./docker-images/gatus/config.yml.j2 /homelab/
 RUN jinja2 config.yml.j2 data.json --format json -o config.yml
 

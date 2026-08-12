@@ -3,6 +3,15 @@ apache:
     - path: /
       target: http://app:80
 
+gatus:
+  enabled: true
+  endpoints:
+    - path: /v2/_catalog
+      conditions:
+        - "[CONNECTED] == true"
+        - "[STATUS] == 200"
+        - "has([BODY].repositories) == true"
+
 prometheus:
   enabled: true
   endpoints:
