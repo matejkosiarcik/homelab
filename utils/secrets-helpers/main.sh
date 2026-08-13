@@ -87,7 +87,7 @@ load_secret() {
     if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
         main_secret='N/A'
     else
-        main_secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yaml" "$git_root_dir/secrets/secrets.enc.yml" | yq -r "$1")"
+        main_secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yml" "$git_root_dir/secrets/secrets.enc.yml" | yq -r "$1")"
         if [ "$main_secret" = '' ] || [ "$main_secret" = 'null' ] || [ "$main_secret" = 'undefined' ]; then
             printf 'Could not load secret "%s"\n' "$1" >&2
             exit 1
