@@ -1,5 +1,5 @@
 app:
-  nice-name: Vikunja
+  name: Vikunja
 
 apache:
   upstream-url:

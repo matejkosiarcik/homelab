@@ -1,5 +1,5 @@
 app:
-  nice-name: Smtp4Dev
+  name: Smtp4Dev
 
 apache:
   upstream-url:

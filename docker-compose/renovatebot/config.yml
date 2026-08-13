@@ -1,5 +1,5 @@
 app:
-  nice-name: Renovatebot
+  name: Renovatebot
 
 apache:
   upstream-url:

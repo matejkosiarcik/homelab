@@ -1,5 +1,5 @@
 app:
-  nice-name: ChangeDetection
+  name: ChangeDetection
 
 apache:
   upstream-url:

@@ -1,5 +1,5 @@
 app:
-  nice-name: Home Assistant
+  name: Home Assistant
 
 apache:
   upstream-url:

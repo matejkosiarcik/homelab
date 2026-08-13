@@ -1,5 +1,5 @@
 app:
-  nice-name: Koffan
+  name: Koffan
 
 apache:
   upstream-url:

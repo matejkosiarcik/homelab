@@ -1,5 +1,5 @@
 app:
-  nice-name: MinIO
+  name: MinIO
 
 apache:
   upstream-url:

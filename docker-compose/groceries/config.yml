@@ -1,5 +1,5 @@
 app:
-  nice-name: Groceries
+  name: Groceries
 
 apache:
   upstream-url:

@@ -1,5 +1,5 @@
 app:
-  nice-name: Docker Cache
+  name: Docker Cache
 
 apache:
   upstream-url:
