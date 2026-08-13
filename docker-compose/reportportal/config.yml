@@ -1,3 +1,6 @@
+app:
+  nice-name: Report Portal
+
 apache:
   upstream-url:
     - path: /api/
@@ -10,6 +13,9 @@ apache:
       target: http://app-ui:8080
     - path: /
       target: http://app-index:8080
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

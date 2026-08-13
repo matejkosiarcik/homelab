@@ -1,7 +1,27 @@
+app:
+  nice-name: TVheadend
+
 apache:
   upstream-url:
     - path: /
       target: http://app:9981
+
+gatus:
+  enabled: true
+  additional_ports:
+    http:
+      - 9981
+    tcp:
+      - 9982
+  endpoints:
+    - path: /api/serverinfo
+      conditions:
+        - "[CONNECTED] == true"
+        - "[STATUS] == 200"
+        - "has([BODY].capabilities) == true"
+        - "has([BODY].sw_version) == true"
+        - "has([BODY].api_version) == true"
+        - "has([BODY].name) == true"
 
 prometheus:
   enabled: true

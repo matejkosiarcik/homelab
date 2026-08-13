@@ -1,7 +1,19 @@
+app:
+  nice-name: Ntfy
+
 apache:
   upstream-url:
     - path: /
       target: http://app:80
+
+gatus:
+  enabled: true
+  type: [http, smtp]
+  additional_ports:
+    tcp:
+      - 25
+  endpoints:
+    - path: /v1/health
 
 prometheus:
   enabled: true

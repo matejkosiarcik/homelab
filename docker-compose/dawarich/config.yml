@@ -1,3 +1,6 @@
+app:
+  nice-name: Dawarich
+
 apache:
   upstream-url:
     - path: /metrics
@@ -8,6 +11,13 @@ apache:
     #   target: http://decryptor:8080/pub
     - path: /
       target: http://app:3000
+
+gatus:
+  enabled: true
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
 
 prometheus:
   enabled: true

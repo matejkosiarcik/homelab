@@ -1,7 +1,13 @@
+app:
+  nice-name: Grafana
+
 apache:
   upstream-url:
     - path: /
       target: http://app:3000
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

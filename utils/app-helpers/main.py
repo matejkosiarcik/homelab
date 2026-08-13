@@ -25,6 +25,8 @@ app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 log_dir = path.join(app_dir, "app-logs", ".meta")
 
+is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
+
 if path.exists(log_dir):
     shutil.rmtree(log_dir)
 os.makedirs(log_dir, exist_ok=True)
@@ -280,25 +282,26 @@ def run_with_spinner(
     try:
         subprocess_thread = threading.Thread(target=subprocess_main)
         subprocess_thread.start()
+        spin_timeout = 5 if is_ci else 0.1
 
         spinner_chars = "▖▘▝▗"
         spinner_index = 0
 
         if print_output:
-            print(f"↓ {description_progress} {os.environ['DOCKER_COMPOSE_APP_SHORTNAME']} 00:00")
+            print(f"↓ {description_progress} {os.environ.get('DOCKER_COMPOSE_APP_SHORTNAME')} 00:00")
 
         while not done.is_set():
             elapsed = time.time() - start_time
             elapsed_mins = int(elapsed) // 60
             elapsed_secs = int(elapsed) % 60
-            last_output_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ['DOCKER_COMPOSE_APP_SHORTNAME']} {elapsed_mins:02d}:{elapsed_secs:02d} "
+            last_output_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ.get('DOCKER_COMPOSE_APP_SHORTNAME')} {elapsed_mins:02d}:{elapsed_secs:02d} "
             if global_exit:
                 break
             if not print_output:
                 print(f"\r{last_output_line}", end="", flush=True)
             spinner_index += 1
             spinner_index %= len(spinner_chars)
-            done.wait(0.1)
+            done.wait(spin_timeout)
 
         subprocess_thread.join()
     except KeyboardInterrupt:
@@ -312,7 +315,7 @@ def run_with_spinner(
         status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
         print(f"\r{' ' * len(last_output_line)}", end="", flush=True)
         print(
-            f"\r{status_marker} {description_done} {os.environ['DOCKER_COMPOSE_APP_SHORTNAME']} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
+            f"\r{status_marker} {description_done} {os.environ.get('DOCKER_COMPOSE_APP_SHORTNAME')} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
             file=sys.stderr,
         )
         write_log_file_footer(command_log_file)
@@ -403,7 +406,7 @@ def run_main_command(command: str):
     # Check if docker-compose stack exists
     compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
     if not path.isdir(compose_path):
-        print(f"Docker compose stack for app {os.environ['DOCKER_COMPOSE_APP_TYPE']} not found")
+        print(f"Docker compose stack for app {os.environ.get('DOCKER_COMPOSE_APP_TYPE')} not found")
         sys.exit(1)
 
     # Execute commands

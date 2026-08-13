@@ -45,7 +45,7 @@ COPY ./docker-compose/ /homelab/docker-compose/
 COPY ./docker-images/prometheus/parse-app-entry.sh /homelab/
 RUN printf 'apps:\n' >'/homelab/app-entries.yml' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
-    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name)' '/homelab/app-entries.yml' && \
+    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
     yq '.' '/homelab/app-entries.yml' >'/homelab/app-entries.json'
 
 FROM jinja AS prometheus_config
@@ -103,7 +103,6 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME=prometheus \
     HOMELAB_CONTAINER_VARIANT=default \
-    PROMETHEUS__HOMELAB_VIEWER_USERNAME=homelab-viewer \
     TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9090", "--status", "401" ]

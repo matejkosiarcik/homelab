@@ -1,7 +1,19 @@
+app:
+  nice-name: SpeedTestTracker
+
 apache:
   upstream-url:
     - path: /
       target: https://app:80
+
+gatus:
+  enabled: true
+  endpoints:
+    - path: /api/healthcheck
+      conditions:
+        - "[CONNECTED] == true"
+        - "[STATUS] == 200"
+        - "has([BODY].message) == true"
 
 prometheus:
   enabled: true

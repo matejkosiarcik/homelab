@@ -1,7 +1,13 @@
+app:
+  nice-name: DoneTick
+
 apache:
   upstream-url:
     - path: /
       target: http://app:2021
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

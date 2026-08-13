@@ -1,7 +1,17 @@
+app:
+  nice-name: Uptime Kuma
+
 apache:
   upstream-url:
     - path: /
       target: http://app:3001
+
+gatus:
+  enabled: true
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: matej
 
 prometheus:
   enabled: true

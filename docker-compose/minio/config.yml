@@ -1,9 +1,26 @@
+app:
+  nice-name: MinIO
+
 apache:
   upstream-url:
     - path: /ui/
       target: http://app:9001
     - path: /
       target: http://app:9000
+
+gatus:
+  enabled: true
+  authentication: true
+  conditions:
+    - "[CONNECTED] == true"
+    - "[STATUS] < 500"
+  endpoints:
+    - path: /minio/health/cluster
+    - path: /minio/health/cluster/read
+    - path: /minio/health/live
+    - path: /minio/v2/metrics/cluster
+      authentication:
+        bearer: PROMETHEUS_TOKEN
 
 prometheus:
   enabled: true

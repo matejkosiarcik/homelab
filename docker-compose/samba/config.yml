@@ -1,9 +1,24 @@
+app:
+  nice-name: Samba
+
 apache:
   upstream-url:
     - path: /metrics
       target: http://app:9922/metrics
     - path: /
       target: http://file-server:8080
+
+gatus:
+  enabled: true
+  type: [http, smb]
+  additional_ports:
+    tcp:
+      - 139
+      - 445
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
 
 prometheus:
   enabled: true

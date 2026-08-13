@@ -1,9 +1,19 @@
+app:
+  nice-name: MotionEye
+
 apache:
   upstream-url:
     - path: /
       target: http://app:8765
     - path: /stream
       target: http://app:9081
+
+gatus:
+  enabled: true
+  endpoints:
+    - path: /stream
+      authentication:
+        basic: homelab-stream
 
 prometheus:
   enabled: true

@@ -1,7 +1,15 @@
+app:
+  nice-name: Renovatebot
+
 apache:
   upstream-url:
     - path: /
       target: http://app:8080
+
+gatus:
+  enabled: true
+  authentication:
+    basic: homelab-viewer
 
 prometheus:
   enabled: true

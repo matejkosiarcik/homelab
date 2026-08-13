@@ -1,7 +1,19 @@
+app:
+  nice-name: LibreTranslate
+
 apache:
   upstream-url:
     - path: /
       target: http://app:5000
+
+gatus:
+  enabled: true
+  authentication:
+    basic: homelab-viewer
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
 
 prometheus:
   enabled: true

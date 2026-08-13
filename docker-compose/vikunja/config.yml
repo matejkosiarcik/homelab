@@ -1,7 +1,15 @@
+app:
+  nice-name: Vikunja
+
 apache:
   upstream-url:
     - path: /
       target: http://app:3456
+
+gatus:
+  enabled: false
+  endpoints:
+    - path: /api/v1/metrics
 
 prometheus:
   enabled: true

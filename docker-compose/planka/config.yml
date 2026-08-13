@@ -1,7 +1,14 @@
+app:
+  nice-name: Planka
+
 apache:
   upstream-url:
     - path: /
       target: http://app:1337
+
+gatus:
+  enabled: true
+  # TODO: Add some endpoints
 
 prometheus:
   enabled: true

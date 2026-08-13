@@ -1,7 +1,13 @@
+app:
+  nice-name: ActualBudget
+
 apache:
   upstream-url:
     - path: /
       target: http://app:5006
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

@@ -1,7 +1,13 @@
+app:
+  nice-name: Dozzle
+
 apache:
   upstream-url:
     - path: /
       target: http://app:8080
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

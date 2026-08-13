@@ -1,9 +1,20 @@
+app:
+  nice-name: PiHole
+
 apache:
   upstream-url:
     - path: /metrics
       target: http://app-prometheus-exporter:9617/metrics
     - path: /
       target: http://app:80
+
+gatus:
+  enabled: true
+  type: ["dns[blackhole]", http]
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
 
 prometheus:
   enabled: true

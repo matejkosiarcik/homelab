@@ -1,7 +1,14 @@
+app:
+  nice-name: Data Optimizer
+
 apache:
   upstream-url:
     - path: /
       target: http://app:8080 # This is just a temporary placeholder
+
+gatus:
+  enabled: true
+  # TODO: Finish gatus config
 
 prometheus:
   enabled: true

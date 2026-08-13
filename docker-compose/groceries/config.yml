@@ -1,3 +1,6 @@
+app:
+  nice-name: Groceries
+
 apache:
   upstream-url:
     - path: /api/
@@ -6,6 +9,9 @@ apache:
       target: http://couchdb:5984
     - path: /
       target: http://app-frontend:8100
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

@@ -1,9 +1,15 @@
+app:
+  nice-name: AdventureLog
+
 apache:
   upstream-url:
     - path: /api/
       target: http://app-backend:80
     - path: /
       target: http://app-frontend:3000
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

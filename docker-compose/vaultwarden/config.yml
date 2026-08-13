@@ -1,7 +1,13 @@
+app:
+  nice-name: Vaultwarden
+
 apache:
   upstream-url:
     - path: /
       target: http://app:80
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true

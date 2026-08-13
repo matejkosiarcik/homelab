@@ -1,7 +1,13 @@
+app:
+  nice-name: ChangeDetection
+
 apache:
   upstream-url:
     - path: /
       target: http://app:5000
+
+gatus:
+  enabled: true
 
 prometheus:
   enabled: true
