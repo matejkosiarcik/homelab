@@ -55,7 +55,7 @@ fi
 tmpdir="$(mktemp -d)"
 
 # Set SOPS decryption key file
-SOPS_AGE_KEY_FILE="$git_root_dir/secrets/age-key.txt"
+SOPS_AGE_KEY_FILE="$git_root_dir/secrets/key.txt"
 export SOPS_AGE_KEY_FILE
 
 if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
