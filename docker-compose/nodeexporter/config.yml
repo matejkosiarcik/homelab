@@ -1,3 +1,6 @@
+app:
+  nice-name: NodeExporter
+
 apache:
   upstream-url:
     - path: /

@@ -1,3 +1,6 @@
+app:
+  nice-name: Vikunja
+
 apache:
   upstream-url:
     - path: /

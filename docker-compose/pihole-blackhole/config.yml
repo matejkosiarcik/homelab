@@ -1,3 +1,6 @@
+app:
+  nice-name: PiHole
+
 apache:
   upstream-url:
     - path: /metrics

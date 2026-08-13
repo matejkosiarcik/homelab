@@ -1,3 +1,6 @@
+app:
+  nice-name: Healthchecks
+
 apache:
   upstream-url:
     - path: /

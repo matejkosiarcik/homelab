@@ -1,3 +1,6 @@
+app:
+  nice-name: MinIO
+
 apache:
   upstream-url:
     - path: /ui/

@@ -1,3 +1,6 @@
+app:
+  nice-name: Prometheus
+
 apache:
   upstream-url:
     - path: /

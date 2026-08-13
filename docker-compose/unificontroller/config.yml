@@ -1,3 +1,6 @@
+app:
+  nice-name: Unifi Controller
+
 apache:
   upstream-url:
     - path: /

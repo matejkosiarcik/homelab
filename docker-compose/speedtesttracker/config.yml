@@ -1,3 +1,6 @@
+app:
+  nice-name: SpeedTestTracker
+
 apache:
   upstream-url:
     - path: /

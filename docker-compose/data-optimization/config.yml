@@ -1,3 +1,6 @@
+app:
+  nice-name: Data Optimizer
+
 apache:
   upstream-url:
     - path: /
