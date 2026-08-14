@@ -1662,12 +1662,12 @@ speedtesttracker)
 tvheadend)
     # Preload #
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_stream_password="$(load_secret ".$app_fullname_key.app.homelab_stream_user" dev=default)"
+    stream_password="$(load_secret ".$app_fullname_key.app.stream_user" dev=default)"
     homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
-    printf 'homelab-stream,%s\n' "$homelab_stream_password" >>"$initial_output/.secrets.csv"
+    printf 'stream,%s\n' "$stream_password" >>"$initial_output/.secrets.csv"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
