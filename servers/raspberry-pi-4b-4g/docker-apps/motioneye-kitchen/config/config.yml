@@ -1,5 +1,0 @@
-app:
-  type: motioneye
-
-network:
-  ip: 10.1.16.31

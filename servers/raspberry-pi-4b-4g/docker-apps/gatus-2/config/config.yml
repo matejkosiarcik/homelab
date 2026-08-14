@@ -1,0 +1,5 @@
+app:
+  type: gatus
+
+network:
+  ip: 10.1.16.31

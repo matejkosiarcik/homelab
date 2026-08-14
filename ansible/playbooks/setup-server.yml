@@ -40,6 +40,7 @@
           - moreutils
           - openssh-server
           - openssl
+          - pipx
           - psmisc
           - python-is-python3
           - python3
@@ -85,37 +86,21 @@
 
     # This prevents problems with inotify and open file descriptors
     - name: Raise inotify limits
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       register: inotify_limits
-      changed_when: "'CHANGED' in inotify_limits.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
+      become: true
+      ansible.builtin.lineinfile:
+        path: /usr/lib/sysctl.d/50-default.conf
+        insertafter: EOF
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - regexp: '^fs\.inotify\.max_user_instances ?='
+          line: "fs.inotify.max_user_instances = 65536"
+        - regexp: '^fs\.file\-max ?='
+          line: "fs.file-max = 65536"
 
-        # In debian 13 file "/etc/sysctl.conf" changed to "/usr/lib/sysctl.d/50-default.conf"
-        if [ ! -f '/usr/lib/sysctl.d/50-default.conf' ]; then
-          printf 'File '/usr/lib/sysctl.d/50-default.conf' not found' >&2
-          exit 1
-        fi
-        before_sha="$(shasum '/usr/lib/sysctl.d/50-default.conf')"
-
-        if [ "$(tail -c1 '/usr/lib/sysctl.d/50-default.conf')" != '\n' ]; then
-          printf '\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
-        fi
-
-        # TODO: Change this to lineinfile to change the lines instead of appending
-        if ! grep 'fs.file-max = 65536' <'/usr/lib/sysctl.d/50-default.conf' >/dev/null; then
-          printf 'fs.file-max = 65536\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
-        fi
-
-        # TODO: Change this to lineinfile to change the lines instead of appending
-        if ! grep 'fs.inotify.max_user_instances = 65536' <'/usr/lib/sysctl.d/50-default.conf' >/dev/null; then
-          printf 'fs.inotify.max_user_instances = 65536\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
-        fi
-
-        after_sha="$(shasum '/usr/lib/sysctl.d/50-default.conf')"
-        if [ "$before_sha" != "$after_sha" ]; then
-          printf 'CHANGED\n'
-        fi
-
+    # Raspberry PI by default doesn't allow monitoring for individual containers
     - name: Allow docker memory monitoring
       register: docker_memory_monitoring
       when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
@@ -154,38 +139,47 @@
     - name: Configure Bash
       register: bash_config_file
       ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.bashrc"
-        marker: "# {mark} ANSIBLE"
+        path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+        marker: "# {mark} ANSIBLE #"
         insertafter: EOF
+        create: true
+        prepend_newline: true
         block: |
-          # Task runner
-          eval "$(task --completion bash)"
-
-          # Homelab
+          # Homelab config
           export HOMELAB_ENV='prod'
 
-          # Docker
+          # Docker config
           export COMPOSE_BAKE='true'
           export DOCKER_BUILDKIT='1'
           export COMPOSE_DOCKER_CLI_BUILD='1'
 
-          # NodeJS
+          # NodeJS config
           export NODE_NO_WARNINGS='1'
 
-    - name: Configure NPM
-      register: npm_config_file
+          # Pipx programs
+          export PATH="$PATH:$HOME/.local/bin"
+
+          # Go programs
+          export PATH="$PATH:$HOME/go/bin"
+
+          # Task runner
+          eval "$(task --completion bash)"
+
+    ## Git Config ##
+
+    - name: Git config
+      register: git_config
       ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.npmrc"
-        marker: "; {mark} ANSIBLE"
+        path: "{{ ansible_facts['env']['HOME'] }}/.gitconfig"
+        marker: "# {mark} ANSIBLE #"
         insertafter: EOF
+        create: true
+        prepend_newline: true
         block: |
-          fetch-retries=5
-          fetch-retry-factor=10
-          fetch-retry-maxtimeout=60000
-          fetch-retry-mintimeout=1000
-          ignore-scripts=true
-          min-release-age=1
-        # TODO: Also add: registry=https://npm-cache.matejhome.com
+          [remote "origin"]
+            prune = true
+          [pull]
+            rebase = true
 
     ## Log2Ram ##
 
@@ -207,7 +201,7 @@
         fi
 
     - name: Reboot
-      when: log2ram_install.changed or log2ram_config_file.changed
+      when: log2ram_install.changed
       throttle: 1
       ansible.builtin.reboot:
         reboot_command: sudo reboot
@@ -244,25 +238,30 @@
         node --version
         npm --version
 
-    - name: NPM config
-      register: npm_config
-      changed_when: "'CHANGED' in npm_config.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        before_sha="$(shasum "$HOME/.npmrc" || true)"
-        new_config="$(printf '
+    - name: Configure NPM
+      register: npm_config_file
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_facts['env']['HOME'] }}/.npmrc"
+        marker: "; {mark} ANSIBLE ;"
+        insertafter: EOF
+        create: true
+        prepend_newline: true
+        block: |
           fetch-retries=5
           fetch-retry-factor=10
           fetch-retry-maxtimeout=60000
           fetch-retry-mintimeout=1000
           ignore-scripts=true
           min-release-age=1
-        ' | sed -E 's~^  ~~' | tail -n +2)"
-        printf '%s' "$new_config" >"$HOME/.npmrc"
-        after_sha="$(shasum "$HOME/.npmrc")"
-        if [ "$before_sha" != "$after_sha" ]; then
-          printf 'CHANGED\n'
-        fi
+        # TODO: Also add: registry=https://npm-cache.matejhome.com
+
+    - name: Update NPM packages
+      become: true
+      community.general.npm:
+        global: true
+        state: latest
+
+    ## Go ##
 
     - name: Install Task
       register: install_task
@@ -276,17 +275,10 @@
 
         go install github.com/go-task/task/v3/cmd/task@latest
 
-    - name: Update NPM packages
-      become: true
-      community.general.npm:
-        global: true
-        state: latest
-
     ## Python ##
 
-    - name: Install pip packages
-      become: true
-      ansible.builtin.pip:
+    - name: Install yq
+      community.general.pipx:
         name: yq
 
     ## Docker ##
@@ -327,7 +319,7 @@
 
     - name: Start docker on startup
       register: docker_startup
-      when: ansible_facts['system'] == 'Linux'
+      when: ansible_facts['system'] == 'Linux' and docker_install.changed
       changed_when: "'CHANGED' in docker_startup.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
@@ -343,30 +335,29 @@
     - name: Docker config
       when: ansible_facts['system'] == 'Linux'
       register: docker_config
-      changed_when: "'CHANGED' in docker_config.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        before_sha="$(shasum /etc/docker/daemon.json || true)"
-        new_config='{
-          "log-driver": "local",
-          "log-opts": {
-            "max-size": "100m"
-          },
-          "registry-mirrors": [
-            "https://docker-cache-dockerhub.matejhome.com"
-          ],
-          "default-address-pools": [
-            {
-              "base" : "172.16.0.0/12",
-              "size" : 26
-            }
-          ]
-        }'
-        printf '%s\n' "$new_config" | sudo tee '/etc/docker/daemon.json' >/dev/null
-        after_sha="$(shasum /etc/docker/daemon.json)"
-        if [ "$before_sha" != "$after_sha" ]; then
-          printf 'CHANGED\n'
-        fi
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/docker/daemon.json
+        owner: root
+        group: root
+        mode: "0644"
+        # TODO: Add also:
+        # "registry-mirrors": [
+        #   "https://docker-cache-dockerhub.matejhome.com"
+        # ],
+        content: |
+          {
+            "log-driver": "local",
+            "log-opts": {
+              "max-size": "100m"
+            },
+            "default-address-pools": [
+              {
+                "base" : "172.16.0.0/12",
+                "size" : 26
+              }
+            ]
+          }
 
     - name: Restart docker
       when: ansible_facts['system'] == 'Linux' and docker_config.changed
@@ -433,22 +424,6 @@
           mkdir -p "$HOME/.log"
           printf 'CHANGED\n'
         fi
-
-    ## Git Config ##
-
-    - name: Git config
-      register: git_config
-      changed_when: "'CHANGED' in git_config.stdout"
-      ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.gitconfig"
-        marker: "# {mark} ANSIBLE"
-        insertafter: EOF
-        block: |
-          [remote "origin"]
-            prune = true
-          [pull]
-            rebase = true
-          '
 
     ## Homelab repository ##
 

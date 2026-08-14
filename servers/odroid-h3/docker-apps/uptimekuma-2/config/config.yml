@@ -1,5 +1,0 @@
-app:
-  type: uptimekuma
-
-network:
-  ip: 10.1.10.32
