@@ -154,9 +154,10 @@
     - name: Configure Bash
       register: bash_config_file
       ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.bashrc"
+        path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
         marker: "# {mark} ANSIBLE"
         insertafter: EOF
+        create: true
         block: |
           # Task runner
           eval "$(task --completion bash)"
@@ -175,9 +176,10 @@
     - name: Configure NPM
       register: npm_config_file
       ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.npmrc"
+        path: "{{ ansible_facts['env']['HOME'] }}/.npmrc"
         marker: "; {mark} ANSIBLE"
         insertafter: EOF
+        create: true
         block: |
           fetch-retries=5
           fetch-retry-factor=10
@@ -440,9 +442,10 @@
       register: git_config
       changed_when: "'CHANGED' in git_config.stdout"
       ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.gitconfig"
+        path: "{{ ansible_facts['env']['HOME'] }}/.gitconfig"
         marker: "# {mark} ANSIBLE"
         insertafter: EOF
+        create: true
         block: |
           [remote "origin"]
             prune = true
