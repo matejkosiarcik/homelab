@@ -1,5 +1,5 @@
 app:
-  nice-name: ActualBudget
+  name: ActualBudget
 
 apache:
   upstream-url:

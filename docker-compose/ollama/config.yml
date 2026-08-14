@@ -1,5 +1,5 @@
 app:
-  nice-name: Ollama
+  name: Ollama
 
 apache:
   upstream-url:

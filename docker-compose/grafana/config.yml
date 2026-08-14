@@ -1,5 +1,5 @@
 app:
-  nice-name: Grafana
+  name: Grafana
 
 apache:
   upstream-url:

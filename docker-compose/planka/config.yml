@@ -1,5 +1,5 @@
 app:
-  nice-name: Planka
+  name: Planka
 
 apache:
   upstream-url:

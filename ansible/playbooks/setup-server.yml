@@ -101,9 +101,12 @@
           printf '\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
         fi
 
+        # TODO: Change this to lineinfile to change the lines instead of appending
         if ! grep 'fs.file-max = 65536' <'/usr/lib/sysctl.d/50-default.conf' >/dev/null; then
           printf 'fs.file-max = 65536\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
         fi
+
+        # TODO: Change this to lineinfile to change the lines instead of appending
         if ! grep 'fs.inotify.max_user_instances = 65536' <'/usr/lib/sysctl.d/50-default.conf' >/dev/null; then
           printf 'fs.inotify.max_user_instances = 65536\n' | sudo tee --append '/usr/lib/sysctl.d/50-default.conf' >/dev/null
         fi
@@ -126,6 +129,7 @@
         fi
         before_sha="$(shasum '/boot/firmware/cmdline.txt')"
 
+        # TODO: Change this to lineinfile to change the lines instead of appending them
         if ! grep 'cgroup_enable=cpuset' <'/boot/firmware/cmdline.txt' >/dev/null; then
           printf ' cgroup_enable=cpuset' | sudo tee --append '/boot/firmware/cmdline.txt' >/dev/null
         fi
@@ -147,87 +151,41 @@
       ansible.builtin.reboot:
         reboot_command: sudo reboot
 
-    - name: Setup Shell environment
-      register: shell_setup
-      changed_when: "'CHANGED' in shell_setup.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
+    - name: Configure Bash
+      register: bash_config_file
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        marker: "# {mark} ANSIBLE"
+        insertafter: EOF
+        block: |
+          # Task runner
+          eval "$(task --completion bash)"
 
-        # Ensure files exist
-        touch "$HOME/.bashrc" "$HOME/.profile" "$HOME/.custom.sh"
+          # Homelab
+          export HOMELAB_ENV='prod'
 
-        before_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
+          # Docker
+          export COMPOSE_BAKE='true'
+          export DOCKER_BUILDKIT='1'
+          export COMPOSE_DOCKER_CLI_BUILD='1'
 
-        # Ensure files end with newline
-        if [ "$(tail -c1 "$HOME/.bashrc")" != '\n' ] && [ "$(wc -c <"$HOME/.bashrc")" -gt '0' ]; then
-          printf '\n' >>"$HOME/.bashrc"
-        fi
-        if [ "$(tail -c1 "$HOME/.profile")" != '\n' ] && [ "$(wc -c <"$HOME/.profile")" -gt '0' ]; then
-          printf '\n' >>"$HOME/.profile"
-        fi
-        if [ "$(tail -c1 "$HOME/.custom.sh")" != '\n' ] && [ "$(wc -c <"$HOME/.custom.sh")" -gt '0' ]; then
-          printf '\n' >>"$HOME/.custom.sh"
-        fi
-
-        # Bash specific
-        if ! grep 'eval "$(task --completion bash)"' <"$HOME/.bashrc" >/dev/null; then
-          printf 'eval "$(task --completion bash)"\n' >>"$HOME/.bashrc"
-        fi
-
-        # Import custom shell file
-        if ! grep '. "$HOME/.custom.sh"' <"$HOME/.bashrc" >/dev/null; then
-          printf '. "$HOME/.custom.sh"' >>"$HOME/.bashrc"
-        fi
-        if ! grep '. "$HOME/.custom.sh"' <"$HOME/.profile" >/dev/null; then
-          printf '. "$HOME/.custom.sh"' >>"$HOME/.profile"
-        fi
-
-        # Custom shell file
-        if ! grep 'export COMPOSE_BAKE=true' <"$HOME/.custom.sh" >/dev/null; then
-          printf 'export COMPOSE_BAKE=true\n' >>"$HOME/.custom.sh"
-        fi
-        if ! grep 'export HOMELAB_ENV=prod' <"$HOME/.custom.sh" >/dev/null; then
-          printf 'export HOMELAB_ENV=prod\n' >>"$HOME/.custom.sh"
-        fi
-        if ! grep 'export NODE_NO_WARNINGS=1' <"$HOME/.custom.sh" >/dev/null; then
-          printf 'export NODE_NO_WARNINGS=1\n' >>"$HOME/.custom.sh"
-        fi
-        if ! grep 'export BW_SESSION=' <"$HOME/.custom.sh" >/dev/null; then
-          printf '# export BW_SESSION=\n' >>"$HOME/.custom.sh"
-        fi
-
-        # Report status
-        after_sha="$(shasum "$HOME/.bashrc")$(shasum "$HOME/.profile")$(shasum "$HOME/.custom.sh")"
-        if [ "$before_sha" != "$after_sha" ]; then
-          printf 'CHANGED\n'
-        fi
+          # NodeJS
+          export NODE_NO_WARNINGS='1'
 
     - name: Configure NPM
-      register: npm_config
-      changed_when: "'CHANGED' in npm_config.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-
-        # Ensure file exist
-        touch "$HOME/.npmrc"
-
-        before_sha="$(shasum "$HOME/.npmrc")"
-
-        # Ensure file ends with newline
-        if [ "$(tail -c1 "$HOME/.npmrc")" != '\n' ] && [ "$(wc -c <"$HOME/.npmrc")" -gt '0' ]; then
-          printf '\n' >>"$HOME/.npmrc"
-        fi
-
-        # NPM Config
-        if ! grep 'registry=https://npm-cache.matejhome.com' <"$HOME/.npmrc" >/dev/null; then
-          printf 'registry=https://npm-cache.matejhome.com\n' >>"$HOME/.npmrc"
-        fi
-
-        # Report status
-        after_sha="$(shasum "$HOME/.npmrc")"
-        if [ "$before_sha" != "$after_sha" ]; then
-          printf 'CHANGED\n'
-        fi
+      register: npm_config_file
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env.HOME }}/.npmrc"
+        marker: "; {mark} ANSIBLE"
+        insertafter: EOF
+        block: |
+          fetch-retries=5
+          fetch-retry-factor=10
+          fetch-retry-maxtimeout=60000
+          fetch-retry-mintimeout=1000
+          ignore-scripts=true
+          min-release-age=1
+        # TODO: Also add: registry=https://npm-cache.matejhome.com
 
     ## Log2Ram ##
 
@@ -249,7 +207,7 @@
         fi
 
     - name: Reboot
-      when: log2ram_install.changed
+      when: log2ram_install.changed or log2ram_config_file.changed
       throttle: 1
       ansible.builtin.reboot:
         reboot_command: sudo reboot
@@ -269,12 +227,15 @@
       changed_when: "'CHANGED' in install_nodejs.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+
         if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
           exit 0
         fi
+
         if [ -e nodesource_setup.sh ]; then
           rm -f nodesource_setup.sh
         fi
+
         curl -fsSL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
         sudo -E bash nodesource_setup.sh
         rm -f nodesource_setup.sh
@@ -282,19 +243,6 @@
         printf 'CHANGED\n'
         node --version
         npm --version
-
-    - name: Install Bitwarden CLI
-      become: true
-      community.general.npm:
-        name: "@bitwarden/cli"
-        global: true
-
-    # TODO: Check on new servers if this package is still required to be explicitly installed
-    # - name: Install Semver (Bitwarden CLI dependency)
-    #   become: true
-    #   community.general.npm:
-    #     name: semver
-    #     global: true
 
     - name: NPM config
       register: npm_config
@@ -316,29 +264,23 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Install Task runner
-      become: true
-      community.general.npm:
-        name: "@go-task/cli"
-        global: true
+    - name: Install Task
+      register: install_task
+      changed_when: "'CHANGED' in install_task.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+
+        if command -v task >/dev/null 2>&1; then
+          exit 0
+        fi
+
+        go install github.com/go-task/task/v3/cmd/task@latest
 
     - name: Update NPM packages
       become: true
       community.general.npm:
         global: true
         state: latest
-
-    - name: Configure Bitwarden CLI
-      register: config_bitwarden_cli
-      changed_when: "'CHANGED' in config_bitwarden_cli.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        target='https://vaultwarden.matejhome.com'
-        if [ "$(bw config server)" = "$target" ]; then
-          exit 0
-        fi
-        bw config server "$target"
-        printf 'CHANGED\n'
 
     ## Python ##
 
@@ -369,13 +311,6 @@
           sudo usermod -aG docker "$(whoami)"
           printf 'CHANGED\n'
         fi
-
-    # - name: Verify docker installation
-    #   when: docker_install.changed
-    #   changed_when: "False"
-    #   ansible.builtin.shell: |
-    #     set -eufo pipefail
-    #     sudo docker run hello-world
 
     - name: Reboot
       when: ansible_facts['system'] == 'Linux' and docker_install.changed
@@ -439,6 +374,7 @@
         set -eufo pipefail
         sudo service docker restart
 
+    # This is necessary, otherwise sometimes the network addresses we want to bind to are not setup yet
     - name: Throtlle docker service start
       register: docker_throttle
       become: true
@@ -466,6 +402,7 @@
         set -eufo pipefail
         (yes || true) | sudo sensors-detect
 
+    # TODO: Fix this for real
     - name: Setup locale
       register: setup_locale
       when: ansible_facts['system'] == 'Linux'
@@ -502,23 +439,20 @@
     - name: Git config
       register: git_config
       changed_when: "'CHANGED' in git_config.stdout"
-      ansible.builtin.shell: |
-        set -eufo pipefail
-        new_config='
-        [remote "origin"]
-          prune = true
-        [pull]
-          rebase = true
-        '
-        before_sha="$(shasum "$HOME/.gitconfig" || true)"
-        printf '%s\n' "$new_config" >"$HOME/.gitconfig" >/dev/null
-        after_sha="$(shasum "$HOME/.gitconfig")"
-        if [ "$before_sha" != "$after_sha" ]; then
-          printf 'CHANGED\n'
-        fi
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env.HOME }}/.gitconfig"
+        marker: "# {mark} ANSIBLE"
+        insertafter: EOF
+        block: |
+          [remote "origin"]
+            prune = true
+          [pull]
+            rebase = true
+          '
 
     ## Homelab repository ##
 
+    # TODO: Change to builtin git task
     - name: Git clone homelab
       register: git_clone_homelab
       changed_when: "'CHANGED' in git_clone_homelab.stdout"
@@ -526,7 +460,7 @@
         set -eufo pipefail
         if [ ! -e "$HOME/git/homelab" ]; then
           mkdir -p "$HOME/git"
-          git clone https://github.com/matejkosiarcik/homelab.git "$HOME/git/homelab"
+          git clone 'https://github.com/matejkosiarcik/homelab.git' "$HOME/git/homelab"
           printf 'CHANGED\n'
         fi
 
@@ -535,9 +469,15 @@
       changed_when: "'CHANGED' in git_current_symlink.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+
+        # Make sure current server directory exists
+        if [ ! -d "$HOME/git/homelab/servers/$(uname -n)" ]; then
+          exit 1
+        fi
+
+        # Create symlink
         if [ ! -e "$HOME/git/homelab/servers/.current" ]; then
-          cd "$HOME/git/homelab/servers"
-          ln -s "$(uname -n)" .current
+          ln -s "$(uname -n)" "$HOME/git/homelab/servers/.current"
           printf 'CHANGED\n'
         fi
 

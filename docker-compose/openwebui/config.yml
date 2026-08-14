@@ -1,5 +1,5 @@
 app:
-  nice-name: OpenWebUI
+  name: OpenWebUI
 
 apache:
   upstream-url:

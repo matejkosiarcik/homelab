@@ -1,5 +1,5 @@
 app:
-  nice-name: AdventureLog
+  name: AdventureLog
 
 apache:
   upstream-url:

@@ -1,5 +1,5 @@
 app:
-  nice-name: Git Cache
+  name: Git Cache
 
 apache:
   upstream-url:

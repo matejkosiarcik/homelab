@@ -1,5 +1,5 @@
 app:
-  nice-name: NPM Cache
+  name: NPM Cache
 
 apache:
   upstream-url:
