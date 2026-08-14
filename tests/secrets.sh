@@ -35,8 +35,8 @@ rm -f .secrets.env
 {
     set -euf
 
-    printf 'ACTUALBUDGET__PASSWORD=%s\n' "$(load_secret '.actualbudget.app.admin_user')"
-    printf 'ACTUALBUDGET__ENCRYPTION_PASSWORD=%s\n' "$(load_secret '.actualbudget.app.encryption')"
+    printf 'ACTUALBUDGET__ADMIN_PASSWORD=%s\n' "$(load_secret '.actualbudget.app.admin_user')"
+    printf 'ACTUALBUDGET__ENCRYPTION_PASSWORD=%s\n' "$(load_secret '.actualbudget.app.encryption_key')"
     printf 'ACTUALBUDGET__SYNC_ID=%s\n' "$(load_secret '.actualbudget.app.sync_id')"
     printf 'ACTUALBUDGET__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.actualbudget.apache.status_user')"
     printf 'ACTUALBUDGET__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.actualbudget.apache.prometheus_user')"

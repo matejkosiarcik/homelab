@@ -19,7 +19,7 @@ test.describe(apps.actualbudget.title, () => {
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login`);
-                await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'PASSWORD'));
+                await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
                 await page.locator('button[type="button"]:has-text("Sign in")').click();
                 await page.waitForURL(instance.url);
                 await expect(page.locator('#root:has-text("Files")')).toBeVisible();
