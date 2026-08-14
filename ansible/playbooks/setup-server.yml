@@ -275,6 +275,18 @@
 
         go install github.com/go-task/task/v3/cmd/task@latest
 
+    - name: Install SOPS
+      register: install_sops
+      changed_when: "'CHANGED' in install_sops.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+
+        if command -v sops >/dev/null 2>&1; then
+          exit 0
+        fi
+
+        go install github.com/getsops/sops/v3/cmd/sops@latest
+
     ## Python ##
 
     - name: Install yq
