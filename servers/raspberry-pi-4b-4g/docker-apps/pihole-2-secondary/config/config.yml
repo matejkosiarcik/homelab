@@ -1,0 +1,5 @@
+app:
+  type: pihole
+
+network:
+  ip: 10.1.16.12
