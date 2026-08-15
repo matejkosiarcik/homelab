@@ -25,4 +25,4 @@ Other considered off-the-shelf projects were:
 
 ## After initial installation
 
-_N/A_
+N/A
