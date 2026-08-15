@@ -95,9 +95,13 @@ dryrun:
 clean:
 	find "$(PROJECT_DIR)" -type d \( \
 		-name ".mypy_cache" -or \
+		-name "build" -or \
 		-name "dist" -or \
 		-name "gitman-repositories" -or \
 		-name "node_modules" -or \
 		-name "python-vendor" -or \
+		-name "target" -or \
+		-name "test-report" -or \
+		-name "vendor" -or \
 		-name "venv" \
 	\) -prune -exec rm -rf {} \;
