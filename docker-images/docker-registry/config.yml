@@ -33,6 +33,14 @@ redis:
     maxidle: 16
     maxactive: 64
     idletimeout: 60s
+  # TODO: Enable TLS settings:
+  # tls:
+  #   enabled: true
+  #   cafile: /homelab/redis-certs/ca.crt
+  #   # certfile: /homelab/redis-certs/client.crt
+  #   # keyfile: /homelab/redis-certs/client.key
+  #   # certfile: /homelab/redis-certs/server.crt
+  #   # keyfile: /homelab/redis-certs/server.key
 
 storage:
   cache:
