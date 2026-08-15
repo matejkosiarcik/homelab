@@ -18,4 +18,4 @@
 
 ## After initial installation
 
-Empty
+_N/A_
