@@ -14,6 +14,8 @@
 ### Other devices ###
 
 10.1.2.1 ipkvm.matejhome.com
+10.1.2.5 tv.matejhome.com
+10.1.2.6 tvbox.matejhome.com
 
 ## Mischalenous ##
 
