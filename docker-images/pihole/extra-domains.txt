@@ -13,7 +13,7 @@
 
 ### Other devices ###
 
-10.1.2.5 ipkvm.matejhome.com
+10.1.2.1 ipkvm.matejhome.com
 
 ## Mischalenous ##
 
