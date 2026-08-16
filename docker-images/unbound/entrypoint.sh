@@ -13,6 +13,7 @@ fi
 
 printf 'Checking config:\n'
 unbound-checkconf /homelab/unbound.conf
+printf 'Config OK.\n'
 
-printf 'Starting:\n'
+printf 'Starting unbound:\n'
 unbound -v -d -c '/homelab/unbound.conf'
