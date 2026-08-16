@@ -193,10 +193,12 @@ adventurelog)
     django_password="$(load_secret ".$app_fullname_key.app.django_admin_user" dev=default)"
     secret_key="$(load_secret ".$app_fullname_key.app.secret_key" "dev=value=$(openssl rand -hex 32)")"
     postgis_password="$(load_secret ".$app_fullname_key.postgis.user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'monika,%s\n' "$monika_password" >>"$initial_output/.secrets.csv"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     printf 'DJANGO_ADMIN_PASSWORD="%s"\n' "$django_password" >>"$initial_output/app-backend.env"
     printf 'django-admin,%s\n' "$django_password" >>"$initial_output/.secrets.csv"
@@ -300,10 +302,12 @@ dawarich)
     redis_password="$(load_secret ".$app_fullname_key.redis.user" dev=default)"
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
     api_key="$(load_secret ".$app_fullname_key.app.api_key" dev=empty)"
+    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'api-key,%s\n' "$api_key" >>"$initial_output/.secrets.csv"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
@@ -1069,6 +1073,26 @@ motioneye)
     touch "$initial_output/favicons.env"
     ;;
 
+netalertx)
+    # TODO: Finish NetAlertX secrets
+
+    # Preload #
+    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
+
+    # App #
+    printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
+
+    # Apache #
+    write_default_proxy_users "$app_fullname_key"
+
+    # Certificator #
+    write_certificator_users
+    write_healthcheck_url "$app_fullname_key" certificator
+
+    # Favicons #
+    touch "$initial_output/favicons.env"
+    ;;
+
 nodeexporter)
     # Preload #
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
@@ -1231,16 +1255,18 @@ openspeedtest)
 
 openwebui)
     # Preload #
+    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
     ollama_openwebui_password="$(load_secret '.ollama.app.openwebui_user' dev=real)"
     secret_key="$(load_secret ".$app_fullname_key.app.secret_key" "dev=value=$(openssl rand -hex 16)")"
+    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'OLLAMA_BASE_URL="%s"\n' "https://openwebui:$ollama_openwebui_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
 
     printf 'WEBUI_SECRET_KEY="%s"\n' "$secret_key" >>"$initial_output/app.env"
     printf 'secret-key,%s\n' "$secret_key" >>"$initial_output/.secrets.csv"
-    printf 'matej,%s\n' "$(load_secret ".$app_fullname_key.app.matej_user" dev=default)" >>"$initial_output/.secrets.csv"
-    printf 'homelab-test,%s\n' "$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)" >>"$initial_output/.secrets.csv"
+    printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
+    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "$app_fullname_key"
@@ -1664,11 +1690,13 @@ tvheadend)
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
     stream_password="$(load_secret ".$app_fullname_key.app.stream_user" dev=default)"
     homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'stream,%s\n' "$stream_password" >>"$initial_output/.secrets.csv"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "$app_fullname_key"

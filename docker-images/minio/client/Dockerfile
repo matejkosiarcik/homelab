@@ -74,7 +74,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=minio-client-cl
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.26.5-trixie AS minio-mc-build
+FROM golang:1.26.6-trixie AS minio-mc-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-minio-cli-build-aptcache \
@@ -94,7 +94,7 @@ RUN sh validate-executable.sh ./minio-mc/mc
 
 ### Healthcheck ###
 
-FROM golang:1.26.5-alpine AS healthcheck-build
+FROM golang:1.26.6-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/

@@ -21,6 +21,12 @@ all: clean bootstrap build docker-build docker-build-multiarch
 
 .PHONY: bootstrap
 bootstrap:
+	# Check if there is an active virtualenv and abort
+	if [ -n "$${VIRTUAL_ENV+x}" ]; then \
+		printf 'There is an active python virtualenv. Run "deactivate" and try again.\n'; \
+		exit 1; \
+	fi
+
 	#
 	## NodeJS ##
 	#
@@ -95,9 +101,13 @@ dryrun:
 clean:
 	find "$(PROJECT_DIR)" -type d \( \
 		-name ".mypy_cache" -or \
+		-name "build" -or \
 		-name "dist" -or \
 		-name "gitman-repositories" -or \
 		-name "node_modules" -or \
 		-name "python-vendor" -or \
+		-name "target" -or \
+		-name "test-report" -or \
+		-name "vendor" -or \
 		-name "venv" \
 	\) -prune -exec rm -rf {} \;

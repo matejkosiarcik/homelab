@@ -22,7 +22,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### Healthcheck ###
 
-FROM golang:1.26.5-alpine AS healthcheck-build
+FROM golang:1.26.6-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -84,6 +84,8 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+ARG GID=1000
+ARG UID=1000
 ENV DHCP_ACTIVE=false \
     DNSMASQ_USER=root \
     FTLCONF_dns_blockTTL=600 \

@@ -228,10 +228,11 @@ rm -f .secrets.env
     printf 'NTFY__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.status_user')"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.prometheus_user')"
 
-    printf 'NETALERTX__ADMIN_PASSWORD=%s\n' "$(load_secret '.netalertx.app.admin_user')"
-    printf 'NETALERTX__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.netalertx.app.prometheus_user')"
-    printf 'NETALERTX__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.status_user')"
-    printf 'NETALERTX__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.prometheus_user')"
+    # TODO: Enable NetAlertX
+    # printf 'NETALERTX__ADMIN_PASSWORD=%s\n' "$(load_secret '.netalertx.app.admin_user')"
+    # printf 'NETALERTX__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.netalertx.app.prometheus_user')"
+    # printf 'NETALERTX__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.status_user')"
+    # printf 'NETALERTX__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.prometheus_user')"
 
     printf 'OLLAMA__MATEJ_PASSWORD=%s\n' "$(load_secret '.ollama.app.matej_user')"
     printf 'OLLAMA__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.ollama.app.homelab_viewer_user')"
