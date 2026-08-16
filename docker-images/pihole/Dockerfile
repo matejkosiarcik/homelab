@@ -84,6 +84,8 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+ARG GID=1000
+ARG UID=1000
 ENV DHCP_ACTIVE=false \
     DNSMASQ_USER=root \
     FTLCONF_dns_blockTTL=600 \
