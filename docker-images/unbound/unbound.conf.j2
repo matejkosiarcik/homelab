@@ -2,11 +2,11 @@
   {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
     forward-addr: 10.1.12.11
     forward-addr: 10.1.12.12
-    forward-addr: 10.1.10.11
-    forward-addr: 10.1.10.12
-  {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
-    forward-addr: 10.1.10.11
-    forward-addr: 10.1.10.12
+    forward-addr: 10.1.16.11
+    forward-addr: 10.1.16.12
+  {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.16.") %}
+    forward-addr: 10.1.16.11
+    forward-addr: 10.1.16.12
     forward-addr: 10.1.12.11
     forward-addr: 10.1.12.12
   {%- else %}
@@ -17,9 +17,9 @@
 {%- macro blackhole_piholes() -%}
   {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
     forward-addr: 10.1.12.19
-    forward-addr: 10.1.10.19
-  {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
-    forward-addr: 10.1.10.19
+    forward-addr: 10.1.16.19
+  {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.16.") %}
+    forward-addr: 10.1.16.19
     forward-addr: 10.1.12.19
   {%- else %}
     $ Unknown IP: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}} $
