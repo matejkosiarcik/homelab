@@ -11,4 +11,8 @@ if [ ! -e '/homelab/logs/unbound.log' ]; then
     chmod 0666 '/homelab/logs/unbound.log'
 fi
 
+printf 'Checking config:\n'
+unbound-checkconf /homelab/unbound.conf
+
+printf 'Starting:\n'
 unbound -v -d -c '/homelab/unbound.conf'

@@ -43,14 +43,16 @@ WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=placeholder.example.com
 ARG HOMELAB_APP_EXTERNAL_IP=127.0.0.1
 ARG HOMELAB_APP_EXTERNAL_URL=https://placeholder.example.com
-ARG HOMELAB_APP_NAME=placeholder
+ARG HOMELAB_APP_FULLNAME=placeholder
+ARG HOMELAB_APP_SHORTNAME=placeholder
 ARG HOMELAB_APP_TYPE=placeholder
 ARG HOMELAB_ENV=dev
 RUN printf 'env:\n' >>data.yml && \
     printf '  HOMELAB_APP_EXTERNAL_DOMAIN: %s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >>data.yml && \
     printf '  HOMELAB_APP_EXTERNAL_IP: %s\n' "$HOMELAB_APP_EXTERNAL_IP" >>data.yml && \
     printf '  HOMELAB_APP_EXTERNAL_URL: %s\n' "$HOMELAB_APP_EXTERNAL_URL" >>data.yml && \
-    printf '  HOMELAB_APP_NAME: %s\n' "$HOMELAB_APP_NAME" >>data.yml && \
+    printf '  HOMELAB_APP_FULLNAME: %s\n' "$HOMELAB_APP_FULLNAME" >>data.yml && \
+    printf '  HOMELAB_APP_SHORTNAME: %s\n' "$HOMELAB_APP_SHORTNAME" >>data.yml && \
     printf '  HOMELAB_APP_TYPE: %s\n' "$HOMELAB_APP_TYPE" >>data.yml && \
     printf '  HOMELAB_ENV: %s\n' "$HOMELAB_ENV" >>data.yml
 
