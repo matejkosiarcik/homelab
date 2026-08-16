@@ -48,15 +48,15 @@ server:
     # cache-max-negative-ttl: 10
     # cache-min-negative-ttl: 1
 
-{% if env["HOMELAB_APP_NAME"].endswith("-default") or env["HOMELAB_APP_NAME"].endswith("-matej") or env["HOMELAB_APP_NAME"].endswith("-monika") or env["HOMELAB_APP_NAME"].endswith("-guests") or env["HOMELAB_APP_NAME"].endswith("-iot") %}
+{% if env["HOMELAB_APP_FULLNAME"].endswith("-default") or env["HOMELAB_APP_FULLNAME"].endswith("-matej") or env["HOMELAB_APP_FULLNAME"].endswith("-monika") or env["HOMELAB_APP_FULLNAME"].endswith("-guests") or env["HOMELAB_APP_FULLNAME"].endswith("-iot") %}
 forward-zone:
     name: "."
     {{- default_piholes() -}}
-{% elif env["HOMELAB_APP_NAME"].endswith("-blackhole") %}
+{% elif env["HOMELAB_APP_FULLNAME"].endswith("-blackhole") %}
 forward-zone:
     name: "."
     {{- blackhole_piholes() }}
-{% elif env["HOMELAB_APP_NAME"].endswith("-internal") %}
+{% elif env["HOMELAB_APP_FULLNAME"].endswith("-internal") %}
 forward-zone:
     name: "matejhome.com."
     {{- default_piholes() }}
@@ -69,7 +69,7 @@ forward-zone:
     name: "."
     {{- blackhole_piholes() }}
 {% else %}
-    $ Unknown app: {{- env["HOMELAB_APP_NAME"] -}} $
+    $ Unknown app: {{- env["HOMELAB_APP_FULLNAME"] -}} $
 {% endif %}
 
 remote-control:
