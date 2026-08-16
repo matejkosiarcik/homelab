@@ -11,6 +11,12 @@
 10.1.4.201 desklamp-left.matejhome.com
 10.1.4.202 desklamp-right.matejhome.com
 
+### Other devices ###
+
+10.1.2.1 ipkvm.matejhome.com
+10.1.2.5 tv.matejhome.com
+10.1.2.6 tvbox.matejhome.com
+
 ## Mischalenous ##
 
 unifi unificontroller.matejhome.com # Some UniFi devices require "unifi" record, so we CNAME it to our real domain
