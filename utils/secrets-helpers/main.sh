@@ -251,10 +251,10 @@ certbot)
     certbot_certificator_password="$(load_secret ".$app_fullname_key.app.certificator_user" dev=default)"
     certbot_homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
     certbot_homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    certbot_public_email="$(load_secret ".$app_fullname_key.websupport.public_email" dev=empty)"
-    websupport_api_key="$(load_secret ".$app_fullname_key.websupport.api_key" dev=empty)"
-    websupport_api_secret="$(load_secret ".$app_fullname_key.websupport.api_secret" dev=empty)"
-    websupport_service_id="$(load_secret ".$app_fullname_key.websupport.service_id" dev=empty)"
+    certbot_public_email="$(load_secret ".$app_fullname_key.websupport.public_email" dev=real)"
+    websupport_api_key="$(load_secret ".$app_fullname_key.websupport.api_key" dev=real)"
+    websupport_api_secret="$(load_secret ".$app_fullname_key.websupport.api_secret" dev=real)"
+    websupport_service_id="$(load_secret ".$app_fullname_key.websupport.service_id" dev=real)"
 
     # App #
     write_healthcheck_url "$app_fullname_key" app
