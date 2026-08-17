@@ -107,12 +107,13 @@ certbot certonly --manual --non-interactive --agree-tos \
     --preferred-challenges dns \
     --domain "*.$domain" \
     --email "$CERTBOT_PUBLIC_EMAIL" \
-    --manual-auth-hook 'sh certbot-hook-before.sh >>/homelab/logs/certbot.log 2>&1' \
-    --manual-cleanup-hook 'sh certbot-hook-after.sh >>/homelab/logs/certbot.log 2>&1' \
+    --manual-auth-hook 'sh certbot-hook-before.sh >>/homelab/logs/certbot-hooks.log 2>&1' \
+    --manual-cleanup-hook 'sh certbot-hook-after.sh >>/homelab/logs/certbot-hooks.log 2>&1' \
     $test_cert_mode || printf '%s\n' "$?" >"$statusfile"
 
 if [ "$(cat "$statusfile")" != '0' ]; then
     printf 'Certificate creation failed\n' >&2
+    exit "$(cat "$statusfile")"
 else
     printf "Archiving certificate\n" >&2
     tar -chJf /etc/letsencrypt/live/certificate.tar.xz -C /etc/letsencrypt/live --transform="s~^$domain~certificate~" "$domain"
@@ -124,5 +125,33 @@ else
     find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
     tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1
 fi
+
+## Cleanup TXT records ##
+printf 'Loading created DNS records\n' >&2
+date="$(date +'%Y-%m-%dT%H:%M:%S')"
+websupport_request_signature="$(printf 'GET /v2/service/%s/dns/record %s' "$WEBSUPPORT_SERVICE_ID" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
+record_ids="$(curl -s --fail -X GET \
+    -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
+    -H 'Accept: application/json' \
+    -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
+    "https://rest.websupport.sk/v2/service/$WEBSUPPORT_SERVICE_ID/dns/record?page=1&rowsPerPage=1000" |
+    jq -r ".data[] | select(.type == \"TXT\") | select(.name == \"_acme-challenge.$domain\") | .id")"
+
+printf '%s\n' "$record_ids" | while read -r record_id; do
+    if [ "$record_id" = '' ]; then
+        break
+    fi
+    if [ "$record_id" = 'null' ]; then
+        continue
+    fi
+    printf 'Deleting created DNS record %s\n' "$record_id" >&2
+    date="$(date +'%Y-%m-%dT%H:%M:%S')"
+    websupport_request_signature="$(printf 'DELETE /v2/service/%s/dns/record/%s %s' "$WEBSUPPORT_SERVICE_ID" "$record_id" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
+    curl -s --fail -X DELETE \
+        -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
+        -H 'Accept: application/json' \
+        -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
+        "https://rest.websupport.sk/v2/service/$WEBSUPPORT_SERVICE_ID/dns/record/$record_id"
+done
 
 exit "$(cat "$statusfile")"
