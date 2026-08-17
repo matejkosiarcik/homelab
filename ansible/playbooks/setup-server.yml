@@ -345,8 +345,18 @@
     ## Python ##
 
     - name: Install yq
+      register: install_yq
       community.general.pipx:
         name: yq
+
+    - name: Update Pipx packages
+      register: update_pipx
+      changed_when: "'No packages upgraded' not in update_pipx.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "$HOME/.profile"
+
+        pipx upgrade-all
 
     ## Docker ##
 
@@ -592,8 +602,14 @@
         source "$HOME/.profile"
 
         cd "$HOME/git/homelab/servers/.current"
+        before_sha="$( (find "$HOME/config" -type f -exec shasum {} \; ; crontab -l) | shasum)"
+
         task install
-        printf 'CHANGED\n'
+
+        after_sha="$( (find "$HOME/config" -type f -exec shasum {} \; ; crontab -l) | shasum)"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
 
     - name: Reboot
       when: server_install.changed
@@ -601,14 +617,30 @@
       ansible.builtin.reboot:
         reboot_command: sudo reboot
 
-    ## Finish ##
+    - name: Sync secrets
+      register: sync_secrets
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../secrets/{{ item.file }}"
+        dest: "{{ ansible_facts['env']['HOME'] }}/git/homelab/secrets/{{ item.file }}"
+      loop:
+        - file: ".sops.yml"
+        - file: "key.txt"
+        - file: "secrets.enc.yml"
 
-    - name: Wait for startup
-      register: final_startup
-      changed_when: "'CHANGED' in final_startup.stdout"
+    - name: Update secrets
+      register: update_secrets
+      when: sync_secrets.changed
+      changed_when: "'CHANGED' in update_secrets.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
 
-        sleep 10
-        printf 'OK\n'
+        cd "$HOME/git/homelab/servers/.current"
+        before_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; | shasum)"
+
+        task secrets
+
+        after_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; | shasum)"
+        if [ "$before_sha" != "$after_sha" ]; then
+          printf 'CHANGED\n'
+        fi
