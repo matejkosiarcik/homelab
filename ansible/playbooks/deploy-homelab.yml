@@ -10,6 +10,7 @@
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
+
         cd "$HOME/git/homelab/servers/.current"
         tmpdir="$(mktemp -d)"
 
@@ -17,7 +18,7 @@
         sudo find /root/config -type f -exec shasum {} \; >>"$tmpdir/shasum-before.txt"
         find "$HOME/config" -type f -exec shasum {} \; >>"$tmpdir/shasum-before.txt"
 
-        task install -- --prod
+        task install
 
         crontab -l | shasum >>"$tmpdir/shasum-after.txt"
         sudo find /root/config -type f -exec shasum {} \; >>"$tmpdir/shasum-after.txt"
