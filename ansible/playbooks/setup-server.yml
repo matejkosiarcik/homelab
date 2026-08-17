@@ -602,11 +602,11 @@
         source "$HOME/.profile"
 
         cd "$HOME/git/homelab/servers/.current"
-        before_sha="$( (find "$HOME/config" -type f -exec shasum {} \; ; crontab -l) | shasum)"
+        before_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
 
         task install
 
-        after_sha="$( (find "$HOME/config" -type f -exec shasum {} \; ; crontab -l) | shasum)"
+        after_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
         if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
@@ -636,11 +636,11 @@
         source "$HOME/.profile"
 
         cd "$HOME/git/homelab/servers/.current"
-        before_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; | shasum)"
+        before_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; 2>/dev/null | shasum)"
 
         task secrets
 
-        after_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; | shasum)"
+        after_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; 2>/dev/null | shasum)"
         if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
