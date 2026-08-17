@@ -36,4 +36,4 @@ curl -s --fail -X POST \
     "https://rest.websupport.sk/v2/service/$WEBSUPPORT_SERVICE_ID/dns/record"
 
 # Delay is necessary to let DNS record propagate
-sleep 60
+sleep 45

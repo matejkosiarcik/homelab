@@ -72,7 +72,7 @@ PROXY_PROMETHEUS_EXPORTER_URL='http://apache-prometheus-exporter:9117'
 export PROXY_PROMETHEUS_EXPORTER_URL
 
 # Wait for certificates to exist before starting
-timeout 60s sh <<EOF
+timeout 90s sh <<EOF
 if [ -e '/homelab/certs/fullchain.pem' ]; then
     return 0
 fi
