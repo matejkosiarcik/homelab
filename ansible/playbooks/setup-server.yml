@@ -84,6 +84,56 @@
 
     ## General config ##
 
+    - name: Configure Shell
+      register: shell_config_files
+      ansible.builtin.blockinfile:
+        path: "{{ item.path }}"
+        marker: "# {mark} ANSIBLE #"
+        insertafter: EOF
+        create: true
+        prepend_newline: true
+        block: "{{ item.block }}"
+      loop:
+        - path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+          block: |
+            # Homelab config
+            export HOMELAB_ENV='prod'
+
+            # Docker config
+            export COMPOSE_BAKE='true'
+            export DOCKER_BUILDKIT='1'
+            export COMPOSE_DOCKER_CLI_BUILD='1'
+
+            # NodeJS config
+            export NODE_NO_WARNINGS='1'
+
+            # Pipx programs
+            export PATH="$PATH:$HOME/.local/bin"
+
+            # Go programs
+            export PATH="$PATH:$HOME/go/bin"
+
+            # Task runner
+            eval "$(task --completion bash)"
+        - path: "{{ ansible_facts['env']['HOME'] }}/.profile"
+          block: |
+            # Homelab config
+            export HOMELAB_ENV='prod'
+
+            # Docker config
+            export COMPOSE_BAKE='true'
+            export DOCKER_BUILDKIT='1'
+            export COMPOSE_DOCKER_CLI_BUILD='1'
+
+            # NodeJS config
+            export NODE_NO_WARNINGS='1'
+
+            # Pipx programs
+            export PATH="$PATH:$HOME/.local/bin"
+
+            # Go programs
+            export PATH="$PATH:$HOME/go/bin"
+
     # This prevents problems with inotify and open file descriptors
     - name: Raise inotify limits
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
@@ -107,6 +157,7 @@
       changed_when: "'CHANGED' in docker_memory_monitoring.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
 
         if [ ! -f '/boot/firmware/cmdline.txt' ]; then
           printf 'File '/boot/firmware/cmdline.txt' not found' >&2
@@ -136,34 +187,29 @@
       ansible.builtin.reboot:
         reboot_command: sudo reboot
 
-    - name: Configure Bash
-      register: bash_config_file
-      ansible.builtin.blockinfile:
-        path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
-        marker: "# {mark} ANSIBLE #"
+    ## SSH Config ##
+
+    # Disable password authentication
+    - name: SSH config
+      when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
+      register: ssh_config
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
         insertafter: EOF
-        create: true
-        prepend_newline: true
-        block: |
-          # Homelab config
-          export HOMELAB_ENV='prod'
+        regexp: '^#*\s*PasswordAuthentication\s+(?:yes|no)'
+        line: "PasswordAuthentication no"
 
-          # Docker config
-          export COMPOSE_BAKE='true'
-          export DOCKER_BUILDKIT='1'
-          export COMPOSE_DOCKER_CLI_BUILD='1'
+    - name: Restart SSH server
+      register: ssh_restart
+      when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname'] and ssh_config.changed
+      changed_when: "'CHANGED' in ssh_restart.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "$HOME/.profile"
 
-          # NodeJS config
-          export NODE_NO_WARNINGS='1'
-
-          # Pipx programs
-          export PATH="$PATH:$HOME/.local/bin"
-
-          # Go programs
-          export PATH="$PATH:$HOME/go/bin"
-
-          # Task runner
-          eval "$(task --completion bash)"
+        sudo service ssh restart
+        printf 'CHANGED\n'
 
     ## Git Config ##
 
@@ -189,6 +235,8 @@
       changed_when: "'CHANGED' in log2ram_install.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         if ! command -v log2ram >/dev/null 2>&1; then
           echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
             | sudo tee /etc/apt/sources.list.d/azlux.list >/dev/null
@@ -211,6 +259,8 @@
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
 
     ## NodeJS ##
@@ -221,6 +271,7 @@
       changed_when: "'CHANGED' in install_nodejs.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
 
         if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
           exit 0
@@ -268,6 +319,7 @@
       changed_when: "'CHANGED' in install_task.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
 
         if command -v task >/dev/null 2>&1; then
           exit 0
@@ -281,6 +333,7 @@
       changed_when: "'CHANGED' in install_sops.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
 
         if command -v sops >/dev/null 2>&1; then
           exit 0
@@ -303,6 +356,8 @@
       changed_when: "'CHANGED' in docker_install.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         if ! command -v docker >/dev/null 2>&1; then
           sudo install -m 0755 -d /etc/apt/keyrings
           sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
@@ -329,6 +384,8 @@
       changed_when: "False"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         docker run hello-world
 
     - name: Start docker on startup
@@ -337,6 +394,8 @@
       changed_when: "'CHANGED' in docker_startup.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         if ! sudo systemctl status docker.service >/dev/null 2>&1; then
           sudo systemctl enable docker.service
           printf 'CHANGED\n'
@@ -377,6 +436,8 @@
       when: ansible_facts['system'] == 'Linux' and docker_config.changed
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         sudo service docker restart
 
     # This is necessary, otherwise sometimes the network addresses we want to bind to are not setup yet
@@ -387,6 +448,8 @@
       changed_when: "'CHANGED' in docker_throttle.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         if [ ! -d /etc/systemd/system/docker.service.d ]; then
           sudo mkdir /etc/systemd/system/docker.service.d
           printf 'CHANGED\n'
@@ -414,6 +477,8 @@
       changed_when: "'CHANGED' in setup_locale.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         sudo locale-gen en_US.UTF-8
         sudo localedef -i en_US -f UTF-8 en_US.UTF-8
         before_sha="$(shasum '/etc/default/locale')"
@@ -434,6 +499,8 @@
       changed_when: "'CHANGED' in create_cron_log_dir.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         if [ ! -e "$HOME/.log" ]; then
           mkdir -p "$HOME/.log"
           printf 'CHANGED\n'
@@ -447,17 +514,20 @@
       changed_when: "'CHANGED' in git_clone_homelab.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
+
         if [ ! -e "$HOME/git/homelab" ]; then
           mkdir -p "$HOME/git"
           git clone 'https://github.com/matejkosiarcik/homelab.git' "$HOME/git/homelab"
           printf 'CHANGED\n'
         fi
 
-    - name: Setup current server symlink in homelab repository
+    - name: Setup current server symlink
       register: git_current_symlink
       changed_when: "'CHANGED' in git_current_symlink.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
 
         # Make sure current server directory exists
         if [ ! -d "$HOME/git/homelab/servers/$(uname -n)" ]; then
@@ -465,15 +535,13 @@
         fi
 
         # Create symlink
-        if [ ! -e "$HOME/git/homelab/servers/.current" ]; then
-          ln -s "$(uname -n)" "$HOME/git/homelab/servers/.current"
-          printf 'CHANGED\n'
+        if [ -e "$HOME/git/homelab/servers/.current" ]; then
+          exit 0
         fi
 
-    - name: Validate current server symlink in homelab repository
-      changed_when: "False"
-      ansible.builtin.shell: |
-        set -eufo pipefail
+        ln -s "$(uname -n)" "$HOME/git/homelab/servers/.current"
+        printf 'CHANGED\n'
+
         if [ ! -e "$HOME/git/homelab/servers/.current/Taskfile.yml" ]; then
           exit 1
         fi
@@ -483,6 +551,7 @@
       changed_when: "'CHANGED' in update_git_homelab.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
+        source "$HOME/.profile"
 
         if [ -d "$HOME/git/homelab" ]; then
           cd "$HOME/git/homelab"
@@ -514,3 +583,32 @@
           git pull --ff-only
           printf 'CHANGED\n'
         fi
+
+    - name: Install server-wide utils
+      register: server_install
+      changed_when: "'CHANGED' in server_install.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "$HOME/.profile"
+
+        cd "$HOME/git/homelab/servers/.current"
+        task install
+        printf 'CHANGED\n'
+
+    - name: Reboot
+      when: server_install.changed
+      throttle: 1
+      ansible.builtin.reboot:
+        reboot_command: sudo reboot
+
+    ## Finish ##
+
+    - name: Wait for startup
+      register: final_startup
+      changed_when: "'CHANGED' in final_startup.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "$HOME/.profile"
+
+        sleep 10
+        printf 'OK\n'

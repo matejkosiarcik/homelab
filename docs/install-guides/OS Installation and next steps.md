@@ -41,19 +41,12 @@ sudo apt-get update && sudo apt-get install --yes openssh-server python3
 
 ## Postinstall - Setup SSH
 
-Copy `homelab` public key to server, disable password authentication, enable key authentication.
+Copy `homelab` public key to server:
 
 On client:
 
 ```sh
-ssh-copy-id -i ~/.ssh/homelab.pub homelab@server-<host>.matejhome.com
-```
-
-On server:
-
-```sh
-sudo nano /etc/ssh/sshd_config # Set: "PasswordAuthentication no"
-sudo service ssh restart
+ssh-copy-id -i ~/.ssh/homelab.pub homelab@server-<name>.matejhome.com
 ```
 
 ## Postinstall - Enable passwordless sudo
@@ -70,7 +63,7 @@ sudo visudo
 On client:
 
 ```sh
-ansible-playbook --limit [machine-name] playbooks/setup-server.yml
+ansible-playbook --limit <server-name> playbooks/setup-server.yml
 ```
 
 ## Postinstall - Login to vaultwarden
@@ -81,16 +74,6 @@ On server:
 bw login homelab@vaultwarden.matejhome.com
 nano ~/.bashrc
 # Paste BW_SESSION=...
-```
-
-## Postinstall - Deploy homelab
-
-On server:
-
-```sh
-cd "$HOME/git/homelab/servers/.current"
-task install
-sudo reboot
 ```
 
 Again, on server:
