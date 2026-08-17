@@ -46,7 +46,7 @@ Copy `homelab` public key to server:
 On client:
 
 ```sh
-ssh-copy-id -i ~/.ssh/homelab.pub homelab@server-<name>.matejhome.com
+ssh-copy-id -i ~/.ssh/id_homelab.pub homelab@server-<name>.matejhome.com
 ```
 
 ## Postinstall - Enable passwordless sudo
