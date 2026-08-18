@@ -9,6 +9,11 @@ gatus:
   enabled: true
   # TODO: Finish template
 
+healthchecks:
+  - slug: certificator
+  - slug: app
+    schedule: "* * * * *"
+
 prometheus:
   enabled: true
 

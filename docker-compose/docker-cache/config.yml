@@ -15,6 +15,9 @@ gatus:
         - "[STATUS] == 200"
         - "has([BODY].repositories) == true"
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

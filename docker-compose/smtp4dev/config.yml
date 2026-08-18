@@ -15,6 +15,9 @@ gatus:
     tcp:
       - 25
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

@@ -11,6 +11,9 @@ apache:
 gatus:
   enabled: true
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

@@ -13,6 +13,9 @@ gatus:
       authentication:
         basic: matej
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

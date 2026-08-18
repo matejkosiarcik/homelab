@@ -12,6 +12,9 @@ gatus:
     - "[CONNECTED] == true"
     - "[STATUS] == 200"
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

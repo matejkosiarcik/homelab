@@ -22,6 +22,9 @@ gatus:
       authentication:
         bearer: PROMETHEUS_TOKEN
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

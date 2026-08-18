@@ -10,5 +10,7 @@ gatus:
     tcp:
       - 7007
 
+healthchecks: [] # empty
+
 prometheus:
   enabled: false

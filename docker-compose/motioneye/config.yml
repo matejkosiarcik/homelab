@@ -15,6 +15,9 @@ gatus:
       authentication:
         basic: homelab-stream
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

@@ -11,6 +11,11 @@ gatus:
   authentication:
     basic: homelab-viewer
 
+healthchecks:
+  - slug: certificator
+  - slug: app
+    cron: "30 00 * * *"
+
 prometheus:
   enabled: true
   endpoints:

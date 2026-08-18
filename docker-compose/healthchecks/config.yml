@@ -15,6 +15,9 @@ gatus:
         bearer: PROMETHEUS_TOKEN
     - path: /projects/${HEALTHCHECKS__PROMETHEUS_PROJECT}/metrics/${HEALTHCHECKS__PROMETHEUS_TOKEN}
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:
