@@ -62,12 +62,8 @@ COPY ./docker-images/gatus/parse-app-entry.sh ./docker-images/gatus/extra-data.y
 RUN printf 'apps:\n' >'/homelab/app-data.yml' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-data.yml' && \
     yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-data.yml' && \
-    printf 'Gatus2 apps:\n' && \
-    cat './app-data.yml' && \
     cat '/homelab/extra-data.yml' '/homelab/app-data.yml' >'/homelab/data.yml' && \
-    yq '.' '/homelab/data.yml' >'/homelab/data.json' && \
-    printf 'Gatus2 data:\n' && \
-    cat './data.json'
+    yq '.' '/homelab/data.yml' >'/homelab/data.json'
 
 FROM jinja AS config-2
 USER root
