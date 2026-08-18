@@ -5,6 +5,10 @@ apache:
     - path: /
       target: http://example.com:12345
 
+gatus:
+  enabled: true
+  # TODO: Finish template
+
 prometheus:
   enabled: true
 
