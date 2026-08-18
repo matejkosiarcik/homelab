@@ -163,8 +163,14 @@ write_default_proxy_users() {
 
 write_certificator_users() {
     # No arguments
+
+    # TODO: Finalize which user to use for certificator->certbot
+
     certbot_certificator_password="$(load_secret '.certbot.app.certificator_user' dev=real)"
     printf 'CERTBOT_CERTIFICATOR_PASSWORD="%s"\n' "$certbot_certificator_password" >>"$initial_output/certificator.env"
+
+    certbot_homelab_viewer_password="$(load_secret '.certbot.app.homelab_viewer' dev=real)"
+    printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD="%s"\n' "$certbot_homelab_viewer_password" >>"$initial_output/certificator.env"
 }
 
 case "$app_type" in
