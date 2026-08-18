@@ -28,7 +28,7 @@ app_fullname_uppercase="$(printf '%s' "$app_fullname" | tr '[:lower:]' '[:upper:
 ## Get config values for this generic app-type ##
 
 prometheus_config="$(yq --raw-output --compact-output '.prometheus' "/homelab/docker-compose/$app_type/config.yml")"
-if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
+if [ "$prometheus_config" = '' ] || [ "$prometheus_config" = 'null' ] || [ "$prometheus_config" = 'undefined' ]; then
     prometheus_config='{}'
 fi
 
