@@ -12,6 +12,9 @@ services:
       REGISTRATION_OPEN: "True"
       SITE_ROOT: ${DOCKER_COMPOSE_NETWORK_URL}
 
+  app-setup:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

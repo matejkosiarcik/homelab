@@ -1,0 +1,18 @@
+{
+  "extends": "@tsconfig/strictest/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": false,
+    "noUncheckedIndexedAccess": false,
+    "lib": [
+      "ESNext"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
