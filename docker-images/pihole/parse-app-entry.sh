@@ -12,4 +12,4 @@ output_filepath="$(realpath "$2")"
 app_domain="$(get_app_domain "$app_dirpath")"
 app_ip="$(get_app_ip "$app_dirpath")"
 
-printf '%s %s\n' "$app_ip" "$app_domain" >>"$output"
+printf '%s %s\n' "$app_ip" "$app_domain" >>"$output_filepath"

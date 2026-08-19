@@ -26,7 +26,7 @@ get_server_name() {
     # Arg 1 - App directory path
     server_path="$(dirname "$(dirname "$1")")"
 
-    server_name="$(yq --raw-output '.server.name' "$1/config/config.yml")"
+    server_name="$(yq --raw-output '.server.name' "$server_path/config/config.yml")"
     if [ "$server_name" = '' ] || [ "$server_name" = 'null' ] || [ "$server_name" = 'undefined' ]; then
         printf 'Could not get server name\n' >&2
         exit 1
