@@ -805,11 +805,22 @@ healthchecks)
     homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
     matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
     secret_key="$(load_secret ".$app_fullname_key.app.secret_key" dev=default)"
+    api_key_readonly="$(load_secret '.healthchecks.app.api_key_readonly' dev=empty)"
+    api_key_readwrite="$(load_secret '.healthchecks.app.api_key_readwrite' dev=empty)"
+    ping_key="$(load_secret '.healthchecks.app.ping_key' dev=empty)"
+    project_id="$(load_secret '.healthchecks.app.project_id' dev=empty)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
     printf 'SECRET_KEY="%s"\n' "$secret_key" >>"$initial_output/app.env"
+    printf 'api-key-readonly,%s\n' "$api_key_readonly" >>"$initial_output/.secrets.csv"
+    printf 'api-key-readwrite,%s\n' "$api_key_readwrite" >>"$initial_output/.secrets.csv"
+    printf 'ping-key,%s\n' "$ping_key" >>"$initial_output/.secrets.csv"
+    printf 'project-id,%s\n' "$project_id" >>"$initial_output/.secrets.csv"
+
+    # App setup #
+    printf 'HEALTHCHECKS_API_KEY="%s"\n' "$api_key_readwrite" >>"$initial_output/app-setup.env"
 
     # Apache #
     write_default_proxy_users "$app_fullname_key"
