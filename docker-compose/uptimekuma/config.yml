@@ -1,5 +1,5 @@
 app:
-  name: Uptime Kuma
+  name: UptimeKuma
 
 apache:
   upstream-url:

@@ -1,5 +1,5 @@
 app:
-  name: Omada Controller
+  name: OmadaController
 
 apache:
   upstream-url:

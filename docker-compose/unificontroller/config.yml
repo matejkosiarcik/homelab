@@ -1,5 +1,5 @@
 app:
-  name: Unifi Controller
+  name: UnifiController
 
 apache:
   upstream-url:
