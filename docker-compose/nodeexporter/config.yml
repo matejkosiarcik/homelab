@@ -1,5 +1,5 @@
 app:
-  name: NodeExporter
+  name: NodeExporter - <<server>>
 
 apache:
   upstream-url:

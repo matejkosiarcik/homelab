@@ -1,5 +1,5 @@
 app:
-  name: Dozzle Agent
+  name: Dozzle Agent - <<server>>
 
 apache: {}
 

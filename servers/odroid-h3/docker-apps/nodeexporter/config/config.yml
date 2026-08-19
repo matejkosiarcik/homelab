@@ -1,6 +1,5 @@
 app:
   type: nodeexporter
-  fullname: nodeexporter-odroid-h3
 
 network:
   ip: 10.1.10.24

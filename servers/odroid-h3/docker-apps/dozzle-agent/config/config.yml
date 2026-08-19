@@ -1,6 +1,5 @@
 app:
   type: dozzle-agent
-  fullname: dozzle-agent-odroid-h3
 
 network:
   ip: 10.1.10.22

@@ -1,6 +1,5 @@
 app:
   type: dozzle-agent
-  fullname: dozzle-agent-raspberry-pi-4b-2g
 
 network:
   ip: 10.1.14.22

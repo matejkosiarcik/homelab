@@ -1,6 +1,5 @@
 app:
   type: docker-stats
-  fullname: docker-stats-odroid-h3
 
 network:
   ip: 10.1.10.21

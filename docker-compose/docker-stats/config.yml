@@ -1,5 +1,5 @@
 app:
-  name: Docker Stats
+  name: Docker Stats - <<server>>
 
 apache:
   upstream-url:
