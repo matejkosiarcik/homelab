@@ -4,6 +4,7 @@ set -euf
 app_dirpath="$(realpath "$1")"
 output_filepath="$(realpath "$2")"
 
+# shellcheck source=/dev/null
 . "$PWD/parse-app-entry-utils.sh"
 
 ## Get config values for this specific app ##
@@ -41,5 +42,5 @@ tmpfile="$(mktemp)"
     printf '    prometheus: %s\n' "$prometheus_config"
 } >>"$tmpfile"
 
-replace_placeholders "$tmpfile" >>"$output_filepath"
+sed -E "s~<<app-name-pretty>>~$app_full_name_pretty~g;s~<<app-name-machine>>~$app_full_name_machine~g;s~<<app-env>>~$app_full_name_env~g;s~<<server>>~$server_name~g" <"$tmpfile" >>"$output_filepath"
 rm -f "$tmpfile"

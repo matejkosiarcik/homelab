@@ -43,7 +43,7 @@ get_app_full_name_pretty() {
         exit 1
     fi
 
-    app_instance_prettyname="$(yq --raw-output '.app.variant' "$app_dirpath/config/config.yml")"
+    app_instance_prettyname="$(yq --raw-output '.app.variant' "$1/config/config.yml")"
     if [ "$app_instance_prettyname" = '' ] || [ "$app_instance_prettyname" = 'null' ] || [ "$app_instance_prettyname" = 'undefined' ]; then
         if [ "$(get_app_type "$1")" = "$(get_app_directory_name "$1")" ]; then
             app_instance_prettyname=''
@@ -57,7 +57,7 @@ get_app_full_name_pretty() {
         app_prettyname="$app_prettyname - $app_instance_prettyname"
     fi
 
-    printf '%s\n' "$app_prettyname" | sed -E "s~<<server>>~$(get_server_name)~g"
+    printf '%s\n' "$app_prettyname" | sed -E "s~<<server>>~$(get_server_name "$1")~g"
 }
 
 get_app_full_name_machine() {
@@ -88,9 +88,4 @@ get_app_ip() {
     fi
 
     printf '%s\n' "$domain"
-}
-
-replace_placeholders() {
-    # $1 - input file
-    sed -E "s~<<app-name-pretty>>~$app_full_name_pretty~g;s~<<app-name-machine>>~$app_full_name_machine~g;s~<<app-env>>~$app_full_name_env~g;s~<<server>>~$server_name~g" <"$1"
 }

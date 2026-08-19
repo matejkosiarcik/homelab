@@ -4,6 +4,7 @@ set -euf
 app_dirpath="$(realpath "$1")"
 output_filepath="$(realpath "$2")"
 
+# shellcheck source=/dev/null
 . "$PWD/parse-app-entry-utils.sh"
 
 ## Get config values for this specific app ##
