@@ -11,7 +11,7 @@ get_app_type() {
     # Arg 1 - App directory path
     app_type="$(yq --raw-output '.app.type' "$1/config/config.yml")"
     if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-        app_type="$(get_app_directory_name  "$1")"
+        app_type="$(get_app_directory_name "$1")"
     fi
 
     if [ ! -d "/homelab/docker-compose/$app_type" ]; then
@@ -45,10 +45,10 @@ get_app_full_name_pretty() {
 
     app_instance_prettyname="$(yq --raw-output '.app.variant' "$app_dirpath/config/config.yml")"
     if [ "$app_instance_prettyname" = '' ] || [ "$app_instance_prettyname" = 'null' ] || [ "$app_instance_prettyname" = 'undefined' ]; then
-        if [ "$(get_app_type  "$1")" = "$(get_app_directory_name  "$1")"  ]; then
+        if [ "$(get_app_type "$1")" = "$(get_app_directory_name "$1")" ]; then
             app_instance_prettyname=''
         else
-            app_instance_prettyname="$(get_app_directory_name  "$1" | sed -E "s~^$(get_app_type)\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
+            app_instance_prettyname="$(get_app_directory_name "$1" | sed -E "s~^$(get_app_type)\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
         fi
     fi
 
