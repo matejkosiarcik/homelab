@@ -3,13 +3,15 @@ set -euf
 
 # This is equal to dirname
 get_app_directory_name() {
-    basename "$app_dirpath" | sed -E 's~^\.~~'
+    # Arg 1 - App directory path
+    basename "$1" | sed -E 's~^\.~~'
 }
 
 get_app_type() {
-    app_type="$(yq --raw-output '.app.type' "$app_dirpath/config/config.yml")"
+    # Arg 1 - App directory path
+    app_type="$(yq --raw-output '.app.type' "$1/config/config.yml")"
     if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-        app_type="$(get_app_directory_name)"
+        app_type="$(get_app_directory_name  "$1")"
     fi
 
     if [ ! -d "/homelab/docker-compose/$app_type" ]; then
@@ -21,9 +23,10 @@ get_app_type() {
 }
 
 get_server_name() {
-    server_path="$(dirname "$(dirname "$app_dirpath")")"
+    # Arg 1 - App directory path
+    server_path="$(dirname "$(dirname "$1")")"
 
-    server_name="$(yq --raw-output '.server.name' "$server_path/config/config.yml")"
+    server_name="$(yq --raw-output '.server.name' "$1/config/config.yml")"
     if [ "$server_name" = '' ] || [ "$server_name" = 'null' ] || [ "$server_name" = 'undefined' ]; then
         printf 'Could not get server name\n' >&2
         exit 1
@@ -33,7 +36,8 @@ get_server_name() {
 }
 
 get_app_full_name_pretty() {
-    app_template_prettyname="$(yq --raw-output '.app.name' "/homelab/docker-compose/$(get_app_type)/config.yml")"
+    # Arg 1 - App directory path
+    app_template_prettyname="$(yq --raw-output '.app.name' "/homelab/docker-compose/$(get_app_type "$1")/config.yml")"
     if [ "$app_template_prettyname" = '' ] || [ "$app_template_prettyname" = 'null' ] || [ "$app_template_prettyname" = 'undefined' ]; then
         printf 'Could not get app name\n' >&2
         exit 1
@@ -41,10 +45,10 @@ get_app_full_name_pretty() {
 
     app_instance_prettyname="$(yq --raw-output '.app.variant' "$app_dirpath/config/config.yml")"
     if [ "$app_instance_prettyname" = '' ] || [ "$app_instance_prettyname" = 'null' ] || [ "$app_instance_prettyname" = 'undefined' ]; then
-        if [ "$(get_app_type)" = "$(get_app_directory_name)"  ]; then
+        if [ "$(get_app_type  "$1")" = "$(get_app_directory_name  "$1")"  ]; then
             app_instance_prettyname=''
         else
-            app_instance_prettyname="$(get_app_directory_name | sed -E "s~^$(get_app_type)\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
+            app_instance_prettyname="$(get_app_directory_name  "$1" | sed -E "s~^$(get_app_type)\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
         fi
     fi
 
@@ -57,17 +61,30 @@ get_app_full_name_pretty() {
 }
 
 get_app_full_name_machine() {
-    get_app_full_name_pretty | tr '[:upper:]' '[:lower:]' | sed -E 's~ +~-~g;s~_+~-~g;s~\-+~-~g'
+    # Arg 1 - App directory path
+    get_app_full_name_pretty "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's~ +~-~g;s~_+~-~g;s~\-+~-~g'
 }
 
 get_app_full_name_env() {
-    get_app_full_name_machine | sed -E 's~-~_~g' | tr '[:lower:]' '[:upper:]'
+    # Arg 1 - App directory path
+    get_app_full_name_machine "$1" | sed -E 's~-~_~g' | tr '[:lower:]' '[:upper:]'
 }
 
 get_app_domain() {
-    domain="$(yq --raw-output '.network.domain' "$app_dirpath/config/config.yml")"
+    # Arg 1 - App directory path
+    domain="$(yq --raw-output '.network.domain' "$1/config/config.yml")"
     if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
-        domain="$(get_app_full_name_machine).matejhome.com"
+        domain="$(get_app_full_name_machine "$1").matejhome.com"
+    fi
+
+    printf '%s\n' "$domain"
+}
+
+get_app_ip() {
+    # Arg 1 - App directory path
+    ip="$(yq --raw-output '.network.ip' "$1/config/config.yml")"
+    if [ "$ip" = '' ] || [ "$ip" = 'null' ] || [ "$ip" = 'undefined' ]; then
+        ip='0.0.0.0'
     fi
 
     printf '%s\n' "$domain"

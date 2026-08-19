@@ -1,19 +1,14 @@
 #!/bin/sh
 set -euf
 
-apppath="$(realpath "$1")"
-output="$(realpath "$2")"
+app_dirpath="$(realpath "$1")"
+output_filepath="$(realpath "$2")"
 
-appname="$(basename "$apppath")"
+. "$PWD/parse-app-entry-utils.sh"
 
-domain="$(yq --raw-output '.network.domain' "$apppath/config/config.yml")"
-if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
-    domain="$appname.matejhome.com"
-fi
+## Get config values for this specific app ##
 
-ip="$(yq --raw-output '.network.ip' "$apppath/config/config.yml")"
-if [ "$ip" = '' ] || [ "$ip" = 'null' ] || [ "$ip" = 'undefined' ]; then
-    ip="0.0.0.0"
-fi
+app_domain="$(get_app_domain "$app_dirpath")"
+app_ip="$(get_app_ip "$app_dirpath")"
 
-printf '%s %s\n' "$ip" "$domain" >>"$output"
+printf '%s %s\n' "$app_ip" "$app_domain" >>"$output"
