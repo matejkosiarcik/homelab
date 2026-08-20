@@ -13,7 +13,7 @@ trim_trailing_whitespace = true
 # max_line_length - probably better to leave to language specific tools
 
 # Ignore binaries
-[*.{3gp,7z,a,apng,avf,avi,bak,bin,bmp,br,bz,DS_Store,cache,dll,dylib,exe,gif,gz,gzip,ico,jpeg,jpg,mkv,mp2,mp3,mp4,ogg,pdb,png,so,tar,wav,webm,webp,xz,zip,zst}]
+[*.{3gp,7z,a,apng,avf,avi,bak,bin,bmp,br,bz,DS_Store,cache,dll,dylib,exe,gif,gz,gzip,ico,jpeg,jpg,mkv,mp2,mp3,mp4,ogg,pdb,png,so,tar,wav,webm,webp,xz,zim,zip,zst}]
 charset = unset
 end_of_line = unset
 indent_size = unset
