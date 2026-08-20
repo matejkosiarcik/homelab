@@ -32,6 +32,7 @@ FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY ./docker-images/kiwix/entrypoint.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY ./docker-images/kiwix/empty.zim /homelab/default-data/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
