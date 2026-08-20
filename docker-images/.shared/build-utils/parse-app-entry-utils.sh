@@ -2,19 +2,21 @@
 set -euf
 
 # This is equal to dirname
-get_app_directory_name() {
+get_app_short_name_machine() {
     # Arg 1 - App directory path
     basename "$1" | sed -E 's~^\.~~'
 }
 
 get_app_type() {
     # Arg 1 - App directory path
+    root_path="$(dirname "$(dirname "$(dirname "$(dirname "$1")")")")"
+
     app_type="$(yq --raw-output '.app.type' "$1/config/config.yml")"
     if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-        app_type="$(get_app_directory_name "$1")"
+        app_type="$(get_app_short_name_machine "$1")"
     fi
 
-    if [ ! -d "/homelab/docker-compose/$app_type" ]; then
+    if [ ! -d "$root_path/docker-compose/$app_type" ]; then
         printf 'App-template directory not found\n' >&2
         exit 1
     fi
@@ -37,7 +39,9 @@ get_server_name() {
 
 get_app_full_name_pretty() {
     # Arg 1 - App directory path
-    app_template_prettyname="$(yq --raw-output '.app.name' "/homelab/docker-compose/$(get_app_type "$1")/config.yml")"
+    root_path="$(dirname "$(dirname "$(dirname "$(dirname "$1")")")")"
+
+    app_template_prettyname="$(yq --raw-output '.app.name' "$root_path/docker-compose/$(get_app_type "$1")/config.yml")"
     if [ "$app_template_prettyname" = '' ] || [ "$app_template_prettyname" = 'null' ] || [ "$app_template_prettyname" = 'undefined' ]; then
         printf 'Could not get app name\n' >&2
         exit 1
@@ -45,10 +49,10 @@ get_app_full_name_pretty() {
 
     app_instance_prettyname="$(yq --raw-output '.app.variant' "$1/config/config.yml")"
     if [ "$app_instance_prettyname" = '' ] || [ "$app_instance_prettyname" = 'null' ] || [ "$app_instance_prettyname" = 'undefined' ]; then
-        if [ "$(get_app_type "$1")" = "$(get_app_directory_name "$1")" ]; then
+        if [ "$(get_app_type "$1")" = "$(get_app_short_name_machine "$1")" ]; then
             app_instance_prettyname=''
         else
-            app_instance_prettyname="$(get_app_directory_name "$1" | sed -E "s~^$(get_app_type "$1")\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
+            app_instance_prettyname="$(get_app_short_name_machine "$1" | sed -E "s~^$(get_app_type "$1")\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
         fi
     fi
 

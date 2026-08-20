@@ -33,24 +33,17 @@ done
 initial_output="$(mktemp -d)"
 printf 'secret-name,secret-value\n' >"$initial_output/.secrets.csv"
 
+
+# shellcheck source=/dev/null
+. "$git_root_dir/docker-images/.shared/build-utils/parse-app-entry-utils.sh"
+
 app_dir_path="$PWD"
-app_shortname="$(basename "$app_dir_path" | sed -E 's~^\.~~')"
-
-app_type="$(yq --raw-output .app.type "$app_dir_path/config/config.yml")"
-if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-    app_type="$app_shortname"
-fi
-
-app_fullname="$(yq --raw-output .app.fullname "$app_dir_path/config/config.yml")"
-if [ "$app_fullname" = '' ] || [ "$app_fullname" = 'null' ] || [ "$app_fullname" = 'undefined' ]; then
-    app_fullname="$app_shortname"
-fi
-app_fullname_key="$(printf '%s' "$app_fullname" | tr '-' '_')"
-
-domain="$(yq --raw-output .network.domain "$app_dir_path/config/config.yml")"
-if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
-    domain="$app_fullname.matejhome.com"
-fi
+app_shortname="$(get_app_short_name_machine "$app_dir_path")"
+app_type="$(get_app_type "$app_dir_path")"
+app_full_name="$(get_app_full_name_machine "$app_dir_path")"
+app_full_name_env="$(get_app_full_name_env "$app_dir_path")"
+app_full_name_key="$(printf '%s' "$app_full_name" | tr '-' '_')"
+app_domain="$(get_app_domain "$app_dir_path")"
 
 tmpdir="$(mktemp -d)"
 
@@ -176,17 +169,17 @@ write_certificator_users() {
 case "$app_type" in
 actualbudget)
     # Preload #
-    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -194,12 +187,12 @@ actualbudget)
 
 adventurelog)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    monika_password="$(load_secret ".$app_fullname_key.app.monika_user" dev=default)"
-    django_password="$(load_secret ".$app_fullname_key.app.django_admin_user" dev=default)"
-    secret_key="$(load_secret ".$app_fullname_key.app.secret_key" "dev=value=$(openssl rand -hex 32)")"
-    postgis_password="$(load_secret ".$app_fullname_key.postgis.user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    monika_password="$(load_secret ".$app_full_name_key.app.monika_user" dev=default)"
+    django_password="$(load_secret ".$app_full_name_key.app.django_admin_user" dev=default)"
+    secret_key="$(load_secret ".$app_full_name_key.app.secret_key" "dev=value=$(openssl rand -hex 32)")"
+    postgis_password="$(load_secret ".$app_full_name_key.postgis.user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -218,16 +211,16 @@ adventurelog)
     printf 'postgis,%s\n' "$postgis_password" >>"$initial_output/.secrets.csv"
 
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_fullname_key.postgis.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_fullname_key.postgis.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgis.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgis.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -235,17 +228,17 @@ adventurelog)
 
 changedetection)
     # Preload #
-    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -253,17 +246,17 @@ changedetection)
 
 certbot)
     # Preload #
-    certbot_matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    certbot_certificator_password="$(load_secret ".$app_fullname_key.app.certificator_user" dev=default)"
-    certbot_homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    certbot_homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    certbot_public_email="$(load_secret ".$app_fullname_key.websupport.public_email" dev=real)"
-    websupport_api_key="$(load_secret ".$app_fullname_key.websupport.api_key" dev=real)"
-    websupport_api_secret="$(load_secret ".$app_fullname_key.websupport.api_secret" dev=real)"
-    websupport_service_id="$(load_secret ".$app_fullname_key.websupport.service_id" dev=real)"
+    certbot_matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    certbot_certificator_password="$(load_secret ".$app_full_name_key.app.certificator_user" dev=default)"
+    certbot_homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    certbot_homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    certbot_public_email="$(load_secret ".$app_full_name_key.websupport.public_email" dev=real)"
+    websupport_api_key="$(load_secret ".$app_full_name_key.websupport.api_key" dev=real)"
+    websupport_api_secret="$(load_secret ".$app_full_name_key.websupport.api_secret" dev=real)"
+    websupport_service_id="$(load_secret ".$app_full_name_key.websupport.service_id" dev=real)"
 
     # App #
-    write_healthcheck_url "$app_fullname_key" app
+    write_healthcheck_url "$app_full_name_key" app
 
     write_http_auth_user matej "$certbot_matej_password" proxy-prometheus
     write_http_auth_user matej "$certbot_matej_password" users-viewers
@@ -294,7 +287,7 @@ certbot)
     printf 'websupport-service-id,%s\n' "$websupport_service_id" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -302,13 +295,13 @@ certbot)
 
 dawarich)
     # Preload #
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
-    decryptor_key="$(load_secret ".$app_fullname_key.decryptor.secret_key" "dev=value=$(openssl rand -hex 16)")"
-    postgis_password="$(load_secret ".$app_fullname_key.postgis.user" dev=default)"
-    redis_password="$(load_secret ".$app_fullname_key.redis.user" dev=default)"
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    api_key="$(load_secret ".$app_fullname_key.app.api_key" dev=empty)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
+    decryptor_key="$(load_secret ".$app_full_name_key.decryptor.secret_key" "dev=value=$(openssl rand -hex 16)")"
+    postgis_password="$(load_secret ".$app_full_name_key.postgis.user" dev=default)"
+    redis_password="$(load_secret ".$app_full_name_key.redis.user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    api_key="$(load_secret ".$app_full_name_key.app.api_key" dev=empty)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -329,8 +322,8 @@ dawarich)
     printf 'postgis,%s\n' "$postgis_password" >>"$initial_output/.secrets.csv"
 
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_fullname_key.postgis.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_fullname_key.postgis.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgis.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgis.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Redis #
@@ -339,11 +332,11 @@ dawarich)
     printf 'redis,%s\n' "$redis_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -351,8 +344,8 @@ dawarich)
 
 docker-cache)
     # Preload #
-    http_secret="$(load_secret ".$app_fullname_key.app.http_secret" "dev=value=$(openssl rand -hex 16)")"
-    redis_password="$(load_secret ".$app_fullname_key.redis.user" dev=default)"
+    http_secret="$(load_secret ".$app_full_name_key.app.http_secret" "dev=value=$(openssl rand -hex 16)")"
+    redis_password="$(load_secret ".$app_full_name_key.redis.user" dev=default)"
 
     # App #
     printf 'REGISTRY_HTTP_SECRET="%s"\n' "$http_secret" >>"$initial_output/app.env"
@@ -365,11 +358,11 @@ docker-cache)
     printf 'redis,%s\n' "$redis_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -377,10 +370,10 @@ docker-cache)
 
 docker-stats)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # App #
     write_http_auth_user matej "$matej_password" prometheus
@@ -403,11 +396,11 @@ docker-stats)
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -415,18 +408,18 @@ docker-stats)
 
 donetick)
     # Preload #
-    jwt_secret="$(load_secret ".$app_fullname_key.app.jwt_secret" "dev=value=$(openssl rand -base64 32 | base64)")"
+    jwt_secret="$(load_secret ".$app_full_name_key.app.jwt_secret" "dev=value=$(openssl rand -base64 32 | base64)")"
 
     # App #
     printf 'DT_JWT_SECRET="%s"\n' "$jwt_secret" >>"$initial_output/app.env"
     printf 'jwt-secret,%s\n' "$jwt_secret" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -434,9 +427,9 @@ donetick)
 
 dozzle)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
     hash_password_bcrypt "$matej_password" >"$tmpdir/matej-password-encrypted.txt"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
     hash_password_bcrypt "$homelab_test_password" >"$tmpdir/homelab-test-password-encrypted.txt"
 
     # App #
@@ -445,11 +438,11 @@ dozzle)
 
     printf 'users:\n' >>"$initial_output/dozzle-users.yml"
     printf '    matej:\n' >>"$initial_output/dozzle-users.yml"
-    printf '        email: matej@%s\n' "$domain" >>"$initial_output/dozzle-users.yml"
+    printf '        email: matej@%s\n' "$app_domain" >>"$initial_output/dozzle-users.yml"
     printf '        name: matej\n' >>"$initial_output/dozzle-users.yml"
     printf '        password: %s\n' "$(cat "$tmpdir/matej-password-encrypted.txt")" >>"$initial_output/dozzle-users.yml"
     printf '    homelab-test:\n' >>"$initial_output/dozzle-users.yml"
-    printf '        email: homelab-test@homelab.%s\n' "$domain" >>"$initial_output/dozzle-users.yml"
+    printf '        email: homelab-test@homelab.%s\n' "$app_domain" >>"$initial_output/dozzle-users.yml"
     printf '        name: homelab-test\n' >>"$initial_output/dozzle-users.yml"
     printf '        password: %s\n' "$(cat "$tmpdir/homelab-test-password-encrypted.txt")" >>"$initial_output/dozzle-users.yml"
 
@@ -457,16 +450,16 @@ dozzle)
     openssl genpkey -algorithm RSA -out "$tmpdir/key.pem" -pkeyopt rsa_keygen_bits:2048
     openssl req -new -key "$tmpdir/key.pem" -out "$tmpdir/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"
     openssl x509 -req -in "$tmpdir/request.csr" -signkey "$tmpdir/key.pem" -out "$tmpdir/cert.pem" -days 3650
-    load_secret ".$app_fullname_key.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 -d >"$initial_output/dozzle-key.pem"
-    load_secret ".$app_fullname_key.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 -d >"$initial_output/dozzle-cert.pem"
+    load_secret ".$app_full_name_key.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 -d >"$initial_output/dozzle-key.pem"
+    load_secret ".$app_full_name_key.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 -d >"$initial_output/dozzle-cert.pem"
     rm -f "$tmpdir/key.pem" "$tmpdir/request.csr" "$tmpdir/cert.pem"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -484,10 +477,10 @@ dozzle-agent)
 
 gatus)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -672,11 +665,11 @@ gatus)
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -684,8 +677,8 @@ gatus)
 
 git-cache)
     # Preload #
-    postgres_password="$(load_secret ".$app_fullname_key.postgres.user" dev=default)"
-    redis_password="$(load_secret ".$app_fullname_key.redis.user" dev=default)"
+    postgres_password="$(load_secret ".$app_full_name_key.postgres.user" dev=default)"
+    redis_password="$(load_secret ".$app_full_name_key.redis.user" dev=default)"
 
     # App #
     printf 'PGPASSWORD="%s"\n' "$postgres_password" >>"$initial_output/app.env"
@@ -693,8 +686,8 @@ git-cache)
     # Postgres #
     printf 'POSTGRES_PASSWORD="%s"\n' "$postgres_password" >>"$initial_output/postgres.env"
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_fullname_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_fullname_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Redis #
@@ -703,11 +696,11 @@ git-cache)
     printf 'redis,%s\n' "$redis_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -715,8 +708,8 @@ git-cache)
 
 gotify)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -725,11 +718,11 @@ gotify)
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -737,9 +730,9 @@ gotify)
 
 grafana)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -750,11 +743,11 @@ grafana)
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -762,12 +755,12 @@ grafana)
 
 groceries)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    monika_password="$(load_secret ".$app_fullname_key.app.monika_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    couchdb_password="$(load_secret ".$app_fullname_key.couchdb.user" dev=default)"
-    couchdb_hmac_key="$(load_secret ".$app_fullname_key.couchdb.hmac_key" dev=default)"
-    couchdb_uuid="$(load_secret ".$app_fullname_key.couchdb.uuid" "dev=value=$(uuidgen)")"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    monika_password="$(load_secret ".$app_full_name_key.app.monika_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    couchdb_password="$(load_secret ".$app_full_name_key.couchdb.user" dev=default)"
+    couchdb_hmac_key="$(load_secret ".$app_full_name_key.couchdb.hmac_key" dev=default)"
+    couchdb_uuid="$(load_secret ".$app_full_name_key.couchdb.uuid" "dev=value=$(uuidgen)")"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -790,11 +783,11 @@ groceries)
     printf 'couchdb-uuid,%s\n' "$couchdb_uuid" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -802,9 +795,9 @@ groceries)
 
 healthchecks)
     # Preload #
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    secret_key="$(load_secret ".$app_fullname_key.app.secret_key" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    secret_key="$(load_secret ".$app_full_name_key.app.secret_key" dev=default)"
     api_key_readonly="$(load_secret '.healthchecks.app.api_key_readonly' dev=empty)"
     api_key_readwrite="$(load_secret '.healthchecks.app.api_key_readwrite' dev=empty)"
     ping_key="$(load_secret '.healthchecks.app.ping_key' dev=empty)"
@@ -823,11 +816,11 @@ healthchecks)
     printf 'HEALTHCHECKS_API_KEY="%s"\n' "$api_key_readwrite" >>"$initial_output/app-setup.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -835,11 +828,11 @@ healthchecks)
 
 homeassistant)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    monika_password="$(load_secret ".$app_fullname_key.app.monika_user" dev=default)"
-    homelab_admin_password="$(load_secret ".$app_fullname_key.app.homelab_admin_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    monika_password="$(load_secret ".$app_full_name_key.app.monika_user" dev=default)"
+    homelab_admin_password="$(load_secret ".$app_full_name_key.app.homelab_admin_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -849,11 +842,11 @@ homeassistant)
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -861,9 +854,9 @@ homeassistant)
 
 homepage)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     write_http_auth_user matej "$matej_password" proxy-prometheus
@@ -903,11 +896,11 @@ homepage)
     printf 'HOMEPAGE_VAR__VIKUNJA__APIKEY="%s"\n' "$(load_secret 'vikunja.app.api_key_readonly' dev=real)" >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     printf 'FAVICON_PASSWORD="%s"\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
@@ -919,11 +912,11 @@ homepage)
 
 jellyfin)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    monika_password="$(load_secret ".$app_fullname_key.app.monika_user" dev=default)"
-    homelab_admin_password="$(load_secret ".$app_fullname_key.app.homelab_admin_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    monika_password="$(load_secret ".$app_full_name_key.app.monika_user" dev=default)"
+    homelab_admin_password="$(load_secret ".$app_full_name_key.app.homelab_admin_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -933,15 +926,15 @@ jellyfin)
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
     write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -949,13 +942,13 @@ jellyfin)
 
 kiwix)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    monika_password="$(load_secret ".$app_fullname_key.app.monika_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    monika_password="$(load_secret ".$app_full_name_key.app.monika_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     write_http_auth_user matej "$matej_password" proxy-prometheus
     write_http_auth_user matej "$matej_password" users-viewers
@@ -976,7 +969,7 @@ kiwix)
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -984,18 +977,18 @@ kiwix)
 
 koffan)
     # Preload #
-    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
     printf 'APP_PASSWORD="%s"\n' "$admin_password" >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1003,14 +996,14 @@ koffan)
 
 libretranslate)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    monika_password="$(load_secret ".$app_fullname_key.app.monika_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    monika_password="$(load_secret ".$app_full_name_key.app.monika_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     write_http_auth_user matej "$matej_password" prometheus
     write_http_auth_user matej "$matej_password" proxy-prometheus
@@ -1033,7 +1026,7 @@ libretranslate)
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1041,10 +1034,10 @@ libretranslate)
 
 minio)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_writer_password="$(load_secret ".$app_fullname_key.app.homelab_writer_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_writer_password="$(load_secret ".$app_full_name_key.app.homelab_writer_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1060,11 +1053,11 @@ minio)
     printf 'MINIO_HOMELAB_TEST_PASSWORD="%s"\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1072,19 +1065,19 @@ minio)
 
 motioneye)
     # Preload #
-    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
-    stream_password="$(load_secret ".$app_fullname_key.app.stream_user" dev=default)"
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
+    stream_password="$(load_secret ".$app_full_name_key.app.stream_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
     printf 'stream,%s\n' "$stream_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1094,17 +1087,17 @@ netalertx)
     # TODO: Finish NetAlertX secrets
 
     # Preload #
-    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1112,13 +1105,13 @@ netalertx)
 
 nodeexporter)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     write_http_auth_user matej "$matej_password" proxy-prometheus
     write_http_auth_user matej "$matej_password" prometheus
@@ -1141,7 +1134,7 @@ nodeexporter)
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1149,7 +1142,7 @@ nodeexporter)
 
 npm-cache)
     # Preload #
-    redis_password="$(load_secret ".$app_fullname_key.redis.user" dev=default)"
+    redis_password="$(load_secret ".$app_full_name_key.redis.user" dev=default)"
 
     # Redis #
     printf 'REDIS_PASSWORD="%s"\n' "$redis_password" >>"$initial_output/redis.env"
@@ -1157,11 +1150,11 @@ npm-cache)
     printf 'redis,%s\n' "$redis_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1169,10 +1162,10 @@ npm-cache)
 
 ntfy)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_publisher_password="$(load_secret ".$app_fullname_key.app.homelab_publisher_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_publisher_password="$(load_secret ".$app_full_name_key.app.homelab_publisher_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1188,11 +1181,11 @@ ntfy)
     printf 'NTFY_PASSWORD_HOMELAB_TEST="%s"\n' "$homelab_test_password" >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1200,10 +1193,10 @@ ntfy)
 
 ollama)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    openwebui_password="$(load_secret ".$app_fullname_key.app.openwebui_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    openwebui_password="$(load_secret ".$app_full_name_key.app.openwebui_user" dev=default)"
 
     # App #
     write_http_auth_user matej "$matej_password" proxy-prometheus
@@ -1224,11 +1217,11 @@ ollama)
     printf 'openwebui,%s\n' "$openwebui_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1236,10 +1229,10 @@ ollama)
 
 omadacontroller)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_admin_password="$(load_secret ".$app_fullname_key.app.homelab_admin_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_admin_password="$(load_secret ".$app_full_name_key.app.homelab_admin_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1248,11 +1241,11 @@ omadacontroller)
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1260,11 +1253,11 @@ omadacontroller)
 
 openspeedtest)
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1272,10 +1265,10 @@ openspeedtest)
 
 openwebui)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
     ollama_openwebui_password="$(load_secret '.ollama.app.openwebui_user' dev=real)"
-    secret_key="$(load_secret ".$app_fullname_key.app.secret_key" "dev=value=$(openssl rand -hex 16)")"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    secret_key="$(load_secret ".$app_full_name_key.app.secret_key" "dev=value=$(openssl rand -hex 16)")"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'OLLAMA_BASE_URL="%s"\n' "https://openwebui:$ollama_openwebui_password@$DOCKER_COMPOSE_OLLAMA_UPSTREAM_DOMAIN" >>"$initial_output/app.env"
@@ -1286,11 +1279,11 @@ openwebui)
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1298,8 +1291,8 @@ openwebui)
 
 pihole)
     # Preload #
-    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
@@ -1309,14 +1302,14 @@ pihole)
     printf 'PIHOLE_PASSWORD="%s"\n' "$admin_password" >>"$initial_output/app-prometheus-exporter.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1324,14 +1317,14 @@ pihole)
 
 planka)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
     if [ "$mode" = 'dev' ]; then
         matej_email='matej@localhost'
     else
         matej_email='matej@matejhome.com'
     fi
-    secret_key="$(load_secret ".$app_fullname.app.secret_key" "dev=value=$(openssl rand -hex 64)")"
-    postgres_password="$(load_secret ".$app_fullname_key.postgres.user" dev=default)"
+    secret_key="$(load_secret ".$app_full_name.app.secret_key" "dev=value=$(openssl rand -hex 64)")"
+    postgres_password="$(load_secret ".$app_full_name_key.postgres.user" dev=default)"
 
     # App #
     printf 'SECRET_KEY="%s"\n' "$secret_key" >>"$initial_output/app.env"
@@ -1349,16 +1342,16 @@ planka)
     printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/.secrets.csv"
 
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_fullname_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_fullname_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1366,10 +1359,10 @@ planka)
 
 prometheus)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1517,11 +1510,11 @@ prometheus)
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     printf 'FAVICON_PASSWORD=%s\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
@@ -1529,14 +1522,14 @@ prometheus)
 
 renovatebot)
     # Preload #
-    renovate_token="$(load_secret ".$app_fullname.app.renovate_token" dev=real)" # PAT specific for each git host
-    github_token="$(load_secret ".$app_fullname.app.github_token" dev=real)"     # GitHub PAT (even if using other git hosts)
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    renovate_token="$(load_secret ".$app_full_name.app.renovate_token" dev=real)" # PAT specific for each git host
+    github_token="$(load_secret ".$app_full_name.app.github_token" dev=real)"     # GitHub PAT (even if using other git hosts)
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
-    write_healthcheck_url "$app_fullname_key" app
+    write_healthcheck_url "$app_full_name_key" app
     printf 'RENOVATE_TOKEN="%s"\n' "$renovate_token" >>"$initial_output/app.env"
     printf 'GITHUB_COM_TOKEN="%s"\n' "$github_token" >>"$initial_output/app.env"
     printf 'renovate-token,%s\n' "$renovate_token" >>"$initial_output/.secrets.csv"
@@ -1556,11 +1549,11 @@ renovatebot)
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1568,10 +1561,10 @@ renovatebot)
 
 reportportal)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    admin_password="$(load_secret ".$app_fullname_key.app.admin_user" dev=default)"
-    postgres_password="$(load_secret ".$app_fullname_key.postgres.user" dev=default)"
-    rabbitmq_password="$(load_secret ".$app_fullname_key.rabbitmq.user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
+    postgres_password="$(load_secret ".$app_full_name_key.postgres.user" dev=default)"
+    rabbitmq_password="$(load_secret ".$app_full_name_key.rabbitmq.user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1593,8 +1586,8 @@ reportportal)
     printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/.secrets.csv"
     printf 'POSTGRES_PASSWORD="%s"\n' "$postgres_password" >>"$initial_output/postgres.env"
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_fullname_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_fullname_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # RabbitMQ
@@ -1602,11 +1595,11 @@ reportportal)
     printf 'RABBITMQ_DEFAULT_PASS="%s"\n' "$rabbitmq_password" >>"$initial_output/rabbitmq.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1614,22 +1607,22 @@ reportportal)
 
 samba)
     # Preload #
-    smb_password="$(load_secret ".$app_fullname_key.app.user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    smb_password="$(load_secret ".$app_full_name_key.app.user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "$smb_password" >>"$initial_output/.secrets.csv"
     printf 'SAMBA_PASSWORD="%s"\n' "$smb_password" >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     write_http_auth_user prometheus "$app_prometheus_password" prometheus
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1637,9 +1630,9 @@ samba)
 
 smtp4dev)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'ServerOptions__Users__0__Password="%s"\n' "$matej_password" >>"$initial_output/app.env"
@@ -1661,11 +1654,11 @@ smtp4dev)
     write_http_auth_user homelab-test "$homelab_test_password" users-admins
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     printf 'FAVICON_PASSWORD="%s"\n' "$homelab_viewer_password" >>"$initial_output/favicons.env"
@@ -1673,13 +1666,13 @@ smtp4dev)
 
 speedtesttracker)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
     if [ "$mode" = 'dev' ]; then
         matej_email='matej@localhost'
     else
         matej_email='matej@matejhome.com'
     fi
-    app_key="$(load_secret ".$app_fullname.app.app_key" "dev=value=$(printf 'base64:' && openssl rand -base64 32)")"
+    app_key="$(load_secret ".$app_full_name.app.app_key" "dev=value=$(printf 'base64:' && openssl rand -base64 32)")"
 
     # App #
     printf 'matej-email,%s\n' "$matej_email" >>"$initial_output/.secrets.csv"
@@ -1692,11 +1685,11 @@ speedtesttracker)
     printf 'MAIL_USERNAME=""\n' >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1704,10 +1697,10 @@ speedtesttracker)
 
 tvheadend)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    stream_password="$(load_secret ".$app_fullname_key.app.stream_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    stream_password="$(load_secret ".$app_full_name_key.app.stream_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1716,11 +1709,11 @@ tvheadend)
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1728,13 +1721,13 @@ tvheadend)
 
 unbound)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     write_http_auth_user matej "$matej_password" prometheus
     write_http_auth_user matej "$matej_password" proxy-prometheus
@@ -1757,7 +1750,7 @@ unbound)
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1765,11 +1758,11 @@ unbound)
 
 unificontroller)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_admin_password="$(load_secret ".$app_fullname_key.app.homelab_admin_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    mongodb_password="$(load_secret ".$app_fullname_key.mongodb.user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_admin_password="$(load_secret ".$app_full_name_key.app.homelab_admin_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    mongodb_password="$(load_secret ".$app_full_name_key.mongodb.user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1784,11 +1777,11 @@ unificontroller)
     printf 'MONGO_INITDB_ROOT_PASSWORD="%s"\n' "$mongodb_password" >>"$initial_output/mongodb.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1796,8 +1789,8 @@ unificontroller)
 
 uptimekuma)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1806,11 +1799,11 @@ uptimekuma)
     printf 'app-prometheus,%s\n' "$app_prometheus_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1818,11 +1811,11 @@ uptimekuma)
 
 vaultwarden)
     # Preload #
-    superadmin_password="$(load_secret ".$app_fullname_key.app.superadmin_user" dev=default)"
+    superadmin_password="$(load_secret ".$app_full_name_key.app.superadmin_user" dev=default)"
     superadmin_password_hashed="$(printf '%s' "$superadmin_password" | argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4 | sed 's~\$~$$~g')"
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".$app_fullname_key.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
     # App #
     printf 'ADMIN_TOKEN="%s"\n' "$superadmin_password_hashed" >>"$initial_output/app.env"
@@ -1832,11 +1825,11 @@ vaultwarden)
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
@@ -1844,10 +1837,10 @@ vaultwarden)
 
 vikunja)
     # Preload #
-    matej_password="$(load_secret ".$app_fullname_key.app.matej_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_fullname_key.app.homelab_test_user" dev=default)"
-    jwt_secret="$(load_secret ".$app_fullname.app.jwt_secret" "dev=value=$(openssl rand -hex 32)")"
-    app_prometheus_password="$(load_secret ".$app_fullname_key.app.prometheus_user" dev=default)"
+    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
+    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    jwt_secret="$(load_secret ".$app_full_name.app.jwt_secret" "dev=value=$(openssl rand -hex 32)")"
+    app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
@@ -1863,11 +1856,11 @@ vikunja)
     printf 'VIKUNJA_METRICS_PASSWORD="%s"\n' "$app_prometheus_password" >>"$initial_output/app.env"
 
     # Apache #
-    write_default_proxy_users "$app_fullname_key"
+    write_default_proxy_users "$app_full_name_key"
 
     # Certificator #
     write_certificator_users
-    write_healthcheck_url "$app_fullname_key" certificator
+    write_healthcheck_url "$app_full_name_key" certificator
 
     # Favicons #
     touch "$initial_output/favicons.env"
