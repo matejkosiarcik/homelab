@@ -208,8 +208,8 @@ adventurelog)
     printf 'postgis,%s\n' "$postgis_password" >>"$initial_output/.secrets.csv"
 
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_full_name_key.postgis.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_full_name_key.postgis.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgis.ca_certificate" "dev=value=$(base64 <"$tmpdir/postgres-dev.crt")" | base64 -d >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgis.ca_private_key" "dev=value=$(base64 <"$tmpdir/postgres-dev.key")" | base64 -d >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Apache #
@@ -319,8 +319,8 @@ dawarich)
     printf 'postgis,%s\n' "$postgis_password" >>"$initial_output/.secrets.csv"
 
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_full_name_key.postgis.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_full_name_key.postgis.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgis.ca_certificate" "dev=value=$(base64 <"$tmpdir/postgres-dev.crt")" | base64 -d >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgis.ca_private_key" "dev=value=$(base64 <"$tmpdir/postgres-dev.key")" | base64 -d >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Redis #
@@ -683,8 +683,8 @@ git-cache)
     # Postgres #
     printf 'POSTGRES_PASSWORD="%s"\n' "$postgres_password" >>"$initial_output/postgres.env"
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(base64 <"$tmpdir/postgres-dev.crt")" | base64 -d >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(base64 <"$tmpdir/postgres-dev.key")" | base64 -d >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Redis #
@@ -1339,8 +1339,8 @@ planka)
     printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/.secrets.csv"
 
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(base64 <"$tmpdir/postgres-dev.crt")" | base64 -d >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(base64 <"$tmpdir/postgres-dev.key")" | base64 -d >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # Apache #
@@ -1583,8 +1583,8 @@ reportportal)
     printf 'postgres,%s\n' "$postgres_password" >>"$initial_output/.secrets.csv"
     printf 'POSTGRES_PASSWORD="%s"\n' "$postgres_password" >>"$initial_output/postgres.env"
     openssl req -new -x509 -days 3650 -nodes -text -out "$tmpdir/postgres-dev.crt" -keyout "$tmpdir/postgres-dev.key" -subj '/CN=postgres'
-    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(cat "$tmpdir/postgres-dev.crt")" >"$initial_output/postgres.crt"
-    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(cat "$tmpdir/postgres-dev.key")" >"$initial_output/postgres.key"
+    load_secret ".$app_full_name_key.postgres.ca_certificate" "dev=value=$(base64 <"$tmpdir/postgres-dev.crt")" | base64 -d >"$initial_output/postgres.crt"
+    load_secret ".$app_full_name_key.postgres.ca_private_key" "dev=value=$(base64 <"$tmpdir/postgres-dev.key")" | base64 -d >"$initial_output/postgres.key"
     rm -f "$tmpdir/postgres-dev.crt" "$tmpdir/postgres-dev.key"
 
     # RabbitMQ

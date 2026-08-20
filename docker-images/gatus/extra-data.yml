@@ -20,14 +20,14 @@ network:
 
 servers:
   - name: Odroid H3
-    ip: 10.1.4.1
+    domain: server-odroid-h3.matejhome.com
   - name: Odroid H4 Ultra
-    ip: 10.1.4.2
-  - name: Raspberry Pi 4B 2GB
-    ip: 10.1.4.3
-  - name: Raspberry Pi 4B 4GB
-    ip: 10.1.4.4
+    domain: server-odroid-h4-ultra.matejhome.com
+  - name: Raspberry Pi 4B 2G
+    domain: server-raspberry-pi-4b-2g.matejhome.com
+  - name: Raspberry Pi 4B 4G
+    domain: server-raspberry-pi-4b-4g.matejhome.com
   - name: MacBook Pro 2012
-    ip: 10.1.4.5
+    domain: server-macbook-pro-2012.matejhome.com
 
 # Apps are generated automatically
