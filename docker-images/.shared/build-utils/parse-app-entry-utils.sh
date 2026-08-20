@@ -48,7 +48,7 @@ get_app_full_name_pretty() {
         if [ "$(get_app_type "$1")" = "$(get_app_directory_name "$1")" ]; then
             app_instance_prettyname=''
         else
-            app_instance_prettyname="$(get_app_directory_name "$1" | sed -E "s~^$(get_app_type)\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
+            app_instance_prettyname="$(get_app_directory_name "$1" | sed -E "s~^$(get_app_type "$1")\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
         fi
     fi
 
