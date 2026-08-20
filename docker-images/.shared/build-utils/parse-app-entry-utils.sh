@@ -87,5 +87,5 @@ get_app_ip() {
         ip='0.0.0.0'
     fi
 
-    printf '%s\n' "$domain"
+    printf '%s\n' "$ip"
 }
