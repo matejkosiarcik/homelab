@@ -33,7 +33,6 @@ done
 initial_output="$(mktemp -d)"
 printf 'secret-name,secret-value\n' >"$initial_output/.secrets.csv"
 
-
 # shellcheck source=/dev/null
 . "$git_root_dir/docker-images/.shared/build-utils/parse-app-entry-utils.sh"
 
