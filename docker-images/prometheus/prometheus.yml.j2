@@ -12,7 +12,7 @@ scrape_configs:
   {%- set endpoint_name_suffix = "app" %}
 {%- endif %}
 
-  - job_name: {{ app.full_name }}-{{ endpoint_name_suffix }}
+  - job_name: {{ app.full_name_machine }}-{{ endpoint_name_suffix }}
     scheme: https
     metrics_path: {{ endpoint.path }}
     {%- if endpoint.auth.type == "basic" %}
@@ -24,10 +24,10 @@ scrape_configs:
     {%- set endpoint_auth_user = endpoint.auth.user or endpoint_auth_default_user %}
     basic_auth:
       username: {{ endpoint_auth_user }}
-      password: ${{ "{" }}{{ app.full_name | replace("-", "_") | upper() }}__{{ endpoint_auth_user | replace("-", "_") | upper() }}_PASSWORD{{ "}" }}
+      password: ${{ "{" }}{{ app.full_name_env }}__{{ endpoint_auth_user | replace("-", "_") | upper() }}_PASSWORD{{ "}" }}
     {%- elif endpoint.auth.type == "bearer" %}
     authorization:
-      credentials: Bearer ${{ "{" }}{{ app.full_name | replace("-", "_") | upper() }}__PROMETHEUS_TOKEN{{ "}" }}
+      credentials: Bearer ${{ "{" }}{{ app.full_name_env }}__PROMETHEUS_TOKEN{{ "}" }}
     {%- endif %}
     static_configs:
       - targets: [{{ app.domain }}]

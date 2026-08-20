@@ -1,5 +1,5 @@
 app:
-  name: Uptime Kuma
+  name: UptimeKuma
 
 apache:
   upstream-url:
@@ -12,6 +12,9 @@ gatus:
     - path: /metrics
       authentication:
         basic: matej
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

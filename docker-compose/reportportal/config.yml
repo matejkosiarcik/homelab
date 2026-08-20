@@ -1,5 +1,5 @@
 app:
-  name: Report Portal
+  name: ReportPortal
 
 apache:
   upstream-url:
@@ -16,6 +16,9 @@ apache:
 
 gatus:
   enabled: true
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

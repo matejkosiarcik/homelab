@@ -36,7 +36,7 @@ FROM yq AS dns_entries
 USER root
 WORKDIR /homelab
 COPY ./servers/ /homelab/servers/
-COPY ./docker-images/pihole/parse-app-entry.sh /homelab/
+COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/parse-app-entry.sh /homelab/
 COPY ./docker-images/pihole/extra-domains.txt /homelab/
 RUN find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
     cat '/homelab/app-domains.txt' '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sort --version-sort >'/homelab/custom-domains.txt'

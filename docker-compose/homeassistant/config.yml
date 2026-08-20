@@ -1,5 +1,5 @@
 app:
-  name: Home Assistant
+  name: HomeAssistant
 
 apache:
   upstream-url:
@@ -12,6 +12,9 @@ gatus:
     - path: /api/prometheus
       authentication:
         bearer: PROMETHEUS_TOKEN
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

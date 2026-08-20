@@ -1,5 +1,5 @@
 app:
-  name: Omada Controller
+  name: OmadaController
 
 apache:
   upstream-url:
@@ -41,6 +41,9 @@ gatus:
     #   conditions:
     #     - "[CONNECTED] == true"
     #     - "[STATUS] == 200"
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

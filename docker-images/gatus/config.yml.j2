@@ -225,13 +225,13 @@ endpoints:
 
   {%- for item in apps %}
 
-  ## App - {{ item.full_name }}
+  ## App - {{ item.full_name_pretty }}
 
   {%- if item.type is not defined or "http" in item.type %}
 
   - <<: *default-http-infrequent
-    name: HTTP{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTP{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: http://{{ item.domain }}
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -252,8 +252,8 @@ endpoints:
 
   - <<: *default-https
   {%- endif %}
-    name: HTTPS{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTPS{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -275,14 +275,14 @@ endpoints:
   {%- if item.gatus.authentication is defined %}
 
   - <<: *default-https
-    name: HTTPS - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTPS - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     {%- if item.gatus.authentication.basic is defined %}
-    url: https://{{ item.gatus.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ item.gatus.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}
+    url: https://{{ item.gatus.authentication.basic }}:${{ "{" }}{{ item.full_name_env }}__{{ item.gatus.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}
     {%- elif item.gatus.authentication.bearer is defined %}
     url: https://{{ item.domain }}
     headers:
-      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ item.gatus.authentication.bearer }}{{ "}" }}
+      Authorization: Bearer ${{ "{" }}{{ item.full_name_env }}__{{ item.gatus.authentication.bearer }}{{ "}" }}
     {%- else %}
     url: https://{{ item.domain }}
     {%- endif %}
@@ -298,8 +298,8 @@ endpoints:
   {%- endif %}
 
   - <<: *default-https-infrequent
-    name: HTTPS Proxy /metrics (noauth) - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTPS Proxy /metrics (noauth) - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/.apache/metrics
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -310,40 +310,40 @@ endpoints:
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
-    name: HTTPS Proxy /metrics - {{ item.full_name }}
-    group: App - {{ item.full_name }}
-    url: https://proxy-prometheus:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
+    name: HTTPS Proxy /metrics - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
+    url: https://proxy-prometheus:${{ "{" }}{{ item.full_name_env }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
-    name: HTTPS /favicon.ico - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTPS /favicon.ico - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.ico
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-http-infrequent
-    name: HTTP /favicon.ico - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTP /favicon.ico - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.ico
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-https-infrequent
-    name: HTTPS /favicon.png - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTPS /favicon.png - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.png
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
   - <<: *default-http-infrequent
-    name: HTTP /favicon.png - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTP /favicon.png - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.png
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -353,8 +353,8 @@ endpoints:
   {%- for endpoint in item.gatus.endpoints %}
 
   - <<: *default-https-infrequent
-    name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %} - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     {% if endpoint.insecure == True%}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -371,14 +371,14 @@ endpoints:
   {%- if endpoint.authentication is defined %}
 
   - <<: *default-https-infrequent
-    name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }} - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }} - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     {%- if endpoint.authentication.basic is defined %}
-    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ endpoint.authentication.basic }}:${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ endpoint.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}{{ endpoint.path }}
+    url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ endpoint.authentication.basic }}:${{ "{" }}{{ item.full_name_env }}__{{ endpoint.authentication.basic | replace("-", "_") | upper }}_PASSWORD{{ "}" }}@{{ item.domain }}{{ endpoint.path }}
     {%- elif endpoint.authentication.bearer is defined %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     headers:
-      Authorization: Bearer ${{ "{" }}{{ item.domain | replace(".matejhome.com", "") | replace("-", "_") | upper }}__{{ endpoint.authentication.bearer }}{{ "}" }}
+      Authorization: Bearer ${{ "{" }}{{ item.full_name_env }}__{{ endpoint.authentication.bearer }}{{ "}" }}
     {%- else %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     {%- endif %}
@@ -400,8 +400,8 @@ endpoints:
   {%- if item.type is defined and "dns" in item.type %}
 
   - <<: *default-dns-a
-    name: DNS A - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: DNS A - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
     alerts:
       - type: ntfy
@@ -409,8 +409,8 @@ endpoints:
     {{- is_enabled(item) }}
 
   - <<: *default-dns-aaaa
-    name: DNS AAAA - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: DNS AAAA - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
     {{- is_enabled(item) }}
   {%- endif %}
@@ -418,8 +418,8 @@ endpoints:
   {%- if item.type is defined and "dns[blackhole]" in item.type %}
 
   - <<: *default-dns-blackhole-a
-    name: DNS A - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: DNS A - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
     alerts:
       - type: ntfy
@@ -427,8 +427,8 @@ endpoints:
     {{- is_enabled(item) }}
 
   - <<: *default-dns-blackhole-aaaa
-    name: DNS AAAA - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: DNS AAAA - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
     {{- is_enabled(item) }}
   {%- endif %}
@@ -437,8 +437,8 @@ endpoints:
   {%- for port in item.additional_ports.http %}
 
   - <<: *default-http
-    name: HTTP:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTP:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: http://{{ item.domain }}:{{ port }}
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -449,8 +449,8 @@ endpoints:
   {%- for port in item.additional_ports.https %}
 
   - <<: *default-https
-    name: HTTPS:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: HTTPS:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}:{{ port }}
     {% if item.gatus.insecure == True %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
@@ -461,8 +461,8 @@ endpoints:
   {%- for port in item.additional_ports.tcp %}
 
   - <<: *default-tcp
-    name: TCP:{{ port }} - {{ item.full_name }}
-    group: App - {{ item.full_name }}
+    name: TCP:{{ port }} - {{ item.full_name_pretty }}
+    group: App - {{ item.full_name_pretty }}
     url: tcp://{{ item.domain }}:{{ port }}
     {{- is_enabled(item) }}
   {%- endfor %}

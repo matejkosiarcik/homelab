@@ -10,6 +10,9 @@ gatus:
   enabled: true
   # TODO: Add some endpoints
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

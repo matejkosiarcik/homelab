@@ -23,6 +23,9 @@ gatus:
         - "has([BODY].api_version) == true"
         - "has([BODY].name) == true"
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:

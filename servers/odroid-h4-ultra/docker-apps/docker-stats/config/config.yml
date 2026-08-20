@@ -1,6 +1,5 @@
 app:
   type: docker-stats
-  fullname: docker-stats-odroid-h4-ultra
 
 network:
   ip: 10.1.12.21

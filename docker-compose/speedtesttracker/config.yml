@@ -15,6 +15,11 @@ gatus:
         - "[STATUS] == 200"
         - "has([BODY].message) == true"
 
+healthchecks:
+  - slug: certificator
+  - slug: app
+    cron: "15 */4 * * *"
+
 prometheus:
   enabled: true
   endpoints:

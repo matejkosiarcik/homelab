@@ -1,9 +1,21 @@
+app:
+  name: Template
+
 apache:
   upstream-url:
     - path: /api/
       target: http://example.com:12345
     - path: /
       target: http://example.com:12345
+
+gatus:
+  enabled: true
+  # TODO: Finish template
+
+healthchecks:
+  - slug: certificator
+  - slug: app
+    schedule: "* * * * *"
 
 prometheus:
   enabled: true

@@ -1,34 +1,25 @@
 #!/bin/sh
 set -euf
 
-apppath="$(realpath "$1")"
-output="$(realpath "$2")"
+app_dirpath="$(realpath "$1")"
+output_filepath="$(realpath "$2")"
+
+# shellcheck source=/dev/null
+. "$PWD/parse-app-entry-utils.sh"
 
 ## Get config values for this specific app ##
 
-app_shortname="$(basename "$apppath" | sed -E 's~^\.~~')"
-
-app_type="$(yq --raw-output '.app.type' "$apppath/config/config.yml")"
-if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
-    app_type="$app_shortname"
-fi
-
-app_fullname="$(yq --raw-output '.app.fullname' "$apppath/config/config.yml")"
-if [ "$app_fullname" = '' ] || [ "$app_fullname" = 'null' ] || [ "$app_fullname" = 'undefined' ]; then
-    app_fullname="$app_shortname"
-fi
-
-domain="$(yq --raw-output '.network.domain' "$apppath/config/config.yml")"
-if [ "$domain" = '' ] || [ "$domain" = 'null' ] || [ "$domain" = 'undefined' ]; then
-    domain="$app_fullname.matejhome.com"
-fi
-
-app_fullname_uppercase="$(printf '%s' "$app_fullname" | tr '[:lower:]' '[:upper:]')"
+app_type="$(get_app_type "$app_dirpath")"
+app_full_name_pretty="$(get_app_full_name_pretty "$app_dirpath")"
+app_full_name_machine="$(get_app_full_name_machine "$app_dirpath")"
+app_full_name_env="$(get_app_full_name_env "$app_dirpath")"
+app_domain="$(get_app_domain "$app_dirpath")"
+server_name="$(get_server_name "$app_dirpath")"
 
 ## Get config values for this generic app-type ##
 
 prometheus_config="$(yq --raw-output --compact-output '.prometheus' "/homelab/docker-compose/$app_type/config.yml")"
-if [ "$app_type" = '' ] || [ "$app_type" = 'null' ] || [ "$app_type" = 'undefined' ]; then
+if [ "$prometheus_config" = '' ] || [ "$prometheus_config" = 'null' ] || [ "$prometheus_config" = 'undefined' ]; then
     prometheus_config='{}'
 fi
 
@@ -36,12 +27,14 @@ fi
 
 tmpfile="$(mktemp)"
 {
-    printf '  - app: "%s"\n' "$app_type"
-    printf '    short_name: "%s"\n' "$app_shortname"
-    printf '    full_name: "%s"\n' "$app_fullname"
-    printf '    domain: "%s"\n' "$domain"
+    printf '\n'
+    printf '  - app_type: "%s"\n' "$app_type"
+    printf '    domain: "%s"\n' "$app_domain"
+    printf '    full_name_env: "%s"\n' "$app_full_name_env"
+    printf '    full_name_machine: "%s"\n' "$app_full_name_machine"
+    printf '    full_name_pretty: "%s"\n' "$app_full_name_pretty"
     printf '    prometheus: %s\n' "$prometheus_config"
 } >>"$tmpfile"
 
-sed -E "s~<<app>>~$app_fullname~g;s~<<APP>>~$app_fullname_uppercase~g" <"$tmpfile" >>"$output"
+sed -E "s~<<app-name-pretty>>~$app_full_name_pretty~g;s~<<app-name-machine>>~$app_full_name_machine~g;s~<<app-env>>~$app_full_name_env~g;s~<<server>>~$server_name~g" <"$tmpfile" >>"$output_filepath"
 rm -f "$tmpfile"

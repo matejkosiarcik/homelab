@@ -7,7 +7,10 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "verbatimModuleSyntax": false,
-    "noUncheckedIndexedAccess": false
+    "noUncheckedIndexedAccess": false,
+    "lib": [
+      "ESNext"
+    ]
   },
   "exclude": [
     "node_modules"

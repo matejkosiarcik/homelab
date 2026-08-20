@@ -1,5 +1,5 @@
 app:
-  name: NodeExporter
+  name: NodeExporter - <<server>>
 
 apache:
   upstream-url:
@@ -14,6 +14,9 @@ gatus:
     - path: /metrics
       authentication:
         basic: prometheus
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

@@ -12,6 +12,9 @@ services:
       # Uncomment for initial setup (signups):
       # REGISTRATION_OPEN: "True"
 
+  app-setup:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

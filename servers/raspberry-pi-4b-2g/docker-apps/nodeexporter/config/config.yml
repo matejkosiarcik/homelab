@@ -1,6 +1,5 @@
 app:
   type: nodeexporter
-  fullname: nodeexporter-raspberry-pi-4b-2g
 
 network:
   ip: 10.1.14.24

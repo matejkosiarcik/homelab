@@ -1,5 +1,5 @@
 app:
-  name: Unifi Controller
+  name: UnifiController
 
 apache:
   upstream-url:
@@ -24,6 +24,9 @@ gatus:
       conditions:
         - "[CONNECTED] == true"
         - "[STATUS] == 200"
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

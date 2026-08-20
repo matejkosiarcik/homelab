@@ -1,5 +1,5 @@
 app:
-  name: Docker Stats
+  name: Docker Stats - <<server>>
 
 apache:
   upstream-url:
@@ -16,6 +16,9 @@ gatus:
     - path: /metrics
       authentication:
         basic: prometheus
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

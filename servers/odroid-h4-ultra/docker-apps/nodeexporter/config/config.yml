@@ -1,6 +1,5 @@
 app:
   type: nodeexporter
-  fullname: nodeexporter-odroid-h4-ultra
 
 network:
   ip: 10.1.12.24

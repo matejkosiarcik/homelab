@@ -1,6 +1,5 @@
 app:
   type: docker-stats
-  fullname: docker-stats-raspberry-pi-4b-4g
 
 network:
   ip: 10.1.16.21

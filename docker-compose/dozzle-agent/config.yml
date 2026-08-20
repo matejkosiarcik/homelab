@@ -1,5 +1,5 @@
 app:
-  name: Dozzle Agent
+  name: Dozzle Agent - <<server>>
 
 apache: {}
 
@@ -9,6 +9,8 @@ gatus:
   additional_ports:
     tcp:
       - 7007
+
+healthchecks: [] # empty
 
 prometheus:
   enabled: false

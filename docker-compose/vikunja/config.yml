@@ -11,6 +11,9 @@ gatus:
   endpoints:
     - path: /api/v1/metrics
 
+healthchecks:
+  - slug: certificator
+
 prometheus:
   enabled: true
   endpoints:
