@@ -37,10 +37,8 @@ printf 'secret-name,secret-value\n' >"$initial_output/.secrets.csv"
 . "$git_root_dir/docker-images/.shared/build-utils/parse-app-entry-utils.sh"
 
 app_dir_path="$PWD"
-app_shortname="$(get_app_short_name_machine "$app_dir_path")"
 app_type="$(get_app_type "$app_dir_path")"
 app_full_name="$(get_app_full_name_machine "$app_dir_path")"
-app_full_name_env="$(get_app_full_name_env "$app_dir_path")"
 app_full_name_key="$(printf '%s' "$app_full_name" | tr '-' '_')"
 app_domain="$(get_app_domain "$app_dir_path")"
 
