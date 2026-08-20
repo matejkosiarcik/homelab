@@ -13,7 +13,7 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import fastq from 'fastq';
 import cron from 'node-cron';
-import { Client as PostgresClient, Query } from '../node_modules/@types/pg/index.js';
+import { Client as PostgresClient, Query } from 'pg';
 import { createClient } from 'redis';
 
 if (fs.existsSync('.env')) {
