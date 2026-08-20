@@ -212,7 +212,7 @@ endpoints:
   - <<: *default-icmp
     name: ICMP - {{ item.name }}
     group: Servers
-    url: icmp://{{ item.ip }}
+    url: icmp://{{ item.domain }}
     alerts:
       - type: ntfy
       - type: gotify
