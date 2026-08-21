@@ -1,14 +1,25 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
+### App ###
+
+FROM reportportal/migrations:5.15.2 AS entrypoint
+USER root
+WORKDIR /homelab
+COPY ./docker-images/reportportal/migrations/entrypoint-extra-end.sh ./docker-images/reportportal/migrations/entrypoint-extra-start.sh /homelab/
+RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
+    tail -n +2 /entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
+    cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra-start.sh /homelab/entrypoint-upstream-rest.sh /homelab/entrypoint-extra-end.sh | sed 's~exec /wait-for-it.sh~bash /wait-for-it.sh~g' >/homelab/entrypoint-final.sh && \
+    chmod u=rx,go= /homelab/entrypoint-final.sh
+
 ### Healthcheck ###
 
 FROM golang:1.26.6-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=actualbudget-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=actualbudget-healthcheck-build-gobuildcache \
+COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=reportportal-migrations-healthcheck-build-gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=reportportal-migrations-healthcheck-build-gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###
@@ -35,6 +46,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
+COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoint.sh
 
 ### Final ###
 
@@ -43,6 +55,7 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/entrypoint.sh /
 USER homelab
 
 ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
@@ -54,4 +67,4 @@ ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
     POSTGRES_USER="postgres" \
     TZ=Europe/"Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5006" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
