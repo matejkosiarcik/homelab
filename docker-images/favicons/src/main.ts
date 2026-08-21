@@ -57,6 +57,7 @@ const appAddress = (() => {
         case 'openwebui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'pihole': return 'http://app:80';
+        case 'pihole-blackhole': return 'http://app:80';
         case 'planka': return 'http://app:1337';
         case 'prometheus': return 'http://app:9090';
         case 'renovatebot': return '' // http://app:8080
