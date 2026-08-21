@@ -64,7 +64,7 @@ COPY --from=prefinal --chown=homelab:homelab /var/app /var/app
 ENV APPLICATION_PROTOCOL=http \
     BACKGROUND_PROCESSING_CONCURRENCY=10 \
     DATABASE_HOST=postgis \
-    DATABASE_NAME=dawarich \
+    DATABASE_NAME=database \
     DATABASE_USERNAME=postgres \
     DISABLE_TELEMETRY=true \
     HOMELAB_CONTAINER_NAME=dawarich \

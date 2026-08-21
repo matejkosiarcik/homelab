@@ -120,9 +120,6 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: postgres
-    # Override:
-    environment:
-      POSTGRES_DB: reportportal
 
   rabbitmq:
     extends:

@@ -28,7 +28,7 @@ const config = {
         password: process.env['REDIS_PASSWORD']!,
     },
     postgres: {
-        database: 'gitcache',
+        database: 'database',
         host: 'postgres',
         password: process.env['PGPASSWORD']!,
         port: 5432,

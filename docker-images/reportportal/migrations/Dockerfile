@@ -47,7 +47,7 @@ USER homelab
 
 ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    POSTGRES_DB="reportportal" \
+    POSTGRES_DB="database" \
     POSTGRES_PORT="5432" \
     POSTGRES_SERVER="postgres" \
     POSTGRES_SSLMODE="require" \

@@ -42,7 +42,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV PGDATA=/var/lib/postgresql/data \
-    POSTGRES_DB=postgres \
+    POSTGRES_DB=database \
     POSTGRES_USER=postgres \
     HOMELAB_CONTAINER_NAME=postgres \
     HOMELAB_CONTAINER_VARIANT=default \
