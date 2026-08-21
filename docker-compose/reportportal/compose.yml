@@ -15,6 +15,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-migrations.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations:1.0.0
+    tmpfs:
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   app-index:
     extends:
@@ -120,9 +122,6 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: postgres
-    # Override:
-    environment:
-      POSTGRES_DB: reportportal
 
   rabbitmq:
     extends:

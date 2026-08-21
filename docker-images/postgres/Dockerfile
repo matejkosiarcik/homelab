@@ -41,12 +41,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=postgres-final-ap
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-ENV PGDATA=/var/lib/postgresql/data \
-    POSTGRES_DB=postgres \
+ENV PGDATA=/var/lib/postgresql/data/database \
+    POSTGRES_DB=database \
     POSTGRES_USER=postgres \
     HOMELAB_CONTAINER_NAME=postgres \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
+
+# NOTE: The PGDATA has to be a subdirectory in "/var/lib/postgresql/data" so postgres can create it itself
+# otherwise there are permissions problems in Docker Desktop
+
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB || exit 1" ]
 # ENTRYPOINT stays original
