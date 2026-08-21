@@ -11,6 +11,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
       - ${DOCKER_COMPOSE_APP_PATH}/config/app.env
+    environment:
+      REGISTRY_HTTP_HOST: ${DOCKER_COMPOSE_NETWORK_URL}
     networks: # Internet access required for reading remote registry data
       - external-network
       - internal-network
