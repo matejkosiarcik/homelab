@@ -52,11 +52,12 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 FROM ghcr.io/plankanban/planka:2.1.1
 USER root
+ARG HOMELAB_APP_EXTERNAL_URL
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoint.sh /usr/local/bin/
-ENV BASE_URL=https://localhost:8443 \
+ENV BASE_URL=$HOMELAB_APP_EXTERNAL_URL \
     HOMELAB_CONTAINER_NAME=planka \
     HOMELAB_CONTAINER_VARIANT=default \
     KNEX_REJECT_UNAUTHORIZED_SSL_CERTIFICATE=false \
