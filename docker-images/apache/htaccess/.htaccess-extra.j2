@@ -14,8 +14,8 @@ RewriteCond %{REQUEST_URI} ^/{{ itempathtrimmed }}(.{0})(.{0})$ [NC]
 RewriteRule ^ - [E=_PROXY_SUBPATH_{{ itempathescaped }}:%1%2,NE]
 
 # Proxy regular requests upstream for {{ item.path }}
-RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
+RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{REQUEST_URI} !^/\.apache(?:/.*)?$ [NC]
 {%- if item.path == "/" %}
 RewriteCond %{REQUEST_URI} ^/.*$ [NC]
@@ -27,8 +27,8 @@ RewriteCond %{REQUEST_URI} ^/{{ itempathtrimmed }}$ [NC]
 RewriteRule ^ "{{ item.target }}%{ENV:_PROXY_SUBPATH_{{ itempathescaped }}}" [P,L]
 
 # Proxy WebSockets requests upstream for {{ item.path }}
-RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{HTTP:Connection} upgrade [NC]
+RewriteCond %{HTTP:Upgrade} websocket [NC]
 RewriteCond %{REQUEST_URI} !^/\.apache(?:/.*)?$ [NC]
 {%- if item.path == "/" %}
 RewriteCond %{REQUEST_URI} ^/.*$ [NC]
