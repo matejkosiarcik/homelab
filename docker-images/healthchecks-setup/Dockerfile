@@ -144,5 +144,5 @@ ENV HOMELAB_CONTAINER_NAME=script-setup \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=90s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
+HEALTHCHECK --interval=10s --start-period=120s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

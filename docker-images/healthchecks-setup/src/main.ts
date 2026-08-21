@@ -49,7 +49,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     }
 
     axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || '';
-    axios.defaults.baseURL = 'http://app:8000/api/v3/status'; // 'https://healthchecks.matejhome.com/api/v3'
+    axios.defaults.baseURL = `https://${process.env['HOMELAB_APP_EXTERNAL_URL']}/api/v3`;
     axios.defaults.validateStatus = () => true;
 
     const startDate = new Date();
@@ -61,7 +61,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         }
 
         try {
-            const response = await axios.get('/');
+            const response = await axios.get('/status');
             assert(response.status === 200, `Failed to connect to healthcheck-app\nStatus: ${response.status}\n`);
             break;
         } catch {
