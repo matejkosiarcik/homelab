@@ -84,71 +84,71 @@
         target: _self
 
 - DNS:
-    - PiHole 1 Primary:
+    - PiHole 1:
         description: DNS Server With Built-In AdBlocking
-        href: https://pihole-1-primary.matejhome.com
-        ping: pihole-1-primary.matejhome.com
+        href: https://pihole-1.matejhome.com
+        ping: pihole-1.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-primary.matejhome.com
+          url: https://pihole-1.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_1_PRIMARY__PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_1__PASSWORD}}"
 
-    - PiHole 1 Secondary:
+    - PiHole 2:
         description: DNS Server With Built-In AdBlocking
-        href: https://pihole-1-secondary.matejhome.com
-        ping: pihole-1-secondary.matejhome.com
+        href: https://pihole-2.matejhome.com
+        ping: pihole-2.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-secondary.matejhome.com
+          url: https://pihole-2.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_1_SECONDARY__PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_2__PASSWORD}}"
 
-    - PiHole 1 Blackhole:
+    - PiHole Blackhole 1:
         description: DNS Server With Built-In AdBlocking
-        href: https://pihole-1-blackhole.matejhome.com
-        ping: pihole-1-blackhole.matejhome.com
+        href: https://pihole-blackhole-1.matejhome.com
+        ping: pihole-blackhole-1.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-1-blackhole.matejhome.com
+          url: https://pihole-blackhole-1.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_1_BLACKHOLE__PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_BLACKHOLE_1__PASSWORD}}"
 
-    - PiHole 2 Primary:
+    - PiHole 3:
         description: DNS Server With Built-In AdBlocking
-        href: https://pihole-2-primary.matejhome.com
-        ping: pihole-2-primary.matejhome.com
+        href: https://pihole-3.matejhome.com
+        ping: pihole-3.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-primary.matejhome.com
+          url: https://pihole-3.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_2_PRIMARY__PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_3__PASSWORD}}"
 
-    - PiHole 2 Secondary:
+    - PiHole 4:
         description: DNS Server With Built-In AdBlocking
-        href: https://pihole-2-secondary.matejhome.com
-        ping: pihole-2-secondary.matejhome.com
+        href: https://pihole-4.matejhome.com
+        ping: pihole-4.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-secondary.matejhome.com
+          url: https://pihole-4.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_2_SECONDARY__PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_4__PASSWORD}}"
 
-    - PiHole 2 Blackhole:
+    - PiHole Blackhole 2:
         description: DNS Server With Built-In AdBlocking
-        href: https://pihole-2-blackhole.matejhome.com
-        ping: pihole-2-blackhole.matejhome.com
+        href: https://pihole-blackhole-2.matejhome.com
+        ping: pihole-blackhole-2.matejhome.com
         icon: /icons/pihole.png
         widget:
           type: pihole
-          url: https://pihole-2-blackhole.matejhome.com
+          url: https://pihole-blackhole-2.matejhome.com
           version: 6
-          key: "{{HOMEPAGE_VAR__PIHOLE_2_BLACKHOLE__PASSWORD}}"
+          key: "{{HOMEPAGE_VAR__PIHOLE_BLACKHOLE_2__PASSWORD}}"
 
     - Unbound 1 Default:
         description: Entrypoint DNS Server

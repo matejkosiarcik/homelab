@@ -52,7 +52,7 @@ get_app_full_name_pretty() {
         if [ "$(get_app_type "$1")" = "$(get_app_short_name_machine "$1")" ]; then
             app_instance_prettyname=''
         else
-            app_instance_prettyname="$(get_app_short_name_machine "$1" | sed -E "s~^$(get_app_type "$1")\-~~;s~\-~ ~g" | sed -E 's~\b.~\u&~g')"
+            app_instance_prettyname="$(get_app_short_name_machine "$1" | sed -E "s~^$(get_app_type "$1")\-~~;s~\-~ ~g")"
         fi
     fi
 
@@ -66,7 +66,7 @@ get_app_full_name_pretty() {
 
 get_app_full_name_machine() {
     # Arg 1 - App directory path
-    get_app_full_name_pretty "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's~ +~-~g;s~_+~-~g;s~\-+~-~g'
+    get_app_full_name_pretty "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's~(\[|\]|\(|\)|\{|\}|\_|\+|\ |\-)~-~g;s~\-+~-~g'
 }
 
 get_app_full_name_env() {

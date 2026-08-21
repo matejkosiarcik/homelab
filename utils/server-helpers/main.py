@@ -50,21 +50,32 @@ if tty_supports_color():
 
 
 def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
+    all_apps_list = []
     apps_list_output = []
-
-    priority_file = path.join(server_dir, "docker-apps", "priority.txt")
-    if path.exists(priority_file):
-        with open(priority_file, "r", encoding="utf-8") as file:
-            apps_list_output += [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
-
-    for item in sorted(pathlib.Path(path.join(server_dir, "docker-apps")).iterdir()):
-        if item.is_dir() and not item.name.startswith(".") and item.name not in apps_list_output:
-            apps_list_output.append(item.name)
 
     def app_regex(appname: str) -> str:
         partial_regex = appname.replace("?", ".").replace("*", ".*").replace("-", "\\-")
         return f".*{partial_regex}.*"
 
+    # Get a list of all apps
+    for item in sorted(pathlib.Path(path.join(server_dir, "docker-apps")).iterdir()):
+        if item.is_dir() and not item.name.startswith("."):
+            all_apps_list.append(item.name)
+
+    # Add priority apps
+    priority_file = path.join(server_dir, "docker-apps", "priority.txt")
+    if path.exists(priority_file):
+        with open(priority_file, "r", encoding="utf-8") as file:
+            priority_apps_list = [app for app in [re.sub(r"#.*$", "", line).strip() for line in file] if len(app) > 0]
+            for item in priority_apps_list:
+                apps_list_output += sorted([x for x in all_apps_list if re.match(app_regex(item), x)])
+
+    # Add rest of the apps
+    for item in all_apps_list:
+        if item not in apps_list_output:
+            apps_list_output.append(item)
+
+    # If "--only" -> only output apps that match it
     if only_apps is not None and len(only_apps) > 0:
         args_only_list = [x for x in only_apps.split(",") if len(x) > 0]
         apps_list_filtered = []
@@ -73,6 +84,7 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
             apps_list_filtered.extend(matched_apps)
         apps_list_output = apps_list_filtered
 
+    # If "--skip" -> remove apps which do not match it
     if skip_apps is not None and len(skip_apps) > 0:
         args_skip_list = [x for x in skip_apps.split(",") if len(x) > 0]
         apps_list_filtered = apps_list_output
