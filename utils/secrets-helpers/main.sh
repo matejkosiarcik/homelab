@@ -1286,7 +1286,7 @@ openwebui)
     touch "$initial_output/favicons.env"
     ;;
 
-pihole|pihole-blackhole)
+pihole | pihole-blackhole)
     # Preload #
     admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
     app_prometheus_password="$(load_secret ".$app_full_name_key.app.prometheus_user" dev=default)"
