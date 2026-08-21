@@ -208,12 +208,12 @@ export const apps = {
     pihole: {
         title: 'PiHole',
         instances: [
-            { url: 'https://pihole-1-blackhole.matejhome.com', title: 'Blackhole' },
-            { url: 'https://pihole-1-primary.matejhome.com', title: 'Primary' },
-            { url: 'https://pihole-1-secondary.matejhome.com', title: 'Secondary' },
-            { url: 'https://pihole-2-blackhole.matejhome.com', title: 'Blackhole' },
-            { url: 'https://pihole-2-primary.matejhome.com', title: 'Primary' },
-            { url: 'https://pihole-2-secondary.matejhome.com', title: 'Secondary' },
+            { url: 'https://pihole-1.matejhome.com', title: '1' },
+            { url: 'https://pihole-2.matejhome.com', title: '2' },
+            { url: 'https://pihole-3.matejhome.com', title: '3' },
+            { url: 'https://pihole-4.matejhome.com', title: '4' },
+            { url: 'https://pihole-blackhole-1.matejhome.com', title: 'Blackhole 1' },
+            { url: 'https://pihole-blackhole-2.matejhome.com', title: 'Blackhole 2' },
         ],
     },
     planka: {
