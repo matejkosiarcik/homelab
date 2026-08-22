@@ -113,7 +113,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     for (const healthcheck of healthchecksToAdd) {
         await (async () => {
             console.log(`Creating healthcheck ${healthcheck.slug}`);
-            const response = await axios.post('/checks/', healthcheck, {
+            const response = await axios.post('/checks', healthcheck, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
