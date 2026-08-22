@@ -48,7 +48,10 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         dotenv.config({ path: '.secrets.env', quiet: true });
     }
 
-    axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || '';
+    axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || (() => {
+        throw new Error("HEALTHCHECKS_API_KEY unset");
+    })();
+
     axios.defaults.baseURL = `${process.env['HOMELAB_APP_EXTERNAL_URL']}/api/v3`;
     // axios.defaults.baseURL = `http://app:8000/api/v3`;
     axios.defaults.validateStatus = () => true;

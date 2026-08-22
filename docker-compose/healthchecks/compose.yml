@@ -29,6 +29,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/healthchecks-setup/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
     # Has to be connected to outside world, because it needs access to the app from the outside
     # Because the app can only be accessed by it's real URL
     networks:
