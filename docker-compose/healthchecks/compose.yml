@@ -29,6 +29,11 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/healthchecks-setup/Dockerfile
+    # Has to be connected to outside world, because it needs access to the app from the outside
+    # Because the app can only be accessed by it's real URL
+    networks:
+      - external-network
+      - internal-network
 
   certificator:
     extends:
