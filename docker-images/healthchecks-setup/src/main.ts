@@ -52,8 +52,8 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         throw new Error("HEALTHCHECKS_API_KEY unset");
     })();
 
-    axios.defaults.baseURL = `${process.env['HOMELAB_APP_EXTERNAL_URL']}/api/v3`;
-    // axios.defaults.baseURL = `http://app:8000/api/v3`;
+    // axios.defaults.baseURL = `${process.env['HOMELAB_APP_EXTERNAL_URL']}/api/v3`;
+    axios.defaults.baseURL = `http://app:8000/api/v3`;
     axios.defaults.validateStatus = () => true;
 
     console.log('URL:', axios.defaults.baseURL);
