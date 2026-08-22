@@ -67,7 +67,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
             const response = await axios.get('/status');
             assert(response.status === 200, `Failed to connect to healthcheck-app\nStatus: ${response.status}\n`);
             break;
-        } catch (error) {
+        } catch {
             await sleep(1000);
         }
     }
