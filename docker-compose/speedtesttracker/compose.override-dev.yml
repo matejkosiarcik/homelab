@@ -7,6 +7,7 @@ services:
     <<: *common-service-options
     environment:
       APP_URL: ${DOCKER_COMPOSE_NETWORK_URL}
+      APP_DEBUG: "true"
       # SPEEDTEST_SCHEDULE: "* * * * *"
 
   certificator:
