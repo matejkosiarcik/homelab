@@ -30,7 +30,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/kiwix/entrypoint.sh /homelab/
+COPY ./docker-images/kiwix/entrypoint.sh ./docker-images/kiwix/main.sh /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY ./docker-images/kiwix/empty.zim /homelab/default-data/
 
@@ -44,7 +44,7 @@ COPY --from=homelab-dir /homelab /homelab
 FROM ghcr.io/kiwix/kiwix-serve:3.8.1
 USER root
 RUN apk update --no-cache && \
-    apk add --no-cache inotify-tools
+    apk add --no-cache inotify-tools zim-tools
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
