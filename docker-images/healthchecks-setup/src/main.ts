@@ -131,6 +131,6 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
 
     // Sleep forever
     while (true) {
-        await sleep(Number.MAX_SAFE_INTEGER);
+        await sleep(Math.pow(2, 31) - 1);
     }
 })();
