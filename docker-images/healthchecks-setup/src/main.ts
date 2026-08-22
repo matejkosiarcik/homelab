@@ -128,4 +128,9 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     }
 
     await fsx.writeFile(statusFile, 'started', 'utf8');
+
+    // Sleep forever
+    while (true) {
+        await sleep(Number.MAX_SAFE_INTEGER);
+    }
 })();
