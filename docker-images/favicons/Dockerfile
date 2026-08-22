@@ -141,6 +141,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME=favicons \
     HOMELAB_CONTAINER_VARIANT=default \
+    NODE_OPTIONS=--dns-result-order=ipv4first \
     PATH="/homelab/imagemagick/bin:${PATH}" \
     TZ=Europe/Bratislava
 USER homelab
