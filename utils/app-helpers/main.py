@@ -325,7 +325,7 @@ def run_with_spinner(
             log.error("Process args: %s", " ".join(command))
             log.error("Process output:")
             with open(command_log_file, "r", encoding="utf-8") as file:
-                for line in collections.deque(file, maxlen=30):
+                for line in collections.deque(file, maxlen=50):
                     log.error(">> %s", line.rstrip())
             log.error('See logfile "%s" for all details.', path.basename(command_log_file))
             sys.exit(1)

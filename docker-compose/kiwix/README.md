@@ -16,8 +16,9 @@ Kiwix:
 ## Before initial installation
 
 - Follow general [guide](../../docs/Checklist%20for%20new%20docker-apps.md)
-- Prepare ZIM files in `./app-data/kiwix/data/`
 
 ## After initial installation
 
-N/A
+- Copy ZIM files:
+    - Wikipedia: `scp wikipedia*.zim homelab@server-odroid-h4-ultra.matejhome.com:~/git/homelab/servers/.current/docker-apps/kiwix-wikipedia/app-data/kiwix/data/`
+    - Wiktionary: `scp wiktionary*.zim homelab@server-odroid-h4-ultra.matejhome.com:~/git/homelab/servers/.current/docker-apps/kiwix-wiktionary/app-data/kiwix/data/`

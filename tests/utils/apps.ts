@@ -140,7 +140,7 @@ export const apps = {
         ],
     },
     minio: {
-        title: 'Minio',
+        title: 'MinIO',
         instances: [
             { url: 'https://minio.matejhome.com', title: 'Main', consoleUrl: 'https://minio-console.matejhome.com' },
         ],

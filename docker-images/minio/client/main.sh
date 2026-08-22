@@ -18,7 +18,7 @@ printf 'Waiting for minio deployment\n' >&2
 while ! curl --fail "$minio_url/minio/health/live"; do
     sleep 1
 done
-printf 'Minio deployment available\n' >&2
+printf 'MinIO deployment available\n' >&2
 sleep 1
 EOF
 

@@ -4,7 +4,7 @@ app:
 apache:
   upstream-url:
     - path: /
-      target: https://app:80
+      target: https://app:443
 
 gatus:
   enabled: true
