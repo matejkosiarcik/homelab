@@ -495,7 +495,7 @@
               field: unread
               format: number
 
-    - Minio:
+    - MinIO:
         description: S3 Compatible Storage
         href: https://minio-console.matejhome.com
         ping: minio-console.matejhome.com
