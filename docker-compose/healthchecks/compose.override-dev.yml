@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
     environment:
-      ALLOWED_HOSTS: "*"
+      ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN},app
       DEBUG: "True"
       DEFAULT_FROM_EMAIL: healthchecks@localhost
       REGISTRATION_OPEN: "True"
