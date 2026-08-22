@@ -74,4 +74,5 @@ ENV DB=sqlite \
 # EMAIL_USE_SSL=False
 # EMAIL_USE_TLS=True
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000" ]
+# TODO: Allow both status 200 and 400
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000", "--status", "400" ]
