@@ -7,8 +7,8 @@
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-yq-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-dependency-yq-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-dependency-yq-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-dependency-yq-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
@@ -23,8 +23,8 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-jinja-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-dependency-jinja-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-dependency-jinja-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-dependency-jinja-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
@@ -38,20 +38,22 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### Build config ###
 
-FROM debian:13.6-slim AS npmconfig
+FROM node:26.7.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-npmconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-npmconfig-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN printf '' >/root/.npmrc && \
-    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-    npm config set proxy https://npm-cache.matejhome.com && \
-    npm config set https-proxy https://npm-cache.matejhome.com
+RUN touch '/root/.npmrc'
+# TODO: Re-enable cache below:
+# RUN touch '/root/.npmrc' && \
+#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+#     npm config set proxy https://npm-cache.matejhome.com && \
+#     npm config set https-proxy https://npm-cache.matejhome.com
 
 ### App config ###
 

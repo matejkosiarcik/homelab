@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.6-slim AS npmconfig
+FROM node:26.7.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=git-cache-npmconfig-aptcache \
@@ -13,10 +13,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=git-cache-npmconf
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN printf '' >/root/.npmrc && \
-    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-    npm config set proxy https://npm-cache.matejhome.com && \
-    npm config set https-proxy https://npm-cache.matejhome.com
+RUN touch '/root/.npmrc'
+# TODO: Re-enable cache below:
+# RUN touch '/root/.npmrc' && \
+#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+#     npm config set proxy https://npm-cache.matejhome.com && \
+#     npm config set https-proxy https://npm-cache.matejhome.com
 
 ### App ###
 

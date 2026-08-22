@@ -14,8 +14,11 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/planka/data:/app/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/planka/default:/app/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
+    tmpfs:
+      - /app/.tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:

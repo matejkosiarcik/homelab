@@ -17,7 +17,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
-FROM debian:13.6-slim AS npmconfig
+FROM node:26.7.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-npmconfig-aptcache \
@@ -27,10 +27,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-np
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN printf '' >/root/.npmrc && \
-    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-    npm config set proxy https://npm-cache.matejhome.com && \
-    npm config set https-proxy https://npm-cache.matejhome.com
+RUN touch '/root/.npmrc'
+# TODO: Re-enable cache below:
+# RUN touch '/root/.npmrc' && \
+#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+#     npm config set proxy https://npm-cache.matejhome.com && \
+#     npm config set https-proxy https://npm-cache.matejhome.com
 
 ### Dependencies ###
 
