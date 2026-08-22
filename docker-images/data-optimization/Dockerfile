@@ -27,10 +27,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-np
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN touch '/root/.npmrc' && \
-    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-    npm config set proxy https://npm-cache.matejhome.com && \
-    npm config set https-proxy https://npm-cache.matejhome.com
+RUN touch '/root/.npmrc'
+# TODO: Reenable cache below:
+# RUN touch '/root/.npmrc' && \
+#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+#     npm config set proxy https://npm-cache.matejhome.com && \
+#     npm config set https-proxy https://npm-cache.matejhome.com
 
 ### Dependencies ###
 

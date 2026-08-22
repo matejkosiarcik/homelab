@@ -40,17 +40,19 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 FROM node:26.7.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=healthchecks-app-setup-npmconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=healthchecks-app-setup-npmconfig-aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN touch '/root/.npmrc' && \
-    { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-    npm config set proxy https://npm-cache.matejhome.com && \
-    npm config set https-proxy https://npm-cache.matejhome.com
+RUN touch '/root/.npmrc'
+# TODO: Reenable cache below:
+# RUN touch '/root/.npmrc' && \
+#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
+#     npm config set proxy https://npm-cache.matejhome.com && \
+#     npm config set https-proxy https://npm-cache.matejhome.com
 
 ### App config ###
 
