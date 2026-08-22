@@ -43,6 +43,8 @@ COPY --from=homelab-dir /homelab /homelab
 
 FROM ghcr.io/kiwix/kiwix-serve:3.8.1
 USER root
+RUN apk update --no-cache && \
+    apk add --no-cache inotify-tools
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
