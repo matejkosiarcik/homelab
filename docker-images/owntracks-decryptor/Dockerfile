@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=owntracks-decrypt
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/anticache.txt /homelab/
 RUN touch '/root/.npmrc'
-# TODO: Reenable cache below:
+# TODO: Re-enable cache below:
 # RUN touch '/root/.npmrc' && \
 #     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
 #     npm config set proxy https://npm-cache.matejhome.com && \
