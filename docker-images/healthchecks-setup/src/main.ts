@@ -48,8 +48,11 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         dotenv.config({ path: '.secrets.env', quiet: true });
     }
 
-    axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || '';
-    axios.defaults.baseURL = `https://${process.env['HOMELAB_APP_EXTERNAL_URL']}/api/v3`;
+    axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || (() => {
+        throw new Error("HEALTHCHECKS_API_KEY unset");
+    })();
+
+    axios.defaults.baseURL = `http://app:8000/api/v3`;
     axios.defaults.validateStatus = () => true;
 
     const startDate = new Date();
@@ -64,7 +67,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
             const response = await axios.get('/status');
             assert(response.status === 200, `Failed to connect to healthcheck-app\nStatus: ${response.status}\n`);
             break;
-        } catch {
+        } catch (error) {
             await sleep(1000);
         }
     }
@@ -120,4 +123,9 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     }
 
     await fsx.writeFile(statusFile, 'started', 'utf8');
+
+    // Sleep forever
+    while (true) {
+        await sleep(Math.pow(2, 31) - 1);
+    }
 })();

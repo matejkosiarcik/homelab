@@ -149,6 +149,11 @@ write_default_proxy_users() {
     proxy_prometheus_password="$(load_secret ".$1.apache.prometheus_user" dev=default)"
     write_http_auth_user proxy-prometheus "$proxy_prometheus_password" proxy-prometheus
     printf 'proxy-prometheus,%s\n' "$proxy_prometheus_password" >>"$initial_output/.secrets.csv"
+
+    # Make sure some common secrets exist for all apps
+    if [ ! -e "$initial_output/prometheus.htpasswd" ]; then
+        touch "$initial_output/prometheus.htpasswd"
+    fi
 }
 
 write_certificator_users() {
