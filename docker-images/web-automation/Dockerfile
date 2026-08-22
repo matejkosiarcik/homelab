@@ -17,7 +17,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
-FROM debian:13.6-slim AS npmconfig
+FROM node:26.7.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-npmconfig-aptcache \

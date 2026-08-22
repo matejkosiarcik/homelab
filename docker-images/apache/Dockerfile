@@ -38,7 +38,7 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 
 ### Build config ###
 
-FROM debian:13.6-slim AS npmconfig
+FROM node:26.7.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-npmconfig-aptcache \
