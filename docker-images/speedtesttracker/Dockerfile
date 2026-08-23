@@ -78,4 +78,4 @@ ENV APP_TIMEZONE=Etc/Utc \
 # TODO: Consider:
 # CACHE_STORE=file \
 # APP_DEBUG=true \
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost/api/healthcheck", "--insecure" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost:443/api/healthcheck", "--insecure" ]
