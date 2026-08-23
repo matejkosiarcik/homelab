@@ -37,7 +37,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM dgtlmoon/changedetection.io:0.51.4
+FROM dgtlmoon/changedetection.io:0.55.8
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
