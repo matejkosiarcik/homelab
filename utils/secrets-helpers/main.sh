@@ -607,7 +607,6 @@ gatus)
     printf 'GIT_CACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.git_cache_github.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'GOTIFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gotify.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'GRAFANA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.grafana.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
-    printf 'GROCERIES__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.groceries.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.healthchecks.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.homeassistant.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.homepage.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
@@ -750,46 +749,6 @@ grafana)
     printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/.secrets.csv"
 
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
-
-    # Apache #
-    write_default_proxy_users "$app_full_name_key"
-
-    # Certificator #
-    write_certificator_users
-    write_healthcheck_url "$app_full_name_key" certificator
-
-    # Favicons #
-    touch "$initial_output/favicons.env"
-    ;;
-
-groceries)
-    # Preload #
-    matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
-    monika_password="$(load_secret ".$app_full_name_key.app.monika_user" dev=default)"
-    homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
-    couchdb_password="$(load_secret ".$app_full_name_key.couchdb.user" dev=default)"
-    couchdb_hmac_key="$(load_secret ".$app_full_name_key.couchdb.hmac_key" dev=default)"
-    couchdb_uuid="$(load_secret ".$app_full_name_key.couchdb.uuid" "dev=value=$(uuidgen)")"
-
-    # App #
-    printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
-
-    printf 'monika,%s\n' "$monika_password" >>"$initial_output/.secrets.csv"
-
-    printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
-    printf 'SMTP_PASSWORD="\n"' >>"$initial_output/app.env" # Placeholder
-
-    # CouchDB #
-    printf 'COUCHDB_ADMIN_PASSWORD="%s"\n' "$couchdb_password" >>"$initial_output/app.env"
-    printf 'COUCHDB_PASSWORD="%s"\n' "$couchdb_password" >>"$initial_output/couchdb.env"
-    printf 'couchdb-user,%s\n' "$couchdb_password" >>"$initial_output/.secrets.csv"
-
-    printf 'COUCHDB_HMAC_KEY="%s"\n' "$couchdb_hmac_key" >>"$initial_output/app.env"
-    printf 'HMAC_KEY="%s"\n' "$couchdb_hmac_key" >>"$initial_output/couchdb.env"
-    printf 'couchdb-hmac,%s\n' "$couchdb_hmac_key" >>"$initial_output/.secrets.csv"
-
-    printf 'UUID="%s"\n' "$couchdb_uuid" >>"$initial_output/couchdb.env"
-    printf 'couchdb-uuid,%s\n' "$couchdb_uuid" >>"$initial_output/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "$app_full_name_key"
@@ -1459,7 +1418,6 @@ prometheus)
     printf 'GIT_CACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.git_cache_github.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'GOTIFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gotify.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'GRAFANA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.grafana.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
-    printf 'GROCERIES__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.groceries.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'HEALTHCHECKS__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.healthchecks.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'HOMEASSISTANT__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.homeassistant.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'HOMEPAGE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.homepage.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"

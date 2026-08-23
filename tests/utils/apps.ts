@@ -90,12 +90,6 @@ export const apps = {
             { url: 'https://grafana.matejhome.com', title: 'Main' },
         ]
     },
-    groceries: {
-        title: 'Groceries',
-        instances: [
-            { url: 'https://groceries.matejhome.com', title: 'Main' },
-        ]
-    },
     healthchecks: {
         title: 'Healthchecks',
         instances: [
