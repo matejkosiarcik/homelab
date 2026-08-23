@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./docker-images/gotify/Dockerfile
+      dockerfile: ./docker-images/gotify/app/Dockerfile
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
@@ -18,6 +18,16 @@ services:
       - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/gotify/data:/app/data:rw
+
+  app-setup:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: script-app-setup
+    # Override:
+    build:
+      dockerfile: ./docker-images/gotify/setup/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
 
   certificator:
     extends:

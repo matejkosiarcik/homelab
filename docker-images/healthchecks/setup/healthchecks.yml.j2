@@ -1,0 +1,23 @@
+healthchecks:
+{%- for app in apps %}
+{%- for healthcheck in app.healthchecks -%}
+
+  {%- if healthcheck.slug == "certificator" %}
+    {%- set default_schedule = "30 01 * * *" %}
+  {%- else %}
+    {%- set default_schedule = "* * * * *" %}
+  {%- endif %}
+
+  {%- set default_grace = "30m" %}
+  {%- set default_timezone = "Europe/Bratislava" %}
+
+  {%- set healthcheck_name = app.full_name_pretty + " - " + (healthcheck.slug | capitalize) %}
+  {%- set healthcheck_slug = app.full_name_machine + "-" + healthcheck.slug %}
+
+  - grace: "{{ healthcheck.grace or default_grace }}"
+    name: "{{ healthcheck_name }}"
+    schedule: "{{ healthcheck.schedule or default_schedule }}"
+    slug: "{{ healthcheck_slug }}"
+    tz: "{{ healthcheck.timezone or default_timezone }}"
+{%- endfor %}
+{%- endfor %}

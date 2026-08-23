@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./docker-images/healthchecks/Dockerfile
+      dockerfile: ./docker-images/healthchecks/app/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
@@ -28,7 +28,7 @@ services:
       service: script-app-setup
     # Override:
     build:
-      dockerfile: ./docker-images/healthchecks-setup/Dockerfile
+      dockerfile: ./docker-images/healthchecks/setup/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
 

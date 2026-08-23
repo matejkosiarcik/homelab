@@ -61,18 +61,18 @@ USER root
 WORKDIR /homelab
 COPY ./servers/ /homelab/servers/
 COPY ./docker-compose/ /homelab/docker-compose/
-COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/healthchecks-setup/parse-app-entry.sh /homelab/
-RUN printf 'apps:\n' >'/homelab/app-data.yml' && \
-    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-data.yml' && \
-    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-data.yml' && \
-    yq '.' '/homelab/app-data.yml' >'/homelab/app-data.json'
+COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/healthchecks/setup/parse-app-entry.sh /homelab/
+RUN printf 'apps:\n' >'/homelab/apps.yml' && \
+    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/apps.yml' && \
+    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/apps.yml' && \
+    yq '.' '/homelab/apps.yml' >'/homelab/apps.json'
 
 FROM jinja AS config_2
 USER root
 WORKDIR /homelab
-COPY --from=config_1 /homelab/app-data.json /homelab/
-COPY ./docker-images/healthchecks-setup/healthchecks.yml.j2 /homelab/
-RUN jinja2 healthchecks.yml.j2 app-data.json --format json -o healthchecks.yml
+COPY --from=config_1 /homelab/apps.json /homelab/
+COPY ./docker-images/healthchecks/setup/healthchecks.yml.j2 /homelab/
+RUN jinja2 healthchecks.yml.j2 apps.json --format json -o healthchecks.yml
 
 FROM yq AS config_3
 USER root
@@ -86,11 +86,11 @@ FROM node:26.7.0-slim AS app_build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-COPY ./docker-images/healthchecks-setup/package-lock.json ./docker-images/healthchecks-setup/package.json /homelab/
+COPY ./docker-images/healthchecks/setup/package-lock.json ./docker-images/healthchecks/setup/package.json /homelab/
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=healthchecks-setup-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/healthchecks-setup/tsconfig.json /homelab/
-COPY ./docker-images/healthchecks-setup/src/ /homelab/src/
+COPY ./docker-images/healthchecks/setup/tsconfig.json /homelab/
+COPY ./docker-images/healthchecks/setup/src/ /homelab/src/
 RUN npm run build && \
     npm prune --production
 

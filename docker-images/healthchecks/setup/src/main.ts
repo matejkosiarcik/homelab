@@ -1,8 +1,6 @@
-import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import path from 'node:path';
 import axios from 'axios';
-import dotenv from 'dotenv';
 import { assert } from 'simple-assert';
 import parseDuration from 'parse-duration-ms';
 import sleep from 'sleep-promise';
@@ -43,10 +41,6 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     const statusFile = path.join('tmpfs', 'status.txt');
     await fsx.mkdir(path.dirname(statusFile), { recursive: true });
     await fsx.writeFile(statusFile, 'starting', 'utf8');
-
-    if (fs.existsSync('.secrets.env')) {
-        dotenv.config({ path: '.secrets.env', quiet: true });
-    }
 
     axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || (() => {
         throw new Error("HEALTHCHECKS_API_KEY unset");
@@ -125,6 +119,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         })();
     }
 
+    console.log('Setup successful');
     await fsx.writeFile(statusFile, 'started', 'utf8');
 
     // Sleep forever

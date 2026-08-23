@@ -43,7 +43,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY ./docker-images/healthchecks/icons/healthchecks.png /custom-healthchecks.png
+COPY ./docker-images/healthchecks/app/icons/healthchecks.png /custom-healthchecks.png
 
 ### Final ###
 

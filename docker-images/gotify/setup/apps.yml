@@ -1,0 +1,16 @@
+apps:
+  - defaultPriority: 1
+    description: ""
+    name: ChangeDetection
+
+  - defaultPriority: 1
+    description: ""
+    name: Gatus
+
+  - defaultPriority: 1
+    description: ""
+    name: Healthchecks
+
+  - defaultPriority: 1
+    description: ""
+    name: UptimeKuma

@@ -712,12 +712,19 @@ gotify)
     # Preload #
     matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
     homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
+    homelab_viewer_password="$(load_secret ".$app_full_name_key.app.homelab_viewer_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'GOTIFY_DEFAULTUSER_PASS="%s"\n' "$matej_password" >>"$initial_output/app.env"
+    printf 'GOTIFY_DEFAULTUSER_PASS="%s"\n' "$matej_password" >>"$initial_output/app-setup.env"
+    printf 'USER_MATEJ_PASSWORD="%s"\n' "$matej_password" >>"$initial_output/app-setup.env"
 
     printf 'homelab-test,%s\n' "$homelab_test_password" >>"$initial_output/.secrets.csv"
+    printf 'USER_HOMELAB_TEST_PASSWORD="%s"\n' "$homelab_test_password" >>"$initial_output/app-setup.env"
+
+    printf 'homelab-viewer,%s\n' "$homelab_viewer_password" >>"$initial_output/.secrets.csv"
+    printf 'USER_HOMELAB_VIEWER_PASSWORD="%s"\n' "$homelab_viewer_password" >>"$initial_output/app-setup.env"
 
     # Apache #
     write_default_proxy_users "$app_full_name_key"
