@@ -2,7 +2,7 @@
 # TODO: Investigate if it is possible to run as non-root
 # checkov:skip=CKV_DOCKER_2: No need for healthcheck
 
-FROM arduinoci/ci-arduino-cli:v1.4.0
+FROM arduinoci/ci-arduino-cli:v1.5.1
 USER root
 WORKDIR /homelab
 RUN arduino-cli core update-index && \
