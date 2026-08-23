@@ -717,7 +717,6 @@ gotify)
     # App #
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'GOTIFY_DEFAULTUSER_PASS="%s"\n' "$matej_password" >>"$initial_output/app.env"
-    printf 'GOTIFY_DEFAULTUSER_NAME="matej"\n' "$matej_password" >>"$initial_output/app-setup.env"
     printf 'GOTIFY_DEFAULTUSER_PASS="%s"\n' "$matej_password" >>"$initial_output/app-setup.env"
     printf 'USER_MATEJ_PASSWORD="%s"\n' "$matej_password" >>"$initial_output/app-setup.env"
 

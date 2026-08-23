@@ -109,7 +109,8 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME=script-setup \
+ENV GOTIFY_DEFAULTUSER_NAME="matej" \
+    HOMELAB_CONTAINER_NAME=script-setup \
     HOMELAB_CONTAINER_VARIANT=default \
     NODE_OPTIONS=--dns-result-order=ipv4first \
     TZ=Europe/Bratislava
