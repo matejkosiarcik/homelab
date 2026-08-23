@@ -56,8 +56,11 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ARG GID=1000
 ARG UID=1000
 ENV APP_TIMEZONE=Etc/Utc \
+    CHART_DATETIME_FORMAT="d M H:i" \
     DASHBOARD_POLLING=5s \
+    DATETIME_FORMAT="Y-m-d (D) H:i:s" \
     DB_CONNECTION=sqlite \
+    DEFAULT_CHART_RANGE=week \
     DISPLAY_TIMEZONE=Europe/Bratislava \
     FORCE_HTTPS=true \
     HOMELAB_CONTAINER_NAME=speedtesttracker \
