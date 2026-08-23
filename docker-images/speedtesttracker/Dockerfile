@@ -32,7 +32,15 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~sail~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~sail~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~nginx~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~nginx~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~php~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~php~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~postgres~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~postgres~' | sponge --append /etc/passwd
 
 ### Prefinal ###
 
@@ -50,7 +58,7 @@ COPY --from=homelab-dir /homelab /homelab
 FROM linuxserver/speedtest-tracker:1.13.3
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-RUN chown -R homelab:homelab /app/www
+RUN chown -R homelab:homelab /app
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ARG GID=1000
