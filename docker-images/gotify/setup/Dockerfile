@@ -116,4 +116,4 @@ ENV GOTIFY_DEFAULTUSER_NAME="matej" \
     TZ=Europe/Bratislava
 USER homelab
 HEALTHCHECK --interval=10s --start-period=120s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
-ENTRYPOINT [ "node", "/homelab/dist/main.js" ]
+ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]
