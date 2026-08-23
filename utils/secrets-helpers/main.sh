@@ -1232,9 +1232,14 @@ openspeedtest)
     ;;
 
 openwebui)
+    suffix=''
+    if printf '%s' "$app_full_name_key" | grep -E '\-private$' >/dev/null 2>/&1; then
+        suffix='-private'
+    fi
+
     # Preload #
     matej_password="$(load_secret ".$app_full_name_key.app.matej_user" dev=default)"
-    ollama_openwebui_password="$(load_secret '.ollama.app.openwebui_user' dev=real)"
+    ollama_openwebui_password="$(load_secret ".ollama$suffix.app.openwebui_user" dev=real)"
     secret_key="$(load_secret ".$app_full_name_key.app.secret_key" "dev=value=$(openssl rand -hex 16)")"
     homelab_test_password="$(load_secret ".$app_full_name_key.app.homelab_test_user" dev=default)"
 
