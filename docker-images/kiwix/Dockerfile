@@ -41,7 +41,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM ghcr.io/kiwix/kiwix-serve:3.8.1
+FROM ghcr.io/kiwix/kiwix-serve:3.8.2
 USER root
 RUN apk update --no-cache && \
     apk add --no-cache inotify-tools zim-tools
