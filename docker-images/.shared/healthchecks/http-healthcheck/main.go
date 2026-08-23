@@ -98,7 +98,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Validate reponse status
+	// Validate response status
 	if !slices.Contains(expectedStatuses, response.StatusCode) {
 		fmt.Fprintf(os.Stderr, "Unexpected response status: %s\n", response.Status)
 		os.Exit(1)
