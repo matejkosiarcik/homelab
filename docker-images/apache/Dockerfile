@@ -91,7 +91,7 @@ USER root
 WORKDIR /homelab
 COPY --from=apache-config-2 /homelab/apache.conf-extra /homelab/
 COPY ./docker-images/apache/apache.conf /homelab/
-RUN sed -e '/## INSERT_EXTRA_REVERSE_PROXY ##/{' -e 'r /homelab/apache.conf-extra' -e 'd'  -e '}' </homelab/apache.conf >/homelab/apache.conf-final && \
+RUN sed -e '/# <<INSERT_EXTRA_REVERSE_PROXY>>/{' -e 'r /homelab/apache.conf-extra' -e 'd'  -e '}' </homelab/apache.conf >/homelab/apache.conf-final && \
     mv /homelab/apache.conf-final /homelab/apache.conf
 
 ### Error pages ###
@@ -190,5 +190,5 @@ ENV HOMELAB_CONTAINER_NAME=apache \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=120s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost/.apache", "--insecure", "--status", "401" ]
+HEALTHCHECK --interval=10s --start-period=120s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost:443/.apache", "--insecure", "--status", "401" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

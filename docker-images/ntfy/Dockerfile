@@ -50,6 +50,6 @@ ENV HOMELAB_CONTAINER_NAME=ntfy \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost/v1/health", "--body", "\"healthy\"\\s*:\\s*true" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/v1/health", "--body", "\"healthy\"\\s*:\\s*true" ]
 ENTRYPOINT [ "ntfy" ]
 CMD [ "serve" ]

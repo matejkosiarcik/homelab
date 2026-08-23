@@ -32,7 +32,15 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~sail~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~sail~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~nginx~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~nginx~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~php~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~php~' | sponge --append /etc/passwd && \
+    grep -E '^homelab:' </etc/group | sed 's~^homelab~postgres~' | sponge --append /etc/group && \
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~postgres~' | sponge --append /etc/passwd
 
 ### Prefinal ###
 
@@ -50,14 +58,17 @@ COPY --from=homelab-dir /homelab /homelab
 FROM linuxserver/speedtest-tracker:1.13.3
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-RUN chown -R homelab:homelab /app/www
+RUN chown -R homelab:homelab /app
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ARG GID=1000
 ARG UID=1000
 ENV APP_TIMEZONE=Etc/Utc \
+    CHART_DATETIME_FORMAT="d M H:i" \
     DASHBOARD_POLLING=5s \
+    DATETIME_FORMAT="Y-m-d (D) H:i:s" \
     DB_CONNECTION=sqlite \
+    DEFAULT_CHART_RANGE=week \
     DISPLAY_TIMEZONE=Europe/Bratislava \
     FORCE_HTTPS=true \
     HOMELAB_CONTAINER_NAME=speedtesttracker \
@@ -75,7 +86,4 @@ ENV APP_TIMEZONE=Etc/Utc \
     RESULTS_POLLING=5s \
     SPEEDTEST_SCHEDULE="15 */4 * * *" \
     TZ=Etc/Utc
-# TODO: Consider:
-# CACHE_STORE=file \
-# APP_DEBUG=true \
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost/api/healthcheck", "--insecure" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost:443/api/healthcheck", "--insecure" ]
