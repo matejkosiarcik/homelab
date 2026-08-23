@@ -23,10 +23,9 @@ Gotify server:
     - Tokens for: _Gatus_ in `secrets.yml`
     - URLs for: _ChangeDetection_, _Healthchecks_, _UptimeKuma_ - `gotifys://gotify.matejhome.com/{token}`
 
-
 ## Publishing notifications
 
-For publishing notifications to gotify (see also: ):
+For publishing notifications to gotify (see also: <https://gotify.net/docs/pushmsg>):
 
 ```txt
 gotifys://gotify.matejhome.com/{token}

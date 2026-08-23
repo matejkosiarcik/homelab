@@ -6,9 +6,9 @@ import { assert } from 'simple-assert';
 import sleep from 'sleep-promise';
 
 type AppBase = {
-  defaultPriority: number,
-  description: string,
-  name: string,
+    defaultPriority: number,
+    description: string,
+    name: string,
 };
 
 type AppPost = AppBase;
@@ -89,12 +89,12 @@ async function syncApps() {
 }
 
 type UserBase = {
-  admin: boolean,
-  name: string,
+    admin: boolean,
+    name: string,
 };
 
 type UserPost = UserBase & {
-  pass: string,
+    pass: string,
 }
 
 type UserGet = UserBase & {
