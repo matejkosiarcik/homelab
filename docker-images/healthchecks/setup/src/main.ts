@@ -44,10 +44,6 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     await fsx.mkdir(path.dirname(statusFile), { recursive: true });
     await fsx.writeFile(statusFile, 'starting', 'utf8');
 
-    if (fs.existsSync('.secrets.env')) {
-        dotenv.config({ path: '.secrets.env', quiet: true });
-    }
-
     axios.defaults.headers.common['X-Api-Key'] = process.env['HEALTHCHECKS_API_KEY'] || (() => {
         throw new Error("HEALTHCHECKS_API_KEY unset");
     })();
@@ -125,6 +121,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         })();
     }
 
+    console.log('Setup successful');
     await fsx.writeFile(statusFile, 'started', 'utf8');
 
     // Sleep forever
