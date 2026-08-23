@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=actualbudget-healthc
 
 ### App ###
 
-FROM opensearchproject/opensearch:2.19.4 AS entrypoint
+FROM opensearchproject/opensearch:2.19.6 AS entrypoint
 USER root
 COPY ./docker-images/reportportal/opensearch/entrypoint-extra.sh /homelab/
 RUN head -n 1 /usr/share/opensearch/opensearch-docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -21,7 +21,7 @@ RUN head -n 1 /usr/share/opensearch/opensearch-docker-entrypoint.sh >/homelab/en
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM opensearchproject/opensearch:2.19.4 AS runtime-dirs
+FROM opensearchproject/opensearch:2.19.6 AS runtime-dirs
 USER root
 RUN mkdir -p /homelab/original/usr/share/opensearch/config && \
     cp -R /usr/share/opensearch/config/. /homelab/original/usr/share/opensearch/config
@@ -55,7 +55,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/opensearc
 
 ### Final ###
 
-FROM opensearchproject/opensearch:2.19.4
+FROM opensearchproject/opensearch:2.19.6
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
