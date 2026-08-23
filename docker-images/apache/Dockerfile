@@ -91,7 +91,7 @@ USER root
 WORKDIR /homelab
 COPY --from=apache-config-2 /homelab/apache.conf-extra /homelab/
 COPY ./docker-images/apache/apache.conf /homelab/
-RUN sed -e '/## INSERT_EXTRA_REVERSE_PROXY ##/{' -e 'r /homelab/apache.conf-extra' -e 'd'  -e '}' </homelab/apache.conf >/homelab/apache.conf-final && \
+RUN sed -e '/# <<INSERT_EXTRA_REVERSE_PROXY>>/{' -e 'r /homelab/apache.conf-extra' -e 'd'  -e '}' </homelab/apache.conf >/homelab/apache.conf-final && \
     mv /homelab/apache.conf-final /homelab/apache.conf
 
 ### Error pages ###
