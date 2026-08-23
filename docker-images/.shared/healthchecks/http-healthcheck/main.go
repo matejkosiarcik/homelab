@@ -7,6 +7,9 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"slices"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/alexflint/go-arg"
@@ -18,10 +21,24 @@ func main() {
 		URL      string `arg:"--url,required" help:"URL to check"`
 		Method   string `arg:"--method" default:"GET" help:"HTTP method"`
 		Body     string `arg:"--body" help:"Regex to validate response body against (optional)"`
-		Status   int    `arg:"--status" help:"Expected HTTP status code (optional)"`
+		Status   string `arg:"--status" help:"Expected HTTP status code(s), comma-delimited (optional)"`
 		Insecure bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
 	}
 	arg.MustParse(&args)
+
+	// Parse expected status codes
+	var expectedStatuses []int
+	if args.Status != "" {
+		for _, status := range strings.Split(args.Status, ",") {
+			code, err := strconv.Atoi(strings.TrimSpace(status))
+			if err != nil || code < 100 || code > 599 {
+				fmt.Fprintf(os.Stderr, "Invalid HTTP status code for --status: %q\n", status)
+				os.Exit(1)
+			}
+
+			expectedStatuses = append(expectedStatuses, code)
+		}
+	}
 
 	bodyRegex := func() *regexp.Regexp {
 		if args.Body != "" {
@@ -55,16 +72,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	if args.Status != 0 {
-		if response.StatusCode != args.Status {
+	if len(expectedStatuses) > 0 {
+		if !slices.Contains(expectedStatuses, response.StatusCode) {
 			fmt.Fprintf(os.Stderr, "Unexpected response status: %s\n", response.Status)
 			os.Exit(1)
 		}
-	} else {
-		if response.StatusCode/100 != 2 {
-			fmt.Fprintf(os.Stderr, "Unexpected response status: %s\n", response.Status)
-			os.Exit(1)
-		}
+	} else if response.StatusCode/100 != 2 {
+		fmt.Fprintf(os.Stderr, "Unexpected response status: %s\n", response.Status)
+		os.Exit(1)
 	}
 
 	if bodyRegex != nil {
