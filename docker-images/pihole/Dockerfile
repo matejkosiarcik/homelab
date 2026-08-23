@@ -112,4 +112,4 @@ ENV DHCP_ACTIVE=false \
     TZ=Europe/Bratislava
 # TODO: Investigate if it is possible to run as non-root
 # TODO: Remove DNSMASQ_USER=root override above
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost/admin" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/admin" ]
