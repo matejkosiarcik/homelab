@@ -55,6 +55,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     axios.defaults.baseURL = `http://app:8000/api/v3`;
     axios.defaults.validateStatus = () => true;
 
+    console.log('Waiting for healthchecks to return status 200');
     const startDate = new Date();
     while (true) {
         const currentDate = new Date();
@@ -71,12 +72,14 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
             await sleep(1000);
         }
     }
+    console.log('Healthchecks status OK');
 
     // Load new healthchecks
     const declaredHealthchecks = await loadHealthchecks('healthchecks.json');
 
     // Load existing healthchecks in database
     const existingHealthchecks = await (async () => {
+        console.log('Loading list of existing healthchecks');
         const response = await axios.get('/checks');
         assert(response.status === 200, `Failed to fetch list of healthchecks\nStatus: ${response.status}\nBody: ${response.data}`);
         const body = response.data as { checks: Healthcheck[] };
@@ -113,7 +116,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     for (const healthcheck of healthchecksToAdd) {
         await (async () => {
             console.log(`Creating healthcheck ${healthcheck.slug}`);
-            const response = await axios.post('/checks', healthcheck, {
+            const response = await axios.post('/checks/', healthcheck, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
