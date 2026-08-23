@@ -25,14 +25,14 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY ./docker-images/gotify/config.yml /etc/gotify/config.yml
+COPY ./docker-images/gotify/app/config.yml /etc/gotify/config.yml
 
 ### Final ###
 
 FROM gotify/server:2.7.3
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-COPY --from=prefinal --chown=homelab:homelab /etc/gotify/config.yml /etc/gotify/config.yml
+COPY --from=prefinal --chown=homelab:homelab /etc/gotify/app/config.yml /etc/gotify/config.yml
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 RUN chmod go-rw /etc/gotify/config.yml
