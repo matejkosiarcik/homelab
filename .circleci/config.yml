@@ -18,7 +18,7 @@ workflows:
 jobs:
   docker_build:
     docker:
-      - image: docker:29.6.2
+      - image: docker:29.7.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -42,7 +42,7 @@ jobs:
       server:
         type: string
     docker:
-      - image: docker:29.6.2
+      - image: docker:29.7.2
     environment:
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
     steps:
