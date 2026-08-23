@@ -19,6 +19,16 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/gotify/data:/app/data:rw
 
+  app-setup:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: script-app-setup
+    # Override:
+    build:
+      dockerfile: ./docker-images/gotify/setup/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
+
   certificator:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml

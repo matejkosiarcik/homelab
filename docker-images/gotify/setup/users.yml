@@ -1,0 +1,10 @@
+users:
+  - admin: true
+    name: matej
+    pass: ""
+  - admin: false
+    name: homelab-test
+    pass: ""
+  - admin: false
+    name: homelab-viewer
+    pass: ""

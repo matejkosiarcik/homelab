@@ -6,6 +6,9 @@ services:
   app:
     <<: *common-service-options
 
+  app-setup:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

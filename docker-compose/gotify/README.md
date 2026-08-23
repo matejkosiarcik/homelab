@@ -19,14 +19,14 @@ Gotify server:
 
 ## After initial installation
 
-- Create apps for receiving notifications:
-    - _Changedetection_, _Gatus_, _Healthchecks_, _UptimeKuma_
-    - Save _Gatus_ token in _Vaultwarden_
-- Create `homelab-viewer` and `homelab-test` users
+- Change access tokens in all affected apps
+    - Tokens for: _Gatus_ in `secrets.yml`
+    - URLs for: _ChangeDetection_, _Healthchecks_, _UptimeKuma_ - `gotifys://gotify.matejhome.com/{token}`
+
 
 ## Publishing notifications
 
-For publishing notifications to gotify (see also: <https://gotify.net/docs/pushmsg>):
+For publishing notifications to gotify (see also: ):
 
 ```txt
 gotifys://gotify.matejhome.com/{token}
