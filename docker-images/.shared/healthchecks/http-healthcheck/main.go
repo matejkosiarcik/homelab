@@ -15,6 +15,7 @@ import (
 	"github.com/alexflint/go-arg"
 )
 
+// nolint:gocyclo
 func main() {
 	// Parse arguments
 	var args struct {
