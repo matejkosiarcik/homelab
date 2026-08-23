@@ -146,16 +146,16 @@ COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
 
 ### Final ###
 
-FROM renovate/renovate:42.66.7-full
+FROM renovate/renovate:44.39.2-full
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN chown -R homelab:homelab /usr/src/app
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-COPY --from=prefinal --chown=homelab:homelab /usr/src/app/config.js /usr/src/app/config.js
+COPY --from=prefinal --chown=homelab:homelab /usr/src/app/config.js /usr/src/app/
 ENV HOMELAB_CONTAINER_NAME=renovatebot \
     HOMELAB_CONTAINER_VARIANT=default \
-    HOMELAB_CRON_SKIP_INITIAL=0 \
+    HOMELAB_CRON_SKIP_INITIAL=1 \
     HOMELAB_CRON_TIMEOUT=30m \
     PATH="/homelab/bin:$PATH" \
     TZ=Europe/Bratislava
