@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=script-setup-pack
         moreutils && \
     rm -rf /var/lib/apt/lists/*
 
-FROM busybox:1.35.0-uclibc AS busybox
+FROM busybox:1.38.0-uclibc AS busybox
 USER root
 COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
 RUN sh /homelab/busybox-copy.sh

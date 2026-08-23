@@ -77,7 +77,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=unbound-prometheus-e
 
 ### Other ###
 
-FROM busybox:1.35.0-uclibc AS busybox
+FROM busybox:1.38.0-uclibc AS busybox
 USER root
 COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
 RUN sh /homelab/busybox-copy.sh
