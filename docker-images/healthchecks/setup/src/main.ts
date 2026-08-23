@@ -1,8 +1,6 @@
-import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import path from 'node:path';
 import axios from 'axios';
-import dotenv from 'dotenv';
 import { assert } from 'simple-assert';
 import parseDuration from 'parse-duration-ms';
 import sleep from 'sleep-promise';

@@ -9,7 +9,6 @@
     "@types/node": "^26.2.0",
     "axios": "^1.19.0",
     "date-fns": "^4.4.0",
-    "dotenv": "^17.4.2",
     "parse-duration-ms": "^0.1.0",
     "simple-assert": "^2.0.0",
     "sleep-promise": "^9.1.0",
