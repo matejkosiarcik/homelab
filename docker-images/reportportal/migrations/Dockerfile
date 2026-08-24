@@ -3,8 +3,8 @@
 
 ### App ###
 
-FROM reportportal/migrations:5.15.2 AS entrypoint
-USER root
+FROM reportportal/migrations:5.15.4 AS entrypoint
+USER nonroot
 WORKDIR /homelab
 COPY ./docker-images/reportportal/migrations/entrypoint-extra-end.sh ./docker-images/reportportal/migrations/entrypoint-extra-start.sh /homelab/
 RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -50,7 +50,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoin
 
 ### Final ###
 
-FROM reportportal/migrations:5.15.2
+FROM reportportal/migrations:5.15.4
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
