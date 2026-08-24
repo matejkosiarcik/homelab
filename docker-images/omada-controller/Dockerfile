@@ -5,7 +5,7 @@
 
 ### App ###
 
-FROM mbentley/omada-controller:6.0 AS omadacontroller-app
+FROM mbentley/omada-controller:6.2 AS omadacontroller-app
 USER root
 
 ### User setup ###
@@ -44,7 +44,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM mbentley/omada-controller:6.0
+FROM mbentley/omada-controller:6.2
 USER root
 ARG GID=1000
 ARG UID=1000
