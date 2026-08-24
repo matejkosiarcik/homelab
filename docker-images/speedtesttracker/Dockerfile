@@ -55,7 +55,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM linuxserver/speedtest-tracker:1.13.3
+FROM linuxserver/speedtest-tracker:1.15.0
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN chown -R homelab:homelab /app
