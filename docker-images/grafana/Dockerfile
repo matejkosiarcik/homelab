@@ -38,7 +38,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM grafana/grafana-oss:12.1.1
+FROM grafana/grafana-oss:12.4.3
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
