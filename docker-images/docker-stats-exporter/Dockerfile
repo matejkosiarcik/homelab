@@ -7,7 +7,7 @@ FROM wywywywy/docker_stats_exporter:20220516 AS docker-stats-exporter-app
 
 ### Healthcheck ###
 
-FROM golang:1.26.6-alpine AS healthcheck-build
+FROM golang:1.27.0-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/

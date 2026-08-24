@@ -14,7 +14,7 @@ RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
 
 ### Healthcheck ###
 
-FROM golang:1.26.6-alpine AS healthcheck-build
+FROM golang:1.27.0-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
