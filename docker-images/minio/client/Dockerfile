@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-pack
     mkdir -p /homelab/usr-lib && \
     find /usr/lib \( -name 'libbrotli*' -or -name 'libcom*' -or -name 'libcurl*' -or -name 'libffi*' -or -name 'libgmp*' -or -name 'libgnutls*' -or -name 'libgssapi*' -or -name 'libhogweed*' -or -name 'libidn*' -or -name 'libk*crypto*' -or -name 'libkeyutils*' -or -name 'libkrb*' -or -name 'liblber*' -or -name 'libldap*' -or -name 'libnettle*' -or -name 'libnghttp*' -or -name 'libp*kit*' -or -name 'libpsl*' -or -name 'librtmp*' -or -name 'libsasl*' -or -name 'libssh*' -or -name 'libtasn*' -or -name 'libunistring*' \) -exec sh -c 'mkdir -p "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")" && cp "$0" "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")/$(basename "$0")"' {} \;
 
-FROM busybox:1.35.0-uclibc AS busybox
+FROM busybox:1.38.0-uclibc AS busybox
 USER root
 COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
 RUN sh /homelab/busybox-copy.sh
