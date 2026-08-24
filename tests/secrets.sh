@@ -128,10 +128,6 @@ rm -f .secrets.env
     printf 'GRAFANA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.grafana.apache.status_user')"
     printf 'GRAFANA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.grafana.apache.prometheus_user')"
 
-    printf 'GROCERIES__HOMELABTEST_PASSWORD=%s\n' "$(load_secret '.groceries.app.homelab_test_user')"
-    printf 'GROCERIES__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.groceries.apache.status_user')"
-    printf 'GROCERIES__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.groceries.apache.prometheus_user')"
-
     printf 'HEALTHCHECKS__MATEJ_PASSWORD=%s\n' "$(load_secret '.healthchecks.app.matej_user')"
     printf 'HEALTHCHECKS__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.healthchecks.app.homelab_test_user')"
     printf 'HEALTHCHECKS__API_KEY_READONLY=%s\n' "$(load_secret '.healthchecks.app.api_key_readonly')"

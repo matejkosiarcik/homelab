@@ -6,10 +6,12 @@ module.exports = {
         ],
     },
     repositories: [
-        'matejkosiarcik/azlint',
-        'matejkosiarcik/azminifier',
         'matejkosiarcik/dotfiles',
         'matejkosiarcik/homelab',
-        'matejkosiarcik/website',
+
+        // TODO: Re-enable other repositories:
+        // 'matejkosiarcik/azlint',
+        // 'matejkosiarcik/azminifier',
+        // 'matejkosiarcik/website',
     ],
 };
