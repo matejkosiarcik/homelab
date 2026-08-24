@@ -4,7 +4,7 @@
 ### App ###
 
 FROM reportportal/migrations:5.15.4 AS entrypoint
-USER root
+USER nonroot
 WORKDIR /homelab
 COPY ./docker-images/reportportal/migrations/entrypoint-extra-end.sh ./docker-images/reportportal/migrations/entrypoint-extra-start.sh /homelab/
 RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
