@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM prom/node-exporter:v1.10.2 AS nodeexporter-app
+FROM prom/node-exporter:v1.12.1 AS nodeexporter-app
 USER root
 
 ### Healthcheck ###
