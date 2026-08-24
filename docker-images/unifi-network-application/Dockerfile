@@ -4,7 +4,7 @@
 
 ### Other ###
 
-FROM linuxserver/unifi-network-application:10.0.162 AS entrypoint
+FROM linuxserver/unifi-network-application:10.5.67 AS entrypoint
 USER root
 COPY ./docker-images/unifi-network-application/entrypoint-extra.sh /homelab/
 RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
@@ -12,7 +12,7 @@ RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM linuxserver/unifi-network-application:10.0.162 AS runtime-dirs
+FROM linuxserver/unifi-network-application:10.5.67 AS runtime-dirs
 USER root
 WORKDIR /homelab
 RUN mkdir -p /homelab/original/defaults && \
@@ -56,7 +56,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 
 ### Final ###
 
-FROM linuxserver/unifi-network-application:10.0.162
+FROM linuxserver/unifi-network-application:10.5.67
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
