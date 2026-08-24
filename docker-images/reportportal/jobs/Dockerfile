@@ -38,7 +38,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-jobs:5.15.1
+FROM reportportal/service-jobs:5.15.2
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
