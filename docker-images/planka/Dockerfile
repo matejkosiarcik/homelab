@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM ghcr.io/plankanban/planka:2.1.1 AS entrypoint
+FROM ghcr.io/plankanban/planka:2.2.1 AS entrypoint
 USER root
 WORKDIR /homelab
 COPY ./docker-images/planka/entrypoint-extra.sh /homelab/
@@ -50,7 +50,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM ghcr.io/plankanban/planka:2.1.1
+FROM ghcr.io/plankanban/planka:2.2.1
 USER root
 ARG HOMELAB_APP_EXTERNAL_URL
 COPY --from=prefinal /etc/group /etc/passwd /etc/
