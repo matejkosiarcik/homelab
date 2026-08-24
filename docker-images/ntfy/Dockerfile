@@ -40,7 +40,7 @@ COPY ./docker-images/ntfy/config/server.yml /etc/ntfy/server.yml
 
 ### Final ###
 
-FROM binwiederhier/ntfy:v2.15.0
+FROM binwiederhier/ntfy:v2.27.0
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
