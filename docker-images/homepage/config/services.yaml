@@ -49,37 +49,37 @@
 
 - Servers:
     - Odroid H3:
-        description: App Server
-        href: javascript:copyUrl('ssh matej@10.1.4.1')
-        ping: "10.1.4.1"
+        description: Storage Server
+        href: javascript:copyUrl('ssh matej@server-odroid-h3.matejhome.com')
+        ping: server-odroid-h3.matejhome.com
         icon: /icons/odroid.png
         target: _self
 
     - Odroid H4 Ultra:
         description: App Server
-        href: javascript:copyUrl('ssh matej@10.1.4.2')
-        ping: "10.1.4.2"
+        href: javascript:copyUrl('ssh matej@server-odroid-h4-ultra.matejhome.com')
+        ping: server-odroid-h4-ultra.matejhome.com
         icon: /icons/odroid.png
         target: _self
 
     - Raspberry Pi 4B 2G:
         description: App Server
-        href: javascript:copyUrl('ssh matej@10.1.4.3')
-        ping: "10.1.4.3"
+        href: javascript:copyUrl('ssh matej@server-raspberry-pi-4b-2g.matejhome.com')
+        ping: server-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 4G:
         description: App Server
-        href: javascript:copyUrl('ssh matej@10.1.4.4')
-        ping: "10.1.4.4"
+        href: javascript:copyUrl('ssh matej@server-raspberry-pi-4b-4g.matejhome.com')
+        ping: server-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/raspberry-pi.png
         target: _self
 
     - MacBook Pro 2012:
         description: NAS
-        href: javascript:copyUrl('ssh matej@10.1.4.5')
-        ping: "10.1.4.5"
+        href: javascript:copyUrl('ssh matej@server-macbook-pro-2012.matejhome.com')
+        ping: server-macbook-pro-2012.matejhome.com
         icon: /icons/apple.png
         target: _self
 
