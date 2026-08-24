@@ -2,7 +2,7 @@
 
 ### App ###
 
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0 AS adventurelog-backend
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.0 AS adventurelog-backend
 
 ### Healthcheck ###
 
@@ -37,7 +37,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.11.0
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.0
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN ln -sf /run/supervisord.pid /code/supervisord.pid && \
