@@ -4,7 +4,7 @@
 
 ### App ###
 
-FROM linuxserver/jellyfin:10.11.5 AS favicon
+FROM linuxserver/jellyfin:10.11.11 AS favicon
 USER root
 RUN find '/usr/share/jellyfin/web' -name 'favicon.*.ico' -type f -maxdepth 1 -exec cp {} '/usr/share/jellyfin/web/favicon.ico' \; && \
     if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
@@ -60,7 +60,7 @@ COPY --from=favicon /usr/share/jellyfin/web/favicon.ico /fsroot/favicon/favicon.
 
 ### Final ###
 
-FROM linuxserver/jellyfin:10.11.5
+FROM linuxserver/jellyfin:10.11.11
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
