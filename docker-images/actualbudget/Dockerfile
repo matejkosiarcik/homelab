@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM actualbudget/actual-server:26.5.2 AS actualbudget-app
+FROM actualbudget/actual-server:26.8.1 AS actualbudget-app
 
 ### Healthcheck ###
 
