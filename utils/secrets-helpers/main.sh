@@ -1233,7 +1233,7 @@ openspeedtest)
 
 openwebui)
     suffix=''
-    if printf '%s' "$app_full_name_key" | grep -E '\-private$' >/dev/null 2>/&1; then
+    if printf '%s' "$app_full_name_key" | grep -E '\-private$' >/dev/null 2>&1; then
         suffix='-private'
     fi
 
