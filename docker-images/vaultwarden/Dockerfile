@@ -28,7 +28,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM vaultwarden/server:1.34.3
+FROM vaultwarden/server:1.37.2
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
