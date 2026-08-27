@@ -47,7 +47,7 @@ COPY ./docker-images/healthchecks/app/icons/healthchecks.png /custom-healthcheck
 
 ### Final ###
 
-FROM healthchecks/healthchecks:v3.13
+FROM healthchecks/healthchecks:v4.3
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
