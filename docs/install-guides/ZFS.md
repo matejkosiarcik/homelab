@@ -3,7 +3,7 @@
 Tl;DR (on NAS):
 
 | Key        | Value             |
-| ---------- | ----------------- |
+|------------|-------------------|
 | ZPool      | `tank`            |
 | Dataset    | `tank/data`       |
 | Mountpoint | `/tank/data`      |
