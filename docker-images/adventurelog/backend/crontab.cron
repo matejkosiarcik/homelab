@@ -1,0 +1,1 @@
+0 0 * * * /code/scripts/run-cron-job.sh sync_visited_regions sync_visited_regions
