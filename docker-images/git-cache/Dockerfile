@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM node:26.7.0-slim AS npmconfig
+FROM node:26.8.1-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=git-cache-npmconfig-aptcache \
@@ -22,7 +22,7 @@ RUN touch '/root/.npmrc'
 
 ### App ###
 
-FROM node:26.7.0-slim AS nodejs-build
+FROM node:26.8.1-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json ./docker-images/git-cache/tsconfig.json /homelab/

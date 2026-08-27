@@ -4,7 +4,7 @@
 
 ### Build config ###
 
-FROM node:26.7.0-slim AS npmconfig
+FROM node:26.8.1-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage-npmconfig-aptcache \
@@ -23,7 +23,7 @@ RUN touch '/root/.npmrc'
 
 ### App ###
 
-FROM node:26.7.0-slim AS nodejs-build
+FROM node:26.8.1-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/homepage/package-lock.json ./docker-images/homepage/package.json ./docker-images/homepage/terser.json ./docker-images/homepage/tsconfig.json ./docker-images/homepage/vite.config.ts /homelab/

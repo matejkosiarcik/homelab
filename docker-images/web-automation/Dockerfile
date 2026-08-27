@@ -17,7 +17,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
-FROM node:26.7.0-slim AS npmconfig
+FROM node:26.8.1-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-npmconfig-aptcache \
@@ -84,7 +84,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:26.7.0-slim AS nodejs-build
+FROM node:26.8.1-slim AS nodejs-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/web-automation/package-lock.json ./web-automation/package.json ./web-automation/postinstall.sh ./web-automation/rollup.config.js ./web-automation/tsconfig.json /homelab/
@@ -127,7 +127,7 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM node:26.7.0-slim AS browsers
+FROM node:26.8.1-slim AS browsers
 USER root
 WORKDIR /homelab
 COPY --from=nodejs-build /homelab/package.json /homelab/
@@ -169,7 +169,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM node:26.7.0-slim
+FROM node:26.8.1-slim
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
