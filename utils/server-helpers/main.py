@@ -162,7 +162,9 @@ def main(argv: list[str]):
 
 
 def server_action(action: str):
-    action_log = "Secrets for" if action == "secrets" else action.capitalize()
+    action_log = action.capitalize()
+    if action == "secrets":
+        action_log += " for"
     print(f"↓ {action_log} docker apps")
     print("\n---\n")
 
