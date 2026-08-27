@@ -1,8 +1,5 @@
 # syntax=docker/dockerfile:1
-
-### App ###
-
-FROM ghcr.io/seanmorley15/adventurelog-frontend:v0.13.0 AS adventurelog-frontend
+# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
 ### Healthcheck ###
 
@@ -16,9 +13,12 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=adventurelog-fronten
 
 ### Users ###
 
+# hadolint ignore=DL3007
+FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+
 FROM debian:13.6-slim AS user-setup
 USER root
-COPY --from=adventurelog-frontend /etc/group /etc/passwd /etc/
+COPY --from=user-setup-base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
