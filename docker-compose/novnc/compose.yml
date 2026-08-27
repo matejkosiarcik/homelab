@@ -1,0 +1,50 @@
+x-definitions: {}
+
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    # Override:
+    build:
+      dockerfile: ./docker-images/novnc/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+      - ${DOCKER_COMPOSE_APP_PATH}/config/app.env
+    networks:
+      - external-network
+      - internal-network
+    tmpfs:
+      - /homelab/noVNC/app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
+    driver: bridge
+    internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
+    driver: bridge
+    internal: true
