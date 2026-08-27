@@ -1,0 +1,6 @@
+app:
+  type: samba
+
+network:
+  ip: 10.1.10.31
+  domain: data.matejhome.com

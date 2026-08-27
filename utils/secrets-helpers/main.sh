@@ -623,6 +623,7 @@ gatus)
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
+    printf 'NOVNC__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.novnc.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npm_cache.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
@@ -1108,6 +1109,25 @@ nodeexporter)
     touch "$initial_output/favicons.env"
     ;;
 
+novnc)
+    # Preload #
+    admin_password="$(load_secret ".$app_full_name_key.app.admin_user" dev=default)"
+
+    # App #
+    printf 'admin,%s\n' "$admin_password" >>"$initial_output/.secrets.csv"
+    printf 'VNC_PASSWORD="%s"\n' "$admin_password" >>"$initial_output/app.env"
+
+    # Apache #
+    write_default_proxy_users "$app_full_name_key"
+
+    # Certificator #
+    write_certificator_users
+    write_healthcheck_url "$app_full_name_key" certificator
+
+    # Favicons #
+    touch "$initial_output/favicons.env"
+    ;;
+
 npm-cache)
     # Preload #
     redis_password="$(load_secret ".$app_full_name_key.redis.user" dev=default)"
@@ -1439,6 +1459,7 @@ prometheus)
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
+    printf 'NOVNC__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.novnc.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npm_cache.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama.apache.prometheus_user' dev=real)" >>"$initial_output/app.env"

@@ -90,6 +90,7 @@ convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nextcloud
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nginx.svg" "$output_dir/nginx.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "$output_dir/nodeexporter.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/nodejs.svg" "$output_dir/nodejs.png"
+convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/novnc.svg" "$output_dir/novnc.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/npm.svg" "$output_dir/npm.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/ntfy.svg" "$output_dir/ntfy.png"
 convert_image_full "$input_dir/gitman-repositories/dashboard-icons/svg/opensearch.svg" "$output_dir/opensearch.png"

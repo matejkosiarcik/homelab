@@ -52,6 +52,7 @@ const appAddress = (() => {
         case 'nodeexporter': return ''; // http://app:9100
         case 'npm-cache': return ''; // http://app:8080
         case 'ntfy': return 'http://app:80';
+        case 'novnc': return 'http://app:6080';
         case 'ollama': return ''; // http://app:11434
         case 'omadacontroller': return envMode === 'prod' ? 'https://app:80' : 'https://app:8443';
         case 'openwebui': return 'http://app:8080';
@@ -75,53 +76,54 @@ const appAddress = (() => {
     }
 })();
 
-function getFaviconPath(imageType: 'ico' | 'png'): string {
+function getFaviconPath(): string {
     switch (appType) {
-        case 'actualbudget': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
+        case 'actualbudget': return '/apple-touch-icon.png'; // ICO - '/favicon.ico'
         case 'adventurelog': return '/favicon.png'; // Checked
         case 'certbot': return `@/homelab/icons/${appType}.png`;
-        case 'changedetection': return imageType === 'ico' ? '/static/favicons/favicon-32x32.png' : '/static/favicons/apple-touch-icon.png';
-        case 'dawarich': return imageType === 'ico' ? '/assets/favicon/favicon.ico' : '/assets/favicon/apple-touch-icon.png';
+        case 'changedetection': return '/static/favicons/apple-touch-icon.png'; // ICO - '/static/favicons/favicon-32x32.png'
+        case 'dawarich': return '/assets/favicon/apple-touch-icon.png'; // ICO - '/assets/favicon/favicon.ico'
         case 'docker-cache': return `@/homelab/icons/${appType}.png`;
         case 'docker-stats': return `@/homelab/icons/${appType}.png`;
-        case 'donetick': return imageType === 'ico' ? '/favicon-32x32.png' : '/apple-touch-icon.png';
-        case 'dozzle': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
-        case 'gatus': return imageType === 'ico' ? '/favicon.ico' : '/apple-touch-icon.png';
+        case 'donetick': return '/apple-touch-icon.png'; // ICO - '/favicon-32x32.png'
+        case 'dozzle': return '/favicon.png'; // ICO - '/favicon.ico'
+        case 'gatus': return '/apple-touch-icon.png'; // ICO - '/favicon.ico'
         case 'git-cache': return `@/homelab/icons/${appType}.png`;
         // case 'glances': return '/static/favicon.ico';
-        case 'gotify': return imageType === 'ico' ? '/static/favicon-32x32.png' : '/static/favicon-196x196.png';
-        case 'grafana': return imageType === 'ico' ? '/public/img/fav32.png' : '/public/img/grafana_icon.svg';
+        case 'gotify': return '/static/favicon-196x196.png'; // ICO - '/static/favicon-32x32.png'
+        case 'grafana': return '/public/img/grafana_icon.svg'; // ICO - '/public/img/fav32.png'
         // case 'groceries': return '/assets/icon/favicon.svg'; // Checked
         case 'healthchecks': return '/static/img/favicon.svg'; // Checked
-        case 'homeassistant': return imageType === 'ico' ? '/static/icons/favicon.ico' : '/static/icons/favicon-192x192.png';
-        case 'homepage': return imageType === 'ico' ? '/favicon-32x32.png' : '/apple-touch-icon.png';
+        case 'homeassistant': return '/static/icons/favicon-192x192.png'; // ICO - '/static/icons/favicon.ico'
+        case 'homepage': return '/apple-touch-icon.png'; // ICO - '/favicon-32x32.png'
         case 'jellyfin': return '/web/favicon.ico'; // Checked
-        case 'kiwix': return imageType === 'ico' ? '/skin/favicon/favicon-32x32.png' : '/skin/favicon/apple-touch-icon.png';
-        case 'koffan': return imageType === 'ico' ? '/favicon.ico' : '/static/icon-192.png';
+        case 'kiwix': return '/skin/favicon/apple-touch-icon.png'; // ICO - '/skin/favicon/favicon-32x32.png'
+        case 'koffan': return '/static/icon-192.png'; // ICO - '/favicon.ico'
         case 'libretranslate': return '/static/favicon.ico'; // Checked
-        case 'minio': return imageType === 'ico' ? '/favicon.ico' : '/apple-icon-180x180.png';
+        case 'minio': return '/apple-icon-180x180.png'; // ICO - '/favicon.ico'
         case 'motioneye': return '/static/img/motioneye-logo.svg'; // Checked
         case 'nodeexporter': return `@/homelab/icons/${appType}.png`;
+        case 'novnc': return '/app/images/icons/novnc-ios-180.png'; // ICO - '/app/images/icons/novnc.ico'
         case 'npm-cache': return `@/homelab/icons/${appType}.png`;
-        case 'ntfy': return imageType === 'ico' ? '/static/images/favicon.ico' : '/static/images/apple-touch-icon.png';
+        case 'ntfy': return '/static/images/apple-touch-icon.png'; // ICO - '/static/images/favicon.ico'
         case 'ollama': return `@/homelab/icons/${appType}.png`;
         case 'omadacontroller': return '/favicon.ico'; // Checked
-        case 'openwebui': return imageType === 'ico' ? '/static/favicon.ico' : '/static/favicon.svg';
-        case 'openspeedtest': return imageType === 'ico' ? '/assets/images/icons/favicon-32x32.png' : '/assets/images/icons/apple-touch-icon.png';
-        case 'pihole': return imageType === 'ico' ? '/admin/img/favicons/favicon-32x32.png' : '/admin/img/favicons/apple-touch-icon.png';
-        case 'planka': return imageType === 'ico' ? '/favicon.ico' : '/logo192.png';
+        case 'openwebui': return '/static/favicon.svg'; // ICO -  '/static/favicon.ico'
+        case 'openspeedtest': return '/assets/images/icons/apple-touch-icon.png'; // ICO - '/assets/images/icons/favicon-32x32.png'
+        case 'pihole': return '/admin/img/favicons/apple-touch-icon.png'; // ICO - '/admin/img/favicons/favicon-32x32.png'
+        case 'planka': return '/logo192.png'; // ICO - '/favicon.ico'
         case 'prometheus': return '/favicon.svg'; // Checked
         case 'renovatebot': return `@/homelab/icons/${appType}.png`;
         case 'reportportal': return '/ui/favicon.ico'; // Checked
         case 'samba': return `@/homelab/icons/${appType}.png`;
-        case 'smtp4dev': return imageType === 'ico' ? '/favicon.ico' : '/favicon.png';
-        case 'speedtesttracker': return imageType === 'ico' ? '/favicon.ico' : '/img/speedtest-tracker-icon.png';
-        case 'tvheadend': return imageType === 'ico' ? '/favicon.ico' : '/static/img/logo.png';
+        case 'smtp4dev': return '/favicon.png'; // ICO - '/favicon.ico'
+        case 'speedtesttracker': return '/img/speedtest-tracker-icon.png'; // ICO - '/favicon.ico'
+        case 'tvheadend': return '/static/img/logo.png'; // ICO - '/favicon.ico'
         case 'unbound': return `@/homelab/icons/${appType}.png`;
-        case 'unificontroller': return imageType === 'ico' ? '/manage/angular/favicon.ico' : '/manage/angular/favicon-192.png';
-        case 'uptimekuma': return imageType === 'ico' ? '/favicon.ico' : '/icon.svg';
-        case 'vaultwarden': return imageType === 'ico' ? '/images/favicon-32x32.png' : '/images/apple-touch-icon.png';
-        case 'vikunja': return imageType === 'ico' ? '/favicon.ico' : '/images/icons/apple-touch-icon-180x180.png';
+        case 'unificontroller': return '/manage/angular/favicon-192.png'; // ICO - '/manage/angular/favicon.ico'
+        case 'uptimekuma': return '/icon.svg'; // ICO - '/favicon.ico'
+        case 'vaultwarden': return '/images/apple-touch-icon.png'; // ICO - '/images/favicon-32x32.png'
+        case 'vikunja': return '/images/icons/apple-touch-icon-180x180.png'; // ICO - '/favicon.ico'
         default: throw new Error(`Unknown app type: ${appType}`);
     }
 }
@@ -129,29 +131,10 @@ function getFaviconPath(imageType: 'ico' | 'png'): string {
 const fileCache: Record<string, Buffer> = {};
 
 /**
- * Converts PNG to PNG
- * Usually just passes the PNG as is
- * But if the source is too big, it downsizes it to 64x64 px
+ * Extract largest Image component from an ICO image
+ * The output is usually a PNG, but can be other formats, depending what was inside the ICO
  */
-async function convertPngToPng(pngImage: Buffer): Promise<Buffer> {
-    const image = sharp(pngImage);
-    const metadata = await image.metadata();
-    let outputPng: Buffer;
-    if (metadata.width > 64 || metadata.height > 64) {
-        outputPng = await image.resize(64, 64, { fit: 'inside' }).png().toBuffer();
-    } else {
-        outputPng = pngImage;
-    }
-
-    return outputPng;
-}
-
-/**
- * Converts ICO to PNG
- * Usually just passes the PNG as is
- * But if the source is too big, it downsizes it to 64x64 px
- */
-async function convertIcoToPng(icoImage: Buffer): Promise<Buffer> {
+async function extractLargestPngFromIco(icoImage: Buffer): Promise<Buffer> {
     const tmpDir = await fsx.mkdtemp(path.join(os.tmpdir(), 'favicons-'));
     try {
         const tmpIco = path.join(tmpDir, 'favicon.ico');
@@ -178,10 +161,40 @@ async function convertIcoToPng(icoImage: Buffer): Promise<Buffer> {
         }
 
         let biggestPng = await fsx.readFile(path.join(tmpDir, biggestPngFile));
-        return await convertPngToPng(biggestPng);
+
+        const image = sharp(biggestPng);
+        return image.png().toBuffer();
     } finally {
         await fsx.rm(tmpDir, { recursive: true, force: true });
     }
+}
+
+/**
+ * Converts PNG to PNG
+ * Usually just passes the PNG as is
+ * But if the source is too big, it downsizes it to 64x64 px
+ */
+async function convertPngToPng(pngImage: Buffer): Promise<Buffer> {
+    const image = sharp(pngImage);
+    const metadata = await image.metadata();
+    let outputPng: Buffer;
+    if (metadata.width > 64 || metadata.height > 64) {
+        outputPng = await image.resize(64, 64, { fit: 'inside' }).png().toBuffer();
+    } else {
+        outputPng = pngImage;
+    }
+
+    return outputPng;
+}
+
+/**
+ * Converts ICO to PNG
+ * Usually just passes the PNG as is
+ * But if the source is too big, it downsizes it to 64x64 px
+ */
+async function convertIcoToPng(icoImage: Buffer): Promise<Buffer> {
+    const pngBuffer = await extractLargestPngFromIco(icoImage);
+    return await convertPngToPng(pngBuffer);
 }
 
 async function convertPngToIco(pngImage: Buffer): Promise<Buffer> {
@@ -202,6 +215,11 @@ async function convertPngToIco(pngImage: Buffer): Promise<Buffer> {
     return await png2ico(pngs);
 }
 
+async function convertIcoToIco(icoImage: Buffer): Promise<Buffer> {
+    const pngBuffer = await extractLargestPngFromIco(icoImage);
+    return convertPngToIco(pngBuffer);
+}
+
 async function convertSvgToPng(svgImage: Buffer): Promise<Buffer> {
     return await sharp(svgImage).resize(64, 64).png().toBuffer();
 }
@@ -220,7 +238,7 @@ async function convertImage(source: Buffer, sourceType: 'ico' | 'png' | 'svg', t
     const output = await (async () => {
         switch (sourceType) {
             case 'ico':
-                return targetType === 'png' ? await convertIcoToPng(source) : source;
+                return targetType === 'png' ? await convertIcoToPng(source) : await convertIcoToIco(source);
             case 'png':
                 return targetType === 'png' ? await convertPngToPng(source) : await convertPngToIco(source);
             case 'svg':
@@ -243,7 +261,7 @@ app.get('/.health', (_: Request, response: Response) => {
 
 app.get('/favicon.ico', async (_: Request, response: Response) => {
     try {
-        const faviconPath = getFaviconPath('ico');
+        const faviconPath = getFaviconPath();
         const originalFavicon = await loadFavicon(faviconPath);
         const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'ico');
         response.status(200);
@@ -257,7 +275,7 @@ app.get('/favicon.ico', async (_: Request, response: Response) => {
 
 app.get('/favicon.png', async (_: Request, response: Response) => {
     try {
-        const faviconPath = getFaviconPath('png');
+        const faviconPath = getFaviconPath();
         const originalFavicon = await loadFavicon(faviconPath);
         const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'png');
         response.status(200);
@@ -276,7 +294,6 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
 
     const headers: Record<string, string> = {};
     switch (appType) {
-        case 'homepage':
         case 'prometheus':
         case 'smtp4dev': {
             headers['Authorization'] = `Basic ${Buffer.from(`homelab-viewer:${process.env['FAVICON_PASSWORD']}`).toString('base64')}`;

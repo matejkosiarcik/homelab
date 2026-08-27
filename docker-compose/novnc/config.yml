@@ -1,0 +1,20 @@
+app:
+  name: NoVNC
+
+apache:
+  upstream-url:
+    - path: /
+      target: http://app:6080
+
+gatus:
+  enabled: true
+
+healthchecks:
+  - slug: certificator
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic

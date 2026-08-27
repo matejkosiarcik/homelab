@@ -1,5 +1,14 @@
 # ZFS
 
+Tl;DR (on NAS):
+
+| Key        | Value             |
+|------------|-------------------|
+| ZPool      | `tank`            |
+| Dataset    | `tank/data`       |
+| Mountpoint | `/tank/data`      |
+| Snapshots  | `/tank/snapshots` |
+
 ## Installation
 
 Prerequisite: Server should be fully setup via Ansible already.
@@ -12,9 +21,40 @@ sudo apt-get install -y zfsutils-linux zfs-dkms
 
 ## Setup
 
-TODO: Fill this section
+Create ZFS pool:
 
-`ashift=12` (or 13, depending on your drive)
+```sh
+sudo zpool create -o ashift=12 -o autotrim=on tank /dev/<device>
+# <device> - device identifier, eg. sdb
+# ashift=12 - 4K sectors, recommended for most disks
+# NOTE: To find out sector size on disk: lsblk -o NAME,MODEL,PHY-SEC,LOG-SEC
+```
+
+NOTE: Some Zpool properties may not be changed afterwards (ashift), but some may be changed afterwards (autotrim).
+
+Create dataset:
+
+```sh
+# mkdir -p /tank/data
+sudo zfs create -o atime=off -o compression=lz4 -o dedup=off -o mountpoint=/tank/data -o relatime=off -o snapdir=visible -o xattr=off tank/data
+sudo chown -R homelab:homelab /tank/data
+```
+
+NOTE: Dataset properties may be changed afterwards.
+
+<!-- Symlink to access snapshots:
+
+```sh
+# TODO: Device where to keep this or not
+ln -sf /tank/data/.zfs/snapshot /tank/data/snapshots
+``` -->
+
+Verify it:
+
+```sh
+sudo zpool status tank
+sudo zfs list tank/data
+```
 
 ## Post installation
 
@@ -24,35 +64,22 @@ Install ZFS auto snapshots:
 sudo apt-get install -y zfs-auto-snapshot
 ```
 
-Disable atime, for performance reasons and avoid unnecessary snapshots diffs - <https://www.unixtutorial.org/zfs-performance-basics-disable-atime>:
+For changing properties afterwards, run:
+
+Enable autotrim:
 
 ```sh
-sudo zfs set atime=off tank
-sudo zfs set relatime=off tank
+sudo zpool set property=value tank
 # Verify status:
-zfs get all tank | grep time
+zpool get property tank
+# Or get all properties: zpool get all tank
 ```
 
 Disable extended attributes, just because it's cleaner:
 
 ```sh
-sudo zfs set xattr=off tank
+sudo zfs set property=value tank/data
 # Verify status:
-zfs get xattr tank
-```
-
-Enable compression:
-
-```sh
-sudo zfs set compression=lz4 tank
-# Verify status:
-zfs get compression tank
-```
-
-Enable autotrim:
-
-```sh
-sudo zpool set autotrim=on tank
-# Verify status:
-zpool get autotrim tank
+zfs get property tank/data
+# Or get all properties: zfs get all tank/data
 ```
