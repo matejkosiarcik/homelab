@@ -57,7 +57,7 @@ jobs:
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
     strategy:
-      fail-fast: false
+      fail-fast: true
       max-parallel: 10
       matrix:
         include: ${{ fromJSON(needs.discovery.outputs.matrix) }}
