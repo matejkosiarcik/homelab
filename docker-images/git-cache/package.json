@@ -9,7 +9,7 @@
     "@sequelize/postgres": "^7.0.0-alpha.48",
     "@sequelize/sqlite3": "^7.0.0-alpha.48",
     "async": "^3.2.6",
-    "axios": "^1.19.0",
+    "axios": "^1.20.0",
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "execa": "^10.0.1",

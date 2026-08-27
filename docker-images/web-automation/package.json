@@ -6,7 +6,7 @@
     "postinstall": "sh postinstall.sh"
   },
   "dependencies": {
-    "axios": "^1.19.0",
+    "axios": "^1.20.0",
     "chai": "^6.2.2",
     "dotenv": "^17.4.2",
     "playwright": "^1.62.1"
@@ -16,7 +16,7 @@
     "@tsconfig/recommended": "^1.0.13",
     "@types/chai": "^5.2.3",
     "@types/node": "^26.3.0",
-    "rollup": "^4.62.5",
+    "rollup": "^4.63.0",
     "tslib": "^2.8.1",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
