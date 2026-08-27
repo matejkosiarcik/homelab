@@ -109,22 +109,22 @@ jobs:
       - name: Setup secrets
         run: |
           set -euf
-          task secrets -- --mode dev
+          task --taskfile './Taskfile.yml' secrets -- --mode dev
 
       - name: Docker build
         run: |
           set -euf
-          task build -- --mode dev
+          task --taskfile './Taskfile.yml' build -- --mode dev
 
       - name: Docker start
         run: |
           set -euf
-          task start -- --mode dev --dry-run
+          task --taskfile './Taskfile.yml' start -- --mode dev --dry-run
 
       - name: Docker stop
         run: |
           set -euf
-          task stop -- --mode dev --dry-run
+          task --taskfile './Taskfile.yml' stop -- --mode dev --dry-run
 
   status:
     name: Docker Build Status

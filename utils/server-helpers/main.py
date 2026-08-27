@@ -177,7 +177,7 @@ def server_action(action: str):
         cli_args.extend([f"--{when_mode}"])
 
     for app in applist:
-        subprocess.check_call(["task", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
+        subprocess.check_call(["task", "--taskfile", "./Taskfile.yml", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
         print("\n---\n")
 
     total_elapsed = time.time() - start_time

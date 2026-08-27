@@ -603,7 +603,7 @@
         cd "$HOME/git/homelab/servers/.current"
         before_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
 
-        task install
+        task --taskfile './Taskfile.yml' install
 
         after_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
         if [ "$before_sha" != "$after_sha" ]; then
@@ -637,7 +637,7 @@
         cd "$HOME/git/homelab/servers/.current"
         before_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; 2>/dev/null | shasum)"
 
-        task secrets
+        task --taskfile './Taskfile.yml' secrets
 
         after_sha="$(find . -path "./docker-apps/*/app-secrets/*" -type f -exec shasum {} \; 2>/dev/null | shasum)"
         if [ "$before_sha" != "$after_sha" ]; then
