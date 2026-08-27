@@ -201,15 +201,15 @@ def load_full_env():
 
 
 def symlink_app():
-    compose_dir = path.join(git_dir, "docker-compose", app_config.app_type)
+    app_compose_dir = path.join(git_dir, "docker-compose", app_config.app_type)
     for file in ["compose.yml", "compose.override.yml", "compose.prod.yml"]:
         try:
             os.remove(file)
         except OSError:
             pass
-    os.symlink(path.join(compose_dir, "compose.yml"), "compose.yml")
-    os.symlink(path.join(compose_dir, "compose.override-dev.yml"), "compose.override.yml")
-    os.symlink(path.join(compose_dir, "compose.override-prod.yml"), "compose.prod.yml")
+    os.symlink(path.join(app_compose_dir, "compose.yml"), "compose.yml")
+    os.symlink(path.join(app_compose_dir, "compose.override-dev.yml"), "compose.override.yml")
+    os.symlink(path.join(app_compose_dir, "compose.override-prod.yml"), "compose.prod.yml")
 
 
 def get_docker_compose_config() -> str:

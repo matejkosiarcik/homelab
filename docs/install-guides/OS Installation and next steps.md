@@ -65,21 +65,3 @@ On client:
 ```sh
 ansible-playbook --limit <server-name> playbooks/setup-server.yml
 ```
-
-## Postinstall - Login to vaultwarden
-
-On server:
-
-```sh
-bw login homelab@vaultwarden.matejhome.com
-nano ~/.bashrc
-# Paste BW_SESSION=...
-```
-
-Again, on server:
-
-```sh
-cd "$HOME/git/homelab/servers/.current"
-task secrets
-task deploy
-```

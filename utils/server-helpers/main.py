@@ -162,7 +162,9 @@ def main(argv: list[str]):
 
 
 def server_action(action: str):
-    action_log = "Secrets for" if action == "secrets" else action.capitalize()
+    action_log = action.capitalize()
+    if action == "secrets":
+        action_log += " for"
     print(f"↓ {action_log} docker apps")
     print("\n---\n")
 
@@ -177,7 +179,7 @@ def server_action(action: str):
         cli_args.extend([f"--{when_mode}"])
 
     for app in applist:
-        subprocess.check_call(["task", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
+        subprocess.check_call(["task", "--taskfile", "./Taskfile.yml", action, "--"] + cli_args, cwd=path.join(server_dir, "docker-apps", app))
         print("\n---\n")
 
     total_elapsed = time.time() - start_time
