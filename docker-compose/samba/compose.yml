@@ -8,13 +8,14 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/samba/Dockerfile
+      args:
+        HOMELAB_SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG}
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
-      SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG-default}
       SAMBA_TITLE: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     networks:
       - external-network

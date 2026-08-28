@@ -66,6 +66,14 @@ COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
     sh validate-executable.sh ./samba_exporter/bin/samba_statusd
 
+### App config ###
+
+FROM debian:13.6-slim AS app_config
+USER root
+WORKDIR /homelab
+ARG HOMELAB_SAMBA_CONFIG=default
+COPY ./docker-images/samba/config/${HOMELAB_SAMBA_CONFIG}.conf /homelab/smb.conf
+
 ### User setup ###
 
 # hadolint ignore=DL3007
@@ -84,7 +92,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/samba/config /homelab/config
+COPY --from=app_config /homelab/smb.conf /homelab/
 COPY ./docker-images/samba/entrypoint.sh /homelab/
 COPY --from=samba-exporter-build /homelab/samba_exporter/bin /homelab/bin
 

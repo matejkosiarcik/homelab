@@ -42,12 +42,11 @@ sudo chown -R homelab:homelab /tank/data
 
 NOTE: Dataset properties may be changed afterwards.
 
-<!-- Symlink to access snapshots:
+Symlink to access snapshots:
 
 ```sh
-# TODO: Device where to keep this or not
-ln -sf /tank/data/.zfs/snapshot /tank/data/snapshots
-``` -->
+ln -s '/tank/data' "$HOME/data"
+```
 
 Verify it:
 
