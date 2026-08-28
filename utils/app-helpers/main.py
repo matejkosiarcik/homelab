@@ -26,7 +26,7 @@ git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decod
 log_dir = path.join(app_dir, "app-logs", ".meta")
 
 is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
-cpu_count = os.cpu_count()
+cpu_count = os.cpu_count() or 1
 
 if path.exists(log_dir):
     shutil.rmtree(log_dir)
