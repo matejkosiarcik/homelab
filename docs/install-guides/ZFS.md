@@ -62,6 +62,7 @@ Install ZFS auto snapshots:
 
 ```sh
 sudo apt-get install -y zfs-auto-snapshot
+# NOTE: May require enabling "contrib" packages in apt sources
 ```
 
 For changing properties afterwards, run:
