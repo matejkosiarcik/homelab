@@ -87,7 +87,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 FROM node:26.8.1-slim AS nodejs-main-build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/data-optimization/package-lock.json ./data-optimization/package.json ./data-optimization/tsconfig.json /homelab/
+COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json ./docker-images/data-optimization/tsconfig.json /homelab/
 COPY ./docker-images/data-optimization/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=data-optimizer-nodejs-main-build-npmcache \
@@ -142,7 +142,7 @@ USER root
 WORKDIR /homelab
 COPY --from=empty-dir /empty /homelab/logs
 COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/.shared/cron-utils/entrypoint.sh /homelab/
-COPY ./docker-images/data-optimization/crontab.cron ./data-optimization/main.sh /homelab/
+COPY ./docker-images/data-optimization/crontab.cron ./docker-images/data-optimization/main.sh /homelab/
 COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 COPY --from=nodejs-main-build /homelab/package.json /homelab/

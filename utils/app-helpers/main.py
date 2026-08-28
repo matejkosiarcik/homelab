@@ -26,6 +26,7 @@ git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decod
 log_dir = path.join(app_dir, "app-logs", ".meta")
 
 is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
+cpu_count = os.cpu_count() or 1
 
 if path.exists(log_dir):
     shutil.rmtree(log_dir)
@@ -400,6 +401,8 @@ def run_main_command(command: str):
         os.environ["DOCKER_COMPOSE_APP_SHORTNAME"],
         "--progress",
         "plain",
+        "--parallel",
+        str(int(max(cpu_count * 0.75, 1))),
     ]
     docker_command_args = ["--dry-run"] if is_dryrun else []
 

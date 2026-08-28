@@ -601,7 +601,7 @@
         source "$HOME/.profile"
 
         cd "$HOME/git/homelab/servers/.current"
-        before_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
+        before_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l || true) | shasum)"
 
         task --taskfile './Taskfile.yml' install
 
