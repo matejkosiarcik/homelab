@@ -146,9 +146,9 @@
         line: "{{ item.line }}"
       loop:
         - regexp: '^fs\.inotify\.max_user_instances ?='
-          line: "fs.inotify.max_user_instances = 65536"
+          line: "fs.inotify.max_user_instances = 131072"
         - regexp: '^fs\.file\-max ?='
-          line: "fs.file-max = 65536"
+          line: "fs.file-max = 131072"
 
     # Raspberry PI by default doesn't allow monitoring for individual containers
     - name: Allow docker memory monitoring
