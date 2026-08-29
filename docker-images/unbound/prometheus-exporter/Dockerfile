@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheu
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
-COPY ./docker-images/unbound-prometheus-exporter/gitman.yml /homelab/
+COPY ./docker-images/unbound/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometheus-exporter-gitman-gitcache \
     gitman install --quiet && \
@@ -100,7 +100,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/unbound-prometheus-exporter/entrypoint.sh /homelab/entrypoint.sh
+COPY ./docker-images/unbound/prometheus-exporter/entrypoint.sh /homelab/entrypoint.sh
 COPY --from=unbound-prometheus-exporter-build /homelab/unbound_exporter/unbound_exporter /homelab/bin/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 

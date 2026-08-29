@@ -7,7 +7,7 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./docker-images/pihole/Dockerfile
+      dockerfile: ./docker-images/pihole/app/Dockerfile
     cap_add:
       - SYS_NICE
     # TODO: Try to remove hard-coded DNS after setting up OpenWRT router with DNS forwarding
@@ -42,7 +42,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./docker-images/pihole-prometheus-exporter/Dockerfile
+      dockerfile: ./docker-images/pihole/prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
