@@ -94,7 +94,8 @@ COPY --from=package-libsentencepiece /homelab/usr-lib/ /fsroot/usr-lib/
 ### Final ###
 
 # hadolint ignore=DL3007,DL3029
-FROM --platform=linux/amd64 gcr.io/distroless/python3-debian13:latest
+FROM --platform=linux/amd64 debian:13.6-slim
+# gcr.io/distroless/python3-debian13:latest
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
