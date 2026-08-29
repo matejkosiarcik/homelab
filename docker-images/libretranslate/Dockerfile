@@ -47,39 +47,6 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=libretranslate-healt
 
 ### Other ###
 
-# hadolint ignore=DL3029
-# FROM --platform=linux/amd64 debian:13.6-slim AS package-libsentencepiece
-# USER root
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptcache \
-#     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptlibcache \
-#     apt-get update && \
-#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-#         libsentencepiece0 >/dev/null && \
-#     rm -rf /var/lib/apt/lists/* && \
-#     mkdir -p /homelab/usr-lib && \
-#     find /usr/lib -name 'libsentencepiece*' -exec sh -c 'mkdir -p "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")" && cp "$0" "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")/$(basename "$0")"' {} \;
-
-FROM --platform=linux/amd64 debian:13.6-slim AS packages
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptlibcache \
-    apt-get update && \
-    dpkg-query -W -f='${binary:Package}\n' | sort >/tmp/packages.before && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        build-essential cmake g++ gcc libprotobuf-dev libsentencepiece-dev libsentencepiece0 pkg-config procps protobuf-compiler python3 python3-dev python3-pip python3-sentencepiece sentencepiece >/dev/null && \
-    rm -rf /var/lib/apt/lists/* && \
-    dpkg-query -W -f='${binary:Package}\n' | sort >/tmp/packages.after && \
-    comm -13 /tmp/packages.before /tmp/packages.after >/tmp/packages.new && \
-    mkdir -p /out && \
-    while read -r package; do \
-        dpkg-query -L "$package" | while read -r file; do \
-            if [ ! -f "$file" ]; then continue; fi && \
-            mkdir -p "/out$(dirname "$file")" && \
-            cp -a "$file" "/out$file" && \
-        true; done && \
-    true; done < /tmp/packages.new && \
-    echo 'new package files:' && \
-    find /out
-
 FROM debian:13.6-slim AS empty-dir
 USER root
 RUN mkdir /empty
@@ -110,26 +77,22 @@ COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
 COPY --from=libretranslate-build /root/.local-copy /home/homelab/.local
-# COPY --from=package-libsentencepiece /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
 
 # hadolint ignore=DL3007,DL3029
-# FROM --platform=linux/amd64 debian:13.6-slim
-FROM --platform=linux/amd64 gcr.io/distroless/python3-debian13:latest
+FROM --platform=linux/amd64 debian:13.6-slim
+# TODO: gcr.io/distroless/python3-debian13:latest
 USER root
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptcache \
-#     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptlibcache \
-#     apt-get update && \
-#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-#         python3 >/dev/null && \
-#     rm -rf /var/lib/apt/lists/*
-# pkg-config build-essential cmake g++ gcc procps protobuf-compiler python3-dev python3-pip libprotobuf-dev python3-sentencepiece libsentencepiece-dev sentencepiece libsentencepiece0
-COPY --from=packages /out/ /
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptlibcache \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        python3 >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-# COPY --from=prefinal --chown=homelab:homelab /fsroot/usr-lib/ /usr/lib/
 WORKDIR /homelab
 USER homelab
 ENV HOMELAB_CONTAINER_NAME=libretranslate \
