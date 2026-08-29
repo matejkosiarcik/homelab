@@ -46,14 +46,14 @@ COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-image
 RUN printf 'apps:\n' >'/homelab/app-entries.yml' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
-    yq '.' '/homelab/app-entries.yml' >'/homelab/app-entries.json'
+    yq '.' '/homelab/app-entries.yml' >'/homelab/data.json'
 
 FROM jinja AS prometheus_config
 USER root
 WORKDIR /homelab
-COPY --from=monitoring_entries /homelab/app-entries.json /homelab/
+COPY --from=monitoring_entries /homelab/data.json /homelab/
 COPY ./docker-images/prometheus/prometheus.yml.j2 /homelab/
-RUN jinja2 './prometheus.yml.j2' './app-entries.json' --format json -o './prometheus.yml'
+RUN jinja2 './prometheus.yml.j2' './data.json' --format json -o './prometheus.yml'
 
 ### Healthcheck ###
 
