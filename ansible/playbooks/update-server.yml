@@ -66,6 +66,45 @@
           printf 'CHANGED\n'
         fi
 
+    - name: Update dotfiles repository
+      register: update_git_dotfiles
+      changed_when: "'CHANGED' in update_git_dotfiles.stdout"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "$HOME/.profile"
+
+        if [ -d "$HOME/git/dotfiles" ]; then
+          cd "$HOME/git/dotfiles"
+        else
+          printf 'Directory ~/git/dotfiles not found\n'
+          exit 1
+        fi
+
+        if [ "$(git branch --show-current)" != main ]; then
+          git checkout main
+          printf 'CHANGED\n'
+        fi
+
+        if [ "$(git status --short)" != '' ]; then
+          git checkout .
+          git clean -df
+          printf 'CHANGED\n'
+        fi
+
+        if [ "$(git status --short)" != '' ]; then
+          git checkout .
+          git clean -df
+          printf 'CHANGED\n'
+        fi
+
+        git fetch
+
+        if [ "$(git diff --name-only origin/main)" != '' ]; then
+          git pull --ff-only
+          printf 'CHANGED\n'
+        fi
+
+
     ## Sync secrets ##
 
     - name: Sync secrets
