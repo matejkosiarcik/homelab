@@ -1,0 +1,5 @@
+extra_healthchecks:
+  - grace: "6h"
+    name: Odroid H3 - ZFS Scrub
+    schedule: "0 0 10 * *"
+    slug: odroid-h3-zfs-scrub

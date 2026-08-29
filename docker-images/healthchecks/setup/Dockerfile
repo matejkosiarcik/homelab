@@ -61,24 +61,25 @@ USER root
 WORKDIR /homelab
 COPY ./servers/ /homelab/servers/
 COPY ./docker-compose/ /homelab/docker-compose/
-COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/healthchecks/setup/parse-app-entry.sh /homelab/
-RUN printf 'apps:\n' >'/homelab/apps.yml' && \
-    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/apps.yml' && \
-    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/apps.yml' && \
-    yq '.' '/homelab/apps.yml' >'/homelab/apps.json'
+COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/healthchecks/setup/extra-entries.yml ./docker-images/healthchecks/setup/parse-app-entry.sh /homelab/
+RUN printf 'apps:\n' >'/homelab/app-entries.yml' && \
+    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
+    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
+    cat './app-entries.yml' './extra-entries.yml' >'./all-entries.yml' && \
+    yq '.' './all-entries.yml' >'./data.json'
 
 FROM jinja AS config_2
 USER root
 WORKDIR /homelab
-COPY --from=config_1 /homelab/apps.json /homelab/
-COPY ./docker-images/healthchecks/setup/healthchecks.yml.j2 /homelab/
-RUN jinja2 healthchecks.yml.j2 apps.json --format json -o healthchecks.yml
+COPY --from=config_1 /homelab/data.json /homelab/
+COPY ./docker-images/healthchecks/setup/config.yml.j2 /homelab/
+RUN jinja2 './config.yml.j2' './data.json' --format json -o './healthchecks.yml'
 
 FROM yq AS config_3
 USER root
 WORKDIR /homelab
 COPY --from=config_2 /homelab/healthchecks.yml /homelab/
-RUN yq '.' '/homelab/healthchecks.yml' >'/homelab/healthchecks.json'
+RUN yq '.' './healthchecks.yml' >'./healthchecks.json'
 
 ### App ###
 
