@@ -66,7 +66,7 @@ FROM jinja AS config-3
 USER root
 WORKDIR /homelab
 COPY --from=config-2 /homelab/data.json /homelab/
-COPY ./docker-images/unbound/unbound.conf.j2 /homelab/
+COPY ./docker-images/unbound/app/unbound.conf.j2 /homelab/
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
 FROM debian:13.6-slim AS config-4
@@ -99,7 +99,7 @@ RUN sh /homelab/create-user.sh
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
-COPY ./docker-images/unbound/entrypoint.sh /homelab/
+COPY ./docker-images/unbound/app/entrypoint.sh /homelab/
 COPY --from=config-4 /homelab/unbound.conf /homelab/
 
 FROM scratch AS prefinal
