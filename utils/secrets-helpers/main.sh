@@ -94,9 +94,19 @@ load_secret() {
         return
     fi
 
+    if [ "$mode" = 'dev' ] && [ "$2" = 'dev=real' ]; then
+        printf '%s\n' "$main_secret"
+        return
+    fi
+
     if [ "$mode" = 'dev' ] && printf '%s' "$2" | grep -E '^dev=value=.+$' >/dev/null 2>&1; then
         fallback_secret="$(printf '%s' "$2" | sed -E 's~^dev=value=~~')"
         printf '%s\n' "$fallback_secret"
+        return
+    fi
+
+    if [ "$mode" = 'dev' ]; then
+        printf 'Unknown dev value: %s\n' "$2" >&2
         return
     fi
 
@@ -455,6 +465,9 @@ dozzle)
     load_secret ".$app_full_name_key.app.agent_key" "dev=value=$(base64 <"$tmpdir/key.pem")" | base64 -d >"$initial_output/dozzle-key.pem"
     load_secret ".$app_full_name_key.app.agent_cert" "dev=value=$(base64 <"$tmpdir/cert.pem")" | base64 -d >"$initial_output/dozzle-cert.pem"
     rm -f "$tmpdir/key.pem" "$tmpdir/request.csr" "$tmpdir/cert.pem"
+    # Use real keys for connecting to real agents when debugging:
+    # load_secret ".$app_full_name_key.app.agent_key" "dev=real" | base64 -d >"$initial_output/dozzle-key.pem"
+    # load_secret ".$app_full_name_key.app.agent_cert" "dev=real" | base64 -d >"$initial_output/dozzle-cert.pem"
 
     # Apache #
     write_default_proxy_users "$app_full_name_key"
