@@ -60,7 +60,7 @@ RUN touch '/root/.npmrc'
 FROM yq AS apache-htaccess-config-1
 USER root
 WORKDIR /homelab
-ARG HOMELAB_APP_TYPE=placeholder
+ARG HOMELAB_APP_TYPE=".template"
 COPY ./docker-compose/${HOMELAB_APP_TYPE}/config.yml /homelab/data.yml
 RUN yq . data.yml >data.json
 
