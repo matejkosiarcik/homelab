@@ -61,5 +61,5 @@ ENV DOZZLE_AUTH_PROVIDER=simple \
     HOMELAB_CONTAINER_VARIANT=default \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/dozzle", "healthcheck" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/dozzle", "healthcheck" ]
 ENTRYPOINT [ "/dozzle" ]

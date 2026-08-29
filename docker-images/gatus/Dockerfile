@@ -138,5 +138,5 @@ ENV GATUS_CONFIG_PATH=/homelab/config.yml \
     PORT=8080 \
     TZ=Europe/Bratislava
 USER homelab
-HEALTHCHECK --interval=10s --start-period=20s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080" ]
 ENTRYPOINT [ "/homelab/bin/gatus" ]
