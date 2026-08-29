@@ -101,9 +101,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-pa
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptlibcache \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        libsentencepiece0 python3 >/dev/null && \
+        python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-#  pkg-config build-essential cmake g++ gcc procps protobuf-compiler python3-dev python3-pip libprotobuf-dev python3-sentencepiece libsentencepiece-dev sentencepiece
+# pkg-config build-essential cmake g++ gcc procps protobuf-compiler python3-dev python3-pip libprotobuf-dev python3-sentencepiece libsentencepiece-dev sentencepiece libsentencepiece0
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
