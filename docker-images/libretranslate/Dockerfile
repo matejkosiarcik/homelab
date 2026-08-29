@@ -31,7 +31,8 @@ RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate-buil
         exit 1 && \
     true; fi && \
     pkill -f libretranslate && \
-    rm -f ./status.txt
+    rm -f ./status.txt && \
+    cp -R /root/.local /root/.local-copy
 
 ### Healthcheck ###
 
@@ -87,7 +88,7 @@ FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
-COPY --from=libretranslate-build /root/.local /home/homelab/.local
+COPY --from=libretranslate-build /root/.local-copy /home/homelab/.local
 COPY --from=package-libsentencepiece /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
