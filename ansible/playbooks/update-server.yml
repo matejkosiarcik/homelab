@@ -104,7 +104,6 @@
           printf 'CHANGED\n'
         fi
 
-
     ## Sync secrets ##
 
     - name: Sync secrets
