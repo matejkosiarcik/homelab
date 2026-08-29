@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^26.3.0",
+    "@types/node": "^26.4.0",
     "axios": "^1.20.0",
     "simple-assert": "^2.0.0",
     "sleep-promise": "^9.1.0",
