@@ -21,12 +21,12 @@ RUN --mount=type=cache,target=/root/.cache/pip,id=libretranslate-build-pipcache 
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
 RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate-build-language-models \
-    (libretranslate --debug --update-models 2>&1 | tee ./status.txt &) && \
+    libretranslate_pid="$(libretranslate --debug --update-models >./status.txt 2>&1 & printf '%s' "$!")" && \
     sleep 1 && \
-    while pgrep python3 >/dev/null 2>&1 && ! grep 'Running on ' <./status.txt >/dev/null; do true && \
+    while ps -p "${libretranslate_pid}" >/dev/null 2>&1 && ! grep 'Running on ' <./status.txt >/dev/null; do true && \
         sleep 5 && \
     true; done && \
-    if ! pgrep python3 >/dev/null 2>&1; then true && \
+    if ! ps -p "${libretranslate_pid}" >/dev/null 2>&1; then true && \
         printf 'Error during libretranslate update, process not running\n' >&2 && \
         exit 1 && \
     true; fi && \
