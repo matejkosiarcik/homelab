@@ -37,8 +37,8 @@ USER root
 WORKDIR /homelab
 COPY ./servers/ /homelab/servers/
 COPY ./docker-compose/ /homelab/docker-compose/
-COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/parse-app-entry.sh /homelab/
-COPY ./docker-images/pihole/extra-domains.txt /homelab/
+COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
+COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
 RUN find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
     cat '/homelab/app-domains.txt' '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sort --version-sort >'/homelab/custom-domains.txt'
 
@@ -69,7 +69,7 @@ RUN sh /homelab/create-user.sh && \
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 ARG SETUP_SCRIPT=default
-COPY ./docker-images/pihole/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh
+COPY ./docker-images/pihole/app/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh
 COPY --from=dns_entries /homelab/custom-domains.txt /homelab/
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
 
