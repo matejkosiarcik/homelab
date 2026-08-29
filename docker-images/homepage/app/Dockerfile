@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage-nodejs-build
 
 ### Other ###
 
-FROM ghcr.io/gethomepage/homepage:v1.13.2 AS entrypoint
+FROM ghcr.io/gethomepage/homepage:v2.1.2 AS entrypoint
 USER root
 COPY ./docker-images/homepage/app/entrypoint-extra.sh /homelab/
 RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -44,7 +44,7 @@ RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM ghcr.io/gethomepage/homepage:v1.13.2 AS runtime-dirs
+FROM ghcr.io/gethomepage/homepage:v2.1.2 AS runtime-dirs
 USER root
 RUN mkdir -p /homelab/original/app/.next/server/pages && \
     cp -R /app/.next/server/pages/. /homelab/original/app/.next/server/pages
@@ -82,7 +82,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM ghcr.io/gethomepage/homepage:v1.13.2
+FROM ghcr.io/gethomepage/homepage:v2.1.2
 USER root
 RUN rm -rf /app/.next/server/pages /app/config
 COPY --from=prefinal /etc/group /etc/passwd /etc/
