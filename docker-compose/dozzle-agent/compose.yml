@@ -21,11 +21,10 @@ services:
     networks:
       - external-network
       - internal-network
-    secrets:
-      - source: cert
-        target: /dozzle_cert.pem
-      - source: key
-        target: /dozzle_key.pem
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-cert.pem:/certs/dozzle-cert.pem:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-key.pem:/certs/dozzle-key.pem:ro
+      # Docker socket intentionally left out, as we are using socket-proxy
 
   socket-proxy:
     extends:
@@ -49,9 +48,3 @@ networks:
     name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
     driver: bridge
     internal: true
-
-secrets:
-  cert:
-    file: ./app-secrets/dozzle-cert.pem
-  key:
-    file: ./app-secrets/dozzle-key.pem
