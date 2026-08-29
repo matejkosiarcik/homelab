@@ -21,3 +21,16 @@ healthchecks:
     tz: "{{ healthcheck.timezone or default_timezone }}"
 {%- endfor %}
 {%- endfor %}
+
+{%- for healthcheck in extra_healthchecks -%}
+
+  {%- set default_schedule = "* * * * *" %}
+  {%- set default_grace = "60m" %}
+  {%- set default_timezone = "Europe/Bratislava" %}
+
+  - grace: "{{ healthcheck.grace or default_grace }}"
+    name: "{{ healthcheck.name }}"
+    schedule: "{{ healthcheck.schedule or default_schedule }}"
+    slug: "{{ healthcheck.slug }}"
+    tz: "{{ healthcheck.timezone or default_timezone }}"
+{%- endfor %}
