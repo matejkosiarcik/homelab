@@ -80,7 +80,7 @@ COPY --from=homelab-dir /homelab /homelab
 
 ### Final ###
 
-FROM pihole/pihole:2025.11.1
+FROM pihole/pihole:2026.07.2
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
