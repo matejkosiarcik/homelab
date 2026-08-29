@@ -20,6 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,id=libretranslate-build-pipcache 
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
     PYTHONPATH=/homelab/python-vendor
+# hadolint ignore=DL3001
 RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate-build-language-models \
     libretranslate_pid="$(libretranslate --debug --update-models >./status.txt 2>&1 & printf '%s' "$!")" && \
     sleep 1 && \
