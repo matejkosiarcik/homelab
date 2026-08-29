@@ -3,7 +3,8 @@
 
 ### App ###
 
-FROM debian:13.6-slim AS libretranslate-build
+# hadolint ignore=DL3029
+FROM --platform=linux/amd64 debian:13.6-slim AS libretranslate-build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-build-aptcache \
@@ -12,6 +13,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-bu
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         build-essential cmake g++ gcc libprotobuf-dev libsentencepiece-dev libsentencepiece0 pkg-config procps protobuf-compiler python3 python3-dev python3-pip python3-sentencepiece sentencepiece >/dev/null && \
     rm -rf /var/lib/apt/lists/*
+ENV PIP_ROOT_USER_ACTION=ignore
 COPY ./docker-images/libretranslate/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN --mount=type=cache,target=/root/.cache/pip,id=libretranslate-build-pipcache \
@@ -21,10 +23,10 @@ ENV PATH="/homelab/python-vendor/bin:$PATH" \
 RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate-build-language-models \
     (libretranslate --debug --update-models 2>&1 | tee ./status.txt &) && \
     sleep 1 && \
-    while pgrep libretranslate >/dev/null 2>&1 && ! grep 'Running on ' <./status.txt >/dev/null; do true && \
+    while pgrep python3 >/dev/null 2>&1 && ! grep 'Running on ' <./status.txt >/dev/null; do true && \
         sleep 5 && \
     true; done && \
-    if ! pgrep libretranslate >/dev/null 2>&1; then true && \
+    if ! pgrep python3 >/dev/null 2>&1; then true && \
         printf 'Error during libretranslate update, process not running\n' >&2 && \
         exit 1 && \
     true; fi && \
@@ -34,7 +36,8 @@ RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate-buil
 
 ### Healthcheck ###
 
-FROM golang:1.27.0-alpine AS healthcheck-build
+# hadolint ignore=DL3029
+FROM --platform=linux/amd64 golang:1.27.0-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -44,7 +47,8 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=libretranslate-healt
 
 ### Other ###
 
-FROM debian:13.6-slim AS package-libsentencepiece
+# hadolint ignore=DL3029
+FROM --platform=linux/amd64 debian:13.6-slim AS package-libsentencepiece
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate-package-libsentencepiece-aptlibcache \
