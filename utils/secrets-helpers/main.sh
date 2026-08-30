@@ -1681,6 +1681,7 @@ speedtesttracker)
     app_key="$(load_secret ".$app_full_name.app.app_key" "dev=value=$(printf 'base64:' && openssl rand -base64 32)")"
 
     # App #
+    write_healthcheck_url "$app_full_name_key" app
     printf 'matej-email,%s\n' "$matej_email" >>"$initial_output/.secrets.csv"
     printf 'matej,%s\n' "$matej_password" >>"$initial_output/.secrets.csv"
     printf 'APP_KEY="%s"\n' "$app_key" >>"$initial_output/app.env"
