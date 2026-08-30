@@ -14,7 +14,7 @@ gatus:
 healthchecks:
   - slug: certificator
   - slug: app
-    cron: "30 00 * * *"
+    schedule: "30 00 * * *"
 
 prometheus:
   enabled: true
