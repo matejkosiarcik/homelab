@@ -5,10 +5,9 @@ import sys
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from smtplib import SMTP
-from typing import List
 
 
-def main(argv: List[str]) -> int:
+def main(argv: list[str]) -> int:
     # Parse arguments
     parser = argparse.ArgumentParser(prog="debug-email.py")
     parser.add_argument("--host", type=str, default="localhost:8025", help="Host IP:Port or Domain:Port")
