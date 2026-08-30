@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-app_dirpath="$(realpath "$1")"
+app_dir_path="$(realpath "$1")"
 output_filepath="$(realpath "$2")"
 
 # shellcheck source=/dev/null
@@ -9,12 +9,12 @@ output_filepath="$(realpath "$2")"
 
 ## Get config values for this specific app ##
 
-app_type="$(get_app_type "$app_dirpath")"
-app_full_name_pretty="$(get_app_full_name_pretty "$app_dirpath")"
-app_full_name_machine="$(get_app_full_name_machine "$app_dirpath")"
-app_full_name_env="$(get_app_full_name_env "$app_dirpath")"
-app_domain="$(get_app_domain "$app_dirpath")"
-server_name="$(get_server_name "$app_dirpath")"
+app_type="$(get_app_type "$app_dir_path")"
+app_full_name_pretty="$(get_app_full_name_pretty "$app_dir_path")"
+app_full_name_machine="$(get_app_full_name_machine "$app_dir_path")"
+app_full_name_env="$(get_app_full_name_env "$app_dir_path")"
+app_domain="$(get_app_domain "$app_dir_path")"
+server_name="$(get_server_name "$app_dir_path")"
 
 ## Get config values for this generic app-type ##
 
