@@ -12,7 +12,6 @@ gatus:
     basic: homelab-viewer
 
 healthchecks:
-  - slug: certificator
   - slug: app
     schedule: "30 00 * * *"
 
