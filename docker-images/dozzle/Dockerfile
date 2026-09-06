@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM amir20/dozzle:v10.7.5 AS dozzle-app
+FROM amir20/dozzle:v10.10.0 AS dozzle-app
 USER root
 
 ### Users ###
