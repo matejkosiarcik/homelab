@@ -6,13 +6,13 @@
   },
   "dependencies": {
     "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.4.1",
     "axios": "^1.20.0",
     "date-fns": "^4.4.0",
     "parse-duration-ms": "^0.1.0",
     "simple-assert": "^2.0.0",
     "sleep-promise": "^9.1.0",
-    "tsx": "^4.23.12",
+    "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   }
 }
