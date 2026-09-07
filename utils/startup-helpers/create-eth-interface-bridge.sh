@@ -22,7 +22,7 @@ if [ "${found_interface}" = '' ]; then
     found_interface="$( ( (ip link show enp1s0f0 >/dev/null 2>/dev/null) && printf 'enp1s0f0') || true)"
 fi
 
-if [ "$found_interface" = '' ]; then
+if [ "${found_interface}" = '' ]; then
     printf 'No suitable network interface found\n'
     exit 1
 fi

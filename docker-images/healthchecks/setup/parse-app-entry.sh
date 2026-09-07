@@ -13,8 +13,8 @@ app_type="$(get_app_type "${app_dir_path}")"
 app_full_name_pretty="$(get_app_full_name_pretty "${app_dir_path}")"
 app_full_name_machine="$(get_app_full_name_machine "${app_dir_path}")"
 app_full_name_env="$(get_app_full_name_env "${app_dir_path}")"
-app_domain="$(get_app_domain "$app_dir_path")"
-server_name="$(get_server_name "$app_dir_path")"
+app_domain="$(get_app_domain "${app_dir_path}")"
+server_name="$(get_server_name "${app_dir_path}")"
 
 ## Get config values for this generic app-type ##
 

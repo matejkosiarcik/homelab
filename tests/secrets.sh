@@ -10,7 +10,7 @@ if [ "${BW_SESSION-}" = '' ]; then
 fi
 
 # Set SOPS decryption key file
-SOPS_AGE_KEY_FILE="$git_root_dir/secrets/key.txt"
+SOPS_AGE_KEY_FILE="${git_root_dir}/secrets/key.txt"
 export SOPS_AGE_KEY_FILE
 
 load_secret() {

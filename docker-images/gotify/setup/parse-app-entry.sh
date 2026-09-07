@@ -14,12 +14,12 @@ app_full_name_pretty="$(get_app_full_name_pretty "${app_dir_path}")"
 app_full_name_machine="$(get_app_full_name_machine "${app_dir_path}")"
 app_full_name_env="$(get_app_full_name_env "${app_dir_path}")"
 app_domain="$(get_app_domain "${app_dir_path}")"
-server_name="$(get_server_name "$app_dir_path")"
+server_name="$(get_server_name "${app_dir_path}")"
 
 ## Get config values for this generic app-type ##
 
-notifications_config="$(yq --raw-output --compact-output '.notifications' "/homelab/docker-compose/$app_type/config.yml")"
-if [ "$notifications_config" = '' ] || [ "$notifications_config" = 'null' ] || [ "$notifications_config" = 'undefined' ]; then
+notifications_config="$(yq --raw-output --compact-output '.notifications' "/homelab/docker-compose/${app_type}/config.yml")"
+if [ "${notifications_config}" = '' ] || [ "${notifications_config}" = 'null' ] || [ "${notifications_config}" = 'undefined' ]; then
     notifications_config='{}'
 fi
 
@@ -28,7 +28,7 @@ fi
 tmpfile="$(mktemp)"
 {
     printf '\n'
-    printf '  - app_type: "%s"\n' "$app_type"
+    printf '  - app_type: "%s"\n' "${app_type}"
     printf '    domain: "%s"\n' "$app_domain"
     printf '    full_name_env: "%s"\n' "$app_full_name_env"
     printf '    full_name_machine: "%s"\n' "$app_full_name_machine"

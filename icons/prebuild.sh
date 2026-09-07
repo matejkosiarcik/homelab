@@ -32,9 +32,9 @@ HOMELAB_ENV="${mode}"
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/icons/prebuild"
 if [ "${only_pattern:-}" = '' ]; then
-    rm -rf "$output_dir"
+    rm -rf "${output_dir}"
 fi
-mkdir -p "$output_dir"
+mkdir -p "${output_dir}"
 
 tmpdir=''
 # shellcheck source=/dev/null
@@ -48,58 +48,58 @@ default_convert_options='magick -density 2000 -background none -bordercolor tran
 ### Simple icons ###
 
 # Cache
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 50 OUTPUT_FILE' "$input_dir/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/pvc.svg" "$tmpdir/cache.png"
-convert_image_full "$tmpdir/cache.png" "$output_dir/cache.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 50 OUTPUT_FILE' "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/pvc.svg" "${tmpdir}/cache.png"
+convert_image_full "${tmpdir}/cache.png" "${output_dir}/cache.png"
 
 # Cloud
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 20 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_cloud.svg" "$tmpdir/cloud.png"
-convert_image_full "$tmpdir/cloud.png" "$output_dir/cloud.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 20 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_cloud.svg" "${tmpdir}/cloud.png"
+convert_image_full "${tmpdir}/cloud.png" "${output_dir}/cloud.png"
 
 # Prometheus
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 50 OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$tmpdir/prometheus-background.png"
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 20 OUTPUT_FILE' "$input_dir/gitman-repositories/homer-icons/svg/prometheus.svg" "$tmpdir/prometheus-alone.png"
-convert_image_full "$tmpdir/prometheus-alone.png" "$output_dir/prometheus.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 50 OUTPUT_FILE' "${input_dir}/gitman-repositories/homer-icons/svg/prometheus.svg" "${tmpdir}/prometheus-background.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 20 OUTPUT_FILE' "${input_dir}/gitman-repositories/homer-icons/svg/prometheus.svg" "${tmpdir}/prometheus-alone.png"
+convert_image_full "${tmpdir}/prometheus-alone.png" "${output_dir}/prometheus.png"
 
 # Rounded Squid
-convert_image_draft 'magick INPUT_FILE \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite OUTPUT_FILE' "$input_dir/other/squid.jpg" "$tmpdir/squid.png"
-convert_image_full "$tmpdir/squid.png" "$output_dir/squid.png"
+convert_image_draft 'magick INPUT_FILE \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite OUTPUT_FILE' "${input_dir}/other/squid.jpg" "${tmpdir}/squid.png"
+convert_image_full "${tmpdir}/squid.png" "${output_dir}/squid.png"
 
 ### Combined icons ###
 
 # Servers
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 10 -density 2000 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_server.svg" "$tmpdir/servers-1.png"
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 650x650 -density 2000 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_server.svg" "$tmpdir/servers-2.png"
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 550x550 -density 2000 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_server.svg" "$tmpdir/servers-3.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry -200+175 -composite -resize 1000x1000 OUTPUT_FILE' "$tmpdir/servers-1.png" "$tmpdir/servers-2.png" "$tmpdir/servers-4.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +200+225 -composite -resize 1000x1000 OUTPUT_FILE' "$tmpdir/servers-4.png" "$tmpdir/servers-3.png" "$tmpdir/servers-5.png"
-convert_image_full "$tmpdir/servers-5.png" "$output_dir/servers.png"
-rm -f "$tmpdir/servers-1.png" "$tmpdir/servers-2.png" "$tmpdir/servers-3.png" "$tmpdir/servers-4.png" "$tmpdir/servers-5.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 10 -density 2000 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_server.svg" "${tmpdir}/servers-1.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 650x650 -density 2000 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_server.svg" "${tmpdir}/servers-2.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 550x550 -density 2000 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_server.svg" "${tmpdir}/servers-3.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry -200+175 -composite -resize 1000x1000 OUTPUT_FILE' "${tmpdir}/servers-1.png" "${tmpdir}/servers-2.png" "${tmpdir}/servers-4.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +200+225 -composite -resize 1000x1000 OUTPUT_FILE' "${tmpdir}/servers-4.png" "${tmpdir}/servers-3.png" "${tmpdir}/servers-5.png"
+convert_image_full "${tmpdir}/servers-5.png" "${output_dir}/servers.png"
+rm -f "${tmpdir}/servers-1.png" "${tmpdir}/servers-2.png" "${tmpdir}/servers-3.png" "${tmpdir}/servers-4.png" "${tmpdir}/servers-5.png"
 
 # Personal devices
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 10 -density 2000 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_laptop.svg" "$tmpdir/laptop.png"
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize "800x800" -density 2000 OUTPUT_FILE' "$tmpdir/13_05_osa_icons_svg/osa_iPhone.svg" "$tmpdir/phone.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +275+100 -composite -resize 1000x1000 OUTPUT_FILE' "$tmpdir/laptop.png" "$tmpdir/phone.png" "$tmpdir/personal-devices.png"
-convert_image_full "$tmpdir/personal-devices.png" "$output_dir/personal-devices.png"
-rm -f "$tmpdir/personal-devices.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 10 -density 2000 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_laptop.svg" "${tmpdir}/laptop.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize "800x800" -density 2000 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_iPhone.svg" "${tmpdir}/phone.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +275+100 -composite -resize 1000x1000 OUTPUT_FILE' "${tmpdir}/laptop.png" "${tmpdir}/phone.png" "${tmpdir}/personal-devices.png"
+convert_image_full "${tmpdir}/personal-devices.png" "${output_dir}/personal-devices.png"
+rm -f "${tmpdir}/personal-devices.png"
 
 ### Icons with background ###
 
-magick -size 1000x1000 xc:#ffffffef "$tmpdir/white-background.png"
-magick -size 1000x1000 xc:black -fill white -draw "roundRectangle 0,0,1000,1000 80,80" "$tmpdir/white-background-mask.png"
-magick "$tmpdir/white-background.png" "$tmpdir/white-background-mask.png" -alpha Off -compose CopyOpacity -composite "$tmpdir/white-background.png"
-magick "$tmpdir/white-background.png" -define png:color-type=6 "$tmpdir/white-background.png"
+magick -size 1000x1000 xc:#ffffffef "${tmpdir}/white-background.png"
+magick -size 1000x1000 xc:black -fill white -draw "roundRectangle 0,0,1000,1000 80,80" "${tmpdir}/white-background-mask.png"
+magick "${tmpdir}/white-background.png" "${tmpdir}/white-background-mask.png" -alpha Off -compose CopyOpacity -composite "${tmpdir}/white-background.png"
+magick "${tmpdir}/white-background.png" -define png:color-type=6 "${tmpdir}/white-background.png"
 
 # DWService with custom background
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 900x900 -density 2000 OUTPUT_FILE' "$input_dir/other/dwservice.png" "$tmpdir/dwservice-foreground.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -composite OUTPUT_FILE' "$tmpdir/white-background.png" "$tmpdir/dwservice-foreground.png" "$tmpdir/dwservice.png"
-convert_image_full "$tmpdir/dwservice.png" "$output_dir/dwservice.png"
-rm -f "$tmpdir/dwservice-foreground.png" "$tmpdir/dwservice.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 900x900 -density 2000 OUTPUT_FILE' "${input_dir}/other/dwservice.png" "${tmpdir}/dwservice-foreground.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -composite OUTPUT_FILE' "${tmpdir}/white-background.png" "${tmpdir}/dwservice-foreground.png" "${tmpdir}/dwservice.png"
+convert_image_full "${tmpdir}/dwservice.png" "${output_dir}/dwservice.png"
+rm -f "${tmpdir}/dwservice-foreground.png" "${tmpdir}/dwservice.png"
 
 # Let's Encrypt
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 900x900 -density 2000 OUTPUT_FILE' "$input_dir/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" "$tmpdir/lets-encrypt-foreground.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +0+0 -composite OUTPUT_FILE' "$tmpdir/white-background.png" "$tmpdir/lets-encrypt-foreground.png" "$tmpdir/lets-encrypt.png"
-convert_image_full "$tmpdir/lets-encrypt.png" "$output_dir/lets-encrypt.png"
-rm -f "$tmpdir/lets-encrypt-foreground.png" "$tmpdir/lets-encrypt.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 900x900 -density 2000 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/lets-encrypt.svg" "${tmpdir}/lets-encrypt-foreground.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +0+0 -composite OUTPUT_FILE' "${tmpdir}/white-background.png" "${tmpdir}/lets-encrypt-foreground.png" "${tmpdir}/lets-encrypt.png"
+convert_image_full "${tmpdir}/lets-encrypt.png" "${output_dir}/lets-encrypt.png"
+rm -f "${tmpdir}/lets-encrypt-foreground.png" "${tmpdir}/lets-encrypt.png"
 
 # LibreTranslate
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 850x850 -density 2000 OUTPUT_FILE' "$input_dir/gitman-repositories/dashboard-icons/svg/libretranslate.svg" "$tmpdir/libretranslate-foreground.png"

@@ -19,7 +19,7 @@ if [ "${has_eth0}" = '' ]; then
 elif [ "${has_enp1s0}" = '' ]; then
     found_interface='enp1s0'
 fi
-if [ "$found_interface" = '' ]; then
+if [ "${found_interface}" = '' ]; then
     printf 'No suitable network interface found\n'
     exit 1
 fi

@@ -39,7 +39,7 @@ tmpfile="$(mktemp)"
     printf '    full_name_machine: "%s"\n' "${app_full_name_machine}"
     printf '    full_name_pretty: "%s"\n' "${app_full_name_pretty}"
     printf '    gatus: %s\n' "${gatus_config}"
-    printf '    prometheus: %s\n' "$prometheus_config"
+    printf '    prometheus: %s\n' "${prometheus_config}"
 } >>"$tmpfile"
 
 sed -E "s~<<app-name-pretty>>~$app_full_name_pretty~g;s~<<app-name-machine>>~$app_full_name_machine~g;s~<<app-env>>~$app_full_name_env~g;s~<<server>>~$server_name~g" <"$tmpfile" >>"$output_filepath"
