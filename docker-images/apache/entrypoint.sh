@@ -60,7 +60,7 @@ export PROXY_FORCE_HTTPS
 # Set PROXY_REDIRECT_TO_HTTP_OR_HTTPS
 if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
     PROXY_REDIRECT_TO_HTTP_OR_HTTPS='HTTP'
-elif [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTPS' ] || [ "$PROXY_FORCE_HTTPS" = 'true' ]; then
+elif [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTPS' ] || [ "${PROXY_FORCE_HTTPS}" = 'true' ]; then
     PROXY_REDIRECT_TO_HTTP_OR_HTTPS='HTTPS'
 else
     PROXY_REDIRECT_TO_HTTP_OR_HTTPS=''
@@ -94,4 +94,4 @@ apachectl -D FOREGROUND &
 apache_pid="$!"
 
 # Wait for apache process to exit
-wait "$apache_pid"
+wait "${apache_pid}"

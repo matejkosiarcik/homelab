@@ -14,20 +14,20 @@
         cd "$HOME/git/homelab/servers/.current"
         tmpdir="$(mktemp -d)"
 
-        crontab -l | shasum >>"$tmpdir/shasum-before.txt"
-        sudo find /root/config -type f -exec shasum {} \; >>"$tmpdir/shasum-before.txt"
-        find "$HOME/config" -type f -exec shasum {} \; >>"$tmpdir/shasum-before.txt"
+        crontab -l | shasum >>"${tmpdir}/shasum-before.txt"
+        sudo find /root/config -type f -exec shasum {} \; >>"${tmpdir}/shasum-before.txt"
+        find "$HOME/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-before.txt"
 
         task --taskfile './Taskfile.yml' install
 
-        crontab -l | shasum >>"$tmpdir/shasum-after.txt"
-        sudo find /root/config -type f -exec shasum {} \; >>"$tmpdir/shasum-after.txt"
-        find "$HOME/config" -type f -exec shasum {} \; >>"$tmpdir/shasum-after.txt"
+        crontab -l | shasum >>"${tmpdir}/shasum-after.txt"
+        sudo find /root/config -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
+        find "$HOME/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
 
-        if [ "$tmpdir/shasum-before.txt" != "$tmpdir/shasum-after.txt" ]; then
+        if [ "${tmpdir}/shasum-before.txt" != "${tmpdir}/shasum-after.txt" ]; then
           printf 'CHANGED\n'
         fi
-        rm -rf "$tmpdir"
+        rm -rf "${tmpdir}"
 
     - name: Reboot
       when: install.changed

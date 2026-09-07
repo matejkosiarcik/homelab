@@ -1,8 +1,8 @@
 #!/bin/sh
 set -euf
 
-app_dir_path="$(realpath "$1")"
-output_filepath="$(realpath "$2")"
+app_dir_path="$(realpath "${1}")"
+output_filepath="$(realpath "${2}")"
 
 # shellcheck source=/dev/null
 . "${PWD}/parse-app-entry-utils.sh"
@@ -29,12 +29,12 @@ tmpfile="$(mktemp)"
 {
     printf '\n'
     printf '  - app_type: "%s"\n' "${app_type}"
-    printf '    domain: "%s"\n' "$app_domain"
-    printf '    full_name_env: "%s"\n' "$app_full_name_env"
-    printf '    full_name_machine: "%s"\n' "$app_full_name_machine"
-    printf '    full_name_pretty: "%s"\n' "$app_full_name_pretty"
-    printf '    notifications: %s\n' "$notifications_config"
-} >>"$tmpfile"
+    printf '    domain: "%s"\n' "${app_domain}"
+    printf '    full_name_env: "%s"\n' "${app_full_name_env}"
+    printf '    full_name_machine: "%s"\n' "${app_full_name_machine}"
+    printf '    full_name_pretty: "%s"\n' "${app_full_name_pretty}"
+    printf '    notifications: %s\n' "${notifications_config}"
+} >>"${tmpfile}"
 
-sed -E "s~<<app-name-pretty>>~$app_full_name_pretty~g;s~<<app-name-machine>>~$app_full_name_machine~g;s~<<app-env>>~$app_full_name_env~g;s~<<server>>~$server_name~g" <"$tmpfile" >>"$output_filepath"
-rm -f "$tmpfile"
+sed -E "s~<<app-name-pretty>>~${app_full_name_pretty}~g;s~<<app-name-machine>>~${app_full_name_machine}~g;s~<<app-env>>~${app_full_name_env}~g;s~<<server>>~${server_name}~g" <"${tmpfile}" >>"${output_filepath}"
+rm -f "${tmpfile}"

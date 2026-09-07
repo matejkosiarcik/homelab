@@ -4,7 +4,7 @@ set -euf
 # This is equal to dirname
 get_app_short_name_machine() {
     # Arg 1 - App directory path
-    basename "$1" | sed -E 's~^\.~~'
+    basename "${1}" | sed -E 's~^\.~~'
 }
 
 get_app_type() {

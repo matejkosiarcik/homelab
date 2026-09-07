@@ -7,11 +7,11 @@ if ! grep -Eq "^${SAMBA_GROUP}:" /etc/group; then
     printf 'Group %s not available\n' "${SAMBA_GROUP}" >&2
     exit 1
 fi
-if ! grep -Eq "^$SAMBA_USERNAME:" /etc/passwd; then
-    printf 'User %s not available\n' "$SAMBA_GROUP" >&2
+if ! grep -Eq "^${SAMBA_USERNAME}:" /etc/passwd; then
+    printf 'User %s not available\n' "${SAMBA_GROUP}" >&2
     exit 1
 fi
-printf '%s\n%s\n' "$SAMBA_PASSWORD" "$SAMBA_PASSWORD" | smbpasswd -s -a "$SAMBA_USERNAME"
+printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -a "${SAMBA_USERNAME}"
 
 testparm -s /homelab/tmpfs/smb.conf || {
     printf '"testparm -s" failed with status %s\n' "$?" >&2

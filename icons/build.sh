@@ -2,16 +2,16 @@
 set -euf
 
 # shellcheck disable=SC2068
-sh "$(dirname "$0")/prebuild.sh" $@
+sh "$(dirname "${0}")/prebuild.sh" ${@}
 
 # shellcheck disable=SC2068
-sh "$(dirname "$0")/build-diagrams.sh" $@
+sh "$(dirname "${0}")/build-diagrams.sh" ${@}
 
 # shellcheck disable=SC2068
-sh "$(dirname "$0")/build-favicons.sh" $@
+sh "$(dirname "${0}")/build-favicons.sh" ${@}
 
 # shellcheck disable=SC2068
-sh "$(dirname "$0")/build-healthchecks.sh" $@
+sh "$(dirname "${0}")/build-healthchecks.sh" ${@}
 
 # shellcheck disable=SC2068
-sh "$(dirname "$0")/build-homepage.sh" $@
+sh "$(dirname "${0}")/build-homepage.sh" ${@}

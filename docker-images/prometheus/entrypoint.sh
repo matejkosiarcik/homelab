@@ -2,8 +2,8 @@
 set -euf
 
 process_template() {
-    input_file="$1"
-    output_file="$2"
+    input_file="${1}"
+    output_file="${2}"
 
     if [ ! -f "${input_file}" ]; then
         printf "Error: Template file %s not found\n" "${input_file}" >&2
@@ -19,35 +19,35 @@ process_template() {
 
         printf '%s\n' "${line}" >"${linefile}"
 
-        printf '%s\n' "$variables" | while read -r var; do
-            if [ "$var" = '' ]; then
+        printf '%s\n' "${variables}" | while read -r var; do
+            if [ "${var}" = '' ]; then
                 continue
             fi
 
             # Read variable value
-            value="$(printenv "$var")" || {
-                printf "Error: Environment variable %s not set\n" "$var" >&2
-                rm -rf "$tmpdir"
+            value="$(printenv "${var}")" || {
+                printf "Error: Environment variable %s not set\n" "${var}" >&2
+                rm -rf "${tmpdir}"
                 exit 1
             }
 
             # Decode (base64) variable value if necessary
-            if printf '%s' "$var" | grep -E '_ENCRYPTED$' >/dev/null 2>&1; then
-                value="$(printf '%s' "$value" | base64 -d 2>/dev/null)" || {
-                    printf "Error: Failed to base64 decode variable %s\n" "$var" >&2
-                    rm -rf "$tmpdir"
+            if printf '%s' "${var}" | grep -E '_ENCRYPTED$' >/dev/null 2>&1; then
+                value="$(printf '%s' "${value}" | base64 -d 2>/dev/null)" || {
+                    printf "Error: Failed to base64 decode variable %s\n" "${var}" >&2
+                    rm -rf "${tmpdir}"
                     exit 1
                 }
             fi
 
-            line="$(sed "s~\${$var}~$value~g" <"$linefile")"
-            printf '%s\n' "$line" >"$linefile"
+            line="$(sed "s~\${${var}}~${value}~g" <"${linefile}")"
+            printf '%s\n' "${line}" >"${linefile}"
         done
 
-        cat "$linefile" >>"$tmpfile"
+        cat "${linefile}" >>"${tmpfile}"
     done
 
-    sed -E 's~^_~ ~g' <"$tmpfile" >"$output_file"
+    sed -E 's~^_~ ~g' <"${tmpfile}" >"${output_file}"
 }
 
 process_template /homelab/web.yml /homelab/tmpfs/web.yml

@@ -2,13 +2,13 @@
 set -euf
 # This script sets up macvlan-shim "router" to be able to access containers running in macvlan network from current host
 
-if [ "$#" -lt 2 ]; then
+if [ "${#}" -lt 2 ]; then
     printf 'Not enough arguments\n' >&2
     exit 1
 fi
 
-id="$1"
-external_ip="$2"
+id="${1}"
+external_ip="${2}"
 
 # Get appropriate network interface
 found_interface=''
@@ -27,7 +27,7 @@ if [ "${found_interface}" = '' ]; then
     exit 1
 fi
 
-# printf 'Found network interface %s\n' "$found_interface"
+# printf 'Found network interface %s\n' "${found_interface}"
 
 router_name="ethbr-${id}"
 sudo ip link add link "${found_interface}" name "${router_name}" type bridge

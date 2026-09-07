@@ -20,7 +20,7 @@ if [ ! -e '/config/data/custom-certificates' ]; then
     openssl req -x509 -new -nodes -key ca.key -sha256 -days 3651 -subj "/C=SK/ST=SK/L=Bratislava/O=Homelab/OU=Homelab/CN=Homelab" -out ca.pem
 
     # Sign the CSR with our CA to create output certificate
-    printf '%s\n' "subjectAltName = DNS:$HOMELAB_APP_EXTERNAL_DOMAIN, DNS:unifi, IP:$HOMELAB_APP_EXTERNAL_IP" >extfile.cnf
+    printf '%s\n' "subjectAltName = DNS:${HOMELAB_APP_EXTERNAL_DOMAIN}, DNS:unifi, IP:${HOMELAB_APP_EXTERNAL_IP}" >extfile.cnf
     openssl x509 -req -in unifi.req -CA ca.pem -CAkey ca.key -CAcreateserial -out unifi.crt -days 3650 -sha256 -extfile extfile.cnf
 
     # Import certificates
@@ -28,5 +28,5 @@ if [ ! -e '/config/data/custom-certificates' ]; then
     keytool -import -noprompt -alias unifi -file unifi.crt -keystore keystore -storepass aircontrolenterprise
 
     cp ./keystore ../keystore
-    cd "$original_dir" || exit 1
+    cd "${original_dir}" || exit 1
 fi

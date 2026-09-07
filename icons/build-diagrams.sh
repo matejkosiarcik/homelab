@@ -7,8 +7,8 @@ only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
     mode="${HOMELAB_ENV}"
 fi
-while [ "$#" -gt 0 ]; do
-    case "$1" in
+while [ "${#}" -gt 0 ]; do
+    case "${1}" in
     -d | --dev)
         mode='dev'
         shift
@@ -18,11 +18,11 @@ while [ "$#" -gt 0 ]; do
         shift
         ;;
     --only)
-        only_pattern="$2"
+        only_pattern="${2}"
         shift 2
         ;;
     *)
-        printf 'Unknown argument %s\n' "$1"
+        printf 'Unknown argument %s\n' "${1}"
         exit 1
         ;;
     esac
@@ -38,7 +38,7 @@ mkdir -p "${output_dir}"
 
 tmpdir=''
 # shellcheck source=/dev/null
-. "$(dirname "$0")/.build-utils.sh"
+. "$(dirname "${0}")/.build-utils.sh"
 
 # shellcheck disable=SC2034
 default_image_size='256x256'

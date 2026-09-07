@@ -10,30 +10,30 @@ printf 'Checking DNS authentication\n' >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "${date}" +'%s')" | openssl dgst -sha1 -hmac "${WEBSUPPORT_API_SECRET}" | sed -E 's~^.* ~~')"
 curl -s --fail -X GET \
-    -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
-    -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
+    -u "${WEBSUPPORT_API_KEY}:${websupport_request_signature}" \
+    -H "Date: $(date -u -d "${date}" +'%a, %d %b %Y %H:%M:%S GMT')" \
     'https://rest.websupport.sk/v2/check' >/dev/null
 
-# This is for 4th degree subdomains "_acme-challenge.$(printf '%s' "$CERTBOT_DOMAIN" | sed -E 's~\..+$~~')"
+# This is for 4th degree subdomains "_acme-challenge.$(printf '%s' "${CERTBOT_DOMAIN}" | sed -E 's~\..+$~~')"
 printf 'Adding new DNS record\n' >&2
 record_payload="{
     \"type\": \"TXT\",
     \"name\": \"_acme-challenge\",
-    \"content\": \"$CERTBOT_VALIDATION\",
+    \"content\": \"${CERTBOT_VALIDATION}\",
     \"ttl\": 1,
     \"priority\": 0,
     \"port\": 0,
     \"weight\": 0
 }"
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
-websupport_request_signature="$(printf 'POST /v2/service/%s/dns/record %s' "$WEBSUPPORT_SERVICE_ID" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
+websupport_request_signature="$(printf 'POST /v2/service/%s/dns/record %s' "${WEBSUPPORT_SERVICE_ID}" "$(date -u -d "${date}" +'%s')" | openssl dgst -sha1 -hmac "${WEBSUPPORT_API_SECRET}" | sed -E 's~^.* ~~')"
 curl -s --fail -X POST \
-    -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
+    -u "${WEBSUPPORT_API_KEY}:${websupport_request_signature}" \
     -H 'Accept: application/json' \
     -H 'Content-Type: application/json' \
-    -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
-    -d "$record_payload" \
-    "https://rest.websupport.sk/v2/service/$WEBSUPPORT_SERVICE_ID/dns/record"
+    -H "Date: $(date -u -d "${date}" +'%a, %d %b %Y %H:%M:%S GMT')" \
+    -d "${record_payload}" \
+    "https://rest.websupport.sk/v2/service/${WEBSUPPORT_SERVICE_ID}/dns/record"
 
 # Delay is necessary to let DNS record propagate
 sleep 45
