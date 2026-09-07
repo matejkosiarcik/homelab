@@ -37,6 +37,26 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     return outputHealthchecks;
 }
 
+// Not sure why, but this functions seems to be necessary for healthchecks v4, otherwise we get lots of ECONNRESET/socket hang up errors
+async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | undefined, delay?: number | undefined, onRetry?: ((error: unknown) => void | Promise<void>) | undefined }): Promise<T> {
+    const config = {
+        retries: _config.retries ?? 1,
+        delay: _config.delay ?? 0,
+        onRetry: _config.onRetry ?? (() => {}),
+    }
+    let lastError: unknown;
+    for (let i = 0; i < config.retries; i++) {
+        try {
+            return await fn();
+        } catch (error) {
+            lastError = error;
+            await config.onRetry(error);
+            await sleep(config.delay);
+        }
+    }
+    throw lastError;
+}
+
 (async () => {
     const statusFile = path.join('tmpfs', 'status.txt');
     await fsx.mkdir(path.dirname(statusFile), { recursive: true });
@@ -46,7 +66,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         throw new Error("HEALTHCHECKS_API_KEY unset");
     })();
 
-    axios.defaults.baseURL = `http://app:8000/api/v3`;
+    axios.defaults.baseURL = 'http://app:8000/api/v3';
     axios.defaults.validateStatus = () => true;
 
     console.log('Waiting for healthchecks to return status 200');
@@ -74,32 +94,59 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     // Load existing healthchecks in database
     const existingHealthchecks = await (async () => {
         console.log('Loading list of existing healthchecks');
-        const response = await axios.get('/checks');
-        assert(response.status === 200, `Failed to fetch list of healthchecks\nStatus: ${response.status}\nBody: ${response.data}`);
-        const body = response.data as { checks: Healthcheck[] };
-        return body.checks;
+        return await retry(async () => {
+            const response = await axios.get('/checks/');
+            assert(response.status === 200, `Failed to fetch list of healthchecks\nStatus: ${response.status}\nBody: ${response.data}`);
+            const body = response.data as { checks: Healthcheck[] };
+            return body.checks;
+        }, {
+            retries: 3,
+            delay: 1000,
+            onRetry: (error) => {
+                console.log(`Failed to fetch list of healthchecks, retrying... Error: ${error}`);
+            },
+        });
     })();
 
     // Delete healthchecks in database which are no longer used
     const healthchecksToDelete = existingHealthchecks.filter((el1) => !declaredHealthchecks.find((el2) => el2.slug === el1.slug));
     for (const healthcheck of healthchecksToDelete) {
         console.log(`Deleting healthcheck ${healthcheck.slug}`);
-        await (async () => {
+        await retry(async () => {
             const response = await axios.delete(`/checks/${healthcheck.uuid}`);
             assert(response.status === 200, `Failed to delete healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
-        })();
+        }, {
+            retries: 3,
+            delay: 1000,
+            onRetry: (error) => {
+                console.log(`Failed to delete healthcheck, retrying... Error: ${error}`);
+            },
+        });
     }
 
     // Edit existing healthchecks in database
     const healthchecksToEdit = existingHealthchecks.filter((el1) => declaredHealthchecks.find((el2) => el2.slug === el1.slug));
     for (const healthcheck of healthchecksToEdit) {
         const declaredHealthcheck = declaredHealthchecks.find((el) => el.slug === healthcheck.slug)!;
+        const updatedHealthcheck = {
+            ...healthcheck,
+            grace: declaredHealthcheck.grace,
+            name: declaredHealthcheck.name,
+            schedule: declaredHealthcheck.schedule,
+            tz: declaredHealthcheck.tz,
+        };
         if (declaredHealthcheck.schedule !== healthcheck.schedule || declaredHealthcheck.grace !== healthcheck.grace || declaredHealthcheck.name !== healthcheck.name || declaredHealthcheck.tz !== healthcheck.tz) {
-            await (async () => {
+            await retry(async () => {
                 console.log(`Updating healthcheck ${healthcheck.slug}`);
-                const response = await axios.post(`/checks/${healthcheck.uuid}`, healthcheck);
+                const response = await axios.post(`/checks/${healthcheck.uuid}`, updatedHealthcheck);
                 assert(response.status === 200, `Failed to update healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
-            })();
+            }, {
+                retries: 3,
+                delay: 1000,
+                onRetry: (error) => {
+                    console.log(`Failed to update healthcheck, retrying... Error: ${error}`);
+                },
+            });
         } else {
             console.log(`Healthcheck ${healthcheck.slug} already up-to-date.`);
         }
@@ -108,7 +155,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     // Add new healthchecks to database
     const healthchecksToAdd = declaredHealthchecks.filter((el1) => !existingHealthchecks.find((el2) => el2.slug === el1.slug));
     for (const healthcheck of healthchecksToAdd) {
-        await (async () => {
+        await retry(async () => {
             console.log(`Creating healthcheck ${healthcheck.slug}`);
             const response = await axios.post('/checks/', healthcheck, {
                 headers: {
@@ -116,7 +163,13 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
                 },
             });
             assert(response.status === 201, `Failed to create healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
-        })();
+        }, {
+            retries: 3,
+            delay: 1000,
+            onRetry: (error) => {
+                console.log(`Failed to create healthcheck, retrying... Error: ${error}`);
+            },
+        });
     }
 
     console.log('Setup successful');
