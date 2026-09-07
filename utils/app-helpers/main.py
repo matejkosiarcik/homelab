@@ -39,6 +39,7 @@ if path.exists(buildcache_dir_root):
     shutil.rmtree(buildcache_dir_root)
 os.makedirs(buildcache_dir_root, exist_ok=True)
 
+
 @dataclass
 class AppConfig:
     app_fullname: str
