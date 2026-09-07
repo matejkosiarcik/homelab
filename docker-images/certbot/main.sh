@@ -77,7 +77,7 @@ record_ids="$(curl -s --fail -X GET \
     -H "Date: $(date -u -d "${date}" +'%a, %d %b %Y %H:%M:%S GMT')" \
     "https://rest.websupport.sk/v2/service/${WEBSUPPORT_SERVICE_ID}/dns/record?page=1&rowsPerPage=1000" | jq -r ".data[] | select(.type == \"TXT\") | select(.name == \"_acme-challenge.${domain}\") | .id")"
 
-printf '%s\n' "${record_id}s" | while read -r record_id; do
+printf '%s\n' "${record_ids}" | while read -r record_id; do
     if [ "${record_id}" = '' ]; then
         break
     fi
@@ -137,7 +137,7 @@ record_ids="$(curl -s --fail -X GET \
     "https://rest.websupport.sk/v2/service/${WEBSUPPORT_SERVICE_ID}/dns/record?page=1&rowsPerPage=1000" |
     jq -r ".data[] | select(.type == \"TXT\") | select(.name == \"_acme-challenge.${domain}\") | .id")"
 
-printf '%s\n' "${record_id}s" | while read -r record_id; do
+printf '%s\n' "${record_ids}" | while read -r record_id; do
     if [ "${record_id}" = '' ]; then
         break
     fi
