@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate-buil
 ### Healthcheck ###
 
 # hadolint ignore=DL3029
-FROM --platform=linux/amd64 golang:1.27.0-alpine AS healthcheck-build
+FROM --platform=linux/amd64 golang:1.27.1-alpine AS healthcheck-build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
