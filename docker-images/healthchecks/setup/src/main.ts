@@ -46,7 +46,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         throw new Error("HEALTHCHECKS_API_KEY unset");
     })();
 
-    axios.defaults.baseURL = `http://app:8000/api/v3`;
+    axios.defaults.baseURL = 'http://app:8000/api/v3';
     axios.defaults.validateStatus = () => true;
 
     console.log('Waiting for healthchecks to return status 200');
@@ -74,7 +74,7 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     // Load existing healthchecks in database
     const existingHealthchecks = await (async () => {
         console.log('Loading list of existing healthchecks');
-        const response = await axios.get('/checks');
+        const response = await axios.get('/checks/');
         assert(response.status === 200, `Failed to fetch list of healthchecks\nStatus: ${response.status}\nBody: ${response.data}`);
         const body = response.data as { checks: Healthcheck[] };
         return body.checks;
