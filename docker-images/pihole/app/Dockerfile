@@ -17,7 +17,7 @@ COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
 ### Healthcheck ###
@@ -107,8 +107,8 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_webserver_interface_theme="default-darker" \
     HOMELAB_CONTAINER_NAME="pihole" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PIHOLE_GID="$GID" \
-    PIHOLE_UID="$UID" \
+    PIHOLE_GID="${GID}" \
+    PIHOLE_UID="${UID}" \
     TZ="Europe/Bratislava"
 # TODO: Investigate if it is possible to run as non-root
 # TODO: Remove DNSMASQ_USER=root override above

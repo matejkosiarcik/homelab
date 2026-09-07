@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-su
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
@@ -143,8 +143,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-fi
     rm -rf /var/lib/apt/lists/*
     # cp -R /root/.cache/ms-playwright/. /root/.cache-ms-playwright && \
     # find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -not -name '.*' | sed 's~^./~~;s~-.*$~~' | sort | uniq | while read -r dir; do \
-    #     find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -name "$dir"'-*' | sort | head -n -1 | while read -r old_dir; do \
-    #         rm -rf "$old_dir" && \
+    #     find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -name "${dir}"'-*' | sort | head -n -1 | while read -r old_dir; do \
+    #         rm -rf "${old_dir}" && \
     #     true; done && \
     # true; done
 
@@ -183,7 +183,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-fi
 USER homelab
 ENV HOMELAB_CONTAINER_NAME="web-automation" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PATH="/homelab/bin:$PATH" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

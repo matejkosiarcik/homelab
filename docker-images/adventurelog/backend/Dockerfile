@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercron
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
@@ -136,7 +136,7 @@ ENV DEBUG="False" \
     EMAIL_USE_TLS="False" \
     HOMELAB_CONTAINER_NAME="adventurelog" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PATH="/homelab/bin:$PATH" \
+    PATH="/homelab/bin:${PATH}" \
     PGDATABASE="database" \
     PGHOST="postgis" \
     PGUSER="postgres" \

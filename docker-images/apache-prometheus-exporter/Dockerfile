@@ -69,7 +69,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/bin/ /bin/
 ENV HOMELAB_CONTAINER_NAME="apache-prometheus-exporter" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PATH="/homelab/bin:$PATH" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

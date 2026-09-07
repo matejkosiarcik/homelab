@@ -53,8 +53,8 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="omadacontroller" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PGID="$GID" \
-    PUID="$UID" \
+    PGID="${GID}" \
+    PUID="${UID}" \
     PORT_APP_DISCOVERY="27001" \
     PORT_ADOPT_V1="29812" \
     PORT_UPGRADE_V1="29813" \

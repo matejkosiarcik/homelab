@@ -16,7 +16,7 @@ COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
 FROM debian:13.6-slim AS jinja
@@ -32,7 +32,7 @@ COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
 ### App config ###
@@ -48,13 +48,13 @@ ARG HOMELAB_APP_SHORTNAME=placeholder
 ARG HOMELAB_APP_TYPE=placeholder
 ARG HOMELAB_ENV=dev
 RUN printf 'env:\n' >>data.yml && \
-    printf '  HOMELAB_APP_EXTERNAL_DOMAIN: %s\n' "$HOMELAB_APP_EXTERNAL_DOMAIN" >>data.yml && \
-    printf '  HOMELAB_APP_EXTERNAL_IP: %s\n' "$HOMELAB_APP_EXTERNAL_IP" >>data.yml && \
-    printf '  HOMELAB_APP_EXTERNAL_URL: %s\n' "$HOMELAB_APP_EXTERNAL_URL" >>data.yml && \
-    printf '  HOMELAB_APP_FULLNAME: %s\n' "$HOMELAB_APP_FULLNAME" >>data.yml && \
-    printf '  HOMELAB_APP_SHORTNAME: %s\n' "$HOMELAB_APP_SHORTNAME" >>data.yml && \
-    printf '  HOMELAB_APP_TYPE: %s\n' "$HOMELAB_APP_TYPE" >>data.yml && \
-    printf '  HOMELAB_ENV: %s\n' "$HOMELAB_ENV" >>data.yml
+    printf '  HOMELAB_APP_EXTERNAL_DOMAIN: %s\n' "${HOMELAB_APP_EXTERNAL_DOMAIN}" >>data.yml && \
+    printf '  HOMELAB_APP_EXTERNAL_IP: %s\n' "${HOMELAB_APP_EXTERNAL_IP}" >>data.yml && \
+    printf '  HOMELAB_APP_EXTERNAL_URL: %s\n' "${HOMELAB_APP_EXTERNAL_URL}" >>data.yml && \
+    printf '  HOMELAB_APP_FULLNAME: %s\n' "${HOMELAB_APP_FULLNAME}" >>data.yml && \
+    printf '  HOMELAB_APP_SHORTNAME: %s\n' "${HOMELAB_APP_SHORTNAME}" >>data.yml && \
+    printf '  HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE}" >>data.yml && \
+    printf '  HOMELAB_ENV: %s\n' "${HOMELAB_ENV}" >>data.yml
 
 FROM yq AS config-2
 USER root
@@ -126,5 +126,5 @@ ENV HOMELAB_CONTAINER_NAME="unbound" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @$HOMELAB_APP_EXTERNAL_IP +short placeholder.matejhome.com || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @${HOMELAB_APP_EXTERNAL_IP} +short placeholder.matejhome.com || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
