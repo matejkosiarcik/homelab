@@ -18,14 +18,14 @@ printf 'started\n' >/homelab/tmpfs/status.txt
 
 # Determine cronfile
 cronfile=''
-if [ "$HOMELAB_CONTAINER_NAME" = 'web-automation' ]; then
-    cronfile="/homelab/crontab-$HOMELAB_APP_TYPE-$HOMELAB_CONTAINER_VARIANT.cron"
+if [ "${HOMELAB_CONTAINER_NAME}" = 'web-automation' ]; then
+    cronfile="/homelab/crontab-${HOMELAB_APP_TYPE}-${HOMELAB_CONTAINER_VARIANT}.cron"
 else
     cronfile='/homelab/crontab.cron'
 fi
 
-if [ ! -e "$cronfile" ]; then
-    printf 'crontab file %s not found\n' "$cronfile"
+if [ ! -e "${cronfile}" ]; then
+    printf 'crontab file %s not found\n' "${cronfile}"
     exit 1
 fi
 

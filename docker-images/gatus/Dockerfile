@@ -29,11 +29,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 
 FROM debian:13.6-slim AS jinja
 USER root
@@ -45,11 +45,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 
 ### App config ###
 
@@ -130,13 +130,13 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 WORKDIR /homelab
-ENV GATUS_CONFIG_PATH=/homelab/config.yml \
-    GATUS_DELAY_START_SECONDS=0 \
-    GATUS_LOG_LEVEL=INFO \
-    HOMELAB_CONTAINER_NAME=gatus \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PORT=8080 \
-    TZ=Europe/Bratislava
+ENV GATUS_CONFIG_PATH="/homelab/config.yml" \
+    GATUS_DELAY_START_SECONDS="0" \
+    GATUS_LOG_LEVEL="INFO" \
+    HOMELAB_CONTAINER_NAME="gatus" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PORT="8080" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080" ]
 ENTRYPOINT [ "/homelab/bin/gatus" ]

@@ -74,18 +74,18 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/init /
 ARG GID=1000
 ARG UID=1000
-ENV FILE__MONGO_PASS=/homelab/mongodb-password.txt \
-    HOMELAB_CONTAINER_NAME=unificontroller \
-    HOMELAB_CONTAINER_VARIANT=default \
-    MEM_LIMIT=2048 \
-    MEM_STARTUP=2048 \
-    MONGO_AUTHSOURCE=admin \
-    MONGO_DBNAME=unifi \
-    MONGO_PORT=27017 \
-    MONGO_TLS= \
-    MONGO_USER=unifi \
-    PGID=$GID \
-    PUID=$UID
+ENV FILE__MONGO_PASS="/homelab/mongodb-password.txt" \
+    HOMELAB_CONTAINER_NAME="unificontroller" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    MEM_LIMIT="2048" \
+    MEM_STARTUP="2048" \
+    MONGO_AUTHSOURCE="admin" \
+    MONGO_DBNAME="unifi" \
+    MONGO_PORT="27017" \
+    MONGO_TLS="" \
+    MONGO_USER="unifi" \
+    PGID="${GID}" \
+    PUID="${UID}"
 # checkov:skip=CKV_SECRET_6: false positive in timezone
-ENV TZ=Europe/Bratislava
-HEALTHCHECK --interval=10s --start-period=360s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && if [ \"$(curl --insecure https://localhost:$https_port/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]
+ENV TZ="Europe/Bratislava"
+HEALTHCHECK --interval=10s --start-period=360s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && if [ \"$(curl --insecure https://localhost:${https_port}/status | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]

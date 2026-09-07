@@ -40,7 +40,7 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=favicons-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
@@ -54,8 +54,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-imagemag
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/imagemagick-appimage/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=favicons-imagemagick-appimage-gitman-gitcache \
@@ -141,11 +141,11 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME=favicons \
-    HOMELAB_CONTAINER_VARIANT=default \
-    NODE_OPTIONS=--dns-result-order=ipv4first \
+ENV HOMELAB_CONTAINER_NAME="favicons" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    NODE_OPTIONS="--dns-result-order=ipv4first" \
     PATH="/homelab/imagemagick/bin:${PATH}" \
-    TZ=Europe/Bratislava
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

@@ -36,7 +36,7 @@ COPY --from=prefinal --chown=homelab:homelab /etc/gotify/config.yml /etc/gotify/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 RUN chmod go-rw /etc/gotify/config.yml
-ENV HOMELAB_CONTAINER_NAME=gotify \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="gotify" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 USER homelab

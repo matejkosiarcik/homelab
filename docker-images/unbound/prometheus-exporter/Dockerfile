@@ -23,7 +23,7 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-prometheus-exporter-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
@@ -37,8 +37,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheu
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/unbound/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometheus-exporter-gitman-gitcache \
@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheu
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=unbound-prometheus-exporter-gitman /homelab/gitman-repositories/unbound_exporter/ /homelab/unbound_exporter/
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED="0"
 WORKDIR /homelab/unbound_exporter
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all unbound_exporter
@@ -120,10 +120,10 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/bin/ /bin/
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME=unbound-prometheus-exporter \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PATH="/homelab/bin:$PATH" \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="unbound-prometheus-exporter" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9167/metrics" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

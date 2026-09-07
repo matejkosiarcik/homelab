@@ -60,10 +60,10 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/bin/ /bin/
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME=docker-registry \
-    HOMELAB_CONTAINER_VARIANT=default \
-    OTEL_TRACES_EXPORTER=none \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="docker-registry" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    OTEL_TRACES_EXPORTER="none" \
+    TZ="Europe/Bratislava"
 # TODO: Eventually enable OpenTelemetry
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost" ]
 USER homelab

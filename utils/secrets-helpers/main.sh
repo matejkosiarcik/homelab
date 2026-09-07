@@ -24,45 +24,45 @@ while [ "$#" -gt 0 ]; do
         shift
         ;;
     *)
-        printf 'Unknown argument %s\n' "$1"
+        printf 'Unknown argument %s\n' "${1}"
         exit 1
         ;;
     esac
 done
 
 initial_output="$(mktemp -d)"
-printf 'secret-name,secret-value\n' >"$initial_output/.secrets.csv"
+printf 'secret-name,secret-value\n' >"${initial_output}/.secrets.csv"
 
 # shellcheck source=/dev/null
-. "$git_root_dir/docker-images/.shared/build-utils/parse-app-entry-utils.sh"
+. "${git_root_dir}/docker-images/.shared/build-utils/parse-app-entry-utils.sh"
 
 app_dir_path="$PWD"
-app_type="$(get_app_type "$app_dir_path")"
-app_full_name_machine="$(get_app_full_name_machine "$app_dir_path")"
-app_full_name_key="$(printf '%s' "$app_full_name_machine" | tr '-' '_')"
-app_domain="$(get_app_domain "$app_dir_path")"
+app_type="$(get_app_type "${app_dir_path}")"
+app_full_name_machine="$(get_app_full_name_machine "${app_dir_path}")"
+app_full_name_key="$(printf '%s' "${app_full_name_machine}" | tr '-' '_')"
+app_domain="$(get_app_domain "${app_dir_path}")"
 
 tmpdir="$(mktemp -d)"
 
 # Set SOPS decryption key file
-SOPS_AGE_KEY_FILE="$git_root_dir/secrets/key.txt"
+SOPS_AGE_KEY_FILE="${git_root_dir}/secrets/key.txt"
 export SOPS_AGE_KEY_FILE
 
 if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
     true # Check skipped on CI
-elif [ ! -e "$SOPS_AGE_KEY_FILE" ]; then
+elif [ ! -e "${SOPS_AGE_KEY_FILE}" ]; then
     printf 'SOPS_AGE_KEY_FILE not found\n' >&2
     exit 1
 fi
 
 # Load custom docker compose overrides if available
-if [ -f "$PWD/config/compose.env" ]; then
+if [ -f "${PWD}/config/compose.env" ]; then
     # shellcheck source=/dev/null
-    . "$PWD/config/compose.env"
+    . "${PWD}/config/compose.env"
 fi
-if [ -f "$PWD/config/compose-$mode.env" ]; then
+if [ -f "${PWD}/config/compose-${mode}.env" ]; then
     # shellcheck source=/dev/null
-    . "$PWD/config/compose-$mode.env"
+    . "${PWD}/config/compose-${mode}.env"
 fi
 
 load_secret() {
@@ -77,40 +77,40 @@ load_secret() {
     if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
         main_secret='N/A'
     else
-        main_secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yml" "$git_root_dir/secrets/secrets.enc.yml" | yq -r "$1")"
-        if [ "$main_secret" = '' ] || [ "$main_secret" = 'null' ] || [ "$main_secret" = 'undefined' ]; then
-            printf 'Could not load secret "%s"\n' "$1" >&2
+        main_secret="$(sops --decrypt --config "${git_root_dir}/secrets/.sops.yml" "${git_root_dir}/secrets/secrets.enc.yml" | yq -r "${1}")"
+        if [ "${main_secret}" = '' ] || [ "${main_secret}" = 'null' ] || [ "${main_secret}" = 'undefined' ]; then
+            printf 'Could not load secret "%s"\n' "${1}" >&2
             exit 1
         fi
     fi
 
-    if [ "$mode" = 'dev' ] && [ "$2" = 'dev=empty' ]; then
+    if [ "${mode}" = 'dev' ] && [ "${2}" = 'dev=empty' ]; then
         printf '\n'
         return
     fi
 
-    if [ "$mode" = 'dev' ] && [ "$2" = 'dev=default' ]; then
+    if [ "${mode}" = 'dev' ] && [ "${2}" = 'dev=default' ]; then
         printf 'Password123.\n'
         return
     fi
 
-    if [ "$mode" = 'dev' ] && [ "$2" = 'dev=real' ]; then
-        printf '%s\n' "$main_secret"
+    if [ "${mode}" = 'dev' ] && [ "${2}" = 'dev=real' ]; then
+        printf '%s\n' "${main_secret}"
         return
     fi
 
-    if [ "$mode" = 'dev' ] && printf '%s' "$2" | grep -E '^dev=value=.+$' >/dev/null 2>&1; then
-        fallback_secret="$(printf '%s' "$2" | sed -E 's~^dev=value=~~')"
-        printf '%s\n' "$fallback_secret"
+    if [ "${mode}" = 'dev' ] && printf '%s' "${2}" | grep -E '^dev=value=.+$' >/dev/null 2>&1; then
+        fallback_secret="$(printf '%s' "${2}" | sed -E 's~^dev=value=~~')"
+        printf '%s\n' "${fallback_secret}"
         return
     fi
 
-    if [ "$mode" = 'dev' ]; then
-        printf 'Unknown dev value: %s\n' "$2" >&2
+    if [ "${mode}" = 'dev' ]; then
+        printf 'Unknown dev value: %s\n' "${2}" >&2
         return
     fi
 
-    printf '%s\n' "$main_secret"
+    printf '%s\n' "${main_secret}"
 }
 
 healthchecks_ping_key="$(load_secret '.healthchecks.app.ping_key' dev=empty)"

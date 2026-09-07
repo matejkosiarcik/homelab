@@ -23,7 +23,7 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
@@ -39,8 +39,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercron
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot-supercronic-gitman-gitcache \
@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercron
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED="0"
 WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
@@ -151,10 +151,10 @@ COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr-bin/ /usr/bin/
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr-lib/ /usr/lib/
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME=certbot \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PATH="/homelab/bin:$PATH" \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="certbot" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=120s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

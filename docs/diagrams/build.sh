@@ -15,11 +15,11 @@ build_diagram() {
     # $1 - diagram name
     extension="$(printf '%s' "$1" | sed -E 's~^.+\.~~')"
     output_file="$(printf '%s' "$1" | sed -E 's~src/~~;s~\.[^.]+$~.png~')"
-    mkdir -p "$(dirname "$diagrams_dir/out/$output_file")"
+    mkdir -p "$(dirname "${diagrams_dir}/out/${output_file}")"
 
-    if [ "$extension" = 'mmd' ]; then
-        mmdc --scale 2 --input "$diagrams_dir/$1" --output "$diagrams_dir/out/$output_file" --cssFile "$diagrams_dir/style.css"
-    elif [ "$extension" = 'ts' ]; then
+    if [ "${extension}" = 'mmd' ]; then
+        mmdc --scale 2 --input "${diagrams_dir}/${1}" --output "${diagrams_dir}/out/${output_file}" --cssFile "${diagrams_dir}/style.css"
+    elif [ "${extension}" = 'ts' ]; then
         tsx "$diagrams_dir/$1"
         drawio -x -f png --scale 2 --border 100 -o "$diagrams_dir/out/$output_file" "$diagrams_dir/$(printf '%s' "$1" | sed -E 's~\.ts$~~').drawio"
     elif [ "$extension" = 'drawio' ]; then

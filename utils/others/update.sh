@@ -17,10 +17,10 @@ git pull --ff-only
 
 # Run build
 find docker-apps -type d -mindepth 1 -maxdepth 1 -not -name '.*' | while read -r dir; do
-    task build -- --only "$dir" "--$mode"
+    task build -- --only "${dir}" "--${mode}"
 done
 
 # Run deploy
 find docker-apps -type d -mindepth 1 -maxdepth 1 -not -name '.*' | while read -r dir; do
-    task deploy -- --only "$dir" "--$mode"
+    task deploy -- --only "${dir}" "--${mode}"
 done

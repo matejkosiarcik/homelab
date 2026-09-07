@@ -65,6 +65,6 @@ ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
     POSTGRES_SERVER="postgres" \
     POSTGRES_SSLMODE="require" \
     POSTGRES_USER="postgres" \
-    TZ=Europe/"Bratislava"
+    TZ="Europe/Bratislava"
 
 HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]

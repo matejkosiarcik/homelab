@@ -13,11 +13,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gotify-dependency
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gotify-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 
 ### Build config ###
 
@@ -110,10 +110,10 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
 ENV GOTIFY_DEFAULTUSER_NAME="matej" \
-    HOMELAB_CONTAINER_NAME=script-setup \
-    HOMELAB_CONTAINER_VARIANT=default \
-    NODE_OPTIONS=--dns-result-order=ipv4first \
-    TZ=Europe/Bratislava
+    HOMELAB_CONTAINER_NAME="script-setup" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    NODE_OPTIONS="--dns-result-order=ipv4first" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=120s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

@@ -5,19 +5,19 @@ process_template() {
     input_file="$1"
     output_file="$2"
 
-    if [ ! -f "$input_file" ]; then
-        printf "Error: Template file %s not found\n" "$input_file" >&2
+    if [ ! -f "${input_file}" ]; then
+        printf "Error: Template file %s not found\n" "${input_file}" >&2
         exit 1
     fi
 
     tmpdir="$(mktemp -d)"
-    tmpfile="$tmpdir/file.txt"
-    linefile="$tmpdir/line.txt"
+    tmpfile="${tmpdir}/file.txt"
+    linefile="${tmpdir}/line.txt"
 
-    sed -E 's~^ ~_~g' <"$input_file" | while read -r line; do
-        variables="$(printf '%s' "$line" | grep -E -o '\$\{[^}]*\}' 2>/dev/null | sed -E 's~^\$\{([^}]*)\}~\1~' || true)"
+    sed -E 's~^ ~_~g' <"${input_file}" | while read -r line; do
+        variables="$(printf '%s' "${line}" | grep -E -o '\$\{[^}]*\}' 2>/dev/null | sed -E 's~^\$\{([^}]*)\}~\1~' || true)"
 
-        printf '%s\n' "$line" >"$linefile"
+        printf '%s\n' "${line}" >"${linefile}"
 
         printf '%s\n' "$variables" | while read -r var; do
             if [ "$var" = '' ]; then

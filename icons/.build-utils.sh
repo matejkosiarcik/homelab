@@ -1,10 +1,10 @@
 #!/bin/sh
 set -euf
 
-PATH="$PATH:$(dirname "$0")/node_modules/.bin"
+PATH="${PATH}:$(dirname "${0}")/node_modules/.bin"
 tmpdir="$(mktemp -d)"
-mkdir "$tmpdir/file"
-unzip -q 13_05_osa_icons_svg.zip -d "$tmpdir/13_05_osa_icons_svg"
+mkdir "${tmpdir}/file"
+unzip -q 13_05_osa_icons_svg.zip -d "${tmpdir}/13_05_osa_icons_svg"
 
 default_image_size='1x1'
 default_convert_options='magick INPUT_FILE OUTPUT_FILE'

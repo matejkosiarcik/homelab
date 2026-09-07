@@ -5,7 +5,7 @@ set -euf
 mode=''
 only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
-    mode="$HOMELAB_ENV"
+    mode="${HOMELAB_ENV}"
 fi
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -27,7 +27,7 @@ while [ "$#" -gt 0 ]; do
         ;;
     esac
 done
-HOMELAB_ENV="$mode"
+HOMELAB_ENV="${mode}"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/homepage/icons"

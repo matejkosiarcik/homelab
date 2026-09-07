@@ -49,11 +49,11 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab/app
-ENV DOCKERSTATS_INTERVAL=60 \
-    HOMELAB_CONTAINER_NAME=docker-stats-exporter \
-    HOMELAB_CONTAINER_VARIANT=default \
-    NODE_OPTIONS=--dns-result-order=ipv4first \
-    TZ=Europe/Bratislava
+ENV DOCKERSTATS_INTERVAL="60" \
+    HOMELAB_CONTAINER_NAME="docker-stats-exporter" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    NODE_OPTIONS="--dns-result-order=ipv4first" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9487" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/app/docker_stats_exporter.js" ]

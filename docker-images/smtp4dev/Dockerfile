@@ -45,18 +45,18 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /app/wwwroot/favicon.ico /app/wwwroot/favicon.png /app/wwwroot/
-ENV HOMELAB_CONTAINER_NAME=smtp4dev \
-    HOMELAB_CONTAINER_VARIANT=default \
-    ServerOptions__LockSettings=true \
-    ServerOptions__Users__0__DefaultMailbox=Default \
-    ServerOptions__Users__0__Username=matej \
-    ServerOptions__Users__1__DefaultMailbox=Default \
-    ServerOptions__Users__1__Username=homelab-viewer \
-    ServerOptions__Users__2__DefaultMailbox=Default \
-    ServerOptions__Users__2__Username=homelab-test \
-    ServerOptions__WebAuthenticationRequired=true \
-    TZ=Europe/Bratislava \
-    URLS=http://*:5000
+ENV HOMELAB_CONTAINER_NAME="smtp4dev" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    ServerOptions__LockSettings="true" \
+    ServerOptions__Users__0__DefaultMailbox="Default" \
+    ServerOptions__Users__0__Username="matej" \
+    ServerOptions__Users__1__DefaultMailbox="Default" \
+    ServerOptions__Users__1__Username="homelab-viewer" \
+    ServerOptions__Users__2__DefaultMailbox="Default" \
+    ServerOptions__Users__2__Username="homelab-test" \
+    ServerOptions__WebAuthenticationRequired="true" \
+    TZ="Europe/Bratislava" \
+    URLS="http://*:5000"
 
 # TODO: Enable TLS below
 # ServerOptions__TlsMode=StartTls

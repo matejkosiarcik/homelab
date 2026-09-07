@@ -4,7 +4,7 @@ set -euf
 mode=''
 only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
-    mode="$HOMELAB_ENV"
+    mode="${HOMELAB_ENV}"
 fi
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -26,14 +26,14 @@ while [ "$#" -gt 0 ]; do
         ;;
     esac
 done
-HOMELAB_ENV="$mode"
+HOMELAB_ENV="${mode}"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/healthchecks/icons"
 if [ "${only_pattern:-}" = '' ]; then
-    rm -rf "$output_dir"
+    rm -rf "${output_dir}"
 fi
-mkdir -p "$output_dir"
+mkdir -p "${output_dir}"
 
 tmpdir=''
 # shellcheck source=/dev/null
@@ -46,8 +46,8 @@ default_convert_options='magick -density 2000 -background none -bordercolor tran
 
 ### Dashboard icon ###
 
-convert_image_full "$input_dir/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "$output_dir/healthchecks.png"
+convert_image_full "${input_dir}/gitman-repositories/organizr/plugins/images/tabs/healthchecks.png" "${output_dir}/healthchecks.png"
 
 ### Cleanup ###
 
-rm -rf "$tmpdir"
+rm -rf "${tmpdir}"

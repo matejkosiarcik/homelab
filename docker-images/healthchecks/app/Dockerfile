@@ -53,21 +53,21 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /custom-healthchecks.png /opt/healthchecks/static-collected/img/
-ENV DB=sqlite \
-    DB_NAME=/homelab/healthchecks/database.db \
-    DEBUG=False \
-    EMAIL_HOST=smtp4dev.matejhome.com \
-    EMAIL_PORT=25 \
-    EMAIL_USE_SSL=False \
-    EMAIL_USE_TLS=False \
-    HOMELAB_CONTAINER_NAME=healthchecks \
-    HOMELAB_CONTAINER_VARIANT=default \
-    INTEGRATIONS_ALLOW_PRIVATE_IPS=True \
-    PROMETHEUS_ENABLED=True \
-    REGISTRATION_OPEN=False \
-    SHELL_ENABLED=False \
-    SITE_LOGO_URL=/static/img/custom-healthchecks.png \
-    TZ=Europe/Bratislava
+ENV DB="sqlite" \
+    DB_NAME="/homelab/healthchecks/database.db" \
+    DEBUG="False" \
+    EMAIL_HOST="smtp4dev.matejhome.com" \
+    EMAIL_PORT="25" \
+    EMAIL_USE_SSL="False" \
+    EMAIL_USE_TLS="False" \
+    HOMELAB_CONTAINER_NAME="healthchecks" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    INTEGRATIONS_ALLOW_PRIVATE_IPS="True" \
+    PROMETHEUS_ENABLED="True" \
+    REGISTRATION_OPEN="False" \
+    SHELL_ENABLED="False" \
+    SITE_LOGO_URL="/static/img/custom-healthchecks.png" \
+    TZ="Europe/Bratislava"
 # TODO: Enable secure emails
 # EMAIL_HOST_PASSWORD=
 # EMAIL_HOST_USER=

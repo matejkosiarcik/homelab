@@ -40,7 +40,7 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=web-automation-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
@@ -56,8 +56,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-su
         git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=web-automation-supercronic-gitman-gitcache \
@@ -74,7 +74,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-su
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED="0"
 WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
@@ -89,7 +89,7 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/web-automation/package-lock.json ./web-automation/package.json ./web-automation/postinstall.sh ./web-automation/rollup.config.js ./web-automation/tsconfig.json /homelab/
 COPY ./docker-images/web-automation/src/ ./src/
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=web-automation-nodejs-build-npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
@@ -143,8 +143,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-fi
     rm -rf /var/lib/apt/lists/*
     # cp -R /root/.cache/ms-playwright/. /root/.cache-ms-playwright && \
     # find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -not -name '.*' | sed 's~^./~~;s~-.*$~~' | sort | uniq | while read -r dir; do \
-    #     find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -name "$dir"'-*' | sort | head -n -1 | while read -r old_dir; do \
-    #         rm -rf "$old_dir" && \
+    #     find /root/.cache-ms-playwright -mindepth 1 -maxdepth 1 -name "${dir}"'-*' | sort | head -n -1 | while read -r old_dir; do \
+    #         rm -rf "${old_dir}" && \
     #     true; done && \
     # true; done
 
@@ -181,9 +181,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=web-automation-fi
     npx --no-install playwright install-deps chromium && \
     rm -rf /var/lib/apt/lists/*
 USER homelab
-ENV HOMELAB_CONTAINER_NAME=web-automation \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PATH="/homelab/bin:$PATH" \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="web-automation" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
+    TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=30s --timeout=1s CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

@@ -13,13 +13,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate-bu
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         build-essential cmake g++ gcc libprotobuf-dev libsentencepiece-dev libsentencepiece0 pkg-config procps protobuf-compiler python3 python3-dev python3-pip python3-sentencepiece sentencepiece >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 COPY ./docker-images/libretranslate/requirements.txt ./
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,id=libretranslate-build-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
-ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
 # hadolint ignore=DL3001
 RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate-build-language-models \
     libretranslate_pid="$(libretranslate --debug --update-models >./status.txt 2>&1 & printf '%s' "$!")" && \
@@ -96,10 +96,10 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
 USER homelab
-ENV HOMELAB_CONTAINER_NAME=libretranslate \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="libretranslate" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor" \
+    TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]
 ENTRYPOINT [ "libretranslate", "--host", "0.0.0.0", "--port", "5000", "--ssl", "--debug", "--metrics" ]

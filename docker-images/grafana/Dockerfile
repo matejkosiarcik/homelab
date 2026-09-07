@@ -44,13 +44,13 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 # WORKDIR /homelab
-ENV GF_PLUGINS_PREINSTALL= \
-    GF_SECURITY_ADMIN_USER=matej \
-    GF_SECURITY_COOKIE_SAMESITE=strict \
-    GF_SECURITY_COOKIE_SECURE=true \
-    GF_SECURITY_DISABLE_GRAVATAR=true \
-    HOMELAB_CONTAINER_NAME=grafana \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV GF_PLUGINS_PREINSTALL="" \
+    GF_SECURITY_ADMIN_USER="matej" \
+    GF_SECURITY_COOKIE_SAMESITE="strict" \
+    GF_SECURITY_COOKIE_SECURE="true" \
+    GF_SECURITY_DISABLE_GRAVATAR="true" \
+    HOMELAB_CONTAINER_NAME="grafana" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000" ]

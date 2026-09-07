@@ -10,13 +10,13 @@ EOF
 
 # Add predefined users if they don't already exists
 if [ "$(ntfy user list 2>&1 | grep -E '^user' | sed -E 's~^user ([a-zA-Z0-9*_-]+) .*$~\1~' | grep -E -c '^matej$' || true)" -eq '0' ]; then
-    NTFY_PASSWORD="$NTFY_PASSWORD_MATEJ" ntfy user add matej
+    NTFY_PASSWORD="${NTFY_PASSWORD_MATEJ}" ntfy user add matej
 fi
 if [ "$(ntfy user list 2>&1 | grep -E '^user' | sed -E 's~^user ([a-zA-Z0-9*_-]+) .*$~\1~' | grep -E -c '^homelab-publisher$' || true)" -eq '0' ]; then
-    NTFY_PASSWORD="$NTFY_PASSWORD_HOMELAB_PUBLISHER" ntfy user add homelab-publisher
+    NTFY_PASSWORD="${NTFY_PASSWORD_HOMELAB_PUBLISHER}" ntfy user add homelab-publisher
 fi
 if [ "$(ntfy user list 2>&1 | grep -E '^user' | sed -E 's~^user ([a-zA-Z0-9*_-]+) .*$~\1~' | grep -E -c '^homelab-viewer$' || true)" -eq '0' ]; then
-    NTFY_PASSWORD="$NTFY_PASSWORD_HOMELAB_VIEWER" ntfy user add homelab-viewer
+    NTFY_PASSWORD="${NTFY_PASSWORD_HOMELAB_VIEWER}" ntfy user add homelab-viewer
 fi
 if [ "$(ntfy user list 2>&1 | grep -E '^user' | sed -E 's~^user ([a-zA-Z0-9*_-]+) .*$~\1~' | grep -E -c '^homelab-test$' || true)" -eq '0' ]; then
     NTFY_PASSWORD="$NTFY_PASSWORD_HOMELAB_TEST" ntfy user add homelab-test

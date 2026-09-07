@@ -68,11 +68,11 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal /fsroot/favicon/favicon.ico /usr/share/jellyfin/web/favicon.ico
 ARG GID=1000
 ARG UID=1000
-ENV HOMELAB_CONTAINER_NAME=jellyfin \
-    HOMELAB_CONTAINER_VARIANT=default \
-    JELLYFIN_CACHE_DIR=/cache \
-    JELLYFIN_LOG_DIR=/logs \
-    PGID=$GID \
-    PUID=$UID \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="jellyfin" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    JELLYFIN_CACHE_DIR="/cache" \
+    JELLYFIN_LOG_DIR="/logs" \
+    PGID="${GID}" \
+    PUID="${UID}" \
+    TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8096" ]
