@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-cd "$(dirname "$0")"
+cd "$(dirname "${0}")"
 git_root_dir="$(git rev-parse --show-toplevel)"
 
 if [ "${BW_SESSION-}" = '' ]; then
@@ -10,24 +10,24 @@ if [ "${BW_SESSION-}" = '' ]; then
 fi
 
 # Set SOPS decryption key file
-SOPS_AGE_KEY_FILE="$git_root_dir/secrets/key.txt"
+SOPS_AGE_KEY_FILE="${git_root_dir}/secrets/key.txt"
 export SOPS_AGE_KEY_FILE
 
 load_secret() {
-    # $1 - yq query
+    # ${1} - yq query
 
-    if [ "$#" -lt 1 ]; then
-        printf 'Missing arguments for load_secret() function, got: %s\n' "$#" >&2
+    if [ "${#}" -lt 1 ]; then
+        printf 'Missing arguments for load_secret() function, got: %s\n' "${#}" >&2
         exit 1
     fi
 
-    secret="$(sops --decrypt --config "$git_root_dir/secrets/.sops.yml" "$git_root_dir/secrets/secrets.enc.yml" | yq -r "$1")"
-    if [ "$secret" = '' ] || [ "$secret" = 'null' ] || [ "$secret" = 'undefined' ]; then
-        printf 'Could not load secret "%s"\n' "$1" >&2
+    secret="$(sops --decrypt --config "${git_root_dir}/secrets/.sops.yml" "${git_root_dir}/secrets/secrets.enc.yml" | yq -r "${1}")"
+    if [ "${secret}" = '' ] || [ "${secret}" = 'null' ] || [ "${secret}" = 'undefined' ]; then
+        printf 'Could not load secret "%s"\n' "${1}" >&2
         exit 1
     fi
 
-    printf '%s\n' "$secret"
+    printf '%s\n' "${secret}"
 }
 
 rm -f .secrets.env

@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-script_dir="$(dirname "$0")"
+script_dir="$(dirname "${0}")"
 
 if [ -e '/.dockerenv' ]; then
     minio_url='http://app:9000'
@@ -41,12 +41,12 @@ mc admin policy attach minio readonly --user 'homelab-test'
 
 # Create new buckets
 while read -r bucket; do
-    if ! (mc ls minio | grep "$bucket/" >/dev/null); then
-        mc mb "minio/$bucket"
+    if ! (mc ls minio | grep "${bucket}/" >/dev/null); then
+        mc mb "minio/${bucket}"
     fi
-done <"$script_dir/plain-buckets.txt"
+done <"${script_dir}/plain-buckets.txt"
 while read -r bucket; do
-    if ! (mc ls minio | grep "$bucket/" >/dev/null); then
-        mc mb --with-versioning "minio/$bucket"
+    if ! (mc ls minio | grep "${bucket}/" >/dev/null); then
+        mc mb --with-versioning "minio/${bucket}"
     fi
-done <"$script_dir/versioned-buckets.txt"
+done <"${script_dir}/versioned-buckets.txt"

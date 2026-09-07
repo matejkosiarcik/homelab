@@ -23,41 +23,41 @@ find '/data' -mindepth 1 -maxdepth 1 -type f -name '*.zim' | sort >"${zim_files_
 while read -r file; do
     # NOTE: This is the source of the script being slow, the zimcheck call
     # It could be optimized with caching the results for each file (if it is valid) and when it doesn't change (same modified date, same filesize), then we wouldn't have to call it and automatically consider the file valid
-    if [ "$is_initial_run" -eq '1' ] || zimcheck --checksum "$file" >/dev/null 2>&1; then
-        printf '%s\n' "$file" >>"$zim_files_list_new_valid_file"
+    if [ "${is_initial_run}" -eq '1' ] || zimcheck --checksum "${file}" >/dev/null 2>&1; then
+        printf '%s\n' "${file}" >>"${zim_files_list_new_valid_file}"
     fi
-done <"$zim_files_list_new_all_file"
+done <"${zim_files_list_new_all_file}"
 
 # Get file properties for comparisons later
 while read -r file; do
-    (printf 'File: %s, Modified at: %s, Size: %s\n' "$file" "$(date -r "$file" || true)" "$(stat -c '%s bytes' -- "$file" || true)") >>"$zim_files_list_new_shasum_file"
-done <"$zim_files_list_new_valid_file"
-new_shasum="$(sha256sum <"$zim_files_list_new_shasum_file")"
+    (printf 'File: %s, Modified at: %s, Size: %s\n' "${file}" "$(date -r "${file}" || true)" "$(stat -c '%s bytes' -- "${file}" || true)") >>"${zim_files_list_new_shasum_file}"
+done <"${zim_files_list_new_valid_file}"
+new_shasum="$(sha256sum <"${zim_files_list_new_shasum_file}")"
 
 # If the shasum is the same, abort this run
-if [ "$new_shasum" = "$last_shasum" ]; then
+if [ "${new_shasum}" = "${last_shasum}" ]; then
     printf 'Server already started and no valid changes in ZIM files detected\n' >&2
     return
 fi
 
 # Save shasum for next run
-printf '%s\n' "$new_shasum" >"$last_shasum_file"
+printf '%s\n' "${new_shasum}" >"${last_shasum_file}"
 
 # Use placeholder if there are no real ZIM files
-zim_files_count="$(wc -l <"$zim_files_list_new_valid_file")"
-if [ "$zim_files_count" -eq '0' ]; then
+zim_files_count="$(wc -l <"${zim_files_list_new_valid_file}")"
+if [ "${zim_files_count}" -eq '0' ]; then
     printf 'No ZIM files found, using placeholder\n' >&2
-    printf '/homelab/default-data/empty.zim\n' >>"$zim_files_list_new_valid_file"
+    printf '/homelab/default-data/empty.zim\n' >>"${zim_files_list_new_valid_file}"
 fi
 
-if [ "$is_initial_run" -eq '1' ]; then
+if [ "${is_initial_run}" -eq '1' ]; then
     printf 'Starting server initially\n' >&2
 else
     printf 'Restarting server\n' >&2
-    kill "$(cat "$kiwix_pid_file")"
+    kill "$(cat "${kiwix_pid_file}")"
 fi
 
 # shellcheck disable=SC2046
-kiwix-serve --port=8080 $(cat "$zim_files_list_new_valid_file") &
+kiwix-serve --port=8080 $(cat "${zim_files_list_new_valid_file}") &
 kiwix_pid="$!"
-printf '%s\n' "$kiwix_pid" >"$kiwix_pid_file"
+printf '%s\n' "${kiwix_pid}" >"${kiwix_pid_file}"

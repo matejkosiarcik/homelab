@@ -39,10 +39,10 @@ export PROXY_HTTP_PORT
 # Set PROXY_HTTPS_PORT
 if [ "${HOMELAB_ENV}" = 'prod' ]; then
     PROXY_HTTPS_PORT='443'
-elif [ "$HOMELAB_ENV" = 'dev' ]; then
+elif [ "${HOMELAB_ENV}" = 'dev' ]; then
     PROXY_HTTPS_PORT='8443'
 else
-    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
+    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
     exit 1
 fi
 export PROXY_HTTPS_PORT
@@ -50,7 +50,7 @@ export PROXY_HTTPS_PORT
 # Set PROXY_FORCE_HTTPS
 if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
     PROXY_FORCE_HTTPS='false'
-elif [ "$HOMELAB_APP_TYPE" = 'unificontroller' ] && [ "$HOMELAB_CONTAINER_VARIANT" = 'admin-raw' ]; then
+elif [ "${HOMELAB_APP_TYPE}" = 'unificontroller' ] && [ "${HOMELAB_CONTAINER_VARIANT}" = 'admin-raw' ]; then
     PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 else
     PROXY_FORCE_HTTPS='true'
@@ -60,7 +60,7 @@ export PROXY_FORCE_HTTPS
 # Set PROXY_REDIRECT_TO_HTTP_OR_HTTPS
 if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
     PROXY_REDIRECT_TO_HTTP_OR_HTTPS='HTTP'
-elif [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTPS' ] || [ "$PROXY_FORCE_HTTPS" = 'true' ]; then
+elif [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTPS' ] || [ "${PROXY_FORCE_HTTPS}" = 'true' ]; then
     PROXY_REDIRECT_TO_HTTP_OR_HTTPS='HTTPS'
 else
     PROXY_REDIRECT_TO_HTTP_OR_HTTPS=''
@@ -94,4 +94,4 @@ apachectl -D FOREGROUND &
 apache_pid="$!"
 
 # Wait for apache process to exit
-wait "$apache_pid"
+wait "${apache_pid}"

@@ -39,11 +39,11 @@ if [ -e '/homelab/server/dist/main.js' ]; then
 fi
 
 # Start cron
-supercronic "$cronfile" &
+supercronic "${cronfile}" &
 supercronic_pid="$!"
 
 # Wait for subprocesses
-wait "$supercronic_pid"
+wait "${supercronic_pid}"
 if [ "${node_pid-x}" != x ]; then
-    wait "$node_pid"
+    wait "${node_pid}"
 fi

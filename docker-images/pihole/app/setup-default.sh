@@ -2,12 +2,12 @@
 set -euf
 
 sql() {
-    command="$1"
+    command="${1}"
     i=0
     while [ "${i}" -le '3' ]; do
         i="$((i + 1))"
         status='0'
-        pihole-FTL sqlite3 /etc/pihole/gravity.db "$command" || {
+        pihole-FTL sqlite3 /etc/pihole/gravity.db "${command}" || {
             status="$?"
             # Guard against "Error: stepping, database is locked (5)"
             if [ "${status}" = '5' ]; then
@@ -64,82 +64,82 @@ adfull_group_id="$(sql "SELECT id FROM [group] WHERE name='Adfull';")"
 
 # Custom clients
 unbound_default_1_ip='10.1.12.1'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_default_1_ip', 0, 0, 'Unbound 1 Default');"
-unbound_default_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_default_1_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_default_1_ip}', 0, 0, 'Unbound 1 Default');"
+unbound_default_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_default_1_ip}';")"
 
 unbound_matej_1_ip='10.1.12.2'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_matej_1_ip', 0, 0, 'Unbound 1 Matej');"
-unbound_matej_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_matej_1_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_matej_1_ip}', 0, 0, 'Unbound 1 Matej');"
+unbound_matej_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_matej_1_ip}';")"
 
 unbound_monika_1_ip='10.1.12.3'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_monika_1_ip', 0, 0, 'Unbound 1 Monika');"
-unbound_monika_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_monika_1_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_monika_1_ip}', 0, 0, 'Unbound 1 Monika');"
+unbound_monika_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_monika_1_ip}';")"
 
 unbound_iot_1_ip='10.1.12.4'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_iot_1_ip', 0, 0, 'Unbound 1 IoT');"
-unbound_iot_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_iot_1_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_iot_1_ip}', 0, 0, 'Unbound 1 IoT');"
+unbound_iot_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_iot_1_ip}';")"
 
 unbound_guests_1_ip='10.1.12.5'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_1_ip', 0, 0, 'Unbound 1 Guests');"
-unbound_guests_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_guests_1_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_guests_1_ip}', 0, 0, 'Unbound 1 Guests');"
+unbound_guests_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_guests_1_ip}';")"
 
 unbound_internal_1_ip='10.1.12.6'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_1_ip', 0, 0, 'Unbound 1 Internal');"
-unbound_internal_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_internal_1_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_internal_1_ip}', 0, 0, 'Unbound 1 Internal');"
+unbound_internal_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_internal_1_ip}';")"
 
 unbound_blackhole_1_ip='10.1.12.7'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_1_ip', 0, 0, 'Unbound 1 Blackhole');"
-unbound_blackhole_1_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_blackhole_1_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_blackhole_1_ip}', 0, 0, 'Unbound 1 Blackhole');"
+unbound_blackhole_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_blackhole_1_ip}';")"
 
 unbound_default_2_ip='10.1.10.1'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_default_2_ip', 0, 0, 'Unbound 2 Default');"
-unbound_default_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_default_2_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_default_2_ip}', 0, 0, 'Unbound 2 Default');"
+unbound_default_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_default_2_ip}';")"
 
 unbound_matej_2_ip='10.1.10.2'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_matej_2_ip', 0, 0, 'Unbound 2 Matej');"
-unbound_matej_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_matej_2_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_matej_2_ip}', 0, 0, 'Unbound 2 Matej');"
+unbound_matej_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_matej_2_ip}';")"
 
 unbound_monika_2_ip='10.1.10.3'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_monika_2_ip', 0, 0, 'Unbound 2 Monika');"
-unbound_monika_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_monika_2_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_monika_2_ip}', 0, 0, 'Unbound 2 Monika');"
+unbound_monika_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_monika_2_ip}';")"
 
 unbound_iot_2_ip='10.1.10.4'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_iot_2_ip', 0, 0, 'Unbound 2 IoT');"
-unbound_iot_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_iot_2_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_iot_2_ip}', 0, 0, 'Unbound 2 IoT');"
+unbound_iot_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_iot_2_ip}';")"
 
 unbound_guests_2_ip='10.1.10.5'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_guests_2_ip', 0, 0, 'Unbound 2 Guests');"
-unbound_guests_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_guests_2_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_guests_2_ip}', 0, 0, 'Unbound 2 Guests');"
+unbound_guests_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_guests_2_ip}';")"
 
 unbound_internal_2_ip='10.1.10.6'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_internal_2_ip', 0, 0, 'Unbound 2 Internal');"
-unbound_internal_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_internal_2_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_internal_2_ip}', 0, 0, 'Unbound 2 Internal');"
+unbound_internal_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_internal_2_ip}';")"
 
 unbound_blackhole_2_ip='10.1.10.7'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('$unbound_blackhole_2_ip', 0, 0, 'Unbound 2 Blackhole');"
-unbound_blackhole_2_id="$(sql "SELECT id FROM [client] WHERE ip='$unbound_blackhole_2_ip';")"
+sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_blackhole_2_ip}', 0, 0, 'Unbound 2 Blackhole');"
+unbound_blackhole_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_blackhole_2_ip}';")"
 
 # Assign clients to groups
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_default_1_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_default_2_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_matej_1_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_matej_2_id';"
-sql "UPDATE [client_by_group] SET group_id='$adfull_group_id' WHERE client_id='$unbound_monika_1_id';"
-sql "UPDATE [client_by_group] SET group_id='$adfull_group_id' WHERE client_id='$unbound_monika_2_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_iot_1_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_iot_2_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_guests_1_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_guests_2_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_internal_1_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_internal_2_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_blackhole_1_id';"
-sql "UPDATE [client_by_group] SET group_id='$default_group_id' WHERE client_id='$unbound_blackhole_2_id';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_default_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_default_2_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_matej_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_matej_2_id}';"
+sql "UPDATE [client_by_group] SET group_id='${adfull_group_id}' WHERE client_id='${unbound_monika_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${adfull_group_id}' WHERE client_id='${unbound_monika_2_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_iot_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_iot_2_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_guests_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_guests_2_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_internal_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_internal_2_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_2_id}';"
 
 # Set custom local domains
 custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
-pihole-FTL --config dns.hosts "$custom_domains_a"
+pihole-FTL --config dns.hosts "${custom_domains_a}"
 custom_domains_cname="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^[a-zA-Z]' | sed -E 's~^(.*) (.*)$~"\1,\2"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
-pihole-FTL --config dns.cnameRecords "$custom_domains_cname"
+pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
 
 # Restart DNS
 pihole reloaddns
