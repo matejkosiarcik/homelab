@@ -1,10 +1,10 @@
 #!/bin/sh
 set -euf
 
-sed "s~#smb-title#~$SAMBA_TITLE~g;s~#smb-user#~$SAMBA_USERNAME~g;s~#smb-group#~$SAMBA_GROUP~g" <'/homelab/smb.conf' >'/homelab/tmpfs/smb.conf'
+sed "s~#smb-title#~${SAMBA_TITLE}~g;s~#smb-user#~${SAMBA_USERNAME}~g;s~#smb-group#~${SAMBA_GROUP}~g" <'/homelab/smb.conf' >'/homelab/tmpfs/smb.conf'
 
-if ! grep -Eq "^$SAMBA_GROUP:" /etc/group; then
-    printf 'Group %s not available\n' "$SAMBA_GROUP" >&2
+if ! grep -Eq "^${SAMBA_GROUP}:" /etc/group; then
+    printf 'Group %s not available\n' "${SAMBA_GROUP}" >&2
     exit 1
 fi
 if ! grep -Eq "^$SAMBA_USERNAME:" /etc/passwd; then

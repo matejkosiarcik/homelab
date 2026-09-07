@@ -29,10 +29,10 @@ fi
 # Create new home directory
 
 # Create new homelab user
-if ! getent passwd "$UID" >'/dev/null' 2>&1; then
+if ! getent passwd "${UID}" >'/dev/null' 2>&1; then
     useradd --no-log-init --home '/home/homelab' --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" homelab
 else
-    oldusername="$(getent passwd "$UID" | cut -d: -f1)"
+    oldusername="$(getent passwd "${UID}" | cut -d: -f1)"
     usermod --move-home --home '/home/homelab' --uid "${UID}" --gid "${GID}" --shell "${nologinshell}" --login homelab "${oldusername}"
 fi
 

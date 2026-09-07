@@ -5,7 +5,7 @@ printf 'starting\n' >/homelab/tmpfs/status.txt
 
 # Wait for target container to start
 timeout 30s sh <<EOF
-printf 'Waiting for container %s\n' "$HOMELAB_SETUP_TARGET_CONTAINER" >&2
+printf 'Waiting for container %s\n' "${HOMELAB_SETUP_TARGET_CONTAINER}" >&2
 while [ "\$(docker ps --quiet --filter "name=^$HOMELAB_SETUP_TARGET_CONTAINER\\$" --filter 'status=running')" == '' ]; do
     sleep 1
 done

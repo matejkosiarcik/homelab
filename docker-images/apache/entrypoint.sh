@@ -26,18 +26,18 @@ fi
 export HOMELAB_APP_EXTERNAL_DOMAIN
 
 # Set PROXY_HTTP_PORT
-if [ "$HOMELAB_ENV" = 'prod' ]; then
+if [ "${HOMELAB_ENV}" = 'prod' ]; then
     PROXY_HTTP_PORT='80'
-elif [ "$HOMELAB_ENV" = 'dev' ]; then
+elif [ "${HOMELAB_ENV}" = 'dev' ]; then
     PROXY_HTTP_PORT='8080'
 else
-    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "$HOMELAB_APP_TYPE"
+    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
     exit 1
 fi
 export PROXY_HTTP_PORT
 
 # Set PROXY_HTTPS_PORT
-if [ "$HOMELAB_ENV" = 'prod' ]; then
+if [ "${HOMELAB_ENV}" = 'prod' ]; then
     PROXY_HTTPS_PORT='443'
 elif [ "$HOMELAB_ENV" = 'dev' ]; then
     PROXY_HTTPS_PORT='8443'

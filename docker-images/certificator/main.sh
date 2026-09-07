@@ -1,24 +1,24 @@
 #!/bin/sh
 set -euf
 
-if [ "$HOMELAB_ENV" = 'dev' ]; then
+if [ "${HOMELAB_ENV}" = 'dev' ]; then
     domain='localhost'
-    subject_domain="$domain"
+    subject_domain="${domain}"
 else
     domain='matejhome.com'
-    subject_domain="*.$domain"
+    subject_domain="*.${domain}"
 fi
 
 load_certificate='0'
 certificate_file='/homelab/certs/fullchain.pem'
-if [ -e "$certificate_file" ]; then
-    if [ "$(openssl x509 -noout -subject -in "$certificate_file" | sed -E 's~^.*CN\s*=\s*([a-zA-Z0-9*.]+).*$~\1~')" != "$subject_domain" ]; then
+if [ -e "${certificate_file}" ]; then
+    if [ "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^.*CN\s*=\s*([a-zA-Z0-9*.]+).*$~\1~')" != "${subject_domain}" ]; then
         printf 'Loading certificate (previous certificate has wrong domain)\n' >&2
         load_certificate='1'
     elif ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in "$certificate_file" >/dev/null; then
         printf 'Loading certificate (previous certificate is about to expire)\n' >&2
         load_certificate='1'
-    elif [ "$HOMELAB_ENV" = 'prod' ] && [ "$(openssl x509 -noout -issuer -in "$certificate_file" | sed -E 's~^issuer=~~')" = "$(openssl x509 -noout -subject -in "$certificate_file" | sed -E 's~^subject=~~')" ]; then
+    elif [ "${HOMELAB_ENV}" = 'prod' ] && [ "$(openssl x509 -noout -issuer -in "${certificate_file}" | sed -E 's~^issuer=~~')" = "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^subject=~~')" ]; then
         printf 'Loading certificate (previous certificate is self-signed)\n' >&2
         load_certificate='1'
     fi
@@ -26,7 +26,7 @@ else
     printf 'Loading certificate (previous certificate not found)\n' >&2
     load_certificate='1'
 fi
-if [ "$load_certificate" != '1' ]; then
+if [ "${load_certificate}" != '1' ]; then
     printf 'Existing certificate is valid\n' >&2
     exit 0
 fi
@@ -36,10 +36,10 @@ get_dev_certificate() {
     tmpdir="$(mktemp -d)"
 
     # Create new certificates
-    openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Home/OU=Homelab/CN=$subject_domain"
-    openssl genrsa -out "$tmpdir/privkey.pem" 4096
-    openssl req -sha256 -new -key "$tmpdir/privkey.pem" -out "$tmpdir/certificate.pem" -subj "$openssl_subj"
-    openssl x509 -req -sha256 -days 365 -in "$tmpdir/certificate.pem" -signkey "$tmpdir/privkey.pem" -out "$tmpdir/fullchain.pem"
+    openssl_subj="/C=SK/ST=Slovakia/L=Bratislava/O=Home/OU=Homelab/CN=${subject_domain}"
+    openssl genrsa -out "${tmpdir}/privkey.pem" 4096
+    openssl req -sha256 -new -key "${tmpdir}/privkey.pem" -out "${tmpdir}/certificate.pem" -subj "${openssl_subj}"
+    openssl x509 -req -sha256 -days 365 -in "${tmpdir}/certificate.pem" -signkey "${tmpdir}/privkey.pem" -out "${tmpdir}/fullchain.pem"
 
     # Copy certificates to proper directory
     mkdir -p '/homelab/certs'

@@ -2,13 +2,13 @@
 set -euf
 
 kiwix_pid_file='/homelab/tmpfs/pid.txt'
-touch "$kiwix_pid_file"
+touch "${kiwix_pid_file}"
 last_shasum_file='/homelab/tmpfs/shasum.txt'
-touch "$last_shasum_file"
-last_shasum="$(cat "$last_shasum_file")"
+touch "${last_shasum_file}"
+last_shasum="$(cat "${last_shasum_file}")"
 
 is_initial_run='0'
-if [ "$(cat "$kiwix_pid_file")" = '' ]; then
+if [ "$(cat "${kiwix_pid_file}")" = '' ]; then
     is_initial_run='1'
 fi
 
@@ -19,7 +19,7 @@ zim_files_list_new_valid_file="$(mktemp)"
 zim_files_list_new_shasum_file="$(mktemp)"
 
 # Get list of files and filter only valid ones
-find '/data' -mindepth 1 -maxdepth 1 -type f -name '*.zim' | sort >"$zim_files_list_new_all_file"
+find '/data' -mindepth 1 -maxdepth 1 -type f -name '*.zim' | sort >"${zim_files_list_new_all_file}"
 while read -r file; do
     # NOTE: This is the source of the script being slow, the zimcheck call
     # It could be optimized with caching the results for each file (if it is valid) and when it doesn't change (same modified date, same filesize), then we wouldn't have to call it and automatically consider the file valid

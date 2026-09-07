@@ -5,13 +5,13 @@ app_dir_path="$(realpath "$1")"
 output_filepath="$(realpath "$2")"
 
 # shellcheck source=/dev/null
-. "$PWD/parse-app-entry-utils.sh"
+. "${PWD}/parse-app-entry-utils.sh"
 
 ## Get config values for this specific app ##
 
-app_type="$(get_app_type "$app_dir_path")"
-app_full_name_pretty="$(get_app_full_name_pretty "$app_dir_path")"
-app_full_name_machine="$(get_app_full_name_machine "$app_dir_path")"
+app_type="$(get_app_type "${app_dir_path}")"
+app_full_name_pretty="$(get_app_full_name_pretty "${app_dir_path}")"
+app_full_name_machine="$(get_app_full_name_machine "${app_dir_path}")"
 app_full_name_env="$(get_app_full_name_env "$app_dir_path")"
 app_domain="$(get_app_domain "$app_dir_path")"
 server_name="$(get_server_name "$app_dir_path")"

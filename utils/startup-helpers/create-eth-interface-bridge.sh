@@ -12,13 +12,13 @@ external_ip="$2"
 
 # Get appropriate network interface
 found_interface=''
-if [ "$found_interface" = '' ]; then
+if [ "${found_interface}" = '' ]; then
     found_interface="$( ( (ip link show eth0 >/dev/null 2>/dev/null) && printf 'eth0') || true)"
 fi
-if [ "$found_interface" = '' ]; then
+if [ "${found_interface}" = '' ]; then
     found_interface="$( ( (ip link show enp1s0 >/dev/null 2>/dev/null) && printf 'enp1s0') || true)"
 fi
-if [ "$found_interface" = '' ]; then
+if [ "${found_interface}" = '' ]; then
     found_interface="$( ( (ip link show enp1s0f0 >/dev/null 2>/dev/null) && printf 'enp1s0f0') || true)"
 fi
 
@@ -29,7 +29,7 @@ fi
 
 # printf 'Found network interface %s\n' "$found_interface"
 
-router_name="ethbr-$id"
-sudo ip link add link "$found_interface" name "$router_name" type bridge
-sudo ip address add "$external_ip/32" dev "$router_name"
-sudo ip link set "$router_name" up
+router_name="ethbr-${id}"
+sudo ip link add link "${found_interface}" name "${router_name}" type bridge
+sudo ip address add "${external_ip}/32" dev "${router_name}"
+sudo ip link set "${router_name}" up

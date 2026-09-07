@@ -6,8 +6,8 @@ certificate_file='/homelab/certs/fullchain.pem'
 certificate_archive_file='/homelab/data/certificate.tar.xz'
 
 create_certificate='0'
-if [ -e "$certificate_file" ]; then
-    if [ "$(openssl x509 -noout -subject -in "$certificate_file" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.$domain" ]; then
+if [ -e "${certificate_file}" ]; then
+    if [ "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.${domain}" ]; then
         printf 'Renewing certificate (wrong domain)\n' >&2
         create_certificate='1'
     elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in "$certificate_file" >/dev/null; then
@@ -19,18 +19,18 @@ else
     printf 'Renewing certificate (not found)\n' >&2
     create_certificate='1'
 fi
-if [ "$create_certificate" != '1' ]; then
+if [ "${create_certificate}" != '1' ]; then
     printf 'Existing certificate is valid\n' >&2
     exit 0
 fi
 
-if [ -e "$certificate_archive_file" ]; then
+if [ -e "${certificate_archive_file}" ]; then
     tmpdir="$(mktemp -d)"
-    tar -xJf "$certificate_archive_file" -C "$tmpdir" --strip-components=1
-    tmp_certificate_file="$tmpdir/fullchain.pem"
+    tar -xJf "${certificate_archive_file}" -C "${tmpdir}" --strip-components=1
+    tmp_certificate_file="${tmpdir}/fullchain.pem"
 
     certificate_valid='1'
-    if [ "$(openssl x509 -noout -subject -in "$tmp_certificate_file" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.$domain" ]; then
+    if [ "$(openssl x509 -noout -subject -in "${tmp_certificate_file}" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.${domain}" ]; then
         printf 'Renewing certificate archive (wrong domain)\n' >&2
         certificate_valid='0'
     elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in "$tmp_certificate_file" >/dev/null; then
@@ -39,12 +39,12 @@ if [ -e "$certificate_archive_file" ]; then
         certificate_valid='0'
     fi
 
-    if [ "$certificate_valid" = '1' ]; then
+    if [ "${certificate_valid}" = '1' ]; then
         printf 'Existing certificate archive is valid\n' >&2
         mkdir -p /homelab/certs
         find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
-        tar -xJf "$certificate_archive_file" -C /homelab/certs --strip-components=1
-        rm -rf "$tmpdir"
+        tar -xJf "${certificate_archive_file}" -C /homelab/certs --strip-components=1
+        rm -rf "${tmpdir}"
         exit 0
     fi
 fi
@@ -54,23 +54,23 @@ if [ "$(wc -l <'/homelab/data/timestamps.log')" -ge '2' ]; then
     current_date_ts="$(date -u -d "$(tail -n 1 <'/homelab/data/timestamps.log')" +'%s')"
     comparator_date_ts="$(date -u -d "$(tail -n 2 <'/homelab/data/timestamps.log' | head -n 1)" +'%s')"
     difference="$((current_date_ts - comparator_date_ts))"
-    if [ "$difference" -lt "$((60 * 60))" ]; then # 1 hour
-        printf 'There are too many certificate requests in short time, previous %s s ago, stopping\n' "$difference" >&2
+    if [ "${difference}" -lt "$((60 * 60))" ]; then # 1 hour
+        printf 'There are too many certificate requests in short time, previous %s s ago, stopping\n' "${difference}" >&2
         exit 1
     fi
 fi
 
 printf 'Checking DNS authentication\n' >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
-websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
+websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "${date}" +'%s')" | openssl dgst -sha1 -hmac "${WEBSUPPORT_API_SECRET}" | sed -E 's~^.* ~~')"
 curl -s --fail -X GET \
-    -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
+    -u "${WEBSUPPORT_API_KEY}:${websupport_request_signature}" \
     -H "Date: $(date -u -d "$date" +'%a, %d %b %Y %H:%M:%S GMT')" \
     'https://rest.websupport.sk/v2/check' >/dev/null
 
 printf 'Loading leftover DNS records\n' >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
-websupport_request_signature="$(printf 'GET /v2/service/%s/dns/record %s' "$WEBSUPPORT_SERVICE_ID" "$(date -u -d "$date" +'%s')" | openssl dgst -sha1 -hmac "$WEBSUPPORT_API_SECRET" | sed -E 's~^.* ~~')"
+websupport_request_signature="$(printf 'GET /v2/service/%s/dns/record %s' "${WEBSUPPORT_SERVICE_ID}" "$(date -u -d "${date}" +'%s')" | openssl dgst -sha1 -hmac "${WEBSUPPORT_API_SECRET}" | sed -E 's~^.* ~~')"
 record_ids="$(curl -s --fail -X GET \
     -u "$WEBSUPPORT_API_KEY:$websupport_request_signature" \
     -H 'Accept: application/json' \

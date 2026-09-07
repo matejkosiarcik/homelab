@@ -6,14 +6,14 @@ cp -R /homelab/original/defaults/. /defaults
 
 # Install custom certificate - mostly inspered by https://community.ui.com/questions/UniFi-Controller-SSL-Certificate-installation/2e0bb632-bd9a-406f-b675-651e068de973
 if [ ! -e '/config/data/custom-certificates' ]; then
-    original_dir="$PWD"
+    original_dir="${PWD}"
     mkdir -p /config/data/custom-certificates
     cd /config/data/custom-certificates || exit 1
     # mv ../keystore "./keystore.bak.$(date +"%Y-%m-%d_%H-%M-%S")"
 
     # Create certificate signing request
-    keytool -genkeypair -alias unifi -keyalg RSA -keysize 2048 -dname "CN=$HOMELAB_APP_EXTERNAL_DOMAIN, OU=Homelab, O=Homelab, L=Bratislava, S=SK, C=SK" -ext "SAN=DNS:$HOMELAB_APP_EXTERNAL_DOMAIN,DNS:unifi,IP:$HOMELAB_APP_EXTERNAL_IP" -keystore keystore -storepass aircontrolenterprise
-    keytool -certreq -alias unifi -ext "SAN=DNS:$HOMELAB_APP_EXTERNAL_DOMAIN,DNS:unifi,IP:$HOMELAB_APP_EXTERNAL_IP" -keystore keystore -storepass aircontrolenterprise -file unifi.req
+    keytool -genkeypair -alias unifi -keyalg RSA -keysize 2048 -dname "CN=${HOMELAB_APP_EXTERNAL_DOMAIN}, OU=Homelab, O=Homelab, L=Bratislava, S=SK, C=SK" -ext "SAN=DNS:${HOMELAB_APP_EXTERNAL_DOMAIN},DNS:unifi,IP:${HOMELAB_APP_EXTERNAL_IP}" -keystore keystore -storepass aircontrolenterprise
+    keytool -certreq -alias unifi -ext "SAN=DNS:${HOMELAB_APP_EXTERNAL_DOMAIN},DNS:unifi,IP:${HOMELAB_APP_EXTERNAL_IP}" -keystore keystore -storepass aircontrolenterprise -file unifi.req
 
     # Create certificate for custom CA
     openssl genrsa -out ca.key 4096
