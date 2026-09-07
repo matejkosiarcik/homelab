@@ -94,10 +94,17 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
     const healthchecksToEdit = existingHealthchecks.filter((el1) => declaredHealthchecks.find((el2) => el2.slug === el1.slug));
     for (const healthcheck of healthchecksToEdit) {
         const declaredHealthcheck = declaredHealthchecks.find((el) => el.slug === healthcheck.slug)!;
+        const updatedHealthcheck = {
+            ...healthcheck,
+            grace: declaredHealthcheck.grace,
+            name: declaredHealthcheck.name,
+            schedule: declaredHealthcheck.schedule,
+            tz: declaredHealthcheck.tz,
+        };
         if (declaredHealthcheck.schedule !== healthcheck.schedule || declaredHealthcheck.grace !== healthcheck.grace || declaredHealthcheck.name !== healthcheck.name || declaredHealthcheck.tz !== healthcheck.tz) {
             await (async () => {
                 console.log(`Updating healthcheck ${healthcheck.slug}`);
-                const response = await axios.post(`/checks/${healthcheck.uuid}`, healthcheck);
+                const response = await axios.post(`/checks/${healthcheck.uuid}`, updatedHealthcheck);
                 assert(response.status === 200, `Failed to update healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
             })();
         } else {
