@@ -23,7 +23,7 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
@@ -40,7 +40,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercron
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+    PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot-supercronic-gitman-gitcache \
@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercron
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED="0"
 WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
@@ -126,21 +126,21 @@ RUN ln -sf /run/supervisord.pid /code/supervisord.pid && \
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/etc/supervisor/conf.d /etc/supervisor/conf.d
-ENV DEBUG=False \
-    DISABLE_REGISTRATION=True \
-    DJANGO_ADMIN_USERNAME=admin \
-    EMAIL_BACKEND=email \
-    EMAIL_HOST=smtp4dev.matejhome.com \
-    EMAIL_PORT=25 \
-    EMAIL_USE_SSL=False \
-    EMAIL_USE_TLS=False \
-    HOMELAB_CONTAINER_NAME=adventurelog \
-    HOMELAB_CONTAINER_VARIANT=default \
+ENV DEBUG="False" \
+    DISABLE_REGISTRATION="True" \
+    DJANGO_ADMIN_USERNAME="admin" \
+    EMAIL_BACKEND="email" \
+    EMAIL_HOST="smtp4dev.matejhome.com" \
+    EMAIL_PORT="25" \
+    EMAIL_USE_SSL="False" \
+    EMAIL_USE_TLS="False" \
+    HOMELAB_CONTAINER_NAME="adventurelog" \
+    HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/homelab/bin:$PATH" \
-    PGDATABASE=database \
-    PGHOST=postgis \
-    PGUSER=postgres \
-    TZ=Europe/Bratislava
+    PGDATABASE="database" \
+    PGHOST="postgis" \
+    PGUSER="postgres" \
+    TZ="Europe/Bratislava"
 USER homelab
 # Startup period a bit longer for initial migration - downloads stuff from github and sets up locations database
 HEALTHCHECK --interval=10s --start-period=180s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000" ]

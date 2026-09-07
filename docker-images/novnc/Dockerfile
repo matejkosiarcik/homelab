@@ -59,10 +59,10 @@ RUN rm -rf /root && \
     chmod 777 /root && \
     ln -s /homelab/noVNC /root/noVNC
 # NOTE: Placeholders are replaced during runtime (in config or secrets)
-ENV AUTOCONNECT=true \
-    HOMELAB_CONTAINER_NAME=novnc \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava \
+ENV AUTOCONNECT="true" \
+    HOMELAB_CONTAINER_NAME="novnc" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava" \
     VNC_PASSWORD="PLACEHOLDER" \
     VNC_SERVER="PLACEHOLDER"
 USER homelab

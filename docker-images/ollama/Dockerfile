@@ -53,8 +53,8 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 USER homelab
-ENV HOMELAB_CONTAINER_NAME=ollama \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="ollama" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:11434" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

@@ -33,9 +33,9 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-ENV APP_ENV=production \
-    HOMELAB_CONTAINER_NAME=koffan \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PORT=8080 \
-    TZ=Europe/Bratislava
+ENV APP_ENV="production" \
+    HOMELAB_CONTAINER_NAME="koffan" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PORT="8080" \
+    TZ="Europe/Bratislava"
 USER homelab

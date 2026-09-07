@@ -24,7 +24,7 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
@@ -41,7 +41,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+    PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/samba/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=samba-exporter-gitman-gitcache \
@@ -58,7 +58,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-
     rm -rf /var/lib/apt/lists/*
 COPY --from=samba-exporter-gitman /root/.gitcache /root/.gitcache
 COPY --from=samba-exporter-gitman /homelab/gitman-repositories/samba_exporter/ ./samba_exporter/
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED="0"
 WORKDIR /homelab/samba_exporter
 RUN ./build.sh build
 WORKDIR /homelab
@@ -115,10 +115,10 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME=samba \
-    HOMELAB_CONTAINER_VARIANT=default \
+ENV HOMELAB_CONTAINER_NAME="samba" \
+    HOMELAB_CONTAINER_VARIANT="default" \
     SAMBA_GROUP=homelab \
     SAMBA_USERNAME=homelab \
-    TZ=Europe/Bratislava
+    TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "bash -c ':> /dev/tcp/localhost/139' || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

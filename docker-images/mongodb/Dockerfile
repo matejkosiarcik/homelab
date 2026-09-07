@@ -33,13 +33,13 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-ENV HOMELAB_CONTAINER_NAME=mongodb \
-    HOMELAB_CONTAINER_VARIANT=default \
-    MONGO_DBNAME=database \
-    MONGO_INITDB_ROOT_USERNAME=root \
-    MONGO_USER=mongo \
-    PORT=27017 \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="mongodb" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    MONGO_DBNAME="database" \
+    MONGO_INITDB_ROOT_USERNAME="root" \
+    MONGO_USER="mongo" \
+    PORT="27017" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "/homelab/healthcheck.sh" ]
 CMD [ "--auth", "--quiet", "--logpath", "/dev/null" ]

@@ -42,10 +42,10 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-ENV BODY_SIZE_LIMIT=Infinity \
-    HOMELAB_CONTAINER_NAME=adventurelog \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PUBLIC_SERVER_URL=http://app-backend:8000 \
-    TZ=Europe/Bratislava
+ENV BODY_SIZE_LIMIT="Infinity" \
+    HOMELAB_CONTAINER_NAME="adventurelog" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PUBLIC_SERVER_URL="http://app-backend:8000" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000" ]

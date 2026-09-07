@@ -91,7 +91,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /app/public/icons /app/public/icons
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoint.sh /usr/local/bin/
-ENV HOMELAB_CONTAINER_NAME=homepage \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="homepage" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 USER homelab

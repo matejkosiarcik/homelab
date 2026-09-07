@@ -61,24 +61,24 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 RUN rm -rf /var/app
 COPY --from=prefinal --chown=homelab:homelab /var/app /var/app
-ENV APPLICATION_PROTOCOL=http \
-    BACKGROUND_PROCESSING_CONCURRENCY=10 \
-    DATABASE_HOST=postgis \
-    DATABASE_NAME=database \
-    DATABASE_USERNAME=postgres \
-    DISABLE_TELEMETRY=true \
-    HOMELAB_CONTAINER_NAME=dawarich \
-    HOMELAB_CONTAINER_VARIANT=default \
-    MIN_MINUTES_SPENT_IN_CITY=60 \
-    PROMETHEUS_EXPORTER_ENABLED=true \
-    PROMETHEUS_EXPORTER_HOST=0.0.0.0 \
-    PROMETHEUS_EXPORTER_PORT=9394 \
-    RAILS_ENV=development \
-    REDIS_URL=redis://redis:6379 \
-    SELF_HOSTED=true \
-    STORE_GEODATA=true \
-    TIME_ZONE=Europe/Bratislava \
-    TZ=Europe/Bratislava
+ENV APPLICATION_PROTOCOL="http" \
+    BACKGROUND_PROCESSING_CONCURRENCY="10" \
+    DATABASE_HOST="postgis" \
+    DATABASE_NAME="database" \
+    DATABASE_USERNAME="postgres" \
+    DISABLE_TELEMETRY="true" \
+    HOMELAB_CONTAINER_NAME="dawarich" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    MIN_MINUTES_SPENT_IN_CITY="60" \
+    PROMETHEUS_EXPORTER_ENABLED="true" \
+    PROMETHEUS_EXPORTER_HOST="0.0.0.0" \
+    PROMETHEUS_EXPORTER_PORT="9394" \
+    RAILS_ENV="development" \
+    REDIS_URL="redis://redis:6379" \
+    SELF_HOSTED="true" \
+    STORE_GEODATA="true" \
+    TIME_ZONE="Europe/Bratislava" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body", "\"status\"\\s*:\\s*\"ok\"" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

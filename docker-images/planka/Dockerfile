@@ -57,12 +57,12 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoint.sh /usr/local/bin/
-ENV BASE_URL=$HOMELAB_APP_EXTERNAL_URL \
-    HOMELAB_CONTAINER_NAME=planka \
-    HOMELAB_CONTAINER_VARIANT=default \
-    KNEX_REJECT_UNAUTHORIZED_SSL_CERTIFICATE=false \
-    NODE_EXTRA_CA_CERTS=/homelab/certs/postgres.crt \
-    PGSSLMODE=verify-full \
-    TZ=Europe/Bratislava
+ENV BASE_URL="$HOMELAB_APP_EXTERNAL_URL" \
+    HOMELAB_CONTAINER_NAME="planka" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    KNEX_REJECT_UNAUTHORIZED_SSL_CERTIFICATE="false" \
+    NODE_EXTRA_CA_CERTS="/homelab/certs/postgres.crt" \
+    PGSSLMODE="verify-full" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:1337" ]

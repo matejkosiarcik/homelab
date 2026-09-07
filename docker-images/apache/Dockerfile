@@ -14,11 +14,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-dependency
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+    PYTHONPATH="/homelab/python-vendor"
 
 FROM debian:13.6-slim AS jinja
 USER root
@@ -30,11 +30,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-dependency
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+    PYTHONPATH="/homelab/python-vendor"
 
 ### Build config ###
 
@@ -186,9 +186,9 @@ COPY --from=prefinal --chown=homelab:homelab /fsroot/apache.conf /etc/apache2/si
 WORKDIR /homelab
 # For debugging enable following modules: dump_io log_forensic
 # NOTE: "alias" module is disabled because it causes 403/404 errors, see also: https://serverfault.com/questions/153177/apache2-and-icons-path-behaving-differently
-ENV HOMELAB_CONTAINER_NAME=apache \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="apache" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=120s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost:443/.apache", "--insecure", "--status", "401" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

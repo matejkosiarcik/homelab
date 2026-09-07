@@ -53,15 +53,15 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /dozzle /dozzle
 COPY --from=prefinal --chown=homelab:homelab /data /data
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
-ENV DOZZLE_AUTH_PROVIDER=simple \
-    DOZZLE_CERT=/certs/dozzle-cert.pem \
-    DOZZLE_KEY=/certs/dozzle-key.pem \
-    DOZZLE_ENABLE_ACTIONS=false \
-    DOZZLE_HOSTNAME=Server \
-    DOZZLE_REMOTE_AGENT=dozzle-agent-odroid-h3.matejhome.com:7007,dozzle-agent-odroid-h4-ultra.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-2g.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-4g.matejhome.com:7007 \
-    HOMELAB_CONTAINER_NAME=dozzle \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV DOZZLE_AUTH_PROVIDER="simple" \
+    DOZZLE_CERT="/certs/dozzle-cert.pem" \
+    DOZZLE_KEY="/certs/dozzle-key.pem" \
+    DOZZLE_ENABLE_ACTIONS="false" \
+    DOZZLE_HOSTNAME="Server" \
+    DOZZLE_REMOTE_AGENT="dozzle-agent-odroid-h3.matejhome.com:7007,dozzle-agent-odroid-h4-ultra.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-2g.matejhome.com:7007,dozzle-agent-raspberry-pi-4b-4g.matejhome.com:7007" \
+    HOMELAB_CONTAINER_NAME="dozzle" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/dozzle", "healthcheck" ]
 ENTRYPOINT [ "/dozzle" ]

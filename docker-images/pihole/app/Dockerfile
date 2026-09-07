@@ -14,11 +14,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=pihole-dependency
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+    PYTHONPATH="/homelab/python-vendor"
 
 ### Healthcheck ###
 
@@ -87,29 +87,29 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ARG GID=1000
 ARG UID=1000
-ENV DHCP_ACTIVE=false \
-    DNSMASQ_USER=root \
-    FTLCONF_dns_blockTTL=600 \
-    FTLCONF_dns_domain=matejhome.com \
-    FTLCONF_dns_domainNeeded=true \
-    FTLCONF_dns_ignoreLocalhost=false \
-    FTLCONF_dns_listeningMode=all \
-    FTLCONF_dns_piholePTR=HOSTNAMEFQDN \
-    FTLCONF_dns_rateLimit_count=0 \
-    FTLCONF_dns_rateLimit_interval=0 \
-    FTLCONF_dns_replyWhenBusy=BLOCK \
-    FTLCONF_dns_upstreams=1.1.1.1;8.8.8.8;9.9.9.9 \
+ENV DHCP_ACTIVE="false" \
+    DNSMASQ_USER="root" \
+    FTLCONF_dns_blockTTL="600" \
+    FTLCONF_dns_domain="matejhome.com" \
+    FTLCONF_dns_domainNeeded="true" \
+    FTLCONF_dns_ignoreLocalhost="false" \
+    FTLCONF_dns_listeningMode="all" \
+    FTLCONF_dns_piholePTR="HOSTNAMEFQDN" \
+    FTLCONF_dns_rateLimit_count="0" \
+    FTLCONF_dns_rateLimit_interval="0" \
+    FTLCONF_dns_replyWhenBusy="BLOCK" \
+    FTLCONF_dns_upstreams="1.1.1.1;8.8.8.8;9.9.9.9" \
     FTLCONF_misc_dnsmasq_lines="local-ttl=600" \
-    FTLCONF_misc_nice=-999 \
-    FTLCONF_misc_privacylevel=0 \
-    FTLCONF_webserver_api_allow_destructive=false \
-    FTLCONF_webserver_domain=pihole-placeholder \
-    FTLCONF_webserver_interface_theme=default-darker \
-    HOMELAB_CONTAINER_NAME=pihole \
-    HOMELAB_CONTAINER_VARIANT=default \
-    PIHOLE_GID=$GID \
-    PIHOLE_UID=$UID \
-    TZ=Europe/Bratislava
+    FTLCONF_misc_nice="-999" \
+    FTLCONF_misc_privacylevel="0" \
+    FTLCONF_webserver_api_allow_destructive="false" \
+    FTLCONF_webserver_domain="pihole-placeholder" \
+    FTLCONF_webserver_interface_theme="default-darker" \
+    HOMELAB_CONTAINER_NAME="pihole" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    PIHOLE_GID="$GID" \
+    PIHOLE_UID="$UID" \
+    TZ="Europe/Bratislava"
 # TODO: Investigate if it is possible to run as non-root
 # TODO: Remove DNSMASQ_USER=root override above
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/admin" ]

@@ -50,10 +50,10 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /usr/bin/minio /usr/bin/minio
-ENV HOMELAB_CONTAINER_NAME=minio-server \
-    HOMELAB_CONTAINER_VARIANT=default \
-    MINIO_ROOT_USER=matej \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="minio-server" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    MINIO_ROOT_USER="matej" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9000/minio/health/live" ]
 ENTRYPOINT [ "minio" ]

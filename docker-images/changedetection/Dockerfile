@@ -42,11 +42,11 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-ENV FETCH_WORKERS=4 \
-    HOMELAB_CONTAINER_NAME=changedetection \
-    HOMELAB_CONTAINER_VARIANT=default \
-    LOGGER_LEVEL=WARNING \
-    TZ=Europe/Bratislava \
-    PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
+ENV FETCH_WORKERS="4" \
+    HOMELAB_CONTAINER_NAME="changedetection" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    LOGGER_LEVEL="WARNING" \
+    TZ="Europe/Bratislava" \
+    PLAYWRIGHT_DRIVER_URL="ws://sockpuppetbrowser:3000"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]

@@ -43,12 +43,12 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-ENV DONETICK_DISABLE_SIGNUP=true \
-    DT_ENV=selfhosted \
-    DT_IS_USER_CREATION_DISABLED=true \
-    DT_SQLITE_PATH=/data/donetick.db \
-    HOMELAB_CONTAINER_NAME=donetick \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV DONETICK_DISABLE_SIGNUP="true" \
+    DT_ENV="selfhosted" \
+    DT_IS_USER_CREATION_DISABLED="true" \
+    DT_SQLITE_PATH="/data/donetick.db" \
+    HOMELAB_CONTAINER_NAME="donetick" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:2021" ]

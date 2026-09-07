@@ -13,11 +13,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependenc
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-yq-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+    PYTHONPATH="/homelab/python-vendor"
 
 FROM debian:13.6-slim AS jinja
 USER root
@@ -29,11 +29,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependenc
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-jinja-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:$PATH" \
-    PYTHONPATH=/homelab/python-vendor
+    PYTHONPATH="/homelab/python-vendor"
 
 ### App config ###
 
@@ -122,9 +122,9 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME=unbound \
-    HOMELAB_CONTAINER_VARIANT=default \
-    TZ=Europe/Bratislava
+ENV HOMELAB_CONTAINER_NAME="unbound" \
+    HOMELAB_CONTAINER_VARIANT="default" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @$HOMELAB_APP_EXTERNAL_IP +short placeholder.matejhome.com || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
