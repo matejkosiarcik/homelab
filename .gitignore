@@ -12,6 +12,7 @@ app-secrets-*/
 app-secrets/
 test-report/
 tmp/
+.build-cache/
 
 # For deployment
 /servers/.current

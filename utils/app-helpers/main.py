@@ -25,13 +25,19 @@ app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 log_dir = path.join(app_dir, "app-logs", ".meta")
 
+buildcache_dir_root = path.join(git_dir, ".build-cache")
+
 is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
+is_ci_gha = is_ci and bool(os.environ.get("GITHUB_ACTIONS") == "true")
 cpu_count = os.cpu_count() or 1
 
 if path.exists(log_dir):
     shutil.rmtree(log_dir)
 os.makedirs(log_dir, exist_ok=True)
 
+if path.exists(buildcache_dir_root):
+    shutil.rmtree(buildcache_dir_root)
+os.makedirs(buildcache_dir_root, exist_ok=True)
 
 @dataclass
 class AppConfig:
@@ -161,11 +167,25 @@ def load_full_env():
     default_protocol = "smb" if "samba" in app_config.app_fullname else "https"
     default_port = "8443" if env_mode == "dev" else ""
     port_delimiter = ":" if default_port != "" else ""
+    if is_ci_gha:
+        buildcache_scope = f"{os.environ.get('GITHUB_WORKFLOW', 'local')}-{app_config.app_shortname}"
+        buildcache_from = f"type=gha,scope={buildcache_scope}"
+        buildcache_to = f"type=gha,mode=max,scope={buildcache_scope}"
+    else:
+        # TODO: Remove local cache when it will be unused
+        # buildcache_dir_app = path.join(buildcache_dir_root, app_config.app_shortname)
+        # buildcache_from = f"type=local,src={buildcache_dir_app}"
+        # buildcache_to = f"type=local,dest={buildcache_dir_app}"
+        # NOTE: The src/dest are not necessary for "inline", but used for compatibility with compose.yml files
+        buildcache_from = f"type=inline,src={app_config.app_shortname}"
+        buildcache_to = f"type=inline,dest={app_config.app_shortname}"
     default_env_values = {
         "DOCKER_COMPOSE_APP_FULLNAME": app_config.app_fullname,
         "DOCKER_COMPOSE_APP_SHORTNAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
         "DOCKER_COMPOSE_APP_TYPE": app_config.app_type,
+        "DOCKER_COMPOSE_BUILDCACHE_FROM": buildcache_from,
+        "DOCKER_COMPOSE_BUILDCACHE_TO": buildcache_to,
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": app_config.app_domain,
         "DOCKER_COMPOSE_NETWORK_IP": app_config.app_ip,
