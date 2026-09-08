@@ -9,6 +9,10 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:1.0.0
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-frontend
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-frontend
       dockerfile: ./docker-images/adventurelog/frontend/Dockerfile
     environment:
       ORIGIN: ${DOCKER_COMPOSE_NETWORK_URL}
@@ -19,6 +23,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-backend
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-backend
       dockerfile: ./docker-images/adventurelog/backend/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend
     env_file:

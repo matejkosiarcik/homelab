@@ -52,6 +52,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-widgets
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-widgets
       dockerfile: ./docker-images/homepage/widgets/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-widgets
     dns: # Use internal DNS

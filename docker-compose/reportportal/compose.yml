@@ -7,6 +7,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-migrations
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-migrations
       dockerfile: ./docker-images/reportportal/migrations/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations
     depends_on:
@@ -24,6 +28,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-index
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-index
       dockerfile: ./docker-images/reportportal/index/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index:1.0.0
@@ -34,6 +42,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-ui
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-ui
       dockerfile: ./docker-images/reportportal/ui/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui:1.0.0
@@ -47,6 +59,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-api
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-api
       dockerfile: ./docker-images/reportportal/api/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api
     depends_on:
@@ -69,6 +85,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-uat
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-uat
       dockerfile: ./docker-images/reportportal/uat/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat
     depends_on:
@@ -86,6 +106,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-jobs
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-jobs
       dockerfile: ./docker-images/reportportal/jobs/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs
     depends_on:
@@ -105,6 +129,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-analyzer
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-analyzer
       dockerfile: ./docker-images/reportportal/analyzer/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-analyzer
     depends_on:
@@ -129,6 +157,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-rabbitmq
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-rabbitmq
       dockerfile: ./docker-images/reportportal/rabbitmq/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq
     env_file:
@@ -146,6 +178,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-opensearch
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-opensearch
       dockerfile: ./docker-images/reportportal/opensearch/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch:1.0.0

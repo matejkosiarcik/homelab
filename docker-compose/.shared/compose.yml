@@ -52,6 +52,11 @@ services:
     extends:
       service: template
     # Override:
+    build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
 
@@ -60,6 +65,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-certificator
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-certificator
       dockerfile: ./docker-images/certificator/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-certificator
     dns: # Use internal DNS
@@ -82,6 +91,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-apache
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-apache
       dockerfile: ./docker-images/apache/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache
     dns: # Use blackhole DNS
@@ -106,6 +119,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-apache-prometheus-exporter
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-apache-prometheus-exporter
       dockerfile: ./docker-images/apache-prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter
     env_file:
@@ -117,6 +134,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-socket-proxy
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-socket-proxy
       dockerfile: ./docker-images/socket-proxy/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-socket-proxy
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-socket-proxy:1.0.0
@@ -130,6 +151,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-setup
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-setup
       dockerfile: ./docker-images/docker-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     environment:
@@ -144,6 +169,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-favicons
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-favicons
       dockerfile: ./docker-images/favicons/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons
     env_file:
@@ -155,6 +184,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-file-server
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-file-server
       dockerfile: ./docker-images/file-server/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server:1.0.0
@@ -164,6 +197,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-setup
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-setup
       dockerfile: ./docker-images/script-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
@@ -175,6 +212,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-redis
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-redis
       dockerfile: ./docker-images/redis/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-redis
     env_file:
@@ -191,6 +232,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-postgres
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-postgres
       dockerfile: ./docker-images/postgres/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgres
     env_file:
@@ -209,6 +254,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-postgis
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-postgis
       dockerfile: ./docker-images/postgis/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis
     env_file:

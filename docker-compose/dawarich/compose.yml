@@ -28,6 +28,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-sidekiq
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-sidekiq
       dockerfile: ./docker-images/dawarich/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-sidekiq
     env_file:
@@ -70,6 +74,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-decryptor
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-decryptor
       dockerfile: ./docker-images/owntracks-decryptor/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-decryptor
     env_file:
