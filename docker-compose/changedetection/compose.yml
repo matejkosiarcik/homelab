@@ -20,6 +20,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-sockpuppetbrowser
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-sockpuppetbrowser
       dockerfile: ./docker-images/sockpuppetbrowser/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-sockpuppetbrowser
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sockpuppetbrowser:1.0.0

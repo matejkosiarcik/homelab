@@ -31,6 +31,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-mongodb
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-mongodb
       dockerfile: ./docker-images/mongodb/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-mongodb
     env_file:

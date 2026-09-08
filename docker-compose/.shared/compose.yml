@@ -152,9 +152,9 @@ services:
     # Override:
     build:
       cache_from:
-        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-docker-app-setup
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-setup
       cache_to:
-        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-docker-app-setup
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-setup
       dockerfile: ./docker-images/docker-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     environment:
@@ -198,9 +198,9 @@ services:
     # Override:
     build:
       cache_from:
-        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-script-app-setup
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-setup
       cache_to:
-        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-script-app-setup
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-setup
       dockerfile: ./docker-images/script-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0

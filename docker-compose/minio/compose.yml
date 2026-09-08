@@ -21,6 +21,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-setup
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-setup
       dockerfile: ./docker-images/minio/client/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     env_file:

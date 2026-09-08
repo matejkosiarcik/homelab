@@ -40,6 +40,10 @@ services:
       service: template
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-prometheus-exporter
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-prometheus-exporter
       dockerfile: ./docker-images/pihole/prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
     env_file:
