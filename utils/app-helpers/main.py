@@ -169,7 +169,8 @@ def load_full_env():
     default_port = "8443" if env_mode == "dev" else ""
     port_delimiter = ":" if default_port != "" else ""
     if is_ci_gha:
-        buildcache_scope = f"{os.environ.get('GITHUB_WORKFLOW', 'local')}-{app_config.app_shortname}"
+        buildcache_scope = f"{re.sub(r'[^a-zA-Z0-9]', '-', os.environ.get('GITHUB_WORKFLOW', 'local'))}-{app_config.app_shortname}".lower()
+        print(f"Using buildcache scope: {buildcache_scope}")
         buildcache_from = f"type=gha,scope={buildcache_scope}"
         buildcache_to = f"type=gha,mode=max,scope={buildcache_scope}"
     else:
