@@ -128,6 +128,11 @@ jobs:
           path: ${{ github.workspace }}/.build-cache
           key: ${{ steps.build-cache-key.outputs.key }}
 
+      - name: Debug cache key
+        env:
+          KEY: ${{ steps.build-cache-key.outputs.key }}
+        run: echo "${KEY}"
+
       - name: Docker build
         run: |
           set -euf
