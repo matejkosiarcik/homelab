@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^26.5.0",
+    "@types/node": "^26.5.1",
     "axios": "^1.20.0",
     "date-fns": "^4.4.0",
     "parse-duration-ms": "^0.1.0",
