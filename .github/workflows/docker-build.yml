@@ -3,6 +3,9 @@ name: Docker Build
 permissions: {}
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -131,7 +134,7 @@ jobs:
       - name: Debug cache 1
         run: |
           set -euf
-          ls -lahR .build-cache
+          ls -lahR .build-cache || true
 
       - name: Docker build
         run: |
