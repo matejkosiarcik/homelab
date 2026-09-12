@@ -131,6 +131,15 @@ jobs:
           path: ${{ github.workspace }}/.build-cache
           key: ${{ steps.build-cache-key.outputs.key }}
 
+      - name: Debug paths
+        run: |
+          set -euf
+          printf '---\n'
+          pwd
+          printf '---\n'
+          ls -lahR
+          printf '---\n'
+
       - name: Debug cache 1
         run: |
           set -euf
