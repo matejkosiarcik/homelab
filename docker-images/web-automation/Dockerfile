@@ -87,7 +87,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 FROM node:26.8.2-slim AS nodejs-build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/web-automation/package-lock.json ./web-automation/package.json ./web-automation/postinstall.sh ./web-automation/rollup.config.js ./web-automation/tsconfig.json /homelab/
+COPY ./docker-images/web-automation/package-lock.json ./docker-images/web-automation/package.json ./docker-images/web-automation/postinstall.sh ./docker-images/web-automation/rollup.config.js ./docker-images/web-automation/tsconfig.json /homelab/
 COPY ./docker-images/web-automation/src/ ./src/
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
