@@ -1,6 +1,6 @@
 module example
 
-go 1.26.4
+go 1.27.1
 
 require github.com/alexflint/go-arg v1.6.1
 
