@@ -113,7 +113,7 @@ jobs:
           set -euf
           task --taskfile './Taskfile.yml' secrets -- --mode dev
 
-      - name: Restore build artifacts cache
+      - name: Restore build cache
         uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ github.workspace }}/.build-cache
@@ -124,7 +124,7 @@ jobs:
           set -euf
           task --taskfile './Taskfile.yml' build -- --mode dev
 
-      - name: Save build artifacts cache
+      - name: Save build cache
         uses: actions/cache/save@v6.1.0
         with:
           path: ${{ github.workspace }}/.build-cache
