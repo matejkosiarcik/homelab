@@ -169,7 +169,7 @@ def load_full_env():
     if is_ci_gha:
         buildcache_scope = f"{re.sub(r'[^a-zA-Z0-9]', '-', os.environ.get('GITHUB_WORKFLOW', 'local'))}-{app_config.app_shortname}".lower()
         buildcache_dir = path.join(buildcache_dir_root, buildcache_scope)
-        print(f"Using buildcache directory: {buildcache_scope}-*")
+        print(f"Using buildcache directory: {buildcache_dir}-*")
         buildcache_from = f"type=local,src={buildcache_dir}"
         buildcache_to = f"type=local,dest={buildcache_dir}"
     else:

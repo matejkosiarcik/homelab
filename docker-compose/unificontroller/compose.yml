@@ -85,9 +85,10 @@ services:
   #     HOMELAB_CONTAINER_VARIANT: backup
   #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
   #   volumes:
-  #     - ./app-data/web-backup:/homelab/backup:rw
-  #     - ./app-logs/web-backup-errors:/homelab/errors:rw
-  #     - ./app-logs/web-backup:/homelab/logs:rw
+  #     - ./app-data/web-backup/default:/homelab/backup:rw
+  #     - ./app-logs/web-backup/errors:/homelab/errors:rw
+  #     - ./app-logs/web-backup/default:/homelab/logs:rw
+  #     - ./app-logs/web-backup/cron:/homelab/cron:rw
 
 networks:
   default:

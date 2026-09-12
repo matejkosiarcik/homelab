@@ -17,6 +17,18 @@ app.get('/.health', (_: Request, response: Response) => {
     response.sendStatus(200);
 });
 
+app.get('/status', async (_: Request, response: Response) => {
+    try {
+        const isRunning = fs.existsSync('/tmp/cron.lockdir');
+        response.status(200);
+        response.send({ status: isRunning ? 'running' : 'idle' });
+    } catch (error) {
+        console.error('Server error:', error);
+        response.status(500);
+        response.send({ error: 'Server error' });
+    }
+});
+
 // Endpoint for starting a new job
 app.post('/run', async (_: Request, response: Response) => {
     try {
