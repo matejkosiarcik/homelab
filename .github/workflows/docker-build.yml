@@ -113,11 +113,20 @@ jobs:
           set -euf
           task --taskfile './Taskfile.yml' secrets -- --mode dev
 
+      - name: Set build cache key
+        id: build-cache-key
+        env:
+          APP_LABEL: ${{ matrix.label }}
+        run: |
+          set -euf
+          key="$(printf '%s-%s-%s' "$GITHUB_WORKFLOW" "$RUNNER_OS" "$APP_LABEL" | tr '[:upper:] ' '[:lower:]-')"
+          printf 'key=%s\n' "$key" >>"$GITHUB_OUTPUT"
+
       - name: Restore build cache
         uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ github.workspace }}/.build-cache
-          key: ${{ github.workflow }}-${{ runner.os }}-${{ matrix.path }}
+          key: ${{ steps.build-cache-key.outputs.key }}
 
       - name: Docker build
         run: |
@@ -128,7 +137,7 @@ jobs:
         uses: actions/cache/save@v6.1.0
         with:
           path: ${{ github.workspace }}/.build-cache
-          key: ${{ github.workflow }}-${{ runner.os }}-${{ matrix.path }}
+          key: ${{ steps.build-cache-key.outputs.key }}
 
       - name: Docker start
         run: |
