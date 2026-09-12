@@ -141,6 +141,16 @@ jobs:
           ls -lahR
           printf '...\n'
 
+      - name: Debug paths one way up
+        run: |
+          set -euf
+          cd "$(git rev-parse --show-toplevel)/.."
+          printf '...\n'
+          pwd
+          printf '...\n'
+          ls -lahR
+          printf '...\n'
+
       - name: Debug cache 1
         run: |
           set -euf
