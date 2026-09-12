@@ -154,7 +154,7 @@ jobs:
       - name: Debug cache 1
         run: |
           set -euf
-          ls -lahR .build-cache || true
+          ls -lahR "$(git rev-parse --show-toplevel)/.build-cache" || true
 
       - name: Docker build
         run: |
@@ -164,7 +164,7 @@ jobs:
       - name: Debug cache 2
         run: |
           set -euf
-          ls -lahR .build-cache
+          ls -lahR "$(git rev-parse --show-toplevel)/.build-cache"
 
       - name: Save build cache
         uses: actions/cache/save@v6.1.0
