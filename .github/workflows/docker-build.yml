@@ -128,10 +128,20 @@ jobs:
           path: ${{ github.workspace }}/.build-cache
           key: ${{ steps.build-cache-key.outputs.key }}
 
+      - name: Debug cache 1
+        run: |
+          set -euf
+          ls -lahR .build-cache
+
       - name: Docker build
         run: |
           set -euf
           task --taskfile './Taskfile.yml' build -- --mode dev
+
+      - name: Debug cache 2
+        run: |
+          set -euf
+          ls -lahR .build-cache
 
       - name: Save build cache
         uses: actions/cache/save@v6.1.0
