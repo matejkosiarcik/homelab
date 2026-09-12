@@ -130,6 +130,8 @@ jobs:
         with:
           path: ${{ github.workspace }}/.build-cache
           key: ${{ steps.build-cache-key.outputs.key }}
+          restore-keys: |
+            ${{ steps.build-cache-key.outputs.key }}
 
       - name: Debug cache 1
         run: |
