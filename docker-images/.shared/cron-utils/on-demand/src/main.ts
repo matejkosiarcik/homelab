@@ -19,7 +19,7 @@ app.get('/.health', (_: Request, response: Response) => {
 
 app.get('/status', async (_: Request, response: Response) => {
     try {
-        const isRunning = fs.existsSync('/tmp/homelab-cron.lockd');
+        const isRunning = fs.existsSync('/tmp/cron.lockdir');
         response.status(200);
         response.send({ status: isRunning ? 'running' : 'idle' });
     } catch (error) {

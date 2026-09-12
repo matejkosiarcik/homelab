@@ -17,6 +17,7 @@ services:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot/default:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot/cron:/homelab/cron:rw
 
   certificator:
     extends:

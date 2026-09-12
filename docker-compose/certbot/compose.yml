@@ -21,6 +21,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot/data:/homelab/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot/default:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot/cron:/homelab/cron:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot/letsencrypt:/var/log/letsencrypt:rw
 
   file-server:

@@ -5,10 +5,10 @@ set -euf
 # It calls healthchecks both before and after the main script is run, and reports it status and output to healthchecks
 
 # Setup
-logdir="/homelab/logs/$(date +'%Y-%m-%d_%H-%M-%S')"
+logdir="/homelab/cron/$(date +'%Y-%m-%d_%H-%M-%S-%3N')"
 mkdir -p "${logdir}"
 statusfile="${logdir}/status.txt"
-logfile="${logdir}/output.log"
+logfile="${logdir}/output.txt"
 touch "${statusfile}" "${logfile}"
 printf '0\n' >"${statusfile}"
 printf 'Running job with ID %s\n' "$(basename "${logdir}")" | tee -a "${logfile}" >&2
@@ -34,15 +34,15 @@ fi
 # Lock lockfile for to run exclusively
 locked="$(
     set +e
-    mkdir /tmp/homelab-cron.lockd
+    mkdir /tmp/cron.lockdir
     printf '%s' "$?"
     set -e
 )"
 if [ "${locked}" -ne 0 ]; then
-    printf '%s Another instance of the script is already running. Exiting.\n' "$(date +'%Y-%m-%dT%H:%M:%S')" | tee -a "${logfile}" >&2
+    printf '%s Another instance of the script is already running. Exiting.\n' "$(date +'%Y-%m-%dT%H:%M:%S.%3N')" | tee -a "${logfile}" >&2
     exit 1
 fi
-trap 'rm -rf /tmp/homelab-cron.lockd' EXIT
+trap 'rm -rf /tmp/cron.lockdir' EXIT
 
 # Run actual job
 cron_job_timeout="${HOMELAB_CRON_TIMEOUT-10m}"
