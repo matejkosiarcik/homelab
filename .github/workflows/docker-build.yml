@@ -92,9 +92,13 @@ jobs:
           python-version: 3.x
 
       - name: Setup NodeJS
-        uses: actions/setup-node@v7.0.0
+        uses: Wandalen/wretry.action@v3.8.0
         with:
-          node-version: latest
+          action: actions/setup-node@v7.0.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            node-version: latest
 
       - name: Install Task dependency
         uses: go-task/setup-task@v2.2.0
@@ -109,22 +113,31 @@ jobs:
           set -euf
           task --taskfile './Taskfile.yml' secrets -- --mode dev
 
-      - name: Restore build artifacts cache
+      - name: Set build cache key
+        id: build-cache-key
+        env:
+          APP_LABEL: ${{ matrix.label }}
+        run: |
+          set -euf
+          key="$(printf '%s-%s-%s' "$GITHUB_WORKFLOW" "$RUNNER_OS" "$APP_LABEL" | tr '[:upper:] ' '[:lower:]-' | sed -E 's~[-]+~-~g')"
+          printf 'key=%s\n' "$key" >>"$GITHUB_OUTPUT"
+
+      - name: Restore build cache
         uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ github.workspace }}/.build-cache
-          key: ${{ github.workflow }}-${{ runner.os }}-${{ matrix.path }}
+          key: ${{ steps.build-cache-key.outputs.key }}
 
       - name: Docker build
         run: |
           set -euf
           task --taskfile './Taskfile.yml' build -- --mode dev
 
-      - name: Save build artifacts cache
+      - name: Save build cache
         uses: actions/cache/save@v6.1.0
         with:
           path: ${{ github.workspace }}/.build-cache
-          key: ${{ github.workflow }}-${{ runner.os }}-${{ matrix.path }}
+          key: ${{ steps.build-cache-key.outputs.key }}
 
       - name: Docker start
         run: |

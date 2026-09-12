@@ -35,8 +35,6 @@ if path.exists(log_dir):
     shutil.rmtree(log_dir)
 os.makedirs(log_dir, exist_ok=True)
 
-if path.exists(buildcache_dir_root):
-    shutil.rmtree(buildcache_dir_root)
 os.makedirs(buildcache_dir_root, exist_ok=True)
 
 

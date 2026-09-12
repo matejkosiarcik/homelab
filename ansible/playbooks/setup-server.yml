@@ -580,12 +580,6 @@
           printf 'CHANGED\n'
         fi
 
-        if [ "$(git status --short)" != '' ]; then
-          git checkout .
-          git clean -df
-          printf 'CHANGED\n'
-        fi
-
         git fetch
 
         if [ "$(git diff --name-only origin/main)" != '' ]; then
@@ -676,12 +670,6 @@
 
         if [ "$(git branch --show-current)" != main ]; then
           git checkout main
-          printf 'CHANGED\n'
-        fi
-
-        if [ "$(git status --short)" != '' ]; then
-          git checkout .
-          git clean -df
           printf 'CHANGED\n'
         fi
 

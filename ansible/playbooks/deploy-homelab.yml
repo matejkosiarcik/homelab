@@ -24,7 +24,7 @@
         sudo find /root/config -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
         find "$HOME/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
 
-        if [ "${tmpdir}/shasum-before.txt" != "${tmpdir}/shasum-after.txt" ]; then
+        if ! cmp --silent "${tmpdir}/shasum-before.txt" "${tmpdir}/shasum-after.txt"; then
           printf 'CHANGED\n'
         fi
         rm -rf "${tmpdir}"
