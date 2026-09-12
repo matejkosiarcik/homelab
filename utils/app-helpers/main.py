@@ -170,14 +170,11 @@ def load_full_env():
     port_delimiter = ":" if default_port != "" else ""
     if is_ci_gha:
         buildcache_scope = f"{re.sub(r'[^a-zA-Z0-9]', '-', os.environ.get('GITHUB_WORKFLOW', 'local'))}-{app_config.app_shortname}".lower()
-        print(f"Using buildcache scope: {buildcache_scope}")
-        buildcache_from = f"type=gha,scope={buildcache_scope}"
-        buildcache_to = f"type=gha,mode=max,scope={buildcache_scope}"
+        buildcache_dir = path.join(buildcache_dir_root, buildcache_scope)
+        print(f"Using buildcache directory: {buildcache_scope}-*")
+        buildcache_from = f"type=local,src={buildcache_dir}"
+        buildcache_to = f"type=local,dest={buildcache_dir}"
     else:
-        # TODO: Remove local cache when it will be unused
-        # buildcache_dir_app = path.join(buildcache_dir_root, app_config.app_shortname)
-        # buildcache_from = f"type=local,src={buildcache_dir_app}"
-        # buildcache_to = f"type=local,dest={buildcache_dir_app}"
         # NOTE: The src/dest are not necessary for "inline", but used for compatibility with compose.yml files
         buildcache_from = f"type=inline,src={app_config.app_shortname}"
         buildcache_to = f"type=inline,dest={app_config.app_shortname}"
