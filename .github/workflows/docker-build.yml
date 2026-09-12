@@ -119,7 +119,7 @@ jobs:
           APP_LABEL: ${{ matrix.label }}
         run: |
           set -euf
-          key="$(printf '%s-%s-%s' "$GITHUB_WORKFLOW" "$RUNNER_OS" "$APP_LABEL" | tr '[:upper:] ' '[:lower:]-')"
+          key="$(printf '%s-%s-%s' "$GITHUB_WORKFLOW" "$RUNNER_OS" "$APP_LABEL" | tr '[:upper:] ' '[:lower:]-' | sed -E 's~[-]+~-~g')"
           printf 'key=%s\n' "$key" >>"$GITHUB_OUTPUT"
 
       - name: Restore build cache
