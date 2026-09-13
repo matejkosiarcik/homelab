@@ -7,10 +7,6 @@ services:
       service: app
     # Override:
     build:
-      cache_from:
-        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app
-      cache_to:
-        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app
       dockerfile: ./docker-images/tvheadend/Dockerfile
     dns: # Use blackhole DNS
       - 10.1.12.7
