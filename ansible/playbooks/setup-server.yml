@@ -356,9 +356,9 @@
         set -eufo pipefail
         source "$HOME/.profile"
 
-        shasum_before="$(find . -type f -not -path '*/__pycache__/*' -not -path './state/*' | shasum)"
+        shasum_before="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
         pipx upgrade-all
-        shasum_after="$(find . -type f -not -path '*/__pycache__/*' -not -path './state/*' | shasum)"
+        shasum_after="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
 
         if [ "${shasum_before}" != "${shasum_after}" ]; then
           printf 'CHANGED\n'
