@@ -146,9 +146,9 @@
         line: "{{ item.line }}"
       loop:
         - regexp: '^fs\.inotify\.max_user_instances ?='
-          line: "fs.inotify.max_user_instances = 131072"
+          line: "fs.inotify.max_user_instances = 1048576"
         - regexp: '^fs\.file\-max ?='
-          line: "fs.file-max = 131072"
+          line: "fs.file-max = 1048576"
 
     # Raspberry PI by default doesn't allow monitoring for individual containers
     - name: Allow docker memory monitoring
@@ -351,12 +351,18 @@
 
     - name: Update Pipx packages
       register: update_pipx
-      changed_when: "'No packages upgraded' not in update_pipx.stdout"
+      changed_when: "'CHANGED' in update_pipx.stdout"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
 
+        shasum_before="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
         pipx upgrade-all
+        shasum_after="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
+
+        if [ "${shasum_before}" != "${shasum_after}" ]; then
+          printf 'CHANGED\n'
+        fi
 
     ## Docker ##
 

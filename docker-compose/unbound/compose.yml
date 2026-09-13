@@ -7,10 +7,6 @@ services:
       service: template_no_network
     # Override:
     build:
-      cache_from:
-        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app
-      cache_to:
-        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app
       dockerfile: ./docker-images/unbound/app/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
