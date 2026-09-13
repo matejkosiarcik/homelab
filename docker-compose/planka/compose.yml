@@ -7,6 +7,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app
       dockerfile: ./docker-images/planka/Dockerfile
     depends_on:
       postgres:

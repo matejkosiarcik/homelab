@@ -52,11 +52,6 @@ services:
     extends:
       service: template
     # Override:
-    build:
-      cache_from:
-        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app
-      cache_to:
-        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
 

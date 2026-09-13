@@ -7,6 +7,10 @@ services:
       service: app
     # Override:
     build:
+      cache_from:
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app
+      cache_to:
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app
       dockerfile: ./docker-images/grafana/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
