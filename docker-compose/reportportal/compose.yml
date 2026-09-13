@@ -4,7 +4,7 @@ services:
   app-migrations:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:
@@ -25,7 +25,7 @@ services:
   app-index:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:
@@ -39,7 +39,7 @@ services:
   app-ui:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:
@@ -56,7 +56,7 @@ services:
   app-api:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:
@@ -82,7 +82,7 @@ services:
   app-uat:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:
@@ -103,7 +103,7 @@ services:
   app-jobs:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:
@@ -126,7 +126,7 @@ services:
   app-analyzer:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:

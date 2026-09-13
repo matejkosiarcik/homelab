@@ -28,7 +28,7 @@ services:
   mongodb:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:

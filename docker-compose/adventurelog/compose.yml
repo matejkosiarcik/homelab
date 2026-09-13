@@ -4,7 +4,7 @@ services:
   app-frontend:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:1.0.0
@@ -20,7 +20,7 @@ services:
   app-backend:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: app
+      service: template
     # Override:
     build:
       cache_from:
