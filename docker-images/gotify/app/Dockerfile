@@ -29,7 +29,7 @@ COPY ./docker-images/gotify/app/config.yml /etc/gotify/config.yml
 
 ### Final ###
 
-FROM gotify/server:2.9.1
+FROM gotify/server:3.1.0
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /etc/gotify/config.yml /etc/gotify/config.yml
