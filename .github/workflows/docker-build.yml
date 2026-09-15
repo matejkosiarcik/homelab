@@ -40,12 +40,6 @@ jobs:
 
           printf 'matrix=[%s]\n' "$(cat "$tmpfile" | sed -E 's~,$~~')" | tee -a "$GITHUB_OUTPUT"
 
-      - name: Show Docker versions
-        run: |
-          docker version
-          docker compose version
-          docker buildx version
-
   build:
     name: Docker Build - ${{ matrix.label }}
     runs-on: ubuntu-latest
@@ -134,6 +128,40 @@ jobs:
         run: |
           set -euf
           python3 -m pip install yq
+
+      - name: Debug build environment
+        run: |
+          printf 'Docker version:\n'
+          docker version
+          printf '\n'
+
+          printf 'Docker Compose version:\n'
+          docker compose version
+          printf '\n'
+
+          printf 'Docker Buildx version:\n'
+          docker buildx version
+          printf '\n'
+
+          printf 'NodeJS version:\n'
+          node --version
+          printf '\n'
+
+          printf 'NPM version:\n'
+          npm --version
+          printf '\n'
+
+          printf 'Python version:\n'
+          python --version
+          printf '\n'
+
+          printf 'Pip version:\n'
+          pip --version
+          printf '\n'
+
+          printf 'Task version:\n'
+          task --version
+          printf '\n'
 
       - name: Setup secrets
         run: |
