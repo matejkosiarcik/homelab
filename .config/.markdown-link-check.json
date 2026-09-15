@@ -6,7 +6,7 @@
   ],
   "ignorePatterns": [
     {
-      "pattern": "^https?://([\\w\\.-]+)?opensecurityarchitecture.org(/.*)?"
+      "pattern": "^https?://(?:[\\w\\.-]+)?opensecurityarchitecture.org(?:/.*)?"
     }
   ]
 }

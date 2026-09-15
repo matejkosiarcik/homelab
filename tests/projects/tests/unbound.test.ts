@@ -147,12 +147,12 @@ test.describe(apps.unbound.title, () => {
                                             expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
                                             expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
                                             expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(1[6-9]|2[0-9]|3[0-1])\./);
+                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(?:1[6-9]|2[0-9]|3[0-1])\./);
                                             expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
                                             break;
                                         }
                                         case 'AAAA': {
-                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(/([0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(/(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
                                             expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
                                             expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
                                             break;

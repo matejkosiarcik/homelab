@@ -300,7 +300,7 @@ def run_with_spinner(
     try:
         subprocess_thread = threading.Thread(target=subprocess_main)
         subprocess_thread.start()
-        spin_timeout = 5 if is_ci else 0.1
+        spin_timeout = 10 if is_ci else 0.1
 
         spinner_chars = "▖▘▝▗"
         spinner_index = 0
