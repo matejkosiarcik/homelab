@@ -23,15 +23,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils moreutils
 
-      - name: Setup Python
-        uses: Wandalen/wretry.action@v3.8.0
-        with:
-          action: actions/setup-python@v7.0.0
-          attempt_limit: 3
-          attempt_delay: 2500
-          with: |
-            python-version: 3.x
-
       - name: Setup NodeJS
         uses: Wandalen/wretry.action@v3.8.0
         with:
@@ -40,6 +31,15 @@ jobs:
           attempt_delay: 2500
           with: |
             node-version: latest
+
+      - name: Setup Python
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: actions/setup-python@v7.0.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            python-version: 3.x
 
       - name: Bootstrap dependencies
         run: |
@@ -64,6 +64,24 @@ jobs:
         uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
+
+      - name: Setup NodeJS
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: actions/setup-node@v7.0.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            node-version: latest
+
+      - name: Setup Python
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: actions/setup-python@v7.0.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            python-version: 3.x
 
       - name: Setup QEMU
         uses: Wandalen/wretry.action@v3.8.0
@@ -101,24 +119,6 @@ jobs:
           set -euf
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils jq moreutils
-
-      - name: Setup Python
-        uses: Wandalen/wretry.action@v3.8.0
-        with:
-          action: actions/setup-python@v7.0.0
-          attempt_limit: 3
-          attempt_delay: 2500
-          with: |
-            python-version: 3.x
-
-      - name: Setup NodeJS
-        uses: Wandalen/wretry.action@v3.8.0
-        with:
-          action: actions/setup-node@v7.0.0
-          attempt_limit: 3
-          attempt_delay: 2500
-          with: |
-            node-version: latest
 
       - name: Docker build
         run: |
