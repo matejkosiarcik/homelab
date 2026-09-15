@@ -101,8 +101,6 @@ jobs:
           with: |
             version: latest
             cache-binary: false
-            cache-from: type=gha,scope=${{ github.workflow }}
-            cache-to: type=gha,mode=max,scope=${{ github.workflow }}
 
       - name: Setup Docker Compose
         uses: Wandalen/wretry.action@v3.8.0
