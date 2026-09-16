@@ -40,12 +40,6 @@ jobs:
 
           printf 'matrix=[%s]\n' "$(cat "$tmpfile" | sed -E 's~,$~~')" | tee -a "$GITHUB_OUTPUT"
 
-      - name: Show Docker versions
-        run: |
-          docker version
-          docker compose version
-          docker buildx version
-
   build:
     name: Docker Build - ${{ matrix.label }}
     runs-on: ubuntu-latest
@@ -70,30 +64,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v4.3.0
-
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
-        with:
-          version: latest
-
-      - name: Setup Docker Compose
-        uses: docker/setup-compose-action@v2.3.0
-        with:
-          version: latest
-
-      - name: Install APT dependencies
-        run: |
-          set -euf
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils jq moreutils
-
-      - name: Setup Python
-        uses: actions/setup-python@v7.0.0
-        with:
-          python-version: 3.x
-
       - name: Setup NodeJS
         uses: Wandalen/wretry.action@v3.8.0
         with:
@@ -103,13 +73,95 @@ jobs:
           with: |
             node-version: latest
 
+      - name: Setup Python
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: actions/setup-python@v7.0.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            python-version: 3.x
+
+      - name: Setup QEMU
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: docker/setup-qemu-action@v4.3.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            cache-image: false
+
+      - name: Setup Docker Buildx
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: docker/setup-buildx-action@v4.3.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            version: latest
+            cache-binary: false
+
+      - name: Setup Docker Compose
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: docker/setup-compose-action@v2.3.0
+          attempt_limit: 3
+          attempt_delay: 2500
+          with: |
+            version: latest
+            cache-binary: false
+
+      - name: Install APT dependencies
+        run: |
+          set -euf
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils jq moreutils
+
       - name: Install Task dependency
-        uses: go-task/setup-task@v2.2.0
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          action: go-task/setup-task@v2.2.0
+          attempt_limit: 3
+          attempt_delay: 2500
 
       - name: Install Pip dependencies
         run: |
           set -euf
           python3 -m pip install yq
+
+      - name: Debug build environment
+        run: |
+          printf 'Docker version:\n'
+          docker version
+          printf '\n'
+
+          printf 'Docker Compose version:\n'
+          docker compose version
+          printf '\n'
+
+          printf 'Docker Buildx version:\n'
+          docker buildx version
+          printf '\n'
+
+          printf 'NodeJS version:\n'
+          node --version
+          printf '\n'
+
+          printf 'NPM version:\n'
+          npm --version
+          printf '\n'
+
+          printf 'Python version:\n'
+          python --version
+          printf '\n'
+
+          printf 'Pip version:\n'
+          pip --version
+          printf '\n'
+
+          printf 'Task version:\n'
+          task --version
+          printf '\n'
 
       - name: Setup secrets
         run: |
