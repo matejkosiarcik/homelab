@@ -6,8 +6,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gitconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gitconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -24,14 +24,14 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=python_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 FROM python:3.14.7-slim AS unbound_prometheus_exporter_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_prometheus_exporter_gitman_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_prometheus_exporter_gitman_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_prometheus_exporter_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_unbound_prometheus_exporter_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -41,7 +41,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/unbound/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound_prometheus_exporter_gitman_gitcache \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=homelab_unbound_prometheus_exporter_gitman_gitcache \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
@@ -50,8 +50,8 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound_prometh
 FROM golang:1.27.1-trixie AS unbound_prometheus_exporter_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_prometheus_exporter_build_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_prometheus_exporter_build_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_prometheus_exporter_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_unbound_prometheus_exporter_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
@@ -59,8 +59,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_prometheu
 COPY --from=unbound_prometheus_exporter_gitman /homelab/gitman-repositories/unbound_exporter/ /homelab/unbound_exporter/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/unbound_exporter
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all unbound_exporter
 WORKDIR /homelab
@@ -73,8 +73,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Other ###

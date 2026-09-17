@@ -6,15 +6,15 @@
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=yq_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=yq_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_yq_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=python_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -24,8 +24,8 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=npmconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=npmconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -54,7 +54,7 @@ USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 COPY ./docker-images/gotify/setup/package-lock.json ./docker-images/gotify/setup/package.json /homelab/
-RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/gotify/setup/tsconfig.json /homelab/
 COPY ./docker-images/gotify/setup/src/ /homelab/src/
@@ -67,8 +67,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Users ###

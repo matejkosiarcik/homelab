@@ -5,8 +5,8 @@
 
 FROM debian:13.6-slim AS package_moreutils
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=script_setup_package_moreutils_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=script_setup_package_moreutils_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_setup_package_moreutils_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_script_setup_package_moreutils_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
@@ -23,8 +23,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Users ###

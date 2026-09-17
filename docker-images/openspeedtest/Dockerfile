@@ -8,8 +8,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Other ###
@@ -35,8 +35,8 @@ FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=openspeedtest_user_setup_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=openspeedtest_user_setup_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_openspeedtest_user_setup_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_openspeedtest_user_setup_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \

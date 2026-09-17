@@ -23,8 +23,8 @@ RUN sh /homelab/create-user.sh
 
 FROM debian:13.6-slim AS package_ca_certificates
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=package_ca_certificates_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=package_ca_certificates_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_ca_certificates_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_ca_certificates_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates >/dev/null && \

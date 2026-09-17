@@ -6,8 +6,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gitconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gitconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -24,15 +24,15 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=python_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Other ###
 
 FROM debian:13.6-slim AS package_ca_certificates
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=package_ca_certificates_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=package_ca_certificates_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_ca_certificates_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_ca_certificates_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates >/dev/null && \
@@ -40,8 +40,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=package_ca_certif
 
 FROM debian:13.6-slim AS package_curl
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=package_curl_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=package_curl_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_curl_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_curl_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         curl >/dev/null && \
@@ -59,8 +59,8 @@ RUN sh /homelab/busybox-copy.sh
 FROM python:3.14.7-slim AS minio_mc_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio_client_minio_cli_gitman_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio_client_minio_cli_gitman_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_minio_client_minio_cli_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_minio_client_minio_cli_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -70,15 +70,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/minio/client/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=minio_client_cli_gitman_gitcache \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=homelab_minio_client_cli_gitman_gitcache \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.27.1-trixie AS minio_mc_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio_client_minio_cli_build_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio_client_minio_cli_build_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_minio_client_minio_cli_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_minio_client_minio_cli_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
@@ -86,8 +86,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio_client_mini
 COPY --from=minio_mc_gitman /homelab/gitman-repositories/minio-mc/ ./minio-mc/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/minio-mc
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all mc
 WORKDIR /homelab
@@ -100,8 +100,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### User setup ###
