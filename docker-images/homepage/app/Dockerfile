@@ -7,8 +7,8 @@
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage_npmconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homepage_npmconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \

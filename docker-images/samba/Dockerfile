@@ -7,8 +7,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba_gitconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba_gitconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -25,7 +25,7 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba_gitman_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gitman_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Samba exporter ###

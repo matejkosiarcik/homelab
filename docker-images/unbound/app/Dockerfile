@@ -6,15 +6,15 @@
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_dependency_yq_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_dependency_yq_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=yq_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound_dependency_yq_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=yq_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -22,15 +22,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_dependency_jinja_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_dependency_jinja_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=jinja_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=jinja_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound_dependency_jinja_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=jinja_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
