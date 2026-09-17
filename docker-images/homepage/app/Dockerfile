@@ -29,7 +29,7 @@ WORKDIR /homelab
 COPY ./docker-images/homepage/app/package-lock.json ./docker-images/homepage/app/package.json ./docker-images/homepage/app/terser.json ./docker-images/homepage/app/tsconfig.json ./docker-images/homepage/app/vite.config.ts /homelab/
 COPY ./docker-images/homepage/app/src/ ./src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage_nodejs_build_npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production

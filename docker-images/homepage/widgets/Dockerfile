@@ -28,7 +28,7 @@ WORKDIR /homelab
 COPY ./docker-images/homepage/widgets/package-lock.json ./docker-images/homepage/widgets/package.json ./docker-images/homepage/widgets/tsconfig.json /homelab/
 COPY ./docker-images/homepage/widgets/src/ ./src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage_widgets_nodejs_build_npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
