@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate_bu
 ENV PIP_ROOT_USER_ACTION="ignore"
 COPY ./docker-images/libretranslate/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,id=libretranslate_build_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=libretranslate_build_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"

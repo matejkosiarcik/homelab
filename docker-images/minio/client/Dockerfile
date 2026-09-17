@@ -24,7 +24,7 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gitman_pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=python_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Other ###
