@@ -4,6 +4,9 @@ permissions: {}
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   make-build:
@@ -119,6 +122,8 @@ jobs:
           sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils jq moreutils
 
       - name: Docker build
-        run: |
-          set -euf
-          make docker-build
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          command: make docker-build
+          attempt_limit: ${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && (github.event.pull_request.user.login == 'dependabot[bot]' || github.event.pull_request.user.login == 'renovate[bot]' || (github.event.pull_request.user.login == 'matejkosiarcik' && startsWith(github.head_ref, 'renovate/')))) && 2) || 1 }}
+          attempt_delay: 2500
