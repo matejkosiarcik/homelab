@@ -6,8 +6,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gitconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gitconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -20,8 +20,8 @@ RUN printf '' >/root/.gitconfig && \
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=npmconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=npmconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -41,34 +41,35 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gitman_pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 
 ### Supercronic ###
 
 FROM python:3.14.7-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=supercronic_gitman_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=supercronic_gitman_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_supercronic_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        git >/dev/null && \
+        git retry >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+ENV GITMAN_CACHE="/root/.gitcache" \
+    PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=supercronic_gitman_gitcache \
-    gitman install --quiet && \
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
+    retry --times=3 -- gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.27.1-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=supercronic_build_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=supercronic_build_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_supercronic_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
@@ -76,7 +77,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=supercronic_build
 COPY --from=supercronic_gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/supercronic
-RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    go build -ldflags='-s -w -buildid=' -buildvcs=false && \
     strip --strip-all supercronic
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
@@ -90,7 +93,7 @@ WORKDIR /homelab
 COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json ./docker-images/data-optimization/tsconfig.json /homelab/
 COPY ./docker-images/data-optimization/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
@@ -101,7 +104,7 @@ WORKDIR /homelab
 COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
 COPY ./docker-images/.shared/cron-utils/on-demand/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
@@ -112,9 +115,9 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=healthcheck_build_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=healthcheck_build_gobuildcache \
-    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Other ###
 
@@ -161,8 +164,8 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM node:26.8.2-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data_optimizer_final_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data_optimizer_final_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_data_optimizer_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_data_optimizer_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ghostscript imagemagick jq libreoffice && \

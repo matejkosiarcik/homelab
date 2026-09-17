@@ -6,8 +6,8 @@
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=npmconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=npmconfig_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -28,7 +28,7 @@ WORKDIR /homelab
 COPY ./docker-images/homepage/widgets/package-lock.json ./docker-images/homepage/widgets/package.json ./docker-images/homepage/widgets/tsconfig.json /homelab/
 COPY ./docker-images/homepage/widgets/src/ ./src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
@@ -39,9 +39,9 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=healthcheck_build_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=healthcheck_build_gobuildcache \
-    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Users ###
 

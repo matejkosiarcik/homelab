@@ -7,8 +7,8 @@
 FROM --platform=linux/amd64 debian:13.6-slim AS libretranslate_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate_build_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate_build_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_libretranslate_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_libretranslate_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         build-essential cmake g++ gcc libprotobuf-dev libsentencepiece-dev libsentencepiece0 pkg-config procps protobuf-compiler python3 python3-dev python3-pip python3-sentencepiece sentencepiece >/dev/null && \
@@ -16,12 +16,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate_bu
 ENV PIP_ROOT_USER_ACTION="ignore"
 COPY ./docker-images/libretranslate/requirements.txt ./
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,id=libretranslate_build_pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_libretranslate_build_pipcache \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 # hadolint ignore=DL3001
-RUN --mount=type=cache,target=/root/.local,sharing=locked,id=libretranslate_build_language_models \
+RUN --mount=type=cache,target=/root/.local,sharing=locked,id=homelab_libretranslate_build_language_models \
     libretranslate_pid="$(libretranslate --debug --update-models >./status.txt 2>&1 & printf '%s' "$!")" && \
     sleep 1 && \
     while ps -p "${libretranslate_pid}" >/dev/null 2>&1 && ! grep 'Running on ' <./status.txt >/dev/null; do true && \
@@ -42,9 +42,9 @@ FROM --platform=linux/amd64 golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=healthcheck_build_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=healthcheck_build_gobuildcache \
-    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Other ###
 
@@ -85,8 +85,8 @@ COPY --from=libretranslate_build /root/.local-copy /home/homelab/.local
 FROM --platform=linux/amd64 debian:13.6-slim
 # TODO: gcr.io/distroless/python3-debian13:latest
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=libretranslate_package_libsentencepiece_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=libretranslate_package_libsentencepiece_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_libretranslate_package_libsentencepiece_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_libretranslate_package_libsentencepiece_aptlibcache \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         python3 >/dev/null && \

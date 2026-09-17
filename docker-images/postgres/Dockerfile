@@ -32,8 +32,8 @@ COPY --from=homelab_dir /homelab /homelab
 # hadolint ignore=DL3029
 FROM postgres:18.6
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=postgres_final_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=postgres_final_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_postgres_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_postgres_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         openssl && \

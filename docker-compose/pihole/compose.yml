@@ -8,8 +8,6 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/pihole/app/Dockerfile
-    cap_add:
-      - SYS_NICE
     # TODO: Try to remove hard-coded DNS after setting up OpenWRT router with DNS forwarding
     # Hard-coded DNS is necessary because of bootstrapping problem
     # Basically PiHole needs functional DNS in order to start (eg. to update adlists before start - which it can't do until it itself started, when it's the only DNS server on network)
@@ -28,6 +26,7 @@ services:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/pihole:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/spool:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/spool/cron/crontabs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole/data:/etc/pihole:rw
 
@@ -35,6 +34,9 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: docker-app-setup
+    environment:
+      # The Pi-hole CLI intentionally requires root for admin actions
+      HOMELAB_SETUP_TARGET_USER: "0"
 
   app-prometheus-exporter:
     extends:
