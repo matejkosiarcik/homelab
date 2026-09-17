@@ -49,6 +49,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="npm-cache" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/srv/app:${PATH}" \
+    REDIS_ADDRESS="redis:6379" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080" ]

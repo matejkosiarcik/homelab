@@ -45,6 +45,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 # WORKDIR /homelab
 ENV GF_PLUGINS_PREINSTALL="" \
+    GF_LOG_LEVEL="error" \
     GF_SECURITY_ADMIN_USER="matej" \
     GF_SECURITY_COOKIE_SAMESITE="strict" \
     GF_SECURITY_COOKIE_SECURE="true" \

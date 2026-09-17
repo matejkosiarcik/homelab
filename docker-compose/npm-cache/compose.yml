@@ -10,8 +10,6 @@ services:
       dockerfile: ./docker-images/npm-cache/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
-    environment:
-      REDIS_ADDRESS: redis:6379
     networks: # Internet access required for downloading packages
       - external-network
       - internal-network

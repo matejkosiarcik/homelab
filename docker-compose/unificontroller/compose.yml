@@ -11,8 +11,6 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-    environment:
-      MONGO_HOST: mongodb
     init: false
     networks: # Internet access required for downloading device firmware updates
       - external-network

@@ -67,6 +67,7 @@ ENV DB="sqlite" \
     REGISTRATION_OPEN="False" \
     SHELL_ENABLED="False" \
     SITE_LOGO_URL="/static/img/custom-healthchecks.png" \
+    SITE_NAME="Healthchecks" \
     TZ="Europe/Bratislava"
 # TODO: Enable secure emails
 # EMAIL_HOST_PASSWORD=

@@ -10,8 +10,6 @@ services:
       dockerfile: ./docker-images/healthchecks/app/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
-    environment:
-      SITE_NAME: Healthchecks
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
