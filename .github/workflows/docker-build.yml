@@ -195,7 +195,15 @@ jobs:
         with:
           command: task --taskfile './Taskfile.yml' build -- --mode dev
           current_path: ${{ matrix.path }}
-          attempt_limit: ${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && (github.event.pull_request.user.login == 'dependabot[bot]' || github.event.pull_request.user.login == 'renovate[bot]' || (github.event.pull_request.user.login == 'matejkosiarcik' && startsWith(github.head_ref, 'renovate/')))) && 2) || 1 }}
+          attempt_limit: >-
+            ${{ (
+              (github.event_name == 'push' && github.ref == 'refs/heads/main')
+              || (github.event_name == 'pull_request' && (
+                github.event.pull_request.user.login == 'dependabot[bot]'
+                || github.event.pull_request.user.login == 'renovate[bot]'
+                || (github.event.pull_request.user.login == 'matejkosiarcik' && startsWith(github.head_ref, 'renovate/'))
+              ))
+            ) && 2 || 1 }}
           attempt_delay: 2500
 
       - name: Debug cache 2
