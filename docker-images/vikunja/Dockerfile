@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM vikunja/vikunja:0.24.6 AS vikunja_app
+FROM vikunja/vikunja:2.6.0 AS vikunja_app
 USER root
 
 ### Other ###
