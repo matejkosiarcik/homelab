@@ -61,7 +61,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    retry --times=3 --jitter=1 -- gitman install --quiet && \
+    retry --times=3 -- gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.27.1-trixie AS supercronic_build

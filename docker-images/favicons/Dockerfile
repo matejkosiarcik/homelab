@@ -59,7 +59,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 COPY ./docker-images/.shared/dependencies/imagemagick-appimage/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    retry --times=3 --jitter=1 -- gitman install --quiet
+    retry --times=3 -- gitman install --quiet
 
 FROM debian:13.6-slim AS imagemagick_final
 USER root
