@@ -58,7 +58,7 @@ COPY --from=homelab-dir /homelab /homelab
 FROM linuxserver/speedtest-tracker:1.15.0
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-RUN chown -R homelab:homelab /app
+RUN chown -R homelab:homelab /app /config
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ARG GID=1000
