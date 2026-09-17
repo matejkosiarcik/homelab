@@ -25,7 +25,6 @@ done
 
 if [ "${1-}" = '-c' ] && [ "${#}" -ge 2 ]; then
     shift
-    echo "executing: $@"
     exec /bin/sh -c "$@"
 fi
 
