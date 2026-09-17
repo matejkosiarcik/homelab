@@ -80,6 +80,7 @@ ENV FILE__MONGO_PASS="/homelab/mongodb-password.txt" \
     MEM_LIMIT="2048" \
     MEM_STARTUP="2048" \
     MONGO_AUTHSOURCE="admin" \
+    MONGO_HOST="mongodb" \
     MONGO_DBNAME="unifi" \
     MONGO_PORT="27017" \
     MONGO_TLS="" \

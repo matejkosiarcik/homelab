@@ -8,9 +8,6 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/docker-stats-exporter/Dockerfile
-    environment:
-      DOCKER_HOST: tcp://socket-proxy:2375
-
   socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
