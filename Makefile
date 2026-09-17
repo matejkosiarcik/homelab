@@ -32,7 +32,7 @@ bootstrap:
 	#
 
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | tr -d ' ' | base64 -d | while read -r component; do \
-		npm ci --prefix "$(PROJECT_DIR)/$$component" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
+		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
 	true; done
 
 	# Must run postinstall script for zopfli-png, otherwise zopfli binaries are unavailable
@@ -43,14 +43,14 @@ bootstrap:
 	#
 
 	printf '%s' "$(PYTHON_COMPONENTS)" | tr -d ' ' | base64 -d | while read -r component; do \
-		cd "$(PROJECT_DIR)/$$component" && \
+		cd "$(PROJECT_DIR)/$${component}" && \
 		if [ -e ./venv ]; then true; else python3 -m venv ./venv; fi && \
-		PATH="$(PROJECT_DIR)/$$component/venv/bin:$$PATH" \
+		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
 		PIP_DISABLE_PIP_VERSION_CHECK=1 \
 			python3 -m pip install --requirement ./requirements.txt --quiet --upgrade && \
 	true; done
 
-	PATH="$(PROJECT_DIR)/icons/venv/bin:$$PATH" \
+	PATH="$(PROJECT_DIR)/icons/venv/bin:$${PATH}" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
 		gitman install --root icons
 	# --quiet --force
@@ -60,23 +60,23 @@ bootstrap:
 .PHONY: build
 build:
 	printf '%s' "$(NPM_COMPONENTS_FOR_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
-		printf 'Building %s\n' "$$component" && \
-		npm run build --prefix "$(PROJECT_DIR)/$$component" && \
+		printf 'Building %s\n' "$${component}" && \
+		npm run build --prefix "$(PROJECT_DIR)/$${component}" && \
 		printf '\n\n' && \
 	true; done
 
 .PHONY: docker-build
 docker-build:
 	printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
-		printf 'Building %s\n' "$$component" && \
-		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$$component/Dockerfile" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab" && \
+		printf 'Building %s\n' "$${component}" && \
+		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" && \
 		printf '\n\n' && \
 	true; done
 
 	# Disabled - It's complicated
 	# printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
-	# 	printf 'Building %s\n' "$$app" && \
-	# 	docker compose --project-directory "$(PROJECT_DIR)/$$app" build --with-dependencies && \
+	# 	printf 'Building %s\n' "$${app}" && \
+	# 	docker compose --project-directory "$(PROJECT_DIR)/$${app}" build --with-dependencies && \
 	# 	printf '\n\n' && \
 	# true; done
 
@@ -84,8 +84,8 @@ docker-build:
 docker-build-multiarch:
 	printf '%s' "$(DOCKER_ARCHS)" | tr -d ' ' | base64 -d | while read -r arch; do \
 		printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
-			printf 'Building %s for linux/%s:\n' "$$component" "$$arch" && \
-			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$$component/Dockerfile" --platform "linux/$$arch" --tag "$$(printf '%s\n' "$$component" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$$arch" | tr '/' '-')" && \
+			printf 'Building %s for linux/%s:\n' "$${component}" "$${arch}" && \
+			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" && \
 			printf '\n\n' && \
 		true; done && \
 	true; done
@@ -93,12 +93,18 @@ docker-build-multiarch:
 .PHONY: dryrun
 dryrun:
 	printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
-		docker compose --project-directory "$(PROJECT_DIR)/$$app" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
+		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
 		printf '\n\n' && \
 	true; done
 
 .PHONY: clean
 clean:
+	# Check if there is an active virtualenv and abort
+	if [ -n "$${VIRTUAL_ENV+x}" ]; then \
+		printf 'There is an active python virtualenv. Run "deactivate" and try again.\n'; \
+		exit 1; \
+	fi
+
 	find "$(PROJECT_DIR)" -type d \( \
 		-name ".mypy_cache" -or \
 		-name "build" -or \
