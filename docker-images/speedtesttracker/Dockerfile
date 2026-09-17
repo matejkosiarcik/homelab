@@ -40,7 +40,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercron
         git retry >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+ENV GITMAN_CACHE="/root/.gitcache" \
+    PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
