@@ -362,6 +362,14 @@ def docker_build():
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
 
+def docker_debug_compose():
+    compose_file = path.join(log_dir, f"compose-{env_mode}.yml")
+    commands = ["docker", "compose"] + docker_compose_args + ["config", "--output", compose_file]
+    docker_log_file = path.join(log_dir, "docker-debug-compose.log")
+    run_with_spinner(commands, "Resolving compose config for", "Resolve compose config for", docker_log_file, False)
+    print(f"Resolved compose config written to {compose_file}")
+
+
 def docker_stop():
     commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
     docker_log_file = path.join(log_dir, "docker-stop.log")
@@ -432,6 +440,8 @@ def run_main_command(command: str):
     # Execute commands
     if command == "build":
         docker_build()
+    elif command == "debug-compose":
+        docker_debug_compose()
     elif command == "deploy":
         if include_secrets is True:
             create_secrets()
@@ -462,6 +472,7 @@ def main(argv):
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
         subparsers.add_parser("build", help="Build this app"),
+        subparsers.add_parser("debug-compose", help="Dump resolved compose config for this app"),
         subparsers.add_parser("deploy", help="Deploy app (build + stop + start)"),
         subparsers.add_parser("restart", help="Restart app (stop + start)"),
         subparsers.add_parser("secrets", help="Create secrets for this app"),
@@ -518,7 +529,7 @@ def main(argv):
         print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
         sys.exit(1)
 
-    if command not in ["build", "deploy", "restart", "secrets", "start", "stop"]:
+    if command not in ["build", "debug-compose", "deploy", "restart", "secrets", "start", "stop"]:
         print(f"Unrecognized command: {command}")
         sys.exit(1)
 

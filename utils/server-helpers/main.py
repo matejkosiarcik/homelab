@@ -103,6 +103,7 @@ def main(argv: list[str]):
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
         subparsers.add_parser("build", help="Build docker images for all docker apps"),
+        subparsers.add_parser("debug-compose", help="Dump resolved compose configs for all docker apps"),
         subparsers.add_parser("deploy", help="Deploy all docker apps (build + stop + start)"),
         subparsers.add_parser("install", help="Install main server scripts"),
         subparsers.add_parser("restart", help="Restart all docker apps (stop + start)"),
@@ -153,7 +154,7 @@ def main(argv: list[str]):
         server_install()
         return
 
-    if command in ["build", "deploy", "restart", "secrets", "start", "stop"]:
+    if command in ["build", "debug-compose", "deploy", "restart", "secrets", "start", "stop"]:
         server_action(command)
         return
 
@@ -162,7 +163,7 @@ def main(argv: list[str]):
 
 
 def server_action(action: str):
-    action_log = action.capitalize()
+    action_log = action.replace("-", " ").capitalize()
     if action == "secrets":
         action_log += " for"
     print(f"↓ {action_log} docker apps")
