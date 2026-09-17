@@ -136,3 +136,6 @@ pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
 
 # Restart DNS
 pihole reloaddns
+
+# Make sure all subdirectories are owned by homelab user
+chown -R homelab:homelab /etc/pihole
