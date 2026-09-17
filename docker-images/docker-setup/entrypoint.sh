@@ -15,7 +15,11 @@ EOF
 sleep "${HOMELAB_SETUP_DELAY-10}"
 
 printf '%s - Starting setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
-docker exec "${HOMELAB_SETUP_TARGET_CONTAINER}" sh /homelab/setup.sh
+if [ -n "${HOMELAB_SETUP_TARGET_USER-}" ]; then
+    docker exec --user "${HOMELAB_SETUP_TARGET_USER}" "${HOMELAB_SETUP_TARGET_CONTAINER}" sh /homelab/setup.sh
+else
+    docker exec "${HOMELAB_SETUP_TARGET_CONTAINER}" sh /homelab/setup.sh
+fi
 printf '%s - Finished setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 
 printf 'started\n' >/homelab/tmpfs/status.txt

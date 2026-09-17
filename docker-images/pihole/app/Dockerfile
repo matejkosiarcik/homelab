@@ -83,12 +83,17 @@ COPY --from=homelab_dir /homelab /homelab
 FROM pihole/pihole:2026.07.2
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
+RUN chown -R homelab:homelab /macvendor.db /etc/.pihole /etc/pihole /usr/local/bin/pihole /usr/bin/pihole-FTL && \
+    mv /usr/sbin/setcap /usr/sbin/setcap-original && \
+    mv /usr/sbin/capsh /usr/sbin/capsh-original
+COPY --chown=homelab:homelab --chmod=0777 ./docker-images/pihole/app/capsh.sh /usr/sbin/capsh
+COPY --chown=homelab:homelab --chmod=0777 ./docker-images/pihole/app/setcap.sh /usr/sbin/setcap
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ARG GID=1000
 ARG UID=1000
 ENV DHCP_ACTIVE="false" \
-    DNSMASQ_USER="root" \
+    DNSMASQ_USER="homelab" \
     FTLCONF_dns_blockTTL="600" \
     FTLCONF_dns_domain="matejhome.com" \
     FTLCONF_dns_domainNeeded="true" \
@@ -110,6 +115,5 @@ ENV DHCP_ACTIVE="false" \
     PIHOLE_GID="${GID}" \
     PIHOLE_UID="${UID}" \
     TZ="Europe/Bratislava"
-# TODO: Investigate if it is possible to run as non-root
-# TODO: Remove DNSMASQ_USER=root override above
+USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/admin" ]
