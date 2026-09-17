@@ -54,7 +54,7 @@ const appAddress = (() => {
         case 'ntfy': return 'http://app:80';
         case 'novnc': return 'http://app:6080';
         case 'ollama': return ''; // http://app:11434
-        case 'omadacontroller': return envMode === 'prod' ? 'https://app:80' : 'https://app:8443';
+        case 'omadacontroller': return envMode === 'prod' ? 'https://app:443' : 'https://app:8443';
         case 'openwebui': return 'http://app:8080';
         case 'openspeedtest': return 'http://app:3000';
         case 'pihole': return 'http://app:80';
@@ -65,7 +65,7 @@ const appAddress = (() => {
         case 'reportportal': return 'http://app-ui:8080';
         case 'samba': return '';
         case 'smtp4dev': return 'http://app:5000';
-        case 'speedtesttracker': return 'https://app:80';
+        case 'speedtesttracker': return 'https://app:443';
         case 'tvheadend': return 'http://app:9981';
         case 'unbound': return ''; // http://app:8080
         case 'unificontroller': return 'https://app:8443';
