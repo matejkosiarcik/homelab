@@ -212,7 +212,12 @@ jobs:
           ls -lahR "$(git rev-parse --show-toplevel)/.build-cache"
 
       - name: Save build cache
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: >-
+          ${{
+            github.event_name == 'push'
+            && github.ref == 'refs/heads/main'
+            && endsWith(matrix.path, '/libretranslate')
+          }}
         uses: actions/cache/save@v6.1.0
         with:
           path: ${{ github.workspace }}/.build-cache
