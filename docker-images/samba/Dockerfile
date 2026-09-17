@@ -45,7 +45,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 COPY ./docker-images/samba/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    retry --times=3 --delay=1,4 --jitter=1 -- gitman install --quiet
+    retry --times=3 --jitter=1 -- gitman install --quiet
 
 FROM golang:1.27.1-trixie AS samba_exporter_build
 USER root
