@@ -21,7 +21,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 
 ### Build config ###
 
-FROM node:26.8.2-slim AS npmconfig
+FROM node:26.9.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -49,7 +49,7 @@ RUN yq '.' '/homelab/apps.yml' >'/homelab/apps.json' && \
 
 ### App ###
 
-FROM node:26.8.2-slim AS app_build
+FROM node:26.9.0-slim AS app_build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc

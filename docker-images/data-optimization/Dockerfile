@@ -17,7 +17,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
     git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
 
-FROM node:26.8.2-slim AS npmconfig
+FROM node:26.9.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -87,7 +87,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:26.8.2-slim AS nodejs_main_build
+FROM node:26.9.0-slim AS nodejs_main_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json ./docker-images/data-optimization/tsconfig.json /homelab/
@@ -98,7 +98,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
     npm run build && \
     npm prune --production
 
-FROM node:26.8.2-slim AS nodejs_server_build
+FROM node:26.9.0-slim AS nodejs_server_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
@@ -162,7 +162,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM node:26.8.2-slim
+FROM node:26.9.0-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_data_optimizer_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_data_optimizer_final_aptlibcache \
