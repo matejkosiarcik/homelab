@@ -2,6 +2,75 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
+### Build config ###
+
+FROM debian:13.6-slim AS gitconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-gitconfig-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-gitconfig-aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/anticache.txt /homelab/
+RUN printf '' >/root/.gitconfig && \
+    { curl --fail --silent https://git-cache-github.matejhome.com || exit 0; } && \
+    git config --global url."https://git-cache-github.matejhome.com/".insteadOf "https://github.com/"
+
+### Dependencies ###
+
+FROM python:3.14.7-slim AS gitman
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION="ignore"
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot-gitman-pipcache \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
+
+### Supercronic ###
+
+FROM python:3.14.7-slim AS supercronic-gitman
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-gitman-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-supercronic-gitman-aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        git >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
+COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
+COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot-supercronic-gitman-gitcache \
+    gitman install --quiet && \
+    find . -type d -name .git -prune -exec rm -rf {} \;
+
+FROM golang:1.27.1-trixie AS supercronic-build
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-build-aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-supercronic-build-aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
+ENV CGO_ENABLED="0"
+WORKDIR /homelab/supercronic
+RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
+    strip --strip-all supercronic
+WORKDIR /homelab
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
+RUN sh validate-executable.sh ./supercronic/supercronic
+
+### App config ####
+
+FROM linuxserver/speedtest-tracker:1.15.0 AS speedtesttracker-config
+USER root
+
 ### Healthcheck ###
 
 FROM golang:1.27.1-alpine AS healthcheck-build
@@ -32,26 +101,21 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
-    grep -E '^homelab:' </etc/group | sed 's~^homelab~sail~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~sail~' | sponge --append /etc/passwd && \
-    grep -E '^homelab:' </etc/group | sed 's~^homelab~nginx~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~nginx~' | sponge --append /etc/passwd && \
-    grep -E '^homelab:' </etc/group | sed 's~^homelab~php~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~php~' | sponge --append /etc/passwd && \
-    grep -E '^homelab:' </etc/group | sed 's~^homelab~postgres~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~postgres~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd
 
 ### Prefinal ###
 
 FROM scratch AS homelab-dir
 WORKDIR /homelab
 COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
+COPY --from=speedtesttracker-config --chmod=0555 /etc/crontabs/abc /homelab/crontabs/
 
 FROM scratch AS prefinal
 COPY --from=user-setup /etc/group /etc/passwd /etc/
 COPY --from=user-setup /home/homelab /home/homelab
 COPY --from=homelab-dir /homelab /homelab
+COPY --chmod=0755 ./docker-images/speedtesttracker/cron-run.sh /etc/s6-overlay/s6-rc.d/svc-cron/run
 
 ### Final ###
 
@@ -61,6 +125,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN chown -R homelab:homelab /app /config
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
+COPY --from=prefinal --chown=homelab:homelab /etc/s6-overlay/s6-rc.d/svc-cron/run /etc/s6-overlay/s6-rc.d/svc-cron/run
 ARG GID=1000
 ARG UID=1000
 ENV APP_TIMEZONE="Etc/Utc" \
