@@ -44,7 +44,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/samba/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=homelab_samba_exporter_gitman_gitcache \
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     gitman install --quiet
 
 FROM golang:1.27.1-trixie AS samba_exporter_build
@@ -56,12 +56,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_pro
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=samba_exporter_gitman /root/.gitcache /root/.gitcache
 COPY --from=samba_exporter_gitman /homelab/gitman-repositories/samba_exporter/ ./samba_exporter/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/samba_exporter
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     ./build.sh build
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/

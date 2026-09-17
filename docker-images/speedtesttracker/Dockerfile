@@ -44,7 +44,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=homelab_supercronic_gitman_gitcache \
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 

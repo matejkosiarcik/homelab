@@ -58,7 +58,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/imagemagick-appimage/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=homelab_favicons_imagemagick_appimage_gitman_gitcache \
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     gitman install --quiet
 
 FROM debian:13.6-slim AS imagemagick_final
@@ -72,7 +72,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_
     rm -rf /var/lib/apt/lists/*
 COPY --from=imagemagick_appimage_gitman /homelab/gitman-repositories/imagemagick-appimage /homelab/imagemagick-git
 WORKDIR /homelab/imagemagick-git
-RUN version="$(cat LATEST_VERSION)" && \
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
+    version="$(cat LATEST_VERSION)" && \
     tag="$(git tag --list "${version}@*" | head -n1)" && \
     curl --fail --silent --show-error --location -o ./ImageMagick.AppImage "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
     chmod a+x ./ImageMagick.AppImage && \
