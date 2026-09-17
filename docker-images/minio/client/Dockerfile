@@ -63,7 +63,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_minio_cli
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_minio_client_minio_cli_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        git >/dev/null && \
+        git retry >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
@@ -71,7 +71,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 COPY ./docker-images/minio/client/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    gitman install --quiet && \
+    retry --times=3 --delay=1,4 --jitter=1 -- gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.27.1-trixie AS minio_mc_build
