@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcac
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_apt
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
