@@ -6,15 +6,15 @@
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=healthchecks-dependency-yq-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=healthchecks-dependency-yq-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=yq_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=healthchecks-dependency-yq-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=yq_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -22,15 +22,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=healthchecks-dependency-jinja-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=healthchecks-dependency-jinja-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=jinja_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=jinja_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=healthchecks-dependency-jinja-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=jinja_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -40,8 +40,8 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=healthchecks-app-setup-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=healthchecks-app-setup-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -88,7 +88,7 @@ USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 COPY ./docker-images/healthchecks/setup/package-lock.json ./docker-images/healthchecks/setup/package.json /homelab/
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=healthchecks-setup-nodejs-build-npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/healthchecks/setup/tsconfig.json /homelab/
 COPY ./docker-images/healthchecks/setup/src/ /homelab/src/
@@ -97,22 +97,22 @@ RUN npm run build && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=script-setup-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=script-setup-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Users ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -120,19 +120,19 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=config_3 /homelab/healthchecks.json /homelab/
 COPY --from=app_build /homelab/package.json /homelab/
 COPY --from=app_build /homelab/dist/ /homelab/dist/
 COPY --from=app_build /homelab/node_modules/ /homelab/node_modules/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 

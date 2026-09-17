@@ -7,15 +7,15 @@
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-dependency-yq-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-dependency-yq-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=yq_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=yq_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -23,15 +23,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-dependency-jinja-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-dependency-jinja-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=jinja_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=jinja_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-jinja-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=jinja_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -41,8 +41,8 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -57,51 +57,51 @@ RUN touch '/root/.npmrc'
 
 ### App config ###
 
-FROM yq AS apache-htaccess-config-1
+FROM yq AS apache_htaccess_config_1
 USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_TYPE=".template"
 COPY ./docker-compose/${HOMELAB_APP_TYPE}/config.yml /homelab/data.yml
 RUN yq . data.yml >data.json
 
-FROM jinja AS htaccess-config-2
+FROM jinja AS htaccess_config_2
 USER root
 WORKDIR /homelab
-COPY --from=apache-htaccess-config-1 /homelab/data.json /homelab/
+COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/htaccess/.htaccess-extra.j2 /homelab/
 RUN jinja2 ./.htaccess-extra.j2 ./data.json --format json -o ./.htaccess-extra
 
-FROM debian:13.6-slim AS htaccess-config-3
+FROM debian:13.6-slim AS htaccess_config_3
 USER root
 WORKDIR /homelab
-COPY --from=htaccess-config-2 /homelab/.htaccess-extra /homelab/
+COPY --from=htaccess_config_2 /homelab/.htaccess-extra /homelab/
 COPY ./docker-images/apache/htaccess/.htaccess /homelab/
 RUN sed -e '/## INSERT_EXTRA_REDIRECTS ##/{' -e 'r /homelab/.htaccess-extra' -e 'd'  -e '}' </homelab/.htaccess >/homelab/.htaccess-final && \
     mv /homelab/.htaccess-final /homelab/.htaccess
 
-FROM jinja AS apache-config-2
+FROM jinja AS apache_config_2
 USER root
 WORKDIR /homelab
-COPY --from=apache-htaccess-config-1 /homelab/data.json /homelab/
+COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/apache.conf-extra.j2 /homelab/
 RUN jinja2 ./apache.conf-extra.j2 ./data.json --format json -o ./apache.conf-extra
 
-FROM debian:13.6-slim AS apache-config-3
+FROM debian:13.6-slim AS apache_config_3
 USER root
 WORKDIR /homelab
-COPY --from=apache-config-2 /homelab/apache.conf-extra /homelab/
+COPY --from=apache_config_2 /homelab/apache.conf-extra /homelab/
 COPY ./docker-images/apache/apache.conf /homelab/
 RUN sed -e '/# <<INSERT_EXTRA_REVERSE_PROXY>>/{' -e 'r /homelab/apache.conf-extra' -e 'd'  -e '}' </homelab/apache.conf >/homelab/apache.conf-final && \
     mv /homelab/apache.conf-final /homelab/apache.conf
 
 ### Error pages ###
 
-FROM node:26.8.2-slim AS errors-build
+FROM node:26.8.2-slim AS errors_build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 COPY ./docker-images/apache/errors/package-lock.json ./docker-images/apache/errors/package.json /homelab/
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=apache-errors-nodejs-build-npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/apache/errors/eleventy.config.js ./docker-images/apache/errors/postcss.config.js ./docker-images/apache/errors/terser.json ./docker-images/apache/errors/vite.config.ts ./docker-images/apache/errors/tsconfig.json /homelab/
 COPY ./docker-images/apache/errors/src/ /homelab/src/
@@ -110,17 +110,17 @@ RUN npm run build && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=apache-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=apache-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Other ###
 
-FROM debian:13.6-slim AS empty-dir
+FROM debian:13.6-slim AS empty_dir
 USER root
 RUN mkdir /empty && \
     touch /empty.txt
@@ -128,17 +128,17 @@ RUN mkdir /empty && \
 ### Users ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-user-setup-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-user-setup-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache_user_setup_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache_user_setup_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -148,30 +148,30 @@ RUN sh /homelab/create-user.sh && \
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
-COPY --from=empty-dir /empty /homelab/certs
-COPY --from=empty-dir /empty /homelab/logs
-COPY --from=empty-dir /empty.txt /homelab/users/empty.htpasswd
+COPY --from=empty_dir /empty /homelab/certs
+COPY --from=empty_dir /empty /homelab/logs
+COPY --from=empty_dir /empty.txt /homelab/users/empty.htpasswd
 COPY ./docker-images/apache/www /homelab/www
-COPY --from=htaccess-config-3 /homelab/.htaccess /homelab/www/
-COPY --from=errors-build /homelab/dist/out /homelab/www/.apache/errors
+COPY --from=htaccess_config_3 /homelab/.htaccess /homelab/www/
+COPY --from=errors_build /homelab/dist/out /homelab/www/.apache/errors
 COPY ./docker-images/apache/entrypoint.sh /homelab/
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
-COPY --from=apache-config-3 /homelab/apache.conf /fsroot/apache.conf
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
+COPY --from=apache_config_3 /homelab/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
 FROM debian:13.6-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-final-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-final-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         apache2 inotify-tools && \

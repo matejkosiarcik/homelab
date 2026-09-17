@@ -12,7 +12,7 @@ RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM linuxserver/unifi-network-application:10.6.106 AS runtime-dirs
+FROM linuxserver/unifi-network-application:10.6.106 AS runtime_dirs
 USER root
 WORKDIR /homelab
 RUN mkdir -p /homelab/original/defaults && \
@@ -21,18 +21,18 @@ RUN mkdir -p /homelab/original/defaults && \
 ### User setup ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unifi-network-application-user-setup-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unifi-network-application-user-setup-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unifi_network_application_user_setup_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unifi_network_application_user_setup_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -44,14 +44,14 @@ RUN sh /homelab/create-user.sh && \
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
-COPY --from=runtime-dirs /homelab/original /homelab/original
+COPY --from=runtime_dirs /homelab/original /homelab/original
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 
 ### Final ###

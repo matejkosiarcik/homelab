@@ -7,6 +7,11 @@ tasks:
     cmds:
       - python3 ../../utils/server-helpers/main.py build {{.CLI_ARGS}}
 
+  debug-compose:
+    desc: Dump resolved compose configs for all apps
+    cmds:
+      - python3 ../../utils/server-helpers/main.py debug-compose {{.CLI_ARGS}}
+
   deploy:
     desc: Deploy all apps | build + stop + start
     cmds:

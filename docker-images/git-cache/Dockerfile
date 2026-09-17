@@ -6,8 +6,8 @@
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=git-cache-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=git-cache-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -22,36 +22,36 @@ RUN touch '/root/.npmrc'
 
 ### App ###
 
-FROM node:26.8.2-slim AS nodejs-build
+FROM node:26.8.2-slim AS nodejs_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json ./docker-images/git-cache/tsconfig.json /homelab/
 COPY ./docker-images/git-cache/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=git-cache-nodejs-build-npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=git-cache-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=git-cache-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### User setup ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -59,17 +59,17 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
-COPY --from=nodejs-build /homelab/package.json /homelab/
-COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
-COPY --from=nodejs-build /homelab/dist /homelab/dist
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=nodejs_build /homelab/package.json /homelab/
+COPY --from=nodejs_build /homelab/node_modules /homelab/node_modules
+COPY --from=nodejs_build /homelab/dist /homelab/dist
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
