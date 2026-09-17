@@ -60,7 +60,9 @@ COPY --from=samba_exporter_gitman /root/.gitcache /root/.gitcache
 COPY --from=samba_exporter_gitman /homelab/gitman-repositories/samba_exporter/ ./samba_exporter/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/samba_exporter
-RUN ./build.sh build
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=go_gobuildcache \
+    ./build.sh build
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
