@@ -5,15 +5,15 @@
 
 ### App ###
 
-FROM mbentley/omada-controller:6.3 AS omadacontroller-app
+FROM mbentley/omada-controller:6.3 AS omadacontroller_app
 USER root
 
 ### User setup ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=omadacontroller-user-setup-aptcache \
@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=omadacontroller-u
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=omadacontroller-app /etc/group /etc/passwd /etc/
+COPY --from=omadacontroller_app /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -34,13 +34,13 @@ RUN sh /homelab/create-user.sh && \
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 

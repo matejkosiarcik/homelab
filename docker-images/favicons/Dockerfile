@@ -44,7 +44,7 @@ ENV PIP_ROOT_USER_ACTION="ignore"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=favicons-gitman-pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
-FROM python:3.14.7-slim AS imagemagick-appimage-gitman
+FROM python:3.14.7-slim AS imagemagick_appimage_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-imagemagick-appimage-gitman-aptcache \
@@ -61,7 +61,7 @@ COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=favicons-imagemagick-appimage-gitman-gitcache \
     gitman install --quiet
 
-FROM debian:13.6-slim AS imagemagick-final
+FROM debian:13.6-slim AS imagemagick_final
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-imagemagick-final-aptcache \
@@ -70,7 +70,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=favicons-imagemag
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=imagemagick-appimage-gitman /homelab/gitman-repositories/imagemagick-appimage /homelab/imagemagick-git
+COPY --from=imagemagick_appimage_gitman /homelab/gitman-repositories/imagemagick-appimage /homelab/imagemagick-git
 WORKDIR /homelab/imagemagick-git
 RUN version="$(cat LATEST_VERSION)" && \
     tag="$(git tag --list "${version}@*" | head -n1)" && \
@@ -81,7 +81,7 @@ RUN version="$(cat LATEST_VERSION)" && \
 
 ### App ###
 
-FROM node:26.8.2-slim AS nodejs-build
+FROM node:26.8.2-slim AS nodejs_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/favicons/package-lock.json ./docker-images/favicons/package.json ./docker-images/favicons/tsconfig.json /homelab/
@@ -94,7 +94,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=favicons-nodejs-build
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -105,11 +105,11 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=favicons-healthcheck
 ### Users ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -117,20 +117,20 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
-COPY --from=nodejs-build /homelab/package.json /homelab/
-COPY --from=nodejs-build /homelab/node_modules /homelab/node_modules
-COPY --from=nodejs-build /homelab/dist /homelab/dist
+COPY --from=nodejs_build /homelab/package.json /homelab/
+COPY --from=nodejs_build /homelab/node_modules /homelab/node_modules
+COPY --from=nodejs_build /homelab/dist /homelab/dist
 COPY ./docker-images/favicons/icons /homelab/icons
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
-COPY --from=imagemagick-final /homelab/imagemagick /homelab/imagemagick
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+COPY --from=imagemagick_final /homelab/imagemagick /homelab/imagemagick
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 

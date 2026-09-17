@@ -3,12 +3,12 @@
 
 ### App ###
 
-FROM prom/node-exporter:v1.12.1 AS nodeexporter-app
+FROM prom/node-exporter:v1.12.1 AS nodeexporter_app
 USER root
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -19,12 +19,12 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=nodeexporter-healthc
 ### User setup ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -32,15 +32,15 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
-COPY --from=nodeexporter-app /bin/node_exporter /homelab/bin/
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=nodeexporter_app /bin/node_exporter /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 

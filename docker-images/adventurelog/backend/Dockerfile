@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot-gitman-
 
 ### Supercronic ###
 
-FROM python:3.14.7-slim AS supercronic-gitman
+FROM python:3.14.7-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-gitman-aptcache \
@@ -47,7 +47,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot-supercr
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.27.1-trixie AS supercronic-build
+FROM golang:1.27.1-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-build-aptcache \
@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercron
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
+COPY --from=supercronic_gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
@@ -67,7 +67,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -78,11 +78,11 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=adventurelog-backend
 ### Users ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -90,7 +90,7 @@ RUN sh /homelab/create-user.sh
 
 ### App ###
 
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.0 AS adventurelog-backend
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.0 AS adventurelog_backend
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apache-user-setup-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=apache-user-setup-aptlibcache \
@@ -102,17 +102,17 @@ RUN sed -E 's~^command=/usr/sbin/cron .+~command=supercronic /homelab/crontab.cr
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY ./docker-images/adventurelog/backend/crontab.cron /homelab/
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
-COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+COPY --from=supercronic_build /homelab/supercronic/supercronic /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
-COPY --from=adventurelog-backend /etc/supervisor/conf.d /fsroot/etc/supervisor/conf.d
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
+COPY --from=adventurelog_backend /etc/supervisor/conf.d /fsroot/etc/supervisor/conf.d
 
 ### Final ###
 

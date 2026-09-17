@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot-gitman-
 
 ### Supercronic ###
 
-FROM python:3.14.7-slim AS supercronic-gitman
+FROM python:3.14.7-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-gitman-aptcache \
@@ -47,7 +47,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot-supercr
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.27.1-trixie AS supercronic-build
+FROM golang:1.27.1-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-build-aptcache \
@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercron
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
+COPY --from=supercronic_gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
@@ -67,7 +67,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
@@ -77,7 +77,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=certbot-healthcheck-
 
 ### Other ###
 
-FROM debian:13.6-slim AS package-ca-certificates
+FROM debian:13.6-slim AS package_ca_certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-package-ca-certificates-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-package-ca-certificates-aptlibcache \
@@ -86,7 +86,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-package-c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.6-slim AS package-curl
+FROM debian:13.6-slim AS package_curl
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-package-curl-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certificator-package-curl-aptlibcache \
@@ -97,18 +97,18 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-pack
     mkdir -p /homelab/usr-lib && \
     find /usr/lib \( -name 'libbrotli*' -or -name 'libcom*' -or -name 'libcurl*' -or -name 'libffi*' -or -name 'libgnutls*' -or -name 'libgssapi*' -or -name 'libidn*' -or -name 'libk*crypto*' -or -name 'libkeyutils*' -or -name 'libkrb*' -or -name 'liblber*' -or -name 'libldap*' -or -name 'libnghttp*' -or -name 'libp*kit*' -or -name 'libpsl*' -or -name 'librtmp*' -or -name 'libsasl*' -or -name 'libssh*' -or -name 'libtasn*' -or -name 'libunistring*' \) -exec sh -c 'mkdir -p "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")" && cp "$0" "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")/$(basename "$0")"' {} \;
 
-FROM debian:13.6-slim AS empty-dir
+FROM debian:13.6-slim AS empty_dir
 USER root
 RUN mkdir /empty
 
 ### Users ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -116,23 +116,23 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
-COPY --from=empty-dir /empty /homelab/certs
-COPY --from=empty-dir /empty /homelab/logs
+COPY --from=empty_dir /empty /homelab/certs
+COPY --from=empty_dir /empty /homelab/logs
 COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/.shared/cron-utils/entrypoint.sh /homelab/
 COPY ./docker-images/certbot/crontab.cron ./docker-images/certbot/main.sh ./docker-images/certbot/certbot-hook-after.sh ./docker-images/certbot/certbot-hook-before.sh /homelab/
-COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=supercronic_build /homelab/supercronic/supercronic /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
-COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
-COPY --from=package-curl /usr/bin/curl /fsroot/usr-bin/
-COPY --from=package-curl /homelab/usr-lib/ /fsroot/usr-lib/
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
+COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
+COPY --from=package_curl /usr/bin/curl /fsroot/usr-bin/
+COPY --from=package_curl /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
 

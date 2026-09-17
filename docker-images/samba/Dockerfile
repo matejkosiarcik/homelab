@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba-gitman-pi
 
 ### Samba exporter ###
 
-FROM python:3.14.7-slim AS samba-exporter-gitman
+FROM python:3.14.7-slim AS samba_exporter_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-gitman-aptcache \
@@ -47,7 +47,7 @@ COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=samba-exporter-gitman-gitcache \
     gitman install --quiet
 
-FROM golang:1.27.1-trixie AS samba-exporter-build
+FROM golang:1.27.1-trixie AS samba_exporter_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-build-aptcache \
@@ -56,8 +56,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=samba-exporter-gitman /root/.gitcache /root/.gitcache
-COPY --from=samba-exporter-gitman /homelab/gitman-repositories/samba_exporter/ ./samba_exporter/
+COPY --from=samba_exporter_gitman /root/.gitcache /root/.gitcache
+COPY --from=samba_exporter_gitman /homelab/gitman-repositories/samba_exporter/ ./samba_exporter/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/samba_exporter
 RUN ./build.sh build
@@ -77,12 +77,12 @@ COPY ./docker-images/samba/config/${HOMELAB_SAMBA_CONFIG}.conf /homelab/smb.conf
 ### User setup ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -90,16 +90,16 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY --from=app_config /homelab/smb.conf /homelab/
 COPY ./docker-images/samba/entrypoint.sh /homelab/
-COPY --from=samba-exporter-build /homelab/samba_exporter/bin /homelab/bin
+COPY --from=samba_exporter_build /homelab/samba_exporter/bin /homelab/bin
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 

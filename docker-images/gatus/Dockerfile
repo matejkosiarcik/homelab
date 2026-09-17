@@ -3,10 +3,10 @@
 
 ### App ###
 
-FROM twinproduction/gatus:v5.36.0 AS gatus-app
+FROM twinproduction/gatus:v5.36.0 AS gatus_app
 USER root
 
-FROM debian:13.6-slim AS gatus-setcap
+FROM debian:13.6-slim AS gatus_setcap
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-setcap-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-setcap-aptlibcache \
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-setcap-aptc
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         libcap2-bin >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=gatus-app /gatus /gatus
+COPY --from=gatus_app /gatus /gatus
 RUN setcap 'cap_net_raw+ep' /gatus
 
 ### Dependencies ###
@@ -65,7 +65,7 @@ RUN printf 'apps:\n' >'/homelab/app-entries.yml' && \
     cat '/homelab/extra-entries.yml' '/homelab/app-entries.yml' >'/homelab/all-entries.yml' && \
     yq '.' '/homelab/all-entries.yml' >'/homelab/data.json'
 
-FROM jinja AS config-2
+FROM jinja AS config_2
 USER root
 WORKDIR /homelab
 COPY --from=monitoring_entries /homelab/data.json /homelab/
@@ -74,7 +74,7 @@ RUN jinja2 './config.yml.j2' './data.json' --format json -o './config.yml'
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -84,7 +84,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=gatus-healthcheck-bu
 
 ### Other ###
 
-FROM debian:13.6-slim AS package-ca-certificates
+FROM debian:13.6-slim AS package_ca_certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-package-ca-certificates-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-package-ca-certificates-aptlibcache \
@@ -96,12 +96,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-package-ca-
 ### User setup ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -109,17 +109,17 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
-COPY --from=config-2 /homelab/config.yml /homelab/
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
-COPY --from=gatus-setcap /gatus /homelab/bin/
+COPY --from=config_2 /homelab/config.yml /homelab/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+COPY --from=gatus_setcap /gatus /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
-COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
+COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
 
 ### Final ###
 

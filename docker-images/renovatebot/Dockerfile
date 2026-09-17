@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=renovatebot-git
 
 ### Supercronic ###
 
-FROM python:3.14.7-slim AS supercronic-gitman
+FROM python:3.14.7-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-supercronic-gitman-aptcache \
@@ -64,7 +64,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=renovatebot-sup
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.27.1-trixie AS supercronic-build
+FROM golang:1.27.1-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-supercronic-build-aptcache \
@@ -73,7 +73,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-super
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=supercronic-gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
+COPY --from=supercronic_gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/supercronic
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
@@ -84,7 +84,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:26.8.2-slim AS nodejs-server-build
+FROM node:26.8.2-slim AS nodejs_server_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
@@ -97,7 +97,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=renovatebot-nodejs-se
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
@@ -107,18 +107,18 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=renovatebot-healthch
 
 ### Other ###
 
-FROM debian:13.6-slim AS empty-dir
+FROM debian:13.6-slim AS empty_dir
 USER root
 RUN mkdir /empty
 
 ### Users ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -126,22 +126,22 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
-COPY --from=empty-dir /empty /homelab/logs
+COPY --from=empty_dir /empty /homelab/logs
 COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/.shared/cron-utils/entrypoint.sh /homelab/
 COPY ./docker-images/renovatebot/crontab.cron ./docker-images/renovatebot/main.sh /homelab/
-COPY --from=supercronic-build /homelab/supercronic/supercronic /homelab/bin/
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
-COPY --from=nodejs-server-build /homelab/package.json /homelab/server/
-COPY --from=nodejs-server-build /homelab/node_modules /homelab/server/node_modules
-COPY --from=nodejs-server-build /homelab/dist /homelab/server/dist
+COPY --from=supercronic_build /homelab/supercronic/supercronic /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+COPY --from=nodejs_server_build /homelab/package.json /homelab/server/
+COPY --from=nodejs_server_build /homelab/node_modules /homelab/server/node_modules
+COPY --from=nodejs_server_build /homelab/dist /homelab/server/dist
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
 COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
 
 ### Final ###

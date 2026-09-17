@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=minio-client-gi
 
 ### Other ###
 
-FROM debian:13.6-slim AS package-ca-certificates
+FROM debian:13.6-slim AS package_ca_certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-package-ca-certificates-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=minio-client-package-ca-certificates-aptlibcache \
@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-pack
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.6-slim AS package-curl
+FROM debian:13.6-slim AS package_curl
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certificator-package-curl-aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certificator-package-curl-aptlibcache \
@@ -56,7 +56,7 @@ RUN sh /homelab/busybox-copy.sh
 
 ### App ###
 
-FROM python:3.14.7-slim AS minio-mc-gitman
+FROM python:3.14.7-slim AS minio_mc_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-minio-cli-gitman-aptcache \
@@ -74,7 +74,7 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=minio-client-cl
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.27.1-trixie AS minio-mc-build
+FROM golang:1.27.1-trixie AS minio_mc_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-minio-cli-build-aptcache \
@@ -83,7 +83,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=minio-client-mini
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=minio-mc-gitman /homelab/gitman-repositories/minio-mc/ ./minio-mc/
+COPY --from=minio_mc_gitman /homelab/gitman-repositories/minio-mc/ ./minio-mc/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/minio-mc
 RUN go build -ldflags='-s -w -buildid=' -buildvcs=false && \
@@ -94,7 +94,7 @@ RUN sh validate-executable.sh ./minio-mc/mc
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck-build
+FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
@@ -105,12 +105,12 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=minio-client-healthc
 ### User setup ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user-setup-base
+FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user-setup
+FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-COPY --from=user-setup-base /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -118,19 +118,19 @@ RUN sh /homelab/create-user.sh
 
 ### Prefinal ###
 
-FROM scratch AS homelab-dir
+FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY ./docker-images/minio/client/entrypoint.sh ./docker-images/minio/client/main.sh ./docker-images/minio/client/plain-buckets.txt ./docker-images/minio/client/versioned-buckets.txt /homelab/
-COPY --from=minio-mc-build /homelab/minio-mc/mc /homelab/bin/
-COPY --from=healthcheck-build /homelab/healthcheck /homelab/bin/
+COPY --from=minio_mc_build /homelab/minio-mc/mc /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user-setup /etc/group /etc/passwd /etc/
-COPY --from=user-setup /home/homelab /home/homelab
-COPY --from=homelab-dir /homelab /homelab
-COPY --from=package-curl /usr/bin/curl /fsroot/usr-bin/
-COPY --from=package-curl /homelab/usr-lib/ /fsroot/usr-lib/
-COPY --from=package-ca-certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
+COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /home/homelab /home/homelab
+COPY --from=homelab_dir /homelab /homelab
+COPY --from=package_curl /usr/bin/curl /fsroot/usr-bin/
+COPY --from=package_curl /homelab/usr-lib/ /fsroot/usr-lib/
+COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
 COPY --from=busybox /fsroot/bin /fsroot/bin
 
 ### Final ###
