@@ -7,8 +7,8 @@
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homepage-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homepage_npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homepage_npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -29,7 +29,7 @@ WORKDIR /homelab
 COPY ./docker-images/homepage/app/package-lock.json ./docker-images/homepage/app/package.json ./docker-images/homepage/app/terser.json ./docker-images/homepage/app/tsconfig.json ./docker-images/homepage/app/vite.config.ts /homelab/
 COPY ./docker-images/homepage/app/src/ ./src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage-nodejs-build-npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=homepage_nodejs_build_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production

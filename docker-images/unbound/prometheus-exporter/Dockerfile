@@ -6,8 +6,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-gitconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-prometheus-exporter-gitconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_prometheus_exporter_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_prometheus_exporter_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -24,14 +24,14 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-prometheus-exporter-gitman-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound_prometheus_exporter_gitman_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 FROM python:3.14.7-slim AS unbound_prometheus_exporter_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-gitman-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-prometheus-exporter-gitman-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_prometheus_exporter_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_prometheus_exporter_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -41,7 +41,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/unbound/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometheus-exporter-gitman-gitcache \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound_prometheus_exporter_gitman_gitcache \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
@@ -50,8 +50,8 @@ RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=unbound-prometh
 FROM golang:1.27.1-trixie AS unbound_prometheus_exporter_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-prometheus-exporter-build-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-prometheus-exporter-build-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_prometheus_exporter_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_prometheus_exporter_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
@@ -71,8 +71,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=unbound-prometheus-exporter-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=unbound-prometheus-exporter-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=unbound_prometheus_exporter_healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=unbound_prometheus_exporter_healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Other ###

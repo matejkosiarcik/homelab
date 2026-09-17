@@ -6,8 +6,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-gitconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot-gitconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -20,8 +20,8 @@ RUN printf '' >/root/.gitconfig && \
     FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot_npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot_npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -41,7 +41,7 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=renovatebot-gitman-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=renovatebot_gitman_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Supercronic ###
@@ -49,8 +49,8 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=renovatebot-git
 FROM python:3.14.7-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-supercronic-gitman-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot-supercronic-gitman-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot_supercronic_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot_supercronic_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -60,15 +60,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=renovatebot-supercronic-gitman-gitcache \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=renovatebot_supercronic_gitman_gitcache \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.27.1-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot-supercronic-build-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot-supercronic-build-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=renovatebot_supercronic_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=renovatebot_supercronic_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
@@ -90,7 +90,7 @@ WORKDIR /homelab
 COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
 COPY ./docker-images/.shared/cron-utils/on-demand/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=renovatebot-nodejs-server-build-npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=renovatebot_nodejs_server_build_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
@@ -101,8 +101,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=renovatebot-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=renovatebot-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=renovatebot_healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=renovatebot_healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Other ###

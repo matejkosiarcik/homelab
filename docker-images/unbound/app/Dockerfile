@@ -6,15 +6,15 @@
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-yq-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-dependency-yq-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_dependency_yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_dependency_yq_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-yq-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound_dependency_yq_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -22,15 +22,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-dependency-jinja-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-dependency-jinja-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_dependency_jinja_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_dependency_jinja_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound-dependency-jinja-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=unbound_dependency_jinja_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -72,8 +72,8 @@ RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 FROM debian:13.6-slim AS config_4
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-config-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-config-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_config_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_config_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils >/dev/null && \
@@ -111,8 +111,8 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM debian:13.6-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound-final-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound-final-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=unbound_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=unbound_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         dnsutils libcap2-bin unbound >/dev/null && \

@@ -7,8 +7,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-gitconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-gitconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -25,7 +25,7 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba-gitman-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba_gitman_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Samba exporter ###
@@ -33,8 +33,8 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=samba-gitman-pi
 FROM python:3.14.7-slim AS samba_exporter_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-gitman-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-prometheus-exporter-gitman-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba_prometheus_exporter_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba_prometheus_exporter_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -44,14 +44,14 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/samba/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=samba-exporter-gitman-gitcache \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=samba_exporter_gitman_gitcache \
     gitman install --quiet
 
 FROM golang:1.27.1-trixie AS samba_exporter_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-prometheus-exporter-build-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-prometheus-exporter-build-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba_prometheus_exporter_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba_prometheus_exporter_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file git >/dev/null && \
@@ -105,8 +105,8 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM debian:13.6-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba-final-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba-final-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=samba_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=samba_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         gnutls-bin samba && \

@@ -6,8 +6,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-gitconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-gitconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data_optimizer_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data_optimizer_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -20,8 +20,8 @@ RUN printf '' >/root/.gitconfig && \
 FROM node:26.8.2-slim AS npmconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-npmconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-npmconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data_optimizer_npmconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data_optimizer_npmconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -41,7 +41,7 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=data-optimizer-gitman-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=data_optimizer_gitman_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Supercronic ###
@@ -49,8 +49,8 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=data-optimizer-
 FROM python:3.14.7-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-supercronic-gitman-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-supercronic-gitman-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data_supercronic_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data_supercronic_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -60,15 +60,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=data-optimizer-supercronic-gitman-gitcache \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=data_optimizer_supercronic_gitman_gitcache \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.27.1-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-supercronic-build-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-supercronic-build-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data_optimizer_supercronic_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data_optimizer_supercronic_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
@@ -90,7 +90,7 @@ WORKDIR /homelab
 COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json ./docker-images/data-optimization/tsconfig.json /homelab/
 COPY ./docker-images/data-optimization/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=data-optimizer-nodejs-main-build-npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=data_optimizer_nodejs_main_build_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
@@ -101,7 +101,7 @@ WORKDIR /homelab
 COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
 COPY ./docker-images/.shared/cron-utils/on-demand/src/ /homelab/src/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=data-optimizer-nodejs-server-build-npmcache \
+RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=data_optimizer_nodejs_server_build_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
     npm run build && \
     npm prune --production
@@ -112,8 +112,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=data-optimizer-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=data-optimizer-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=data_optimizer_healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=data_optimizer_healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Other ###
@@ -161,8 +161,8 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM node:26.8.2-slim
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data-optimizer-final-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data-optimizer-final-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=data_optimizer_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=data_optimizer_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ghostscript imagemagick jq libreoffice && \

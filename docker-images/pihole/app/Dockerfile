@@ -7,15 +7,15 @@
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=pihole-dependency-yq-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=pihole-dependency-yq-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=pihole_dependency_yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=pihole_dependency_yq_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus_dependency_yq_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -26,8 +26,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=pihole-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=pihole-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=pihole_healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=pihole_healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### App config ###
@@ -50,8 +50,8 @@ FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=pihole-user-setup-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=pihole-user-setup-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=pihole_user_setup_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=pihole_user_setup_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \

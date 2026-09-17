@@ -16,8 +16,8 @@ FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=omadacontroller-user-setup-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=omadacontroller-user-setup-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=omadacontroller_user_setup_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=omadacontroller_user_setup_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \

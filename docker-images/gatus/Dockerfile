@@ -8,8 +8,8 @@ USER root
 
 FROM debian:13.6-slim AS gatus_setcap
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-setcap-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-setcap-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus_setcap_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus_setcap_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         libcap2-bin >/dev/null && \
@@ -22,15 +22,15 @@ RUN setcap 'cap_net_raw+ep' /gatus
 FROM debian:13.6-slim AS yq
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-yq-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-dependency-yq-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus_dependency_yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus_dependency_yq_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-yq-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus_dependency_yq_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -38,15 +38,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM debian:13.6-slim AS jinja
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-dependency-jinja-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-dependency-jinja-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus_dependency_jinja_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus_dependency_jinja_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus-dependency-jinja-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=gatus_dependency_jinja_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
@@ -78,16 +78,16 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=gatus-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=gatus-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=gatus_healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=gatus_healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### Other ###
 
 FROM debian:13.6-slim AS package_ca_certificates
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus-package-ca-certificates-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus-package-ca-certificates-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=gatus_package_ca_certificates_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=gatus_package_ca_certificates_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates >/dev/null && \

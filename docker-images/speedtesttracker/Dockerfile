@@ -7,8 +7,8 @@
 FROM debian:13.6-slim AS gitconfig
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-gitconfig-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-gitconfig-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot_gitconfig_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
@@ -25,7 +25,7 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
 ENV PIP_ROOT_USER_ACTION="ignore"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot-gitman-pipcache \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot_gitman_pipcache \
     python3 -m pip install --requirement requirements.txt --target python-vendor --quiet --resume-retries 1
 
 ### Supercronic ###
@@ -33,8 +33,8 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=certbot-gitman-
 FROM python:3.14.7-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-gitman-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-supercronic-gitman-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot_supercronic_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot_supercronic_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         git >/dev/null && \
@@ -44,15 +44,15 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot-supercronic-gitman-gitcache \
+RUN --mount=type=cache,target=/root/.cache/git,sharing=locked,id=certbot_supercronic_gitman_gitcache \
     gitman install --quiet && \
     find . -type d -name .git -prune -exec rm -rf {} \;
 
 FROM golang:1.27.1-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot-supercronic-build-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot-supercronic-build-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=certbot_supercronic_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=certbot_supercronic_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         binutils file >/dev/null && \
@@ -77,8 +77,8 @@ FROM golang:1.27.1-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=speedtesttracker-healthcheck-build-gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=speedtesttracker-healthcheck-build-gobuildcache \
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked,id=speedtesttracker_healthcheck_build_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=locked,id=speedtesttracker_healthcheck_build_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o healthcheck .
 
 ### User setup ###
@@ -89,8 +89,8 @@ FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 FROM debian:13.6-slim AS user_setup
 USER root
 WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=speedtesttracker-user-setup-aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=speedtesttracker-user-setup-aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=speedtesttracker_user_setup_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=speedtesttracker_user_setup_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
