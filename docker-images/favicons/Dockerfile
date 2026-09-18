@@ -36,6 +36,38 @@ RUN touch '/root/.npmrc'
 
 ### Dependencies ###
 
+FROM debian:13.6-slim AS yq
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_yq_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        jq python3 python3-pip >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION="ignore"
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
+
+FROM debian:13.6-slim AS jinja
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_jinja_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        jq python3 python3-pip >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
+ENV PIP_ROOT_USER_ACTION="ignore"
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
+    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
+
 FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
@@ -80,6 +112,32 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     chmod a+x ./ImageMagick.AppImage && \
     ./ImageMagick.AppImage --appimage-extract && \
     mv ./AppDir /homelab/imagemagick
+
+### App config ###
+
+FROM yq AS urls_config_1
+USER root
+WORKDIR /homelab
+COPY ./servers/ /homelab/servers/
+COPY ./docker-compose/ /homelab/docker-compose/
+COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/favicons/parse-app-entry.sh /homelab/
+RUN printf 'apps:\n' >'/homelab/app-entries.yml' && \
+    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
+    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
+    yq '.' '/homelab/app-entries.yml' >'/homelab/data.json'
+
+FROM jinja AS urls_config_2
+USER root
+WORKDIR /homelab
+COPY --from=urls_config_1 /homelab/data.json /homelab/
+COPY ./docker-images/favicons/urls.yml.j2 /homelab/
+RUN jinja2 './urls.yml.j2' './data.json' --format json -o './urls.yml'
+
+FROM yq AS urls_config_3
+USER root
+WORKDIR /homelab
+COPY --from=urls_config_2 /homelab/urls.yml /homelab/
+RUN yq '.' '/homelab/urls.yml' >'/homelab/urls.json'
 
 ### App ###
 
@@ -128,6 +186,7 @@ COPY --from=nodejs_build /homelab/dist /homelab/dist
 COPY ./docker-images/favicons/icons /homelab/icons
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=imagemagick_final /homelab/imagemagick /homelab/imagemagick
+COPY --from=urls_config_3 /homelab/urls.json /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/

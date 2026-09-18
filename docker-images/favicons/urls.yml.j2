@@ -1,0 +1,5 @@
+apps:
+{%- for app in apps %}
+  - name: {{ app.full_name_machine }}
+    urls:  {{ app.proxy_urls }}
+{%- endfor %}
