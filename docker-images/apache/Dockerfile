@@ -38,7 +38,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 
 ### Build config ###
 
-FROM node:26.8.2-slim AS npmconfig
+FROM node:26.9.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -96,7 +96,7 @@ RUN sed -e '/# <<INSERT_EXTRA_REVERSE_PROXY>>/{' -e 'r /homelab/apache.conf-extr
 
 ### Error pages ###
 
-FROM node:26.8.2-slim AS errors_build
+FROM node:26.9.0-slim AS errors_build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
