@@ -26,27 +26,20 @@ sql() {
 }
 
 # Wait for database to exist
-db_log='0'
-while [ ! -e '/etc/pihole/gravity.db' ]; do
-    if [ "${db_log}" -eq '0' ]; then
-        db_log='1'
-        printf 'Waiting for database\n'
-    fi
-    sleep 1
-done
-printf 'Database found\n'
+if [ -e '/etc/pihole/gravity.db' ]; then
+    printf 'Database found\n'
+else
+    printf 'Database created\n'
+    pihole -g
+fi
 
 # Wait for database tables to be ready
-db_log='0'
 while true; do
     count="$(sql "SELECT count(*) FROM [sqlite_master] WHERE type='table' AND name='gravity';")"
     if [ "${count}" -gt '0' ]; then
         break
     fi
-    if [ "${db_log}" -eq '0' ]; then
-        db_log='1'
-        printf 'Waiting for database table\n'
-    fi
+    printf 'Waiting for database tables\n'
     sleep 1
 done
 printf 'Main table found\n'
@@ -62,3 +55,6 @@ sql "INSERT INTO [domainlist] (type, domain, enabled, date_added, date_modified,
 
 # Restart DNS
 pihole reloaddns
+
+# Make sure all subdirectories are owned by homelab user
+chown -R homelab:homelab /etc/pihole
