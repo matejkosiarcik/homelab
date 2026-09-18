@@ -1,5 +1,6 @@
 apps:
 {%- for app in apps %}
   - name: {{ app.full_name_machine }}
+    favicons: {{ app.favicons }}
     urls:  {{ app.proxy_urls }}
 {%- endfor %}
