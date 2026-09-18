@@ -8,6 +8,9 @@ apache:
     - path: /
       target: http://app-frontend:3000
 
+favicons:
+  default: /favicon.png
+
 gatus:
   enabled: true
 

@@ -6,6 +6,10 @@ apache:
     - path: /
       target: http://app:6080
 
+favicons:
+  default: /app/images/icons/novnc-ios-180.png
+  # ico: /app/images/icons/novnc.ico
+
 gatus:
   enabled: true
 

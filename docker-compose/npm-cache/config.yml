@@ -6,6 +6,9 @@ apache:
     - path: /
       target: http://app:8080
 
+favicons:
+  default: "@npm-cache.png"
+
 gatus:
   enabled: true
 

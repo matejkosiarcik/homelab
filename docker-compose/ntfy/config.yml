@@ -6,6 +6,10 @@ apache:
     - path: /
       target: http://app:80
 
+favicons:
+  default: /static/images/apple-touch-icon.png
+  # ico: /static/images/favicon.ico
+
 gatus:
   enabled: true
   type: [http, smtp]

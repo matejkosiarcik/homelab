@@ -6,6 +6,10 @@ apache:
     - path: /
       target: http://app:5006
 
+favicons:
+  default: /apple-touch-icon.png
+  # ico: /favicon.ico
+
 gatus:
   enabled: true
 

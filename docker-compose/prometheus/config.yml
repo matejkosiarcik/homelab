@@ -6,6 +6,9 @@ apache:
     - path: /
       target: http://app:9090
 
+favicons:
+  default: /favicon.svg
+
 gatus:
   enabled: true
   authentication:

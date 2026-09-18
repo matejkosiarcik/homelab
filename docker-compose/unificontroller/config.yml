@@ -6,6 +6,10 @@ apache:
     - path: /
       target: https://app:8443
 
+favicons:
+  default: /manage/angular/favicon-192.png
+  # ico: /manage/angular/favicon.ico
+
 gatus:
   enabled: true
   additional_ports:

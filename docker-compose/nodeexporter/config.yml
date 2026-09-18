@@ -6,6 +6,9 @@ apache:
     - path: /
       target: http://app:9100
 
+favicons:
+  default: "@nodeexporter.png"
+
 gatus:
   enabled: true
   authentication:

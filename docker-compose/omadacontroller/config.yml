@@ -10,6 +10,9 @@ apache:
       env: dev
       target: https://app:8443
 
+favicons:
+  default: /favicon.ico
+
 gatus:
   enabled: true
   additional_ports:

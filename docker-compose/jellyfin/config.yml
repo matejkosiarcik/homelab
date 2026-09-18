@@ -6,6 +6,9 @@ apache:
     - path: /
       target: http://app:8096
 
+favicons:
+  default: /web/favicon.ico
+
 gatus:
   enabled: true
   additional_ports:

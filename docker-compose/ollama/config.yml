@@ -6,6 +6,9 @@ apache:
     - path: /
       target: http://app:11434
 
+favicons:
+  default: "@ollama.png"
+
 gatus:
   enabled: true
   authentication:
