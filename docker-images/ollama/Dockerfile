@@ -47,7 +47,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ollama/ollama:0.34.1
+FROM ollama/ollama:0.34.2
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
