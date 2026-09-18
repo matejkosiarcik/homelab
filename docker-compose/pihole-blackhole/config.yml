@@ -8,6 +8,10 @@ apache:
     - path: /
       target: http://app:80
 
+favicons:
+  default: /admin/img/favicons/apple-touch-icon.png
+  # ico: /admin/img/favicons/favicon-32x32.png
+
 gatus:
   enabled: true
   type: [dns, http]
