@@ -8,6 +8,9 @@ apache:
     - path: /stream
       target: http://app:9081
 
+favicons:
+  default: /static/img/motioneye-logo.svg
+
 gatus:
   enabled: true
   endpoints:

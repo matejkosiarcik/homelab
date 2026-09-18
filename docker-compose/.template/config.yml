@@ -8,6 +8,9 @@ apache:
     - path: /
       target: http://example.com:12345
 
+favicons:
+  default: /favicon.svg
+
 gatus:
   enabled: true
   # TODO: Finish template

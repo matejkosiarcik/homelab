@@ -6,6 +6,10 @@ apache:
     - path: /
       target: https://app:443
 
+favicons:
+  default: /img/speedtest-tracker-icon.png
+  # ico: /favicon.ico
+
 gatus:
   enabled: true
   endpoints:

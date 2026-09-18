@@ -6,6 +6,10 @@ apache:
     - path: /
       target: http://app:8123
 
+favicons:
+  default: /static/icons/favicon-192x192.png
+  # ico: /static/icons/favicon.ico
+
 gatus:
   enabled: true
   endpoints:

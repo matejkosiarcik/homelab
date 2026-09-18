@@ -6,6 +6,9 @@ apache:
     - path: /
       target: http://file-server:8080
 
+favicons:
+  default: "@certbot.png"
+
 gatus:
   enabled: true
   authentication:

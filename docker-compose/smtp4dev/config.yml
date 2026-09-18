@@ -6,6 +6,10 @@ apache:
     - path: /
       target: http://app:5000
 
+favicons:
+  default: /favicon.png
+  # ico: /favicon.ico
+
 gatus:
   enabled: true
   type: [http, smtp]

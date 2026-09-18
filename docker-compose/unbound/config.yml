@@ -8,6 +8,9 @@ apache:
     - path: /
       target: http://file-server:8080
 
+favicons:
+  default: "@unbound.png"
+
 gatus:
   enabled: true
   authentication:

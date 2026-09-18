@@ -12,6 +12,10 @@ apache:
     - path: /
       target: http://app:3000
 
+favicons:
+  default: /assets/favicon/apple-touch-icon.png
+  # ico: /assets/favicon/favicon.ico
+
 gatus:
   enabled: true
   endpoints:

@@ -1,0 +1,6 @@
+apps:
+{%- for app in apps %}
+  - name: {{ app.app_type }}
+    favicons: {{ app.favicons }}
+    urls:  {{ app.proxy_urls }}
+{%- endfor %}

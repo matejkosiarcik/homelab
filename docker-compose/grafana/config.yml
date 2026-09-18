@@ -6,6 +6,10 @@ apache:
     - path: /
       target: http://app:3000
 
+favicons:
+  default: /public/img/grafana_icon.svg
+  # ico: /public/img/fav32.png
+
 gatus:
   enabled: true
 

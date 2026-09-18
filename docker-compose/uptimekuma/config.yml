@@ -6,6 +6,10 @@ apache:
     - path: /
       target: http://app:3001
 
+favicons:
+  default: /icon.svg
+  # ico: /favicon.ico
+
 gatus:
   enabled: true
   endpoints:
