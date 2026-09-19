@@ -4,7 +4,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.6-slim AS yq
+FROM debian:13.7-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -47,7 +47,7 @@ RUN find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user_setup
+FROM debian:13.7-slim AS user_setup
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_pihole_user_setup_aptcache \

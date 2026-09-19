@@ -4,7 +4,7 @@
 
 ### Build config ###
 
-FROM debian:13.6-slim AS gitconfig
+FROM debian:13.7-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
@@ -89,7 +89,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user_setup
+FROM debian:13.7-slim AS user_setup
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_speedtesttracker_user_setup_aptcache \

@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.6-slim AS gitconfig
+FROM debian:13.7-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 
 ### Other ###
 
-FROM debian:13.6-slim AS package_ca_certificates
+FROM debian:13.7-slim AS package_ca_certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_ca_certificates_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_ca_certificates_aptlibcache \
@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.6-slim AS package_curl
+FROM debian:13.7-slim AS package_curl
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_curl_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_curl_aptlibcache \
@@ -110,7 +110,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user_setup
+FROM debian:13.7-slim AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/

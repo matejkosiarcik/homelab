@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM debian:13.6-slim AS gitconfig
+FROM debian:13.7-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
@@ -36,7 +36,7 @@ RUN touch '/root/.npmrc'
 
 ### Dependencies ###
 
-FROM debian:13.6-slim AS yq
+FROM debian:13.7-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -52,7 +52,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
-FROM debian:13.6-slim AS jinja
+FROM debian:13.7-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
@@ -94,7 +94,7 @@ COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     retry --times=3 -- gitman install --quiet
 
-FROM debian:13.6-slim AS imagemagick_final
+FROM debian:13.7-slim AS imagemagick_final
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_imagemagick_final_aptcache \
@@ -167,7 +167,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user_setup
+FROM debian:13.7-slim AS user_setup
 USER root
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
