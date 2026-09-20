@@ -82,7 +82,7 @@ COPY --chmod=0777 ./docker-images/pihole/app/setcap.sh /usr/sbin/setcap
 
 ### Final ###
 
-FROM pihole/pihole:2026.07.2
+FROM pihole/pihole:2026.09.0
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN chown -R homelab:homelab /macvendor.db /etc/.pihole /etc/pihole /usr/local/bin/pihole /usr/bin/pihole-FTL && \
