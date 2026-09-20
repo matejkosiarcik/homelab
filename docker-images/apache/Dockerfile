@@ -4,7 +4,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.6-slim AS yq
+FROM debian:13.7-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
-FROM debian:13.6-slim AS jinja
+FROM debian:13.7-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
@@ -71,7 +71,7 @@ COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/htaccess/.htaccess-extra.j2 /homelab/
 RUN jinja2 ./.htaccess-extra.j2 ./data.json --format json -o ./.htaccess-extra
 
-FROM debian:13.6-slim AS htaccess_config_3
+FROM debian:13.7-slim AS htaccess_config_3
 USER root
 WORKDIR /homelab
 COPY --from=htaccess_config_2 /homelab/.htaccess-extra /homelab/
@@ -86,7 +86,7 @@ COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/apache.conf-extra.j2 /homelab/
 RUN jinja2 ./apache.conf-extra.j2 ./data.json --format json -o ./apache.conf-extra
 
-FROM debian:13.6-slim AS apache_config_3
+FROM debian:13.7-slim AS apache_config_3
 USER root
 WORKDIR /homelab
 COPY --from=apache_config_2 /homelab/apache.conf-extra /homelab/
@@ -120,7 +120,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM debian:13.6-slim AS empty_dir
+FROM debian:13.7-slim AS empty_dir
 USER root
 RUN mkdir /empty && \
     touch /empty.txt
@@ -130,7 +130,7 @@ RUN mkdir /empty && \
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user_setup
+FROM debian:13.7-slim AS user_setup
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_user_setup_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_apache_user_setup_aptlibcache \
@@ -168,7 +168,7 @@ COPY --from=apache_config_3 /homelab/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
-FROM debian:13.6-slim
+FROM debian:13.7-slim
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_apache_final_aptlibcache \

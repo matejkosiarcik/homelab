@@ -8,7 +8,7 @@ USER root
 
 ### Other ###
 
-FROM debian:13.6-slim AS package_ca_certificates
+FROM debian:13.7-slim AS package_ca_certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_ca_certificates_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_ca_certificates_aptlibcache \
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.6-slim AS empty_dir
+FROM debian:13.7-slim AS empty_dir
 USER root
 RUN mkdir /empty
 
@@ -26,7 +26,7 @@ RUN mkdir /empty
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user_setup
+FROM debian:13.7-slim AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/

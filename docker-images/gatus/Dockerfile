@@ -6,7 +6,7 @@
 FROM twinproduction/gatus:v5.36.0 AS gatus_app
 USER root
 
-FROM debian:13.6-slim AS gatus_setcap
+FROM debian:13.7-slim AS gatus_setcap
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gatus_setcap_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gatus_setcap_aptlibcache \
@@ -19,7 +19,7 @@ RUN setcap 'cap_net_raw+ep' /gatus
 
 ### Dependencies ###
 
-FROM debian:13.6-slim AS yq
+FROM debian:13.7-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -35,7 +35,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
-FROM debian:13.6-slim AS jinja
+FROM debian:13.7-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
@@ -84,7 +84,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM debian:13.6-slim AS package_ca_certificates
+FROM debian:13.7-slim AS package_ca_certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_ca_certificates_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_ca_certificates_aptlibcache \
@@ -98,7 +98,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
 
-FROM debian:13.6-slim AS user_setup
+FROM debian:13.7-slim AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
