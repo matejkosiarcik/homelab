@@ -31,7 +31,7 @@ const appType = (() => {
     return process.env['HOMELAB_APP_TYPE'];
 })();
 
-// TODO: Reenable URLs config
+// TODO: Re-enable URLs config
 
 // type UrlsConfig = {
 //     apps: {
