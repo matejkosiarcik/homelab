@@ -17,7 +17,7 @@ import { Client as PostgresClient, Query } from 'pg';
 import { createClient } from 'redis';
 
 if (fs.existsSync('.env')) {
-    dotenv.config();
+    dotenv.config({ fast: true });
 }
 
 const config = {

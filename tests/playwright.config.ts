@@ -11,10 +11,10 @@ events.EventEmitter.defaultMaxListeners = 100;
 
 // Load env files
 if (fs.existsSync('.secrets.env')) {
-    dotenv.config({ path: '.secrets.env', quiet: true });
+    dotenv.config({ path: '.secrets.env', quiet: true, fast: true });
 }
 if (fs.existsSync('.env')) {
-    dotenv.config({ path: '.env', quiet: true });
+    dotenv.config({ path: '.env', quiet: true, fast: true });
 }
 
 // Test reporters
