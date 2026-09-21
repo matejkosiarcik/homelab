@@ -25,12 +25,12 @@ sql() {
     done
 }
 
-# Wait for database to exist
+# Detect or create database
 if [ -e '/etc/pihole/gravity.db' ]; then
     printf 'Database found\n'
 else
     printf 'Database created\n'
-    pihole -g
+    pihole updateGravity
 fi
 
 # Wait for database tables to be ready

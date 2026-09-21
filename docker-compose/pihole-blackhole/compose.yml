@@ -10,11 +10,12 @@ services:
       dockerfile: ./docker-images/pihole/app/Dockerfile
       args:
         SETUP_SCRIPT: blackhole
-    cap_add:
-      - SYS_NICE
-    dns: # Use internal DNS
-      - 10.1.12.6
-      - 10.1.10.6
+    dns: # TODO: Revert back to use internal DNS
+      # - 10.1.12.6
+      # - 10.1.10.6
+      - 1.1.1.1
+      - 8.8.8.8
+      - 9.9.9.9
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header
@@ -26,6 +27,7 @@ services:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/pihole:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/spool:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/spool/cron/crontabs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole/data:/etc/pihole:rw
 
