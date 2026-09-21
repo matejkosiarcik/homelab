@@ -240,7 +240,7 @@
         if ! command -v log2ram >/dev/null 2>&1; then
           echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" \
             | sudo tee /etc/apt/sources.list.d/azlux.list >/dev/null
-          sudo curl https://azlux.fr/repo.gpg -o /usr/share/keyrings/azlux-archive-keyring.gpg
+          sudo curl --retry 3 --retry-connrefused --retry-max-time 60 https://azlux.fr/repo.gpg --output /usr/share/keyrings/azlux-archive-keyring.gpg
           sudo apt-get update
           sudo apt-get install --yes log2ram
           # Modify settings (disable email)
@@ -281,7 +281,7 @@
           rm -f nodesource_setup.sh
         fi
 
-        curl -fsSL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
+        curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 https://deb.nodesource.com/setup_lts.x --output nodesource_setup.sh
         sudo -E bash nodesource_setup.sh
         rm -f nodesource_setup.sh
         sudo apt-get install -y nodejs
@@ -376,7 +376,7 @@
 
         if ! command -v docker >/dev/null 2>&1; then
           sudo install -m 0755 -d /etc/apt/keyrings
-          sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+          sudo curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 https://download.docker.com/linux/debian/gpg --output /etc/apt/keyrings/docker.asc
           sudo chmod a+r /etc/apt/keyrings/docker.asc
           echo "deb [arch=$(dpkg --print-architecture) \
             signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \

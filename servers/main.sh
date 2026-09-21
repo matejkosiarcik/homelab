@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
-set -eufo pipefail
-# The reason to use `bash` instead of plain `sh` is that we require pipefail
+#!/bin/sh
+set -euf
 
 if [ "${#}" -lt 1 ]; then
     printf 'Not enough arguments.\n' >&2
