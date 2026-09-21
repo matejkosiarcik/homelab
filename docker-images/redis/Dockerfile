@@ -30,7 +30,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM redis:8.10.1
+FROM redis:8.10.2
 USER root
 # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_redis_final_aptcache \
 #     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_redis_final_aptlibcache \
