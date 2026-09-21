@@ -1,4 +1,4 @@
-# shellcheck disable=SC2148
+# shellcheck shell=sh
 
 # Copy files to real "default"
 mkdir -p /defaults
