@@ -137,5 +137,9 @@ pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
 # Restart DNS
 pihole reloaddns
 
+# FTL starts as an unprivileged user, so apply the FTLCONF_* variables while this
+# setup script is running as root. This also persists the API password hash.
+pihole-FTL --config dns.blocking.active true
+
 # Make sure all subdirectories are owned by homelab user
 chown -R homelab:homelab /etc/pihole
