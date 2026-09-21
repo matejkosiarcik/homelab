@@ -10,7 +10,7 @@ if [ -e "${certificate_file}" ]; then
     if [ "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.${domain}" ]; then
         printf 'Renewing certificate (wrong domain)\n' >&2
         create_certificate='1'
-    elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in "${certificate_file}" >/dev/null; then
+    elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in "${certificate_file}" >'/dev/null'; then
         # Certificate is valid for 1.5 months
         printf 'Renewing certificate (renew period)\n' >&2
         create_certificate='1'
@@ -33,7 +33,7 @@ if [ -e "${certificate_archive_file}" ]; then
     if [ "$(openssl x509 -noout -subject -in "${tmp_certificate_file}" | sed -E 's~^subject\s*=\s*CN\s*=\s*~~')" != "*.${domain}" ]; then
         printf 'Renewing certificate archive (wrong domain)\n' >&2
         certificate_valid='0'
-    elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in "${tmp_certificate_file}" >/dev/null; then
+    elif ! openssl x509 -checkend "$((60 * 60 * 24 * 45))" -noout -in "${tmp_certificate_file}" >'/dev/null'; then
         # Certificate is valid for 1.5 months
         printf 'Renewing certificate archive (renew period)\n' >&2
         certificate_valid='0'
@@ -41,9 +41,9 @@ if [ -e "${certificate_archive_file}" ]; then
 
     if [ "${certificate_valid}" = '1' ]; then
         printf 'Existing certificate archive is valid\n' >&2
-        mkdir -p /homelab/certs
-        find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
-        tar -xJf "${certificate_archive_file}" -C /homelab/certs --strip-components=1
+        mkdir -p '/homelab/certs'
+        find '/homelab/certs' -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+        tar -xJf "${certificate_archive_file}" -C '/homelab/certs' --strip-components=1
         rm -rf "${tmpdir}"
         exit 0
     fi
@@ -66,7 +66,7 @@ websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "${date}
 curl -s --fail -X GET \
     -u "${WEBSUPPORT_API_KEY}:${websupport_request_signature}" \
     -H "Date: $(date -u -d "${date}" +'%a, %d %b %Y %H:%M:%S GMT')" \
-    'https://rest.websupport.sk/v2/check' >/dev/null
+    'https://rest.websupport.sk/v2/check' >'/dev/null'
 
 printf 'Loading leftover DNS records\n' >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
@@ -107,8 +107,8 @@ certbot certonly --manual --non-interactive --agree-tos \
     --preferred-challenges dns \
     --domain "*.${domain}" \
     --email "${CERTBOT_PUBLIC_EMAIL}" \
-    --manual-auth-hook 'sh certbot-hook-before.sh >>/homelab/logs/certbot-hooks.log 2>&1' \
-    --manual-cleanup-hook 'sh certbot-hook-after.sh >>/homelab/logs/certbot-hooks.log 2>&1' \
+    --manual-auth-hook "sh './certbot-hook-before.sh' >>'/homelab/logs/certbot-hooks.log' 2>&1" \
+    --manual-cleanup-hook "sh './certbot-hook-after.sh' >>'/homelab/logs/certbot-hooks.log' 2>&1" \
     ${test_cert_mode} || printf '%s\n' "$?" >"${statusfile}"
 
 if [ "$(cat "${statusfile}")" != '0' ]; then
@@ -116,14 +116,14 @@ if [ "$(cat "${statusfile}")" != '0' ]; then
     exit "$(cat "${statusfile}")"
 else
     printf "Archiving certificate\n" >&2
-    tar -chJf /etc/letsencrypt/live/certificate.tar.xz -C /etc/letsencrypt/live --transform="s~^${domain}~certificate~" "${domain}"
+    tar -chJf '/etc/letsencrypt/live/certificate.tar.xz' -C '/etc/letsencrypt/live' --transform="s~^${domain}~certificate~" "${domain}"
     if [ -e "${certificate_archive_file}" ]; then
         rm -rf "${certificate_archive_file}"
     fi
     mv '/etc/letsencrypt/live/certificate.tar.xz' "${certificate_archive_file}"
-    mkdir -p /homelab/certs
-    find /homelab/certs -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
-    tar -xJf "${certificate_archive_file}" -C /homelab/certs --strip-components=1
+    mkdir -p '/homelab/certs'
+    find '/homelab/certs' -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+    tar -xJf "${certificate_archive_file}" -C '/homelab/certs' --strip-components=1
 fi
 
 ## Cleanup TXT records ##

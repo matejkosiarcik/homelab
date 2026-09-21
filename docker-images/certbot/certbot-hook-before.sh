@@ -12,7 +12,7 @@ websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "${date}
 curl -s --fail -X GET \
     -u "${WEBSUPPORT_API_KEY}:${websupport_request_signature}" \
     -H "Date: $(date -u -d "${date}" +'%a, %d %b %Y %H:%M:%S GMT')" \
-    'https://rest.websupport.sk/v2/check' >/dev/null
+    'https://rest.websupport.sk/v2/check' >'/dev/null'
 
 # This is for 4th degree subdomains "_acme-challenge.$(printf '%s' "${CERTBOT_DOMAIN}" | sed -E 's~\..+$~~')"
 printf 'Adding new DNS record\n' >&2

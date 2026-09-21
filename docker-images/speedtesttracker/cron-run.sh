@@ -6,9 +6,9 @@
 # shellcheck disable=SC2093
 exec \
     s6-setuidgid abc \
-    env HOME=/home/homelab USER=abc LOGNAME=abc SHELL=/bin/sh \
-    /homelab/bin/supercronic \
+    env HOME='/home/homelab' USER=abc LOGNAME=abc SHELL='/bin/sh' \
+    '/homelab/bin/supercronic' \
     -split-logs \
-    /homelab/crontabs/abc
+    '/homelab/crontabs/abc'
 
 sleep infinity

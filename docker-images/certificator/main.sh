@@ -15,7 +15,7 @@ if [ -e "${certificate_file}" ]; then
     if [ "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^.*CN\s*=\s*([a-zA-Z0-9*.]+).*$~\1~')" != "${subject_domain}" ]; then
         printf 'Loading certificate (previous certificate has wrong domain)\n' >&2
         load_certificate='1'
-    elif ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in "${certificate_file}" >/dev/null; then
+    elif ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in "${certificate_file}" >'/dev/null'; then
         printf 'Loading certificate (previous certificate is about to expire)\n' >&2
         load_certificate='1'
     elif [ "${HOMELAB_ENV}" = 'prod' ] && [ "$(openssl x509 -noout -issuer -in "${certificate_file}" | sed -E 's~^issuer=~~')" = "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^subject=~~')" ]; then
@@ -73,7 +73,7 @@ get_prod_certificate() {
 check_certbot_availability() {
     printf 'Checking certbot availability\n' >&2
     timeout 45s sh <<EOF
-    while ! curl --fail --silent --show-error --output /dev/null --user "homelab-viewer:${CERTBOT_HOMELAB_VIEWER_PASSWORD}" 'https://certbot.matejhome.com/download/certificate.tar.xz'; do
+    while ! curl --fail --silent --show-error --output '/dev/null' --user "homelab-viewer:${CERTBOT_HOMELAB_VIEWER_PASSWORD}" 'https://certbot.matejhome.com/download/certificate.tar.xz'; do
         sleep 5
     done
 EOF

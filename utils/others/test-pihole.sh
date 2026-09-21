@@ -4,7 +4,7 @@ set -euf
 i=1
 tail -n +2 <"${HOME}/Downloads/majestic_million.csv" | while read -r entry; do
     domain="$(printf '%s' "${entry}" | cut -d, -f3)"
-    if printf '%s' "${domain}" | grep -E -e '\.cn$' -e 'wixsite\.com$' -e 'cloudfront\.net$' -e 'blogspot\.com$' -e 'gouv\.fr$' >/dev/null 2>&1; then
+    if printf '%s' "${domain}" | grep -E -e '\.cn$' -e 'wixsite\.com$' -e 'cloudfront\.net$' -e 'blogspot\.com$' -e 'gouv\.fr$' >'/dev/null' 2>&1; then
         continue
     fi
 

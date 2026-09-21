@@ -99,7 +99,7 @@ load_secret() {
         return
     fi
 
-    if [ "${mode}" = 'dev' ] && printf '%s' "${2}" | grep -E '^dev=value=.+$' >/dev/null 2>&1; then
+    if [ "${mode}" = 'dev' ] && printf '%s' "${2}" | grep -E '^dev=value=.+$' >'/dev/null' 2>&1; then
         fallback_secret="$(printf '%s' "${2}" | sed -E 's~^dev=value=~~')"
         printf '%s\n' "${fallback_secret}"
         return
@@ -1266,7 +1266,7 @@ openspeedtest)
 
 openwebui)
     suffix=''
-    if printf '%s' "${app_full_name_key}" | grep -E '[_-]private$' >/dev/null 2>&1; then
+    if printf '%s' "${app_full_name_key}" | grep -E '[_-]private$' >'/dev/null' 2>&1; then
         suffix='_private'
     fi
 

@@ -25,7 +25,7 @@ done
 
 if [ "${1-}" = '-c' ] && [ "${#}" -ge 2 ]; then
     shift
-    exec /bin/sh -c "${@}"
+    exec '/bin/sh' -c "${@}"
 fi
 
 exit 0
