@@ -5,7 +5,7 @@
 ## Docs
 
 - Samba setup tutorial: `https://wiki.samba.org/index.php/Setting_up_Samba_as_a_Standalone_Server` (error 500)
-- `smb.conf` manpage: <https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html>
+- `smb.conf` manpage: `https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html` (unavailable server)
 
 Prometheus exporter:
 
