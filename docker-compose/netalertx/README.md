@@ -5,7 +5,7 @@
 ## Docs
 
 - Docs: <https://github.com/jokob-sk/NetAlertX/tree/main/docs>
-    - Docker install guide: <https://github.com/jokob-sk/NetAlertX/blob/main/dockerfiles/README.md>
+    - Docker install guide: <https://docs.netalertx.com/DOCKER_INSTALLATION>
 - GitHub: <https://github.com/jokob-sk/NetAlertX>
 - DockerHub: <https://registry.hub.docker.com/r/jokobsk/netalertx>
 

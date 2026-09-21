@@ -3,6 +3,14 @@
   "overrides": [
     {
       "files": [
+        "*.{js,ts}"
+      ],
+      "options": {
+        "printWidth": 180
+      }
+    },
+    {
+      "files": [
         "*.{yml,yaml}"
       ],
       "options": {
@@ -13,6 +21,12 @@
       "files": "*.{htm,html,xhtml}",
       "options": {
         "printWidth": 150
+      }
+    },
+    {
+      "files": "*.{md,mdown,markdown}",
+      "options": {
+        "tabWidth": 4
       }
     }
   ]
