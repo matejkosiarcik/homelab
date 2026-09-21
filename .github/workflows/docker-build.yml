@@ -32,7 +32,7 @@ jobs:
           tmpfile="$(mktemp)"
           trap 'rm -f "$tmpfile"' EXIT HUP INT TERM
 
-          find . -type d -path './servers/*/docker-apps/*' -mindepth 4 -maxdepth 4 | while read -r path; do
+          find '.' -type d -path './servers/*/docker-apps/*' -mindepth 4 -maxdepth 4 | while read -r path; do
             if basename "$path" | grep -qE '^\.' >/dev/null 2>&1; then
               continue
             fi
