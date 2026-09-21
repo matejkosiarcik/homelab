@@ -95,6 +95,10 @@ rm -f .secrets.env
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.docker_stats_raspberry_pi_4b_4g.apache.status_user')"
     printf 'DOCKER_STATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.docker_stats_raspberry_pi_4b_4g.apache.prometheus_user')"
 
+    printf 'DONETICK__MATEJ_PASSWORD=%s\n' "$(load_secret '.donetick.app.matej_user')"
+    printf 'DONETICK__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.donetick.apache.status_user')"
+    printf 'DONETICK__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.donetick.apache.prometheus_user')"
+
     printf 'DOZZLE__MATEJ_PASSWORD=%s\n' "$(load_secret '.dozzle.app.matej_user')"
     printf 'DOZZLE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.dozzle.app.homelab_test_user')"
     printf 'DOZZLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dozzle.apache.status_user')"
@@ -293,6 +297,10 @@ rm -f .secrets.env
     printf 'PIHOLE_BLACKHOLE_2__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_2.apache.status_user')"
     printf 'PIHOLE_BLACKHOLE_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_2.apache.prometheus_user')"
 
+    printf 'PLANKA__MATEJ_PASSWORD=%s\n' "$(load_secret '.planka.app.matej_user')"
+    printf 'PLANKA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.planka.apache.status_user')"
+    printf 'PLANKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.planka.apache.prometheus_user')"
+
     printf 'PROMETHEUS__MATEJ_PASSWORD=%s\n' "$(load_secret '.prometheus.app.matej_user')"
     printf 'PROMETHEUS__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.prometheus.app.homelab_viewer_user')"
     printf 'PROMETHEUS__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.prometheus.app.homelab_test_user')"
@@ -305,6 +313,11 @@ rm -f .secrets.env
     printf 'RENOVATEBOT__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.renovatebot.app.homelab_test_user')"
     printf 'RENOVATEBOT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.apache.status_user')"
     printf 'RENOVATEBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.apache.prometheus_user')"
+
+    printf 'REPORTPORTAL__MATEJ_PASSWORD=%s\n' "$(load_secret '.reportportal.app.matej_user')"
+    printf 'REPORTPORTAL__ADMIN_PASSWORD=%s\n' "$(load_secret '.reportportal.app.admin_user')"
+    printf 'REPORTPORTAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.reportportal.apache.status_user')"
+    printf 'REPORTPORTAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.reportportal.apache.prometheus_user')"
 
     printf 'SAMBA_DATA__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.samba_data.app.prometheus_user')"
     printf 'SAMBA_DATA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.samba_data.apache.status_user')"
