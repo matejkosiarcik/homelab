@@ -97,6 +97,7 @@ ARG UID=1000
 ENV DHCP_ACTIVE="false" \
     DNSMASQ_USER="homelab" \
     FTLCONF_dns_blockTTL="600" \
+    FTLCONF_dns_domain_local="true" \
     FTLCONF_dns_domain_name="matejhome.com" \
     FTLCONF_dns_domainNeeded="true" \
     FTLCONF_dns_ignoreLocalhost="false" \
