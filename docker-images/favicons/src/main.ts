@@ -23,6 +23,7 @@ const envMode = (() => {
     }
     return process.env['HOMELAB_ENV'] as EnvMode;
 })();
+
 const appType = (() => {
     if (!process.env['HOMELAB_APP_TYPE']) {
         console.error('HOMELAB_APP_TYPE is unset');
@@ -341,7 +342,7 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
     });
 
     if (axiosResponse.status === 0) {
-        throw new Error('Upstream error, no response.');
+        throw new Error(`Upstream unavailable: ${axiosResponse}`);
     }
     if (axiosResponse.status !== 200) {
         throw new Error(`Upstream error ${axiosResponse.status}.`);
