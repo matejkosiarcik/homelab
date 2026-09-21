@@ -14,7 +14,16 @@ if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
 
-const envMode = `${process.env['HOMELAB_ENV']}` as 'dev' | 'prod';
+type EnvMode = 'dev' | 'prod';
+
+const envMode = (() => {
+    if (!process.env['HOMELAB_ENV']) {
+        console.error('HOMELAB_ENV is unset');
+        process.exit(1);
+    }
+    return process.env['HOMELAB_ENV'] as EnvMode;
+})();
+
 const appType = (() => {
     if (!process.env['HOMELAB_APP_TYPE']) {
         console.error('HOMELAB_APP_TYPE is unset');
@@ -22,6 +31,26 @@ const appType = (() => {
     }
     return process.env['HOMELAB_APP_TYPE'];
 })();
+
+// TODO: Re-enable URLs config
+
+// type UrlsConfig = {
+//     apps: {
+//         name: string,
+//         favicons: {
+//             default?: string;
+//         },
+//         urls: {
+//             env?: 'dev' | 'prod',
+//             path: string,
+//             target: string,
+//         }[],
+//     }[],
+// }
+
+// const urlsConfig = JSON.parse(fs.readFileSync('urls.json', 'utf8')) as UrlsConfig;
+
+const fileCache: Record<string, Buffer> = {};
 
 const appAddress = (() => {
     switch (appType) {
@@ -127,8 +156,6 @@ function getFaviconPath(): string {
         default: throw new Error(`Unknown app type: ${appType}`);
     }
 }
-
-const fileCache: Record<string, Buffer> = {};
 
 /**
  * Extract largest Image component from an ICO image
@@ -315,7 +342,7 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
     });
 
     if (axiosResponse.status === 0) {
-        throw new Error('Upstream error, no response.');
+        throw new Error(`Upstream unavailable: ${axiosResponse}`);
     }
     if (axiosResponse.status !== 200) {
         throw new Error(`Upstream error ${axiosResponse.status}.`);
