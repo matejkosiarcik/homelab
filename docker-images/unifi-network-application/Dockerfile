@@ -59,7 +59,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 FROM linuxserver/unifi-network-application:10.6.106
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
-RUN find . \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
+RUN find '.' \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
     if [ ! -e './webapps/ROOT/app-unifi/angular/favicon.ico' ]; then \
         printf 'File "favicon.ico" not found\n' >&2 && \
         exit 1 && \

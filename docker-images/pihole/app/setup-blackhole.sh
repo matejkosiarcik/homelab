@@ -7,7 +7,7 @@ sql() {
     while [ "${i}" -le '3' ]; do
         i="$((i + 1))"
         status='0'
-        pihole-FTL sqlite3 /etc/pihole/gravity.db "${command}" || {
+        pihole-FTL sqlite3 '/etc/pihole/gravity.db' "${command}" || {
             status="$?"
             # Guard against "Error: stepping, database is locked (5)"
             if [ "${status}" = '5' ]; then
@@ -61,4 +61,4 @@ pihole reloaddns
 pihole-FTL --config dns.blocking.active true
 
 # Make sure all subdirectories are owned by homelab user
-chown -R homelab:homelab /etc/pihole
+chown -R homelab:homelab '/etc/pihole'

@@ -30,7 +30,7 @@ load_secret() {
     printf '%s\n' "${secret}"
 }
 
-rm -f .secrets.env
+rm -f './.secrets.env'
 
 {
     set -euf

@@ -34,7 +34,7 @@ fi
 # Lock lockfile for to run exclusively
 locked="$(
     set +e
-    mkdir /tmp/cron.lockdir
+    mkdir '/tmp/cron.lockdir'
     printf '%s' "$?"
     set -e
 )"
@@ -42,11 +42,11 @@ if [ "${locked}" -ne 0 ]; then
     printf '%s Another instance of the script is already running. Exiting.\n' "$(date +'%Y-%m-%dT%H:%M:%S.%3N')" | tee -a "${logfile}" >&2
     exit 1
 fi
-trap 'rm -rf /tmp/cron.lockdir' EXIT
+trap "rm -rf '/tmp/cron.lockdir'" EXIT
 
 # Run actual job
 cron_job_timeout="${HOMELAB_CRON_TIMEOUT-10m}"
-(timeout "${cron_job_timeout}" sh /homelab/main.sh 2>&1 || printf '%s\n' "$?" >"${statusfile}") | tee -a "${logfile}" >&2
+(timeout "${cron_job_timeout}" sh '/homelab/main.sh' 2>&1 || printf '%s\n' "$?" >"${statusfile}") | tee -a "${logfile}" >&2
 
 # Send end-signal to healthchecks
 status="$(cat "${statusfile}")"

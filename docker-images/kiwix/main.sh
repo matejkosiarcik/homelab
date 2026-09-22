@@ -23,7 +23,7 @@ find '/data' -mindepth 1 -maxdepth 1 -type f -name '*.zim' | sort >"${zim_files_
 while read -r file; do
     # NOTE: This is the source of the script being slow, the zimcheck call
     # It could be optimized with caching the results for each file (if it is valid) and when it doesn't change (same modified date, same filesize), then we wouldn't have to call it and automatically consider the file valid
-    if [ "${is_initial_run}" -eq '1' ] || zimcheck --checksum "${file}" >/dev/null 2>&1; then
+    if [ "${is_initial_run}" -eq '1' ] || zimcheck --checksum "${file}" >'/dev/null' 2>&1; then
         printf '%s\n' "${file}" >>"${zim_files_list_new_valid_file}"
     fi
 done <"${zim_files_list_new_all_file}"

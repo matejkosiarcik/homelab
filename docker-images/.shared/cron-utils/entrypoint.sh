@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-printf 'starting\n' >/homelab/tmpfs/status.txt
+printf 'starting\n' >'/homelab/tmpfs/status.txt'
 
 # Setup Environment variables
 CRON='0'
@@ -9,12 +9,12 @@ export CRON
 
 # Run script initially
 if [ "${HOMELAB_CRON_SKIP_INITIAL-}" != '1' ]; then
-    sh /homelab/cron-wrapper.sh
+    sh '/homelab/cron-wrapper.sh'
 fi
 
 # Run cron indefinitely
 CRON=1
-printf 'started\n' >/homelab/tmpfs/status.txt
+printf 'started\n' >'/homelab/tmpfs/status.txt'
 
 # Determine cronfile
 cronfile=''
@@ -34,7 +34,7 @@ trap 'exit 0' TERM
 
 # Start HTTP server
 if [ -e '/homelab/server/dist/main.js' ]; then
-    node /homelab/server/dist/main.js &
+    node '/homelab/server/dist/main.js' &
     node_pid="$!"
 fi
 

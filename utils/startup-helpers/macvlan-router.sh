@@ -12,8 +12,8 @@ external_ip="${2}"
 internal_docker_ip="${3}"
 
 # Get appropriate network interface
-has_eth0="$(ip link show eth0 >/dev/null 2>/dev/null || printf '0\n')"
-has_enp1s0="$(ip link show enp1s0 >/dev/null 2>/dev/null || printf '0\n')"
+has_eth0="$(ip link show eth0 >'/dev/null' 2>'/dev/null' || printf '0\n')"
+has_enp1s0="$(ip link show enp1s0 >'/dev/null' 2>'/dev/null' || printf '0\n')"
 found_interface=''
 if [ "${has_eth0}" = '' ]; then
     found_interface='eth0'

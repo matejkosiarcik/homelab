@@ -7,7 +7,7 @@ sql() {
     while [ "${i}" -le '3' ]; do
         i="$((i + 1))"
         status='0'
-        pihole-FTL sqlite3 /etc/pihole/gravity.db "${command}" || {
+        pihole-FTL sqlite3 '/etc/pihole/gravity.db' "${command}" || {
             status="$?"
             # Guard against "Error: stepping, database is locked (5)"
             if [ "${status}" = '5' ]; then
@@ -129,9 +129,9 @@ sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_2_id}';"
 
 # Set custom local domains
-custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
+custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
 pihole-FTL --config dns.hosts "${custom_domains_a}"
-custom_domains_cname="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' </homelab/custom-domains.txt | grep -vE '^ *$' | grep -E '^[a-zA-Z]' | sed -E 's~^(.*) (.*)$~"\1,\2"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
+custom_domains_cname="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[a-zA-Z]' | sed -E 's~^(.*) (.*)$~"\1,\2"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
 pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
 
 # Restart DNS
@@ -142,4 +142,4 @@ pihole reloaddns
 pihole-FTL --config dns.blocking.active true
 
 # Make sure all subdirectories are owned by homelab user
-chown -R homelab:homelab /etc/pihole
+chown -R homelab:homelab '/etc/pihole'

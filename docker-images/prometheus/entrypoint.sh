@@ -15,7 +15,7 @@ process_template() {
     linefile="${tmpdir}/line.txt"
 
     sed -E 's~^ ~_~g' <"${input_file}" | while read -r line; do
-        variables="$(printf '%s' "${line}" | grep -E -o '\$\{[^}]*\}' 2>/dev/null | sed -E 's~^\$\{([^}]*)\}~\1~' || true)"
+        variables="$(printf '%s' "${line}" | grep -E -o '\$\{[^}]*\}' 2>'/dev/null' | sed -E 's~^\$\{([^}]*)\}~\1~' || true)"
 
         printf '%s\n' "${line}" >"${linefile}"
 
@@ -32,8 +32,8 @@ process_template() {
             }
 
             # Decode (base64) variable value if necessary
-            if printf '%s' "${var}" | grep -E '_ENCRYPTED$' >/dev/null 2>&1; then
-                value="$(printf '%s' "${value}" | base64 -d 2>/dev/null)" || {
+            if printf '%s' "${var}" | grep -E '_ENCRYPTED$' >'/dev/null' 2>&1; then
+                value="$(printf '%s' "${value}" | base64 -d 2>'/dev/null')" || {
                     printf "Error: Failed to base64 decode variable %s\n" "${var}" >&2
                     rm -rf "${tmpdir}"
                     exit 1
@@ -50,8 +50,8 @@ process_template() {
     sed -E 's~^_~ ~g' <"${tmpfile}" >"${output_file}"
 }
 
-process_template /homelab/web.yml /homelab/tmpfs/web.yml
-process_template /homelab/prometheus.yml /homelab/tmpfs/prometheus.yml
+process_template '/homelab/web.yml' '/homelab/tmpfs/web.yml'
+process_template '/homelab/prometheus.yml' '/homelab/tmpfs/prometheus.yml'
 
 if [ "$(wc -l </homelab/tmpfs/web.yml)" -eq 0 ]; then
     printf "Error: File /homelab/tmpfs/web.yml is empty" >&2
@@ -62,11 +62,11 @@ if [ "$(wc -l </homelab/tmpfs/prometheus.yml)" -eq 0 ]; then
     exit 1
 fi
 
-promtool check web-config /homelab/tmpfs/web.yml
-promtool check config /homelab/tmpfs/prometheus.yml
+promtool check web-config '/homelab/tmpfs/web.yml'
+promtool check config '/homelab/tmpfs/prometheus.yml'
 
 prometheus \
-    --config.file=/homelab/tmpfs/prometheus.yml \
-    --storage.tsdb.path=/prometheus \
+    --config.file='/homelab/tmpfs/prometheus.yml' \
+    --storage.tsdb.path='/prometheus' \
     --storage.tsdb.retention.time=30d \
-    --web.config.file=/homelab/tmpfs/web.yml
+    --web.config.file='/homelab/tmpfs/web.yml'

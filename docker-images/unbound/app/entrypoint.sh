@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-ls -lah '/homelab/sock' >/dev/null # This command has to be here, it seem to help with issue `touch: cannot touch '<file>': Operation not supported`
+ls -lah '/homelab/sock' >'/dev/null' # This command has to be here, it seem to help with issue `touch: cannot touch '<file>': Operation not supported`
 if [ ! -e '/homelab/sock/unbound.sock' ]; then
     touch '/homelab/sock/unbound.sock'
 fi
@@ -12,7 +12,7 @@ if [ ! -e '/homelab/logs/unbound.log' ]; then
 fi
 
 printf 'Checking config:\n'
-unbound-checkconf /homelab/unbound.conf
+unbound-checkconf '/homelab/unbound.conf'
 printf 'Config OK.\n'
 
 printf 'Starting unbound:\n'

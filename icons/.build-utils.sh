@@ -4,7 +4,7 @@ set -euf
 PATH="${PATH}:$(dirname "${0}")/node_modules/.bin"
 tmpdir="$(mktemp -d)"
 mkdir "${tmpdir}/file"
-unzip -q 13_05_osa_icons_svg.zip -d "${tmpdir}/13_05_osa_icons_svg"
+unzip -q './13_05_osa_icons_svg.zip' -d "${tmpdir}/13_05_osa_icons_svg"
 
 default_image_size='1x1'
 default_convert_options='magick INPUT_FILE OUTPUT_FILE'
@@ -17,7 +17,7 @@ should_generate_icon() {
         return 0 # No "--only" pattern -> return positive code
     fi
 
-    if printf '%s\n' "${1}" | grep -qE ".*(?:${only_pattern}).*" >/dev/null; then
+    if printf '%s\n' "${1}" | grep -qE ".*(?:${only_pattern}).*" >'/dev/null'; then
         return 0 # The file matches -> return positive code
     fi
 
@@ -39,7 +39,7 @@ optimize_image() {
     tmpdir2="$(mktemp -d)"
     tmpfile2="${tmpdir2}/$(basename "${1}")"
 
-    if printf '%s' "$(basename "${1}")" | grep -E '\.png$' >/dev/null 2>&1; then
+    if printf '%s' "$(basename "${1}")" | grep -E '\.png$' >'/dev/null' 2>&1; then
         cp "${1}" "${tmpfile2}"
         oxipng --opt max --strip safe --force "${tmpfile2}"
         if [ "$(wc -c <"${tmpdir2}/$(basename "${1}")")" -lt "$(wc -c <"${1}")" ]; then

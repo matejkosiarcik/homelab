@@ -13,7 +13,7 @@ fi
 
 # Determine nologin shell
 nologinshell="$(getent passwd nobody | cut -d: -f7)"
-if printf '%s' "${nologinshell}" | grep -vE '/nologin$' >/dev/null 2>&1; then
+if printf '%s' "${nologinshell}" | grep -vE '/nologin$' >'/dev/null' 2>&1; then
     printf 'Unknown nologin shell: %s\n' "${nologinshell}" >&2
     nologinshell='/bin/false'
 fi
@@ -37,7 +37,7 @@ else
 fi
 
 # Set correct permissions for home directory
-mkdir -p /home/homelab
+mkdir -p '/home/homelab'
 chown -R 'homelab:homelab' '/home/homelab'
 
 # Ensure all users use the nologin shell
