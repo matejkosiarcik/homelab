@@ -16,7 +16,7 @@ gatus:
 
 healthchecks:
   - slug: app
-    schedule: "30 00 * * *"
+    schedule: "30 0 * * *"
 
 prometheus:
   enabled: true
