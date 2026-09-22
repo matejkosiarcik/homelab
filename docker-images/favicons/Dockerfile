@@ -17,7 +17,7 @@ RUN printf '' >/root/.gitconfig && \
     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
 
-FROM node:26.9.0-slim AS npmconfig
+FROM node:26.10.0-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -141,7 +141,7 @@ RUN yq '.' '/homelab/urls.yml' >'/homelab/urls.json'
 
 ### App ###
 
-FROM node:26.9.0-slim AS nodejs_build
+FROM node:26.10.0-slim AS nodejs_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/favicons/package-lock.json ./docker-images/favicons/package.json ./docker-images/favicons/tsconfig.json /homelab/
