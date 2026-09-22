@@ -5,7 +5,7 @@
     "build": "run-s build:js build:css",
     "build:js": "run-s build:js:vite build:js:terser",
     "build:js:vite": "vite build .",
-    "build:js:terser": "terser --config-file terser.json dist/main.js --output dist/main.js",
+    "build:js:terser": "terser --config-file ./terser.json ./dist/main.js --output ./dist/main.js",
     "build:css": "cat ./src/main.css ./node_modules/notyf/notyf.min.css >./dist/main.css"
   },
   "dependencies": {
