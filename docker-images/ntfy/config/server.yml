@@ -1,8 +1,8 @@
 # Server config
 behind-proxy: true
 # "base-url" has to be the same URL as is configured in the iOS app in order to received notifications
-base-url: https://ntfy.matejhome.com
-upstream-base-url: https://ntfy.sh # This has to be set to ensure push notification delivery to iOS app
+base-url: "https://ntfy.matejhome.com"
+upstream-base-url: "https://ntfy.sh" # This has to be set to ensure push notification delivery to iOS app
 
 # Data config
 cache-file: /var/cache/ntfy/cache.db

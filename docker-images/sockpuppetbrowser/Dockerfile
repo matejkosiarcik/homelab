@@ -38,4 +38,4 @@ ENV ALLOW_CDP_LOG="no" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "/bin/sh", "-c", "python3 /usr/src/app/docker-health-check.py --host http://localhost || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s CMD [ "/bin/sh", "-c", "python3 /usr/src/app/docker-health-check.py --host 'http://localhost' || exit 1" ]

@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import https from 'node:https';
@@ -32,129 +33,45 @@ const appType = (() => {
     return process.env['HOMELAB_APP_TYPE'];
 })();
 
-// TODO: Re-enable URLs config
+type UrlsConfig = {
+    apps: {
+        type: string,
+        favicons: {
+            default?: string;
+        },
+        urls: {
+            env?: 'dev' | 'prod',
+            path: string,
+            target: string,
+        }[],
+    }[],
+}
 
-// type UrlsConfig = {
-//     apps: {
-//         name: string,
-//         favicons: {
-//             default?: string;
-//         },
-//         urls: {
-//             env?: 'dev' | 'prod',
-//             path: string,
-//             target: string,
-//         }[],
-//     }[],
-// }
+const urlsConfig = JSON.parse(fs.readFileSync('urls.json', 'utf8')) as UrlsConfig;
+const fileCache = new Map<string, Buffer>();
 
-// const urlsConfig = JSON.parse(fs.readFileSync('urls.json', 'utf8')) as UrlsConfig;
+function upstreamUrl(imagePath: string): string {
+    const app = urlsConfig.apps.find((app) => app.type == appType)!;
+    const faviconPath = app.favicons.default || imagePath;
 
-const fileCache: Record<string, Buffer> = {};
-
-const appAddress = (() => {
-    switch (appType) {
-        case 'actualbudget': return 'http://app:5006';
-        case 'adventurelog': return 'http://app-frontend:3000';
-        case 'certbot': return 'http://app:8080';
-        case 'changedetection': return 'http://app:5000';
-        case 'dawarich': return 'http://app:3000';
-        case 'docker-cache': return ''; // http://app:80
-        case 'docker-stats': return ''; // http://app:9487
-        case 'donetick': return 'http://app:2021';
-        case 'dozzle': return 'http://app:8080';
-        case 'gatus': return 'http://app:8080';
-        case 'git-cache': return ''; // http://app:8080
-        // case 'glances': return 'http://app:61208';
-        case 'gotify': return 'http://app:80';
-        case 'grafana': return 'http://app:3000';
-        // case 'groceries': return 'http://app-frontend:8100';
-        case 'healthchecks': return 'http://app:8000';
-        case 'homeassistant': return 'http://app:8123';
-        case 'homepage': return 'http://app:3000';
-        case 'jellyfin': return 'http://app:8096';
-        case 'kiwix': return 'http://app:8080';
-        case 'koffan': return 'http://app:8080';
-        case 'libretranslate': return 'http://app:5000';
-        case 'minio': return 'http://app:9001';
-        case 'motioneye': return 'http://app:8765';
-        case 'nodeexporter': return ''; // http://app:9100
-        case 'npm-cache': return ''; // http://app:8080
-        case 'ntfy': return 'http://app:80';
-        case 'novnc': return 'http://app:6080';
-        case 'ollama': return ''; // http://app:11434
-        case 'omadacontroller': return envMode === 'prod' ? 'https://app:443' : 'https://app:8443';
-        case 'openwebui': return 'http://app:8080';
-        case 'openspeedtest': return 'http://app:3000';
-        case 'pihole': return 'http://app:80';
-        case 'pihole-blackhole': return 'http://app:80';
-        case 'planka': return 'http://app:1337';
-        case 'prometheus': return 'http://app:9090';
-        case 'renovatebot': return '' // http://app:8080
-        case 'reportportal': return 'http://app-ui:8080';
-        case 'samba': return '';
-        case 'smtp4dev': return 'http://app:5000';
-        case 'speedtesttracker': return 'https://app:443';
-        case 'tvheadend': return 'http://app:9981';
-        case 'unbound': return ''; // http://app:8080
-        case 'unificontroller': return 'https://app:8443';
-        case 'uptimekuma': return 'http://app:3001';
-        case 'vaultwarden': return 'http://app:80';
-        case 'vikunja': return 'http://app:3456';
-        default: throw new Error(`Unknown app type ${appType}`);
+    if (faviconPath.startsWith('@')) {
+        return faviconPath;
     }
-})();
 
-function getFaviconPath(): string {
-    switch (appType) {
-        case 'actualbudget': return '/apple-touch-icon.png'; // ICO - '/favicon.ico'
-        case 'adventurelog': return '/favicon.png'; // Checked
-        case 'certbot': return `@/homelab/icons/${appType}.png`;
-        case 'changedetection': return '/static/favicons/apple-touch-icon.png'; // ICO - '/static/favicons/favicon-32x32.png'
-        case 'dawarich': return '/assets/favicon/apple-touch-icon.png'; // ICO - '/assets/favicon/favicon.ico'
-        case 'docker-cache': return `@/homelab/icons/${appType}.png`;
-        case 'docker-stats': return `@/homelab/icons/${appType}.png`;
-        case 'donetick': return '/apple-touch-icon.png'; // ICO - '/favicon-32x32.png'
-        case 'dozzle': return '/favicon.png'; // ICO - '/favicon.ico'
-        case 'gatus': return '/apple-touch-icon.png'; // ICO - '/favicon.ico'
-        case 'git-cache': return `@/homelab/icons/${appType}.png`;
-        // case 'glances': return '/static/favicon.ico';
-        case 'gotify': return '/static/favicon-196x196.png'; // ICO - '/static/favicon-32x32.png'
-        case 'grafana': return '/public/img/grafana_icon.svg'; // ICO - '/public/img/fav32.png'
-        // case 'groceries': return '/assets/icon/favicon.svg'; // Checked
-        case 'healthchecks': return '/static/img/favicon.svg'; // Checked
-        case 'homeassistant': return '/static/icons/favicon-192x192.png'; // ICO - '/static/icons/favicon.ico'
-        case 'homepage': return '/apple-touch-icon.png'; // ICO - '/favicon-32x32.png'
-        case 'jellyfin': return '/web/favicon.ico'; // Checked
-        case 'kiwix': return '/skin/favicon/apple-touch-icon.png'; // ICO - '/skin/favicon/favicon-32x32.png'
-        case 'koffan': return '/static/icon-192.png'; // ICO - '/favicon.ico'
-        case 'libretranslate': return '/static/favicon.ico'; // Checked
-        case 'minio': return '/apple-icon-180x180.png'; // ICO - '/favicon.ico'
-        case 'motioneye': return '/static/img/motioneye-logo.svg'; // Checked
-        case 'nodeexporter': return `@/homelab/icons/${appType}.png`;
-        case 'novnc': return '/app/images/icons/novnc-ios-180.png'; // ICO - '/app/images/icons/novnc.ico'
-        case 'npm-cache': return `@/homelab/icons/${appType}.png`;
-        case 'ntfy': return '/static/images/apple-touch-icon.png'; // ICO - '/static/images/favicon.ico'
-        case 'ollama': return `@/homelab/icons/${appType}.png`;
-        case 'omadacontroller': return '/favicon.ico'; // Checked
-        case 'openwebui': return '/static/favicon.svg'; // ICO -  '/static/favicon.ico'
-        case 'openspeedtest': return '/assets/images/icons/apple-touch-icon.png'; // ICO - '/assets/images/icons/favicon-32x32.png'
-        case 'pihole': return '/admin/img/favicons/apple-touch-icon.png'; // ICO - '/admin/img/favicons/favicon-32x32.png'
-        case 'planka': return '/logo192.png'; // ICO - '/favicon.ico'
-        case 'prometheus': return '/favicon.svg'; // Checked
-        case 'renovatebot': return `@/homelab/icons/${appType}.png`;
-        case 'reportportal': return '/ui/favicon.ico'; // Checked
-        case 'samba': return `@/homelab/icons/${appType}.png`;
-        case 'smtp4dev': return '/favicon.png'; // ICO - '/favicon.ico'
-        case 'speedtesttracker': return '/img/speedtest-tracker-icon.png'; // ICO - '/favicon.ico'
-        case 'tvheadend': return '/static/img/logo.png'; // ICO - '/favicon.ico'
-        case 'unbound': return `@/homelab/icons/${appType}.png`;
-        case 'unificontroller': return '/manage/angular/favicon-192.png'; // ICO - '/manage/angular/favicon.ico'
-        case 'uptimekuma': return '/icon.svg'; // ICO - '/favicon.ico'
-        case 'vaultwarden': return '/images/apple-touch-icon.png'; // ICO - '/images/favicon-32x32.png'
-        case 'vikunja': return '/images/icons/apple-touch-icon-180x180.png'; // ICO - '/favicon.ico'
-        default: throw new Error(`Unknown app type: ${appType}`);
+    const upstreamUrl =
+        app?.urls
+        .filter((el) => (el.env || undefined) === undefined || el.env == envMode) // Filter URLs for current ENV mode
+        .filter((el) => el.path === faviconPath || (el.path.endsWith('/') && faviconPath.startsWith(el.path))) // Filter upstream based on the path
+        .toSorted()
+        .at(-1)!;
+    if (!upstreamUrl) {
+        throw new Error(`Unknown target for path ${imagePath}`);
     }
+
+    const resolvedPath = faviconPath.replace(upstreamUrl.path, URL.parse(upstreamUrl.target)!.pathname);
+    const url = upstreamUrl.target + resolvedPath;
+    console.log(`Resolved favicon URL: ${url} for original path: ${imagePath}`);
+    return url;
 }
 
 /**
@@ -208,7 +125,7 @@ async function convertPngToPng(pngImage: Buffer): Promise<Buffer> {
     if (metadata.width > 64 || metadata.height > 64) {
         outputPng = await image.resize(64, 64, { fit: 'inside' }).png().toBuffer();
     } else {
-        outputPng = pngImage;
+        outputPng = await image.png().toBuffer();
     }
 
     return outputPng;
@@ -257,67 +174,45 @@ async function convertSvgToIco(svgImage: Buffer): Promise<Buffer> {
     return output;
 }
 
-async function convertImage(source: Buffer, sourceType: 'ico' | 'png' | 'svg', targetType: 'ico' | 'png'): Promise<Buffer> {
-    if (Object.keys(fileCache).includes(targetType)) {
-        return fileCache[targetType];
+function hashImage(image: Buffer): string {
+    return crypto.createHash('sha256').update(image).digest('hex').slice(-10);
+}
+
+async function convertImage(upstreamImage: Buffer, sourceImageType: 'ico' | 'png' | 'svg', targetImageType: 'ico' | 'png'): Promise<Buffer> {
+    const upstreamImageHash = hashImage(upstreamImage);
+    const imageKey = `${sourceImageType}-${upstreamImageHash}-${targetImageType}`;
+
+    const cachedImage = fileCache.get(imageKey);
+    if (cachedImage) {
+        console.log(`Serving cached image: ${imageKey}`);
+        return cachedImage;
     }
 
     const output = await (async () => {
-        switch (sourceType) {
+        switch (sourceImageType) {
             case 'ico':
-                return targetType === 'png' ? await convertIcoToPng(source) : await convertIcoToIco(source);
+                return targetImageType === 'png' ? await convertIcoToPng(upstreamImage) : await convertIcoToIco(upstreamImage);
             case 'png':
-                return targetType === 'png' ? await convertPngToPng(source) : await convertPngToIco(source);
+                return targetImageType === 'png' ? await convertPngToPng(upstreamImage) : await convertPngToIco(upstreamImage);
             case 'svg':
-                return targetType === 'png' ? await convertSvgToPng(source) : await convertSvgToIco(source);
+                return targetImageType === 'png' ? await convertSvgToPng(upstreamImage) : await convertSvgToIco(upstreamImage);
             default:
-                throw new Error(`Unknown source image type: ${sourceType}`);
+                throw new Error(`Unknown source image type: ${sourceImageType}`);
         }
     })();
 
-    fileCache[targetType] = output;
+    console.log(`Saving converted image: ${imageKey}`);
+    fileCache.set(imageKey, output);
     return output;
 }
 
-const app = express();
-
-// Healthcheck
-app.get('/.health', (_: Request, response: Response) => {
-    response.sendStatus(200);
-});
-
-app.get('/favicon.ico', async (_: Request, response: Response) => {
-    try {
-        const faviconPath = getFaviconPath();
-        const originalFavicon = await loadFavicon(faviconPath);
-        const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'ico');
-        response.status(200);
-        response.setHeader('Content-Type', 'image/x-icon');
-        response.send(outputFavicon);
-    } catch (error) {
-        console.error('Favicon error:', error);
-        response.sendStatus(500);
+async function requestImage(imageUrl: string): Promise<Buffer> {
+    if (imageUrl.startsWith('@')) {
+        return await fsx.readFile(imageUrl.replace(/^@/, ''));
     }
-});
 
-app.get('/favicon.png', async (_: Request, response: Response) => {
-    try {
-        const faviconPath = getFaviconPath();
-        const originalFavicon = await loadFavicon(faviconPath);
-        const outputFavicon = await convertImage(originalFavicon, path.extname(faviconPath).slice(1) as 'ico' | 'png' | 'svg', 'png');
-        response.status(200);
-        response.setHeader('Content-Type', 'image/png');
-        response.send(outputFavicon);
-    } catch (error) {
-        console.error('Favicon error:', error);
-        response.sendStatus(500);
-    }
-});
-
-async function loadFavicon(iconPath: string): Promise<Buffer> {
-    if (iconPath.startsWith('@')) {
-        return await fsx.readFile(iconPath.replace(/^@/, ''));
-    }
+    const imagePath = URL.parse(imageUrl)!.pathname;
+    const imageMime = `image/${path.extname(imagePath).slice(1)}`; // TODO: Make this generic with a mime library
 
     const headers: Record<string, string> = {};
     switch (appType) {
@@ -330,7 +225,8 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
             break;
         }
     }
-    const axiosResponse = await axios.get(`${appAddress}${iconPath}`, {
+
+    const axiosResponse = await axios.get(imageUrl, {
         headers: headers,
         maxRedirects: 99,
         responseType: 'arraybuffer',
@@ -345,11 +241,63 @@ async function loadFavicon(iconPath: string): Promise<Buffer> {
         throw new Error(`Upstream unavailable: ${axiosResponse}`);
     }
     if (axiosResponse.status !== 200) {
-        throw new Error(`Upstream error ${axiosResponse.status}.`);
+        throw new Error(`Upstream returned status ${axiosResponse.status} for ${imageUrl}`);
+    }
+    const contentType = axiosResponse.headers['Content-Type'] || axiosResponse.headers['content-type'];
+    if (contentType !== imageMime) {
+        throw new Error(`Upstream returned mismatched image type ${contentType} for ${imageUrl}, expected ${imageMime}`);
     }
 
     return Buffer.from(axiosResponse.data);
 }
+
+async function getFavicon(imagePath: string): Promise<Buffer> {
+    const outputImageType = path.extname(imagePath).slice(1) as 'ico' | 'png';
+
+    switch (outputImageType) {
+        case 'ico':
+        case 'png':
+            break;
+        default:
+            throw new Error(`Unknown image type ${imagePath}`);
+    }
+
+    const upstreamImageUrl = upstreamUrl(imagePath);
+    const upstreamImage = await requestImage(upstreamImageUrl);
+    const outputImage = await convertImage(upstreamImage, path.extname(URL.parse(upstreamImageUrl)!.pathname).slice(1) as 'ico' | 'png' | 'svg', outputImageType);
+    return outputImage;
+}
+
+const app = express();
+
+// Healthcheck
+app.get('/.health', (_: Request, response: Response) => {
+    response.sendStatus(200);
+});
+
+app.get('/favicon.ico', async (request: Request, response: Response) => {
+    try {
+        const image = await getFavicon(request.path);
+        response.status(200);
+        response.setHeader('Content-Type', 'image/x-icon');
+        response.send(image);
+    } catch (error) {
+        console.error('Favicon error:', error);
+        response.sendStatus(500);
+    }
+});
+
+app.get('/favicon.png', async (request: Request, response: Response) => {
+    try {
+        const image = await getFavicon(request.path);
+        response.status(200);
+        response.setHeader('Content-Type', 'image/png');
+        response.send(image);
+    } catch (error) {
+        console.error('Favicon error:', error);
+        response.sendStatus(500);
+    }
+});
 
 app.listen(8080, () => {
     console.log('Server started.');
