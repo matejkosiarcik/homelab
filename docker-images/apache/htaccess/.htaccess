@@ -180,7 +180,7 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|homepage|kiwix|libretranslate|nodeexporter|ollama|prometheus|renovatebot|smtp4dev|unbound)$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|kiwix|libretranslate|nodeexporter|ollama|prometheus|renovatebot|smtp4dev|unbound)$#">
     <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/favicon\.(?:ico|png)$#">
         # Allow requests with readonly methods to safe locations without authentication
     </If>

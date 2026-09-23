@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 
 ### Other ###
 
-FROM ghcr.io/gethomepage/homepage:v1.13.2 AS entrypoint
+FROM ghcr.io/gethomepage/homepage:v2.4.0 AS entrypoint
 USER root
 COPY ./docker-images/homepage/app/entrypoint-extra.sh /homelab/
 RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -44,7 +44,7 @@ RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM ghcr.io/gethomepage/homepage:v1.13.2 AS runtime_dirs
+FROM ghcr.io/gethomepage/homepage:v2.4.0 AS runtime_dirs
 USER root
 RUN mkdir -p '/homelab/original/app/.next/server/pages' && \
     cp -R '/app/.next/server/pages/.' '/homelab/original/app/.next/server/pages'
@@ -82,7 +82,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM ghcr.io/gethomepage/homepage:v1.13.2
+FROM ghcr.io/gethomepage/homepage:v2.4.0
 USER root
 RUN rm -rf /app/.next/server/pages /app/config
 COPY --from=prefinal /etc/group /etc/passwd /etc/
@@ -93,5 +93,9 @@ COPY --from=prefinal --chown=homelab:homelab /app/public/icons /app/public/icons
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoint.sh /usr/local/bin/
 ENV HOMELAB_CONTAINER_NAME="homepage" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    HOMEPAGE_AUTH_ENABLED="true" \
+    HOMEPAGE_AUTH_PASSWORD="" \
+    HOMEPAGE_AUTH_SECRET="" \
+    HOMEPAGE_MCP_ENABLED="true" \
     TZ="Europe/Bratislava"
 USER homelab

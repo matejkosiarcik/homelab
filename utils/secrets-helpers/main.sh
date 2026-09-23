@@ -836,46 +836,34 @@ homeassistant)
 
 homepage)
     # Preload #
-    matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
+    admin_password="$(load_secret ".${app_full_name_key}.app.admin_user" dev=default)"
+    secret_key="$(load_secret ".${app_full_name_key}.app.secret_key" "dev=value=$(openssl rand -base64 32)")"
 
     # App #
-    write_http_auth_user matej "${matej_password}" proxy-prometheus
-    write_http_auth_user matej "${matej_password}" users-viewers
-    write_http_auth_user matej "${matej_password}" users-admins
-    printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
-
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" proxy-prometheus
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-viewers
-    printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
-
-    write_http_auth_user homelab-test "${homelab_test_password}" proxy-prometheus
-    write_http_auth_user homelab-test "${homelab_test_password}" users-viewers
-    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
+    printf 'HOMEPAGE_AUTH_PASSWORD="%s"\n' "${admin_password}" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_AUTH_SECRET="%s"\n' "${secret_key}" >>"${initial_output}/app.env"
 
     # Other services #
     printf 'HOMEPAGE_VAR__CHANGEDETECTION__APIKEY="%s"\n' "$(load_secret '.changedetection.app.api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__GATUS_1__PASSWORD="%s"\n' "$(load_secret '.gatus-1.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__GATUS_2__PASSWORD="%s"\n' "$(load_secret '.gatus-2.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__GATUS_1__PASSWORD="%s"\n' "$(load_secret '.gatus_1.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__GATUS_2__PASSWORD="%s"\n' "$(load_secret '.gatus_2.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__GRAFANA__PASSWORD="%s"\n' "$(load_secret '.grafana.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__HEALTHCHECKS__APIKEY="%s"\n' "$(load_secret '.healthchecks.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__HOMEASSISTANT__APIKEY="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__JELLYFIN__APIKEY="%s"\n' "$(load_secret '.jellyfin.app.homelab_api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD="%s"\n' "$(load_secret '.motioneye_kitchen.app.homelab_stream_user' dev=real)" >>"${initial_output}/app.env"
-    # TODO: Enable NetAlertX integration
-    # printf 'HOMEPAGE_VAR_NETALERTX_APIKEY="%s"\n' "$(load_secret '.netalertx.app.api_key' dev=real)" "${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__OMADACONTROLLER__PASSWORD="%s"\n' "$(load_secret 'omadacontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_1__PASSWORD="%s"\n' "$(load_secret 'pihole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_2__PASSWORD="%s"\n' "$(load_secret 'pihole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_3__PASSWORD="%s"\n' "$(load_secret 'pihole_3.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_4__PASSWORD="%s"\n' "$(load_secret 'pihole_4.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_BLACKHOLE_1__PASSWORD="%s"\n' "$(load_secret 'pihole_blackhole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_BLACKHOLE_2__PASSWORD="%s"\n' "$(load_secret 'pihole_blackhole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PROMETHEUS__PASSWORD="%s"\n' "$(load_secret 'prometheus.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY="%s"\n' "$(load_secret 'speedtesttracker.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD="%s"\n' "$(load_secret 'unificontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__VIKUNJA__APIKEY="%s"\n' "$(load_secret 'vikunja.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR_NETALERTX_APIKEY="%s"\n' "$(load_secret '.netalertx.app.api_key' dev=real)" "${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__OMADACONTROLLER__PASSWORD="%s"\n' "$(load_secret '.omadacontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__PIHOLE_1__PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__PIHOLE_2__PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__PIHOLE_3__PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.admin_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__PIHOLE_4__PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.admin_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__PIHOLE_BLACKHOLE_1__PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__PIHOLE_BLACKHOLE_2__PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__PROMETHEUS__PASSWORD="%s"\n' "$(load_secret '.prometheus.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY="%s"\n' "$(load_secret '.speedtesttracker.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD="%s"\n' "$(load_secret '.unificontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__VIKUNJA__APIKEY="%s"\n' "$(load_secret '.vikunja.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -885,7 +873,7 @@ homepage)
     write_healthcheck_url "${app_full_name_machine}" certificator
 
     # Favicons #
-    printf 'FAVICON_PASSWORD="%s"\n' "${homelab_viewer_password}" >>"${initial_output}/favicons.env"
+    printf 'FAVICON_PASSWORD="%s"\n' "${admin_password}" >>"${initial_output}/favicons.env"
 
     # Widgets
     printf 'PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.app.homelab_viewer_user' dev=real)" >>"${initial_output}/widgets.env"
