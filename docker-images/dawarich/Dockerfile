@@ -12,6 +12,7 @@ RUN mkdir -p '/homelab/original/var/app/db' && \
     rm -rf '/var/app/db' && \
     cd /var/app && \
     bundle install --with development && \
+    bundle exec foreman --version && \
     find './vendor/bundle/ruby' -path '*.*.*/cache/*.gem' -prune -exec rm -rf {} \; && \
     rm -rf './tmp/cache'
 
@@ -61,7 +62,8 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 RUN rm -rf /var/app
 COPY --from=prefinal --chown=homelab:homelab /var/app /var/app
-ENV APPLICATION_PROTOCOL="http" \
+ENV PATH="/var/app/vendor/bundle/ruby/3.4.0/bin:${PATH}" \
+    APPLICATION_PROTOCOL="http" \
     BACKGROUND_PROCESSING_CONCURRENCY="10" \
     DATABASE_HOST="postgis" \
     DATABASE_NAME="database" \
