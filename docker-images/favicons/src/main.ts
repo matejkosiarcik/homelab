@@ -4,12 +4,13 @@ import fsx from 'node:fs/promises';
 import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
-import axios from 'axios';
+import axios, { AxiosRequestConfig, type AxiosResponse } from 'axios';
 import dotevn from 'dotenv';
 import { execa } from 'execa';
 import express, { type Request, type Response } from 'express';
 import png2ico from 'png-to-ico';
 import sharp from 'sharp';
+import { CookieJar } from 'tough-cookie';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -212,13 +213,24 @@ async function requestImage(imageUrl: string): Promise<Buffer> {
     }
 
     const imagePath = URL.parse(imageUrl)!.pathname;
-    const imageMime = `image/${path.extname(imagePath).slice(1)}`; // TODO: Make this generic with a mime library
+    const allowedMimeTypes = (() => {
+        switch (path.extname(imagePath).slice(1)) {
+            case 'png': return ['image/png', 'image/x-png', 'application/png', 'application/x-png'];
+            case 'svg': return ['image/svg+xml', 'application/svg+xml', 'text/svg+xml', 'image/svg', 'text/xml', 'application/xml'];
+            case 'ico': return ['image/x-icon', 'image/vnd.microsoft.icon', 'image/ico', 'image/icon', 'application/ico', 'application/x-icon', 'application/x-ico'];
+            default: throw new Error(`Unknown image type: ${imagePath}`);
+        }
+    })();
 
     const headers: Record<string, string> = {};
     switch (appType) {
         case 'prometheus':
         case 'smtp4dev': {
-            headers['Authorization'] = `Basic ${Buffer.from(`homelab-viewer:${process.env['FAVICON_PASSWORD']}`).toString('base64')}`;
+            const password = process.env['FAVICON_PASSWORD'];
+            if (!password) {
+                throw new Error('Env FAVICON_PASSWORD unset');
+            }
+            headers['Authorization'] = `Basic ${Buffer.from(`homelab-viewer:${password}`).toString('base64')}`;
             break;
         }
         default: {
@@ -226,7 +238,7 @@ async function requestImage(imageUrl: string): Promise<Buffer> {
         }
     }
 
-    const axiosResponse = await axios.get(imageUrl, {
+    const requestConfig: AxiosRequestConfig = {
         headers: headers,
         maxRedirects: 99,
         responseType: 'arraybuffer',
@@ -235,7 +247,14 @@ async function requestImage(imageUrl: string): Promise<Buffer> {
         httpsAgent: new https.Agent({
             rejectUnauthorized: false
         }),
-    });
+    };
+
+    const axiosResponse = await (async () => {
+        switch (appType) {
+            case 'homepage': return await requestHomepageImage(imageUrl, requestConfig);
+            default: return await axios.get<ArrayBuffer>(imageUrl, requestConfig);
+        }
+    })();
 
     if (axiosResponse.status === 0) {
         throw new Error(`Upstream unavailable: ${axiosResponse}`);
@@ -243,12 +262,81 @@ async function requestImage(imageUrl: string): Promise<Buffer> {
     if (axiosResponse.status !== 200) {
         throw new Error(`Upstream returned status ${axiosResponse.status} for ${imageUrl}`);
     }
-    const contentType = axiosResponse.headers['Content-Type'] || axiosResponse.headers['content-type'];
-    if (contentType !== imageMime) {
-        throw new Error(`Upstream returned mismatched image type ${contentType} for ${imageUrl}, expected ${imageMime}`);
+    const contentType = `${axiosResponse.headers['Content-Type'] || axiosResponse.headers['content-type']}`.split(';')[0];
+    if (!allowedMimeTypes.includes(contentType)) {
+        throw new Error(`Upstream returned mismatched image type ${contentType} for ${imageUrl}, expected one of ${allowedMimeTypes.join(', ')}`);
     }
 
     return Buffer.from(axiosResponse.data);
+}
+
+// Homepage needs multi-request authentication flow before we can request the actual image
+async function requestHomepageImage(imageUrl: string, requestConfig: AxiosRequestConfig): Promise<AxiosResponse<ArrayBuffer>> {
+    // Force HTTPS even when accessing homepage over internal HTTP
+    function secureCookieUrl(url: string): string {
+        const secureUrl = new URL(url);
+        secureUrl.protocol = 'https:';
+        return secureUrl.toString();
+    }
+
+    const password = process.env['FAVICON_PASSWORD'];
+    if (!password) {
+        throw new Error('Env FAVICON_PASSWORD unset');
+    }
+
+    const cookieJar = new CookieJar();
+
+    async function request<T>(url: string, options: AxiosRequestConfig): Promise<AxiosResponse> {
+        const requestUrl = new URL(url, imageUrl).toString();
+        const cookie = await cookieJar.getCookieString(secureCookieUrl(requestUrl));
+        const response = await axios.request<T>({
+            ...requestConfig,
+            url: requestUrl,
+            headers: {
+                ...requestConfig.headers,
+                ...options.headers,
+                ...(cookie ? { Cookie: cookie } : {}),
+            },
+            maxRedirects: options.maxRedirects ?? requestConfig.maxRedirects ?? 0,
+            ...(options.data ? { data: options.data } : {}),
+            method: options.method ?? requestConfig.method ?? 'GET',
+            responseType: options.responseType ?? requestConfig.responseType ?? 'arraybuffer',
+        });
+        const setCookies = response.headers['set-cookie'];
+        if (setCookies) {
+            await Promise.all(setCookies.map(async (setCookie) => {
+                await cookieJar.setCookie(setCookie, secureCookieUrl(requestUrl));
+            }));
+        }
+        return response;
+    };
+
+    const csrfResponse = await request<{ csrfToken?: unknown }>('/api/auth/csrf', {
+        responseType: 'json',
+    });
+    const csrfToken = csrfResponse.data.csrfToken;
+    if (csrfResponse.status !== 200 || typeof csrfToken !== 'string') {
+        throw new Error('Unable to get Homepage authentication CSRF token');
+    }
+
+    const signInResponse = await request('/api/auth/callback/credentials', {
+        method: 'post',
+        data: new URLSearchParams({
+            callbackUrl: '/',
+            csrfToken: csrfToken,
+            json: 'true',
+            password: password,
+        }),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    });
+    if (signInResponse.status !== 200) {
+        throw new Error(`Homepage sign-in failed with status ${signInResponse.status}`);
+    }
+
+    const imageResponse = await request<ArrayBuffer>(imageUrl, {});
+    return imageResponse;
 }
 
 async function getFavicon(imagePath: string): Promise<Buffer> {
