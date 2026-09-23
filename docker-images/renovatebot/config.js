@@ -8,9 +8,9 @@ module.exports = {
     repositories: [
         'matejkosiarcik/dotfiles',
         'matejkosiarcik/homelab',
+        'matejkosiarcik/azlint',
 
         // TODO: Re-enable other repositories:
-        // 'matejkosiarcik/azlint',
         // 'matejkosiarcik/azminifier',
         // 'matejkosiarcik/website',
     ],
