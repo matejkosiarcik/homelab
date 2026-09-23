@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: localhost:8443
+      HOMEPAGE_ALLOWED_HOSTS: localhost:8443,app:3000
       HOMEPAGE_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
 
   certificator:
