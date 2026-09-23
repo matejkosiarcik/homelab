@@ -7,6 +7,7 @@ services:
     <<: *common-service-options
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      HOMEPAGE_EXTERNAL_URL: ${DOCKER_COMPOSE_NETWORK_URL}
 
   certificator:
     <<: *common-service-options

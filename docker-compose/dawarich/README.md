@@ -16,6 +16,6 @@
 
 ## After initial installation
 
-- Change credentials - defaults: `demo@dawarich.app:password` -> `matej@matejhome.com`
+- Change credentials - defaults: `demo@dawarich.app:safepassword` -> `matej@matejhome.com:<password>`
 - Add user `homelab-test` (`homelab-test@homelab.matejhome.com`)
 - Save _API key_ in Vaultwarden

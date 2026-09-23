@@ -14,8 +14,8 @@ RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && 
 
 FROM couchdb:3.5.2 AS runtime_dirs
 USER root
-RUN mkdir -p /homelab/original/opt/couchdb/etc/local.d && \
-    cp -R /opt/couchdb/etc/local.d/. /homelab/original/opt/couchdb/etc/local.d
+RUN mkdir -p '/homelab/original/opt/couchdb/etc/local.d' && \
+    cp -R '/opt/couchdb/etc/local.d/.' '/homelab/original/opt/couchdb/etc/local.d'
 
 ### Healthcheck ###
 

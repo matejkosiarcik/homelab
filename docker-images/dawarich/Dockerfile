@@ -3,17 +3,25 @@
 
 ### App ###
 
-FROM freikin/dawarich:0.37.3 AS app
+FROM freikin/dawarich:1.15.2 AS app
 USER root
 WORKDIR /homelab
 # hadolint ignore=DL3003
-RUN mkdir -p /homelab/original/var/app/db && \
-    cp -R /var/app/db/. /homelab/original/var/app/db && \
-    rm -rf /var/app/db && \
+RUN mkdir -p '/homelab/original/var/app/db' && \
+    cp -R '/var/app/db/.' '/homelab/original/var/app/db' && \
+    rm -rf '/var/app/db' && \
     cd /var/app && \
-    bundle install --with development && \
-    find 'vendor/bundle/ruby' -path '*.*.*/cache/*.gem' -prune -exec rm -rf {} \; && \
-    rm -rf ./tmp/cache
+    (test -d '/var/app/vendor/bundle/ruby/3.4.0' || (printf 'Ruby directory not found.\n' >&2; exit 1)) && \
+    export PATH="/var/app/vendor/bundle/ruby/3.4.0/bin:${PATH}" && \
+    export BUNDLE_PATH="/var/app/vendor/bundle/ruby/3.4.0/gems" && \
+    bundle config set --local without 'test' && \
+    bundle config set --local with 'development' && \
+    bundle add 'prometheus_exporter' --skip-install && \
+    bundle install && \
+    bundle exec 'foreman' --version && \
+    bundle exec 'prometheus_exporter' --help >/dev/null && \
+    find './vendor/bundle/ruby' -path '*.*.*/cache/*.gem' -prune -exec rm -rf {} \; && \
+    rm -rf './tmp/cache'
 
 ### Healthcheck ###
 
@@ -54,7 +62,7 @@ COPY --from=app /var/app /var/app
 
 ### Final ###
 
-FROM freikin/dawarich:0.37.3
+FROM freikin/dawarich:1.15.2
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
@@ -63,6 +71,7 @@ RUN rm -rf /var/app
 COPY --from=prefinal --chown=homelab:homelab /var/app /var/app
 ENV APPLICATION_PROTOCOL="http" \
     BACKGROUND_PROCESSING_CONCURRENCY="10" \
+    BUNDLE_PATH="/var/app/vendor/bundle/ruby/3.4.0/gems" \
     DATABASE_HOST="postgis" \
     DATABASE_NAME="database" \
     DATABASE_USERNAME="postgres" \
@@ -70,6 +79,7 @@ ENV APPLICATION_PROTOCOL="http" \
     HOMELAB_CONTAINER_NAME="dawarich" \
     HOMELAB_CONTAINER_VARIANT="default" \
     MIN_MINUTES_SPENT_IN_CITY="60" \
+    PATH="/var/app/vendor/bundle/ruby/3.4.0/bin:${PATH}" \
     PROMETHEUS_EXPORTER_ENABLED="true" \
     PROMETHEUS_EXPORTER_HOST="0.0.0.0" \
     PROMETHEUS_EXPORTER_PORT="9394" \

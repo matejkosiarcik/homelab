@@ -5,8 +5,8 @@
 # hadolint ignore=DL3029
 FROM --platform=linux/amd64 bonigarcia/novnc:1.3.0 AS app
 USER root
-RUN mkdir -p /homelab/original/noVNC/app && \
-    cp -R /root/noVNC/app/. /homelab/original/noVNC/app
+RUN mkdir -p '/homelab/original/noVNC/app' && \
+    cp -R '/root/noVNC/app/.' '/homelab/original/noVNC/app'
 
 ### Healthcheck ###
 

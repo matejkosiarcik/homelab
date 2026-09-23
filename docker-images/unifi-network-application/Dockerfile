@@ -15,8 +15,8 @@ RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
 FROM linuxserver/unifi-network-application:10.6.106 AS runtime_dirs
 USER root
 WORKDIR /homelab
-RUN mkdir -p /homelab/original/defaults && \
-    cp -R /defaults/. /homelab/original/defaults
+RUN mkdir -p '/homelab/original/defaults' && \
+    cp -R '/defaults/.' '/homelab/original/defaults'
 
 ### User setup ###
 
