@@ -7,13 +7,13 @@ FROM freikin/dawarich:1.15.2 AS app
 USER root
 WORKDIR /homelab
 # hadolint ignore=DL3003
-RUN mkdir -p /homelab/original/var/app/db && \
-    cp -R /var/app/db/. /homelab/original/var/app/db && \
-    rm -rf /var/app/db && \
+RUN mkdir -p '/homelab/original/var/app/db' && \
+    cp -R '/var/app/db/.' '/homelab/original/var/app/db' && \
+    rm -rf '/var/app/db' && \
     cd /var/app && \
     bundle install --with development && \
-    find 'vendor/bundle/ruby' -path '*.*.*/cache/*.gem' -prune -exec rm -rf {} \; && \
-    rm -rf ./tmp/cache
+    find './vendor/bundle/ruby' -path '*.*.*/cache/*.gem' -prune -exec rm -rf {} \; && \
+    rm -rf './tmp/cache'
 
 ### Healthcheck ###
 
