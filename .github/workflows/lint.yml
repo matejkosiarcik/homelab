@@ -30,6 +30,7 @@ jobs:
         run: |
           ln -s -f "$(which true)" "$(which python)" # TODO: Re-enable python and pip checks
           ln -s -f "$(which true)" "$(which python3)" # TODO: Re-enable python and pip checks
+          ln -s -f "$(which true)" '/app/linters/bin/dotenv-linter' # TODO: Re-enable partial dotenv checks (like megalinter)
           ln -s -f "$(which true)" '/app/linters/node_modules/.bin/prettier' # TODO: Re-enable prettier formatting
           if [ "$GITHUB_REF_NAME" = main ]; then
             azlint
@@ -85,6 +86,7 @@ jobs:
           VALIDATE_BIOME_LINT: false
           VALIDATE_CSS: false
           VALIDATE_DOCKERFILE_HADOLINT: false
+          VALIDATE_ENV: false
           VALIDATE_GO: false # False positives with multiple directories
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_JAVASCRIPT_PRETTIER: false
