@@ -840,8 +840,8 @@ homepage)
     secret_key="$(load_secret ".${app_full_name_key}.app.secret_key" "dev=value=$(openssl rand -base64 32)")"
 
     # App #
-    printf 'HOMEPAGE_AUTH_PASSWORD="%s"\n' "${admin_password}" >>"$initial_output/app.env"
-    printf 'HOMEPAGE_AUTH_SECRET="%s"\n' "${secret_key}" >>"$initial_output/app.env"
+    printf 'HOMEPAGE_AUTH_PASSWORD="%s"\n' "${admin_password}" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_AUTH_SECRET="%s"\n' "${secret_key}" >>"${initial_output}/app.env"
 
     # Other services #
     printf 'HOMEPAGE_VAR__CHANGEDETECTION__APIKEY="%s"\n' "$(load_secret '.changedetection.app.api_key' dev=real)" >>"${initial_output}/app.env"
