@@ -93,5 +93,9 @@ COPY --from=prefinal --chown=homelab:homelab /app/public/icons /app/public/icons
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoint.sh /usr/local/bin/
 ENV HOMELAB_CONTAINER_NAME="homepage" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    HOMEPAGE_AUTH_ENABLED="true" \
+    HOMEPAGE_AUTH_PASSWORD="" \
+    HOMEPAGE_AUTH_SECRET="" \
+    HOMEPAGE_MCP_ENABLED="true" \
     TZ="Europe/Bratislava"
 USER homelab
