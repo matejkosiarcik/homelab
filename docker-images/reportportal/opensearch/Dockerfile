@@ -23,8 +23,8 @@ RUN head -n 1 /usr/share/opensearch/opensearch-docker-entrypoint.sh >/homelab/en
 
 FROM opensearchproject/opensearch:2.19.6 AS runtime_dirs
 USER root
-RUN mkdir -p /homelab/original/usr/share/opensearch/config && \
-    cp -R /usr/share/opensearch/config/. /homelab/original/usr/share/opensearch/config
+RUN mkdir -p '/homelab/original/usr/share/opensearch/config' && \
+    cp -R '/usr/share/opensearch/config/.' '/homelab/original/usr/share/opensearch/config'
 
 ### Users ###
 

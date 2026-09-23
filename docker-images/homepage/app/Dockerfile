@@ -46,8 +46,8 @@ RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-
 
 FROM ghcr.io/gethomepage/homepage:v1.13.2 AS runtime_dirs
 USER root
-RUN mkdir -p /homelab/original/app/.next/server/pages && \
-    cp -R /app/.next/server/pages/. /homelab/original/app/.next/server/pages
+RUN mkdir -p '/homelab/original/app/.next/server/pages' && \
+    cp -R '/app/.next/server/pages/.' '/homelab/original/app/.next/server/pages'
 
 ### User setup ###
 

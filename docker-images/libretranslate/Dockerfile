@@ -32,8 +32,8 @@ RUN --mount=type=cache,target=/root/.local,sharing=locked,id=homelab_libretransl
         exit 1 && \
     true; fi && \
     pkill -f libretranslate && \
-    rm -f ./status.txt && \
-    cp -R /root/.local /root/.local-copy
+    rm -f './status.txt' && \
+    cp -R '/root/.local' '/root/.local-copy'
 
 ### Healthcheck ###
 

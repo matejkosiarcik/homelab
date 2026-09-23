@@ -24,8 +24,8 @@ RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && 
 FROM openwebui/open-webui:0.11.4 AS runtime_dirs
 USER root
 WORKDIR /homelab
-RUN mkdir -p /homelab/original/app/backend/open_webui/static && \
-    cp -R /app/backend/open_webui/static/. /homelab/original/app/backend/open_webui/static
+RUN mkdir -p '/homelab/original/app/backend/open_webui/static' && \
+    cp -R '/app/backend/open_webui/static/.' '/homelab/original/app/backend/open_webui/static'
 
 ### User setup ###
 

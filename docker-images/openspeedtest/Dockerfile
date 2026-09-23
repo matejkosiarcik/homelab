@@ -24,8 +24,8 @@ RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
 
 FROM openspeedtest/latest:v2.0.6 AS runtime_dirs
 USER root
-RUN mkdir -p /homelab/original/etc/nginx/conf.d && \
-    cp -R /etc/nginx/conf.d/. /homelab/original/etc/nginx/conf.d
+RUN mkdir -p '/homelab/original/etc/nginx/conf.d' && \
+    cp -R '/etc/nginx/conf.d/.' '/homelab/original/etc/nginx/conf.d'
 
 ### User setup ###
 
