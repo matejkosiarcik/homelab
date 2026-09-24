@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM registry:3.1.1 AS docker_registry_app
+FROM registry:3.1.2 AS docker_registry_app
 USER root
 
 ### Healthcheck ###
