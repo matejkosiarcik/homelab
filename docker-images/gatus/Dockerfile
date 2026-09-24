@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM twinproduction/gatus:v5.36.0 AS gatus_app
+FROM twinproduction/gatus:v5.37.0 AS gatus_app
 USER root
 
 FROM debian:13.7-slim AS gatus_setcap
