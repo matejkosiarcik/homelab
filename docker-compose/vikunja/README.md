@@ -24,4 +24,4 @@
       `docker exec -it vikunja-app '/app/vikunja/vikunja' user create --email 'homelab-test@homelab.matejhome.com' --username 'homelab-test' --password "$HOMELAB_TEST_PASSWORD"`
       `unset HOMELAB_TEST_PASSWORD`
     - Confirm both email addresses
-- Create API key (readonly) and save in vaultwarden
+- Create API key (readonly)
