@@ -18,10 +18,9 @@ log:
   path: /homelab/logs
   level: WARNING
   standard: file
-  database: true
+  database: file
   databaselevel: ERROR
   http: file
-  echo: stdout
   events: file
   eventslevel: ERROR
   mail: file
