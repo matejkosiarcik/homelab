@@ -1,60 +1,63 @@
 # Special things for docker-ignore
 **/compose*.yml
 **/Taskfile.yml
+ansible/
+docs/
+tests/
 
 # Usual stuff from gitignore below
 # For testing services
-.backup/
-.env
-.errors/
-.export/
-.logs/
-app-data-*/
-app-data.*/
-app-data/
-app-logs-*/
-app-logs.*/
-app-logs/
-app-secrets-*/
-app-secrets.*/
-app-secrets/
-test-report/
-tmp/
-.build-cache/
+**/.backup/
+**/.env
+**/.errors/
+**/.export/
+**/.logs/
+**/app-data-*/
+**/app-data.*/
+**/app-data/
+**/app-logs-*/
+**/app-logs.*/
+**/app-logs/
+**/app-secrets-*/
+**/app-secrets.*/
+**/app-secrets/
+**/test-report/
+**/tmp/
+**/.build-cache/
 
 # For deployment
-/servers/.current
-/.deployment/
-/worktree-*
+**/servers/.current
+**/.deployment/
+**/worktree-*
 
 # OS stuff
-._*
-.DS_Store
-[Dd]esktop.ini
-*~
-Thumbs.db
+**/._*
+**/.DS_Store
+**/[Dd]esktop.ini
+**/*~
+**/Thumbs.db
 
 # Editors:
 # JetBrains
-.idea/
+**/.idea/
 # VSCode
-.vscode/
+**/.vscode/
 # Vim
-*.vim
+**/*.vim
 # Sublime Text
-*.sublime-*
-Package Control.*
+**/*.sublime-*
+**/Package Control.*
 # DrawIO
-*.bkp
+**/*.bkp
 
 # dependencies
-.mypy_cache/
-*Brewfile.lock.json
-build/
-dist/
-gitman-repositories/
-node_modules/
-python-vendor/
-venv/
-target/
-__pycache__/
+**/.mypy_cache/
+**/*Brewfile.lock.json
+**/build/
+**/dist/
+**/gitman-repositories/
+**/node_modules/
+**/python-vendor/
+**/venv/
+**/target/
+**/__pycache__/
