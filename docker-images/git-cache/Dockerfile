@@ -11,10 +11,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN touch '/root/.npmrc'
+    rm -rf /var/lib/apt/lists/* && \
+    touch '/root/.npmrc'
 # TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN touch '/root/.npmrc' && \
 #     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
 #     npm config set proxy https://npm-cache.matejhome.com && \
@@ -25,12 +25,15 @@ RUN touch '/root/.npmrc'
 FROM node:26.10.0-slim AS nodejs_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json ./docker-images/git-cache/tsconfig.json /homelab/
-COPY ./docker-images/git-cache/src/ /homelab/src/
+COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
-    npm run build && \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+COPY ./docker-images/git-cache/tsconfig.json /homelab/
+COPY ./docker-images/git-cache/src/ /homelab/src/
+RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 ### Healthcheck ###

@@ -13,9 +13,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcac
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION="ignore"
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --no-compile --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
@@ -29,9 +31,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_apt
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION="ignore"
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --no-compile --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
@@ -45,10 +49,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN touch '/root/.npmrc'
+    rm -rf /var/lib/apt/lists/* && \
+    touch '/root/.npmrc'
 # TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN touch '/root/.npmrc' && \
 #     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
 #     npm config set proxy https://npm-cache.matejhome.com && \
@@ -59,10 +63,12 @@ RUN touch '/root/.npmrc'
 FROM yq AS config_1
 USER root
 WORKDIR /homelab
-COPY ./servers/ /homelab/servers/
-COPY ./docker-compose/ /homelab/docker-compose/
+# COPY ./servers/ /homelab/servers/
+# COPY ./docker-compose/ /homelab/docker-compose/
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/healthchecks/setup/extra-entries.yml ./docker-images/healthchecks/setup/parse-app-entry.sh /homelab/
-RUN printf 'apps:\n' >'/homelab/app-entries.yml' && \
+RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
+    --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
+    printf 'apps:\n' >'/homelab/app-entries.yml' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
     cat './app-entries.yml' './extra-entries.yml' >'./all-entries.yml' && \
@@ -93,6 +99,8 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 COPY ./docker-images/healthchecks/setup/tsconfig.json /homelab/
 COPY ./docker-images/healthchecks/setup/src/ /homelab/src/
 RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 ### Healthcheck ###

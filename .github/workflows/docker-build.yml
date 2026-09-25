@@ -131,7 +131,7 @@ jobs:
       - name: Install Pip dependencies
         run: |
           set -euf
-          python3 -m pip install yq
+          python3 -m pip install --no-compile yq
 
       - name: Debug build environment
         run: |

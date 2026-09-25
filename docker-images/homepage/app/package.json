@@ -17,6 +17,8 @@
     "@tsconfig/recommended": "^1.0.13",
     "@types/chai": "^5.2.3",
     "@types/node": "^26.6.2",
+    "modclean": "^3.0.0-beta.1",
+    "node-prune": "^1.0.2",
     "rollup": "^4.63.4",
     "terser": "^5.51.2",
     "tslib": "^2.8.1",

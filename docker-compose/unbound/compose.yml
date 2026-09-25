@@ -24,10 +24,10 @@ services:
       service: template
     # Override:
     build:
-      cache_from:
-        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-prometheus-exporter
-      cache_to:
-        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-prometheus-exporter
+      # cache_from:
+      #   - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-app-prometheus-exporter
+      # cache_to:
+      #   - ${DOCKER_COMPOSE_BUILDCACHE_TO}-app-prometheus-exporter
       dockerfile: ./docker-images/unbound/prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0

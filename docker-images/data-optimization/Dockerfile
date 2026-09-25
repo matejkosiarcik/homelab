@@ -11,11 +11,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN printf '' >/root/.gitconfig && \
-    { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
-    git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
+    rm -rf /var/lib/apt/lists/* && \
+    printf '' >/root/.gitconfig
+# TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
+# RUN printf '' >/root/.gitconfig && \
+#     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
+#     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
 
 FROM node:26.10.0-slim AS npmconfig
 USER root
@@ -25,10 +27,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN touch '/root/.npmrc'
+    rm -rf /var/lib/apt/lists/* && \
+    touch '/root/.npmrc'
 # TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN touch '/root/.npmrc' && \
 #     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
 #     npm config set proxy https://npm-cache.matejhome.com && \
@@ -40,9 +42,11 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION="ignore"
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --requirement './requirements.txt' --target './python-vendor' --quiet
+    python3 -m pip install --no-compile --requirement './requirements.txt' --target './python-vendor' --quiet
 
 ### Supercronic ###
 
@@ -90,23 +94,29 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 FROM node:26.10.0-slim AS nodejs_main_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json ./docker-images/data-optimization/tsconfig.json /homelab/
-COPY ./docker-images/data-optimization/src/ /homelab/src/
+COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
-    npm run build && \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+COPY ./docker-images/data-optimization/tsconfig.json /homelab/
+COPY ./docker-images/data-optimization/src/ /homelab/src/
+RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 FROM node:26.10.0-slim AS nodejs_server_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
-COPY ./docker-images/.shared/cron-utils/on-demand/src/ /homelab/src/
+COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
-    npm run build && \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+COPY ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
+COPY ./docker-images/.shared/cron-utils/on-demand/src/ /homelab/src/
+RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 ### Healthcheck ###
