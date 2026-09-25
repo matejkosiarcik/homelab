@@ -1834,7 +1834,7 @@ vikunja)
     # Preload #
     matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
     homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
-    jwt_secret="$(load_secret ".${app_full_name_key}.app.jwt_secret" "dev=value=$(openssl rand -hex 32)")"
+    secret_key="$(load_secret ".${app_full_name_key}.app.secret_key" "dev=value=$(openssl rand -hex 32)")"
     app_prometheus_password="$(load_secret ".${app_full_name_key}.app.prometheus_user" dev=default)"
 
     # App #
@@ -1844,8 +1844,8 @@ vikunja)
     printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
     printf 'HOMELAB_TEST_PASSWORD="%s"\n' "${homelab_test_password}" >>"${initial_output}/app.env"
 
-    printf 'jwt-secret,%s\n' "${jwt_secret}" >>"${initial_output}/.secrets.csv"
-    printf 'VIKUNJA_SERVICE_JWTSECRET="%s"\n' "${jwt_secret}" >>"${initial_output}/app.env"
+    printf 'secret-key,%s\n' "${secret_key}" >>"${initial_output}/.secrets.csv"
+    printf 'VIKUNJA_SERVICE_SECRET="%s"\n' "${secret_key}" >>"${initial_output}/app.env"
 
     printf 'app-prometheus,%s\n' "${app_prometheus_password}" >>"${initial_output}/.secrets.csv"
     printf 'VIKUNJA_METRICS_PASSWORD="%s"\n' "${app_prometheus_password}" >>"${initial_output}/app.env"
