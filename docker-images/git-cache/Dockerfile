@@ -25,12 +25,13 @@ RUN touch '/root/.npmrc'
 FROM node:26.10.0-slim AS nodejs_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json ./docker-images/git-cache/tsconfig.json /homelab/
-COPY ./docker-images/git-cache/src/ /homelab/src/
+COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
-    npm run build && \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+COPY ./docker-images/git-cache/tsconfig.json /homelab/
+COPY ./docker-images/git-cache/src/ /homelab/src/
+RUN npm run build && \
     npm prune --production
 
 ### Healthcheck ###
