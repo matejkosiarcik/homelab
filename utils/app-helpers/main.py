@@ -25,7 +25,7 @@ app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 log_dir = path.join(app_dir, "app-logs", ".meta")
 
-buildcache_dir_root = path.join(git_dir, ".build-cache")
+# buildcache_dir_root = path.join(git_dir, ".build-cache")
 
 is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
 is_ci_gha = is_ci and bool(os.environ.get("GITHUB_ACTIONS") == "true")
@@ -35,7 +35,7 @@ if path.exists(log_dir):
     shutil.rmtree(log_dir)
 os.makedirs(log_dir, exist_ok=True)
 
-os.makedirs(buildcache_dir_root, exist_ok=True)
+# os.makedirs(buildcache_dir_root, exist_ok=True)
 
 
 @dataclass
