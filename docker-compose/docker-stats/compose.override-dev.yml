@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
 
-  socket-proxy:
+  docker-socket-proxy:
     <<: *common-service-options
 
   certificator:

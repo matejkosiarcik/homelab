@@ -10,26 +10,26 @@ services:
       dockerfile: ./docker-images/dozzle/Dockerfile
     command: agent
     depends_on:
-      socket-proxy:
+      docker-socket-proxy:
         condition: service_started
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
     environment:
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
-      DOCKER_HOST: tcp://socket-proxy:2375
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
     networks:
       - external-network
       - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-cert.pem:/certs/dozzle-cert.pem:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-key.pem:/certs/dozzle-key.pem:ro
-      # Docker socket intentionally left out, as we are using socket-proxy
+      # Docker socket intentionally left out, as we are using docker-socket-proxy
 
-  socket-proxy:
+  docker-socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: socket-proxy
+      service: docker-socket-proxy
     # Override:
     environment:
       CONTAINERS: 1

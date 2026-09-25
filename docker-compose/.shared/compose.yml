@@ -130,18 +130,18 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter:1.0.0
 
-  socket-proxy:
+  docker-socket-proxy:
     extends:
       service: template
     # Override:
     build:
       cache_from:
-        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-socket-proxy
+        - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-docker-socket-proxy
       cache_to:
-        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-socket-proxy
-      dockerfile: ./docker-images/socket-proxy/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-socket-proxy
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-socket-proxy:1.0.0
+        - ${DOCKER_COMPOSE_BUILDCACHE_TO}-docker-socket-proxy
+      dockerfile: ./docker-images/docker-socket-proxy/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:1.0.0
     tmpfs:
       - /run:rw,uid=0,gid=0
     volumes:
@@ -159,7 +159,7 @@ services:
       dockerfile: ./docker-images/docker-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     environment:
-      DOCKER_HOST: tcp://socket-proxy:2375
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
     tmpfs:
