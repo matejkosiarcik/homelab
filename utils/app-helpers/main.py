@@ -174,8 +174,9 @@ def load_full_env():
         buildcache_to = f"type=local,dest={buildcache_dir}"
     else:
         # NOTE: The src/dest are not necessary for "inline", but used for compatibility with compose.yml files
-        buildcache_from = f"type=inline,src={app_config.app_shortname}"
-        buildcache_to = f"type=inline,dest={app_config.app_shortname}"
+        # buildcache_from = f"type=inline,src={app_config.app_shortname}"
+        # buildcache_to = f"type=inline,dest={app_config.app_shortname}"
+        pass
     default_env_values = {
         "DOCKER_COMPOSE_APP_FULLNAME": app_config.app_fullname,
         "DOCKER_COMPOSE_APP_SHORTNAME": app_config.app_shortname,
