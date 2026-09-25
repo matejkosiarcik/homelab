@@ -166,24 +166,23 @@ def load_full_env():
     default_protocol = "smb" if "samba" in app_config.app_fullname else "https"
     default_port = "8443" if env_mode == "dev" else ""
     port_delimiter = ":" if default_port != "" else ""
-    if is_ci_gha:
-        buildcache_scope = f"{re.sub(r'[^a-zA-Z0-9]', '-', os.environ.get('GITHUB_WORKFLOW', 'local'))}-{app_config.app_shortname}".lower()
-        buildcache_dir = path.join(buildcache_dir_root, buildcache_scope)
-        print(f"Using buildcache directory: {buildcache_dir}-*")
-        buildcache_from = f"type=local,src={buildcache_dir}"
-        buildcache_to = f"type=local,dest={buildcache_dir}"
-    else:
-        # NOTE: The src/dest are not necessary for "inline", but used for compatibility with compose.yml files
-        # buildcache_from = f"type=inline,src={app_config.app_shortname}"
-        # buildcache_to = f"type=inline,dest={app_config.app_shortname}"
-        pass
+    # if is_ci_gha:
+    #     buildcache_scope = f"{re.sub(r'[^a-zA-Z0-9]', '-', os.environ.get('GITHUB_WORKFLOW', 'local'))}-{app_config.app_shortname}".lower()
+    #     buildcache_dir = path.join(buildcache_dir_root, buildcache_scope)
+    #     print(f"Using buildcache directory: {buildcache_dir}-*")
+    #     buildcache_from = f"type=local,src={buildcache_dir}"
+    #     buildcache_to = f"type=local,dest={buildcache_dir}"
+    # else:
+    #     # NOTE: The src/dest are not necessary for "inline", but used for compatibility with compose.yml files
+    #     buildcache_from = f"type=inline,src={app_config.app_shortname}"
+    #     buildcache_to = f"type=inline,dest={app_config.app_shortname}"
     default_env_values = {
         "DOCKER_COMPOSE_APP_FULLNAME": app_config.app_fullname,
         "DOCKER_COMPOSE_APP_SHORTNAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
         "DOCKER_COMPOSE_APP_TYPE": app_config.app_type,
-        "DOCKER_COMPOSE_BUILDCACHE_FROM": buildcache_from,
-        "DOCKER_COMPOSE_BUILDCACHE_TO": buildcache_to,
+        # "DOCKER_COMPOSE_BUILDCACHE_FROM": buildcache_from,
+        # "DOCKER_COMPOSE_BUILDCACHE_TO": buildcache_to,
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": app_config.app_domain,
         "DOCKER_COMPOSE_NETWORK_IP": app_config.app_ip,
