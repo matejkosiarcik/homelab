@@ -144,12 +144,13 @@ RUN yq '.' '/homelab/urls.yml' >'/homelab/urls.json'
 FROM node:26.10.0-slim AS nodejs_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/favicons/package-lock.json ./docker-images/favicons/package.json ./docker-images/favicons/tsconfig.json /homelab/
-COPY ./docker-images/favicons/src/ /homelab/src/
+COPY ./docker-images/favicons/package-lock.json ./docker-images/favicons/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
-    npm run build && \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+COPY ./docker-images/favicons/tsconfig.json /homelab/
+COPY ./docker-images/favicons/src/ /homelab/src/
+RUN npm run build && \
     npm prune --production
 
 ### Healthcheck ###
