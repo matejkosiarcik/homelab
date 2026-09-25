@@ -1,19 +1,60 @@
-# App data
-**/app-data/
-**/app-data.*/
-**/app-data-*/
-**/app-logs/
-**/app-logs.*/
-**/app-logs-*/
-**/app-secrets/
-**/app-secrets.*/
-**/app-secrets-*/
+# Special things for docker-ignore
 **/compose*.yml
 **/Taskfile.yml
 
+# Usual stuff from gitignore below
+# For testing services
+.backup/
+.env
+.errors/
+.export/
+.logs/
+app-data-*/
+app-data.*/
+app-data/
+app-logs-*/
+app-logs.*/
+app-logs/
+app-secrets-*/
+app-secrets.*/
+app-secrets/
+test-report/
+tmp/
+.build-cache/
+
+# For deployment
+/servers/.current
+/.deployment/
+/worktree-*
+
 # OS stuff
-**/._*
-**/.DS_Store
-**/[Dd]esktop.ini
-**/*~
-**/Thumbs.db
+._*
+.DS_Store
+[Dd]esktop.ini
+*~
+Thumbs.db
+
+# Editors:
+# JetBrains
+.idea/
+# VSCode
+.vscode/
+# Vim
+*.vim
+# Sublime Text
+*.sublime-*
+Package Control.*
+# DrawIO
+*.bkp
+
+# dependencies
+.mypy_cache/
+*Brewfile.lock.json
+build/
+dist/
+gitman-repositories/
+node_modules/
+python-vendor/
+venv/
+target/
+__pycache__/

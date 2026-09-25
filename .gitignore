@@ -5,10 +5,13 @@
 .export/
 .logs/
 app-data-*/
+app-data.*/
 app-data/
 app-logs-*/
+app-logs.*/
 app-logs/
 app-secrets-*/
+app-secrets.*/
 app-secrets/
 test-report/
 tmp/
