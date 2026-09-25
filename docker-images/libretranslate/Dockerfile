@@ -13,9 +13,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_libretran
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         build-essential cmake g++ gcc libprotobuf-dev libsentencepiece-dev libsentencepiece0 pkg-config procps protobuf-compiler python3 python3-dev python3-pip python3-sentencepiece sentencepiece >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-ENV PIP_ROOT_USER_ACTION="ignore"
 COPY ./docker-images/libretranslate/requirements.txt ./
-ENV PIP_ROOT_USER_ACTION="ignore"
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_libretranslate_build_pipcache \
     python3 -m pip install --no-compile --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \

@@ -46,12 +46,14 @@ bootstrap:
 		cd "$(PROJECT_DIR)/$${component}" && \
 		if [ -e ./venv ]; then true; else python3 -m venv ./venv; fi && \
 		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
-		PIP_DISABLE_PIP_VERSION_CHECK=1 \
+		PIP_DISABLE_PIP_VERSION_CHECK='1' \
+		PYTHONDONTWRITEBYTECODE='1' \
 			python3 -m pip install --no-compile --requirement './requirements.txt' --quiet --upgrade && \
 	true; done
 
 	PATH="$(PROJECT_DIR)/icons/venv/bin:$${PATH}" \
-	PIP_DISABLE_PIP_VERSION_CHECK=1 \
+	PIP_DISABLE_PIP_VERSION_CHECK='1' \
+	PYTHONDONTWRITEBYTECODE='1' \
 		gitman install --root icons
 	# --quiet --force
 

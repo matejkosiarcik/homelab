@@ -23,7 +23,9 @@ FROM python:3.14.7-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION="ignore"
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --no-compile --requirement './requirements.txt' --target './python-vendor' --quiet
 

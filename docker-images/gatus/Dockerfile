@@ -29,7 +29,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcac
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION="ignore"
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --no-compile --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
@@ -45,7 +47,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_apt
         jq python3 python3-pip >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
-ENV PIP_ROOT_USER_ACTION="ignore"
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --no-compile --requirement requirements.txt --target python-vendor --quiet
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
