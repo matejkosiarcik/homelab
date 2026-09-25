@@ -35,11 +35,13 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 FROM yq AS dns_entries
 USER root
 WORKDIR /homelab
-COPY ./servers/ /homelab/servers/
-COPY ./docker-compose/ /homelab/docker-compose/
+# COPY ./servers/ /homelab/servers/
+# COPY ./docker-compose/ /homelab/docker-compose/
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
 COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
-RUN find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
+RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
+    --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
+    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
     cat '/homelab/app-domains.txt' '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sort --version-sort >'/homelab/custom-domains.txt'
 
 ### User setup ###
