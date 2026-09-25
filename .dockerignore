@@ -1,6 +1,8 @@
 # Special things for docker-ignore
 **/compose*.yml
 **/Taskfile.yml
+.git/
+secrets/
 ansible/
 docs/
 tests/
