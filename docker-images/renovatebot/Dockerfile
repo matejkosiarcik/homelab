@@ -11,11 +11,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN printf '' >/root/.gitconfig && \
-    { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
-    git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
+    rm -rf /var/lib/apt/lists/* && \
+    printf '' >/root/.gitconfig
+# TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
+# RUN printf '' >/root/.gitconfig && \
+#     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
+#     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
 
     FROM node:26.10.0-slim AS npmconfig
 USER root
@@ -25,10 +27,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY ./docker-images/.shared/anticache.txt /homelab/
-RUN touch '/root/.npmrc'
+    rm -rf /var/lib/apt/lists/* && \
+    touch '/root/.npmrc'
 # TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN touch '/root/.npmrc' && \
 #     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
 #     npm config set proxy https://npm-cache.matejhome.com && \
