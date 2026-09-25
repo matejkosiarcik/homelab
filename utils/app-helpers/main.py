@@ -32,6 +32,7 @@ if path.exists(log_dir):
     shutil.rmtree(log_dir)
 os.makedirs(log_dir, exist_ok=True)
 
+
 @dataclass
 class AppConfig:
     app_fullname: str
