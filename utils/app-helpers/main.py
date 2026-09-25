@@ -84,9 +84,11 @@ def tty_supports_color():
 
 ascii_checkmark = "✔"
 ascii_cross = "✘"
+ascii_skip = "⏭"
 if tty_supports_color():
     ascii_checkmark = f"\033[32m{ascii_checkmark}\033[0m"
     ascii_cross = f"\033[31m{ascii_cross}\033[0m"
+    ascii_skip = f"\033[36m{ascii_skip}\033[0m"
 
 
 last_exit_code: int | None = None
@@ -435,6 +437,9 @@ def run_main_command(command: str):
         if when_mode == "always" or (when_mode == "onchange" and shasum_before != shasum_after):
             docker_stop()
             docker_start()
+        else:
+            print(f"{ascii_skip} Stop skipped")
+            print(f"{ascii_skip} Start skipped")
     elif command == "restart":
         docker_stop()
         docker_start()
