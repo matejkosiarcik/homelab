@@ -32,6 +32,8 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 COPY ./docker-images/git-cache/tsconfig.json /homelab/
 COPY ./docker-images/git-cache/src/ /homelab/src/
 RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 ### Healthcheck ###

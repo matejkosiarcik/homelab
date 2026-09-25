@@ -97,6 +97,8 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 COPY ./docker-images/data-optimization/tsconfig.json /homelab/
 COPY ./docker-images/data-optimization/src/ /homelab/src/
 RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 FROM node:26.10.0-slim AS nodejs_server_build
@@ -109,6 +111,8 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 COPY ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
 COPY ./docker-images/.shared/cron-utils/on-demand/src/ /homelab/src/
 RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 ### Healthcheck ###

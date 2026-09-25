@@ -106,6 +106,8 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 COPY ./docker-images/apache/errors/eleventy.config.js ./docker-images/apache/errors/postcss.config.js ./docker-images/apache/errors/terser.json ./docker-images/apache/errors/vite.config.ts ./docker-images/apache/errors/tsconfig.json /homelab/
 COPY ./docker-images/apache/errors/src/ /homelab/src/
 RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 ### Healthcheck ###

@@ -33,6 +33,8 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 COPY ./docker-images/homepage/app/terser.json ./docker-images/homepage/app/tsconfig.json ./docker-images/homepage/app/vite.config.ts /homelab/
 COPY ./docker-images/homepage/app/src/ /homelab/src/
 RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
     npm prune --production
 
 ### Other ###
