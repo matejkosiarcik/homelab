@@ -139,7 +139,7 @@ services:
         - ${DOCKER_COMPOSE_BUILDCACHE_FROM}-docker-socket-proxy
       cache_to:
         - ${DOCKER_COMPOSE_BUILDCACHE_TO}-docker-socket-proxy
-      dockerfile: ./docker-images/docker-socket-proxy/Dockerfile
+      dockerfile: ./docker-images/socket-proxy/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:1.0.0
     tmpfs:
