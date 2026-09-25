@@ -54,10 +54,10 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
 
-  socket-proxy:
+  docker-socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: socket-proxy
+      service: docker-socket-proxy
     # Override:
     environment:
       CONTAINERS: 1

@@ -23,10 +23,10 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: docker-app-setup
 
-  socket-proxy:
+  docker-socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: socket-proxy
+      service: docker-socket-proxy
     # Override:
     environment:
       CONTAINERS: 1

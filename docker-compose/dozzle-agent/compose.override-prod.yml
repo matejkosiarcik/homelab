@@ -8,5 +8,5 @@ services:
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:7007:7007
 
-  socket-proxy:
+  docker-socket-proxy:
     <<: *common-service-options

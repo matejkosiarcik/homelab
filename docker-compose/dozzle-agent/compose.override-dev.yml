@@ -8,5 +8,5 @@ services:
     ports:
       - 127.0.0.1:7007:7007
 
-  socket-proxy:
+  docker-socket-proxy:
     <<: *common-service-options

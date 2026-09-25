@@ -15,7 +15,7 @@ services:
   app-prometheus-exporter:
     <<: *common-service-options
 
-  socket-proxy:
+  docker-socket-proxy:
     <<: *common-service-options
 
   certificator:
