@@ -100,7 +100,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM prom/prometheus:v3.14.0
+FROM prom/prometheus:v3.15.0
 USER root
 ARG GID=1000
 ARG UID=1000
