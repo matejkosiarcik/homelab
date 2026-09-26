@@ -156,7 +156,7 @@ COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
 
 ### Final ###
 
-FROM renovate/renovate:44.115.2-full
+FROM renovate/renovate:44.115.10-full
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 RUN chown -R homelab:homelab /usr/src/app
