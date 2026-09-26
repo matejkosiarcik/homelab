@@ -480,13 +480,18 @@ def main(argv):
             deploy_when_group = subcommand.add_mutually_exclusive_group()
             deploy_when_group.add_argument(
                 "--onchange",
-                action="store_true",
-                help="Deploy app only when build changed. When there is no change, app is not restarted.",
+                dest="when_mode",
+                action="store_const",
+                const="onchange",
+                default="onchange",
+                help="Restart app only when build changed (default). When there is no change, app is not restarted.",
             )
             deploy_when_group.add_argument(
                 "--always",
-                action="store_true",
-                help="Deploy app always, regardless if the build changed or not.",
+                dest="when_mode",
+                action="store_const",
+                const="always",
+                help="Restart app always, regardless if the build changed or not.",
             )
             subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
@@ -502,7 +507,7 @@ def main(argv):
     is_dryrun = args.dry_run
 
     if command == "deploy":
-        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always"
+        when_mode = args.when_mode
         include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
