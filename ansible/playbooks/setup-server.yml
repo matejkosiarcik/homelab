@@ -4,6 +4,22 @@
     - name: Ping
       ansible.builtin.ping:
 
+    - name: Locate Bash
+      register: bash_path
+      changed_when: false
+      ansible.builtin.shell: |
+        set -euf
+        command -v bash
+
+    - name: Test Bash path
+      register: test_bash_path
+      changed_when: false
+      args:
+        executable: "{{ bash_path.stdout }}"
+      ansible.builtin.shell: |
+        set -euf
+        true
+
     ## APT ##
 
     - name: Update APT index
@@ -155,6 +171,8 @@
       register: docker_memory_monitoring
       when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
       changed_when: "'CHANGED' in docker_memory_monitoring.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -204,6 +222,8 @@
       register: ssh_restart
       when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname'] and ssh_config.changed
       changed_when: "'CHANGED' in ssh_restart.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -233,6 +253,8 @@
       register: log2ram_install
       when: ansible_facts['system'] == 'Linux' and 'raspberry' in ansible_facts['hostname']
       changed_when: "'CHANGED' in log2ram_install.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -256,6 +278,8 @@
     - name: Verify log2ram installation
       when: log2ram_install.changed
       changed_when: "False"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -268,6 +292,8 @@
       register: install_nodejs
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       changed_when: "'CHANGED' in install_nodejs.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -316,6 +342,8 @@
     - name: Install Task
       register: install_task
       changed_when: "'CHANGED' in install_task.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -330,6 +358,8 @@
     - name: Install SOPS
       register: install_sops
       changed_when: "'CHANGED' in install_sops.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -351,6 +381,8 @@
     - name: Update Pipx packages
       register: update_pipx
       changed_when: "'CHANGED' in update_pipx.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -369,6 +401,8 @@
       register: docker_install
       when: ansible_facts['system'] == 'Linux'
       changed_when: "'CHANGED' in docker_install.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -394,6 +428,8 @@
     - name: Verify docker installation
       when: ansible_facts['system'] == 'Linux' and docker_install.changed
       changed_when: "False"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -404,6 +440,8 @@
       register: docker_startup
       when: ansible_facts['system'] == 'Linux' and docker_install.changed
       changed_when: "'CHANGED' in docker_startup.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -445,6 +483,8 @@
 
     - name: Restart docker
       when: ansible_facts['system'] == 'Linux' and docker_config.changed
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -457,6 +497,8 @@
       become: true
       when: ansible_facts['system'] == 'Linux'
       changed_when: "'CHANGED' in docker_throttle.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -477,6 +519,8 @@
     - name: Configure sensors
       when: apt_packages.changed
       changed_when: "True"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         (yes || true) | sudo sensors-detect
@@ -486,6 +530,8 @@
       register: setup_locale
       when: ansible_facts['system'] == 'Linux'
       changed_when: "'CHANGED' in setup_locale.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -508,6 +554,8 @@
     - name: Create cron log directory
       register: create_cron_log_dir
       changed_when: "'CHANGED' in create_cron_log_dir.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -523,6 +571,8 @@
     - name: Git clone homelab
       register: git_clone_homelab
       changed_when: "'CHANGED' in git_clone_homelab.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -536,6 +586,8 @@
     - name: Setup current server symlink
       register: git_current_symlink
       changed_when: "'CHANGED' in git_current_symlink.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -560,6 +612,8 @@
     - name: Update homelab repository
       register: update_git_homelab
       changed_when: "'CHANGED' in update_git_homelab.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -592,6 +646,8 @@
     - name: Install server-wide utils
       register: server_install
       changed_when: "'CHANGED' in server_install.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -626,6 +682,8 @@
       register: update_secrets
       when: sync_secrets.changed
       changed_when: "'CHANGED' in update_secrets.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -646,6 +704,8 @@
     - name: Git clone dotfiles
       register: git_clone_dotfiles
       changed_when: "'CHANGED' in git_clone_dotfiles.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -659,6 +719,8 @@
     - name: Update dotfiles repository
       register: update_git_dotfiles
       changed_when: "'CHANGED' in update_git_dotfiles.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"

@@ -4,6 +4,22 @@
     - name: Ping
       ansible.builtin.ping:
 
+    - name: Locate Bash
+      register: bash_path
+      changed_when: false
+      ansible.builtin.shell: |
+        set -euf
+        command -v bash
+
+    - name: Test Bash path
+      register: test_bash_path
+      changed_when: false
+      args:
+        executable: "{{ bash_path.stdout }}"
+      ansible.builtin.shell: |
+        set -euf
+        true
+
     - name: Update APT index
       when: ansible_facts['system'] == 'Linux' and ansible_facts['os_family'] == 'Debian'
       become: true
@@ -28,6 +44,8 @@
     - name: Update Pipx packages
       register: update_pipx
       changed_when: "'CHANGED' in update_pipx.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -43,6 +61,8 @@
     - name: Update homelab repository
       register: update_git_homelab
       changed_when: "'CHANGED' in update_git_homelab.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -75,6 +95,8 @@
     - name: Update dotfiles repository
       register: update_git_dotfiles
       changed_when: "'CHANGED' in update_git_dotfiles.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -120,6 +142,8 @@
       register: update_secrets
       when: sync_secrets.changed
       changed_when: "'CHANGED' in update_secrets.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
