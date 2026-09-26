@@ -62,13 +62,16 @@ USER root
 WORKDIR /homelab
 # COPY ./servers/ /homelab/servers/
 # COPY ./docker-compose/ /homelab/docker-compose/
-COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/gatus/extra-entries.yml ./docker-images/gatus/parse-app-entry.sh /homelab/
+COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/gatus/extra-entries.yml ./docker-images/gatus/parse-app-entry.sh ./docker-images/gatus/parse-server-entry.sh /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
+    printf 'servers:\n' >'/homelab/server-entries.yml' && \
+    find '/homelab/servers' -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-server-entry.sh' % '/homelab/server-entries.yml' && \
+    yq --in-place --yaml-output '.servers |= sort_by(.name, .domain)' '/homelab/server-entries.yml' && \
     printf 'apps:\n' >'/homelab/app-entries.yml' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
-    cat '/homelab/extra-entries.yml' '/homelab/app-entries.yml' >'/homelab/all-entries.yml' && \
+    cat '/homelab/extra-entries.yml' '/homelab/server-entries.yml' '/homelab/app-entries.yml' >'/homelab/all-entries.yml' && \
     yq '.' '/homelab/all-entries.yml' >'/homelab/data.json'
 
 FROM jinja AS config_2

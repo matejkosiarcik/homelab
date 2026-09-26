@@ -1,5 +1,0 @@
-app:
-  type: samba
-
-network:
-  ip: 10.1.18.31

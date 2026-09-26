@@ -257,18 +257,6 @@
           type: mjpeg
           stream: "https://homelab-stream:{{HOMEPAGE_VAR__MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD}}@motioneye-kitchen.matejhome.com/stream"
 
-    - Desklamp - left:
-        description: Custom Smart Lamp
-        href: http://desklamp-left.matejhome.com
-        ping: desklamp-left.matejhome.com
-        icon: /icons/lightbulb.png
-
-    - Desklamp - right:
-        description: Custom Smart Lamp
-        href: http://desklamp-right.matejhome.com
-        ping: desklamp-right.matejhome.com
-        icon: /icons/lightbulb.png
-
 - Data:
     - SMB (data):
         description: Main Data Store
