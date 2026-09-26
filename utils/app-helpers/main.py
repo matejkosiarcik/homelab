@@ -483,15 +483,14 @@ def main(argv):
                 dest="when_mode",
                 action="store_const",
                 const="onchange",
-                default="onchange",
-                help="Restart app only when build changed (default). When there is no change, app is not restarted.",
+                help="Restart app only when build changed (default in prod)",
             )
             deploy_when_group.add_argument(
                 "--always",
                 dest="when_mode",
                 action="store_const",
                 const="always",
-                help="Restart app always, regardless if the build changed or not.",
+                help="Restart app always, regardless if the build changed or not (default in dev)",
             )
             subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
@@ -507,7 +506,6 @@ def main(argv):
     is_dryrun = args.dry_run
 
     if command == "deploy":
-        when_mode = args.when_mode
         include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
@@ -521,6 +519,9 @@ def main(argv):
     if env_mode not in ["dev", "prod"]:
         print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
         sys.exit(1)
+
+    if command == "deploy":
+        when_mode = args.when_mode or ("always" if env_mode == "dev" else "onchange")
 
     if command not in ["build", "debug-compose", "deploy", "restart", "secrets", "start", "stop"]:
         print(f"Unrecognized command: {command}")
