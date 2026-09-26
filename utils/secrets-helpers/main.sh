@@ -527,7 +527,6 @@ gatus)
     printf 'GATUS_1__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.gatus_1.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GATUS_2__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.gatus_2.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GOTIFY__TOKEN="%s"\n' "$(load_secret '.gotify.app.gatus_token' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.homepage.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'KIWIX_WIKIPEDIA__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.kiwix_wikipedia.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'KIWIX_WIKTIONARY__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.kiwix_wiktionary.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'LIBRETRANSLATE__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.libretranslate.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
