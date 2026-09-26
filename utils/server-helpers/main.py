@@ -120,8 +120,20 @@ def main(argv: list[str]):
         subcommand.add_argument("--jobs", type=int, default=1, help="A number of simultaneous actions to perform")
         if subcommand_name == "deploy":
             deploy_when_group = subcommand.add_mutually_exclusive_group()
-            deploy_when_group.add_argument("--onchange", action="store_true", help="Deploy apps only when build changed. When there is no change, app is not restarted.")
-            deploy_when_group.add_argument("--always", action="store_true", help="Deploy apps always, regardless if the build changed or not.")
+            deploy_when_group.add_argument(
+                "--onchange",
+                dest="when_mode",
+                action="store_const",
+                const="onchange",
+                help="Restart apps only when build changed (default in prod)",
+            )
+            deploy_when_group.add_argument(
+                "--always",
+                dest="when_mode",
+                action="store_const",
+                const="always",
+                help="Restart apps always, regardless if the build changed or not (default in dev)",
+            )
             subcommand.add_argument("--with-secrets", action="store_true", help="Also regenerate secrets")
         if subcommand_name in ["deploy", "build"]:
             subcommand.add_argument("--pull", action="store_true", help="Pull latest docker image from upstream registry")
@@ -136,7 +148,6 @@ def main(argv: list[str]):
     if command == "secrets":
         is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
     if command == "deploy":
-        when_mode = "onchange" if (hasattr(args, "onchange") and args.onchange is True) else "always"
         include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
 
     is_pull = hasattr(args, "pull") and args.pull is True
@@ -149,6 +160,9 @@ def main(argv: list[str]):
     if env_mode not in ["dev", "prod"]:
         print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
         sys.exit(1)
+
+    if command == "deploy":
+        when_mode = args.when_mode or ("always" if env_mode == "dev" else "onchange")
 
     if command == "install":
         server_install()
