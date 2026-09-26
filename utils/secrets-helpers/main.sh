@@ -851,7 +851,7 @@ homepage)
     printf 'HOMEPAGE_VAR__HOMEASSISTANT__APIKEY="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__JELLYFIN__APIKEY="%s"\n' "$(load_secret '.jellyfin.app.homelab_api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD="%s"\n' "$(load_secret '.motioneye_kitchen.app.homelab_stream_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR_NETALERTX_APIKEY="%s"\n' "$(load_secret '.netalertx.app.api_key' dev=real)" "${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR_NETALERTX_APIKEY="%s"\n' "$(load_secret '.netalertx.app.api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__OMADACONTROLLER__PASSWORD="%s"\n' "$(load_secret '.omadacontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PIHOLE_1__PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PIHOLE_2__PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"
