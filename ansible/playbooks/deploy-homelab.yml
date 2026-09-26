@@ -4,9 +4,27 @@
     - name: Ping
       ansible.builtin.ping:
 
+    - name: Locate Bash
+      register: bash_path
+      changed_when: false
+      ansible.builtin.shell: |
+        set -euf
+        command -v bash
+
+    - name: Test Bash path
+      register: test_bash_path
+      changed_when: false
+      args:
+        executable: "{{ bash_path.stdout }}"
+      ansible.builtin.shell: |
+        set -euf
+        true
+
     - name: Install global server scripts
       register: install
       changed_when: "'CHANGED' in install.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
@@ -38,6 +56,8 @@
     - name: Deploy homelab
       register: deploy
       changed_when: "'CHANGED' in deploy.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "$HOME/.profile"
