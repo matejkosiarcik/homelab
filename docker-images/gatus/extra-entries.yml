@@ -18,16 +18,4 @@ network:
   - name: Smart switch - TP-Link SG105E
     ip: 10.1.0.4
 
-servers:
-  - name: Odroid H3
-    domain: server-odroid-h3.matejhome.com
-  - name: Odroid H4 Ultra
-    domain: server-odroid-h4-ultra.matejhome.com
-  - name: Raspberry Pi 4B 2G
-    domain: server-raspberry-pi-4b-2g.matejhome.com
-  - name: Raspberry Pi 4B 4G
-    domain: server-raspberry-pi-4b-4g.matejhome.com
-  - name: MacBook Pro 2012
-    domain: server-macbook-pro-2012.matejhome.com
-
 # Apps are generated automatically
