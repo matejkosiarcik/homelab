@@ -1631,20 +1631,14 @@ smtp4dev)
     printf 'ServerOptions__Users__0__Password="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
     write_http_auth_user matej "${matej_password}" proxy-prometheus
-    write_http_auth_user matej "${matej_password}" users-viewers
-    write_http_auth_user matej "${matej_password}" users-admins
 
     printf 'ServerOptions__Users__1__Password="%s"\n' "${homelab_viewer_password}" >>"${initial_output}/app.env"
     printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" proxy-prometheus
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-viewers
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-admins
 
     printf 'ServerOptions__Users__2__Password="%s"\n' "${homelab_test_password}" >>"${initial_output}/app.env"
     printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
     write_http_auth_user homelab-test "${homelab_test_password}" proxy-prometheus
-    write_http_auth_user homelab-test "${homelab_test_password}" users-viewers
-    write_http_auth_user homelab-test "${homelab_test_password}" users-admins
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
