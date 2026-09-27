@@ -849,8 +849,8 @@ homepage)
     printf 'HOMEPAGE_VAR__GRAFANA__PASSWORD="%s"\n' "$(load_secret '.grafana.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__HEALTHCHECKS__APIKEY="%s"\n' "$(load_secret '.healthchecks.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__HOMEASSISTANT__APIKEY="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__JELLYFIN__APIKEY="%s"\n' "$(load_secret '.jellyfin.app.homelab_api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD="%s"\n' "$(load_secret '.motioneye_kitchen.app.homelab_stream_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__JELLYFIN__APIKEY="%s"\n' "$(load_secret '.jellyfin.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD="%s"\n' "$(load_secret '.motioneye_kitchen.app.stream_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR_NETALERTX_APIKEY="%s"\n' "$(load_secret '.netalertx.app.api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__OMADACONTROLLER__PASSWORD="%s"\n' "$(load_secret '.omadacontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PIHOLE_1__PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
@@ -862,7 +862,7 @@ homepage)
     printf 'HOMEPAGE_VAR__PROMETHEUS__PASSWORD="%s"\n' "$(load_secret '.prometheus.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY="%s"\n' "$(load_secret '.speedtesttracker.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD="%s"\n' "$(load_secret '.unificontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__VIKUNJA__APIKEY="%s"\n' "$(load_secret '.vikunja.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__VIKUNJA__APIKEY="%s"\n' "$(load_secret '.vikunja.app.matej_api_key_readonly' dev=real)" >>"${initial_output}/app.env"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -1327,7 +1327,7 @@ planka)
     printf 'DEFAULT_ADMIN_PASSWORD="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
     printf 'DEFAULT_ADMIN_EMAIL="%s"\n' "${matej_email}" >>"${initial_output}/app.env"
     printf 'DEFAULT_ADMIN_USERNAME="%s"\n' "$(printf '%s' "${matej_email}" | cut -d '@' -f 1)" >>"${initial_output}/app.env"
-    printf 'DEFAULT_ADMIN_NAME="%s"\n' "$(printf '%s' "${matej_email}" | cut -d '@' -f 1 | awk '{print toupper(substr(${0},0,1))substr(${0},2)}')" >>"${initial_output}/app.env"
+    printf 'DEFAULT_ADMIN_NAME="%s"\n' "$(printf '%s' "${matej_email}" | cut -d '@' -f 1 | awk '{print toupper(substr($0, 1, 1)) substr($0, 2)}')" >>"${initial_output}/app.env"
 
     # Postgres #
     printf 'DATABASE_PASSWORD="%s"\n' "${postgres_password}" >>"${initial_output}/app.env"
@@ -1631,20 +1631,14 @@ smtp4dev)
     printf 'ServerOptions__Users__0__Password="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
     write_http_auth_user matej "${matej_password}" proxy-prometheus
-    write_http_auth_user matej "${matej_password}" users-viewers
-    write_http_auth_user matej "${matej_password}" users-admins
 
     printf 'ServerOptions__Users__1__Password="%s"\n' "${homelab_viewer_password}" >>"${initial_output}/app.env"
     printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" proxy-prometheus
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-viewers
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-admins
 
     printf 'ServerOptions__Users__2__Password="%s"\n' "${homelab_test_password}" >>"${initial_output}/app.env"
     printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
     write_http_auth_user homelab-test "${homelab_test_password}" proxy-prometheus
-    write_http_auth_user homelab-test "${homelab_test_password}" users-viewers
-    write_http_auth_user homelab-test "${homelab_test_password}" users-admins
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
