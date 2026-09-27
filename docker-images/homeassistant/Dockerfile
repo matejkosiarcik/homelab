@@ -41,7 +41,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM homeassistant/home-assistant:2026.9.3 AS final
+FROM homeassistant/home-assistant:2026.9.4 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
