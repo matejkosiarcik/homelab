@@ -680,7 +680,7 @@
 
     - name: Update secrets
       register: update_secrets
-      when: sync_secrets.changed
+      when: "True" # NOTE: Intentionally run always in this file
       changed_when: "'CHANGED' in update_secrets.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
@@ -689,11 +689,11 @@
         source "$HOME/.profile"
 
         cd "$HOME/git/homelab/servers/.current"
-        before_sha="$(find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null | shasum)"
+        before_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
 
         task --taskfile './Taskfile.yml' secrets
 
-        after_sha="$(find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null | shasum)"
+        after_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
         if [ "$before_sha" != "$after_sha" ]; then
           printf 'CHANGED\n'
         fi
