@@ -862,7 +862,7 @@ homepage)
     printf 'HOMEPAGE_VAR__PROMETHEUS__PASSWORD="%s"\n' "$(load_secret '.prometheus.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY="%s"\n' "$(load_secret '.speedtesttracker.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD="%s"\n' "$(load_secret '.unificontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__VIKUNJA__APIKEY="%s"\n' "$(load_secret '.vikunja.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__VIKUNJA__APIKEY="%s"\n' "$(load_secret '.vikunja.app.matej_api_key_readonly' dev=real)" >>"${initial_output}/app.env"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"

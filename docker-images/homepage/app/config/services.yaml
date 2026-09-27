@@ -510,6 +510,7 @@
           type: vikunja
           url: https://vikunja.matejhome.com
           key: "{{HOMEPAGE_VAR__VIKUNJA__APIKEY}}"
+          version: 2
 
     - Dawarich:
         description: Location Tracking
