@@ -1327,7 +1327,7 @@ planka)
     printf 'DEFAULT_ADMIN_PASSWORD="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
     printf 'DEFAULT_ADMIN_EMAIL="%s"\n' "${matej_email}" >>"${initial_output}/app.env"
     printf 'DEFAULT_ADMIN_USERNAME="%s"\n' "$(printf '%s' "${matej_email}" | cut -d '@' -f 1)" >>"${initial_output}/app.env"
-    printf 'DEFAULT_ADMIN_NAME="%s"\n' "$(printf '%s' "${matej_email}" | cut -d '@' -f 1 | awk '{print toupper(substr(${0},0,1))substr(${0},2)}')" >>"${initial_output}/app.env"
+    printf 'DEFAULT_ADMIN_NAME="%s"\n' "$(printf '%s' "${matej_email}" | cut -d '@' -f 1 | awk '{print toupper(substr($0, 1, 1)) substr($0, 2)}')" >>"${initial_output}/app.env"
 
     # Postgres #
     printf 'DATABASE_PASSWORD="%s"\n' "${postgres_password}" >>"${initial_output}/app.env"
