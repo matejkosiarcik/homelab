@@ -133,7 +133,7 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     printf 'apps:\n' >'/homelab/app-entries.yml' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
-    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
+    yq --in-place --yaml-output '.apps |= (sort_by(.app_type) | unique_by(.app_type))' '/homelab/app-entries.yml' && \
     yq '.' '/homelab/app-entries.yml' >'/homelab/data.json'
 
 FROM jinja AS urls_config_2
