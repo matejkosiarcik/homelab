@@ -34,13 +34,13 @@ if [ "${#domain_header}" -gt "${max_domain_length}" ]; then
 fi
 ip_column_length="$((max_ip_length + 2))"
 domain_column_length="$((max_domain_length + 2))"
-ip_separator="$(printf '%*s' "${ip_column_length}" '' | tr ' ' '-')"
-domain_separator="$(printf '%*s' "${domain_column_length}" '' | tr ' ' '-')"
+ip_separator="$(printf '%*s' "$((ip_column_length + 2))" '' | tr ' ' '-')"
+domain_separator="$(printf '%*s' "$((domain_column_length + 2))" '' | tr ' ' '-')"
 
 {
     printf '\n'
     printf '| %-*s | %-*s |\n' "${ip_column_length}" "${ip_header}" "${domain_column_length}" "${domain_header}"
-    printf '| %s | %s |\n' "${ip_separator}" "${domain_separator}"
+    printf '|%s|%s|\n' "${ip_separator}" "${domain_separator}"
     while IFS=' ' read -r app_ip app_domain; do
         ip_padding="$((max_ip_length - ${#app_ip}))"
         domain_padding="$((max_domain_length - ${#app_domain}))"
