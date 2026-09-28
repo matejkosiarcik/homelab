@@ -10,6 +10,8 @@ services:
       dockerfile: ./docker-images/samba/Dockerfile
       args:
         HOMELAB_SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG}
+    cap_add:
+      - SYS_PTRACE # Necessary to export prometheus metrics
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
@@ -22,12 +24,15 @@ services:
       - internal-network
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /homelab/tmpfs/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/samba/private:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/default:/var/log/samba:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/default-1:/homelab/logs/samba:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/default-2:/var/log/samba:rw
 
   certificator:
     extends:
