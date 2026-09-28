@@ -2,6 +2,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "postinstall": "tsx postinstall.ts",
     "test": "playwright test"
   },
   "dependencies": {
@@ -13,20 +14,22 @@
     "date-fns": "^4.4.0",
     "dotenv": "^18.0.4",
     "execa": "^10.0.1",
+    "getos": "^3.2.1",
     "lodash": "^4.18.1",
     "lzma-native": "^8.0.6",
     "native-dns": "^0.7.0",
     "p-parallel": "^1.0.3",
     "promise-socket": "^8.0.0",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "sharp-ico": "^0.1.5",
     "tar": "^7.5.22",
     "tslib": "^2.8.1",
-    "user-agents": "^2.1.195"
+    "user-agents": "^2.1.196"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
     "@types/async": "^3.2.26",
+    "@types/getos": "^3.0.4",
     "@types/lodash": "^4.17.25",
     "@types/lzma-native": "^4.0.4",
     "@types/node": "^26.6.3",
