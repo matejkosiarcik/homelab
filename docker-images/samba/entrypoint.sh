@@ -3,7 +3,7 @@ set -euf
 
 # Samba has 2 stage entrypoint
 # This is 1st stage, which runs under user "root"
-# Because `samba_statusd` cannot run under diffferent user and `samba_exporter` has to run under the same user to access it's data
+# Because `samba_statusd` cannot run under different user and `samba_exporter` has to run under the same user to access it's data
 
 if [ ! -d '/var/lib/samba' ]; then
     printf 'Directory "/var/lib/samba" not found\n' >&2
