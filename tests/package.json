@@ -2,6 +2,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "postinstall": "tsx postinstall.ts",
     "test": "playwright test"
   },
   "dependencies": {
@@ -13,6 +14,7 @@
     "date-fns": "^4.4.0",
     "dotenv": "^18.0.4",
     "execa": "^10.0.1",
+    "getos": "^3.2.1",
     "lodash": "^4.18.1",
     "lzma-native": "^8.0.6",
     "native-dns": "^0.7.0",
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
     "@types/async": "^3.2.26",
+    "@types/getos": "^3.0.4",
     "@types/lodash": "^4.17.25",
     "@types/lzma-native": "^4.0.4",
     "@types/node": "^26.6.3",
