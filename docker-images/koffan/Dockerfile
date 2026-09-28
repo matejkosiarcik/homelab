@@ -28,7 +28,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ghcr.io/pansalut/koffan:v2.14.1
+FROM ghcr.io/pansalut/koffan:v2.15.0
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
