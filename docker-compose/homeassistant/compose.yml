@@ -18,7 +18,6 @@ services:
     networks:
       - external-network
       - internal-network
-    # privileged: true
     stop_grace_period: 30s
     tmpfs:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
