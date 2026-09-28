@@ -66,7 +66,10 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~pihole~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~pihole~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~pihole~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock pihole
 
 ### Prefinal ###
 
@@ -78,7 +81,7 @@ COPY --from=dns_entries /homelab/custom-domains.txt /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --chmod=0777 ./docker-images/pihole/app/capsh.sh /usr/sbin/capsh
@@ -86,9 +89,9 @@ COPY --chmod=0777 ./docker-images/pihole/app/setcap.sh /usr/sbin/setcap
 
 ### Final ###
 
-FROM pihole/pihole:2026.09.0
+FROM pihole/pihole:2026.09.0 AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /macvendor.db /etc/.pihole /etc/pihole /usr/local/bin/pihole /usr/bin/pihole-FTL && \
     mv /usr/sbin/setcap /usr/sbin/setcap-original && \
     mv /usr/sbin/capsh /usr/sbin/capsh-original

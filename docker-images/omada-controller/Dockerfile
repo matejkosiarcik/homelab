@@ -3,11 +3,6 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, the image switches to nonroot after it starts
 
-### App ###
-
-FROM mbentley/omada-controller:6.3 AS omadacontroller_app
-USER root
-
 ### User setup ###
 
 # hadolint ignore=DL3007
@@ -22,7 +17,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_omadacont
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=omadacontroller_app /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
@@ -30,7 +25,11 @@ RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~omada~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~omada~' | sponge --append /etc/passwd && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~mongodb~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~mongodb~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~mongodb~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock omada && \
+    passwd --lock mongodb
 
 ### Prefinal ###
 
@@ -38,17 +37,17 @@ FROM scratch AS homelab_dir
 WORKDIR /homelab
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM mbentley/omada-controller:6.3
+FROM mbentley/omada-controller:6.3 AS final
 USER root
 ARG GID=1000
 ARG UID=1000
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="omadacontroller" \

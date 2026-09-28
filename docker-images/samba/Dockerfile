@@ -119,14 +119,74 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.7-slim
+FROM debian:13.7-slim AS final
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_samba_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        gnutls-bin samba && \
-    rm -rf /var/lib/apt/lists/*
+        samba >/dev/null && \
+    rm -rf \
+        /etc/apparmor.d/samba \
+        /etc/apt \
+        /etc/cron.d \
+        /etc/cron.daily \
+        /etc/cron.hourly \
+        /etc/cron.monthly \
+        /etc/cron.weekly \
+        /etc/cron.yearly \
+        /etc/init.d \
+        /etc/logrotate.d \
+        /etc/rc0.d \
+        /etc/rc1.d \
+        /etc/rc2.d \
+        /etc/rc3.d \
+        /etc/rc4.d \
+        /etc/rc5.d \
+        /etc/rc6.d \
+        /etc/rcS.d \
+        /etc/samba \
+        /etc/systemd \
+        /etc/ufw \
+        /usr/lib/systemd \
+        /usr/share/applications \
+        /usr/share/bash-completion \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/fish \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man \
+        /usr/share/menu \
+        /usr/share/misc \
+        /usr/share/pixmaps \
+        /usr/share/polkit-1 \
+        /usr/share/samba/admx \
+        /usr/share/tabset \
+        /usr/share/terminfo \
+        /usr/share/zsh \
+        /var/lib/systemd \
+        /var/lib/apt/lists/* && \
+    rm -f \
+        /usr/bin/dbwrap_tool \
+        /usr/bin/dumpmscat \
+        /usr/bin/mvxattr \
+        /usr/bin/net \
+        /usr/bin/nmblookup \
+        /usr/bin/oLschema2ldif \
+        /usr/bin/pdbedit \
+        /usr/bin/profiles \
+        /usr/bin/samba-log-parser \
+        /usr/bin/samba-regedit \
+        /usr/bin/sharesec \
+        /usr/bin/smbcontrol \
+        /usr/bin/winexe \
+        /usr/libexec/samba/samba-log-parser \
+        /usr/sbin/eventlogadm \
+        /usr/sbin/nmbd \
+        /usr/share/samba/is-configured \
+        /usr/share/samba/update-apparmor-samba-profile
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

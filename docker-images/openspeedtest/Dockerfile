@@ -47,7 +47,10 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~nginx~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~nginx~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~nginx~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock nginx
 
 ### Prefinal ###
 
@@ -58,16 +61,16 @@ COPY --from=runtime_dirs /homelab/original /homelab/original
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoint.sh
 
 ### Final ###
 
-FROM openspeedtest/latest:v2.0.6
+FROM openspeedtest/latest:v2.0.6 AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /etc/nginx && \
     chmod a+x "$(which crond)"
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

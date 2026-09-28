@@ -150,7 +150,10 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~www-data~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~www-data~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~www-data~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock www-data
 
 ### Prefinal ###
 
@@ -167,14 +170,14 @@ COPY ./docker-images/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=apache_config_3 /homelab/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
-FROM debian:13.7-slim
+FROM debian:13.7-slim AS final
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_apache_final_aptlibcache \
@@ -184,8 +187,84 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_fi
     rm -rf /var/lib/apt/lists/* && \
     a2enmod auth_basic env headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     a2dismod -f alias && \
-    rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+    rm -rf \
+        /etc/apache2/sites-enabled/* \
+        /etc/apache2/sites-available \
+        /etc/apache2/conf-available/localized-error-pages.conf \
+        /etc/apache2/conf-available/other-vhosts-access-log.conf \
+        /etc/apache2/conf-available/serve-cgi-bin.conf \
+        /etc/apache2/conf-enabled/localized-error-pages.conf \
+        /etc/apache2/conf-enabled/other-vhosts-access-log.conf \
+        /etc/apache2/conf-enabled/serve-cgi-bin.conf \
+        /etc/apt \
+        /etc/cron.d \
+        /etc/cron.daily \
+        /etc/cron.hourly \
+        /etc/cron.monthly \
+        /etc/cron.weekly \
+        /etc/cron.yearly \
+        /etc/init.d \
+        /etc/logrotate.d \
+        /etc/rc0.d \
+        /etc/rc1.d \
+        /etc/rc2.d \
+        /etc/rc3.d \
+        /etc/rc4.d \
+        /etc/rc5.d \
+        /etc/rc6.d \
+        /etc/rcS.d \
+        /etc/systemd \
+        /etc/ufw \
+        /usr/lib/apache2/modules/mod_alias.so \
+        /usr/lib/systemd \
+        /usr/share/applications \
+        /usr/share/bash-completion \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/fish \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man \
+        /usr/share/menu \
+        /usr/share/misc \
+        /usr/share/pixmaps \
+        /usr/share/polkit-1 \
+        /usr/share/tabset \
+        /usr/share/terminfo \
+        /usr/share/apache2/build \
+        /usr/share/apache2/default-site \
+        /usr/share/apache2/error \
+        /usr/share/apache2/icons \
+        /usr/share/zsh \
+        /var/cache/apache2 \
+        /var/lib/apache2 \
+        /var/www && \
+    rm -f \
+        /etc/apache2/mods-available/alias.conf \
+        /etc/apache2/mods-available/alias.load \
+        /usr/share/apache2/apache2-maintscript-helper \
+        /usr/bin/ab \
+        /usr/bin/checkgid \
+        /usr/bin/fcgistarter \
+        /usr/bin/htcacheclean \
+        /usr/bin/htdbm \
+        /usr/bin/htdigest \
+        /usr/bin/htpasswd \
+        /usr/bin/inotifywatch \
+        /usr/bin/logresolve \
+        /usr/bin/rotatelogs \
+        /usr/sbin/a2disconf \
+        /usr/sbin/a2dismod \
+        /usr/sbin/a2dissite \
+        /usr/sbin/a2enconf \
+        /usr/sbin/a2enmod \
+        /usr/sbin/a2ensite \
+        /usr/sbin/a2query \
+        /usr/sbin/check_forensic \
+        /usr/sbin/httxt2dbm \
+        /usr/sbin/split-logfile
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/apache.conf /etc/apache2/sites-enabled/apache.conf

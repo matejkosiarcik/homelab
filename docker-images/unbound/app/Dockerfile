@@ -97,7 +97,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -107,22 +109,84 @@ COPY ./docker-images/unbound/app/entrypoint.sh /homelab/
 COPY --from=config_4 /homelab/unbound.conf /homelab/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.7-slim
+FROM debian:13.7-slim AS final
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_unbound_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         dnsutils libcap2-bin unbound >/dev/null && \
+    setcap 'cap_net_bind_service=+ep' "$(which unbound)" && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get purge -qq --yes libcap2-bin >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
-    setcap 'cap_net_bind_service=+ep' "$(which unbound)"
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+    rm -rf \
+        /etc/apparmor.d/usr.sbin.unbound \
+        /etc/apt \
+        /etc/cron.d \
+        /etc/cron.daily \
+        /etc/cron.hourly \
+        /etc/cron.monthly \
+        /etc/cron.weekly \
+        /etc/cron.yearly \
+        /etc/default/unbound \
+        /etc/init.d \
+        /etc/insserv.conf.d \
+        /etc/logrotate.d \
+        /etc/rc0.d \
+        /etc/rc1.d \
+        /etc/rc2.d \
+        /etc/rc3.d \
+        /etc/rc4.d \
+        /etc/rc5.d \
+        /etc/rc6.d \
+        /etc/rcS.d \
+        /etc/resolvconf \
+        /etc/systemd \
+        /etc/unbound/* \
+        /etc/ufw \
+        /usr/lib/resolvconf \
+        /usr/lib/systemd \
+        /usr/lib/tmpfiles.d/unbound.conf \
+        /usr/libexec/unbound-helper \
+        /usr/share/applications \
+        /usr/share/bash-completion \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/fish \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man \
+        /usr/share/menu \
+        /usr/share/misc \
+        /usr/share/munin \
+        /usr/share/pixmaps \
+        /usr/share/polkit-1 \
+        /usr/share/tabset \
+        /usr/share/terminfo \
+        /usr/share/zsh && \
+    rm -f \
+        /usr/bin/delv \
+        /usr/bin/dnstap-read \
+        /usr/bin/host \
+        /usr/bin/mdig \
+        /usr/bin/nslookup \
+        /usr/bin/nsupdate \
+        /usr/sbin/capsh \
+        /usr/sbin/getcap \
+        /usr/sbin/getpcaps \
+        /usr/sbin/setcap \
+        /usr/sbin/unbound-anchor \
+        /usr/sbin/unbound-control \
+        /usr/sbin/unbound-control-setup \
+        /usr/sbin/unbound-host
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab

@@ -119,7 +119,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -134,7 +136,7 @@ COPY --from=supercronic_build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
@@ -143,15 +145,82 @@ COPY --from=package_curl /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
 
-FROM debian:13.7-slim
+FROM debian:13.7-slim AS final
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_certbot_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_certbot_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         certbot jq xz-utils >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+    rm -rf \
+        /etc/apt \
+        /etc/cron.d \
+        /etc/cron.daily \
+        /etc/cron.hourly \
+        /etc/cron.monthly \
+        /etc/cron.weekly \
+        /etc/cron.yearly \
+        /etc/init.d \
+        /etc/logrotate.d \
+        /etc/rc0.d \
+        /etc/rc1.d \
+        /etc/rc2.d \
+        /etc/rc3.d \
+        /etc/rc4.d \
+        /etc/rc5.d \
+        /etc/rc6.d \
+        /etc/rcS.d \
+        /etc/systemd \
+        /etc/ufw \
+        /usr/lib/python3/dist-packages/acme/_internal/tests \
+        /usr/lib/python3/dist-packages/certbot/_internal/tests \
+        /usr/lib/python3/dist-packages/certbot/tests \
+        /usr/lib/systemd \
+        /usr/share/applications \
+        /usr/share/bash-completion \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/fish \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man \
+        /usr/share/menu \
+        /usr/share/misc \
+        /usr/share/pixmaps \
+        /usr/share/polkit-1 \
+        /usr/share/tabset \
+        /usr/share/terminfo \
+        /usr/share/zsh \
+        /var/lib/apt/lists/* && \
+    rm -f \
+        /usr/bin/c_rehash \
+        /usr/bin/letsencrypt \
+        /usr/bin/lzcat \
+        /usr/bin/lzcmp \
+        /usr/bin/lzdiff \
+        /usr/bin/lzegrep \
+        /usr/bin/lzfgrep \
+        /usr/bin/lzless \
+        /usr/bin/lzma \
+        /usr/bin/lzmainfo \
+        /usr/bin/lzmore \
+        /usr/bin/pdb3 \
+        /usr/bin/pdb3.13 \
+        /usr/bin/pydoc3 \
+        /usr/bin/pydoc3.13 \
+        /usr/bin/pygettext3 \
+        /usr/bin/pygettext3.13 \
+        /usr/bin/unxz \
+        /usr/bin/xzcat \
+        /usr/bin/xzcmp \
+        /usr/bin/xzdiff \
+        /usr/bin/xzegrep \
+        /usr/bin/xzfgrep \
+        /usr/bin/xzgrep \
+        /usr/bin/xzless \
+        /usr/bin/xzmore
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs

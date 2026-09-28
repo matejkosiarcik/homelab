@@ -36,7 +36,11 @@ RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~video123~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~video123~' | sponge --append /etc/passwd && \
     usermod --append --groups root abc && \
-    usermod --append --groups video123 abc
+    usermod --append --groups video123 abc && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock abc && \
+    passwd --lock video123
 # groupmod --gid 44 video123
 
 ### Prefinal ###
@@ -46,16 +50,16 @@ WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
 # hadolint ignore=DL3007
-FROM linuxserver/tvheadend:latest
+FROM linuxserver/tvheadend:latest AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ARG GID=1000
