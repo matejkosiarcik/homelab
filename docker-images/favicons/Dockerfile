@@ -126,8 +126,6 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
 FROM yq AS urls_config_1
 USER root
 WORKDIR /homelab
-# COPY ./servers/ /homelab/servers/
-# COPY ./docker-compose/ /homelab/docker-compose/
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/favicons/parse-app-entry.sh /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \

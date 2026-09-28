@@ -37,8 +37,6 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 FROM yq AS dns_entries
 USER root
 WORKDIR /homelab
-# COPY ./servers/ /homelab/servers/
-# COPY ./docker-compose/ /homelab/docker-compose/
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
 COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \

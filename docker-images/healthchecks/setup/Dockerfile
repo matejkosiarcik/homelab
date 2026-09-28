@@ -63,8 +63,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
 FROM yq AS config_1
 USER root
 WORKDIR /homelab
-# COPY ./servers/ /homelab/servers/
-# COPY ./docker-compose/ /homelab/docker-compose/
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/healthchecks/setup/extra-entries.yml ./docker-images/healthchecks/setup/parse-app-entry.sh /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
