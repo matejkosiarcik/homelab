@@ -187,7 +187,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_fin
         /usr/sbin/nmbd \
         /usr/share/samba/is-configured \
         /usr/share/samba/update-apparmor-samba-profile
-COPY --from=prefinal /etc/group /etc/passwd /etc/shadow etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
