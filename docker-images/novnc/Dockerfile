@@ -2,6 +2,7 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
 ### App ###
+
 # hadolint ignore=DL3029
 FROM --platform=linux/amd64 bonigarcia/novnc:1.3.0 AS app
 USER root

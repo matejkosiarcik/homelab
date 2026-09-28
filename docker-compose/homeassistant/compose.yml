@@ -8,9 +8,9 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/homeassistant/Dockerfile
-    # cap_add:
-    #   - NET_ADMIN
-    #   - NET_RAW
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
@@ -18,7 +18,6 @@ services:
     networks:
       - external-network
       - internal-network
-    # privileged: true
     stop_grace_period: 30s
     tmpfs:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
