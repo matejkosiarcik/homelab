@@ -186,18 +186,81 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_fi
     a2dismod -f alias && \
     rm -rf \
         /etc/apache2/sites-enabled/* \
-        /etc/apt/sources.list \
-        /etc/apt/sources.list.d \
+        /etc/apache2/sites-available \
+        /etc/apache2/conf-available/localized-error-pages.conf \
+        /etc/apache2/conf-available/other-vhosts-access-log.conf \
+        /etc/apache2/conf-available/serve-cgi-bin.conf \
+        /etc/apache2/conf-enabled/localized-error-pages.conf \
+        /etc/apache2/conf-enabled/other-vhosts-access-log.conf \
+        /etc/apache2/conf-enabled/serve-cgi-bin.conf \
+        /etc/apt \
+        /etc/cron.d \
+        /etc/cron.daily \
+        /etc/cron.hourly \
+        /etc/cron.monthly \
+        /etc/cron.weekly \
+        /etc/cron.yearly \
         /etc/init.d \
+        /etc/logrotate.d \
+        /etc/rc0.d \
+        /etc/rc1.d \
+        /etc/rc2.d \
+        /etc/rc3.d \
+        /etc/rc4.d \
+        /etc/rc5.d \
+        /etc/rc6.d \
+        /etc/rcS.d \
+        /etc/systemd \
         /etc/ufw \
+        /usr/lib/apache2/modules/mod_alias.so \
         /usr/lib/systemd \
+        /usr/share/applications \
+        /usr/share/bash-completion \
         /usr/share/bug \
         /usr/share/doc \
+        /usr/share/fish \
         /usr/share/info \
         /usr/share/lintian \
         /usr/share/locale \
         /usr/share/man \
-        /var/www/html/*
+        /usr/share/menu \
+        /usr/share/misc \
+        /usr/share/pixmaps \
+        /usr/share/polkit-1 \
+        /usr/share/tabset \
+        /usr/share/terminfo \
+        /usr/share/apache2/build \
+        /usr/share/apache2/default-site \
+        /usr/share/apache2/error \
+        /usr/share/apache2/icons \
+        /usr/share/zsh \
+        /var/cache/apache2 \
+        /var/lib/apache2 \
+        /var/www && \
+    rm -f \
+        /etc/apache2/mods-available/alias.conf \
+        /etc/apache2/mods-available/alias.load \
+        /usr/share/apache2/apache2-maintscript-helper \
+        /usr/bin/ab \
+        /usr/bin/checkgid \
+        /usr/bin/fcgistarter \
+        /usr/bin/htcacheclean \
+        /usr/bin/htdbm \
+        /usr/bin/htdigest \
+        /usr/bin/htpasswd \
+        /usr/bin/inotifywatch \
+        /usr/bin/logresolve \
+        /usr/bin/rotatelogs \
+        /usr/sbin/a2disconf \
+        /usr/sbin/a2dismod \
+        /usr/sbin/a2dissite \
+        /usr/sbin/a2enconf \
+        /usr/sbin/a2enmod \
+        /usr/sbin/a2ensite \
+        /usr/sbin/a2query \
+        /usr/sbin/check_forensic \
+        /usr/sbin/httxt2dbm \
+        /usr/sbin/split-logfile
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
