@@ -13,16 +13,26 @@ type InputHealthcheck = {
     tz: string,
 };
 
-type Healthcheck = {
+type DeclaredHealthcheck = {
     grace: number,
     name: string,
     schedule: string,
     slug: string,
     tz: string,
+};
+
+type Healthcheck = DeclaredHealthcheck & {
+    channels: string,
     uuid: string,
 };
 
-async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
+type NotificationChannel = {
+    id: string,
+    kind: string,
+    name: string,
+};
+
+async function loadHealthchecks(file: string): Promise<DeclaredHealthcheck[]> {
     const fileContent = await fsx.readFile(file, 'utf8');
     const inputHealthchecks = JSON.parse(fileContent) as { healthchecks: InputHealthcheck[] };
     const outputHealthchecks = inputHealthchecks.healthchecks.map((healthcheck) => ({
@@ -31,7 +41,6 @@ async function loadHealthchecks(file: string): Promise<Healthcheck[]> {
         schedule: healthcheck.schedule,
         slug: healthcheck.slug,
         tz: healthcheck.tz,
-        uuid: '',
     }));
 
     return outputHealthchecks;
@@ -108,6 +117,25 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
         });
     })();
 
+    // Load all notification channels before modifying healthchecks
+    const notificationChannelIds = await (async () => {
+        console.log('Loading list of notification channels');
+        return await retry(async () => {
+            const response = await axios.get('/channels/');
+            assert(response.status === 200, `Failed to fetch list of notification channels\nStatus: ${response.status}\nBody: ${response.data}`);
+            const body = response.data as { channels: NotificationChannel[] };
+            return new Set(body.channels.map((channel) => channel.id));
+        }, {
+            retries: 3,
+            delay: 1000,
+            onRetry: (error) => {
+                console.log(`Failed to fetch list of notification channels, retrying... Error: ${error}`);
+            },
+        });
+    })();
+    const notificationChannels = [...notificationChannelIds].toSorted().join(',');
+    console.log('Noitifications:', notificationChannels);
+
     // Delete healthchecks in database which are no longer used
     const healthchecksToDelete = existingHealthchecks.filter((el1) => !declaredHealthchecks.find((el2) => el2.slug === el1.slug));
     for (const healthcheck of healthchecksToDelete) {
@@ -130,12 +158,13 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
         const declaredHealthcheck = declaredHealthchecks.find((el) => el.slug === healthcheck.slug)!;
         const updatedHealthcheck = {
             ...healthcheck,
+            channels: notificationChannels,
             grace: declaredHealthcheck.grace,
             name: declaredHealthcheck.name,
             schedule: declaredHealthcheck.schedule,
             tz: declaredHealthcheck.tz,
         };
-        if (declaredHealthcheck.schedule !== healthcheck.schedule || declaredHealthcheck.grace !== healthcheck.grace || declaredHealthcheck.name !== healthcheck.name || declaredHealthcheck.tz !== healthcheck.tz) {
+        if (declaredHealthcheck.schedule !== healthcheck.schedule || declaredHealthcheck.grace !== healthcheck.grace || declaredHealthcheck.name !== healthcheck.name || declaredHealthcheck.tz !== healthcheck.tz || healthcheck.channels.split(',').filter(Boolean).toSorted().join(',') !== notificationChannels) {
             await retry(async () => {
                 console.log(`Updating healthcheck ${healthcheck.slug}`);
                 const response = await axios.post(`/checks/${healthcheck.uuid}`, updatedHealthcheck);
@@ -157,7 +186,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
     for (const healthcheck of healthchecksToAdd) {
         await retry(async () => {
             console.log(`Creating healthcheck ${healthcheck.slug}`);
-            const response = await axios.post('/checks/', healthcheck, {
+            const response = await axios.post('/checks/', { ...healthcheck, channels: notificationChannels }, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
