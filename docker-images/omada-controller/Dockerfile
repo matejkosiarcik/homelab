@@ -3,11 +3,6 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, the image switches to nonroot after it starts
 
-### App ###
-
-FROM mbentley/omada-controller:6.3 AS omadacontroller_app
-USER root
-
 ### User setup ###
 
 # hadolint ignore=DL3007
@@ -22,7 +17,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_omadacont
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         moreutils && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=omadacontroller_app /etc/group /etc/passwd /etc/
+COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
