@@ -44,6 +44,7 @@ domain_separator="$(printf '%*s' "${domain_column_length}" '' | tr ' ' '-')"
     while IFS=' ' read -r app_ip app_domain; do
         ip_padding="$((max_ip_length - ${#app_ip}))"
         domain_padding="$((max_domain_length - ${#app_domain}))"
+        # shellcheck disable=SC2016
         printf '| `%s`%*s | `%s`%*s |\n' "${app_ip}" "${ip_padding}" '' "${app_domain}" "${domain_padding}" ''
     done <"${app_entries_filepath}"
     printf '\n'
