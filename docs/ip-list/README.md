@@ -9,7 +9,7 @@
 | `10.1.10.19`  | `pihole-blackhole-2.matejhome.com`              |
 | `10.1.10.21`  | `docker-stats-odroid-h3.matejhome.com`          |
 | `10.1.10.22`  | `dozzle-agent-odroid-h3.matejhome.com`          |
-| `10.1.10.24`  | `nodeexporter-odroid-h3.matejhome.com`          |
+| `10.1.10.23`  | `nodeexporter-odroid-h3.matejhome.com`          |
 | `10.1.10.31`  | `data.matejhome.com`                            |
 | `10.1.10.32`  | `gatus-2.matejhome.com`                         |
 | `10.1.10.33`  | `uptimekuma-2.matejhome.com`                    |
@@ -25,7 +25,7 @@
 | `10.1.12.19`  | `pihole-blackhole-1.matejhome.com`              |
 | `10.1.12.21`  | `docker-stats-odroid-h4-ultra.matejhome.com`    |
 | `10.1.12.22`  | `dozzle-agent-odroid-h4-ultra.matejhome.com`    |
-| `10.1.12.24`  | `nodeexporter-odroid-h4-ultra.matejhome.com`    |
+| `10.1.12.23`  | `nodeexporter-odroid-h4-ultra.matejhome.com`    |
 | `10.1.12.31`  | `unificontroller.matejhome.com`                 |
 | `10.1.12.32`  | `omadacontroller.matejhome.com`                 |
 | `10.1.12.33`  | `certbot.matejhome.com`                         |
@@ -67,7 +67,7 @@
 | `10.1.12.254` | `koffan.matejhome.com`                          |
 | `10.1.14.21`  | `docker-stats-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.22`  | `dozzle-agent-raspberry-pi-4b-2g.matejhome.com` |
-| `10.1.14.24`  | `nodeexporter-raspberry-pi-4b-2g.matejhome.com` |
+| `10.1.14.23`  | `nodeexporter-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.31`  | `vnc.matejhome.com`                             |
 | `10.1.16.1`   | `unbound-2-default.matejhome.com`               |
 | `10.1.16.2`   | `unbound-2-matej.matejhome.com`                 |
@@ -78,6 +78,6 @@
 | `10.1.16.7`   | `unbound-2-blackhole.matejhome.com`             |
 | `10.1.16.21`  | `docker-stats-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.22`  | `dozzle-agent-raspberry-pi-4b-4g.matejhome.com` |
-| `10.1.16.24`  | `nodeexporter-raspberry-pi-4b-4g.matejhome.com` |
+| `10.1.16.23`  | `nodeexporter-raspberry-pi-4b-4g.matejhome.com` |
 
 <!-- IP end -->
