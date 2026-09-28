@@ -108,7 +108,7 @@ RUN sh /homelab/create-user.sh && \
 FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY --from=app_config /homelab/smb.conf /homelab/
-COPY ./docker-images/samba/entrypoint-1.sh ./docker-images/samba/entrypoint-2.sh ./docker-images/samba/tail.sh /homelab/
+COPY ./docker-images/samba/entrypoint.sh /homelab/
 COPY --from=samba_exporter_build /homelab/samba_exporter/bin /homelab/bin
 COPY --from=empty_dir /empty /homelab/logs/samba
 
