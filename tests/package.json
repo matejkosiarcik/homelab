@@ -20,11 +20,11 @@
     "native-dns": "^0.7.0",
     "p-parallel": "^1.0.3",
     "promise-socket": "^8.0.0",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "sharp-ico": "^0.1.5",
     "tar": "^7.5.22",
     "tslib": "^2.8.1",
-    "user-agents": "^2.1.195"
+    "user-agents": "^2.1.196"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
