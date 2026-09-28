@@ -53,7 +53,7 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 # hadolint ignore=DL3007
-FROM linuxserver/tvheadend:latest
+FROM linuxserver/tvheadend:latest AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

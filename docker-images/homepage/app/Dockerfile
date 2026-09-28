@@ -85,7 +85,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM ghcr.io/gethomepage/homepage:v2.4.0
+FROM ghcr.io/gethomepage/homepage:v2.4.0 AS final
 USER root
 RUN rm -rf /app/.next/server/pages /app/config
 COPY --from=prefinal /etc/group /etc/passwd /etc/

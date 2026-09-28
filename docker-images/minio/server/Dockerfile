@@ -44,7 +44,7 @@ COPY --from=minio --chown=homelab:homelab /usr/bin/minio /usr/bin/minio
 
 ### Final ###
 
-FROM scratch
+FROM scratch AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

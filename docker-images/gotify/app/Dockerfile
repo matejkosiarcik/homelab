@@ -29,7 +29,7 @@ COPY ./docker-images/gotify/app/gotify-server.env /app/gotify-server.env
 
 ### Final ###
 
-FROM gotify/server:3.1.1
+FROM gotify/server:3.1.1 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /app/gotify-server.env /app/gotify-server.env

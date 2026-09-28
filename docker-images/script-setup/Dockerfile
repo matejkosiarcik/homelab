@@ -58,7 +58,7 @@ COPY --from=package_moreutils /usr/bin/sponge /fsroot/usr-bin/
 ### Final ###
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/base-debian13:latest
+FROM gcr.io/distroless/base-debian13:latest AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

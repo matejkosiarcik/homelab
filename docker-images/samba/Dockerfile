@@ -119,7 +119,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.7-slim
+FROM debian:13.7-slim AS final
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_samba_final_aptlibcache \

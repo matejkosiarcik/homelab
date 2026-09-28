@@ -27,7 +27,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM bitnamilegacy/rabbitmq:4.1.3-debian-12-r1
+FROM bitnamilegacy/rabbitmq:4.1.3-debian-12-r1 AS final
 # FROM rabbitmq:4.3.2-management
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/

@@ -83,7 +83,7 @@ COPY --from=libretranslate_build /root/.local-copy /home/homelab/.local
 ### Final ###
 
 # hadolint ignore=DL3007,DL3029
-FROM --platform=linux/amd64 debian:13.7-slim
+FROM --platform=linux/amd64 debian:13.7-slim AS final
 # TODO: gcr.io/distroless/python3-debian13:latest
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_libretranslate_package_libsentencepiece_aptcache \

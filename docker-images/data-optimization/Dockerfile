@@ -172,7 +172,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM node:26.10.0-slim
+FROM node:26.10.0-slim AS final
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_data_optimizer_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_data_optimizer_final_aptlibcache \

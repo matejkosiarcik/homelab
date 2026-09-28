@@ -27,7 +27,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM dgtlmoon/sockpuppetbrowser:0.0.3
+FROM dgtlmoon/sockpuppetbrowser:0.0.3 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

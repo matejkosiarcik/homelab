@@ -28,7 +28,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM louislam/uptime-kuma:2.5.5
+FROM louislam/uptime-kuma:2.5.5 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

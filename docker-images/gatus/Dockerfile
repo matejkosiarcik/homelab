@@ -132,7 +132,7 @@ COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/c
 
 ### Final ###
 
-FROM scratch
+FROM scratch AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

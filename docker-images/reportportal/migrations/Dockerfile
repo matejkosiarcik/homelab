@@ -50,7 +50,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoin
 
 ### Final ###
 
-FROM reportportal/migrations:5.15.4
+FROM reportportal/migrations:5.15.4 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

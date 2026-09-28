@@ -57,7 +57,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM couchdb:3.5.2
+FROM couchdb:3.5.2 AS final
 USER root
 RUN rm -rf /opt/couchdb/etc/local.d
 COPY --from=prefinal /etc/group /etc/passwd /etc/

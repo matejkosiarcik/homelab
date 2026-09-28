@@ -44,7 +44,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM mbentley/omada-controller:6.3
+FROM mbentley/omada-controller:6.3 AS final
 USER root
 ARG GID=1000
 ARG UID=1000

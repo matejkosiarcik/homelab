@@ -28,7 +28,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM mongo:8.3.11
+FROM mongo:8.3.11 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

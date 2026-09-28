@@ -47,7 +47,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ghcr.io/motioneye-project/motioneye:edge
+FROM ghcr.io/motioneye-project/motioneye:edge AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

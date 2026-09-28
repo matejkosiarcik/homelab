@@ -30,7 +30,7 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 # hadolint ignore=DL3029
-FROM postgres:18.6
+FROM postgres:18.6 AS final
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_postgres_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_postgres_final_aptlibcache \
