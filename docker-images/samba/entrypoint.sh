@@ -20,15 +20,22 @@ if ! grep -Eq "^${SAMBA_USERNAME}:" '/etc/passwd'; then
     exit 1
 fi
 
+samba_smbd_logfile_original='/var/log/samba_smbd/samba_smbd.log'
+samba_statusd_logfile_original='/var/log/samba_statusd/samba_statusd.log'
+samba_exporter_logfile_original='/var/log/samba_exporter/samba_exporter.log'
+
+samba_smbd_logfile_out='/homelab/logs/samba_smbd/samba_smbd.log'
+samba_statusd_logfile_out='/homelab/logs/samba_statusd/samba_statusd.log'
+samba_exporter_logfile_out='/homelab/logs/samba_exporter/samba_exporter.log'
+
 # Setup log redirection
 # Because the default logfile is owned by "root"
 # So we continuously read it and redirect to our logfile owned by "homelab"
-touch '/var/log/samba/smbd.log'
-chmod 0644 '/var/log/samba/smbd.log'
-# touch '/homelab/logs/samba/smbd.log'
-# chown 'homelab:homelab' '/homelab/logs/samba/smbd.log'
-# install -o homelab -g homelab -m 0644 '/dev/null' '/homelab/logs/samba/smbd.log'
-su --shell='/bin/sh' --command="/bin/sh -c 'tail -F /var/log/samba/smbd.log >>/homelab/logs/samba/smbd.log'" 'homelab' &
+touch "${samba_smbd_logfile_original}" "${samba_statusd_logfile_original}" "${samba_exporter_logfile_original}"
+chmod 0644 "${samba_smbd_logfile_original}" "${samba_statusd_logfile_original}" "${samba_exporter_logfile_original}"
+su --shell='/bin/sh' --command="/bin/sh -c 'tail -F \"${samba_smbd_logfile_original}\" >>\"${samba_smbd_logfile_out}\"'" 'homelab' &
+su --shell='/bin/sh' --command="/bin/sh -c 'tail -F \"${samba_statusd_logfile_original}\" >>\"${samba_statusd_logfile_out}\"'" 'homelab' &
+su --shell='/bin/sh' --command="/bin/sh -c 'tail -F \"${samba_exporter_logfile_original}\" >>\"${samba_exporter_logfile_out}\"'" 'homelab' &
 
 # Inject user into config
 sed "s~#smb-title#~${SAMBA_TITLE}~g;s~#smb-user#~${SAMBA_USERNAME}~g;s~#smb-group#~${SAMBA_GROUP}~g" <'/homelab/smb.conf' >'/homelab/tmpfs/smb.conf'
@@ -37,7 +44,6 @@ chown 'homelab:homelab' '/homelab/tmpfs/smb.conf'
 
 # Generate user password
 printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c '/homelab/tmpfs/smb.conf' -a "${SAMBA_USERNAME}"
-# chown -R 'homelab:homelab' '/var/lib/samba' '/var/log/samba' # '/homelab/logs/samba' '/homelab/tmpfs/samba'
 
 # Test config is valid before starting
 testparm -s '/homelab/tmpfs/smb.conf' || {
@@ -46,8 +52,8 @@ testparm -s '/homelab/tmpfs/smb.conf' || {
 }
 
 # Start prometheus exporter in background
-(sleep 1 && nohup '/homelab/bin/samba_statusd') &
-(sleep 2 && nohup '/homelab/bin/samba_exporter' -not-expose-pid-data) &
+(sleep 1 && nohup '/homelab/bin/samba_statusd' -log-file-path "${samba_statusd_logfile_original}" -log-level Information) &
+(sleep 2 && nohup '/homelab/bin/samba_exporter' -log-file-path "${samba_exporter_logfile_original}" -log-level Information -not-expose-pid-data) &
 
 # Start samba
 exec smbd --foreground --no-process-group --configfile='/homelab/tmpfs/smb.conf'

@@ -31,8 +31,13 @@ services:
       - /var/lib/samba/private:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/lib/samba/usershares:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/samba_smbd:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/samba_statusd:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/samba_exporter:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/default:/homelab/logs/samba:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/smbd:/homelab/logs/samba_smbd:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/statusd:/homelab/logs/samba_statusd:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/exporter:/homelab/logs/samba_exporter:rw
 
   certificator:
     extends:
