@@ -2,4 +2,4 @@ app:
   type: unbound
 
 network:
-  ip: 10.1.16.3
+  ip: 10.1.10.7
