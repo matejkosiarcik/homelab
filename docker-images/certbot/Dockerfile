@@ -150,7 +150,19 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_certbot_f
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         certbot jq xz-utils >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf \
+        /etc/apt/sources.list \
+        /etc/apt/sources.list.d \
+        /etc/init.d \
+        /etc/ufw \
+        /usr/lib/systemd \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man \
+        /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

@@ -121,7 +121,19 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_f
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         dnsutils libcap2-bin unbound >/dev/null && \
     rm -rf /var/lib/apt/lists/* && \
-    setcap 'cap_net_bind_service=+ep' "$(which unbound)"
+    setcap 'cap_net_bind_service=+ep' "$(which unbound)" && \
+    rm -rf \
+        /etc/apt/sources.list \
+        /etc/apt/sources.list.d \
+        /etc/init.d \
+        /etc/ufw \
+        /usr/lib/systemd \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

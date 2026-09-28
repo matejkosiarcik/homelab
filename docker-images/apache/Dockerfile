@@ -184,7 +184,20 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_fi
     rm -rf /var/lib/apt/lists/* && \
     a2enmod auth_basic env headers http2 macro proxy proxy_http proxy_http2 proxy_wstunnel rewrite ssl status && \
     a2dismod -f alias && \
-    rm -rf /etc/apache2/sites-enabled/* /var/www/html/*
+    rm -rf \
+        /etc/apache2/sites-enabled/* \
+        /etc/apt/sources.list \
+        /etc/apt/sources.list.d \
+        /etc/init.d \
+        /etc/ufw \
+        /usr/lib/systemd \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man \
+        /var/www/html/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

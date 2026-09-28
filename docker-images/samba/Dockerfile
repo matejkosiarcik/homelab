@@ -125,8 +125,38 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_fin
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_samba_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        gnutls-bin samba && \
-    rm -rf /var/lib/apt/lists/*
+        samba >/dev/null && \
+    rm -rf \
+        /etc/apt/sources.list \
+        /etc/apt/sources.list.d \
+        /etc/init.d \
+        /etc/samba \
+        /etc/ufw \
+        /usr/lib/systemd \
+        /usr/share/bug \
+        /usr/share/doc \
+        /usr/share/info \
+        /usr/share/lintian \
+        /usr/share/locale \
+        /usr/share/man \
+        /var/lib/apt/lists/* && \
+    rm -f \
+        /usr/bin/dbwrap_tool \
+        /usr/bin/dumpmscat \
+        /usr/bin/mvxattr \
+        /usr/bin/net \
+        /usr/bin/nmblookup \
+        /usr/bin/oLschema2ldif \
+        /usr/bin/pdbedit \
+        /usr/bin/profiles \
+        /usr/bin/samba-log-parser \
+        /usr/bin/samba-regedit \
+        /usr/bin/sharesec \
+        /usr/bin/smbcontrol \
+        /usr/bin/winexe \
+        /usr/libexec/samba/samba-log-parser \
+        /usr/sbin/eventlogadm \
+        /usr/sbin/nmbd
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
