@@ -28,7 +28,7 @@ chmod 0644 '/var/log/samba/smbd.log'
 # touch '/homelab/logs/samba/smbd.log'
 # chown 'homelab:homelab' '/homelab/logs/samba/smbd.log'
 # install -o homelab -g homelab -m 0644 '/dev/null' '/homelab/logs/samba/smbd.log'
-su --shell='/bin/sh' --command="/bin/sh -c 'tail -F /var/log/samba/smbd.log >>/homelab/logs/samba/smbd.log" 'homelab' &
+su --shell='/bin/sh' --command="/bin/sh -c 'tail -F /var/log/samba/smbd.log >>/homelab/logs/samba/smbd.log'" 'homelab' &
 
 # Inject user into config
 sed "s~#smb-title#~${SAMBA_TITLE}~g;s~#smb-user#~${SAMBA_USERNAME}~g;s~#smb-group#~${SAMBA_GROUP}~g" <'/homelab/smb.conf' >'/homelab/tmpfs/smb.conf'
