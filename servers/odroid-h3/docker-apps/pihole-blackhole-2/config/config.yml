@@ -2,4 +2,4 @@ app:
   type: pihole-blackhole
 
 network:
-  ip: 10.1.16.19
+  ip: 10.1.10.19

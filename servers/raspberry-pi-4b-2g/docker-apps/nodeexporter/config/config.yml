@@ -2,4 +2,4 @@ app:
   type: nodeexporter
 
 network:
-  ip: 10.1.14.24
+  ip: 10.1.14.23
