@@ -132,7 +132,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -149,7 +151,7 @@ COPY --from=nodejs_server_build /homelab/node_modules /homelab/server/node_modul
 COPY --from=nodejs_server_build /homelab/dist /homelab/server/dist
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
@@ -158,7 +160,7 @@ COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
 
 FROM renovate/renovate:44.115.13-full AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /usr/src/app
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

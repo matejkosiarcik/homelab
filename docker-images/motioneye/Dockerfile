@@ -32,7 +32,10 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~motion~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~motion~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~motion~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock motion
 
 ### Prefinal ###
 
@@ -41,7 +44,7 @@ WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
@@ -49,7 +52,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM ghcr.io/motioneye-project/motioneye:edge AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="motioneye" \

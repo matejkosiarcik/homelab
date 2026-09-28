@@ -97,7 +97,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -107,7 +109,7 @@ COPY ./docker-images/unbound/app/entrypoint.sh /homelab/
 COPY --from=config_4 /homelab/unbound.conf /homelab/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
@@ -184,7 +186,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_f
         /usr/sbin/unbound-control \
         /usr/sbin/unbound-control-setup \
         /usr/sbin/unbound-host
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab

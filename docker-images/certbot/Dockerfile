@@ -119,7 +119,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -134,7 +136,7 @@ COPY --from=supercronic_build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
@@ -218,7 +220,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_certbot_f
         /usr/bin/xzgrep \
         /usr/bin/xzless \
         /usr/bin/xzmore
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs

@@ -150,7 +150,10 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~www-data~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~www-data~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~www-data~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock www-data
 
 ### Prefinal ###
 
@@ -167,7 +170,7 @@ COPY ./docker-images/apache/entrypoint.sh /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=apache_config_3 /homelab/apache.conf /fsroot/apache.conf
@@ -261,7 +264,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_fi
         /usr/sbin/check_forensic \
         /usr/sbin/httxt2dbm \
         /usr/sbin/split-logfile
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/apache.conf /etc/apache2/sites-enabled/apache.conf

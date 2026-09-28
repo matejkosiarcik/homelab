@@ -14,7 +14,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -22,7 +24,7 @@ FROM scratch AS homelab_dir
 WORKDIR /homelab
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
@@ -30,7 +32,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM vaultwarden/server:1.37.3 AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV EXTENDED_LOGGING="true" \

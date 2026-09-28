@@ -30,7 +30,11 @@ RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~omada~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~omada~' | sponge --append /etc/passwd && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~mongodb~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~mongodb~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~mongodb~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock omada && \
+    passwd --lock mongodb
 
 ### Prefinal ###
 
@@ -38,7 +42,7 @@ FROM scratch AS homelab_dir
 WORKDIR /homelab
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
@@ -48,7 +52,7 @@ FROM mbentley/omada-controller:6.3 AS final
 USER root
 ARG GID=1000
 ARG UID=1000
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="omadacontroller" \

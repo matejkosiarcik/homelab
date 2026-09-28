@@ -65,7 +65,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -75,7 +77,7 @@ COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=libretranslate_build /homelab/python-vendor/ /homelab/python-vendor/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=libretranslate_build /root/.local-copy /home/homelab/.local
@@ -92,7 +94,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_libretran
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         python3 >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab

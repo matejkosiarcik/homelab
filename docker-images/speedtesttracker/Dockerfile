@@ -108,7 +108,10 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock abc
 
 ### Prefinal ###
 
@@ -119,7 +122,7 @@ COPY --from=supercronic_build /homelab/supercronic/supercronic /homelab/bin/
 COPY --from=speedtesttracker_config --chmod=0555 /etc/crontabs/abc /homelab/crontabs/
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --chmod=0755 ./docker-images/speedtesttracker/cron-run.sh /etc/s6-overlay/s6-rc.d/svc-cron/run
@@ -128,7 +131,7 @@ COPY --chmod=0755 ./docker-images/speedtesttracker/cron-run.sh /etc/s6-overlay/s
 
 FROM linuxserver/speedtest-tracker:1.15.0 AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /app /config
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

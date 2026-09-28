@@ -40,7 +40,11 @@ RUN sh /homelab/create-user.sh && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~unifi~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~unifi~' | sponge --append /etc/passwd
+    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~unifi~' | sponge --append /etc/passwd && \
+    pwconv && \
+    passwd --lock homelab && \
+    passwd --lock abc && \
+    passwd --lock unifi
 
 ### Prefinal ###
 
@@ -49,7 +53,7 @@ WORKDIR /homelab
 COPY --from=runtime_dirs /homelab/original /homelab/original
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
@@ -58,7 +62,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 
 FROM linuxserver/unifi-network-application:10.6.106 AS final
 USER root
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN find '.' \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \
     if [ ! -e './webapps/ROOT/app-unifi/angular/favicon.ico' ]; then \
         printf 'File "favicon.ico" not found\n' >&2 && \
