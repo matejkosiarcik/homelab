@@ -209,7 +209,7 @@ async function convertImage(upstreamImage: Buffer, sourceImageType: 'ico' | 'png
 
 async function requestImage(imageUrl: string): Promise<Buffer> {
     if (imageUrl.startsWith('@')) {
-        return await fsx.readFile(imageUrl.replace(/^@/, ''));
+        return await fsx.readFile(imageUrl.replace(/^@/, './icons/'));
     }
 
     const imagePath = URL.parse(imageUrl)!.pathname;
@@ -352,7 +352,7 @@ async function getFavicon(imagePath: string): Promise<Buffer> {
 
     const upstreamImageUrl = upstreamUrl(imagePath);
     const upstreamImage = await requestImage(upstreamImageUrl);
-    const outputImage = await convertImage(upstreamImage, path.extname(URL.parse(upstreamImageUrl)!.pathname).slice(1) as 'ico' | 'png' | 'svg', outputImageType);
+    const outputImage = await convertImage(upstreamImage, (upstreamImageUrl.startsWith('@') ? path.extname(upstreamImageUrl.replace(/^@/, '')).slice(1) : path.extname(URL.parse(upstreamImageUrl)!.pathname).slice(1)) as 'ico' | 'png' | 'svg', outputImageType);
     return outputImage;
 }
 

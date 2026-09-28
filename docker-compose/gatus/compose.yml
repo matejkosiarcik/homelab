@@ -13,8 +13,8 @@ services:
     networks: # Internet access required for monitoring public DNS
       - external-network
       - internal-network
-    security_opt:
-      - no-new-privileges:false # Must be unset to allow ICMP monitoring
+    # security_opt:
+    #   - no-new-privileges:false # Must be unset to allow ICMP monitoring
     stop_grace_period: 30s
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/gatus/data:/data:rw
