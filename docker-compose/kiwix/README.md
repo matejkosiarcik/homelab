@@ -6,7 +6,7 @@
 
 Kiwix:
 
-- Homepage: <https://kiwix.org>
+- Homepage: `https://kiwix.org` <!-- website 503 -->
 - GitHub: <https://github.com/kiwix/kiwix-tools>
 - GHCR registry: <https://github.com/kiwix/kiwix-tools/pkgs/container/kiwix-serve>
 - Kiwix archives:

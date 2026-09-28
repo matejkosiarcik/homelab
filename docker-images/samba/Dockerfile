@@ -2,6 +2,12 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root
 
+## Miscellaneous ##
+
+FROM debian:13.7-slim AS empty_dir
+USER root
+RUN mkdir /empty
+
 ### Build config ###
 
 FROM debian:13.7-slim AS gitconfig
@@ -93,7 +99,9 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh
+RUN sh /homelab/create-user.sh && \
+    pwconv && \
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -102,9 +110,10 @@ WORKDIR /homelab
 COPY --from=app_config /homelab/smb.conf /homelab/
 COPY ./docker-images/samba/entrypoint.sh /homelab/
 COPY --from=samba_exporter_build /homelab/samba_exporter/bin /homelab/bin
+COPY --from=empty_dir /empty /homelab/logs/samba
 
 FROM scratch AS prefinal
-COPY --from=user_setup /etc/group /etc/passwd /etc/
+COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
@@ -118,14 +127,14 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_fin
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         gnutls-bin samba && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=prefinal /etc/group /etc/passwd /etc/
+COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="samba" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    SAMBA_GROUP=homelab \
-    SAMBA_USERNAME=homelab \
+    SAMBA_GROUP="homelab" \
+    SAMBA_USERNAME="homelab" \
     TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "bash -c ':> /dev/tcp/localhost/139' || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

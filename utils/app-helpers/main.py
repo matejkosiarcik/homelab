@@ -245,6 +245,23 @@ def get_docker_images_shasum(config: str) -> str:
     return "\n".join(output)
 
 
+def get_docker_containers_are_running(config: str) -> bool:
+    if when_mode == "always":
+        return False
+
+    config_obj = json.loads(config)
+    expected_containers = {service["container_name"] for service in config_obj["services"].values()}
+    running_containers = set(
+        subprocess.check_output(
+            ["docker", "compose"] + docker_compose_args + ["ps", "--status", "running", "--format", "{{.Name}}"],
+            text=True,
+        ).splitlines()
+    )
+    missing_containers = sorted(expected_containers - running_containers)
+
+    return not missing_containers
+
+
 # pylint: disable=too-many-locals
 def run_with_spinner(
     command: list[str],
@@ -434,7 +451,9 @@ def run_main_command(command: str):
         shasum_before = get_docker_images_shasum(config)
         docker_build()
         shasum_after = get_docker_images_shasum(config)
-        if when_mode == "always" or (when_mode == "onchange" and shasum_before != shasum_after):
+        images_changed = shasum_before != shasum_after
+        all_containers_running = get_docker_containers_are_running(config)
+        if when_mode == "always" or images_changed or not all_containers_running:
             docker_stop()
             docker_start()
         else:
