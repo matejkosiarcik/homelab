@@ -44,8 +44,6 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 FROM yq AS monitoring_entries
 USER root
 WORKDIR /homelab
-# COPY ./servers/ /homelab/servers/
-# COPY ./docker-compose/ /homelab/docker-compose/
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/prometheus/parse-app-entry.sh /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
