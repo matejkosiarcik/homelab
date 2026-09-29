@@ -254,7 +254,7 @@
     - SMB (data):
         description: Main Data Store
         href: "#copy-smb-address"
-        ping: samba-data.matejhome.com
+        ping: data.matejhome.com
         icon: /icons/samba.png
         target: _self
 
