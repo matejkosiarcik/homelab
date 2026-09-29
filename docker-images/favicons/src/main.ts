@@ -63,7 +63,7 @@ function upstreamUrl(imagePath: string): string {
         app?.urls
         .filter((el) => (el.env || undefined) === undefined || el.env == envMode) // Filter URLs for current ENV mode
         .filter((el) => el.path === faviconPath || (el.path.endsWith('/') && faviconPath.startsWith(el.path))) // Filter upstream based on the path
-        .toSorted()
+        .toSorted((a, b) => a.path.length - b.path.length) // Prefer the most-specific matching route over a catch-all route
         .at(-1)!;
     if (!upstreamUrl) {
         throw new Error(`Unknown target for path ${imagePath}`);

@@ -14,6 +14,13 @@ COPY --from=app_original /root/noVNC /root/noVNC
 RUN mkdir -p '/homelab/original/noVNC/app' && \
     cp -R '/root/noVNC/app/.' '/homelab/original/noVNC/app'
 
+FROM debian:13.7-slim AS rm_script
+USER root
+WORKDIR /homelab
+# hadolint ignore=SC2016
+RUN printf '#!/bin/sh\nset -euf\nrm -rf /root\nrm -f "${0}"' >/homelab/rm.sh && \
+    chmod a+x '/homelab/rm.sh'
+
 ### Healthcheck ###
 
 FROM golang:1.27.1-alpine AS healthcheck_build
@@ -48,6 +55,7 @@ COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=app_original /root/noVNC /homelab/noVNC
 COPY --from=app_modified /homelab/original /homelab/original
 COPY ./docker-images/novnc/entrypoint.sh /homelab/
+COPY --from=rm_script /homelab/rm.sh /homelab/
 
 FROM debian:13.7-slim AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -65,7 +73,8 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-RUN rm -rf '/root'
+# NOTE: The following script must be a script file because otherwise it errors out on the server
+RUN /homelab/rm.sh
 COPY --from=prefinal --chown=homelab:homelab /root /root
 # NOTE: Placeholders are replaced during runtime (in config or secrets)
 ENV AUTOCONNECT="true" \
