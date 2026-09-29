@@ -14,14 +14,14 @@ test.describe(apps.uptimekuma.title, () => {
             createFaviconTests(instance.url);
             createPrometheusTests(instance.url, {
                 auth: 'basic',
-                username: '',
+                username: 'prometheus',
                 token: getEnv(instance.url, 'API_KEY'),
             });
 
             test('API: Prometheus metrics content', async () => {
                 const response = await axios.get(`${instance.url}/metrics`, {
                     auth: {
-                        username: '',
+                        username: 'prometheus',
                         password: getEnv(instance.url, 'API_KEY'),
                     },
                 });

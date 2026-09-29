@@ -15,7 +15,7 @@ gatus:
   endpoints:
     - path: /metrics
       authentication:
-        basic: matej
+        basic: prometheus
 
 healthchecks:
   - slug: certificator
@@ -29,4 +29,3 @@ prometheus:
     - path: /metrics
       auth:
         type: basic
-        user: matej

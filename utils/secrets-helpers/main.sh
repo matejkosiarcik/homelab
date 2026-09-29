@@ -557,9 +557,6 @@ gatus)
     printf 'UNBOUND_2_IOT__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.unbound_2_iot.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_2_MATEJ__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.unbound_2_matej.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_2_MONIKA__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.unbound_2_monika.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_1__MATEJ_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.matej_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_2__MATEJ_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.matej_user' dev=real)" >>"${initial_output}/app.env"
-
     # Other apps metrics credentials #
     printf 'DAWARICH__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dawarich.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DOCKER_STATS_ODROID_H3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.docker_stats_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -600,8 +597,8 @@ gatus)
     printf 'UNBOUND_2_MONIKA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_2_monika.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_2_INTERNAL__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_2_internal.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_2_BLACKHOLE__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_2_blackhole.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_1__MATEJ_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.matej_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_2__MATEJ_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.matej_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
 
     # Other apps proxy metrics credentials #
     printf 'ACTUALBUDGET__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.actualbudget.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -1426,8 +1423,8 @@ prometheus)
     printf 'UNBOUND_2_MONIKA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_2_monika.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_2_INTERNAL__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_2_internal.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_2_BLACKHOLE__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_2_blackhole.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_1__MATEJ_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.matej_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_2__MATEJ_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.matej_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
 
     # Other apps proxy metrics credentials #
     printf 'ACTUALBUDGET__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.actualbudget.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
