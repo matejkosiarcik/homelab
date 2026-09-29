@@ -68,5 +68,4 @@ ENV HOMELAB_CONTAINER_NAME="smtp4dev" \
 
 USER homelab
 
-# Note: curl/wget isn't available, so we have to resort to bash
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000", "--status", "401" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000", "--basic-auth-username-env", "ServerOptions__Users__1__Username", "--basic-auth-password-env", "ServerOptions__Users__1__Password" ]

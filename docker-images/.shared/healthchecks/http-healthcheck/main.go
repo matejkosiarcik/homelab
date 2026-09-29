@@ -19,13 +19,51 @@ import (
 func main() {
 	// Parse arguments
 	var args struct {
-		URL      string `arg:"--url,required" help:"URL to check"`
-		Method   string `arg:"--method" default:"GET" help:"HTTP method"`
-		Body     string `arg:"--body" help:"Regex to validate response body against (optional)"`
-		Status   string `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
-		Insecure bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
+		URL                  string `arg:"--url,required" help:"URL to check"`
+		Method               string `arg:"--method" default:"GET" help:"HTTP method"`
+		Body                 string `arg:"--body" help:"Regex to validate response body against (optional)"`
+		Status               string `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
+		Insecure             bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
+		BasicAuthUsername    string `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
+		BasicAuthPassword    string `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
+		BasicAuthUsernameEnv string `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
+		BasicAuthPasswordEnv string `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
 	}
 	arg.MustParse(&args)
+
+	if args.BasicAuthUsername != "" && args.BasicAuthUsernameEnv != "" {
+		fmt.Fprintln(os.Stderr, "Use only one of --basic-auth-username and --basic-auth-username-env")
+		os.Exit(1)
+	}
+	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
+		fmt.Fprintln(os.Stderr, "Use only one of --basic-auth-password and --basic-auth-password-env")
+		os.Exit(1)
+	}
+
+	basicAuthUsername := args.BasicAuthUsername
+	if args.BasicAuthUsernameEnv != "" {
+		var exists bool
+		basicAuthUsername, exists = os.LookupEnv(args.BasicAuthUsernameEnv)
+		if !exists {
+			fmt.Fprintf(os.Stderr, "HTTP Basic Auth username environment variable is unset: %s\n", args.BasicAuthUsernameEnv)
+			os.Exit(1)
+		}
+	}
+
+	basicAuthPassword := args.BasicAuthPassword
+	if args.BasicAuthPasswordEnv != "" {
+		var exists bool
+		basicAuthPassword, exists = os.LookupEnv(args.BasicAuthPasswordEnv)
+		if !exists {
+			fmt.Fprintf(os.Stderr, "HTTP Basic Auth password environment variable is unset: %s\n", args.BasicAuthPasswordEnv)
+			os.Exit(1)
+		}
+	}
+
+	if (basicAuthUsername == "") != (basicAuthPassword == "") {
+		fmt.Fprintln(os.Stderr, "HTTP Basic Auth requires both a username and password")
+		os.Exit(1)
+	}
 
 	var argsStatus = args.Status
 	if argsStatus == "" {
@@ -91,6 +129,9 @@ func main() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating request: %v\n", err)
 		os.Exit(1)
+	}
+	if basicAuthUsername != "" {
+		request.SetBasicAuth(basicAuthUsername, basicAuthPassword)
 	}
 	response, err := client.Do(request)
 	if err != nil {

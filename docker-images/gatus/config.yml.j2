@@ -161,6 +161,19 @@ default-https-infrequent: &default-https-infrequent
   interval: 240m
 
 endpoints:
+  ### Extra apps ###
+
+  {%- for item in extra_apps %}
+
+  - <<: *default-tcp
+    name: {{ item.name }}
+    group: Extra Apps
+    url: {{ item.url }}
+    alerts:
+      - type: ntfy
+      - type: gotify
+  {%- endfor %}
+
   ### DNS ###
 
   {%- for item in dns %}

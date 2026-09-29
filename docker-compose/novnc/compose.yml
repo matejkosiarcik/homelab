@@ -14,8 +14,6 @@ services:
     networks:
       - external-network
       - internal-network
-    tmpfs:
-      - /homelab/noVNC/app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
 
   certificator:
     extends:
