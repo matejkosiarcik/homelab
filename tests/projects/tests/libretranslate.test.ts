@@ -7,7 +7,7 @@ test.describe(apps.libretranslate.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { status: 401 });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
