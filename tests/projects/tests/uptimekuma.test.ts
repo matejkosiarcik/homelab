@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { faker } from '@faker-js/faker';
-import { getEnv } from '../../utils/utils';
+import { axios, getEnv } from '../../utils/utils';
 
 test.describe(apps.uptimekuma.title, () => {
     for (const instance of apps.uptimekuma.instances) {
@@ -12,7 +12,37 @@ test.describe(apps.uptimekuma.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
-            createPrometheusTests(instance.url, { auth: 'basic', username: 'matej' });
+            createPrometheusTests(instance.url, {
+                auth: 'basic',
+                username: '',
+                token: getEnv(instance.url, 'API_KEY'),
+            });
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await axios.get(`${instance.url}/metrics`, {
+                    auth: {
+                        username: '',
+                        password: getEnv(instance.url, 'API_KEY'),
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                const content = response.data as string;
+                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                const lines = content.split('\n');
+                const metrics = [
+                    'app_version',
+                    'expressjs_number_of_open_connections',
+                    'monitor_cert_days_remaining',
+                    'monitor_cert_is_valid',
+                    'monitor_response_time_seconds',
+                    'monitor_response_time',
+                    'monitor_status',
+                    'monitor_uptime_ratio',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
+            });
 
             const validUsers = [
                 {

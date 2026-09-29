@@ -443,10 +443,12 @@ rm -f './.secrets.env'
     printf 'UNIFICONTROLLER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.unificontroller.apache.prometheus_user')"
 
     printf 'UPTIMEKUMA_1__MATEJ_PASSWORD=%s\n' "$(load_secret '.uptimekuma_1.app.matej_user')"
+    printf 'UPTIMEKUMA_1__API_KEY=%s\n' "$(load_secret '.uptimekuma_1.app.api_key')"
     printf 'UPTIMEKUMA_1__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_1.apache.status_user')"
     printf 'UPTIMEKUMA_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_1.apache.prometheus_user')"
 
     printf 'UPTIMEKUMA_2__MATEJ_PASSWORD=%s\n' "$(load_secret '.uptimekuma_2.app.matej_user')"
+    printf 'UPTIMEKUMA_2__API_KEY=%s\n' "$(load_secret '.uptimekuma_2.app.api_key')"
     printf 'UPTIMEKUMA_2__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_2.apache.status_user')"
     printf 'UPTIMEKUMA_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_2.apache.prometheus_user')"
 
