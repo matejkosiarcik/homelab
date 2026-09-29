@@ -8,57 +8,54 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 test.describe(apps.minio.title, () => {
     for (const instance of apps.minio.instances) {
         test.describe(instance.title, () => {
-            createHttpToHttpsRedirectTests(instance.url);
-            createHttpToHttpsRedirectTests(instance.consoleUrl, { title: 'console' });
-            createProxyTests(instance.url);
-            createProxyTests(instance.consoleUrl, { title: 'console' });
-            createPrometheusTests(instance.url, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
-            createApiRootTest(instance.url, {
+            createHttpToHttpsRedirectTests(instance.apiUrl);
+            createHttpToHttpsRedirectTests(instance.uiUrl, { title: 'UI' });
+            createProxyTests(instance.apiUrl);
+            createPrometheusTests(instance.apiUrl, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
+            createApiRootTest(instance.apiUrl, {
                 headers: {
                     'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString()
                 }
             });
-            createTcpTests(instance.url, [80, 443]);
-            createTcpTests(instance.consoleUrl, [80, 443], { title: 'console' });
-            createFaviconTests(instance.url);
-            createFaviconTests(instance.consoleUrl, { title: 'console' });
+            createTcpTests(instance.apiUrl, [80, 443]);
+            createFaviconTests(instance.apiUrl);
 
-            test('API: Redirect to console', async () => {
+            test('API: Redirect to UI', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
-                const response = await axios.get(instance.url, {
+                const response = await axios.get(instance.apiUrl, {
                     headers: {
                         'User-Agent': userAgent,
                     },
                     maxRedirects: 0,
                 });
                 expect(response.status, 'Response Status').toStrictEqual(307);
-                expect(response.headers['location'], 'Response header location').toStrictEqual(instance.consoleUrl);
+                expect(response.headers['location'], 'Response header location').toStrictEqual(instance.uiUrl);
             });
 
-            test('API: Console root', async () => {
-                const response = await axios.get(instance.consoleUrl);
+            test('UI: Root', async () => {
+                const response = await axios.get(instance.uiUrl);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Health endpoint (live)', async () => {
-                const response = await axios.get(`${instance.url}/minio/health/live`);
+                const response = await axios.get(`${instance.apiUrl}/minio/health/live`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Health endpoint (cluster)', async () => {
-                const response = await axios.get(`${instance.url}/minio/health/cluster`);
+                const response = await axios.get(`${instance.apiUrl}/minio/health/cluster`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Health endpoint (cluster-read)', async () => {
-                const response = await axios.get(`${instance.url}/minio/health/cluster/read`);
+                const response = await axios.get(`${instance.apiUrl}/minio/health/cluster/read`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/minio/v2/metrics/cluster`, {
+                const response = await axios.get(`${instance.apiUrl}/minio/v2/metrics/cluster`, {
                     headers: {
-                        Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}`,
+                        Authorization: `Bearer ${getEnv(instance.apiUrl, 'PROMETHEUS_BEARER_TOKEN')}`,
                     },
                 });
                 expect(response.status, 'Response Status').toStrictEqual(200);
@@ -164,12 +161,12 @@ test.describe(apps.minio.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.consoleUrl);
-                    await page.waitForURL(`${instance.consoleUrl}/login`);
+                    await page.goto(instance.uiUrl);
+                    await page.waitForURL(`${instance.uiUrl}/login`);
                     await page.locator('input#accessKey').fill(user.username);
-                    await page.locator('input#secretKey').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                    await page.locator('input#secretKey').fill(getEnv(instance.apiUrl, `${user.username}_PASSWORD`));
                     await page.locator('button#do-login[type="submit"]').click();
-                    await page.waitForURL(`${instance.consoleUrl}/browser`);
+                    await page.waitForURL(`${instance.uiUrl}/browser`);
                     await expect(page.locator('#root .menuItems')).toBeVisible();
                     await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
                 });
@@ -186,8 +183,8 @@ test.describe(apps.minio.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.consoleUrl);
-                    await page.waitForURL(`${instance.consoleUrl}/login`);
+                    await page.goto(instance.uiUrl);
+                    await page.waitForURL(`${instance.uiUrl}/login`);
                     const originalUrl = page.url();
                     await page.locator('input#accessKey').fill(user.username);
                     await page.locator('input#secretKey').fill(faker.string.alpha(10));

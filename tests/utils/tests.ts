@@ -42,6 +42,7 @@ export function createHttpToHttpsRedirectTests(url: string, _options?: { title?:
         title: _options?.title ?? '',
     };
     const port = url.match(/:(\d+)$/)?.[0] ?? '';
+    const urlWithTrailingSlash = new URL(url).pathname === '/' || url.endsWith('/') ? url : `${url}/`;
     return [
         test(`API: Redirect HTTP${port} to HTTPS (root)${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
@@ -52,7 +53,7 @@ export function createHttpToHttpsRedirectTests(url: string, _options?: { title?:
         test(`API: Redirect HTTP${port} to HTTPS (root slash)${options.title ? ` - ${options.title}` : ''}`, async () => {
             const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
             expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
+            expect(response.headers['location'], 'Response header location').toStrictEqual(urlWithTrailingSlash.replace('http://', 'https://').replace(/:\d+$/, ''));
         }),
 
         test(`API: Redirect HTTP${port} to HTTPS (random subpage)${options.title ? ` - ${options.title}` : ''}`, async () => {
