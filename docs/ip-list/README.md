@@ -39,8 +39,8 @@
 | `10.1.12.34`  | `homeassistant.matejhome.com`                   |
 | `10.1.12.35`  | `docker-cache-dockerhub.matejhome.com`          |
 | `10.1.12.36`  | `jellyfin.matejhome.com`                        |
-| `10.1.12.38`  | `smtp4dev.matejhome.com`                        |
-| `10.1.12.39`  | `healthchecks.matejhome.com`                    |
+| `10.1.12.37`  | `smtp4dev.matejhome.com`                        |
+| `10.1.12.38`  | `healthchecks.matejhome.com`                    |
 | `10.1.12.130` | `gatus-1.matejhome.com`                         |
 | `10.1.12.131` | `speedtesttracker.matejhome.com`                |
 | `10.1.12.132` | `homepage.matejhome.com`                        |
