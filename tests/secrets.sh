@@ -161,18 +161,6 @@ rm -f './.secrets.env'
     printf 'JELLYFIN__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.jellyfin.apache.status_user')"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.jellyfin.apache.prometheus_user')"
 
-    printf 'KIWIX_WIKIPEDIA__MATEJ_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.app.matej_user')"
-    printf 'KIWIX_WIKIPEDIA__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.app.homelab_viewer_user')"
-    printf 'KIWIX_WIKIPEDIA__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.app.homelab_test_user')"
-    printf 'KIWIX_WIKIPEDIA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.apache.status_user')"
-    printf 'KIWIX_WIKIPEDIA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.apache.prometheus_user')"
-
-    printf 'KIWIX_WIKTIONARY__MATEJ_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.app.matej_user')"
-    printf 'KIWIX_WIKTIONARY__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.app.homelab_viewer_user')"
-    printf 'KIWIX_WIKTIONARY__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.app.homelab_test_user')"
-    printf 'KIWIX_WIKTIONARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.apache.status_user')"
-    printf 'KIWIX_WIKTIONARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.apache.prometheus_user')"
-
     printf 'KOFFAN__APP_PASSWORD=%s\n' "$(load_secret '.koffan.app.admin_user')"
     printf 'KOFFAN__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.koffan.apache.status_user')"
     printf 'KOFFAN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.koffan.apache.prometheus_user')"
@@ -470,6 +458,18 @@ rm -f './.secrets.env'
     printf 'VIKUNJA__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.vikunja.app.homelab_test_user')"
     printf 'VIKUNJA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.status_user')"
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.prometheus_user')"
+
+    printf 'WIKIPEDIA__MATEJ_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.app.matej_user')"
+    printf 'WIKIPEDIA__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.app.homelab_viewer_user')"
+    printf 'WIKIPEDIA__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.app.homelab_test_user')"
+    printf 'WIKIPEDIA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.apache.status_user')"
+    printf 'WIKIPEDIA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wikipedia.apache.prometheus_user')"
+
+    printf 'WIKTIONARY__MATEJ_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.app.matej_user')"
+    printf 'WIKTIONARY__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.app.homelab_viewer_user')"
+    printf 'WIKTIONARY__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.app.homelab_test_user')"
+    printf 'WIKTIONARY__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.apache.status_user')"
+    printf 'WIKTIONARY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.kiwix_wiktionary.apache.prometheus_user')"
 } >>'.secrets.env'
 
 chmod 0400 '.secrets.env'
