@@ -59,6 +59,10 @@ rm -f './.secrets.env'
     printf 'CHANGEDETECTION__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.changedetection.apache.status_user')"
     printf 'CHANGEDETECTION__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.changedetection.apache.prometheus_user')"
 
+    printf 'DATA__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.samba_data.app.prometheus_user')"
+    printf 'DATA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.samba_data.apache.status_user')"
+    printf 'DATA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.samba_data.apache.prometheus_user')"
+
     printf 'DAWARICH__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.dawarich.app.homelab_test_user')"
     printf 'DAWARICH__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dawarich.apache.status_user')"
     printf 'DAWARICH__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dawarich.apache.prometheus_user')"
@@ -316,10 +320,6 @@ rm -f './.secrets.env'
     printf 'REPORTPORTAL__ADMIN_PASSWORD=%s\n' "$(load_secret '.reportportal.app.admin_user')"
     printf 'REPORTPORTAL__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.reportportal.apache.status_user')"
     printf 'REPORTPORTAL__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.reportportal.apache.prometheus_user')"
-
-    printf 'SAMBA_DATA__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.samba_data.app.prometheus_user')"
-    printf 'SAMBA_DATA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.samba_data.apache.status_user')"
-    printf 'SAMBA_DATA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.samba_data.apache.prometheus_user')"
 
     printf 'SMTP4DEV__MATEJ_PASSWORD=%s\n' "$(load_secret '.smtp4dev.app.matej_user')"
     printf 'SMTP4DEV__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.smtp4dev.app.homelab_viewer_user')"
