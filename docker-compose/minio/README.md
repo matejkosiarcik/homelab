@@ -25,5 +25,5 @@ Client:
 ## After initial installation
 
 - Create prometheus token with local CLI
-    - `mc alias set homelab https://minio.matejhome.com`
+    - `mc alias set homelab 'https://minio.matejhome.com'`
     - `mc admin prometheus generate homelab`
