@@ -42,17 +42,20 @@ RUN sh /homelab/create-user.sh && \
 
 ### Prefinal ###
 
-FROM scratch AS homelab_dir
+FROM debian:13.7-slim AS homelab_dir
 WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=app_original /root/noVNC /homelab/noVNC
 COPY --from=app_modified /homelab/original /homelab/original
 COPY ./docker-images/novnc/entrypoint.sh /homelab/
 
-FROM scratch AS prefinal
+FROM debian:13.7-slim AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab/
+RUN mkdir -p '/root' && \
+    ln -s '/homelab/noVNC' '/root/noVNC' && \
+    ln -s '/homelab/noVNC' '/home/homelab/noVNC'
 
 ### Final ###
 
@@ -62,10 +65,8 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-RUN rm -rf /root && \
-    mkdir -p /root && \
-    chmod 777 /root && \
-    ln -s /homelab/noVNC /root/noVNC
+RUN rm -rf '/root'
+COPY --from=prefinal --chown=homelab:homelab /root /root
 # NOTE: Placeholders are replaced during runtime (in config or secrets)
 ENV AUTOCONNECT="true" \
     HOMELAB_CONTAINER_NAME="novnc" \
