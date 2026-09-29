@@ -1,8 +1,4 @@
 #!/bin/sh
 set -euf
 
-# Copy files to real "/homelab/noVNC/app"
-mkdir -p '/homelab/noVNC/app'
-cp -R '/homelab/original/noVNC/app/.' '/homelab/noVNC/app'
-
-bash -c "/homelab/noVNC/utils/novnc_proxy --vnc ${VNC_SERVER}"
+/usr/share/novnc/utils/novnc_proxy --listen '0.0.0.0:6080' --vnc "${VNC_SERVER}" --file-only --web-auth --auth-plugin 'BasicHTTPAuth' --auth-source "${WEB_AUTH_USERNAME}:${WEB_AUTH_PASSWORD}"

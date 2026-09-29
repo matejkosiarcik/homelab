@@ -24,7 +24,7 @@ get_app_type() {
     printf '%s\n' "${app_type}"
 }
 
-get_server_name() {
+get_server_name_pretty() {
     # Arg 1 - App directory path
     server_path="$(dirname "$(dirname "${1}")")"
 
@@ -35,6 +35,16 @@ get_server_name() {
     fi
 
     printf '%s\n' "${server_name}"
+}
+
+get_server_name_machine() {
+    # Arg 1 - App directory path
+    get_server_name_pretty "${1}" | tr '[:upper:]' '[:lower:]' | sed -E 's~(\[|\]|\(|\)|\{|\}|\_|\+|\ |\-)~-~g;s~\-+~-~g'
+}
+
+get_server_name_env() {
+    # Arg 1 - App directory path
+    get_server_name_machine "${1}" | sed -E 's~-~_~g' | tr '[:lower:]' '[:upper:]'
 }
 
 get_app_full_name_pretty() {
@@ -61,7 +71,7 @@ get_app_full_name_pretty() {
         app_prettyname="${app_prettyname} - ${app_instance_prettyname}"
     fi
 
-    printf '%s\n' "${app_prettyname}" | sed -E "s~<<server>>~$(get_server_name "${1}")~g"
+    printf '%s\n' "${app_prettyname}" | sed -E "s~<<server>>~$(get_server_name_pretty "${1}")~g"
 }
 
 get_app_full_name_machine() {

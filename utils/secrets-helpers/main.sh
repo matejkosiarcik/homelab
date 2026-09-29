@@ -41,6 +41,8 @@ app_type="$(get_app_type "${app_dir_path}")"
 app_full_name_machine="$(get_app_full_name_machine "${app_dir_path}")"
 app_full_name_key="$(printf '%s' "${app_full_name_machine}" | tr '-' '_')"
 app_domain="$(get_app_domain "${app_dir_path}")"
+server_name_machine="$(get_server_name_machine "${app_dir_path}")"
+server_name_key="$(printf '%s' "${server_name_machine}" | tr '-' '_')"
 
 tmpdir="$(mktemp -d)"
 
@@ -1111,11 +1113,13 @@ nodeexporter)
 
 novnc)
     # Preload #
-    admin_password="$(load_secret ".${app_full_name_key}.app.admin_user" dev=default)"
+    matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
+    target_password="$(load_secret ".vnc_${server_name_key}.app.admin_user" dev=real)"
 
     # App #
-    printf 'admin,%s\n' "${admin_password}" >>"${initial_output}/.secrets.csv"
-    printf 'VNC_PASSWORD="%s"\n' "${admin_password}" >>"${initial_output}/app.env"
+    printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
+    printf 'WEB_AUTH_PASSWORD="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
+    printf 'vnc-upstream,%s\n' "${target_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
