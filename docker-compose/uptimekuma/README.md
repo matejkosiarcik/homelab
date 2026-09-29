@@ -23,3 +23,4 @@
     - Setup notifications (Ntfy and Gotify)
     - Modify data persistancy interval
 - Setup status page `dashboard`
+- Setup API key

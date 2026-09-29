@@ -15,7 +15,7 @@ test.describe(apps.changedetection.title, () => {
 
             test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login?next=/`);
+                await page.waitForURL(`${instance.url}/login?redirect=/`);
                 await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
                 await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
                 await page.waitForURL(instance.url);
@@ -30,7 +30,7 @@ test.describe(apps.changedetection.title, () => {
                 await page.locator('form input[type="password"][name="password"]').fill(faker.string.alpha(10));
                 await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
                 await page.waitForSelector('.error:has-text("Incorrect password")', { timeout: 10_000 });
-                await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login`);
+                await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login?redirect=/`);
             });
         });
     }

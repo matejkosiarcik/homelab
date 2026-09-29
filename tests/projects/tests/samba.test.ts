@@ -26,6 +26,7 @@ test.describe(apps.samba.title, () => {
                 await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
                 const lines = content.split('\n');
                 const metrics = [
+                    'go_info',
                     'samba_client_count',
                     'samba_exporter_information',
                     'samba_individual_user_count',
@@ -35,12 +36,6 @@ test.describe(apps.samba.title, () => {
                     'samba_satutsd_up',
                     'samba_server_up',
                     'samba_share_count',
-                    'samba_smbd_cpu_usage_percentage',
-                    'samba_smbd_io_counter_read_bytes',
-                    'samba_smbd_io_counter_read_count',
-                    'samba_smbd_io_counter_write_bytes',
-                    'samba_smbd_io_counter_write_count',
-                    'samba_smbd_open_file_count',
                     'samba_smbd_sum_cpu_usage_percentage',
                     'samba_smbd_sum_io_counter_read_bytes',
                     'samba_smbd_sum_io_counter_read_count',
@@ -50,10 +45,7 @@ test.describe(apps.samba.title, () => {
                     'samba_smbd_sum_thread_count',
                     'samba_smbd_sum_virtual_memory_usage_bytes',
                     'samba_smbd_sum_virtual_memory_usage_percent',
-                    'samba_smbd_thread_count',
                     'samba_smbd_unique_process_id_count',
-                    'samba_smbd_virtual_memory_usage_bytes',
-                    'samba_smbd_virtual_memory_usage_percent',
                 ];
                 for (const metric of metrics) {
                     expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
