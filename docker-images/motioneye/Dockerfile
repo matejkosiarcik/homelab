@@ -30,7 +30,7 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh && \
+RUN sh '/homelab/create-user.sh' && \
     grep -E '^homelab:' </etc/group | sed 's~^homelab~motion~' | sponge --append /etc/group && \
     grep -E '^homelab:' </etc/passwd | sed 's~^homelab~motion~' | sponge --append /etc/passwd && \
     pwconv && \

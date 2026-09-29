@@ -40,7 +40,7 @@ COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
-RUN sh /homelab/create-user.sh && \
+RUN sh '/homelab/create-user.sh' && \
     pwconv && \
     passwd --lock homelab
 
