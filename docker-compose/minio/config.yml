@@ -9,7 +9,7 @@ apache:
       target: http://app:9000
 
 favicons:
-  default: /apple-icon-180x180.png
+  default: /ui/apple-icon-180x180.png
   # ico: /favicon.ico
 
 gatus:
