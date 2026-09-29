@@ -4,6 +4,13 @@
 
 | IP address    | Domain                                          |
 |---------------|-------------------------------------------------|
+| `10.1.10.1`   | `unbound-2-default.matejhome.com`               |
+| `10.1.10.2`   | `unbound-2-matej.matejhome.com`                 |
+| `10.1.10.3`   | `unbound-2-monika.matejhome.com`                |
+| `10.1.10.4`   | `unbound-2-iot.matejhome.com`                   |
+| `10.1.10.5`   | `unbound-2-guests.matejhome.com`                |
+| `10.1.10.6`   | `unbound-2-internal.matejhome.com`              |
+| `10.1.10.7`   | `unbound-2-blackhole.matejhome.com`             |
 | `10.1.10.11`  | `pihole-3.matejhome.com`                        |
 | `10.1.10.12`  | `pihole-4.matejhome.com`                        |
 | `10.1.10.19`  | `pihole-blackhole-2.matejhome.com`              |
@@ -32,8 +39,8 @@
 | `10.1.12.34`  | `homeassistant.matejhome.com`                   |
 | `10.1.12.35`  | `docker-cache-dockerhub.matejhome.com`          |
 | `10.1.12.36`  | `jellyfin.matejhome.com`                        |
-| `10.1.12.38`  | `smtp4dev.matejhome.com`                        |
-| `10.1.12.39`  | `healthchecks.matejhome.com`                    |
+| `10.1.12.37`  | `smtp4dev.matejhome.com`                        |
+| `10.1.12.38`  | `healthchecks.matejhome.com`                    |
 | `10.1.12.130` | `gatus-1.matejhome.com`                         |
 | `10.1.12.131` | `speedtesttracker.matejhome.com`                |
 | `10.1.12.132` | `homepage.matejhome.com`                        |
@@ -68,13 +75,6 @@
 | `10.1.14.21`  | `docker-stats-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.22`  | `dozzle-agent-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.23`  | `nodeexporter-raspberry-pi-4b-2g.matejhome.com` |
-| `10.1.16.1`   | `unbound-2-default.matejhome.com`               |
-| `10.1.16.2`   | `unbound-2-matej.matejhome.com`                 |
-| `10.1.16.3`   | `unbound-2-monika.matejhome.com`                |
-| `10.1.16.4`   | `unbound-2-iot.matejhome.com`                   |
-| `10.1.16.5`   | `unbound-2-guests.matejhome.com`                |
-| `10.1.16.6`   | `unbound-2-internal.matejhome.com`              |
-| `10.1.16.7`   | `unbound-2-blackhole.matejhome.com`             |
 | `10.1.16.21`  | `docker-stats-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.22`  | `dozzle-agent-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.23`  | `nodeexporter-raspberry-pi-4b-4g.matejhome.com` |

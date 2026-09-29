@@ -4,8 +4,13 @@
 ### App ###
 
 # hadolint ignore=DL3029
-FROM --platform=linux/amd64 bonigarcia/novnc:1.3.0 AS app
+FROM --platform=linux/amd64 bonigarcia/novnc:1.3.0 AS app_original
 USER root
+
+FROM debian:13.7-slim AS app_modified
+USER root
+WORKDIR /homelab
+COPY --from=app_original /root/noVNC /root/noVNC
 RUN mkdir -p '/homelab/original/noVNC/app' && \
     cp -R '/root/noVNC/app/.' '/homelab/original/noVNC/app'
 
@@ -40,8 +45,8 @@ RUN sh /homelab/create-user.sh && \
 FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=app /root/noVNC /homelab/noVNC
-COPY --from=app /homelab/original /homelab/original
+COPY --from=app_original /root/noVNC /homelab/noVNC
+COPY --from=app_modified /homelab/original /homelab/original
 COPY ./docker-images/novnc/entrypoint.sh /homelab/
 
 FROM scratch AS prefinal
