@@ -17,6 +17,7 @@ RUN mkdir -p '/homelab/original/noVNC/app' && \
 FROM debian:13.7-slim AS rm_script
 USER root
 WORKDIR /homelab
+# hadolint ignore=SC2016
 RUN printf '#!/bin/sh\nset -euf\nrm -rf /root\nrm -f "${0}"' >/homelab/rm.sh && \
     chmod a+x '/homelab/rm.sh'
 
