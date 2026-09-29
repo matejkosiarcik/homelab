@@ -1779,13 +1779,9 @@ unificontroller)
 uptimekuma)
     # Preload #
     matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
-    app_prometheus_password="$(load_secret ".${app_full_name_key}.app.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
-
-    write_http_auth_user prometheus "${app_prometheus_password}" prometheus
-    printf 'app-prometheus,%s\n' "${app_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
