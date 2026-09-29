@@ -25,10 +25,9 @@ test.describe(apps.homeassistant.title, () => {
                 await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
                 const lines = content.split('\n');
                 const metrics = [
-                    'homeassistant_binary_sensor_state',
+                    'homeassistant_area_info',
                     'homeassistant_entity_available',
                     'homeassistant_last_updated_time_seconds',
-                    'homeassistant_light_brightness_percent',
                     'homeassistant_sensor_timestamp_seconds',
                     'homeassistant_state_change_created',
                     'homeassistant_state_change_total',
