@@ -149,9 +149,7 @@ rm -f './.secrets.env'
     printf 'HOMEASSISTANT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.homeassistant.apache.status_user')"
     printf 'HOMEASSISTANT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.homeassistant.apache.prometheus_user')"
 
-    printf 'HOMEPAGE__MATEJ_PASSWORD=%s\n' "$(load_secret '.homepage.app.matej_user')"
-    printf 'HOMEPAGE__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.homepage.app.homelab_viewer_user')"
-    printf 'HOMEPAGE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.homepage.app.homelab_test_user')"
+    printf 'HOMEPAGE__ADMIN_PASSWORD=%s\n' "$(load_secret '.homepage.app.admin_user')"
     printf 'HOMEPAGE__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.homepage.apache.status_user')"
     printf 'HOMEPAGE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.homepage.apache.prometheus_user')"
 
