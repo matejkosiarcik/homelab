@@ -34,10 +34,12 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: script-app-setup
+    # Override:
+    build:
+      args:
+        SETUP_SCRIPT_DIR: speedtesttracker
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
-    volumes:
-      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/speedtesttracker/setup.sh:/homelab/setup.sh:ro
 
   certificator:
     extends:

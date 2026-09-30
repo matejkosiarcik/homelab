@@ -60,6 +60,8 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/script-setup/entrypoint.sh /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+ARG SETUP_SCRIPT_DIR="script-setup"
+COPY ./docker-images/${SETUP_SCRIPT_DIR}/setup.sh /homelab/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
