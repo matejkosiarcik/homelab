@@ -2,3 +2,4 @@
 pihole-3
 unbound-*
 pihole-4
+samba-data
