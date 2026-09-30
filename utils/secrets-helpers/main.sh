@@ -1674,10 +1674,11 @@ speedtesttracker)
     printf 'ADMIN_PASSWORD="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
     printf 'MAIL_PASSWORD=""\n' >>"${initial_output}/app.env"
     printf 'MAIL_USERNAME=""\n' >>"${initial_output}/app.env"
+
+    # App setup #
+    printf 'SPEEDTEST_RUN_TOKEN="%s"\n' "${speedtest_run_token}" >>"${initial_output}/app-setup.env"
     printf 'api-token-writeonly,%s\n' "${speedtest_run_token}" >>"${initial_output}/.secrets.csv"
-    printf 'SPEEDTEST_RUN_TOKEN="%s"\n' "${speedtest_run_token}" >>"${initial_output}/app.env"
     printf 'api-token-readonly,%s\n' "${speedtest_read_token}" >>"${initial_output}/.secrets.csv"
-    printf 'SPEEDTEST_READ_TOKEN="%s"\n' "${speedtest_read_token}" >>"${initial_output}/app.env"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"

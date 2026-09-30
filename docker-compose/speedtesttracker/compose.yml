@@ -30,6 +30,15 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/speedtesttracker/data:/config:rw
 
+  app-setup:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: script-app-setup
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
+    volumes:
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/speedtesttracker/setup.sh:/homelab/setup.sh:ro
+
   certificator:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml

@@ -12,6 +12,17 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_se
         moreutils && \
     rm -rf /var/lib/apt/lists/*
 
+FROM debian:13.7-slim AS package_curl
+USER root
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_setup_package_curl_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_script_setup_package_curl_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /homelab/usr-lib && \
+    find /usr/lib \( -name 'libbrotli*' -or -name 'libcom*' -or -name 'libcurl*' -or -name 'libffi*' -or -name 'libgmp*' -or -name 'libgnutls*' -or -name 'libgssapi*' -or -name 'libhogweed*' -or -name 'libidn*' -or -name 'libk*crypto*' -or -name 'libkeyutils*' -or -name 'libkrb*' -or -name 'liblber*' -or -name 'libldap*' -or -name 'libnettle*' -or -name 'libnghttp*' -or -name 'libp*kit*' -or -name 'libpsl*' -or -name 'librtmp*' -or -name 'libsasl*' -or -name 'libssh*' -or -name 'libtasn*' -or -name 'libunistring*' \) -exec sh -c 'mkdir -p "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")" && cp "$0" "/homelab/usr-lib/$(dirname "$0" | sed -E "s~^/usr/lib/~~")/$(basename "$0")"' {} \;
+
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
 COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
@@ -56,6 +67,8 @@ COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=busybox /fsroot/bin /fsroot/bin
 COPY --from=package_moreutils /usr/bin/sponge /fsroot/usr-bin/
+COPY --from=package_curl /usr/bin/curl /fsroot/usr-bin/
+COPY --from=package_curl /homelab/usr-lib/ /fsroot/usr-lib/
 
 ### Final ###
 
@@ -67,6 +80,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/bin/ /bin/
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr-bin/ /usr/bin/
+COPY --from=prefinal --chown=homelab:homelab /fsroot/usr-lib/ /usr/lib/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="script-setup" \
     HOMELAB_CONTAINER_VARIANT="default" \

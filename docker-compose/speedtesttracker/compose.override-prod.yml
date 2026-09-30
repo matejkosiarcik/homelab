@@ -8,6 +8,9 @@ services:
     environment:
       APP_URL: ${DOCKER_COMPOSE_NETWORK_URL}
 
+  app-setup:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 
