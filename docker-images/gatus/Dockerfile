@@ -6,17 +6,6 @@
 FROM twinproduction/gatus:v5.37.0 AS gatus_app
 USER root
 
-# FROM debian:13.7-slim AS gatus_setcap
-# USER root
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gatus_setcap_aptcache \
-#     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gatus_setcap_aptlibcache \
-#     apt-get update -qq && \
-#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-#         libcap2-bin >/dev/null && \
-#     rm -rf /var/lib/apt/lists/*
-# COPY --from=gatus_app /gatus /gatus
-# RUN setcap 'cap_net_raw+ep' /gatus
-
 ### Dependencies ###
 
 FROM debian:13.7-slim AS yq
@@ -122,7 +111,6 @@ FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY --from=config_2 /homelab/config.yml /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-# COPY --from=gatus_setcap /gatus /homelab/bin/
 COPY --from=gatus_app /gatus /homelab/bin/
 
 FROM scratch AS prefinal
