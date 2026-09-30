@@ -3,4 +3,4 @@ app:
 
 network:
   domain: wikipedia.matejhome.com
-  ip: 10.1.12.155
+  ip: 10.1.12.57
