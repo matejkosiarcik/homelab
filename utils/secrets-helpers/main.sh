@@ -1655,6 +1655,8 @@ smtp4dev)
 speedtesttracker)
     # Preload #
     matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
+    speedtest_run_token="$(load_secret ".${app_full_name_key}.app.api_key_writeonly" dev=empty)"
+    speedtest_read_token="$(load_secret ".${app_full_name_key}.app.api_key_readonly" dev=empty)"
     if [ "${mode}" = 'dev' ]; then
         matej_email='matej@localhost'
     else
@@ -1672,6 +1674,10 @@ speedtesttracker)
     printf 'ADMIN_PASSWORD="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
     printf 'MAIL_PASSWORD=""\n' >>"${initial_output}/app.env"
     printf 'MAIL_USERNAME=""\n' >>"${initial_output}/app.env"
+    printf 'api-token-writeonly,%s\n' "${speedtest_run_token}" >>"${initial_output}/.secrets.csv"
+    printf 'SPEEDTEST_RUN_TOKEN="%s"\n' "${speedtest_run_token}" >>"${initial_output}/app.env"
+    printf 'api-token-readonly,%s\n' "${speedtest_read_token}" >>"${initial_output}/.secrets.csv"
+    printf 'SPEEDTEST_READ_TOKEN="%s"\n' "${speedtest_read_token}" >>"${initial_output}/app.env"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"

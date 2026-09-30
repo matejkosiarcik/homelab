@@ -328,6 +328,8 @@ rm -f './.secrets.env'
     printf 'SMTP4DEV__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.smtp4dev.apache.prometheus_user')"
 
     printf 'SPEEDTESTTRACKER__MATEJ_PASSWORD=%s\n' "$(load_secret '.speedtesttracker.app.matej_user')"
+    printf 'SPEEDTESTTRACKER__API_KEY_READONLY=%s\n' "$(load_secret '.speedtesttracker.app.api_key_readonly')"
+    printf 'SPEEDTESTTRACKER__API_KEY_WRITEONLY=%s\n' "$(load_secret '.speedtesttracker.app.api_key_writeonly')"
     printf 'SPEEDTESTTRACKER__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.speedtesttracker.apache.status_user')"
     printf 'SPEEDTESTTRACKER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.speedtesttracker.apache.prometheus_user')"
 
