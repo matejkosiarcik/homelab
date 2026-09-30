@@ -193,8 +193,6 @@ test.describe(apps.prometheus.title, () => {
                     'prometheus_sd_received_updates_total',
                     'prometheus_sd_updates_delayed_total',
                     'prometheus_sd_updates_total',
-                    'prometheus_target_interval_length_histogram_seconds',
-                    'prometheus_target_interval_length_seconds',
                     'prometheus_target_metadata_cache_bytes',
                     'prometheus_target_metadata_cache_entries',
                     'prometheus_target_scrape_duration_seconds',

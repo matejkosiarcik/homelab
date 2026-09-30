@@ -38,7 +38,9 @@ test.describe(apps.speedtesttracker.title, () => {
                     await page.locator('form button:has-text("Sign in")').click();
                     await page.waitForURL(`${instance.url}/admin`);
                     await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
-                    await expect(page.locator('main .fi-wi-stats-overview-stat').first()).toBeVisible();
+                    await expect(page.locator('main .fi-section-header-heading:has-text("Download")')).toBeVisible();
+                    await expect(page.locator('main .fi-section-header-heading:has-text("Upload")')).toBeVisible();
+                    await expect(page.locator('main .fi-section-header-heading:has-text("Ping")')).toBeVisible();
                 });
             }
 
@@ -66,7 +68,6 @@ test.describe(apps.speedtesttracker.title, () => {
 
             test('UI: Open', async ({ page }) => {
                 await page.goto(instance.url);
-                // await expect(page.locator('.fi-wi-stats-overview-stat').first()).toBeVisible({ timeout: 5000 }); // NOTE: Unauthenticate dashboard is disabled
                 await page.waitForURL(`${instance.url}/admin/login`);
             });
         });
