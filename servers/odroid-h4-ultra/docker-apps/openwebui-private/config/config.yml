@@ -2,4 +2,4 @@ app:
   type: openwebui
 
 network:
-  ip: 10.1.12.159
+  ip: 10.1.12.64

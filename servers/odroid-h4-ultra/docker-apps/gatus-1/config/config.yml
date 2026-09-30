@@ -2,4 +2,4 @@ app:
   type: gatus
 
 network:
-  ip: 10.1.12.130
+  ip: 10.1.12.40
