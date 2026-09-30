@@ -10,6 +10,9 @@ services:
       APP_DEBUG: "true"
       SPEEDTEST_SCHEDULE: "*/5 * * * *"
 
+  app-setup:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 
