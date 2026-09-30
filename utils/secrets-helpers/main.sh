@@ -813,6 +813,8 @@ homeassistant)
     homelab_admin_password="$(load_secret ".${app_full_name_key}.app.homelab_admin_user" dev=default)"
     homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
     homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
+    homelab_admin_api_key="$(load_secret ".${app_full_name_key}.app.homelab_admin_api_key" dev=empty)"
+    homelab_viewer_api_key="$(load_secret ".${app_full_name_key}.app.homelab_viewer_api_key" dev=empty)"
 
     # App #
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
@@ -820,6 +822,8 @@ homeassistant)
     printf 'homelab-admin,%s\n' "${homelab_admin_password}" >>"${initial_output}/.secrets.csv"
     printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
     printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
+    printf 'homelab-admin-api-key,%s\n' "${homelab_admin_api_key}" >>"${initial_output}/.secrets.csv"
+    printf 'homelab-viewer-api-key,%s\n' "${homelab_viewer_api_key}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -847,10 +851,10 @@ homepage)
     printf 'HOMEPAGE_VAR__GATUS_2__PASSWORD="%s"\n' "$(load_secret '.gatus_2.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__GRAFANA__PASSWORD="%s"\n' "$(load_secret '.grafana.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__HEALTHCHECKS__APIKEY="%s"\n' "$(load_secret '.healthchecks.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__HOMEASSISTANT__APIKEY="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__HOMEASSISTANT__APIKEY="%s"\n' "$(load_secret '.homeassistant.app.homelab_admin_api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__JELLYFIN__APIKEY="%s"\n' "$(load_secret '.jellyfin.app.api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__MOTIONEYE_KITCHEN__HOMELAB_STREAM_PASSWORD="%s"\n' "$(load_secret '.motioneye_kitchen.app.stream_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR_NETALERTX_APIKEY="%s"\n' "$(load_secret '.netalertx.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEPAGE_VAR__NETALERTX__APIKEY="%s"\n' "$(load_secret '.netalertx.app.api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__OMADACONTROLLER__PASSWORD="%s"\n' "$(load_secret '.omadacontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PIHOLE_1__PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PIHOLE_2__PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"

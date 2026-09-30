@@ -236,10 +236,10 @@
         widget:
           type: homeassistant
           url: https://homeassistant.matejhome.com
-          key: "{{HOMEPAGE_VAR__HOMEASSISTANT_APIKEY}}"
-          custom:
-            - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
-              label: Turned on lights
+          key: "{{HOMEPAGE_VAR__HOMEASSISTANT__APIKEY}}"
+          # custom:
+          #   - template: "{{ states.light|selectattr('state','equalto','on')|list|length }}"
+          #     label: Turned on lights
 
     - MotionEye Kitchen:
         description: Camera System
