@@ -23,7 +23,8 @@ db.createUser({
         { db: "admin", role: "clusterMonitor" },
         { db: "${MONGO_DBNAME}", role: "dbOwner" },
         { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
-        { db: "${MONGO_DBNAME}_audit", role: "dbOwner" }
+        { db: "${MONGO_DBNAME}_audit", role: "dbOwner" },
+        { db: "${MONGO_DBNAME}_restore", role: "dbOwner" }
     ]
 })
 EOF
