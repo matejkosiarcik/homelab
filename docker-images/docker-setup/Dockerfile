@@ -41,7 +41,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM docker:29.8.1 AS final
+FROM docker:29.8.2 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
