@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM freikin/dawarich:1.15.2 AS app
+FROM freikin/dawarich:1.15.3 AS app
 USER root
 WORKDIR /homelab
 # hadolint ignore=DL3003
@@ -64,7 +64,7 @@ COPY --from=app /var/app /var/app
 
 ### Final ###
 
-FROM freikin/dawarich:1.15.2 AS final
+FROM freikin/dawarich:1.15.3 AS final
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
