@@ -74,7 +74,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
-FROM python:3.14.7-slim AS gitman
+FROM python:3.14.8-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -84,7 +84,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --no-compile --requirement './requirements.txt' --target './python-vendor' --quiet
 
-FROM python:3.14.7-slim AS imagemagick_appimage_gitman
+FROM python:3.14.8-slim AS imagemagick_appimage_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_imagemagick_appimage_gitman_aptcache \

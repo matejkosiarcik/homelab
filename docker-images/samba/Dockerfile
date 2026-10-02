@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Dependencies ###
 
-FROM python:3.14.7-slim AS gitman
+FROM python:3.14.8-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -40,7 +40,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 
 ### Samba exporter ###
 
-FROM python:3.14.7-slim AS samba_exporter_gitman
+FROM python:3.14.8-slim AS samba_exporter_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_prometheus_exporter_gitman_aptcache \

@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Dependencies ###
 
-FROM python:3.14.7-slim AS gitman
+FROM python:3.14.8-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -34,7 +34,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 
 ### Supercronic ###
 
-FROM python:3.14.7-slim AS supercronic_gitman
+FROM python:3.14.8-slim AS supercronic_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_gitman_aptcache \

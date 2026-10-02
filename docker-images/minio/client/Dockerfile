@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Dependencies ###
 
-FROM python:3.14.7-slim AS gitman
+FROM python:3.14.8-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -60,7 +60,7 @@ RUN sh /homelab/busybox-copy.sh
 
 ### App ###
 
-FROM python:3.14.7-slim AS minio_mc_gitman
+FROM python:3.14.8-slim AS minio_mc_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_minio_client_minio_cli_gitman_aptcache \
