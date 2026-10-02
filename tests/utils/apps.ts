@@ -8,7 +8,7 @@ export const apps = {
     adventurelog: {
         title: 'AdventureLog',
         instances: [
-            { url: 'https://adventurelog.matejhome.com', title: 'Main', backendUrl: 'https://adventurelog-backend.matejhome.com', },
+            { url: 'https://adventurelog.matejhome.com', title: 'Main', backendUrl: 'https://adventurelog.matejhome.com/api', },
         ],
     },
     certbot: {
