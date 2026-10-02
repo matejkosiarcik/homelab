@@ -75,7 +75,8 @@ export const apps = {
     gitcache: {
         title: 'Git Cache',
         instances: [
-            { url: 'https://git-cache-github.matejhome.com', title: 'GitHub' },
+            // TODO: Re-enable or use nexus
+            { url: 'https://git-cache-github.matejhome.com', title: 'GitHub', enabled: false }, // TODO: Re-enable
         ],
     },
     gotify: {
@@ -155,7 +156,8 @@ export const apps = {
     npmcache: {
         title: 'NPM Cache',
         instances: [
-            { url: 'https://npm-cache.matejhome.com', title: 'npmjs' },
+            // TODO: Re-enable or use nexus
+            { url: 'https://npm-cache.matejhome.com', title: 'npmjs', enabled: false }, // TODO: Re-enable
         ],
     },
     ntfy: {

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { apps } from '../../utils/apps';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
-import { axios, getEnv } from '../../utils/utils';
+import { apps } from '../../utils/apps.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests.ts';
+import { axios, getEnv } from '../../utils/utils.ts';
 import { faker } from '@faker-js/faker';
 
 const app = apps.nodeexporter;
