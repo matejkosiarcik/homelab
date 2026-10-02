@@ -18,6 +18,13 @@ network:
   - name: Smart switch - TP-Link SG105E
     ip: 10.1.0.4
 
+home_devices:
+  - name: Living Room TV
+    ip: livingroom-tv.matejhome.com
+    enabled: false # Disabled, because ping is not answered when TV is turned off
+  - name: Living Room TV Box
+    ip: livingroom-tvbox.matejhome.com
+
 extra_apps:
   - name: VNC - Raspberry Pi 4B 4G
     url: tcp://server-raspberry-pi-4b-4g.matejhome.com:5900
