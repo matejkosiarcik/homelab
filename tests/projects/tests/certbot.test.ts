@@ -5,9 +5,9 @@ import path from 'node:path';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 import { execa } from 'execa';
-import { apps } from '../../utils/apps';
-import { axios, extractTar, getEnv } from '../../utils/utils';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
+import { apps } from '../../utils/apps.ts';
+import { axios, extractTar, getEnv } from '../../utils/utils.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests.ts';
 
 const app = apps.certbot;
 

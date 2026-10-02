@@ -5,7 +5,7 @@ import { default as baseAxios } from 'axios';
 import dns from 'native-dns';
 import * as tar from 'tar';
 import lzma from 'lzma-native';
-import { apps } from './apps';
+import { apps } from './apps.ts';
 
 export async function delay(timeout: number): Promise<void> {
     return new Promise((resolve) => {

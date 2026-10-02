@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
-import { apps } from '../../utils/apps';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
-import { getEnv } from '../../utils/utils';
+import { apps } from '../../utils/apps.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests.ts';
+import { getEnv } from '../../utils/utils.ts';
 
 const app = apps.gotify;
 
