@@ -4,11 +4,13 @@ import { getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
+const app = apps['vaultwarden'];
+
 // TODO: Fix failing tests.
-test.describe.skip(apps['vaultwarden'].title, () => {
-    for (const instance of apps['vaultwarden'].instances) {
+test.describe.skip(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps['vaultwarden'].title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

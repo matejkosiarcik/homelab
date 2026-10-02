@@ -3,14 +3,16 @@ import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios } from '../../utils/utils';
 
+const app = apps.dockercache;
+
 type DockerProxyCatalogResponse = {
     repositories: string[];
 };
 
-test.describe(apps.dockercache.title, () => {
-    for (const instance of apps.dockercache.instances) {
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.dockercache.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

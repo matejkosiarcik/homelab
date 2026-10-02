@@ -4,6 +4,8 @@ import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
+const app = apps.omadacontroller;
+
 type OmadaControllerStatusResponse = {
     errorCode: number,
     msg: string,
@@ -21,10 +23,10 @@ type OmadaControllerStatusResponse = {
     },
 };
 
-test.describe(apps.omadacontroller.title, () => {
-    for (const instance of apps.omadacontroller.instances) {
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.omadacontroller.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

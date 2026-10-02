@@ -5,10 +5,12 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { getEnv } from '../../utils/utils';
 import axios from 'axios';
 
-test.describe(apps.dawarich.title, () => {
-    for (const instance of apps.dawarich.instances) {
+const app = apps.dawarich;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.dawarich.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

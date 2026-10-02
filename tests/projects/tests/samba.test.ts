@@ -4,10 +4,12 @@ import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, getEnv } from '../../utils/utils';
 
-test.describe(apps.samba.title, () => {
-    for (const instance of apps.samba.instances) {
+const app = apps.samba;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.samba.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

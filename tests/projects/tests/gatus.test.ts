@@ -4,10 +4,12 @@ import { apps } from '../../utils/apps';
 import { axios, getEnv } from '../../utils/utils';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe(apps.gatus.title, () => {
-    for (const instance of apps.gatus.instances) {
+const app = apps.gatus;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.gatus.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

@@ -4,10 +4,12 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { axios, getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
-test.describe(apps.nodeexporter.title, () => {
-    for (const instance of apps.nodeexporter.instances) {
+const app = apps.nodeexporter;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.nodeexporter.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

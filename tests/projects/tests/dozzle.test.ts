@@ -4,10 +4,13 @@ import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { getEnv } from '../../utils/utils';
 
-test.describe(apps.dozzle.title, () => {
-    for (const instance of apps.dozzle.instances) {
+const app = apps.dozzle;
+const agentApp = apps['dozzle-agent'];
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.dozzle.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 
@@ -62,10 +65,10 @@ test.describe(apps.dozzle.title, () => {
     }
 });
 
-test.describe(apps['dozzle-agent'].title, () => {
-    for (const instance of apps['dozzle-agent'].instances) {
+test.describe(agentApp.title, () => {
+    for (const instance of agentApp.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps['dozzle-agent'].title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${agentApp.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

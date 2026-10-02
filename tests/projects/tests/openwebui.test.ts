@@ -4,10 +4,12 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
-test.describe(apps['openwebui'].title, () => {
-    for (const instance of apps['openwebui'].instances) {
+const app = apps['openwebui'];
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps['openwebui'].title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

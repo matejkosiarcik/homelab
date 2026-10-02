@@ -4,10 +4,12 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { faker } from '@faker-js/faker';
 import { getEnv } from '../../utils/utils';
 
-test.describe(apps.grafana.title, () => {
-    for (const instance of apps.grafana.instances) {
+const app = apps.grafana;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.grafana.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 
