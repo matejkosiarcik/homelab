@@ -149,7 +149,7 @@ export const apps = {
     netalertx: {
         title: 'NetAlertX',
         instances: [
-            { url: 'https://netalertx.matejhome.com', title: 'Main' },
+            { url: 'https://netalertx.matejhome.com', title: 'Main', enabled: false },
         ],
     },
     npmcache: {

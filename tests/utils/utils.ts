@@ -5,6 +5,7 @@ import { default as baseAxios } from 'axios';
 import dns from 'native-dns';
 import * as tar from 'tar';
 import lzma from 'lzma-native';
+import { apps } from './apps';
 
 export async function delay(timeout: number): Promise<void> {
     return new Promise((resolve) => {
@@ -98,4 +99,16 @@ export async function extractTar(file: string, destination: string): Promise<voi
         stream.on('error', (error) => reject(error));
         stream.on('finish', () => resolve(true));
     });
+}
+
+export function getAllHomelabDomains(): string[] {
+    const domains = Object.values(apps)
+        .map((app) => app.instances)
+        .flat()
+        .filter((instance) => ((instance as { enabled?: boolean | undefined }).enabled ?? true) === true)
+        .flatMap((instance) => Object.entries(instance))
+        .filter(([key, value]) => (key === 'url' || key.toLowerCase().endsWith('url') || key.toLowerCase().startsWith('url')) && typeof value === 'string' && /^https?:\/\/[a-zA-Z0-9_-]+\.matejhome\.com$/.test(value))
+        .map(([, value]) => URL.parse(`${value}` as string)?.hostname)
+        .filter((hostname): hostname is string => typeof hostname === 'string');
+    return [...new Set(domains)];
 }

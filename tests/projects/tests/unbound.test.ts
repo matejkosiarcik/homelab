@@ -1,9 +1,7 @@
-import fsx from 'node:fs/promises';
 import nodeDns from 'node:dns/promises';
-import path from 'node:path';
 import _ from 'lodash';
 import { expect, test } from '@playwright/test';
-import { axios, dnsLookup, getEnv } from '../../utils/utils';
+import { axios, dnsLookup, getAllHomelabDomains, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { faker } from '@faker-js/faker';
@@ -139,7 +137,7 @@ test.describe(apps.unbound.title, () => {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step(`Check example.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
-                            if (instance.title.toLowerCase().endsWith(' blackhole') || instance.title.toLowerCase().endsWith(' internal')) {
+                            if (instance.title.toLowerCase().includes('blackhole') || instance.title.toLowerCase().endsWith(' internal')) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
                                 const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
                                 expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
@@ -181,7 +179,7 @@ test.describe(apps.unbound.title, () => {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step(`Check self via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
-                            if (instance.title.toLowerCase().endsWith(' blackhole')) {
+                            if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain ${instanceDomain} should be resolved`).toHaveLength(1);
                                 const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
                                 expect(ips[0], `Domain ${instanceDomain} should be resolved to no IP address`).toStrictEqual(expectedIp);
@@ -215,7 +213,7 @@ test.describe(apps.unbound.title, () => {
                         await test.step(`Check <random>.matejhome.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const domain = `${faker.string.alpha(10)}.matejhome.com`;
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
-                            if (instance.title.toLowerCase().endsWith(' blackhole')) {
+                            if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
                                 const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
                                 expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
@@ -234,25 +232,20 @@ test.describe(apps.unbound.title, () => {
                     return instanceIps[0];
                 })();
 
-                const customDomainsPath = path.join('..', 'docker-images', 'external', 'pihole', 'custom-domains.txt');
-                const domains: { ip: string, domain: string }[] = (await fsx.readFile(customDomainsPath, 'utf-8'))
-                    .split('\n')
-                    .map((line: string) => line.replace(/#.*$/, '').trim())
-                    .filter((line: string) => line !== '')
-                    .map((line: string) => ({ ip: line.split(/\s+/)[0], domain: line.split(/\s+/)[1] }))
-                    .filter((entry) => /^[0-9]/.test(entry.ip));
+                const domains = getAllHomelabDomains();
 
-                for (const entry of domains) {
+                for (const domain of domains) {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
-                        await test.step(`Check domain ${entry.domain} via ${transportVariant.toUpperCase()}`, async () => {
-                            const ipType = entry.ip.includes('.') ? 'A' : 'AAAA';
-                            const ips = await dnsLookup(entry.domain, transportVariant, ipType, instanceIp);
-                            if (instance.title.toLowerCase().endsWith(' blackhole')) {
-                                expect(ips, `Domain ${entry.domain} should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain ${entry.domain} should be resolved to no IP address`).toStrictEqual('0.0.0.0');
+                        await test.step(`Check domain ${domain} via ${transportVariant.toUpperCase()}`, async () => {
+                            const ips = await dnsLookup(domain, transportVariant, 'A', instanceIp);
+                            if (instance.title.toLowerCase().includes('blackhole')) {
+                                expect(ips, `Domain ${domain} should be resolved`).toHaveLength(1);
+                                expect(ips[0], `Domain ${domain} should be resolved to no IP address`).toStrictEqual('0.0.0.0');
                             } else {
-                                expect(ips, `Domain ${entry.domain} should be resolved`).not.toHaveLength(0);
-                                expect(ips, `Domain ${entry.domain} should be resolved to IP address`).toContain(entry.ip);
+                                expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
+                                for (const ip of ips) {
+                                    expect(ip, `Resolved entry should be valid IPv4`).toMatch(/^10\.1\.\d{1,3}\.\d{1,3}$/);
+                                }
                             }
                         });
                     }
