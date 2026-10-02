@@ -70,13 +70,14 @@ test.describe(app.title, () => {
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
                     await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/independent/index.html#login`);
                     await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
                     await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
                     await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                     await page.locator('.login-form a.button-button[title="Log in"]').click();
-                    await page.waitForURL(`${instance.url}/#dashboardGlobal`);
-                    await expect(page.locator('#main-view .header__menu')).toBeVisible();
-                    await expect(page.locator('#main-view #app')).toBeVisible();
+                    await page.waitForURL(`${instance.url}/#/dashboardGlobal`);
+                    await expect(page.locator('text="Site List"')).toBeVisible();
+                    await expect(page.locator('text="Home"')).toBeVisible();
                 });
             }
 
@@ -92,6 +93,7 @@ test.describe(app.title, () => {
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/independent/index.html#login`);
                     await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
                     const originalUrl = page.url();
                     await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
