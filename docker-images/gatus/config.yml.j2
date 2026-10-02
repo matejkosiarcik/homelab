@@ -219,6 +219,22 @@ endpoints:
     {%- endif %}
   {%- endfor %}
 
+  ### Home Devices ###
+
+  {%- for item in home_devices %}
+
+  - <<: *default-icmp
+    name: ICMP - {{ item.name }}
+    group: Home devices
+    url: icmp://{{ item.ip }}
+    alerts:
+      - type: ntfy
+      - type: gotify
+    {%- if item.enabled is defined and not item.enabled %}
+    enabled: false
+    {%- endif %}
+  {%- endfor %}
+
   ### Servers ###
 
   {%- for item in servers %}
