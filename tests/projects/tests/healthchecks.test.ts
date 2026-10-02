@@ -33,6 +33,11 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 
 test.describe(apps.healthchecks.title, () => {
     for (const instance of apps.healthchecks.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

@@ -4,6 +4,11 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 
 test.describe(apps.adventurelog.title, () => {
     for (const instance of apps.adventurelog.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createHttpToHttpsRedirectTests(instance.backendUrl, { title: 'console' });

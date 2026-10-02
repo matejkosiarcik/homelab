@@ -6,6 +6,11 @@ import { getEnv } from '../../utils/utils';
 
 test.describe(apps.dozzle.title, () => {
     for (const instance of apps.dozzle.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
@@ -59,6 +64,11 @@ test.describe(apps.dozzle.title, () => {
 
 test.describe(apps['dozzle-agent'].title, () => {
     for (const instance of apps['dozzle-agent'].instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createTcpTests(instance.url, 7007);
         });

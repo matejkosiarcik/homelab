@@ -10,6 +10,11 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 
 test.describe(apps.pihole.title, () => {
     for (const instance of apps.pihole.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             // Get domain for DNS server for a given variant
             const instanceDomain = instance.url.replace(/^https?:\/\//, '');

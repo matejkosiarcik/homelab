@@ -142,7 +142,8 @@ export const apps = {
     motioneye: {
         title: 'MotionEye',
         instances: [
-            { url: 'https://motioneye-kitchen.matejhome.com', title: 'Kitchen' },
+            // TODO: Re-enable
+            { url: 'https://motioneye-kitchen.matejhome.com', title: 'Kitchen', enabled: false },
         ],
     },
     netalertx: {
@@ -255,7 +256,8 @@ export const apps = {
     tvheadend: {
         title: 'Tvheadend',
         instances: [
-            { url: 'https://tvheadend.matejhome.com', title: 'Main' },
+            // TODO: Re-enable
+            { url: 'https://tvheadend.matejhome.com', title: 'Main', enabled: false },
         ],
     },
     unbound: {

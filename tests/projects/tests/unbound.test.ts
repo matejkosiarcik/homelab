@@ -10,6 +10,11 @@ import { faker } from '@faker-js/faker';
 
 test.describe(apps.unbound.title, () => {
     for (const instance of apps.unbound.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             // Get domain for DNS server for a given variant
             const instanceDomain = instance.url.replace(/^https?:\/\//, '');

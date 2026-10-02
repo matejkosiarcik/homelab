@@ -7,6 +7,11 @@ import axios from 'axios';
 
 test.describe(apps.ollama.title, () => {
     for (const instance of apps.ollama.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             // TODO: createPrometheusTests(instance.url, { auth: 'basic' });

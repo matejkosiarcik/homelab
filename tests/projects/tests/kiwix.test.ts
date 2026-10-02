@@ -6,6 +6,11 @@ import { faker } from '@faker-js/faker';
 
 test.describe(apps.kiwix.title, () => {
     for (const instance of apps.kiwix.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
