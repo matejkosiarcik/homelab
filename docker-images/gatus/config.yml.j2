@@ -14,7 +14,7 @@ ui:
 # Enable prometheus metrics endpoint
 metrics: true
 
-default-alert-settings: &default-alert-settings
+default_alert_settings: &default_alert_settings
   enabled: true
   failure-threshold: 2
   success-threshold: 1
@@ -27,14 +27,14 @@ alerting:
     priority: 1
     token: ${NTFY__TOKEN}
     default-alert:
-      <<: *default-alert-settings
+      <<: *default_alert_settings
   gotify:
     server-url: https://gotify.matejhome.com
     token: ${GOTIFY__TOKEN}
     priority: 1
     title: Gatus monitor failed
     default-alert:
-      <<: *default-alert-settings
+      <<: *default_alert_settings
 
 # connectivity:
 #   checker:
@@ -72,25 +72,25 @@ alerting:
   {%- endif %}
 {%- endmacro -%}
 
-default-icmp: &default-icmp
+default_icmp: &default_icmp
   alerts: []
   interval: 10m
   conditions:
     - "[CONNECTED] == true"
 
-default-tcp: &default-tcp
+default_tcp: &default_tcp
   alerts: []
   interval: 20m
   conditions:
     - "[CONNECTED] == true"
 
-default-udp: &default-udp
+default_udp: &default_udp
   alerts: []
   interval: 20m
   conditions:
     - "[CONNECTED] == true"
 
-default-dns-a: &default-dns-a
+default_dns_a: &default_dns_a
   alerts: []
   interval: 30m
   dns:
@@ -102,7 +102,7 @@ default-dns-a: &default-dns-a
     - "[BODY] != 127.0.0.1"
     - "[DNS_RCODE] == NOERROR"
 
-default-dns-blackhole-a: &default-dns-blackhole-a
+default_dns_blackhole_a: &default_dns_blackhole_a
   alerts: []
   interval: 30m
   dns:
@@ -113,7 +113,7 @@ default-dns-blackhole-a: &default-dns-blackhole-a
     - "[BODY] == 0.0.0.0"
     - "[DNS_RCODE] == NOERROR"
 
-default-dns-aaaa: &default-dns-aaaa
+default_dns_aaaa: &default_dns_aaaa
   alerts: []
   interval: 30m
   dns:
@@ -126,7 +126,7 @@ default-dns-aaaa: &default-dns-aaaa
     - "[BODY] != ::1"
     - "[DNS_RCODE] == NOERROR"
 
-default-dns-blackhole-aaaa: &default-dns-blackhole-aaaa
+default_dns_blackhole_aaaa: &default_dns_blackhole_aaaa
   alerts: []
   interval: 30m
   dns:
@@ -137,18 +137,18 @@ default-dns-blackhole-aaaa: &default-dns-blackhole-aaaa
     - "[BODY] == ::"
     - "[DNS_RCODE] == NOERROR"
 
-default-http: &default-http
+default_http: &default_http
   alerts: []
   interval: 20m
   conditions:
     - "[CONNECTED] == true"
     - "[STATUS] == 200"
 
-default-http-infrequent: &default-http-infrequent
-  <<: *default-http
+default_http_infrequent: &default_http_infrequent
+  <<: *default_http
   interval: 240m
 
-default-https: &default-https
+default_https: &default_https
   alerts: []
   interval: 15m
   conditions:
@@ -156,8 +156,8 @@ default-https: &default-https
     - "[STATUS] == 200"
     - "[CERTIFICATE_EXPIRATION] > 600h" # 25 days
 
-default-https-infrequent: &default-https-infrequent
-  <<: *default-https
+default_https_infrequent: &default_https_infrequent
+  <<: *default_https
   interval: 240m
 
 endpoints:
@@ -165,7 +165,7 @@ endpoints:
 
   {%- for item in extra_apps %}
 
-  - <<: *default-tcp
+  - <<: *default_tcp
     name: {{ item.name }}
     group: Extra Apps
     url: {{ item.url }}
@@ -178,7 +178,7 @@ endpoints:
 
   {%- for item in dns %}
 
-  - <<: *default-icmp
+  - <<: *default_icmp
     name: {{ item.name }} - ICMP - External DNS
     group: External DNS
     url: icmp://{{ item.ip }}
@@ -186,7 +186,7 @@ endpoints:
     enabled: false
     {%- endif %}
 
-  - <<: *default-dns-a
+  - <<: *default_dns_a
     name: {{ item.name }} - DNS A - External DNS
     group: External DNS
     url: "{{ item.ip }}"
@@ -194,7 +194,7 @@ endpoints:
     enabled: false
     {%- endif %}
 
-  - <<: *default-dns-aaaa
+  - <<: *default_dns_aaaa
     name: {{ item.name }} - DNS AAAA - External DNS
     group: External DNS
     url: "{{ item.ip }}"
@@ -207,7 +207,7 @@ endpoints:
 
   {%- for item in network %}
 
-  - <<: *default-icmp
+  - <<: *default_icmp
     name: ICMP - {{ item.name }}
     group: Network equipment
     url: icmp://{{ item.ip }}
@@ -223,7 +223,7 @@ endpoints:
 
   {%- for item in home_devices %}
 
-  - <<: *default-icmp
+  - <<: *default_icmp
     name: ICMP - {{ item.name }}
     group: Home devices
     url: icmp://{{ item.ip }}
@@ -239,7 +239,7 @@ endpoints:
 
   {%- for item in servers %}
 
-  - <<: *default-icmp
+  - <<: *default_icmp
     name: ICMP - {{ item.name }}
     group: Servers
     url: icmp://{{ item.domain }}
@@ -259,7 +259,7 @@ endpoints:
 
   {%- if item.type is not defined or "http" in item.type %}
 
-  - <<: *default-http-infrequent
+  - <<: *default_http_infrequent
     name: HTTP{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: http://{{ item.domain }}
@@ -277,10 +277,10 @@ endpoints:
 
   {%- if item.gatus.authentication is defined %}
 
-  - <<: *default-https-infrequent
+  - <<: *default_https_infrequent
   {%- else %}
 
-  - <<: *default-https
+  - <<: *default_https
   {%- endif %}
     name: HTTPS{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
@@ -304,7 +304,7 @@ endpoints:
 
   {%- if item.gatus.authentication is defined %}
 
-  - <<: *default-https
+  - <<: *default_https
     name: HTTPS - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     {%- if item.gatus.authentication.basic is defined %}
@@ -327,7 +327,7 @@ endpoints:
     {{- is_enabled(item) }}
   {%- endif %}
 
-  - <<: *default-https-infrequent
+  - <<: *default_https_infrequent
     name: HTTPS Proxy /metrics (noauth) - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/.apache/metrics
@@ -339,7 +339,7 @@ endpoints:
       - "[CERTIFICATE_EXPIRATION] > 600h" # 25 days
     {{- is_enabled(item) }}
 
-  - <<: *default-https-infrequent
+  - <<: *default_https_infrequent
     name: HTTPS Proxy /metrics - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://proxy-prometheus:${{ "{" }}{{ item.full_name_env }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
@@ -347,7 +347,7 @@ endpoints:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
-  - <<: *default-https-infrequent
+  - <<: *default_https_infrequent
     name: HTTPS /favicon.ico - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.ico
@@ -355,7 +355,7 @@ endpoints:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
-  - <<: *default-http-infrequent
+  - <<: *default_http_infrequent
     name: HTTP /favicon.ico - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.ico
@@ -363,7 +363,7 @@ endpoints:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
-  - <<: *default-https-infrequent
+  - <<: *default_https_infrequent
     name: HTTPS /favicon.png - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.png
@@ -371,7 +371,7 @@ endpoints:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
-  - <<: *default-http-infrequent
+  - <<: *default_http_infrequent
     name: HTTP /favicon.png - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.png
@@ -382,7 +382,7 @@ endpoints:
   {%- if item.gatus.endpoints is defined %}
   {%- for endpoint in item.gatus.endpoints %}
 
-  - <<: *default-https-infrequent
+  - <<: *default_https_infrequent
     name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
@@ -400,7 +400,7 @@ endpoints:
 
   {%- if endpoint.authentication is defined %}
 
-  - <<: *default-https-infrequent
+  - <<: *default_https_infrequent
     name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     {%- if endpoint.authentication.basic is defined %}
@@ -429,7 +429,7 @@ endpoints:
 
   {%- if item.type is defined and "dns" in item.type %}
 
-  - <<: *default-dns-a
+  - <<: *default_dns_a
     name: DNS A - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
@@ -438,7 +438,7 @@ endpoints:
       - type: gotify
     {{- is_enabled(item) }}
 
-  - <<: *default-dns-aaaa
+  - <<: *default_dns_aaaa
     name: DNS AAAA - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
@@ -447,7 +447,7 @@ endpoints:
 
   {%- if item.type is defined and "dns[blackhole]" in item.type %}
 
-  - <<: *default-dns-blackhole-a
+  - <<: *default_dns_blackhole_a
     name: DNS A - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
@@ -456,7 +456,7 @@ endpoints:
       - type: gotify
     {{- is_enabled(item) }}
 
-  - <<: *default-dns-blackhole-aaaa
+  - <<: *default_dns_blackhole_aaaa
     name: DNS AAAA - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: {{ item.domain }}
@@ -466,7 +466,7 @@ endpoints:
   {%- if item.additional_ports is defined %}
   {%- for port in item.additional_ports.http %}
 
-  - <<: *default-http
+  - <<: *default_http
     name: HTTP:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: http://{{ item.domain }}:{{ port }}
@@ -478,7 +478,7 @@ endpoints:
 
   {%- for port in item.additional_ports.https %}
 
-  - <<: *default-https
+  - <<: *default_https
     name: HTTPS:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}:{{ port }}
@@ -490,7 +490,7 @@ endpoints:
 
   {%- for port in item.additional_ports.tcp %}
 
-  - <<: *default-tcp
+  - <<: *default_tcp
     name: TCP:{{ port }} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: tcp://{{ item.domain }}:{{ port }}
