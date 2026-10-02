@@ -4,6 +4,8 @@ import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
+const app = apps.healthchecks;
+
 // type Healthcheck = {
 //     badge_url: string,
 //     desc: string,
@@ -31,8 +33,13 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 //     uuid: string,
 // };
 
-test.describe(apps.healthchecks.title, () => {
-    for (const instance of apps.healthchecks.instances) {
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

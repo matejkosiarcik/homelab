@@ -8,7 +8,7 @@ export const apps = {
     adventurelog: {
         title: 'AdventureLog',
         instances: [
-            { url: 'https://adventurelog.matejhome.com', title: 'Main', backendUrl: 'https://adventurelog-backend.matejhome.com', },
+            { url: 'https://adventurelog.matejhome.com', title: 'Main', backendUrl: 'https://adventurelog.matejhome.com/api', },
         ],
     },
     certbot: {
@@ -142,13 +142,14 @@ export const apps = {
     motioneye: {
         title: 'MotionEye',
         instances: [
-            { url: 'https://motioneye-kitchen.matejhome.com', title: 'Kitchen' },
+            // TODO: Re-enable
+            { url: 'https://motioneye-kitchen.matejhome.com', title: 'Kitchen', enabled: false },
         ],
     },
     netalertx: {
         title: 'NetAlertX',
         instances: [
-            { url: 'https://netalertx.matejhome.com', title: 'Main' },
+            { url: 'https://netalertx.matejhome.com', title: 'Main', enabled: false },
         ],
     },
     npmcache: {
@@ -255,7 +256,8 @@ export const apps = {
     tvheadend: {
         title: 'Tvheadend',
         instances: [
-            { url: 'https://tvheadend.matejhome.com', title: 'Main' },
+            // TODO: Re-enable
+            { url: 'https://tvheadend.matejhome.com', title: 'Main', enabled: false },
         ],
     },
     unbound: {

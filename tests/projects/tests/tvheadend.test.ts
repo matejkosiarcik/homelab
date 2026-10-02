@@ -4,6 +4,8 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { axios, getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
+const app = apps.tvheadend;
+
 type TvheadendServerInfoResponse = {
     sw_version: string,
     api_version: number,
@@ -12,8 +14,13 @@ type TvheadendServerInfoResponse = {
 };
 
 // TODO: Fix failing tests.
-test.describe.skip(apps.tvheadend.title, () => {
-    for (const instance of apps.tvheadend.instances) {
+test.describe.skip(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createHttpToHttpsRedirectTests(`${instance.url.replace('https://', 'http://')}:9981`);

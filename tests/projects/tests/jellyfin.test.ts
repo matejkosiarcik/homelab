@@ -4,8 +4,15 @@ import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe(apps.jellyfin.title, () => {
-    for (const instance of apps.jellyfin.instances) {
+const app = apps.jellyfin;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createHttpToHttpsRedirectTests(`${instance.url.replace('https://', 'http://')}:8096`);

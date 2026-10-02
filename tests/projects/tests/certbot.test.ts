@@ -9,8 +9,15 @@ import { apps } from '../../utils/apps';
 import { axios, extractTar, getEnv } from '../../utils/utils';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
-test.describe(apps.certbot.title, () => {
-    for (const instance of apps.certbot.instances) {
+const app = apps.certbot;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

@@ -4,8 +4,15 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { axios, getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
-test.describe(apps.kiwix.title, () => {
-    for (const instance of apps.kiwix.instances) {
+const app = apps.kiwix;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

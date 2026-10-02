@@ -4,6 +4,8 @@ import { axios, getEnv } from '../../utils/utils';
 import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 
+const app = apps.unificontroller;
+
 type UnifiControllerStatusResponse = {
     meta: {
         rc: string,
@@ -14,8 +16,13 @@ type UnifiControllerStatusResponse = {
     data: unknown[],
 };
 
-test.describe(apps.unificontroller.title, () => {
-    for (const instance of apps.unificontroller.instances) {
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

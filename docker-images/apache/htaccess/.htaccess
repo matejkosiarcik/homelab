@@ -112,11 +112,11 @@ RewriteCond %{REQUEST_FILENAME}/index.html -f
 RewriteRule ^ "%{REQUEST_URI}/index.html" [L]
 
 # Specific redirect for PiHole: "/" -> "/admin"
-RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:pihole|pihole\-blackhole)$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=302]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} pihole [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^(?:pihole|pihole\-blackhole)$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
@@ -177,7 +177,7 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|samba|unbound)$#">
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|pihole-blackhole|samba|unbound)$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file

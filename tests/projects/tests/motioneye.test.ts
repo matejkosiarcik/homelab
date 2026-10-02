@@ -4,14 +4,21 @@ import { apps } from '../../utils/apps';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests';
 import { axios, getEnv } from '../../utils/utils';
 
+const app = apps.motioneye;
+
 type MotioneyeError = {
     error: string,
     prompt: boolean,
 };
 
 // TODO: Fix failing tests.
-test.describe.skip(apps.motioneye.title, () => {
-    for (const instance of apps.motioneye.instances) {
+test.describe.skip(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

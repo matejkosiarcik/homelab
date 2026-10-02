@@ -5,6 +5,8 @@ import { getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
 
+const app = apps.smtp4dev;
+
 // Smtp4dev
 type Smtp4devResponse = {
     results: [
@@ -28,8 +30,13 @@ type Smtp4devResponse = {
     lastRowOnPage: number,
 };
 
-test.describe(apps.smtp4dev.title, () => {
-    for (const instance of apps.smtp4dev.instances) {
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

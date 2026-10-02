@@ -4,8 +4,15 @@ import { createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTes
 import { axios, getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 
-test.describe(apps['docker-stats'].title, () => {
-    for (const instance of apps['docker-stats'].instances) {
+const app = apps['docker-stats'];
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);

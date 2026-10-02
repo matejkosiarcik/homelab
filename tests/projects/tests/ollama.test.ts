@@ -5,8 +5,15 @@ import { getEnv } from '../../utils/utils';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
 
-test.describe(apps.ollama.title, () => {
-    for (const instance of apps.ollama.instances) {
+const app = apps.ollama;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             // TODO: createPrometheusTests(instance.url, { auth: 'basic' });
