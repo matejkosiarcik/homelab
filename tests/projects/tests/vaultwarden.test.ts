@@ -8,7 +8,7 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 test.describe.skip(apps['vaultwarden'].title, () => {
     for (const instance of apps['vaultwarden'].instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps['vaultwarden'].title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

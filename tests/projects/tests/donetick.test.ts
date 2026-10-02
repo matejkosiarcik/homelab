@@ -5,7 +5,7 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 test.describe(apps.donetick.title, () => {
     for (const instance of apps.donetick.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.donetick.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

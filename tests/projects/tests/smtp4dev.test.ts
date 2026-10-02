@@ -31,7 +31,7 @@ type Smtp4devResponse = {
 test.describe(apps.smtp4dev.title, () => {
     for (const instance of apps.smtp4dev.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.smtp4dev.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

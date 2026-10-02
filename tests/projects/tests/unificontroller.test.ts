@@ -17,7 +17,7 @@ type UnifiControllerStatusResponse = {
 test.describe(apps.unificontroller.title, () => {
     for (const instance of apps.unificontroller.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.unificontroller.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

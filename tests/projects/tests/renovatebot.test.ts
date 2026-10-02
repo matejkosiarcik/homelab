@@ -6,7 +6,7 @@ import { getEnv } from '../../utils/utils';
 test.describe(apps.renovatebot.title, () => {
     for (const instance of apps.renovatebot.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.renovatebot.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

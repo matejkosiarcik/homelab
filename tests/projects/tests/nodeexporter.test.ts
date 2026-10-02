@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker';
 test.describe(apps.nodeexporter.title, () => {
     for (const instance of apps.nodeexporter.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.nodeexporter.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

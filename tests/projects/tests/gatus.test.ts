@@ -7,7 +7,7 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 test.describe(apps.gatus.title, () => {
     for (const instance of apps.gatus.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.gatus.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

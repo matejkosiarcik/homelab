@@ -7,7 +7,7 @@ import { axios, getEnv } from '../../utils/utils';
 test.describe(apps.homepage.title, () => {
     for (const instance of apps.homepage.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.homepage.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

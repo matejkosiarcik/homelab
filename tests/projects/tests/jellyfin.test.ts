@@ -7,7 +7,7 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 test.describe(apps.jellyfin.title, () => {
     for (const instance of apps.jellyfin.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.jellyfin.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 

@@ -7,7 +7,7 @@ import { axios, delay, getEnv } from '../../utils/utils';
 test.describe(apps.ntfy.title, () => {
     for (const instance of apps.ntfy.instances) {
         if ('enabled' in instance && instance.enabled === false) {
-            test.skip(`Instance ${apps.motioneye.title} ${instance.title} is disabled`, () => {});
+            test.skip(`Instance ${apps.ntfy.title} ${instance.title} is disabled`, () => {});
             continue;
         }
 
