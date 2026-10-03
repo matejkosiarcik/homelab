@@ -2,9 +2,9 @@ import type { Browser, BrowserContext, Page } from '@playwright/test';
 
 export type OverridenPage = Page & {
     /**
-     * Specifies whether page is already overriden, to avoid double re-overriding it multiple times
+     * Specifies whether page is already overridden, to avoid double re-overriding it multiple times
      */
-    _overriden: boolean;
+    _overridden: boolean;
 
     /**
      * Specifies whether this is the default test fixture page (not manually opened)
@@ -19,9 +19,9 @@ export type OverridenPage = Page & {
 
 export type OverridenContext = BrowserContext & {
     /**
-     * Specifies whether context is already overriden, to avoid double re-overriding it multiple times
+     * Specifies whether context is already overridden, to avoid double re-overriding it multiple times
      */
-    _overriden: boolean;
+    _overridden: boolean;
 
     /**
      * Specifies whether this is the default test fixture context (not manually opened)
@@ -41,9 +41,9 @@ export type OverridenContext = BrowserContext & {
 
 export type OverridenBrowser = Browser & {
     /**
-     * Specifies whether browser is already overriden, to avoid double re-overriding it multiple times
+     * Specifies whether browser is already overridden, to avoid double re-overriding it multiple times
      */
-    _overriden: boolean;
+    _overridden: boolean;
 
     /**
      * Specifies whether this is the default test fixture browser (not manually opened)
