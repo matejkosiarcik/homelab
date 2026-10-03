@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
-import { apps } from '../../utils/apps.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests.ts';
+import { apps } from '#/utils/apps.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
 const app = apps.reportportal;
 

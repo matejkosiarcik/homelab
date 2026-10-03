@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { apps } from '../../utils/apps.ts';
-import { createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '../../utils/tests.ts';
-import { axios, getEnv } from '../../utils/utils.ts';
+import { apps } from '#/utils/apps.ts';
+import { createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 import { faker } from '@faker-js/faker';
 
 const app = apps['docker-stats'];

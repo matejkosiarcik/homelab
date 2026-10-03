@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { apps } from '../../utils/apps.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '../../utils/tests.ts';
+import { apps } from '#/utils/apps.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { faker } from '@faker-js/faker';
-import { getEnv } from '../../utils/utils.ts';
+import { getEnv } from '#/utils/utils.ts';
 
 const app = apps.grafana;
 
