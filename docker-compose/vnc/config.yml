@@ -1,5 +1,5 @@
 app:
-  name: NoVNC
+  name: VNC
 
 apache:
   upstream-url:

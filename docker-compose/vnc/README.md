@@ -1,6 +1,6 @@
-# Template
+# VNC
 
-![diagram](../../docs/diagrams/out/apps/novnc.png)
+![diagram](../../docs/diagrams/out/apps/vnc.png)
 
 ## Docs
 
