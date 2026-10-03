@@ -32,8 +32,8 @@ test.describe(app.title, () => {
                     await page.locator('input#user_email[type="email"]').fill(user.email);
                     await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
                     await page.locator('input[type="submit"][value="Log in"]').click();
-                    await expect(page).toHaveURL(`${instance.url}/map`);
-                    await expect(page.locator('#map')).toBeVisible();
+                    await expect(page).toHaveURL(`${instance.url}/map/v2`);
+                    await expect(page.locator('#maps-maplibre-container')).toBeVisible();
                 });
             }
 
@@ -52,7 +52,7 @@ test.describe(app.title, () => {
                     await page.locator('input#user_email[type="email"]').fill(user.email);
                     await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));
                     await page.locator('input[type="submit"][value="Log in"]').click();
-                    await expect(page.locator('#flash-messages')).toContainText('Invalid Email or password.');
+                    await expect(page.locator('#flash-messages')).toContainText('Invalid email or password.');
                     await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
                 });
             }
