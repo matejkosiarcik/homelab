@@ -40,6 +40,8 @@ const projects: Project[] = [
 const config: PlaywrightTestConfig = {
     forbidOnly: false,
     fullyParallel: false,
+    globalSetup: path.join('playwright', 'global-setup.ts'),
+    globalTeardown: path.join('playwright', 'global-teardown.ts'),
     globalTimeout: 55 * 60_000,
     outputDir: path.join('test-report', 'artifacts'),
     projects: projects,
