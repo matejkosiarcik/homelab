@@ -20,7 +20,7 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test.only('UI: Successful login', async ({ page }) => {
+            test('UI: Successful login', async ({ page }) => {
                 await page.goto(instance.url);
                 await page.waitForURL(`${instance.url}/login?redirect=/`);
                 await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
