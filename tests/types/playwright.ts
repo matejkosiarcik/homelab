@@ -29,6 +29,11 @@ export type OverridenContext = BrowserContext & {
     _default: boolean;
 
     /**
+     * Exact date when the context was opened
+     */
+    _openedAt: { date: Date, hrtime: bigint };
+
+    /**
      * Original `.newPage` method
      */
     _newPage: BrowserContext['newPage'];
@@ -44,6 +49,11 @@ export type OverridenBrowser = Browser & {
      * Specifies whether this is the default test fixture browser (not manually opened)
      */
     _default: boolean;
+
+    /**
+     * Exact date when the browser was opened
+     */
+    _openedAt: { date: Date, hrtime: bigint };
 
     /**
      * Original `.newContext` method
