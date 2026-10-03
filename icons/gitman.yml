@@ -94,7 +94,7 @@ sources_locked:
       -
   - repo: https://github.com/walkxcode/dashboard-icons.git
     name: dashboard-icons
-    rev: 638a84c865f3cdbab3a4b715c016f0543b1e530e
+    rev: f1d048d9885b97a7319e0a51e508217459f212df
     type: git
     params:
     sparse_paths:
@@ -133,7 +133,7 @@ sources_locked:
       -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
-    rev: 601e971db01debfdc26b0ff63b6b141f73e65fd4
+    rev: b0e9e677be6c9b178368d57b86e9f548fcbd575f
     type: git
     params:
     sparse_paths:
