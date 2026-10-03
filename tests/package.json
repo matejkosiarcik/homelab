@@ -30,6 +30,7 @@
     "@tsconfig/strictest": "^2.0.8",
     "@types/async": "^3.2.26",
     "@types/getos": "^3.0.4",
+    "@types/har-format": "^1.2.16",
     "@types/lodash": "^4.17.25",
     "@types/lzma-native": "^4.0.4",
     "@types/node": "^26.6.4",
