@@ -1,6 +1,9 @@
 {
   "type": "module",
   "private": true,
+  "imports": {
+    "#/*": "./*"
+  },
   "scripts": {
     "postinstall": "tsx postinstall.ts",
     "test": "playwright test"
