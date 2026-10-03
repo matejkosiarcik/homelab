@@ -24,8 +24,8 @@ export class Log {
         this.instances[loggerName] = winston.createLogger({
             format: winston.format.combine(
                 winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-                winston.format.printf(({ timestamp, level, _message }) => {
-                    const message = Array.isArray(_message) ? _message.map((el) => `${el}`).join(' ') : `${_message}`;
+                winston.format.printf(({ timestamp, level, message }) => {
+                    message = Array.isArray(message) ? message.map((el) => `${el}`).join(' ') : `${message}`;
                     return `${message}`
                         .trim()
                         .split('\n')
