@@ -125,7 +125,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_fin
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_samba_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        samba >/dev/null && \
+        gettext-base samba >/dev/null && \
     rm -rf \
         /etc/apparmor.d/samba \
         /etc/apt \
