@@ -10,57 +10,34 @@ process_template() {
         exit 1
     fi
 
-    tmpdir="$(mktemp -d)"
-    tmpfile="${tmpdir}/file.txt"
-    linefile="${tmpdir}/line.txt"
+    tmpfile="$(mktemp)"
+    variables_in_config="$(sed -nE 's/.*\$\{?([A-Za-z_][A-Za-z0-9_]*).*/\1/p' <"${input_file}" | sort -u || true)"
 
-    sed -E 's~^ ~_~g' <"${input_file}" | while read -r line; do
-        variables="$(printf '%s' "${line}" | grep -E -o '\$\{[^}]*\}' 2>'/dev/null' | sed -E 's~^\$\{([^}]*)\}~\1~' || true)"
+    # This is an extra step to base64 decode some variables (ending in "_ENCRYPTED")
+    printf '%s\n' "${variables_in_config}" | while read -r variable; do
+        value="$(printenv "${variable}" || true)"
 
-        printf '%s\n' "${line}" >"${linefile}"
-
-        printf '%s\n' "${variables}" | while read -r var; do
-            if [ "${var}" = '' ]; then
-                continue
-            fi
-
-            # Read variable value
-            value="$(printenv "${var}")" || {
-                printf "Error: Environment variable %s not set\n" "${var}" >&2
-                rm -rf "${tmpdir}"
+        if printf '%s' "${variable}" | grep -E '_ENCRYPTED$' >'/dev/null' 2>&1; then
+            value="$(printf '%s' "${value}" | base64 -d 2>'/dev/null')" || {
+                printf 'Error: Failed to base64 decode variable %s\n' "${variable}" >&2
                 exit 1
             }
-
-            # Decode (base64) variable value if necessary
-            if printf '%s' "${var}" | grep -E '_ENCRYPTED$' >'/dev/null' 2>&1; then
-                value="$(printf '%s' "${value}" | base64 -d 2>'/dev/null')" || {
-                    printf "Error: Failed to base64 decode variable %s\n" "${var}" >&2
-                    rm -rf "${tmpdir}"
-                    exit 1
-                }
-            fi
-
-            line="$(sed "s~\${${var}}~${value}~g" <"${linefile}")"
-            printf '%s\n' "${line}" >"${linefile}"
-        done
-
-        cat "${linefile}" >>"${tmpfile}"
+            printf "export %s='%s'\n" "${variable}" "${value}" >>"${tmpfile}"
+        fi
     done
 
-    sed -E 's~^_~ ~g' <"${tmpfile}" >"${output_file}"
+    # shellcheck source=/dev/null
+    . "${tmpfile}"
+    rm -f "${tmpfile}"
+
+    envsubst -no-digit -no-unset -no-empty -i "${input_file}" -o "${output_file}" || {
+        printf 'An error happened during processing of %s to %s\n\n' "${input_file}" "${output_file}" >&2
+        exit 1
+    }
 }
 
 process_template '/homelab/web.yml' '/homelab/tmpfs/web.yml'
 process_template '/homelab/prometheus.yml' '/homelab/tmpfs/prometheus.yml'
-
-if [ "$(wc -l </homelab/tmpfs/web.yml)" -eq 0 ]; then
-    printf "Error: File /homelab/tmpfs/web.yml is empty" >&2
-    exit 1
-fi
-if [ "$(wc -l </homelab/tmpfs/prometheus.yml)" -eq 0 ]; then
-    printf "Error: File /homelab/tmpfs/prometheus.yml is empty" >&2
-    exit 1
-fi
 
 promtool check web-config '/homelab/tmpfs/web.yml'
 promtool check config '/homelab/tmpfs/prometheus.yml'

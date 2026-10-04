@@ -28,6 +28,25 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Dependencies ###
 
+FROM golang:1.27.1-trixie AS envsubst_build
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_envsubst_build_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/envsubst/go.mod /homelab/
+ENV CGO_ENABLED="0"
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    envsubst_version="$(cat /homelab/go.mod | grep "github.com/a8m/envsubst" | cut -d ' ' -f 3)" && \
+    go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
+    strip --strip-all /go/bin/envsubst
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
+RUN sh validate-executable.sh /go/bin/envsubst
+
 FROM python:3.14.8-slim AS gitman
 USER root
 WORKDIR /homelab
@@ -110,6 +129,7 @@ WORKDIR /homelab
 COPY --from=app_config /homelab/smb.conf /homelab/
 COPY ./docker-images/samba/entrypoint.sh /homelab/
 COPY --from=samba_exporter_build /homelab/samba_exporter/bin /homelab/bin
+COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
 COPY --from=empty_dir /empty /homelab/logs/samba
 
 FROM scratch AS prefinal
@@ -125,7 +145,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_fin
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_samba_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        gettext-base samba >/dev/null && \
+        samba >/dev/null && \
     rm -rf \
         /etc/apparmor.d/samba \
         /etc/apt \
@@ -193,6 +213,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="samba" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     SAMBA_GROUP="homelab" \
     SAMBA_USERNAME="homelab" \
     TZ="Europe/Bratislava"

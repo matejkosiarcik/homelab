@@ -3,6 +3,25 @@
 
 ### App ###
 
+FROM golang:1.27.1-trixie AS envsubst_build
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_envsubst_build_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/envsubst/go.mod /homelab/
+ENV CGO_ENABLED="0"
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    envsubst_version="$(cat /homelab/go.mod | grep "github.com/a8m/envsubst" | cut -d ' ' -f 3)" && \
+    go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
+    strip --strip-all /go/bin/envsubst
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
+RUN sh validate-executable.sh /go/bin/envsubst
+
 FROM couchdb:3.5.2 AS entrypoint
 USER root
 WORKDIR /homelab
@@ -49,6 +68,7 @@ WORKDIR /homelab
 COPY --from=runtime_dirs /homelab/original /homelab/original
 COPY ./docker-images/couchdb/jwt.ini /homelab/original/opt/couchdb/etc/local.d/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
 
 FROM scratch AS prefinal
 WORKDIR /
@@ -61,12 +81,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 FROM couchdb:3.5.2 AS final
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_couchdb_final_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_couchdb_final_aptlibcache \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        gettext-base >/dev/null && \
-    rm -rf /opt/couchdb/etc/local.d /var/lib/apt/lists/*
+RUN rm -rf /opt/couchdb/etc/local.d
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
@@ -74,6 +89,7 @@ COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoin
 ENV COUCHDB_USER="admin" \
     HOMELAB_CONTAINER_NAME="couchdb" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5984/_up" ]

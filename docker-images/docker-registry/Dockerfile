@@ -6,6 +6,27 @@
 FROM registry:3.1.2 AS docker_registry_app
 USER root
 
+### Dependencies ###
+
+FROM golang:1.27.1-trixie AS envsubst_build
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_envsubst_build_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/envsubst/go.mod /homelab/
+ENV CGO_ENABLED="0"
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    envsubst_version="$(cat /homelab/go.mod | grep "github.com/a8m/envsubst" | cut -d ' ' -f 3)" && \
+    go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
+    strip --strip-all /go/bin/envsubst
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
+RUN sh validate-executable.sh /go/bin/envsubst
+
 ### Healthcheck ###
 
 FROM golang:1.27.1-alpine AS healthcheck_build
@@ -44,6 +65,7 @@ FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY ./docker-images/docker-registry/config.yml ./docker-images/docker-registry/entrypoint.sh /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -65,6 +87,7 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="docker-registry" \
     HOMELAB_CONTAINER_VARIANT="default" \
     OTEL_TRACES_EXPORTER="none" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 # TODO: Eventually enable OpenTelemetry
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost" ]
