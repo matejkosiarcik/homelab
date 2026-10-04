@@ -37,6 +37,7 @@ bootstrap:
 
 	# Must run postinstall script for zopfli-png, otherwise zopfli binaries are unavailable
 	npm run postinstall --prefix "$(PROJECT_DIR)/icons/node_modules/zopflipng-bin" --loglevel=error
+	npm run postinstall --prefix "$(PROJECT_DIR)/docs/diagrams/node_modules/zopflipng-bin" --loglevel=error
 
 	# Must run postinstall script for tests, otherwise browsers are unavailable
 	npm run postinstall --prefix "$(PROJECT_DIR)/tests" --loglevel=error
