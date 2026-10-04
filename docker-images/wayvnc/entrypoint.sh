@@ -12,4 +12,7 @@ if [ "${leftover_variables}" != '' ]; then
     exit 1
 fi
 
+cp '/homelab/rsa_key.pem' '/homelab/tmpfs/rsa_key.pem'
+cp '/homelab/rsa_key.pem.pub' '/homelab/tmpfs/rsa_key.pem.pub'
+
 exec wayvnc --config "${config_output_file}" $@
