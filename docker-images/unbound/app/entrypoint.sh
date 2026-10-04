@@ -16,4 +16,4 @@ unbound-checkconf '/homelab/unbound.conf'
 printf 'Config OK.\n'
 
 printf 'Starting unbound:\n'
-unbound -v -d -c '/homelab/unbound.conf'
+exec unbound -v -d -c '/homelab/unbound.conf'

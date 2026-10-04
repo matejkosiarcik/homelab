@@ -16,4 +16,4 @@ if [ "${leftover_variables}" != '' ]; then
 fi
 
 # Start
-redis-server '/homelab/tmpfs/redis.conf'
+exec redis-server '/homelab/tmpfs/redis.conf'

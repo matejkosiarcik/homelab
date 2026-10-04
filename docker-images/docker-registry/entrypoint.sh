@@ -7,4 +7,4 @@ cat <'/homelab/config.yml' |
         >'/homelab/tmpfs/config.yml'
 
 # Start
-registry serve '/homelab/tmpfs/config.yml'
+exec registry serve '/homelab/tmpfs/config.yml'
