@@ -41,8 +41,8 @@ app_type="$(get_app_type "${app_dir_path}")"
 app_full_name_machine="$(get_app_full_name_machine "${app_dir_path}")"
 app_full_name_key="$(printf '%s' "${app_full_name_machine}" | tr '-' '_')"
 app_domain="$(get_app_domain "${app_dir_path}")"
-server_name_machine="$(get_server_name_machine "${app_dir_path}")"
-server_name_key="$(printf '%s' "${server_name_machine}" | tr '-' '_')"
+# server_name_machine="$(get_server_name_machine "${app_dir_path}")"
+# server_name_key="$(printf '%s' "${server_name_machine}" | tr '-' '_')"
 
 tmpdir="$(mktemp -d)"
 
@@ -634,7 +634,7 @@ gatus)
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NOVNC__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.novnc.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'VNC__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vnc.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npm_cache.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -1112,15 +1112,22 @@ nodeexporter)
     touch "${initial_output}/favicons.env"
     ;;
 
-novnc)
+vnc)
     # Preload #
-    matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
-    target_password="$(load_secret ".vnc_${server_name_key}.app.admin_user" dev=real)"
+    novnc_matej_password="$(load_secret ".${app_full_name_key}.novnc.matej_user" dev=default)"
+    wayvnc_homelab_password="$(load_secret ".${app_full_name_key}.wayvnc.homelab_user" dev=default)"
 
     # App #
-    printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
-    printf 'WEB_AUTH_PASSWORD="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
-    printf 'vnc-upstream,%s\n' "${target_password}" >>"${initial_output}/.secrets.csv"
+    printf 'novnc-matej,%s\n' "${novnc_matej_password}" >>"${initial_output}/.secrets.csv"
+    printf 'WEB_AUTH_PASSWORD="%s"\n' "${novnc_matej_password}" >>"${initial_output}/novnc.env"
+    printf 'wayvnc-homelab,%s\n' "${wayvnc_homelab_password}" >>"${initial_output}/.secrets.csv"
+    printf 'WAYVNC_PASSWORD="%s"\n' "${wayvnc_homelab_password}" >>"${initial_output}/wayvnc.env"
+
+    # App - RSA keys #
+    ssh-keygen -m pem -f "${tmpdir}/rsa_key.pem" -t rsa -N ""
+    load_secret ".${app_full_name_key}.wayvnc.rsa_private_key" "dev=value=$(base64 <"${tmpdir}/rsa_key.pem")" | base64 -d >"${initial_output}/rsa_key.pem"
+    load_secret ".${app_full_name_key}.wayvnc.rsa_public_key" "dev=value=$(base64 <"${tmpdir}/rsa_key.pem.pub")" | base64 -d >"${initial_output}/rsa_key.pem.pub"
+    rm -f "${tmpdir}/rsa_key.pem" "${tmpdir}/rsa_key.pem.pub"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -1464,7 +1471,7 @@ prometheus)
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NOVNC__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.novnc.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'VNC__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vnc.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npm_cache.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"

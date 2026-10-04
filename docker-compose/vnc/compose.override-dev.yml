@@ -1,9 +1,12 @@
 x-definitions:
   common-service-options: &common-service-options
-    restart: unless-stopped
+    restart: "no"
 
 services:
-  app:
+  novnc:
+    <<: *common-service-options
+
+  wayvnc:
     <<: *common-service-options
 
   certificator:
@@ -11,9 +14,12 @@ services:
 
   apache:
     <<: *common-service-options
+    networks:
+      - external-network
+      - internal-network
     ports:
-      - ${DOCKER_COMPOSE_NETWORK_IP}:80:80
-      - ${DOCKER_COMPOSE_NETWORK_IP}:443:443
+      - 127.0.0.1:8080:80
+      - 127.0.0.1:8443:443
 
   apache-prometheus-exporter:
     <<: *common-service-options

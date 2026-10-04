@@ -1,10 +1,10 @@
 app:
-  name: NoVNC
+  name: VNC - <<server>>
 
 apache:
   upstream-url:
     - path: /
-      target: http://app:6080
+      target: http://novnc:6080
 
 favicons:
   default: /app/images/icons/novnc-ios-180.png

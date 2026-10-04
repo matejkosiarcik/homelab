@@ -1,0 +1,12 @@
+# General config
+address=0.0.0.0
+use_relative_paths=true
+
+# Authentication
+enable_auth=true
+username=homelab
+password=${WAYVNC_PASSWORD}
+
+# Encryption
+rsa_private_key_file=rsa_key.pem
+relax_encryption=true

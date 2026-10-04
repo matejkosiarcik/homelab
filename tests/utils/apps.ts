@@ -306,4 +306,10 @@ export const apps = {
             { url: 'https://vikunja.matejhome.com', title: 'Main' },
         ],
     },
+    vnc: {
+        title: 'VNC',
+        instances: [
+            { url: 'https://vnc-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
+        ],
+    },
 };
