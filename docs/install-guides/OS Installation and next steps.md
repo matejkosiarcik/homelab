@@ -55,7 +55,10 @@ On server:
 
 ```sh
 sudo visudo
-# Set following line: homelab ALL=(ALL) NOPASSWD: ALL
+# Set following lines:
+
+# Allow passwordless sudo
+homelab ALL=(ALL) NOPASSWD: ALL
 ```
 
 ## Postinstall - Run Ansible
