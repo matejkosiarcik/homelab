@@ -26,6 +26,7 @@ process_template() {
         fi
     done
 
+    # shellcheck source=/dev/null
     . "${tmpfile}"
     rm -f "${tmpfile}"
 
