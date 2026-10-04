@@ -1123,6 +1123,12 @@ vnc)
     printf 'wayvnc-homelab,%s\n' "${wayvnc_homelab_password}" >>"${initial_output}/.secrets.csv"
     printf 'WAYVNC_PASSWORD="%s"\n' "${wayvnc_homelab_password}" >>"${initial_output}/wayvnc.env"
 
+    # App - RSA keys #
+    ssh-keygen -m pem -f "${tmpdir}/rsa_key.pem" -t rsa -N ""
+    load_secret ".${app_full_name_key}.wayvnc.rsa_private_key" "dev=value=$(base64 <"${tmpdir}/rsa_key.pem")" | base64 -d >"${initial_output}/rsa_key.pem"
+    load_secret ".${app_full_name_key}.wayvnc.rsa_public_key" "dev=value=$(base64 <"${tmpdir}/rsa_key.pem.pub")" | base64 -d >"${initial_output}/rsa_key.pem.pub"
+    rm -f "${tmpdir}/rsa_key.pem" "${tmpdir}/rsa_key.pem.pub"
+
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
 
