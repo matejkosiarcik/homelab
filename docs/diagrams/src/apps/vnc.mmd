@@ -16,14 +16,16 @@ flowchart LR
         apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/novnc.png' style='min-width:80px;max-width:80px' /></div>NoVNC")
+        novnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/novnc.png' style='min-width:80px;max-width:80px' /></div>NoVNC")
+        wayvnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>WayVNC")
         class app strong_border;
+        class wayvnc strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:6080| app
+        inbound_interface -->|:80,443| apache_proxy -->|/*:6080| novnc -->|:5900| wayvnc
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_prometheus_exporter & app & favicons ~~~ certificator
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_prometheus_exporter & novnc & wayvnc & favicons
+        apache_proxy -->|/favicon.ico| favicons -.->|use| novnc
     end
 
     subgraph others_1["Others"]
@@ -37,14 +39,14 @@ flowchart LR
     end
 
     subgraph others_2["Others"]
-        vnc_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>VNC Server")
+        wayland("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/wayland.png' style='min-width:80px;max-width:80px' /></div>Wayland (Host)")
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
 
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
-        app -->|use| vnc_server
+        wayvnc -->|use| wayland
     end
 
     others_1 ~~~ app_wrapper
-    app & favicons ~~~ others_2
+    novnc & wayvnc ~~~ others_2
