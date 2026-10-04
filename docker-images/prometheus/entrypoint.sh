@@ -65,7 +65,7 @@ fi
 promtool check web-config '/homelab/tmpfs/web.yml'
 promtool check config '/homelab/tmpfs/prometheus.yml'
 
-prometheus \
+exec prometheus \
     --config.file='/homelab/tmpfs/prometheus.yml' \
     --storage.tsdb.path='/prometheus' \
     --storage.tsdb.retention.time=30d \

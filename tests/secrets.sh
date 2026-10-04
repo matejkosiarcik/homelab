@@ -463,6 +463,8 @@ rm -f './.secrets.env'
     printf 'VIKUNJA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.status_user')"
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.prometheus_user')"
 
+    printf 'VNC_RASPBERRY_PI_4B_4G__NOVNC_MATEJ_PASSWORD=%s\n' "$(load_secret '.vnc_raspberry_pi_4b_4g.novnc.matej_user')"
+    printf 'VNC_RASPBERRY_PI_4B_4G__WAYVNC_HOMELAB_PASSWORD=%s\n' "$(load_secret '.vnc_raspberry_pi_4b_4g.wayvnc.homelab_user')"
     printf 'VNC_RASPBERRY_PI_4B_4G__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.vnc_raspberry_pi_4b_4g.apache.status_user')"
     printf 'VNC_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vnc_raspberry_pi_4b_4g.apache.prometheus_user')"
 

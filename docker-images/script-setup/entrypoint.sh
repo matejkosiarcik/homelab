@@ -8,7 +8,4 @@ sh '/homelab/setup.sh'
 printf '%s - Finished setup\n' "$(date '+%Y-%m-%d_%H-%M-%S')"
 
 printf 'started\n' >'/homelab/tmpfs/status.txt'
-while true; do
-    sleep infinity
-    printf '"sleep infinity" somehow exited?' >&2
-done
+exec sleep infinity

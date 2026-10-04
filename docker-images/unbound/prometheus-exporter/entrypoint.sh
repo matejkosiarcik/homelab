@@ -12,4 +12,4 @@ if [ ! -e '/homelab/sock/unbound.sock' ]; then
     exit 1
 fi
 
-unbound_exporter -unbound.host unix:///homelab/sock/unbound.sock
+exec unbound_exporter -unbound.host unix:///homelab/sock/unbound.sock

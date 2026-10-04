@@ -4,8 +4,13 @@
 
 ## Docs
 
+NoVNC:
+
 - GitHub: <https://github.com/bonigarcia/novnc>
-- DockerHub: <https://hub.docker.com/r/bonigarcia/novnc>
+
+WayVNC:
+
+- GitHub: <https://github.com/any1/wayvnc>
 
 ## Services
 
