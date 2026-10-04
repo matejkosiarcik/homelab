@@ -41,8 +41,8 @@ app_type="$(get_app_type "${app_dir_path}")"
 app_full_name_machine="$(get_app_full_name_machine "${app_dir_path}")"
 app_full_name_key="$(printf '%s' "${app_full_name_machine}" | tr '-' '_')"
 app_domain="$(get_app_domain "${app_dir_path}")"
-server_name_machine="$(get_server_name_machine "${app_dir_path}")"
-server_name_key="$(printf '%s' "${server_name_machine}" | tr '-' '_')"
+# server_name_machine="$(get_server_name_machine "${app_dir_path}")"
+# server_name_key="$(printf '%s' "${server_name_machine}" | tr '-' '_')"
 
 tmpdir="$(mktemp -d)"
 
