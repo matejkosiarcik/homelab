@@ -3,7 +3,10 @@ x-definitions:
     restart: "no"
 
 services:
-  app:
+  novnc:
+    <<: *common-service-options
+
+  wayvnc:
     <<: *common-service-options
 
   certificator:

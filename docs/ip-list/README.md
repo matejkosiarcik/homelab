@@ -78,6 +78,6 @@
 | `10.1.16.21` | `docker-stats-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.22` | `dozzle-agent-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.23` | `nodeexporter-raspberry-pi-4b-4g.matejhome.com` |
-| `10.1.16.31` | `vnc.matejhome.com`                             |
+| `10.1.16.31` | `vnc-raspberry-pi-4b-4g.matejhome.com`          |
 
 <!-- IP end -->

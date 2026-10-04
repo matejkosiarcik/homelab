@@ -1114,13 +1114,14 @@ nodeexporter)
 
 vnc)
     # Preload #
-    matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
-    target_password="$(load_secret ".vnc_${server_name_key}.app.admin_user" dev=real)"
+    novnc_matej_password="$(load_secret ".${app_full_name_key}.novnc.matej_user" dev=default)"
+    wayvnc_homelab_password="$(load_secret ".${app_full_name_key}.wayvnc.homelab_user" dev=default)"
 
     # App #
-    printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
-    printf 'WEB_AUTH_PASSWORD="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
-    printf 'vnc-upstream,%s\n' "${target_password}" >>"${initial_output}/.secrets.csv"
+    printf 'novnc-matej,%s\n' "${novnc_matej_password}" >>"${initial_output}/.secrets.csv"
+    printf 'WEB_AUTH_PASSWORD="%s"\n' "${novnc_matej_password}" >>"${initial_output}/novnc.env"
+    printf 'wayvnc-homelab,%s\n' "${wayvnc_homelab_password}" >>"${initial_output}/.secrets.csv"
+    printf 'WAYVNC_PASSWORD="%s"\n' "${wayvnc_homelab_password}" >>"${initial_output}/wayvnc.env"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"

@@ -3,8 +3,13 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  app:
+  novnc:
     <<: *common-service-options
+
+  wayvnc:
+    <<: *common-service-options
+    volumes:
+      - /run/user/${DOCKER_COMPOSE_UID}:/run/user/${DOCKER_COMPOSE_UID}:rw
 
   certificator:
     <<: *common-service-options
