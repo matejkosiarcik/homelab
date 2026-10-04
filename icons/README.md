@@ -38,6 +38,7 @@ The Icons are obtained from following locations:
     - Stable Diffusion: <https://custom.typingmind.com/tools/model-icons/stable-diffusion>
     - TV (old): <https://www.flaticon.com/free-icon/television_550486>
     - UPC: <https://www.upc.sk>
+    - VNC: <https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/issues/1579>
     - Webcamera: <https://www.flaticon.com/free-icon/webcam_214713>
     - Wiktionary: <https://en.wiktionary.org/wiki/Wiktionary:Main_Page>
     - Windshift: <https://windshift.sh>
