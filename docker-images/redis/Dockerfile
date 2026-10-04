@@ -34,12 +34,12 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM redis:8.10.2 AS final
 USER root
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_redis_final_aptcache \
-#     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_redis_final_aptlibcache \
-#     apt-get update -qq && \
-#     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-#         openssl && \
-#     rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_redis_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_redis_final_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        gettext-base >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

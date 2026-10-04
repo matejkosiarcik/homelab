@@ -61,7 +61,12 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 FROM couchdb:3.5.2 AS final
 USER root
-RUN rm -rf /opt/couchdb/etc/local.d
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_couchdb_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_couchdb_final_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        gettext-base >/dev/null && \
+    rm -rf /opt/couchdb/etc/local.d /var/lib/apt/lists/*
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

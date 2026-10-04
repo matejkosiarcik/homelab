@@ -4,7 +4,23 @@
 mkdir -p '/opt/couchdb/etc/local.d'
 cp -R '/homelab/original/opt/couchdb/etc/local.d/.' '/opt/couchdb/etc/local.d'
 
-# Swap placeholders in "jwt.ini" with real values
-HMAC_KEY_BASE64="$(printf "%s" "${HMAC_KEY}" | base64)"
-sed "s~#hmac-key#~${HMAC_KEY_BASE64}~g;s~#uuid#~${UUID}~g" <'/opt/couchdb/etc/local.d/jwt.ini' >'/opt/couchdb/etc/local.d/jwt.ini2'
-mv '/opt/couchdb/etc/local.d/jwt.ini2' '/opt/couchdb/etc/local.d/jwt.ini'
+HMAC_KEY_BASE64="$(printf '%s' "${HMAC_KEY}" | base64)"
+export HMAC_KEY_BASE64
+
+tmpdir="$(mktemp -d)"
+config_file='/opt/couchdb/etc/local.d/jwt.ini'
+config_file_tmp="${tmpdir}/jwt.ini"
+
+envsubst <"${config_file}" >"${config_file_tmp}"
+
+leftover_variables="$(envsubst --variables "$(cat "${config_file_tmp}")")"
+if test "${leftover_variables}" != ''; then
+    printf 'Error: Not all variables were substituted in config file.\n' >&2
+    printf 'Affected variables: %s.\n' "${leftover_variables}" >&2
+    printf 'Config file (original) - %s:\n---\n%s\n---\n' "${config_file}" "$(cat "${config_file}")" >&2
+    printf 'Config file (substituted) - %s:\n---\n%s\n---\n' "${config_file_tmp}" "$(cat "${config_file_tmp}")" >&2
+    exit 1
+fi
+
+mv "${config_file_tmp}" "${config_file}"
+rm -rf "${tmpdir}"
