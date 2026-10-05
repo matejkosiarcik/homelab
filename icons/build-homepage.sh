@@ -30,7 +30,7 @@ done
 HOMELAB_ENV="${mode}"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
-output_dir="$(git rev-parse --show-toplevel)/docker-images/homepage/icons"
+output_dir="$(git rev-parse --show-toplevel)/docker-images/homepage/app/icons"
 if [ "${only_pattern:-}" = '' ]; then
     rm -rf "${output_dir}"
 fi
