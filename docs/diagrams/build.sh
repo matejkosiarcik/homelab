@@ -33,8 +33,23 @@ HOMELAB_ENV="${mode}"
 
 alias drawio='/Applications/draw.io.app/Contents/MacOS/draw.io'
 diagrams_dir="$(dirname "${0}")"
+
 PATH="$(dirname "${0}")/node_modules/.bin:${PATH}"
 export PATH
+if [ "${PUPPETEER_EXECUTABLE_PATH-}" = '' ]; then
+    case "$(uname -s)" in
+        Darwin)
+            chrome_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+            if [ -e "${chrome_path}" ]; then
+                PUPPETEER_EXECUTABLE_PATH="${chrome_path}"
+                export PUPPETEER_EXECUTABLE_PATH
+            fi
+            ;;
+        *)
+            printf 'You may need to set env PUPPETEER_EXECUTABLE_PATH before running build again.\n' >&2
+            ;;
+    esac
+fi
 
 optimize_diagram() {
     # ${1} - generated PNG
