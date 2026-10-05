@@ -29,6 +29,8 @@ flowchart LR
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|"/favicon.{ico,png}"| favicons
+
+        apache_prometheus_exporter ~~~ file_server & favicons & certificator
     end
 
     subgraph others_1["Others"]
