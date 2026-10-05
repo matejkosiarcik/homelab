@@ -12,10 +12,8 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        apache_frontend_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter<br/>frontend")
-        apache_proxy_frontend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>frontend")
-        apache_backend_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter<br/>backend")
-        apache_proxy_backend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy<br/>backend")
+        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
+        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         app_frontend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/adventurelog.png' style='min-width:80px;max-width:80px' /></div>AdventureLog<br/>frontend")
@@ -24,14 +22,12 @@ flowchart LR
         class app_frontend strong_border;
         class app_backend strong_border;
 
-        apache_frontend_prometheus_exporter -.->|use| apache_proxy_frontend -->|/.apache/metrics| apache_frontend_prometheus_exporter
-        apache_backend_prometheus_exporter -.->|use| apache_proxy_backend -->|/.apache/metrics| apache_backend_prometheus_exporter
-        inbound_interface ~~~ apache_frontend_prometheus_exporter ~~~ apache_proxy_frontend
-        inbound_interface ~~~ apache_backend_prometheus_exporter ~~~ apache_proxy_backend
-        inbound_interface -->|:80,443| apache_proxy_frontend -->|/*:3000| app_frontend
-        inbound_interface -->|:80,443| apache_proxy_backend -->|/*:80| app_backend
-        apache_proxy_frontend & apache_proxy_backend -.-|fs| certificator
-        apache_proxy_frontend & apache_proxy_backend ---> favicons -..->|use| app_frontend
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|/:3000| app_frontend
+        apache_proxy -->|/api/:80| app_backend
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -.-|fs| certificator
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -..->|use| app_frontend
         app_frontend -->|use| app_backend -->|data| postgis
     end
 

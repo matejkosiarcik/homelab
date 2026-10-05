@@ -19,20 +19,20 @@ flowchart LR
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
         class app strong_border;
         app_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
-        pihole_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>PiHole<br/>Prometheus<br/>Exporter")
-        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
+        app_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>PiHole<br/>Prometheus<br/>Exporter")
+        docker_socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/metrics| pihole_prometheus_exporter -.->|use| app
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_proxy -->|/metrics:9617| app_prometheus_exporter -.->|use| app
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         inbound_interface -->|:53| app
-        app ~~~ socket_proxy ~~~ app_setup
-        app_setup -.->|docker tcp| socket_proxy
+        app ~~~ docker_socket_proxy ~~~ app_setup
+        app_setup -.->|docker tcp| docker_socket_proxy
         app_setup -.->|use| app
-        socket_proxy -.->|docker sock| docker
+        docker_socket_proxy -.->|docker sock| docker
     end
 
     subgraph others_1["Others"]

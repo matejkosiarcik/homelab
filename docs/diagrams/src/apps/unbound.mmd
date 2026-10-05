@@ -18,14 +18,19 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound")
         class app strong_border;
-        prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Unbound<br/>Prometheus<br/>Exporter")
+        app_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Unbound<br/>Prometheus<br/>Exporter")
+        file_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/files.png' style='min-width:80px;max-width:80px' /></div>File<br/>server")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:80| prometheus_exporter
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|/metrics:9167| app_prometheus_exporter
+        apache_proxy -->|/:8080| file_server
         inbound_interface -->|:53| app
-        prometheus_exporter -.->|use| app
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        app_prometheus_exporter -.->|use| app
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/favicon.ico| favicons
+        apache_proxy -->|"/favicon.{ico,png}"| favicons
+
+        apache_prometheus_exporter ~~~ file_server & favicons & certificator
     end
 
     subgraph others_1["Others"]

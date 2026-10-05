@@ -20,10 +20,12 @@ flowchart LR
         class app strong_border;
         webcamera("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/webcamera.png' style='min-width:80px;max-width:80px' /></div>USB<br/>webcam")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8765,9081| app
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|/:8765| app
+        apache_proxy -->|/stream:9081| app
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         app -.-|device| webcamera
     end
 

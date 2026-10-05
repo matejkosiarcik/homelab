@@ -19,10 +19,10 @@ flowchart LR
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime<br/>Kuma")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8080| app
+        inbound_interface -->|:80,443| apache_proxy -->|/*:3001| app
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
     end
 
     subgraph others_1["Others"]

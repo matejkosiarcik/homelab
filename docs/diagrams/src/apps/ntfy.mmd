@@ -19,18 +19,18 @@ flowchart LR
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
         class app strong_border;
         app_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
-        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
+        docker_socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
         docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         inbound_interface -->|:25| app
-        app ~~~ socket_proxy ~~~ app_setup
+        app ~~~ docker_socket_proxy ~~~ app_setup
         app_setup -.->|use| app
-        app_setup -.->|docker tcp| socket_proxy
-        socket_proxy -.->|docker sock| docker
+        app_setup -.->|docker tcp| docker_socket_proxy
+        docker_socket_proxy -.->|docker sock| docker
     end
 
     subgraph others_1["Others"]

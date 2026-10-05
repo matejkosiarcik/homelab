@@ -24,9 +24,9 @@ flowchart LR
         sidekiq("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Sidekiq")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:3000| app
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/favicon.ico| favicons
+        apache_proxy -->|"/favicon.{ico,png}"| favicons
         app -.->|data| redis & postgis
         app -.->|use| sidekiq
         apache_proxy -->|/pub| decryptor -.->|send| app

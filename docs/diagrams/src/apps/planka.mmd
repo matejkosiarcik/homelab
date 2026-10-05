@@ -17,13 +17,15 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/planka.png' style='min-width:80px;max-width:80px' /></div>Planka")
+        postgres("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/postgres.png' style='min-width:80px;max-width:80px' /></div>Postgres")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:8080| app
+        inbound_interface -->|:80,443| apache_proxy -->|/*:1337| app
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_prometheus_exporter & app & favicons ~~~ certificator
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
+        app -->|data| postgres
     end
 
     subgraph others_1["Others"]

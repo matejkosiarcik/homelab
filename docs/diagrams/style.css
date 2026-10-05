@@ -1,19 +1,32 @@
-/* Default background */
-html * {
-  background: #222230 !important;
+/* NOTE: Mermaid scopes everything below #my-svg */
+
+/* Keep node and cluster labels transparent */
+.label,
+.label *,
+.cluster-label,
+.cluster-label *,
+.labelBkg,
+.labelBkg *,
+.icon-shape p,
+.image-shape p {
+  background-color: transparent !important;
 }
 
-/* Make some parts of UI see through (such as images or texts) */
-html .label * {
-  background: transparent !important;
+.label rect {
+  fill: transparent !important;
 }
 
-/* This is for connections titles, otherwise the line is visible through text */
-html .edgeLabel * {
-  background: #22223060 !important;
+/* Connection titles need a subtle backing so the connection lines remain visible */
+.edgeLabel,
+.edgeLabel * {
+  background-color: #22223060 !important;
 }
 
-/* The cluster title screws up the rendering of cluster broder at the top portion where they overlap, so this fixes it a little */
-html .cluster .nodeLabel > * {
+.edgeLabel rect {
+  fill: #22223060 !important;
+}
+
+/* Fix the cluster title border where it overlaps the cluster border */
+.cluster .nodeLabel > * {
   border-top: 1px solid #aabbcc !important;
 }

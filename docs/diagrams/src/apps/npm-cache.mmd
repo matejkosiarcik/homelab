@@ -22,8 +22,8 @@ flowchart LR
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:8080| app
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.->|Use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|Use| app
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|Use| app
         app -.->|Store metadata| redis
     end
 
