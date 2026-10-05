@@ -19,7 +19,7 @@ flowchart LR
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
+        inbound_interface -->|:80,443| apache_proxy -->|/*:5000| app
         inbound_interface -->|:25| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter

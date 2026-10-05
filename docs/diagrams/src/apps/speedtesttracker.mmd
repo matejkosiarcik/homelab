@@ -19,12 +19,14 @@ flowchart LR
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/speedtesttracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
         class app strong_border;
         db_sync("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/litestream.png' style='min-width:80px;max-width:80px' /></div>Litestream")
+        app_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Setup<br/>script")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:443| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         app ~~~ db_sync -.->|fs| app
+        app_setup -.->|setup| app
     end
 
     subgraph others_1["Others"]

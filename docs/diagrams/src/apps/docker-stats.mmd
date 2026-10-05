@@ -17,12 +17,18 @@ flowchart LR
         certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
+        docker_socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
+        file_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/files.png' style='min-width:80px;max-width:80px' /></div>File<br/>server")
+        docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:9487| app
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|/metrics:9487| app
+        apache_proxy -->|/:8080| file_server
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons
+        app -.->|Docker API| docker_socket_proxy -.->|docker sock| docker
     end
 
     subgraph others_1["Others"]

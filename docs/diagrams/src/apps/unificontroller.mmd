@@ -18,8 +18,8 @@ flowchart LR
         favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
         app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Network<br/>Application")
         class app strong_border;
-        database("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /></div>MongoDB")
-        script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script")
+        mongodb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/mongodb.png' style='min-width:80px;max-width:80px' /></div>MongoDB")
+        script_backup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chromium.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/playwright.png' style='min-width:48px;max-width:48px;position:absolute;bottom:-10px;right:-5px' /></div>Backup<br/>script<br/>(unused)")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:8443| app
         inbound_interface -->|:8080,8443| app
@@ -28,7 +28,7 @@ flowchart LR
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         app ~~~ script_backup -.->|use| app
-        app -->|use| database
+        app -->|use| mongodb
     end
 
     subgraph others_1["Others"]
