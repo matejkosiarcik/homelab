@@ -22,7 +22,7 @@ flowchart LR
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:443| app
         inbound_interface -->|:8080,8443,27001,29810-29816| app
-        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|use| apache_proxy
+        apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|/.apache/status| apache_proxy
         apache_proxy -.-|fs| certificator
         app ~~~ script_backup -.->|use| app
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app

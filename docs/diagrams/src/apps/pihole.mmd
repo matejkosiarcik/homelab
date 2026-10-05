@@ -26,7 +26,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/metrics:9617| app_prometheus_exporter -.->|use| app
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         inbound_interface -->|:53| app
         app ~~~ docker_socket_proxy ~~~ app_setup

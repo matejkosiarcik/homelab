@@ -25,7 +25,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy
         apache_proxy -->|/:3000| app_frontend
         apache_proxy -->|/api/:80| app_backend
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|"/favicon.{ico,png}"| favicons -..->|use| app_frontend
         app_frontend -->|use| app_backend -->|data| postgis

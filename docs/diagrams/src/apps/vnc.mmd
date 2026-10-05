@@ -23,7 +23,7 @@ flowchart LR
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:6080| novnc -->|:5900| wayvnc
         apache_proxy -.-|fs| certificator
-        apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_prometheus_exporter & novnc & wayvnc & favicons
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| novnc
     end
