@@ -122,21 +122,21 @@ RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
 # Specific redirect for NoVNC: "/" -> "/vnc.html"
-RewriteCond %{ENV:HOMELAB_APP_TYPE} novnc [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^vnc$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /vnc.html [L,R=302]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} novnc [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^vnc$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /vnc.html [L,R=307]
 
 # Specific redirect for MinIO: "/ui" -> "/ui/" (necessary for login to work)
-RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^minio$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
 RewriteCond %{REQUEST_URI} ^/ui$
 RewriteRule ^ /ui/ [L,R=302]
-RewriteCond %{ENV:HOMELAB_APP_TYPE} minio [NC]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^minio$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/ui$
 RewriteRule ^ /ui/ [L,R=307]
