@@ -33,6 +33,7 @@ HOMELAB_ENV="${mode}"
 
 alias drawio='/Applications/draw.io.app/Contents/MacOS/draw.io'
 diagrams_dir="$(dirname "${0}")"
+
 PATH="$(dirname "${0}")/node_modules/.bin:${PATH}"
 export PATH
 

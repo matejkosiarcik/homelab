@@ -39,6 +39,9 @@ bootstrap:
 	npm run postinstall --prefix "$(PROJECT_DIR)/icons/node_modules/zopflipng-bin" --loglevel=error
 	npm run postinstall --prefix "$(PROJECT_DIR)/docs/diagrams/node_modules/zopflipng-bin" --loglevel=error
 
+	# Must run postinstall script for puppeteer, otherwise browsers are unavailable
+	npm run postinstall --prefix "$(PROJECT_DIR)/docs/diagrams/node_modules/puppeteer" --loglevel=error
+
 	# Must run postinstall script for tests, otherwise browsers are unavailable
 	npm run postinstall --prefix "$(PROJECT_DIR)/tests" --loglevel=error
 
