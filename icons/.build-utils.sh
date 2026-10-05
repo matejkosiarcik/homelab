@@ -17,7 +17,8 @@ should_generate_icon() {
         return 0 # No "--only" pattern -> return positive code
     fi
 
-    if printf '%s\n' "${1}" | grep -qE ".*(?:${only_pattern}).*" >'/dev/null'; then
+    pattern="$(printf '%s' "${only_pattern}" | tr '-' '|')"
+    if printf '%s\n' "${1}" | grep -qE ".*(?:${pattern}).*" >'/dev/null'; then
         return 0 # The file matches -> return positive code
     fi
 
