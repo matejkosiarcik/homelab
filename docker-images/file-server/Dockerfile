@@ -36,6 +36,38 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
+FROM debian:13.7-slim AS copy_paths
+USER root
+WORKDIR /homelab/www
+ARG HOMELAB_COPY_PATH_1_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_1_DEST=""
+ARG HOMELAB_COPY_PATH_2_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_2_DEST=""
+ARG HOMELAB_COPY_PATH_3_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_3_DEST=""
+ARG HOMELAB_COPY_PATH_4_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_4_DEST=""
+ARG HOMELAB_COPY_PATH_5_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_5_DEST=""
+ARG HOMELAB_COPY_PATH_6_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_6_DEST=""
+ARG HOMELAB_COPY_PATH_7_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_7_DEST=""
+ARG HOMELAB_COPY_PATH_8_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_8_DEST=""
+ARG HOMELAB_COPY_PATH_9_SRC="./docker-images/file-server/placeholder.txt"
+ARG HOMELAB_COPY_PATH_9_DEST=""
+COPY "${HOMELAB_COPY_PATH_1_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_1_DEST}"
+COPY "${HOMELAB_COPY_PATH_2_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_2_DEST}"
+COPY "${HOMELAB_COPY_PATH_3_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_3_DEST}"
+COPY "${HOMELAB_COPY_PATH_4_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_4_DEST}"
+COPY "${HOMELAB_COPY_PATH_5_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_5_DEST}"
+COPY "${HOMELAB_COPY_PATH_6_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_6_DEST}"
+COPY "${HOMELAB_COPY_PATH_7_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_7_DEST}"
+COPY "${HOMELAB_COPY_PATH_8_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_8_DEST}"
+COPY "${HOMELAB_COPY_PATH_9_SRC}" "/homelab/www/${HOMELAB_COPY_PATH_9_DEST}"
+RUN rm -f '/homelab/www/placeholder.txt'
+
 ### Healthcheck ###
 
 FROM golang:1.27.1-alpine AS healthcheck_build
@@ -69,6 +101,7 @@ WORKDIR /homelab
 COPY --from=nodejs_build /homelab/package.json /homelab/
 COPY --from=nodejs_build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs_build /homelab/dist /homelab/dist
+COPY --from=copy_paths /homelab/www /homelab/www
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal

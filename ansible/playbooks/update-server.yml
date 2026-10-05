@@ -48,11 +48,11 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        shasum_before="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
+        shasum_before="$(find "${HOME}/.local" -type f -not -path '*/state/*' | shasum)"
         pipx upgrade-all
-        shasum_after="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
+        shasum_after="$(find "${HOME}/.local" -type f -not -path '*/state/*' | shasum)"
 
         if [ "${shasum_before}" != "${shasum_after}" ]; then
           printf 'CHANGED\n'
@@ -65,10 +65,10 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ -d "$HOME/git/homelab" ]; then
-          cd "$HOME/git/homelab"
+        if [ -d "${HOME}/git/homelab" ]; then
+          cd "${HOME}/git/homelab"
         else
           printf 'Directory ~/git/homelab not found\n'
           exit 1
@@ -99,10 +99,10 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ -d "$HOME/git/dotfiles" ]; then
-          cd "$HOME/git/dotfiles"
+        if [ -d "${HOME}/git/dotfiles" ]; then
+          cd "${HOME}/git/dotfiles"
         else
           printf 'Directory ~/git/dotfiles not found\n'
           exit 1
@@ -146,14 +146,14 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        cd "$HOME/git/homelab/servers/.current"
+        cd "${HOME}/git/homelab/servers/.current"
         before_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
 
         task --taskfile './Taskfile.yml' secrets
 
         after_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
-        if [ "$before_sha" != "$after_sha" ]; then
+        if [ "${before_sha}" != "${after_sha}" ]; then
           printf 'CHANGED\n'
         fi

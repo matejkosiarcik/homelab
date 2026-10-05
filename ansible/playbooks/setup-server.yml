@@ -124,10 +124,10 @@
             export NODE_NO_WARNINGS='1'
 
             # Pipx programs
-            export PATH="$PATH:$HOME/.local/bin"
+            export PATH="${PATH}:${HOME}/.local/bin"
 
             # Go programs
-            export PATH="$PATH:$HOME/go/bin"
+            export PATH="${PATH}:${HOME}/go/bin"
 
             # Task runner
             eval "$(task --completion bash)"
@@ -145,10 +145,10 @@
             export NODE_NO_WARNINGS='1'
 
             # Pipx programs
-            export PATH="$PATH:$HOME/.local/bin"
+            export PATH="${PATH}:${HOME}/.local/bin"
 
             # Go programs
-            export PATH="$PATH:$HOME/go/bin"
+            export PATH="${PATH}:${HOME}/go/bin"
 
     # This prevents problems with inotify and open file descriptors
     - name: Raise inotify limits
@@ -175,7 +175,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if [ ! -f '/boot/firmware/cmdline.txt' ]; then
           printf 'File '/boot/firmware/cmdline.txt' not found' >&2
@@ -195,7 +195,7 @@
         fi
 
         after_sha="$(shasum '/boot/firmware/cmdline.txt')"
-        if [ "$before_sha" != "$after_sha" ]; then
+        if [ "${before_sha}" != "${after_sha}" ]; then
           printf 'CHANGED\n'
         fi
 
@@ -226,7 +226,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         sudo service ssh restart
         printf 'CHANGED\n'
@@ -257,7 +257,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if ! command -v log2ram >/dev/null 2>&1; then
           printf 'deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main\n' | sudo tee /etc/apt/sources.list.d/azlux.list >/dev/null
@@ -282,7 +282,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         systemctl status log2ram | grep 'Active: active' >/dev/null 2>&1
 
@@ -296,7 +296,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
           exit 0
@@ -346,7 +346,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if command -v task >/dev/null 2>&1; then
           exit 0
@@ -362,7 +362,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if command -v sops >/dev/null 2>&1; then
           exit 0
@@ -385,11 +385,11 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        shasum_before="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
+        shasum_before="$(find "${HOME}/.local" -type f -not -path '*/state/*' | shasum)"
         pipx upgrade-all
-        shasum_after="$(find "$HOME/.local" -type f -not -path '*/state/*' | shasum)"
+        shasum_after="$(find "${HOME}/.local" -type f -not -path '*/state/*' | shasum)"
 
         if [ "${shasum_before}" != "${shasum_after}" ]; then
           printf 'CHANGED\n'
@@ -405,13 +405,13 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if ! command -v docker >/dev/null 2>&1; then
           sudo install -m 0755 -d /etc/apt/keyrings
           sudo curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 'https://download.docker.com/linux/debian/gpg' --output '/etc/apt/keyrings/docker.asc'
           sudo chmod a+r /etc/apt/keyrings/docker.asc
-          printf "deb [arch=%s signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian %s stable\n" "$(dpkg --print-architecture)" "$(. /etc/os-release && printf '%s\n' "$VERSION_CODENAME")" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+          printf "deb [arch=%s signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian %s stable\n" "$(dpkg --print-architecture)" "$(. /etc/os-release && printf '%s\n' "${VERSION_CODENAME}")" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
           sudo apt-get update
           sudo apt-get install --yes docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
           # sudo groupadd docker # Already exists
@@ -432,7 +432,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         docker run hello-world
 
@@ -444,7 +444,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if ! sudo systemctl status docker.service >/dev/null 2>&1; then
           sudo systemctl enable docker.service
@@ -487,7 +487,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         sudo service docker restart
 
@@ -501,7 +501,7 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         if [ ! -d /etc/systemd/system/docker.service.d ]; then
           sudo mkdir /etc/systemd/system/docker.service.d
@@ -510,7 +510,7 @@
         before_sha="$(shasum /etc/systemd/system/docker.service.d/override.conf || true)"
         printf '[Service]\nExecStartPre=/bin/sleep 10\n' | sudo sponge /etc/systemd/system/docker.service.d/override.conf
         after_sha="$(shasum /etc/systemd/system/docker.service.d/override.conf)"
-        if [ "$before_sha" != "$after_sha" ]; then
+        if [ "${before_sha}" != "${after_sha}" ]; then
           printf 'CHANGED\n'
         fi
 
@@ -534,14 +534,14 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         sudo locale-gen en_US.UTF-8
         sudo localedef -i en_US -f UTF-8 en_US.UTF-8
         before_sha="$(shasum '/etc/default/locale')"
         printf 'LANGUAGE=en_US.UTF-8\nLC_ALL=en_US.UTF-8\nLANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n' | sudo tee '/etc/default/locale' >/dev/null
         after_sha="$(shasum '/etc/default/locale')"
-        if [ "$before_sha" != "$after_sha" ]; then
+        if [ "${before_sha}" != "${after_sha}" ]; then
           printf 'CHANGED\n'
         fi
 
@@ -558,10 +558,10 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ ! -e "$HOME/.log" ]; then
-          mkdir -p "$HOME/.log"
+        if [ ! -e "${HOME}/.log" ]; then
+          mkdir -p "${HOME}/.log"
           printf 'CHANGED\n'
         fi
 
@@ -575,11 +575,11 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ ! -e "$HOME/git/homelab" ]; then
-          mkdir -p "$HOME/git"
-          git clone 'https://github.com/matejkosiarcik/homelab.git' "$HOME/git/homelab"
+        if [ ! -e "${HOME}/git/homelab" ]; then
+          mkdir -p "${HOME}/git"
+          git clone 'https://github.com/matejkosiarcik/homelab.git' "${HOME}/git/homelab"
           printf 'CHANGED\n'
         fi
 
@@ -590,22 +590,22 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
         # Make sure current server directory exists
-        if [ ! -d "$HOME/git/homelab/servers/$(uname -n)" ]; then
+        if [ ! -d "${HOME}/git/homelab/servers/$(uname -n)" ]; then
           exit 1
         fi
 
         # Create symlink
-        if [ -e "$HOME/git/homelab/servers/.current" ]; then
+        if [ -e "${HOME}/git/homelab/servers/.current" ]; then
           exit 0
         fi
 
-        ln -s "$(uname -n)" "$HOME/git/homelab/servers/.current"
+        ln -s "$(uname -n)" "${HOME}/git/homelab/servers/.current"
         printf 'CHANGED\n'
 
-        if [ ! -e "$HOME/git/homelab/servers/.current/Taskfile.yml" ]; then
+        if [ ! -e "${HOME}/git/homelab/servers/.current/Taskfile.yml" ]; then
           exit 1
         fi
 
@@ -616,10 +616,10 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ -d "$HOME/git/homelab" ]; then
-          cd "$HOME/git/homelab"
+        if [ -d "${HOME}/git/homelab" ]; then
+          cd "${HOME}/git/homelab"
         else
           printf 'Directory ~/git/homelab not found\n'
           exit 1
@@ -650,15 +650,15 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        cd "$HOME/git/homelab/servers/.current"
-        before_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l || true) | shasum)"
+        cd "${HOME}/git/homelab/servers/.current"
+        before_sha="$( (find "${HOME}/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l || true) | shasum)"
 
         task --taskfile './Taskfile.yml' install
 
-        after_sha="$( (find "$HOME/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
-        if [ "$before_sha" != "$after_sha" ]; then
+        after_sha="$( (find "${HOME}/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
+        if [ "${before_sha}" != "${after_sha}" ]; then
           printf 'CHANGED\n'
         fi
 
@@ -686,15 +686,15 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        cd "$HOME/git/homelab/servers/.current"
+        cd "${HOME}/git/homelab/servers/.current"
         before_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
 
         task --taskfile './Taskfile.yml' secrets
 
         after_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
-        if [ "$before_sha" != "$after_sha" ]; then
+        if [ "${before_sha}" != "${after_sha}" ]; then
           printf 'CHANGED\n'
         fi
 
@@ -708,11 +708,11 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ ! -e "$HOME/git/dotfiles" ]; then
-          mkdir -p "$HOME/git"
-          git clone 'https://github.com/matejkosiarcik/dotfiles.git' "$HOME/git/dotfiles"
+        if [ ! -e "${HOME}/git/dotfiles" ]; then
+          mkdir -p "${HOME}/git"
+          git clone 'https://github.com/matejkosiarcik/dotfiles.git' "${HOME}/git/dotfiles"
           printf 'CHANGED\n'
         fi
 
@@ -723,10 +723,10 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ -d "$HOME/git/dotfiles" ]; then
-          cd "$HOME/git/dotfiles"
+        if [ -d "${HOME}/git/dotfiles" ]; then
+          cd "${HOME}/git/dotfiles"
         else
           printf 'Directory ~/git/dotfiles not found\n'
           exit 1

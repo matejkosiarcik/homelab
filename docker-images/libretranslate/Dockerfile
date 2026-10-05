@@ -23,7 +23,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 # hadolint ignore=DL3001
 RUN --mount=type=cache,target=/root/.local,sharing=locked,id=homelab_libretranslate_build_language_models \
-    libretranslate_pid="$(libretranslate --debug --update-models >./status.txt 2>&1 & printf '%s' "$!")" && \
+    libretranslate_pid="$(libretranslate --debug --update-models >./status.txt 2>&1 & printf '%s' "${!}")" && \
     sleep 1 && \
     while ps -p "${libretranslate_pid}" >/dev/null 2>&1 && ! grep 'Running on ' <./status.txt >/dev/null; do true && \
         sleep 5 && \

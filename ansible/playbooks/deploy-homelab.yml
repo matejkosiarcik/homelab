@@ -27,20 +27,20 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        cd "$HOME/git/homelab/servers/.current"
+        cd "${HOME}/git/homelab/servers/.current"
         tmpdir="$(mktemp -d)"
 
         crontab -l | shasum >>"${tmpdir}/shasum-before.txt"
         sudo find /root/config -type f -exec shasum {} \; >>"${tmpdir}/shasum-before.txt"
-        find "$HOME/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-before.txt"
+        find "${HOME}/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-before.txt"
 
         task --taskfile './Taskfile.yml' install
 
         crontab -l | shasum >>"${tmpdir}/shasum-after.txt"
         sudo find /root/config -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
-        find "$HOME/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
+        find "${HOME}/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
 
         if ! cmp --silent "${tmpdir}/shasum-before.txt" "${tmpdir}/shasum-after.txt"; then
           printf 'CHANGED\n'
@@ -60,10 +60,10 @@
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
-        source "$HOME/.profile"
+        source "${HOME}/.profile"
 
-        if [ -d "$HOME/git/homelab" ]; then
-          cd "$HOME/git/homelab"
+        if [ -d "${HOME}/git/homelab" ]; then
+          cd "${HOME}/git/homelab"
         else
           printf 'Directory ~/git/homelab not found\n'
           exit 1
