@@ -45,7 +45,7 @@ NOTE: Dataset properties may be changed afterwards.
 Symlink to access snapshots:
 
 ```sh
-ln -s '/tank/data' "$HOME/data"
+ln -s '/tank/data' "${HOME}/data"
 ```
 
 Verify it:

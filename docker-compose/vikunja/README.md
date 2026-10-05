@@ -18,10 +18,10 @@
 
 - Create new users: `matej`, and `homelab-test` with commands:
     - `MATEJ_PASSWORD="$(docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' vikunja-app | sed -n 's/^MATEJ_PASSWORD=//p')"`
-      `docker exec -it vikunja-app '/app/vikunja/vikunja' user create --email 'matej@matejhome.com' --username 'matej' --password "$MATEJ_PASSWORD"`
+      `docker exec -it vikunja-app '/app/vikunja/vikunja' user create --email 'matej@matejhome.com' --username 'matej' --password "${MATEJ_PASSWORD}"`
       `unset MATEJ_PASSWORD`
     - `HOMELAB_TEST_PASSWORD="$(docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' vikunja-app | sed -n 's/^HOMELAB_TEST_PASSWORD=//p')"`
-      `docker exec -it vikunja-app '/app/vikunja/vikunja' user create --email 'homelab-test@homelab.matejhome.com' --username 'homelab-test' --password "$HOMELAB_TEST_PASSWORD"`
+      `docker exec -it vikunja-app '/app/vikunja/vikunja' user create --email 'homelab-test@homelab.matejhome.com' --username 'homelab-test' --password "${HOMELAB_TEST_PASSWORD}"`
       `unset HOMELAB_TEST_PASSWORD`
     - Confirm both email addresses
 - Create API key (readonly)
