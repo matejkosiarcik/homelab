@@ -27,7 +27,7 @@ flowchart LR
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/metrics| pihole_prometheus_exporter -.->|use| app
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         inbound_interface -->|:53| app
         app ~~~ socket_proxy ~~~ app_setup
         app_setup -.->|docker tcp| socket_proxy

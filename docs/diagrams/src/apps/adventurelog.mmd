@@ -31,7 +31,7 @@ flowchart LR
         inbound_interface -->|:80,443| apache_proxy_frontend -->|/*:3000| app_frontend
         inbound_interface -->|:80,443| apache_proxy_backend -->|/*:80| app_backend
         apache_proxy_frontend & apache_proxy_backend -.-|fs| certificator
-        apache_proxy_frontend & apache_proxy_backend ---> favicons -..->|use| app_frontend
+        apache_proxy_frontend & apache_proxy_backend -->|"/favicon.{ico,png}"| favicons -..->|use| app_frontend
         app_frontend -->|use| app_backend -->|data| postgis
     end
 

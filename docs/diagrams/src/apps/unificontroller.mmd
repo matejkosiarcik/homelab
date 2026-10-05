@@ -26,7 +26,7 @@ flowchart LR
         inbound_interface -->|:1900,3478,5514,6789,10001| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|use| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|/favicon.ico| favicons -.->|use| app
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         app ~~~ script_backup -.->|use| app
         app -->|use| database
     end
