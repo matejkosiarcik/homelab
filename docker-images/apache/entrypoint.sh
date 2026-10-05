@@ -91,7 +91,7 @@ trap 'apachectl -k stop; exit 0' TERM
 # Start apache
 printf 'Starting Apache\n' >&2
 apachectl -D FOREGROUND &
-apache_pid="$!"
+apache_pid="${!}"
 
 # Wait for apache process to exit
 wait "${apache_pid}"

@@ -11,5 +11,5 @@ fi
 
 # Start
 prometheus-apache-exporter --insecure --scrape_uri="https://proxy-status:${PROXY_STATUS_PASSWORD}@${apache_host}/.apache/status?auto" &
-program_pid="$!"
+program_pid="${!}"
 wait "${program_pid}"

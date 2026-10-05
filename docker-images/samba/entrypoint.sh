@@ -53,7 +53,7 @@ printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c '/ho
 
 # Test config is valid before starting
 testparm -s '/homelab/tmpfs/smb.conf' || {
-    printf 'Program "testparm -s" failed with status %s. Review samba config.\n' "$?" >&2
+    printf 'Program "testparm -s" failed with status %s. Review samba config.\n' "${?}" >&2
     exit 1
 }
 

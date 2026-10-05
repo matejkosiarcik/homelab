@@ -59,5 +59,5 @@ fi
 
 # shellcheck disable=SC2046
 kiwix-serve --port=8080 $(cat "${zim_files_list_new_valid_file}") &
-kiwix_pid="$!"
+kiwix_pid="${!}"
 printf '%s\n' "${kiwix_pid}" >"${kiwix_pid_file}"

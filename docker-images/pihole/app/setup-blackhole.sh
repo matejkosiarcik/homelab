@@ -8,7 +8,7 @@ sql() {
         i="$((i + 1))"
         status='0'
         pihole-FTL sqlite3 '/etc/pihole/gravity.db' "${command}" || {
-            status="$?"
+            status="${?}"
             # Guard against "Error: stepping, database is locked (5)"
             if [ "${status}" = '5' ]; then
                 sleep 1
