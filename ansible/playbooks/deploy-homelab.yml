@@ -62,12 +62,7 @@
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        if [ -d "${HOME}/git/homelab" ]; then
-          cd "${HOME}/git/homelab"
-        else
-          printf 'Directory ~/git/homelab not found\n'
-          exit 1
-        fi
+        cd "${HOME}/git/homelab"
 
         if [ "$(git status --short)" != '' ]; then
           printf 'git repository is dirty\n'
