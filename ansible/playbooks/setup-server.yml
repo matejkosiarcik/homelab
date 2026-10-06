@@ -645,6 +645,7 @@
 
     - name: Install server-wide utils
       register: server_install
+      when: git_clone_homelab.changed or update_git_homelab.changed
       changed_when: "'CHANGED' in server_install.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
