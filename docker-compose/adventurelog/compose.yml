@@ -28,7 +28,7 @@ services:
       DEFAULT_FROM_EMAIL: system@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DJANGO_ADMIN_EMAIL: django-admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       FRONTEND_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-      PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL}/api
+      PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL}
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend:1.0.0
     networks: # Internet access necessary for downloading data from raw.githubusercontent.com
       - external-network

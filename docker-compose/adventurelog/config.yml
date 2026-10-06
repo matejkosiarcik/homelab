@@ -3,8 +3,14 @@ app:
 
 apache:
   upstream-url:
-    - path: /api/
-      target: http://app-backend:80
+    - path: /accounts/
+      target: http://app-backend:80/accounts
+    - path: /admin/
+      target: http://app-backend:80/admin
+    - path: /media/
+      target: http://app-backend:80/media
+    - path: /static/
+      target: http://app-backend:80/static
     - path: /
       target: http://app-frontend:3000
 
