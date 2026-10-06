@@ -614,11 +614,10 @@
       changed_when: "'CHANGED' in update_git_homelab.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
-
-        cd "${HOME}/git/homelab"
 
         if [ "$(git branch --show-current)" != main ]; then
           git checkout main
@@ -644,11 +643,11 @@
       changed_when: "'CHANGED' in server_install.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/servers/.current"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        cd "${HOME}/git/homelab/servers/.current"
         before_sha="$( (find "${HOME}/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l || true) | shasum)"
 
         task --taskfile './Taskfile.yml' install
@@ -680,11 +679,11 @@
       changed_when: "'CHANGED' in update_secrets.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/servers/.current"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        cd "${HOME}/git/homelab/servers/.current"
         before_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
 
         task --taskfile './Taskfile.yml' secrets
@@ -717,11 +716,10 @@
       changed_when: "'CHANGED' in update_git_dotfiles.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/dotfiles"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
-
-        cd "${HOME}/git/dotfiles"
 
         if [ "$(git branch --show-current)" != main ]; then
           git checkout main
@@ -745,9 +743,9 @@
       when: git_clone_dotfiles.changed or update_git_dotfiles.changed
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/dotfiles"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        cd "${HOME}/git/dotfiles"
         make server-install
