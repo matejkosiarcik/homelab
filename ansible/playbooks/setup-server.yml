@@ -750,3 +750,14 @@
           git pull --ff-only
           printf 'CHANGED\n'
         fi
+
+    - name: Install server dotfiles
+      when: git_clone_dotfiles.changed or update_git_dotfiles.changed
+      args:
+        executable: "{{ bash_path.stdout }}"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "${HOME}/.profile"
+
+        cd "${HOME}/git/dotfiles"
+        make server-install
