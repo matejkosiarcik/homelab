@@ -16,6 +16,16 @@ if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
 
+let started = false;
+
+async function delay(timeout: number): Promise<void> {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, timeout);
+    });
+}
+
 type EnvMode = 'dev' | 'prod';
 
 const envMode = (() => {
@@ -70,9 +80,7 @@ function upstreamUrl(imagePath: string): string {
     }
 
     const resolvedPath = faviconPath.replace(upstreamUrl.path, URL.parse(upstreamUrl.target)!.pathname);
-    const url = upstreamUrl.target + resolvedPath;
-    console.log(`Resolved favicon URL: ${url} for original path: ${imagePath}`);
-    return url;
+    return upstreamUrl.target + resolvedPath;
 }
 
 /**
@@ -360,7 +368,7 @@ const app = express();
 
 // Healthcheck
 app.get('/.health', (_: Request, response: Response) => {
-    response.sendStatus(200);
+    response.sendStatus(started ? 200 : 503);
 });
 
 app.get('/favicon.ico', async (request: Request, response: Response) => {
@@ -390,6 +398,35 @@ app.get('/favicon.png', async (request: Request, response: Response) => {
 app.listen(8080, () => {
     console.log('Server started.');
 });
+
+// Request favicons at startup before reporting successful start
+(async () => {
+    async function getFaviconStartup(path: string) {
+        while (true) {
+            try {
+                await getFavicon(path);
+                break;
+            } catch {
+                await delay(1000);
+            }
+        }
+    }
+
+    const startTimeout = setTimeout(() => {
+        console.error('Favicon startup did not complete within 60 seconds, consider investigation.');
+    }, 60_000);
+
+    try {
+        await Promise.all([
+            getFaviconStartup('favicon.ico'),
+            getFaviconStartup('favicon.png'),
+        ]);
+    } finally {
+        clearTimeout(startTimeout);
+    }
+
+    started = true;
+})();
 
 process.on('SIGTERM', () => {
     process.exit(0);
