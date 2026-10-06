@@ -17,6 +17,8 @@ services:
         UID: ${DOCKER_COMPOSE_UID}
       context: ${DOCKER_COMPOSE_REPOROOT_PATH}/
       dockerfile: ./docker-images/PLACEHOLDER/Dockerfile
+    cap_drop:
+      - ALL
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-PLACEHOLDER
     dns_opt:
       - single-request
