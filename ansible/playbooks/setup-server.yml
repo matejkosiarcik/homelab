@@ -112,6 +112,10 @@
       loop:
         - path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
           block: |
+            # Python config
+            export PIP_DISABLE_PIP_VERSION_CHECK='1'
+            export PYTHONDONTWRITEBYTECODE='1'
+
             # Homelab config
             export HOMELAB_ENV='prod'
 
@@ -123,16 +127,23 @@
             # NodeJS config
             export NODE_NO_WARNINGS='1'
 
-            # Pipx programs
+            # Set PATH to Pipx programs
             export PATH="${PATH}:${HOME}/.local/bin"
 
-            # Go programs
+            # Set PATH to Go programs
             export PATH="${PATH}:${HOME}/go/bin"
+
+            # Set PATH to Custom dotfiles
+            export PATH="${PATH}:${HOME}/.config/matejkosiarcik/bin"
 
             # Task runner
             eval "$(task --completion bash)"
         - path: "{{ ansible_facts['env']['HOME'] }}/.profile"
           block: |
+            # Python config
+            export PIP_DISABLE_PIP_VERSION_CHECK='1'
+            export PYTHONDONTWRITEBYTECODE='1'
+
             # Homelab config
             export HOMELAB_ENV='prod'
 
@@ -144,11 +155,14 @@
             # NodeJS config
             export NODE_NO_WARNINGS='1'
 
-            # Pipx programs
+            # Set PATH to Pipx programs
             export PATH="${PATH}:${HOME}/.local/bin"
 
-            # Go programs
+            # Set PATH to Go programs
             export PATH="${PATH}:${HOME}/go/bin"
+
+            # Set PATH to Custom dotfiles
+            export PATH="${PATH}:${HOME}/.config/matejkosiarcik/bin"
 
     # This prevents problems with inotify and open file descriptors
     - name: Raise inotify limits
@@ -739,8 +753,10 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Install server dotfiles
+    - name: Install dotfiles dependencies
+      register: install_dotfiles_dependencies
       when: git_clone_dotfiles.changed or update_git_dotfiles.changed
+      changed_when: "'CHANGED' in install_dotfiles_dependencies.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
         chdir: "{{ ansible_facts['env']['HOME'] }}/git/dotfiles"
@@ -748,4 +764,31 @@
         set -eufo pipefail
         source "${HOME}/.profile"
 
+        before_sha="$((find '.' -not -path '*/.git/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+
+        make server-bootstrap
+
+        after_sha="$((find '.' -not -path '*/.git/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+        if [ "${before_sha}" != "${after_sha}" ]; then
+          printf 'CHANGED\n'
+        fi
+
+    - name: Install dotfiles
+      register: install_dotfiles
+      when: git_clone_dotfiles.changed or update_git_dotfiles.changed or install_dotfiles_requirements.changed
+      changed_when: "'CHANGED' in install_dotfiles.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/dotfiles"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "${HOME}/.profile"
+
+        before_sha="$((find "${HOME}/.config/matejkosiarcik" -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+
         make server-install
+
+        after_sha="$((find "${HOME}/.config/matejkosiarcik" -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+        if [ "${before_sha}" != "${after_sha}" ]; then
+          printf 'CHANGED\n'
+        fi
