@@ -31,6 +31,7 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 FROM linuxserver/socket-proxy:3.4.6 AS final
+LABEL build.user=matejkosiarcik
 USER root
 RUN apk update --no-cache && \
     apk add --no-cache bash

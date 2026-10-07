@@ -47,6 +47,7 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 FROM scratch AS final
+LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

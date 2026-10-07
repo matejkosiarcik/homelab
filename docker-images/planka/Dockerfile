@@ -53,6 +53,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 ### Final ###
 
 FROM ghcr.io/plankanban/planka:2.2.1 AS final
+LABEL build.user=matejkosiarcik
 USER root
 ARG HOMELAB_APP_EXTERNAL_URL
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/

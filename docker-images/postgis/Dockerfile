@@ -31,6 +31,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 # hadolint ignore=DL3029
 FROM --platform=linux/amd64 postgis/postgis:18-3.6 AS final
+LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

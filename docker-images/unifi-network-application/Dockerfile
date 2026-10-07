@@ -61,6 +61,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 ### Final ###
 
 FROM linuxserver/unifi-network-application:10.6.106 AS final
+LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN find '.' \( -name 'favicon*.png' -or -name 'favicon*.ico' \) -type f -regex ".+/webapps/ROOT/app-unifi/angular/.+/images/favicons/.+" -exec cp {} './webapps/ROOT/app-unifi/angular/' \; && \

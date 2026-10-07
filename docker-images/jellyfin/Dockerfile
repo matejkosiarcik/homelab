@@ -65,6 +65,7 @@ COPY --from=favicon /usr/share/jellyfin/web/favicon.ico /fsroot/favicon/favicon.
 ### Final ###
 
 FROM linuxserver/jellyfin:10.11.11 AS final
+LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

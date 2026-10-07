@@ -69,6 +69,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoin
 ### Final ###
 
 FROM openspeedtest/latest:v2.0.6 AS final
+LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /etc/nginx && \
