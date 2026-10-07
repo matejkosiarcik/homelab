@@ -65,6 +65,7 @@ COPY --from=app /var/app /var/app
 ### Final ###
 
 FROM freikin/dawarich:1.15.3 AS final
+LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

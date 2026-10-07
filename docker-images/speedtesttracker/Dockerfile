@@ -130,6 +130,7 @@ COPY --chmod=0755 ./docker-images/speedtesttracker/cron-run.sh /etc/s6-overlay/s
 ### Final ###
 
 FROM linuxserver/speedtest-tracker:1.15.0 AS final
+LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /app /config
