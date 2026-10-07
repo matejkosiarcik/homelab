@@ -689,7 +689,7 @@
 
     - name: Update secrets
       register: update_secrets
-      when: "True" # NOTE: Intentionally run always in this file
+      when: git_clone_homelab.changed or git_current_symlink.changed or update_git_homelab.changed or sync_secrets.changed
       changed_when: "'CHANGED' in update_secrets.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
@@ -775,7 +775,7 @@
 
     - name: Install dotfiles
       register: install_dotfiles
-      when: git_clone_dotfiles.changed or update_git_dotfiles.changed or install_dotfiles_requirements.changed
+      when: git_clone_dotfiles.changed or update_git_dotfiles.changed or install_dotfiles_dependencies.changed
       changed_when: "'CHANGED' in install_dotfiles.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
@@ -784,11 +784,11 @@
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        before_sha="$((find "${HOME}/.config/matejkosiarcik" -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+        before_sha="$((find "${HOME}/.config/matejkosiarcik" \( -type f -or -type l \) -exec shasum {} \; 2>/dev/null || true) | shasum)"
 
         make server-install
 
-        after_sha="$((find "${HOME}/.config/matejkosiarcik" -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+        after_sha="$((find "${HOME}/.config/matejkosiarcik" \( -type f -or -type l \) -exec shasum {} \; 2>/dev/null || true) | shasum)"
         if [ "${before_sha}" != "${after_sha}" ]; then
           printf 'CHANGED\n'
         fi

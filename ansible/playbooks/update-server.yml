@@ -114,6 +114,46 @@
           printf 'CHANGED\n'
         fi
 
+    - name: Install dotfiles dependencies
+      register: install_dotfiles_dependencies
+      when: update_git_dotfiles.changed
+      changed_when: "'CHANGED' in install_dotfiles_dependencies.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/dotfiles"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "${HOME}/.profile"
+
+        before_sha="$((find '.' -not -path '*/.git/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+
+        make server-bootstrap
+
+        after_sha="$((find '.' -not -path '*/.git/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
+        if [ "${before_sha}" != "${after_sha}" ]; then
+          printf 'CHANGED\n'
+        fi
+
+    - name: Install dotfiles
+      register: install_dotfiles
+      when: update_git_dotfiles.changed or install_dotfiles_dependencies.changed
+      changed_when: "'CHANGED' in install_dotfiles.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/dotfiles"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "${HOME}/.profile"
+
+        before_sha="$((find "${HOME}/.config/matejkosiarcik" \( -type f -or -type l \) -exec shasum {} \; 2>/dev/null || true) | shasum)"
+
+        make server-install
+
+        after_sha="$((find "${HOME}/.config/matejkosiarcik" \( -type f -or -type l \) -exec shasum {} \; 2>/dev/null || true) | shasum)"
+        if [ "${before_sha}" != "${after_sha}" ]; then
+          printf 'CHANGED\n'
+        fi
+
     ## Sync secrets ##
 
     - name: Sync secrets
