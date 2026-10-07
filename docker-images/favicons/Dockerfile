@@ -221,5 +221,5 @@ ENV HOMELAB_CONTAINER_NAME="favicons" \
     PATH="/homelab/imagemagick/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
+HEALTHCHECK --interval=10s --start-period=300s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]
