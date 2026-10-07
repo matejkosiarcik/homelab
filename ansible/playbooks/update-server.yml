@@ -136,7 +136,7 @@
 
     - name: Install dotfiles
       register: install_dotfiles
-      when: update_git_dotfiles.changed or install_dotfiles_requirements.changed
+      when: update_git_dotfiles.changed or install_dotfiles_dependencies.changed
       changed_when: "'CHANGED' in install_dotfiles.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
