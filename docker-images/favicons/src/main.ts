@@ -231,14 +231,41 @@ async function requestImage(imageUrl: string): Promise<Buffer> {
     })();
 
     const headers: Record<string, string> = {};
+    const basicAuthUsername = (() => {
+        switch (appType) {
+            case 'prometheus':
+            case 'smtp4dev': {
+                return 'homelab-viewer';
+            }
+            case 'vnc': {
+                return 'matej';
+            }
+            default: {
+                return '';
+            }
+        }
+    })();
+    const basicAuthPassword = (() => {
+        switch (appType) {
+            case 'prometheus':
+            case 'smtp4dev':
+            case 'vnc': {
+                const password = process.env['FAVICON_PASSWORD'];
+                if (!password) {
+                    throw new Error('Env FAVICON_PASSWORD unset');
+                }
+                return password;
+            }
+            default: {
+                return '';
+            }
+        }
+    })();
     switch (appType) {
         case 'prometheus':
-        case 'smtp4dev': {
-            const password = process.env['FAVICON_PASSWORD'];
-            if (!password) {
-                throw new Error('Env FAVICON_PASSWORD unset');
-            }
-            headers['Authorization'] = `Basic ${Buffer.from(`homelab-viewer:${password}`).toString('base64')}`;
+        case 'smtp4dev':
+        case 'vnc': {
+            headers['Authorization'] = `Basic ${Buffer.from(`${basicAuthUsername}:${basicAuthPassword}`).toString('base64')}`;
             break;
         }
         default: {

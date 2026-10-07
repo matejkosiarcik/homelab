@@ -1137,7 +1137,7 @@ vnc)
     write_healthcheck_url "${app_full_name_machine}" certificator
 
     # Favicons #
-    touch "${initial_output}/favicons.env"
+    printf 'FAVICON_PASSWORD="%s"\n' "${novnc_matej_password}" >>"${initial_output}/favicons.env"
     ;;
 
 npm-cache)
