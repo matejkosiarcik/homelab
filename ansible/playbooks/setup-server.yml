@@ -689,7 +689,7 @@
 
     - name: Update secrets
       register: update_secrets
-      when: "True" # NOTE: Intentionally run always in this file
+      when: git_clone_homelab.changed or git_current_symlink.changed or update_git_homelab.changed or sync_secrets.changed
       changed_when: "'CHANGED' in update_secrets.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
