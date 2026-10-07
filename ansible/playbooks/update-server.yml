@@ -63,16 +63,10 @@
       changed_when: "'CHANGED' in update_git_homelab.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
-
-        if [ -d "${HOME}/git/homelab" ]; then
-          cd "${HOME}/git/homelab"
-        else
-          printf 'Directory ~/git/homelab not found\n'
-          exit 1
-        fi
 
         if [ "$(git branch --show-current)" != 'main' ]; then
           git checkout main
@@ -97,16 +91,10 @@
       changed_when: "'CHANGED' in update_git_dotfiles.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/dotfiles"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
-
-        if [ -d "${HOME}/git/dotfiles" ]; then
-          cd "${HOME}/git/dotfiles"
-        else
-          printf 'Directory ~/git/dotfiles not found\n'
-          exit 1
-        fi
 
         if [ "$(git branch --show-current)" != main ]; then
           git checkout main
@@ -144,11 +132,11 @@
       changed_when: "'CHANGED' in update_secrets.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/servers/.current"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        cd "${HOME}/git/homelab/servers/.current"
         before_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
 
         task --taskfile './Taskfile.yml' secrets
