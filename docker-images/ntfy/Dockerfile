@@ -42,7 +42,7 @@ COPY ./docker-images/ntfy/config/server.yml /etc/ntfy/server.yml
 
 ### Final ###
 
-FROM binwiederhier/ntfy:v2.28.0 AS final
+FROM binwiederhier/ntfy:v2.29.0 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
