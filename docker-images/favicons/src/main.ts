@@ -440,8 +440,8 @@ app.listen(8080, () => {
     }
 
     const startTimeout = setTimeout(() => {
-        console.error('Favicon startup did not complete within 60 seconds, consider investigation.');
-    }, 60_000);
+        console.error('Favicon startup did not complete within 5 minutes, consider investigation.');
+    }, 5 * 60_000);
 
     try {
         await Promise.all([
