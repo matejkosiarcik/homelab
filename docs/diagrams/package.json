@@ -1,5 +1,8 @@
 {
   "private": true,
+  "imports": {
+    "#/*": "./*"
+  },
   "scripts": {
     "build": "sh build.sh"
   },

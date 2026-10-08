@@ -1,6 +1,9 @@
 {
   "private": true,
   "type": "module",
+  "imports": {
+    "#/*": "./*"
+  },
   "scripts": {
     "build": "run-s build:rm build:vite build:css build:11ty",
     "build:rm": "rimraf dist",

@@ -1,5 +1,8 @@
 {
   "private": true,
+  "imports": {
+    "#/*": "./*"
+  },
   "dependencies": {
     "zopflipng-bin": "^7.1.0"
   }

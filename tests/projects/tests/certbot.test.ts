@@ -3,7 +3,7 @@ import fsx from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { faker } from '@faker-js/faker';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '#/playwright/test.ts';
 import { execa } from 'execa';
 import { apps } from '#/utils/apps.ts';
 import { axios, extractTar, getEnv } from '#/utils/utils.ts';

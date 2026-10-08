@@ -4,12 +4,19 @@ config:
     theme: dark
 ---
 
-flowchart LR
+flowchart TB
     classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
-    classDef no_border stroke:#ffffff00,stroke-width:0px;
+    classDef no_border fill:transparent,stroke:transparent,stroke-width:0px;
+
+    %% These links are only layout constraints: keep service rows compact without
+    %% suggesting a relationship between adjacent services.
+    linkStyle default stroke:transparent,fill:transparent;
 
     subgraph odroid_h4_ultra["Odroid H4 Ultra"]
+        direction TB
+        subgraph odroid_h4_ultra_row_1[" "]
+            direction LR
         docker_stats_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
         dozzle_agent_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
         nodeexporter_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
@@ -17,6 +24,11 @@ flowchart LR
         actualbudget_main("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(main)")
         actualbudget_public("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(public)")
         adventurelog("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/adventurelog.png' style='min-width:80px;max-width:80px' /></div>AdventureLog")
+            docker_stats_1 --> dozzle_agent_1 --> nodeexporter_1 --> actualbudget_main --> actualbudget_public --> adventurelog
+        end
+
+        subgraph odroid_h4_ultra_row_2[" "]
+            direction LR
         certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
         changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
         dawarich("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dawarich.png' style='min-width:80px;max-width:80px' /></div>Dawarich")
@@ -24,6 +36,11 @@ flowchart LR
         dozzle("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle")
         donetick("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/donetick.png' style='min-width:80px;max-width:80px' /></div>DoneTick")
         gatus_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus 1")
+            certbot --> changedetection --> dawarich --> dockerhub_proxy --> dozzle --> donetick --> gatus_1
+        end
+
+        subgraph odroid_h4_ultra_row_3[" "]
+            direction LR
         git_cache_github("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/git-cache.png' style='min-width:80px;max-width:80px' /></div>GitHub<br/>cache")
         gotify("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify")
         grafana("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/grafana.png' style='min-width:80px;max-width:80px' /></div>Grafana")
@@ -31,6 +48,11 @@ flowchart LR
         homeassistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
         homepage("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
         jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
+            git_cache_github --> gotify --> grafana --> healthchecks --> homeassistant --> homepage --> jellyfin
+        end
+
+        subgraph odroid_h4_ultra_row_4[" "]
+            direction LR
         kiwix_wikipedia("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>Wikipedia")
         kiwix_wiktionary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>Wiktionary")
         koffan("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/koffan.png' style='min-width:80px;max-width:80px' /></div>Koffan")
@@ -41,6 +63,11 @@ flowchart LR
         ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
         ollama_private("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama<br/>(private)")
         omadacontroller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br/>Controller")
+            kiwix_wikipedia --> kiwix_wiktionary --> koffan --> libretranslate --> minio --> npm_cache --> ntfy --> ollama --> ollama_private --> omadacontroller
+        end
+
+        subgraph odroid_h4_ultra_row_5[" "]
+            direction LR
         openspeedtest("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openspeedtest.png' style='min-width:80px;max-width:80px' /></div>OpenSpeedTest")
         openwebui("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openwebui.png' style='min-width:80px;max-width:80px' /></div>Open WebUI")
         openwebui_private("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openwebui.png' style='min-width:80px;max-width:80px' /></div>Open WebUI<br/>(private)")
@@ -50,6 +77,11 @@ flowchart LR
         planka("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/planka.png' style='min-width:80px;max-width:80px' /></div>Planka")
         prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
         renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>Renovatebot")
+            openspeedtest --> openwebui --> openwebui_private --> pihole_1_blackhole --> pihole_1_primary --> pihole_1_secondary --> planka --> prometheus --> renovatebot
+        end
+
+        subgraph odroid_h4_ultra_row_6[" "]
+            direction LR
         reportportal("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal")
         smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
         speedtesttracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtesttracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
@@ -59,17 +91,29 @@ flowchart LR
         unbound_1_internal("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Internal")
         unbound_1_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>IoT")
         unbound_1_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Matej")
+            reportportal --> smtp4dev --> speedtesttracker --> unbound_1_blackhole --> unbound_1_default --> unbound_1_guests --> unbound_1_internal --> unbound_1_iot --> unbound_1_matej
+        end
+
+        subgraph odroid_h4_ultra_row_7[" "]
+            direction LR
         unbound_1_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Monika")
         unificontroller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Controller")
         uptimekuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime Kuma")
         vaultwarden("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vaultwarden.png' style='min-width:80px;max-width:80px' /></div>Vaultwarden")
         vikunja("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vikunja.png' style='min-width:80px;max-width:80px' /></div>Vikunja")
+            unbound_1_monika --> unificontroller --> uptimekuma --> vaultwarden --> vikunja
+        end
+
+        class odroid_h4_ultra_row_1,odroid_h4_ultra_row_2,odroid_h4_ultra_row_3,odroid_h4_ultra_row_4,odroid_h4_ultra_row_5,odroid_h4_ultra_row_6,odroid_h4_ultra_row_7 no_border
 
         %% hidden_odroid_h4_ultra(" ")
         %% class hidden_odroid_h4_ultra no_border
     end
 
     subgraph odroid_h3["Odroid H3"]
+        direction TB
+        subgraph odroid_h3_row_1[" "]
+            direction LR
         docker_stats_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
         dozzle_agent_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
         nodeexporter_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
@@ -77,6 +121,11 @@ flowchart LR
         gatus_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus 2")
         pihole_2_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Blackhole")
         pihole_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 3")
+            docker_stats_2 --> dozzle_agent_2 --> nodeexporter_2 --> gatus_2 --> pihole_2_blackhole --> pihole_3
+        end
+
+        subgraph odroid_h3_row_2[" "]
+            direction LR
         pihole_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 4")
         samba_data("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba<br/>data")
         unbound_2_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Blackhole")
@@ -85,40 +134,61 @@ flowchart LR
         unbound_2_internal("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Internal")
         unbound_2_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>IoT")
         unbound_2_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Matej")
+            pihole_4 --> samba_data --> unbound_2_blackhole --> unbound_2_default --> unbound_2_guests --> unbound_2_internal --> unbound_2_iot --> unbound_2_matej
+        end
+
+        subgraph odroid_h3_row_3[" "]
+            direction LR
         unbound_2_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Monika")
         uptimekuma_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime Kuma 2")
+            unbound_2_monika --> uptimekuma_2
+        end
+
+        class odroid_h3_row_1,odroid_h3_row_2,odroid_h3_row_3 no_border
 
         %% hidden_odroid_h3(" ")
         %% class hidden_odroid_h3 no_border
     end
 
     subgraph raspberry_pi_4_4g["Raspberry Pi 4B 4GB"]
+        direction TB
+        subgraph raspberry_pi_4_4g_row_1[" "]
+            direction LR
         docker_stats_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
         dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
         nodeexporter_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
 
         motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
         vnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vnc.png' style='min-width:80px;max-width:80px' /></div>VNC")
+            docker_stats_3 --> dozzle_agent_3 --> nodeexporter_3 --> motioneye --> vnc
+        end
+
+        class raspberry_pi_4_4g_row_1 no_border
 
         %% hidden_raspberry_pi_4_4g(" ")
         %% class hidden_raspberry_pi_4_4g no_border
     end
 
     subgraph raspberry_pi_4_2g["Raspberry Pi 4B 2GB"]
+        direction TB
+        subgraph raspberry_pi_4_2g_row_1[" "]
+            direction LR
         docker_stats_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
         dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
         nodeexporter_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
 
         tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+            docker_stats_4 --> dozzle_agent_4 --> nodeexporter_4 --> tvheadend
+        end
+
+        class raspberry_pi_4_2g_row_1 no_border
 
         %% hidden_raspberry_pi_4_2g(" ")
         %% class hidden_raspberry_pi_4_2g no_border
     end
 
-    odroid_h4_ultra
-    odroid_h3
-    raspberry_pi_4_2g
-    raspberry_pi_4_4g
+    %% Keep the physical hosts in a top-to-bottom inventory order.
+    odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4_4g ~~~ raspberry_pi_4_2g
 
     %% Note: Enable in future:
     %% samba("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/filebrowser.png' style='min-width:80px;max-width:80px' /></div>SMB")
