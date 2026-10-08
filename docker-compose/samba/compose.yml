@@ -26,16 +26,17 @@ services:
       - internal-network
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /run/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/cache/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/lib/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/lib/samba/private:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/lib/samba/usershares:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/log/samba:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/log/samba_smbd:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/log/samba_statusd:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/log/samba_exporter:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # The below mounts are mounted as root, because samba runs as root
+      - /run:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /run/samba:rw,noexec,nodev,noatime,nodiratime,mode=0755,uid=0,gid=0
+      - /var/cache/samba:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/lib/samba:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/lib/samba/private:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/lib/samba/usershares:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/log/samba:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/log/samba_smbd:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/log/samba_statusd:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/log/samba_exporter:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/smbd:/homelab/logs/samba_smbd:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/statusd:/homelab/logs/samba_statusd:rw
