@@ -14,7 +14,7 @@ export function testArtifactDirectory(): string {
 export async function extendPage(_page: Page): Promise<OverridenPage> {
     const page = (_page as OverridenPage);
 
-    // Abort when the page is already overriden
+    // Abort when the page is already overridden
     if (page._overridden) {
         return page;
     }
@@ -35,7 +35,7 @@ export async function extendContext(_context: BrowserContext): Promise<Overriden
     const context = (_context as OverridenContext);
     await new Promise((resolve, _) => { resolve(true) }); // Placeholder to avoid ESLint error
 
-    // Abort when the context is already overriden
+    // Abort when the context is already overridden
     if (context._overridden) {
         return context;
     }
@@ -60,7 +60,7 @@ export async function extendBrowser(_browser: Browser): Promise<OverridenBrowser
     const browser = (_browser as OverridenBrowser);
     await new Promise((resolve, _) => { resolve(true) }); // Placeholder to avoid ESLint error
 
-    // Abort when the browser is already overriden
+    // Abort when the browser is already overridden
     if (browser._overridden) {
         return browser;
     }
