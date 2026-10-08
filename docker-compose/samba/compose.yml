@@ -11,6 +11,8 @@ services:
       args:
         HOMELAB_SAMBA_CONFIG: ${DOCKER_COMPOSE_SAMBA_CONFIG}
     cap_add:
+      - SETGID # Necessary for `su` to set supplementary groups
+      - SETUID # Necessary for `su` to switch to the homelab user
       - SYS_PTRACE # Necessary to export prometheus metrics
     dns: # Use blackhole DNS
       - 10.1.12.7
