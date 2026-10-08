@@ -1,6 +1,6 @@
 import nodeDns from 'node:dns/promises';
 import _ from 'lodash';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '#/playwright/test.ts';
 import { axios, dnsLookup, getAllHomelabDomains, getEnv } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';

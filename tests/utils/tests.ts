@@ -1,6 +1,6 @@
 import net from 'node:net';
 import { faker } from '@faker-js/faker';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '#/playwright/test.ts';
 import PromiseSocket from 'promise-socket';
 import sharp from 'sharp';
 import sharpIco from 'sharp-ico';

@@ -2,7 +2,7 @@ import os from 'node:os';
 import fs from 'node:fs/promises';
 import actualbudgetApi from '@actual-app/api';
 import { faker } from '@faker-js/faker';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { getEnv } from '#/utils/utils.ts';
