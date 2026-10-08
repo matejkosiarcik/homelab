@@ -1,6 +1,9 @@
 {
   "private": true,
   "type": "module",
+  "imports": {
+    "#/*": "./*"
+  },
   "scripts": {
     "build": "run-s build:js build:css",
     "build:js": "run-s build:js:vite build:js:terser",

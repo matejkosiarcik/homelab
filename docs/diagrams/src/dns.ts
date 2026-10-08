@@ -1,6 +1,6 @@
 import path from 'node:path';
 import _ from 'lodash';
-import { Diagram, DiagramCircle, DiagramEdge, DiagramItem, DiagramSection } from './utils/diagrams';
+import { Diagram, DiagramCircle, DiagramEdge, DiagramItem, DiagramSection } from '#/src/utils/diagrams.ts';
 
 (async () => {
     // Items

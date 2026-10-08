@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test';
 import PromiseSocket from 'promise-socket';
 import sharp from 'sharp';
 import sharpIco from 'sharp-ico';
-import { axios, getEnv } from './utils.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 
 export function createTcpTests(url: string, _ports: number | number[], _options?: { title?: string | undefined } | undefined) {
     const options = {
