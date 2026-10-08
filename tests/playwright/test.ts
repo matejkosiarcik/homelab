@@ -8,13 +8,13 @@ const customExpect = baseExpect;
 const customTest = baseTest.extend<{}, {}>({
     browser: async ({ browser }, use) => {
         (browser as OverridenBrowser)._default = true;
-        extendBrowser(browser);
+        await extendBrowser(browser);
         await use(browser);
     },
 
     context: async ({ context }, use) => {
         (context as OverridenContext)._default = true;
-        extendContext(context);
+        await extendContext(context);
         await use(context);
     },
 

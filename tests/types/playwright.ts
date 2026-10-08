@@ -36,7 +36,7 @@ export type OverridenContext = BrowserContext & {
     /**
      * Original `.newPage` method
      */
-    _newPage: BrowserContext['newPage'];
+    _newPageOriginal: BrowserContext['newPage'];
 };
 
 export type OverridenBrowser = Browser & {
@@ -58,10 +58,10 @@ export type OverridenBrowser = Browser & {
     /**
      * Original `.newContext` method
      */
-    _newContext: Browser['newContext'];
+    _newContextOriginal: Browser['newContext'];
 
     /**
      * Original `.newPage` method
      */
-    _newPage: Browser['newPage'];
+    _newPageOriginal: Browser['newPage'];
 };

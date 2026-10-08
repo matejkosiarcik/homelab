@@ -22,6 +22,7 @@ export async function extendPage(_page: Page): Promise<OverridenPage> {
     // Set defaults
     page._overridden ??= true;
     page._default ??= false;
+    page._openedAt ??= { date: new Date(), hrtime: process.hrtime.bigint() };
 
     // await setupPageConsoleCapture(page);
     // await setupPageErrorCapture(page);
@@ -42,11 +43,12 @@ export async function extendContext(_context: BrowserContext): Promise<Overriden
     // Set defaults
     context._overridden ??= true;
     context._default ??= false;
+    context._openedAt ??= { date: new Date(), hrtime: process.hrtime.bigint() };
 
     // Make sure all opened pages in this context are automatically extended
-    context._newPage = context.newPage;
+    context._newPageOriginal = context.newPage;
     context.newPage = async function (...args) {
-        const page = await this._newPage(...args);
+        const page = await this._newPageOriginal(...args);
         await extendPage(page);
         return page;
     };
@@ -66,21 +68,22 @@ export async function extendBrowser(_browser: Browser): Promise<OverridenBrowser
     // Set defaults
     browser._overridden ??= true;
     browser._default ??= false;
+    browser._openedAt ??= { date: new Date(), hrtime: process.hrtime.bigint() };
 
     // Make sure all opened pages in this browser are automatically extended
-    browser._newPage = browser.newPage;
+    browser._newPageOriginal = browser.newPage;
     browser.newPage = async function (..._args) {
         const args = (_args as Parameters<Browser['newPage']>)[0] ?? {};
-        const page = await this._newPage(args);
+        const page = await this._newPageOriginal(args);
         await extendPage(page);
         return page;
     };
 
     // Make sure all opened contexts in this browser are automatically extended
-    browser._newContext = browser.newContext;
+    browser._newContextOriginal = browser.newContext;
     browser.newContext = async function (..._args) {
         const args = (_args as Parameters<Browser['newContext']>)[0] ?? {};
-        const context = await this._newContext(args);
+        const context = await this._newContextOriginal(args);
         await extendContext(context);
         return context;
     };

@@ -58,7 +58,7 @@ const config: PlaywrightTestConfig = {
             width: 1280,
             height: 720,
         },
-        video: 'retain-on-failure',
+        video: 'on',
         screenshot: 'on',
         trace: 'off',
         actionTimeout: 1000,
