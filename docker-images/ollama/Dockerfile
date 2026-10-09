@@ -49,7 +49,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ollama/ollama:0.40.1 AS final
+FROM ollama/ollama:0.40.2 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
