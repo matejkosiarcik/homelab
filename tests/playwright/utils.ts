@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import fsx from 'node:fs/promises';
 import path from 'node:path';
 import { test as baseTest, Browser, BrowserContext, Page } from '@playwright/test';
 import { OverridenBrowser, OverridenContext, OverridenPage } from '../types/playwright';
@@ -8,7 +10,12 @@ import { OverridenBrowser, OverridenContext, OverridenPage } from '../types/play
 export function testArtifactDirectory(): string {
     const testInfo = baseTest.info();
     const testName = testInfo.titlePath.filter((el) => !!el).join(' ').replaceAll(/[^a-zA-Z0-9]+/g, '-');
-    return path.join('tmp', testInfo.project.name, `test-name-${testName}---test-id-${testInfo.testId}---try-${testInfo.retry + 1}---worker-${testInfo.workerIndex}`);
+    return path.join('tmp', testInfo.project.name, `test---name-${testName}---id-${testInfo.testId}---try-${testInfo.retry + 1}---worker-${testInfo.workerIndex}`);
+}
+
+export function pageArtifactDirectory(page: OverridenPage): string {
+    const pageDirectoryName = `page---date-${page._openedAt.date.toISOString().replaceAll(/[:.]/g, '-')}---hrtime-${page._openedAt.hrtime.toString(10)}`;
+    return path.join(testArtifactDirectory(), pageDirectoryName);
 }
 
 export async function extendPage(_page: Page): Promise<OverridenPage> {
@@ -24,9 +31,9 @@ export async function extendPage(_page: Page): Promise<OverridenPage> {
     page._default ??= false;
     page._openedAt ??= { date: new Date(), hrtime: process.hrtime.bigint() };
 
-    // await setupPageConsoleCapture(page);
-    // await setupPageErrorCapture(page);
-    // await setupPageHarCapture(page);
+    await setupPageConsoleCapture(page);
+    await setupPageErrorCapture(page);
+    await setupPageHarCapture(page);
 
     return page;
 }
@@ -89,4 +96,96 @@ export async function extendBrowser(_browser: Browser): Promise<OverridenBrowser
     };
 
     return browser;
+}
+
+/**
+ * Forward page console logs into an attachment file
+ */
+async function setupPageConsoleCapture(page: OverridenPage): Promise<void> {
+    const outputFile = path.join(pageArtifactDirectory(page), 'console.txt');
+
+    // Precreate empty output file
+    await fsx.mkdir(path.dirname(outputFile), { recursive: true });
+    await fsx.writeFile(outputFile, '', 'utf8');
+
+    // Forward each console.[log/error/etc...] into output file
+    page.on('console', async (message) => {
+        const date = new Date().toISOString();
+        const location = `${message.location().url || 'N/A'}:${message.location().line ?? '?'}:${message.location().column ?? '?'}`;
+        const output = message.text()
+            .trim()
+            .split('\n')
+            .map((line) => `${date} console.${message.type()} ${location} at ${page.url()} | ${line.trim()}\n`)
+            .join('\n');
+        await fsx.appendFile(outputFile, output, 'utf8');
+    });
+}
+
+/**
+ * Forward page errors into an attachment file
+ */
+async function setupPageErrorCapture(page: OverridenPage): Promise<void> {
+    const outputFile = path.join(pageArtifactDirectory(page), 'errors.txt');
+
+    // Precreate empty output file
+    await fsx.mkdir(path.dirname(outputFile), { recursive: true });
+    await fsx.writeFile(outputFile, '', 'utf8');
+
+    // Forward errors into output file
+    page.on('pageerror', (error) => {
+        const date = new Date().toISOString();
+        let output = `${date} error-${error.name} as ${page.url()}:`;
+
+        const message = (error.message || 'N/A')
+            .trim()
+            .split('\n')
+            .map((line) => ` | ${line.trim()}`)
+            .join('\n');
+        output += `\n | Message:\n${message}`;
+
+        if (error.cause) {
+            const cause = `${error.cause}`
+                .trim()
+                .split('\n')
+                .map((line) => ` | ${line.trim()}`)
+                .join('\n');
+            output += `\n | Cause:\n${cause}`;
+        }
+
+        if (error.stack) {
+            const stack = `${error.stack}`
+                .trim()
+                .split('\n')
+                .map((line) => ` | ${line.trim()}`)
+                .join('\n');
+            output += `\n | Stack:\n${stack}`;
+        }
+
+        fs.appendFileSync(outputFile, output, 'utf8');
+    });
+
+    // Forward crashes into output file
+    page.on('crash', (page) => {
+        const date = new Date().toISOString();
+        const output = `${date} crash at ${page.url()}`;
+        fs.appendFileSync(outputFile, output, 'utf8');
+    });
+}
+
+/**
+ * Save HAR into an attachment file
+ */
+async function setupPageHarCapture(page: OverridenPage): Promise<void> {
+    const outputFile = path.join(pageArtifactDirectory(page), 'har.json');
+
+    // Precreate empty output file
+    await fsx.mkdir(path.dirname(outputFile), { recursive: true });
+    await fsx.writeFile(outputFile, '', 'utf8');
+
+    // Capture HAR directly into output file
+    await page.routeFromHAR(outputFile, {
+        update: true,
+        updateContent: 'embed',
+        updateMode: 'full',
+    });
 }
