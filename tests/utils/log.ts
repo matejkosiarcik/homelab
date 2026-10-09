@@ -1,6 +1,8 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import winston from 'winston';
 import { testArtifactDirectory } from '#/playwright/utils.ts';
+import { parseISO } from 'date-fns';
 
 /**
  * Logger for usage in tests
@@ -21,15 +23,19 @@ export class Log {
             throw new Error(`Unknown env LOG_LEVEL ${logLevel}`);
         }
 
+        const outputFile = path.join(outputDirectory, 'log.txt');
+        fs.writeFileSync(outputFile, '', 'utf-8');
+
         this.instances[loggerName] = winston.createLogger({
             format: winston.format.combine(
-                winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+                winston.format.timestamp({ format: 'YYYY-MM-DDTHH:mm:ss.SSSZ' }),
                 winston.format.printf(({ timestamp, level, message }) => {
+                    const editedTimestamp = parseISO(timestamp as string).toISOString();
                     message = Array.isArray(message) ? message.map((el) => `${el}`).join(' ') : `${message}`;
                     return `${message}`
                         .trim()
                         .split('\n')
-                        .map((line) => `${timestamp} ${level.toUpperCase().padStart(5, '_')}: ${line}`)
+                        .map((line) => `${editedTimestamp} ${level.toUpperCase().padStart(5, '_')}: ${line}`)
                         .join('\n');
                     }
                 ),
@@ -37,8 +43,8 @@ export class Log {
             level: logLevel,
             transports: [
                 new winston.transports.File({
-                    dirname: outputDirectory,
-                    filename: 'output.log',
+                    dirname: path.dirname(outputFile),
+                    filename: path.basename(outputFile),
                 }),
             ],
         });
