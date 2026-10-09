@@ -115,7 +115,7 @@ async function setupPageConsoleCapture(page: OverridenPage): Promise<void> {
         const output = message.text()
             .trim()
             .split('\n')
-            .map((line) => `${date} console.${message.type()} ${location} at ${page.url()} | ${line.trim()}\n`)
+            .map((line) => `${date} console.${message.type()} from ${location} at ${page.url()} | ${line.trim()}\n`)
             .join('\n');
         await fsx.appendFile(outputFile, output, 'utf8');
     });
