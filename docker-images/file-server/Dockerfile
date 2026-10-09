@@ -3,7 +3,7 @@
 
 ### Build config ###
 
-FROM node:26.10.0-slim AS npmconfig
+FROM node:26.11.1-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -22,7 +22,7 @@ COPY ./docker-images/.shared/anticache.txt /homelab/
 
 ### App ###
 
-FROM node:26.10.0-slim AS nodejs_build
+FROM node:26.11.1-slim AS nodejs_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/file-server/package-lock.json ./docker-images/file-server/package.json /homelab/
