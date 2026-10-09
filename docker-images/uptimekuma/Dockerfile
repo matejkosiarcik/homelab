@@ -30,7 +30,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM louislam/uptime-kuma:2.5.5 AS final
+FROM louislam/uptime-kuma:2.5.6 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
