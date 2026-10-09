@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Dependencies ###
 
-FROM golang:1.27.1-trixie AS envsubst_build
+FROM golang:1.27.2-trixie AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
@@ -77,7 +77,7 @@ COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     retry --times=3 -- gitman install --quiet
 
-FROM golang:1.27.1-trixie AS samba_exporter_build
+FROM golang:1.27.2-trixie AS samba_exporter_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_prometheus_exporter_build_aptcache \
