@@ -7,6 +7,11 @@ export type OverridenPage = Page & {
     _overridden: boolean;
 
     /**
+     * Playwright test ID of the test during which this page was opened
+     */
+    _testid: string;
+
+    /**
      * Specifies whether this is the default test fixture page (not manually opened)
      */
     _default: boolean;
