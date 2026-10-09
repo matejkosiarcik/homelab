@@ -158,7 +158,7 @@ COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
 
 ### Final ###
 
-FROM renovate/renovate:44.148.3-full AS final
+FROM renovate/renovate:44.149.0-full AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
