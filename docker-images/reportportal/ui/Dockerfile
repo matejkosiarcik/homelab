@@ -40,7 +40,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-ui:5.15.5 AS final
+FROM reportportal/service-ui:5.15.6 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
