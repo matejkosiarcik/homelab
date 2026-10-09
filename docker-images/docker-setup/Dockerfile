@@ -41,7 +41,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM docker:29.8.2 AS final
+FROM docker:29.9.0 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
