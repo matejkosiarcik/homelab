@@ -5,7 +5,13 @@ import { OverridenBrowser, OverridenContext, OverridenPage } from '../types/play
 
 const customExpect = baseExpect;
 
-const customTest = baseTest.extend<{}, {}>({
+const customTest = baseTest.extend<{
+    // Test fixtures
+    _mainTestFixture: void;
+}, {
+    // Worker fixtures
+    _mainWorkerFixture: void;
+}>({
     browser: async ({ browser }, use) => {
         (browser as OverridenBrowser)._default = true;
         await extendBrowser(browser);
@@ -23,6 +29,20 @@ const customTest = baseTest.extend<{}, {}>({
         await extendPage(page);
         await use(page);
     },
+
+    _mainTestFixture: [
+        async ({}, use) => {
+            await use();
+        },
+        { auto: true, scope: 'test' },
+    ],
+
+    _mainWorkerFixture: [
+        async ({}, use) => {
+            await use();
+        },
+        { auto: true, scope: 'worker' },
+    ],
 });
 
 customTest.expect = customExpect;
