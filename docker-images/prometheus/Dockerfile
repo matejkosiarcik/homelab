@@ -3,7 +3,7 @@
 
 ### Dependencies ###
 
-FROM golang:1.27.1-trixie AS envsubst_build
+FROM golang:1.27.2-trixie AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
@@ -80,7 +80,7 @@ RUN jinja2 './prometheus.yml.j2' './data.json' --format json -o './prometheus.ym
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck_build
+FROM golang:1.27.2-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/

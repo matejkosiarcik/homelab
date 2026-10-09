@@ -69,7 +69,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet && \
     find '.' -type d -name .git -prune -exec rm -rf {} \;
 
-FROM golang:1.27.1-trixie AS supercronic_build
+FROM golang:1.27.2-trixie AS supercronic_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_build_aptcache \
@@ -121,7 +121,7 @@ RUN npm run build && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.1-alpine AS healthcheck_build
+FROM golang:1.27.2-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
