@@ -28,8 +28,9 @@ export async function extendPage(_page: Page): Promise<OverridenPage> {
 
     // Set defaults
     page._overridden ??= true;
-    page._default ??= false;
     page._openedAt ??= { date: new Date(), hrtime: process.hrtime.bigint() };
+    page._default ??= false;
+    page._testid ??= baseTest.info().testId;
 
     await setupPageConsoleCapture(page);
     await setupPageErrorCapture(page);
@@ -49,8 +50,8 @@ export async function extendContext(_context: BrowserContext): Promise<Overriden
 
     // Set defaults
     context._overridden ??= true;
-    context._default ??= false;
     context._openedAt ??= { date: new Date(), hrtime: process.hrtime.bigint() };
+    context._default ??= false;
 
     // Make sure all opened pages in this context are automatically extended
     context._newPageOriginal = context.newPage;
@@ -74,8 +75,8 @@ export async function extendBrowser(_browser: Browser): Promise<OverridenBrowser
 
     // Set defaults
     browser._overridden ??= true;
-    browser._default ??= false;
     browser._openedAt ??= { date: new Date(), hrtime: process.hrtime.bigint() };
+    browser._default ??= false;
 
     // Make sure all opened pages in this browser are automatically extended
     browser._newPageOriginal = browser.newPage;
@@ -115,7 +116,7 @@ async function setupPageConsoleCapture(page: OverridenPage): Promise<void> {
         const output = message.text()
             .trim()
             .split('\n')
-            .map((line) => `${date} console.${message.type()} ${location} at ${page.url()} | ${line.trim()}\n`)
+            .map((line) => `${date} console.${message.type()} from ${location} at ${page.url()} | ${line.trim()}\n`)
             .join('\n');
         await fsx.appendFile(outputFile, output, 'utf8');
     });
