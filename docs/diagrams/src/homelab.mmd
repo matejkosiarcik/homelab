@@ -14,11 +14,16 @@ flowchart TB
 
         subgraph odroid_h4_ultra_dns["DNS"]
             direction TB
-            subgraph odroid_h4_ultra_dns_row[" "]
+            subgraph odroid_h4_ultra_dns_pihole_row[" "]
                 direction LR
                 pihole_1_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Blackhole")
                 pihole_1_primary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Primary")
                 pihole_1_secondary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Secondary")
+                pihole_1_blackhole ~~~ pihole_1_primary ~~~ pihole_1_secondary
+            end
+
+            subgraph odroid_h4_ultra_dns_unbound_row[" "]
+                direction LR
                 unbound_1_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Blackhole")
                 unbound_1_default("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Default")
                 unbound_1_guests("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Guests")
@@ -26,8 +31,10 @@ flowchart TB
                 unbound_1_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>IoT")
                 unbound_1_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Matej")
                 unbound_1_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Monika")
-                pihole_1_blackhole ~~~ pihole_1_primary ~~~ pihole_1_secondary ~~~ unbound_1_blackhole ~~~ unbound_1_default ~~~ unbound_1_guests ~~~ unbound_1_internal ~~~ unbound_1_iot ~~~ unbound_1_matej ~~~ unbound_1_monika
+                unbound_1_blackhole ~~~ unbound_1_default ~~~ unbound_1_guests ~~~ unbound_1_internal ~~~ unbound_1_iot ~~~ unbound_1_matej ~~~ unbound_1_monika
             end
+
+            odroid_h4_ultra_dns_pihole_row ~~~ odroid_h4_ultra_dns_unbound_row
         end
 
         subgraph odroid_h4_ultra_platform_roles[" "]
@@ -153,7 +160,7 @@ flowchart TB
 
         odroid_h4_ultra_top_roles ~~~ odroid_h4_ultra_platform_roles ~~~ odroid_h4_ultra_monitoring ~~~ odroid_h4_ultra_dns ~~~ odroid_h4_ultra_miscellaneous
 
-        class odroid_h4_ultra_top_roles,odroid_h4_ultra_platform_roles,odroid_h4_ultra_dns_row,odroid_h4_ultra_infrastructure_row,odroid_h4_ultra_monitoring_row,odroid_h4_ultra_ai_row,odroid_h4_ultra_media_row,odroid_h4_ultra_data_row,odroid_h4_ultra_smart_home_row,odroid_h4_ultra_notifications_row,odroid_h4_ultra_miscellaneous_row_1,odroid_h4_ultra_miscellaneous_row_2 no_border
+        class odroid_h4_ultra_top_roles,odroid_h4_ultra_platform_roles,odroid_h4_ultra_dns_pihole_row,odroid_h4_ultra_dns_unbound_row,odroid_h4_ultra_infrastructure_row,odroid_h4_ultra_monitoring_row,odroid_h4_ultra_ai_row,odroid_h4_ultra_media_row,odroid_h4_ultra_data_row,odroid_h4_ultra_smart_home_row,odroid_h4_ultra_notifications_row,odroid_h4_ultra_miscellaneous_row_1,odroid_h4_ultra_miscellaneous_row_2 no_border
     end
 
     subgraph odroid_h3["Odroid H3"]
@@ -161,11 +168,16 @@ flowchart TB
 
         subgraph odroid_h3_dns["DNS"]
             direction TB
-            subgraph odroid_h3_dns_row[" "]
+            subgraph odroid_h3_dns_pihole_row[" "]
                 direction LR
                 pihole_2_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Blackhole")
                 pihole_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 3")
                 pihole_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 4")
+                pihole_2_blackhole ~~~ pihole_3 ~~~ pihole_4
+            end
+
+            subgraph odroid_h3_dns_unbound_row[" "]
+                direction LR
                 unbound_2_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Blackhole")
                 unbound_2_default("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Default")
                 unbound_2_guests("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Guests")
@@ -173,8 +185,10 @@ flowchart TB
                 unbound_2_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>IoT")
                 unbound_2_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Matej")
                 unbound_2_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Monika")
-                pihole_2_blackhole ~~~ pihole_3 ~~~ pihole_4 ~~~ unbound_2_blackhole ~~~ unbound_2_default ~~~ unbound_2_guests ~~~ unbound_2_internal ~~~ unbound_2_iot ~~~ unbound_2_matej ~~~ unbound_2_monika
+                unbound_2_blackhole ~~~ unbound_2_default ~~~ unbound_2_guests ~~~ unbound_2_internal ~~~ unbound_2_iot ~~~ unbound_2_matej ~~~ unbound_2_monika
             end
+
+            odroid_h3_dns_pihole_row ~~~ odroid_h3_dns_unbound_row
         end
 
         subgraph odroid_h3_monitoring["Monitoring"]
@@ -198,7 +212,7 @@ flowchart TB
             end
         end
 
-        class odroid_h3_dns_row,odroid_h3_monitoring_row,odroid_h3_data_row no_border
+        class odroid_h3_dns_pihole_row,odroid_h3_dns_unbound_row,odroid_h3_monitoring_row,odroid_h3_data_row no_border
     end
 
     subgraph raspberry_pi_4b_servers[" "]
@@ -247,7 +261,7 @@ flowchart TB
                 direction TB
                 subgraph raspberry_pi_4b_2g_media_row[" "]
                     direction LR
-                    tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+                    tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend<br/>(planned)")
                 end
             end
 
@@ -269,4 +283,4 @@ flowchart TB
 
     class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media,raspberry_pi_4b_2g_miscellaneous role
     class raspberry_pi_4b_servers no_border
-    class git_cache_github,npm_cache,netalertx,motioneye,reportportal,vaultwarden planned
+    class git_cache_github,npm_cache,netalertx,motioneye,reportportal,tvheadend,vaultwarden planned
