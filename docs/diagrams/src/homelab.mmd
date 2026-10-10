@@ -12,9 +12,9 @@ flowchart TB
     subgraph odroid_h4_ultra["Odroid H4 Ultra"]
         direction TB
 
-        subgraph h4_dns["DNS"]
+        subgraph odroid_h4_ultra_dns["DNS"]
             direction TB
-            subgraph h4_dns_row[" "]
+            subgraph odroid_h4_ultra_dns_row[" "]
                 direction LR
                 pihole_1_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Blackhole")
                 pihole_1_primary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Primary")
@@ -30,11 +30,11 @@ flowchart TB
             end
         end
 
-        subgraph h4_platform_roles[" "]
+        subgraph odroid_h4_ultra_platform_roles[" "]
             direction LR
-            subgraph h4_infrastructure["Infrastructure"]
+            subgraph odroid_h4_ultra_infrastructure["Infrastructure"]
                 direction TB
-                subgraph h4_infrastructure_row[" "]
+                subgraph odroid_h4_ultra_infrastructure_row[" "]
                     direction LR
                     certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
                     dockerhub_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>DockerHub<br/>cache<br/>proxy")
@@ -47,9 +47,9 @@ flowchart TB
                 end
             end
 
-            subgraph h4_ai["AI"]
+            subgraph odroid_h4_ultra_ai["AI"]
                 direction TB
-                subgraph h4_ai_row[" "]
+                subgraph odroid_h4_ultra_ai_row[" "]
                     direction LR
                     ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
                     ollama_private("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama<br/>(private)")
@@ -62,9 +62,9 @@ flowchart TB
             unificontroller ~~~ ollama
         end
 
-        subgraph h4_monitoring["Monitoring"]
+        subgraph odroid_h4_ultra_monitoring["Monitoring"]
             direction TB
-            subgraph h4_monitoring_row[" "]
+            subgraph odroid_h4_ultra_monitoring_row[" "]
                 direction LR
                 docker_stats_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle")
@@ -79,35 +79,35 @@ flowchart TB
             end
         end
 
-        subgraph h4_top_roles[" "]
+        subgraph odroid_h4_ultra_top_roles[" "]
             direction LR
-            subgraph h4_data["Data"]
+            subgraph odroid_h4_ultra_data["Data"]
                 direction TB
-                subgraph h4_data_row[" "]
+                subgraph odroid_h4_ultra_data_row[" "]
                     direction LR
                     minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
                 end
             end
 
-            subgraph h4_media["Media"]
+            subgraph odroid_h4_ultra_media["Media"]
                 direction TB
-                subgraph h4_media_row[" "]
+                subgraph odroid_h4_ultra_media_row[" "]
                     direction LR
                     jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
                 end
             end
 
-            subgraph h4_smart_home["Smart Home"]
+            subgraph odroid_h4_ultra_smart_home["Smart Home"]
                 direction TB
-                subgraph h4_smart_home_row[" "]
+                subgraph odroid_h4_ultra_smart_home_row[" "]
                     direction LR
                     homeassistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
                 end
             end
 
-            subgraph h4_notifications["Notifications"]
+            subgraph odroid_h4_ultra_notifications["Notifications"]
                 direction TB
-                subgraph h4_notifications_row[" "]
+                subgraph odroid_h4_ultra_notifications_row[" "]
                     direction LR
                     gotify("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify")
                     ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
@@ -119,9 +119,9 @@ flowchart TB
             minio ~~~ jellyfin ~~~ homeassistant ~~~ gotify
         end
 
-        subgraph h4_miscellaneous["Miscellaneous"]
+        subgraph odroid_h4_ultra_miscellaneous["Miscellaneous"]
             direction TB
-            subgraph h4_miscellaneous_row_1[" "]
+            subgraph odroid_h4_ultra_miscellaneous_row_1[" "]
                 direction LR
                 actualbudget_main("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(main)")
                 actualbudget_public("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(public)")
@@ -134,7 +134,7 @@ flowchart TB
                 kiwix_wiktionary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>Wiktionary")
                 actualbudget_main ~~~ actualbudget_public ~~~ adventurelog ~~~ changedetection ~~~ dawarich ~~~ donetick ~~~ homepage ~~~ kiwix_wikipedia ~~~ kiwix_wiktionary
             end
-            subgraph h4_miscellaneous_row_2[" "]
+            subgraph odroid_h4_ultra_miscellaneous_row_2[" "]
                 direction LR
                 koffan("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/koffan.png' style='min-width:80px;max-width:80px' /></div>Koffan")
                 libretranslate("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/libretranslate.png' style='min-width:80px;max-width:80px' /></div>LibreTranslate")
@@ -148,21 +148,21 @@ flowchart TB
                 koffan ~~~ libretranslate ~~~ openspeedtest ~~~ planka ~~~ renovatebot ~~~ reportportal ~~~ speedtesttracker ~~~ vaultwarden ~~~ vikunja
             end
 
-            h4_miscellaneous_row_1 ~~~ h4_miscellaneous_row_2
+            odroid_h4_ultra_miscellaneous_row_1 ~~~ odroid_h4_ultra_miscellaneous_row_2
         end
 
         %% Keep role sections in compact visual rows; all layout links are hidden.
-        h4_top_roles ~~~ h4_platform_roles ~~~ h4_monitoring ~~~ h4_dns ~~~ h4_miscellaneous
+        odroid_h4_ultra_top_roles ~~~ odroid_h4_ultra_platform_roles ~~~ odroid_h4_ultra_monitoring ~~~ odroid_h4_ultra_dns ~~~ odroid_h4_ultra_miscellaneous
 
-        class h4_top_roles,h4_platform_roles,h4_dns_row,h4_infrastructure_row,h4_monitoring_row,h4_ai_row,h4_media_row,h4_data_row,h4_smart_home_row,h4_notifications_row,h4_miscellaneous_row_1,h4_miscellaneous_row_2 no_border
+        class odroid_h4_ultra_top_roles,odroid_h4_ultra_platform_roles,odroid_h4_ultra_dns_row,odroid_h4_ultra_infrastructure_row,odroid_h4_ultra_monitoring_row,odroid_h4_ultra_ai_row,odroid_h4_ultra_media_row,odroid_h4_ultra_data_row,odroid_h4_ultra_smart_home_row,odroid_h4_ultra_notifications_row,odroid_h4_ultra_miscellaneous_row_1,odroid_h4_ultra_miscellaneous_row_2 no_border
     end
 
     subgraph odroid_h3["Odroid H3"]
         direction TB
 
-        subgraph h3_dns["DNS"]
+        subgraph odroid_h3_dns["DNS"]
             direction TB
-            subgraph h3_dns_row[" "]
+            subgraph odroid_h3_dns_row[" "]
                 direction LR
                 pihole_2_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Blackhole")
                 pihole_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 3")
@@ -178,9 +178,9 @@ flowchart TB
             end
         end
 
-        subgraph h3_monitoring["Monitoring"]
+        subgraph odroid_h3_monitoring["Monitoring"]
             direction TB
-            subgraph h3_monitoring_row[" "]
+            subgraph odroid_h3_monitoring_row[" "]
                 direction LR
                 docker_stats_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle_agent_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
@@ -191,23 +191,23 @@ flowchart TB
             end
         end
 
-        subgraph h3_data["Data"]
+        subgraph odroid_h3_data["Data"]
             direction TB
-            subgraph h3_data_row[" "]
+            subgraph odroid_h3_data_row[" "]
                 direction LR
                 samba_data("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba<br/>data")
             end
         end
 
-        class h3_dns_row,h3_monitoring_row,h3_data_row no_border
+        class odroid_h3_dns_row,odroid_h3_monitoring_row,odroid_h3_data_row no_border
     end
 
-    subgraph raspberry_pi_4_4g["Raspberry Pi 4B 4GB"]
+    subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4GB"]
         direction TB
 
-        subgraph pi4_monitoring["Monitoring"]
+        subgraph raspberry_pi_4b_4g_monitoring["Monitoring"]
             direction TB
-            subgraph pi4_monitoring_row[" "]
+            subgraph raspberry_pi_4b_4g_monitoring_row[" "]
                 direction LR
                 docker_stats_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
@@ -216,31 +216,31 @@ flowchart TB
             end
         end
 
-        subgraph pi4_miscellaneous["Miscellaneous"]
+        subgraph raspberry_pi_4b_4g_miscellaneous["Miscellaneous"]
             direction TB
-            subgraph pi4_miscellaneous_row[" "]
+            subgraph raspberry_pi_4b_4g_miscellaneous_row[" "]
                 direction LR
                 motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
             end
         end
 
-        subgraph pi4_infrastructure["Infrastructure"]
+        subgraph raspberry_pi_4b_4g_infrastructure["Infrastructure"]
             direction TB
-            subgraph pi4_infrastructure_row[" "]
+            subgraph raspberry_pi_4b_4g_infrastructure_row[" "]
                 direction LR
                 vnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vnc.png' style='min-width:80px;max-width:80px' /></div>VNC")
             end
         end
 
-        class pi4_monitoring_row,pi4_miscellaneous_row,pi4_infrastructure_row no_border
+        class raspberry_pi_4b_4g_monitoring_row,raspberry_pi_4b_4g_miscellaneous_row,raspberry_pi_4b_4g_infrastructure_row no_border
     end
 
-    subgraph raspberry_pi_4_2g["Raspberry Pi 4B 2GB"]
+    subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2GB"]
         direction TB
 
-        subgraph pi2_monitoring["Monitoring"]
+        subgraph raspberry_pi_4b_2g_monitoring["Monitoring"]
             direction TB
-            subgraph pi2_monitoring_row[" "]
+            subgraph raspberry_pi_4b_2g_monitoring_row[" "]
                 direction LR
                 docker_stats_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
@@ -249,19 +249,19 @@ flowchart TB
             end
         end
 
-        subgraph pi2_media["Media"]
+        subgraph raspberry_pi_4b_2g_media["Media"]
             direction TB
-            subgraph pi2_media_row[" "]
+            subgraph raspberry_pi_4b_2g_media_row[" "]
                 direction LR
                 tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
             end
         end
 
-        class pi2_monitoring_row,pi2_media_row no_border
+        class raspberry_pi_4b_2g_monitoring_row,raspberry_pi_4b_2g_media_row no_border
     end
 
     %% Keep the physical hosts in a top-to-bottom inventory order.
-    odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4_4g ~~~ raspberry_pi_4_2g
+    odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4b_4g ~~~ raspberry_pi_4b_2g
 
-    class h4_dns,h4_infrastructure,h4_monitoring,h4_ai,h4_media,h4_data,h4_smart_home,h4_notifications,h4_miscellaneous,h3_dns,h3_monitoring,h3_data,pi4_monitoring,pi4_miscellaneous,pi4_infrastructure,pi2_monitoring,pi2_media role
-class git_cache_github,npm_cache,netalertx planned
+    class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_miscellaneous,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media role
+    class git_cache_github,npm_cache,netalertx planned
