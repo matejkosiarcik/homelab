@@ -14,8 +14,6 @@ General structure for this repository:
     - `/servers/<server>` - Files related to a single server
         - `/servers/<server>/docker-apps` - Docker apps that run on this server. Each app references exactly one `docker-compose` stack
 
-What does your homelab do?
-
-TL;DR:
+What does your homelab do? TL;DR:
 
 ![diagram](./docs/diagrams/out/homelab.png)
