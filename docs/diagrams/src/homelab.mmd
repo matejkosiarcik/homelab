@@ -1,5 +1,5 @@
 ---
-title: Homelab Servers by Service Role
+title: Homelab Servers
 config:
     theme: dark
 ---
@@ -9,16 +9,12 @@ flowchart TB
     classDef no_border fill:transparent,stroke:transparent,stroke-width:0px;
     classDef planned fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,stroke-dasharray:8 5,rx:5px,ry:5px;
 
-    %% These links only keep each service row compact; they do not describe a
-    %% dependency between adjacent applications.
-    linkStyle default stroke:transparent,fill:transparent;
-
     subgraph odroid_h4_ultra["Odroid H4 Ultra"]
         direction TB
 
-        subgraph h4_dns["DNS"]
+        subgraph odroid_h4_ultra_dns["DNS"]
             direction TB
-            subgraph h4_dns_row[" "]
+            subgraph odroid_h4_ultra_dns_row[" "]
                 direction LR
                 pihole_1_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Blackhole")
                 pihole_1_primary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 1<br/>Primary")
@@ -30,15 +26,15 @@ flowchart TB
                 unbound_1_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>IoT")
                 unbound_1_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Matej")
                 unbound_1_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Monika")
-                pihole_1_blackhole --> pihole_1_primary --> pihole_1_secondary --> unbound_1_blackhole --> unbound_1_default --> unbound_1_guests --> unbound_1_internal --> unbound_1_iot --> unbound_1_matej --> unbound_1_monika
+                pihole_1_blackhole ~~~ pihole_1_primary ~~~ pihole_1_secondary ~~~ unbound_1_blackhole ~~~ unbound_1_default ~~~ unbound_1_guests ~~~ unbound_1_internal ~~~ unbound_1_iot ~~~ unbound_1_matej ~~~ unbound_1_monika
             end
         end
 
-        subgraph h4_platform_roles[" "]
+        subgraph odroid_h4_ultra_platform_roles[" "]
             direction LR
-            subgraph h4_infrastructure["Infrastructure"]
+            subgraph odroid_h4_ultra_infrastructure["Infrastructure"]
                 direction TB
-                subgraph h4_infrastructure_row[" "]
+                subgraph odroid_h4_ultra_infrastructure_row[" "]
                     direction LR
                     certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
                     dockerhub_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>DockerHub<br/>cache<br/>proxy")
@@ -47,28 +43,28 @@ flowchart TB
                     npm_cache("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/npm-cache.png' style='min-width:80px;max-width:80px' /></div>NPM<br/>cache<br/>(planned)")
                     omadacontroller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br/>Controller")
                     unificontroller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Controller")
-                    certbot --> dockerhub_proxy --> git_cache_github --> netalertx --> npm_cache --> omadacontroller --> unificontroller
+                    certbot ~~~ dockerhub_proxy ~~~ git_cache_github ~~~ netalertx ~~~ npm_cache ~~~ omadacontroller ~~~ unificontroller
                 end
             end
 
-            subgraph h4_ai["AI"]
+            subgraph odroid_h4_ultra_ai["AI"]
                 direction TB
-                subgraph h4_ai_row[" "]
+                subgraph odroid_h4_ultra_ai_row[" "]
                     direction LR
                     ollama("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama")
                     ollama_private("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama<br/>(private)")
                     openwebui("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openwebui.png' style='min-width:80px;max-width:80px' /></div>Open WebUI")
                     openwebui_private("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openwebui.png' style='min-width:80px;max-width:80px' /></div>Open WebUI<br/>(private)")
-                    ollama --> ollama_private --> openwebui --> openwebui_private
+                    ollama ~~~ ollama_private ~~~ openwebui ~~~ openwebui_private
                 end
             end
 
-            unificontroller --> ollama
+            unificontroller ~~~ ollama
         end
 
-        subgraph h4_monitoring["Monitoring"]
+        subgraph odroid_h4_ultra_monitoring["Monitoring"]
             direction TB
-            subgraph h4_monitoring_row[" "]
+            subgraph odroid_h4_ultra_monitoring_row[" "]
                 direction LR
                 docker_stats_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle")
@@ -79,53 +75,53 @@ flowchart TB
                 nodeexporter_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
                 prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
                 uptimekuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime Kuma")
-                docker_stats_1 --> dozzle --> dozzle_agent_1 --> gatus_1 --> grafana --> healthchecks --> nodeexporter_1 --> prometheus --> uptimekuma
+                docker_stats_1 ~~~ dozzle ~~~ dozzle_agent_1 ~~~ gatus_1 ~~~ grafana ~~~ healthchecks ~~~ nodeexporter_1 ~~~ prometheus ~~~ uptimekuma
             end
         end
 
-        subgraph h4_top_roles[" "]
+        subgraph odroid_h4_ultra_top_roles[" "]
             direction LR
-            subgraph h4_data["Data"]
+            subgraph odroid_h4_ultra_data["Data"]
                 direction TB
-                subgraph h4_data_row[" "]
+                subgraph odroid_h4_ultra_data_row[" "]
                     direction LR
                     minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
                 end
             end
 
-            subgraph h4_media["Media"]
+            subgraph odroid_h4_ultra_media["Media"]
                 direction TB
-                subgraph h4_media_row[" "]
+                subgraph odroid_h4_ultra_media_row[" "]
                     direction LR
                     jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
                 end
             end
 
-            subgraph h4_smart_home["Smart Home"]
+            subgraph odroid_h4_ultra_smart_home["Smart Home"]
                 direction TB
-                subgraph h4_smart_home_row[" "]
+                subgraph odroid_h4_ultra_smart_home_row[" "]
                     direction LR
                     homeassistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
                 end
             end
 
-            subgraph h4_notifications["Notifications"]
+            subgraph odroid_h4_ultra_notifications["Notifications"]
                 direction TB
-                subgraph h4_notifications_row[" "]
+                subgraph odroid_h4_ultra_notifications_row[" "]
                     direction LR
                     gotify("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify")
                     ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
                     smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
-                    gotify --> ntfy --> smtp4dev
+                    gotify ~~~ ntfy ~~~ smtp4dev
                 end
             end
 
-            minio --> jellyfin --> homeassistant --> gotify
+            minio ~~~ jellyfin ~~~ homeassistant ~~~ gotify
         end
 
-        subgraph h4_miscellaneous["Miscellaneous"]
+        subgraph odroid_h4_ultra_miscellaneous["Miscellaneous"]
             direction TB
-            subgraph h4_miscellaneous_row_1[" "]
+            subgraph odroid_h4_ultra_miscellaneous_row_1[" "]
                 direction LR
                 actualbudget_main("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(main)")
                 actualbudget_public("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/actualbudget.png' style='min-width:80px;max-width:80px' /></div>ActualBudget<br/>(public)")
@@ -136,37 +132,36 @@ flowchart TB
                 homepage("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
                 kiwix_wikipedia("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>Wikipedia")
                 kiwix_wiktionary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>Wiktionary")
-                actualbudget_main --> actualbudget_public --> adventurelog --> changedetection --> dawarich --> donetick --> homepage --> kiwix_wikipedia --> kiwix_wiktionary
+                actualbudget_main ~~~ actualbudget_public ~~~ adventurelog ~~~ changedetection ~~~ dawarich ~~~ donetick ~~~ homepage ~~~ kiwix_wikipedia ~~~ kiwix_wiktionary
             end
-            subgraph h4_miscellaneous_row_2[" "]
+            subgraph odroid_h4_ultra_miscellaneous_row_2[" "]
                 direction LR
                 koffan("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/koffan.png' style='min-width:80px;max-width:80px' /></div>Koffan")
                 libretranslate("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/libretranslate.png' style='min-width:80px;max-width:80px' /></div>LibreTranslate")
                 openspeedtest("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openspeedtest.png' style='min-width:80px;max-width:80px' /></div>OpenSpeedTest")
                 planka("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/planka.png' style='min-width:80px;max-width:80px' /></div>Planka")
                 renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>Renovatebot")
-                reportportal("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal")
+                reportportal("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>(planned)")
                 speedtesttracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtesttracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
-                vaultwarden("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vaultwarden.png' style='min-width:80px;max-width:80px' /></div>Vaultwarden")
+                vaultwarden("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vaultwarden.png' style='min-width:80px;max-width:80px' /></div>Vaultwarden<br/>(planned)")
                 vikunja("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vikunja.png' style='min-width:80px;max-width:80px' /></div>Vikunja")
-                koffan --> libretranslate --> openspeedtest --> planka --> renovatebot --> reportportal --> speedtesttracker --> vaultwarden --> vikunja
+                koffan ~~~ libretranslate ~~~ openspeedtest ~~~ planka ~~~ renovatebot ~~~ reportportal ~~~ speedtesttracker ~~~ vaultwarden ~~~ vikunja
             end
 
-            h4_miscellaneous_row_1 --> h4_miscellaneous_row_2
+            odroid_h4_ultra_miscellaneous_row_1 ~~~ odroid_h4_ultra_miscellaneous_row_2
         end
 
-        %% Keep role sections in compact visual rows; all layout links are hidden.
-        h4_top_roles --> h4_platform_roles --> h4_monitoring --> h4_dns --> h4_miscellaneous
+        odroid_h4_ultra_top_roles ~~~ odroid_h4_ultra_platform_roles ~~~ odroid_h4_ultra_monitoring ~~~ odroid_h4_ultra_dns ~~~ odroid_h4_ultra_miscellaneous
 
-        class h4_top_roles,h4_platform_roles,h4_dns_row,h4_infrastructure_row,h4_monitoring_row,h4_ai_row,h4_media_row,h4_data_row,h4_smart_home_row,h4_notifications_row,h4_miscellaneous_row_1,h4_miscellaneous_row_2 no_border
+        class odroid_h4_ultra_top_roles,odroid_h4_ultra_platform_roles,odroid_h4_ultra_dns_row,odroid_h4_ultra_infrastructure_row,odroid_h4_ultra_monitoring_row,odroid_h4_ultra_ai_row,odroid_h4_ultra_media_row,odroid_h4_ultra_data_row,odroid_h4_ultra_smart_home_row,odroid_h4_ultra_notifications_row,odroid_h4_ultra_miscellaneous_row_1,odroid_h4_ultra_miscellaneous_row_2 no_border
     end
 
     subgraph odroid_h3["Odroid H3"]
         direction TB
 
-        subgraph h3_dns["DNS"]
+        subgraph odroid_h3_dns["DNS"]
             direction TB
-            subgraph h3_dns_row[" "]
+            subgraph odroid_h3_dns_row[" "]
                 direction LR
                 pihole_2_blackhole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 2<br/>Blackhole")
                 pihole_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole 3")
@@ -178,94 +173,100 @@ flowchart TB
                 unbound_2_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>IoT")
                 unbound_2_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Matej")
                 unbound_2_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Monika")
-                pihole_2_blackhole --> pihole_3 --> pihole_4 --> unbound_2_blackhole --> unbound_2_default --> unbound_2_guests --> unbound_2_internal --> unbound_2_iot --> unbound_2_matej --> unbound_2_monika
+                pihole_2_blackhole ~~~ pihole_3 ~~~ pihole_4 ~~~ unbound_2_blackhole ~~~ unbound_2_default ~~~ unbound_2_guests ~~~ unbound_2_internal ~~~ unbound_2_iot ~~~ unbound_2_matej ~~~ unbound_2_monika
             end
         end
 
-        subgraph h3_monitoring["Monitoring"]
+        subgraph odroid_h3_monitoring["Monitoring"]
             direction TB
-            subgraph h3_monitoring_row[" "]
+            subgraph odroid_h3_monitoring_row[" "]
                 direction LR
                 docker_stats_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle_agent_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
                 gatus_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus 2")
                 nodeexporter_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
                 uptimekuma_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime Kuma 2")
-                docker_stats_2 --> dozzle_agent_2 --> gatus_2 --> nodeexporter_2 --> uptimekuma_2
+                docker_stats_2 ~~~ dozzle_agent_2 ~~~ gatus_2 ~~~ nodeexporter_2 ~~~ uptimekuma_2
             end
         end
 
-        subgraph h3_data["Data"]
+        subgraph odroid_h3_data["Data"]
             direction TB
-            subgraph h3_data_row[" "]
+            subgraph odroid_h3_data_row[" "]
                 direction LR
                 samba_data("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/samba.png' style='min-width:80px;max-width:80px' /></div>Samba<br/>data")
             end
         end
 
-        class h3_dns_row,h3_monitoring_row,h3_data_row no_border
+        class odroid_h3_dns_row,odroid_h3_monitoring_row,odroid_h3_data_row no_border
     end
 
-    subgraph raspberry_pi_4_4g["Raspberry Pi 4B 4GB"]
-        direction TB
+    subgraph raspberry_pi_4b_servers[" "]
+        direction LR
 
-        subgraph pi4_monitoring["Monitoring"]
+        subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4GB"]
             direction TB
-            subgraph pi4_monitoring_row[" "]
-                direction LR
-                docker_stats_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
-                dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
-                nodeexporter_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
-                docker_stats_3 --> dozzle_agent_3 --> nodeexporter_3
+
+            subgraph raspberry_pi_4b_4g_monitoring["Monitoring"]
+                direction TB
+                subgraph raspberry_pi_4b_4g_monitoring_row[" "]
+                    direction LR
+                    docker_stats_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
+                    dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
+                    nodeexporter_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
+                    docker_stats_3 ~~~ dozzle_agent_3 ~~~ nodeexporter_3
+                end
             end
+
+            subgraph raspberry_pi_4b_4g_infrastructure["Infrastructure"]
+                direction TB
+                subgraph raspberry_pi_4b_4g_infrastructure_row[" "]
+                    direction LR
+                    vnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vnc.png' style='min-width:80px;max-width:80px' /></div>VNC")
+                end
+            end
+
+            class raspberry_pi_4b_4g_monitoring_row,raspberry_pi_4b_4g_infrastructure_row no_border
         end
 
-        subgraph pi4_miscellaneous["Miscellaneous"]
+        subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2GB"]
             direction TB
-            subgraph pi4_miscellaneous_row[" "]
-                direction LR
-                motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
+
+            subgraph raspberry_pi_4b_2g_monitoring["Monitoring"]
+                direction TB
+                subgraph raspberry_pi_4b_2g_monitoring_row[" "]
+                    direction LR
+                    docker_stats_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
+                    dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
+                    nodeexporter_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
+                    docker_stats_4 ~~~ dozzle_agent_4 ~~~ nodeexporter_4
+                end
             end
+
+            subgraph raspberry_pi_4b_2g_media["Media"]
+                direction TB
+                subgraph raspberry_pi_4b_2g_media_row[" "]
+                    direction LR
+                    tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+                end
+            end
+
+            subgraph raspberry_pi_4b_2g_miscellaneous["Miscellaneous"]
+                direction TB
+                subgraph raspberry_pi_4b_2g_miscellaneous_row[" "]
+                    direction LR
+                    motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye<br/>(planned)")
+                end
+            end
+
+            class raspberry_pi_4b_2g_monitoring_row,raspberry_pi_4b_2g_media_row,raspberry_pi_4b_2g_miscellaneous_row no_border
         end
 
-        subgraph pi4_infrastructure["Infrastructure"]
-            direction TB
-            subgraph pi4_infrastructure_row[" "]
-                direction LR
-                vnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vnc.png' style='min-width:80px;max-width:80px' /></div>VNC")
-            end
-        end
-
-        class pi4_monitoring_row,pi4_miscellaneous_row,pi4_infrastructure_row no_border
+        raspberry_pi_4b_4g ~~~ raspberry_pi_4b_2g
     end
 
-    subgraph raspberry_pi_4_2g["Raspberry Pi 4B 2GB"]
-        direction TB
+    odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4b_servers
 
-        subgraph pi2_monitoring["Monitoring"]
-            direction TB
-            subgraph pi2_monitoring_row[" "]
-                direction LR
-                docker_stats_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
-                dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
-                nodeexporter_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
-                docker_stats_4 --> dozzle_agent_4 --> nodeexporter_4
-            end
-        end
-
-        subgraph pi2_media["Media"]
-            direction TB
-            subgraph pi2_media_row[" "]
-                direction LR
-                tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
-            end
-        end
-
-        class pi2_monitoring_row,pi2_media_row no_border
-    end
-
-    %% Keep the physical hosts in a top-to-bottom inventory order.
-    odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4_4g ~~~ raspberry_pi_4_2g
-
-    class h4_dns,h4_infrastructure,h4_monitoring,h4_ai,h4_media,h4_data,h4_smart_home,h4_notifications,h4_miscellaneous,h3_dns,h3_monitoring,h3_data,pi4_monitoring,pi4_miscellaneous,pi4_infrastructure,pi2_monitoring,pi2_media role
-class git_cache_github,npm_cache,netalertx planned
+    class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media,raspberry_pi_4b_2g_miscellaneous role
+    class raspberry_pi_4b_servers no_border
+    class git_cache_github,npm_cache,netalertx,motioneye,reportportal,vaultwarden planned
