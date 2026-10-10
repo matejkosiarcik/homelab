@@ -2,13 +2,15 @@
 title: Planka
 config:
     theme: dark
+    flowchart:
+        diagramPadding: 50
 ---
 
 flowchart LR
     classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
     classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
     classDef dashed_border stroke-dasharray:10 6;
-    classDef strong_border stroke-width:6px;
+    classDef strong_border stroke-width:5px;
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")

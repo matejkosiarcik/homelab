@@ -61,19 +61,36 @@ optimize_diagram() {
     rm -rf "${tmpdir}"
 }
 
+# Mermaid CLI generates the PNG diagram with unbalanced margins on left and right side, so this function fixes it
+center_diagram() {
+    homelab_png="${1}"
+    homelab_size="$(magick identify -format '%wx%h' "${homelab_png}")"
+    homelab_tmpdir="$(mktemp -d)"
+    homelab_tmpfile="${homelab_tmpdir}/$(basename "${homelab_png}")"
+
+    magick "${homelab_png}" -bordercolor '#222230' -border 11x0 -crop "${homelab_size}+0+0" +repage "${homelab_tmpfile}"
+    cp "${homelab_tmpfile}" "${homelab_png}"
+    rm -rf "${homelab_tmpdir}"
+}
+
 build_diagram() {
     # ${1} - diagram name
-    extension="$(printf '%s' "${1}" | sed -E 's~^.+\.~~')"
+    input_extension="$(printf '%s' "${1}" | sed -E 's~^.+\.~~')"
     output_file="$(printf '%s' "${1}" | sed -E 's~src/~~;s~\.[^.]+$~.png~')"
+    output_extension="$(printf '%s' "${output_file}" | sed -E 's~^.+\.~~')"
     mkdir -p "$(dirname "${diagrams_dir}/out/${output_file}")"
 
-    if [ "${extension}" = 'mmd' ]; then
+    if [ "${input_extension}" = 'mmd' ]; then
         mmdc --scale 3 --backgroundColor '#222230' --input "${diagrams_dir}/${1}" --output "${diagrams_dir}/out/${output_file}" --cssFile "${diagrams_dir}/style.css"
-    elif [ "${extension}" = 'ts' ]; then
+    elif [ "${input_extension}" = 'ts' ]; then
         tsx "${diagrams_dir}/${1}"
         drawio -x -f png --scale 2 --border 100 -o "${diagrams_dir}/out/${output_file}" "${diagrams_dir}/$(printf '%s' "${1}" | sed -E 's~\.ts$~~').drawio"
-    elif [ "${extension}" = 'drawio' ]; then
+    elif [ "${input_extension}" = 'drawio' ]; then
         drawio -x -f png --scale 2 --border 100 -o "${diagrams_dir}/out/${output_file}" "${diagrams_dir}/${1}"
+    fi
+
+    if [ "${input_extension}" = 'mmd' ] && [ "${output_extension}" = 'png' ]; then
+        center_diagram "${diagrams_dir}/out/${output_file}"
     fi
 
     optimize_diagram "${diagrams_dir}/out/${output_file}"
