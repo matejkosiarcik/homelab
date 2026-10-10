@@ -9,10 +9,6 @@ flowchart TB
     classDef no_border fill:transparent,stroke:transparent,stroke-width:0px;
     classDef planned fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,stroke-dasharray:8 5,rx:5px,ry:5px;
 
-    %% These links only keep each service row compact; they do not describe a
-    %% dependency between adjacent applications.
-    linkStyle default stroke:transparent,fill:transparent;
-
     subgraph odroid_h4_ultra["Odroid H4 Ultra"]
         direction TB
 
@@ -30,7 +26,7 @@ flowchart TB
                 unbound_1_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>IoT")
                 unbound_1_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Matej")
                 unbound_1_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 1<br/>Monika")
-                pihole_1_blackhole --> pihole_1_primary --> pihole_1_secondary --> unbound_1_blackhole --> unbound_1_default --> unbound_1_guests --> unbound_1_internal --> unbound_1_iot --> unbound_1_matej --> unbound_1_monika
+                pihole_1_blackhole ~~~ pihole_1_primary ~~~ pihole_1_secondary ~~~ unbound_1_blackhole ~~~ unbound_1_default ~~~ unbound_1_guests ~~~ unbound_1_internal ~~~ unbound_1_iot ~~~ unbound_1_matej ~~~ unbound_1_monika
             end
         end
 
@@ -47,7 +43,7 @@ flowchart TB
                     npm_cache("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/npm-cache.png' style='min-width:80px;max-width:80px' /></div>NPM<br/>cache<br/>(planned)")
                     omadacontroller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br/>Controller")
                     unificontroller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>UniFi<br/>Controller")
-                    certbot --> dockerhub_proxy --> git_cache_github --> netalertx --> npm_cache --> omadacontroller --> unificontroller
+                    certbot ~~~ dockerhub_proxy ~~~ git_cache_github ~~~ netalertx ~~~ npm_cache ~~~ omadacontroller ~~~ unificontroller
                 end
             end
 
@@ -59,11 +55,11 @@ flowchart TB
                     ollama_private("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ollama.png' style='min-width:80px;max-width:80px' /></div>Ollama<br/>(private)")
                     openwebui("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openwebui.png' style='min-width:80px;max-width:80px' /></div>Open WebUI")
                     openwebui_private("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openwebui.png' style='min-width:80px;max-width:80px' /></div>Open WebUI<br/>(private)")
-                    ollama --> ollama_private --> openwebui --> openwebui_private
+                    ollama ~~~ ollama_private ~~~ openwebui ~~~ openwebui_private
                 end
             end
 
-            unificontroller --> ollama
+            unificontroller ~~~ ollama
         end
 
         subgraph h4_monitoring["Monitoring"]
@@ -79,7 +75,7 @@ flowchart TB
                 nodeexporter_1("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
                 prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
                 uptimekuma("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime Kuma")
-                docker_stats_1 --> dozzle --> dozzle_agent_1 --> gatus_1 --> grafana --> healthchecks --> nodeexporter_1 --> prometheus --> uptimekuma
+                docker_stats_1 ~~~ dozzle ~~~ dozzle_agent_1 ~~~ gatus_1 ~~~ grafana ~~~ healthchecks ~~~ nodeexporter_1 ~~~ prometheus ~~~ uptimekuma
             end
         end
 
@@ -116,11 +112,11 @@ flowchart TB
                     gotify("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify")
                     ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
                     smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
-                    gotify --> ntfy --> smtp4dev
+                    gotify ~~~ ntfy ~~~ smtp4dev
                 end
             end
 
-            minio --> jellyfin --> homeassistant --> gotify
+            minio ~~~ jellyfin ~~~ homeassistant ~~~ gotify
         end
 
         subgraph h4_miscellaneous["Miscellaneous"]
@@ -136,7 +132,7 @@ flowchart TB
                 homepage("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
                 kiwix_wikipedia("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>Wikipedia")
                 kiwix_wiktionary("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/kiwix.png' style='min-width:80px;max-width:80px' /></div>Kiwix<br/>Wiktionary")
-                actualbudget_main --> actualbudget_public --> adventurelog --> changedetection --> dawarich --> donetick --> homepage --> kiwix_wikipedia --> kiwix_wiktionary
+                actualbudget_main ~~~ actualbudget_public ~~~ adventurelog ~~~ changedetection ~~~ dawarich ~~~ donetick ~~~ homepage ~~~ kiwix_wikipedia ~~~ kiwix_wiktionary
             end
             subgraph h4_miscellaneous_row_2[" "]
                 direction LR
@@ -149,14 +145,14 @@ flowchart TB
                 speedtesttracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtesttracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
                 vaultwarden("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vaultwarden.png' style='min-width:80px;max-width:80px' /></div>Vaultwarden")
                 vikunja("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vikunja.png' style='min-width:80px;max-width:80px' /></div>Vikunja")
-                koffan --> libretranslate --> openspeedtest --> planka --> renovatebot --> reportportal --> speedtesttracker --> vaultwarden --> vikunja
+                koffan ~~~ libretranslate ~~~ openspeedtest ~~~ planka ~~~ renovatebot ~~~ reportportal ~~~ speedtesttracker ~~~ vaultwarden ~~~ vikunja
             end
 
-            h4_miscellaneous_row_1 --> h4_miscellaneous_row_2
+            h4_miscellaneous_row_1 ~~~ h4_miscellaneous_row_2
         end
 
         %% Keep role sections in compact visual rows; all layout links are hidden.
-        h4_top_roles --> h4_platform_roles --> h4_monitoring --> h4_dns --> h4_miscellaneous
+        h4_top_roles ~~~ h4_platform_roles ~~~ h4_monitoring ~~~ h4_dns ~~~ h4_miscellaneous
 
         class h4_top_roles,h4_platform_roles,h4_dns_row,h4_infrastructure_row,h4_monitoring_row,h4_ai_row,h4_media_row,h4_data_row,h4_smart_home_row,h4_notifications_row,h4_miscellaneous_row_1,h4_miscellaneous_row_2 no_border
     end
@@ -178,7 +174,7 @@ flowchart TB
                 unbound_2_iot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>IoT")
                 unbound_2_matej("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Matej")
                 unbound_2_monika("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unbound.png' style='min-width:80px;max-width:80px' /></div>Unbound 2<br/>Monika")
-                pihole_2_blackhole --> pihole_3 --> pihole_4 --> unbound_2_blackhole --> unbound_2_default --> unbound_2_guests --> unbound_2_internal --> unbound_2_iot --> unbound_2_matej --> unbound_2_monika
+                pihole_2_blackhole ~~~ pihole_3 ~~~ pihole_4 ~~~ unbound_2_blackhole ~~~ unbound_2_default ~~~ unbound_2_guests ~~~ unbound_2_internal ~~~ unbound_2_iot ~~~ unbound_2_matej ~~~ unbound_2_monika
             end
         end
 
@@ -191,7 +187,7 @@ flowchart TB
                 gatus_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus 2")
                 nodeexporter_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
                 uptimekuma_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/uptimekuma.png' style='min-width:80px;max-width:80px' /></div>Uptime Kuma 2")
-                docker_stats_2 --> dozzle_agent_2 --> gatus_2 --> nodeexporter_2 --> uptimekuma_2
+                docker_stats_2 ~~~ dozzle_agent_2 ~~~ gatus_2 ~~~ nodeexporter_2 ~~~ uptimekuma_2
             end
         end
 
@@ -216,7 +212,7 @@ flowchart TB
                 docker_stats_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
                 nodeexporter_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
-                docker_stats_3 --> dozzle_agent_3 --> nodeexporter_3
+                docker_stats_3 ~~~ dozzle_agent_3 ~~~ nodeexporter_3
             end
         end
 
@@ -249,7 +245,7 @@ flowchart TB
                 docker_stats_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
                 dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
                 nodeexporter_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
-                docker_stats_4 --> dozzle_agent_4 --> nodeexporter_4
+                docker_stats_4 ~~~ dozzle_agent_4 ~~~ nodeexporter_4
             end
         end
 
