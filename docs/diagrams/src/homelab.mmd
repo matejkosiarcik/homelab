@@ -151,7 +151,6 @@ flowchart TB
             odroid_h4_ultra_miscellaneous_row_1 ~~~ odroid_h4_ultra_miscellaneous_row_2
         end
 
-        %% Keep role sections in compact visual rows; all layout links are hidden.
         odroid_h4_ultra_top_roles ~~~ odroid_h4_ultra_platform_roles ~~~ odroid_h4_ultra_monitoring ~~~ odroid_h4_ultra_dns ~~~ odroid_h4_ultra_miscellaneous
 
         class odroid_h4_ultra_top_roles,odroid_h4_ultra_platform_roles,odroid_h4_ultra_dns_row,odroid_h4_ultra_infrastructure_row,odroid_h4_ultra_monitoring_row,odroid_h4_ultra_ai_row,odroid_h4_ultra_media_row,odroid_h4_ultra_data_row,odroid_h4_ultra_smart_home_row,odroid_h4_ultra_notifications_row,odroid_h4_ultra_miscellaneous_row_1,odroid_h4_ultra_miscellaneous_row_2 no_border
@@ -202,66 +201,72 @@ flowchart TB
         class odroid_h3_dns_row,odroid_h3_monitoring_row,odroid_h3_data_row no_border
     end
 
-    subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4GB"]
-        direction TB
+    subgraph raspberry_pi_4b_servers[" "]
+        direction LR
 
-        subgraph raspberry_pi_4b_4g_monitoring["Monitoring"]
+        subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4GB"]
             direction TB
-            subgraph raspberry_pi_4b_4g_monitoring_row[" "]
-                direction LR
-                docker_stats_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
-                dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
-                nodeexporter_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
-                docker_stats_3 ~~~ dozzle_agent_3 ~~~ nodeexporter_3
+
+            subgraph raspberry_pi_4b_4g_monitoring["Monitoring"]
+                direction TB
+                subgraph raspberry_pi_4b_4g_monitoring_row[" "]
+                    direction LR
+                    docker_stats_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
+                    dozzle_agent_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
+                    nodeexporter_3("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
+                    docker_stats_3 ~~~ dozzle_agent_3 ~~~ nodeexporter_3
+                end
             end
+
+            subgraph raspberry_pi_4b_4g_miscellaneous["Miscellaneous"]
+                direction TB
+                subgraph raspberry_pi_4b_4g_miscellaneous_row[" "]
+                    direction LR
+                    motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
+                end
+            end
+
+            subgraph raspberry_pi_4b_4g_infrastructure["Infrastructure"]
+                direction TB
+                subgraph raspberry_pi_4b_4g_infrastructure_row[" "]
+                    direction LR
+                    vnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vnc.png' style='min-width:80px;max-width:80px' /></div>VNC")
+                end
+            end
+
+            class raspberry_pi_4b_4g_monitoring_row,raspberry_pi_4b_4g_miscellaneous_row,raspberry_pi_4b_4g_infrastructure_row no_border
         end
 
-        subgraph raspberry_pi_4b_4g_miscellaneous["Miscellaneous"]
+        subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2GB"]
             direction TB
-            subgraph raspberry_pi_4b_4g_miscellaneous_row[" "]
-                direction LR
-                motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
+
+            subgraph raspberry_pi_4b_2g_monitoring["Monitoring"]
+                direction TB
+                subgraph raspberry_pi_4b_2g_monitoring_row[" "]
+                    direction LR
+                    docker_stats_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
+                    dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
+                    nodeexporter_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
+                    docker_stats_4 ~~~ dozzle_agent_4 ~~~ nodeexporter_4
+                end
             end
+
+            subgraph raspberry_pi_4b_2g_media["Media"]
+                direction TB
+                subgraph raspberry_pi_4b_2g_media_row[" "]
+                    direction LR
+                    tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+                end
+            end
+
+            class raspberry_pi_4b_2g_monitoring_row,raspberry_pi_4b_2g_media_row no_border
         end
 
-        subgraph raspberry_pi_4b_4g_infrastructure["Infrastructure"]
-            direction TB
-            subgraph raspberry_pi_4b_4g_infrastructure_row[" "]
-                direction LR
-                vnc("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vnc.png' style='min-width:80px;max-width:80px' /></div>VNC")
-            end
-        end
-
-        class raspberry_pi_4b_4g_monitoring_row,raspberry_pi_4b_4g_miscellaneous_row,raspberry_pi_4b_4g_infrastructure_row no_border
+        raspberry_pi_4b_4g ~~~ raspberry_pi_4b_2g
     end
 
-    subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2GB"]
-        direction TB
-
-        subgraph raspberry_pi_4b_2g_monitoring["Monitoring"]
-            direction TB
-            subgraph raspberry_pi_4b_2g_monitoring_row[" "]
-                direction LR
-                docker_stats_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>Stats<br/>Exporter")
-                dozzle_agent_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Agent")
-                nodeexporter_4("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/nodeexporter.png' style='min-width:80px;max-width:80px' /></div>Node<br/>Exporter")
-                docker_stats_4 ~~~ dozzle_agent_4 ~~~ nodeexporter_4
-            end
-        end
-
-        subgraph raspberry_pi_4b_2g_media["Media"]
-            direction TB
-            subgraph raspberry_pi_4b_2g_media_row[" "]
-                direction LR
-                tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
-            end
-        end
-
-        class raspberry_pi_4b_2g_monitoring_row,raspberry_pi_4b_2g_media_row no_border
-    end
-
-    %% Keep the physical hosts in a top-to-bottom inventory order.
-    odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4b_4g ~~~ raspberry_pi_4b_2g
+    odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4b_servers
 
     class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_miscellaneous,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media role
+    class raspberry_pi_4b_servers no_border
     class git_cache_github,npm_cache,netalertx planned
