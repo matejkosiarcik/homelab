@@ -30,3 +30,10 @@
 .cluster .nodeLabel > * {
   border-top: 1px solid #aabbcc !important;
 }
+
+/* Mermaid's default Neo look adds a blurred drop shadow to every outline. */
+[data-look="neo"].node rect,
+[data-look="neo"].cluster rect {
+  filter: none !important;
+  shape-rendering: crispEdges;
+}
