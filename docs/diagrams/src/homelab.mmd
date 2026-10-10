@@ -1,5 +1,5 @@
 ---
-title: Homelab Servers by Service Role
+title: Homelab Servers
 config:
     theme: dark
 ---
@@ -141,9 +141,9 @@ flowchart TB
                 openspeedtest("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/openspeedtest.png' style='min-width:80px;max-width:80px' /></div>OpenSpeedTest")
                 planka("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/planka.png' style='min-width:80px;max-width:80px' /></div>Planka")
                 renovatebot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/renovatebot.png' style='min-width:80px;max-width:80px' /></div>Renovatebot")
-                reportportal("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal")
+                reportportal("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>(planned)")
                 speedtesttracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtesttracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br/>Tracker")
-                vaultwarden("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vaultwarden.png' style='min-width:80px;max-width:80px' /></div>Vaultwarden")
+                vaultwarden("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vaultwarden.png' style='min-width:80px;max-width:80px' /></div>Vaultwarden<br/>(planned)")
                 vikunja("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/vikunja.png' style='min-width:80px;max-width:80px' /></div>Vikunja")
                 koffan ~~~ libretranslate ~~~ openspeedtest ~~~ planka ~~~ renovatebot ~~~ reportportal ~~~ speedtesttracker ~~~ vaultwarden ~~~ vikunja
             end
@@ -218,14 +218,6 @@ flowchart TB
                 end
             end
 
-            subgraph raspberry_pi_4b_4g_miscellaneous["Miscellaneous"]
-                direction TB
-                subgraph raspberry_pi_4b_4g_miscellaneous_row[" "]
-                    direction LR
-                    motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye")
-                end
-            end
-
             subgraph raspberry_pi_4b_4g_infrastructure["Infrastructure"]
                 direction TB
                 subgraph raspberry_pi_4b_4g_infrastructure_row[" "]
@@ -234,7 +226,7 @@ flowchart TB
                 end
             end
 
-            class raspberry_pi_4b_4g_monitoring_row,raspberry_pi_4b_4g_miscellaneous_row,raspberry_pi_4b_4g_infrastructure_row no_border
+            class raspberry_pi_4b_4g_monitoring_row,raspberry_pi_4b_4g_infrastructure_row no_border
         end
 
         subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2GB"]
@@ -259,7 +251,15 @@ flowchart TB
                 end
             end
 
-            class raspberry_pi_4b_2g_monitoring_row,raspberry_pi_4b_2g_media_row no_border
+            subgraph raspberry_pi_4b_2g_miscellaneous["Miscellaneous"]
+                direction TB
+                subgraph raspberry_pi_4b_2g_miscellaneous_row[" "]
+                    direction LR
+                    motioneye("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/motioneye.png' style='min-width:80px;max-width:80px' /></div>MotionEye<br/>(planned)")
+                end
+            end
+
+            class raspberry_pi_4b_2g_monitoring_row,raspberry_pi_4b_2g_media_row,raspberry_pi_4b_2g_miscellaneous_row no_border
         end
 
         raspberry_pi_4b_4g ~~~ raspberry_pi_4b_2g
@@ -267,6 +267,6 @@ flowchart TB
 
     odroid_h4_ultra ~~~ odroid_h3 ~~~ raspberry_pi_4b_servers
 
-    class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_miscellaneous,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media role
+    class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media,raspberry_pi_4b_2g_miscellaneous role
     class raspberry_pi_4b_servers no_border
-    class git_cache_github,npm_cache,netalertx planned
+    class git_cache_github,npm_cache,netalertx,motioneye,reportportal,vaultwarden planned
