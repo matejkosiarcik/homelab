@@ -105,7 +105,7 @@ const customTest = baseTest.extend<{
             try {
                 const contexts = browser
                     .contexts()
-                    .filter((contet) => (contet as OverridenContext)._testid === testId)
+                    .filter((context) => (context as OverridenContext)._testid === testId)
                     .filter((context) => context.isClosed() === false);
                 for (const context of contexts) {
                     await context.close();
