@@ -30,7 +30,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ghcr.io/pansalut/koffan:v2.15.0 AS final
+FROM ghcr.io/pansalut/koffan:v2.16.1 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
