@@ -125,6 +125,14 @@ convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry 
 convert_image_full "${tmpdir}/smtp4dev.png" "${output_dir}/smtp4dev.png"
 rm -f "${tmpdir}/smtp4dev-foreground.png" "${tmpdir}/smtp4dev.png"
 
+### Cronjobs ###
+
+# Certificator
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -density 2000 OUTPUT_FILE' "${input_dir}/prebuild/lets-encrypt.png" "${tmpdir}/lets-encrypt.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 350x350 -density 2000 OUTPUT_FILE' "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" "${tmpdir}/cronjob.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity NorthEast -geometry +0+0 -composite -resize 1000x1000 OUTPUT_FILE' "${tmpdir}/lets-encrypt.png" "${tmpdir}/cronjob.png" "${tmpdir}/certificator.png"
+convert_image_full "${tmpdir}/certificator.png" "${output_dir}/certificator.png"
+
 ### Cache ###
 
 # APT cache proxy

@@ -233,6 +233,7 @@ convert_image_full "${input_dir}/other/www.png" "${output_dir}/www.png"
 ### Prebuild ###
 
 # General prebuilds
+convert_image_full "${input_dir}/prebuild/certificator.png" "${output_dir}/certificator.png"
 convert_image_full "${input_dir}/prebuild/personal-devices.png" "${output_dir}/personal-devices.png"
 convert_image_full "${input_dir}/prebuild/servers.png" "${output_dir}/servers.png"
 convert_image_full "${input_dir}/prebuild/squid.png" "${output_dir}/squid.png"
