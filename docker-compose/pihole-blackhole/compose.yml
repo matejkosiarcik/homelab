@@ -10,12 +10,9 @@ services:
       dockerfile: ./docker-images/pihole/app/Dockerfile
       args:
         SETUP_SCRIPT: blackhole
-    dns: # TODO: Revert back to use internal DNS
-      # - 10.1.12.6
-      # - 10.1.10.6
-      - 1.1.1.1
-      - 8.8.8.8
-      - 9.9.9.9
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header
