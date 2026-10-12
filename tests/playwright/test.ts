@@ -2,11 +2,12 @@ import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { test as baseTest } from '@playwright/test';
-import { expect as baseExpect } from './expect.ts';
-import { extendBrowser, extendContext, extendPage, testArtifactDirectory } from './utils.ts';
-import { OverridenBrowser, OverridenContext, OverridenPage } from '../types/playwright.ts';
+import process from 'node:process';
 import { faker } from '@faker-js/faker';
+import { test as baseTest } from '@playwright/test';
+import { expect as baseExpect } from '#/playwright/expect.ts';
+import { extendBrowser, extendContext, extendPage, testArtifactDirectory } from '#/playwright/utils.ts';
+import type { OverridenBrowser, OverridenContext, OverridenPage } from '#/types/playwright.d.ts';
 
 const customExpect = baseExpect;
 
@@ -55,7 +56,7 @@ const customTest = baseTest.extend<{
             })();
             baseTest.info().annotations.push({ description: `${fakerSeed}`, type: 'faker-seed' });
 
-            // Attach test end date
+            // Attach test start date
             const startDate = new Date();
             baseTest.info().annotations.push({ description: startDate.toISOString(), type: 'datetime-start' });
 
@@ -66,10 +67,29 @@ const customTest = baseTest.extend<{
             baseTest.info().annotations.push({ description: endDate.toISOString(), type: 'datetime-end' });
 
             const testId = baseTest.info().testId
-            const retryIndex = baseTest.info().retry;
-            const retryAttachmentLabel = retryIndex ? ` - retry ${retryIndex}` : '';
-            const tmpDir = await fsx.mkdtemp(path.join(os.tmpdir(), 'test-attachments-'));
+            baseTest.info().annotations.push({ description: testId, type: 'test-id' });
 
+            const testLocation = {
+                file: baseTest.info().file.replace(process.cwd(), '.'),
+                line: baseTest.info().line,
+                column: baseTest.info().column,
+            }
+            baseTest.info().annotations.push({ description: `${testLocation.file}:${testLocation.line}:${testLocation.column}`, type: 'test-location' });
+
+            const parallelIndex = baseTest.info().parallelIndex;
+            baseTest.info().annotations.push({ description: parallelIndex.toFixed(0), type: 'parallel-index' });
+
+            const workerIndex = baseTest.info().workerIndex;
+            baseTest.info().annotations.push({ description: workerIndex.toFixed(0), type: 'worker-index' });
+
+            const repeatEachIndex = baseTest.info().repeatEachIndex;
+            baseTest.info().annotations.push({ description: repeatEachIndex.toFixed(0), type: 'repeat-index' });
+
+            const retryIndex = baseTest.info().retry;
+            baseTest.info().annotations.push({ description: retryIndex.toFixed(0), type: 'retry-index' });
+            const retryAttachmentLabel = retryIndex > 0 ? ` - retry ${retryIndex}` : '';
+
+            const tmpDirectory = await fsx.mkdtemp(path.join(os.tmpdir(), 'test-attachments-'));
             const testDirectory = testArtifactDirectory();
             const pageDirectories = await (async () => {
                     if (!fs.existsSync(testDirectory)) {
@@ -82,6 +102,12 @@ const customTest = baseTest.extend<{
                         .toSorted((lhs, rhs) => path.basename(lhs).localeCompare(path.basename(rhs)));
                     return pageDirectories;
             })();
+            baseTest.info().annotations.push({ description: pageDirectories.length.toFixed(0), type: 'pages-count' });
+
+            function attachmenName(options: { prefix: string, page: number, extension: string }): string {
+                const pageLabel = ` - page${pageDirectories.length > 1 ? ` ${(options.page + 1).toFixed(0)}` : ''}`;
+                return `${options.prefix}${pageLabel}${retryAttachmentLabel}.${options.extension}`;
+            }
 
             /**
              * Close all pages opened in this test
@@ -130,11 +156,10 @@ const customTest = baseTest.extend<{
                             continue;
                         }
 
-                        const filename = pageDirectories.length > 1 ? `Console logs - page ${index + 1}${retryAttachmentLabel}.txt` : `Console logs - page${retryAttachmentLabel}.txt`;
-                        const newFile = path.join(tmpDir, filename);
+                        const newFile = path.join(tmpDirectory, attachmenName({ prefix: 'Console logs', page: index, extension: 'txt' }));
                         try {
                             await fsx.copyFile(filePath, newFile);
-                            await baseTest.info().attach(filename, { contentType: 'text/plain', body: await fsx.readFile(newFile, 'utf8') });
+                            await baseTest.info().attach(path.basename(newFile), { contentType: 'text/plain', body: await fsx.readFile(newFile, 'utf8') });
                         } finally {
                             await fsx.rm(newFile, { force: true });
                         }
@@ -160,11 +185,10 @@ const customTest = baseTest.extend<{
                             continue;
                         }
 
-                        const filename = pageDirectories.length > 1 ? `Errors - page ${index + 1}${retryAttachmentLabel}.txt` : `Errors - page${retryAttachmentLabel}.txt`;
-                        const newFile = path.join(tmpDir, filename);
+                        const newFile = path.join(tmpDirectory, attachmenName({ prefix: 'Errors', page: index, extension: 'txt' }));
                         try {
                             await fsx.copyFile(filePath, newFile);
-                            await baseTest.info().attach(filename, { contentType: 'text/plain', body: await fsx.readFile(newFile, 'utf8') });
+                            await baseTest.info().attach(path.basename(newFile), { contentType: 'text/plain', body: await fsx.readFile(newFile, 'utf8') });
                         } finally {
                             await fsx.rm(newFile, { force: true });
                         }
@@ -190,11 +214,40 @@ const customTest = baseTest.extend<{
                             continue;
                         }
 
-                        const filename = pageDirectories.length > 1 ? `HAR - page ${index + 1}${retryAttachmentLabel}.json` : `HAR - page${retryAttachmentLabel}.json`;
-                        const newFile = path.join(tmpDir, filename);
+                        const newFile = path.join(tmpDirectory, attachmenName({ prefix: 'HAR', page: index, extension: 'json' }));
                         try {
                             await fsx.copyFile(filePath, newFile);
-                            await baseTest.info().attach(filename, { contentType: 'application/json', path: newFile });
+                            await baseTest.info().attach(path.basename(newFile), { contentType: 'application/json', path: newFile });
+                        } finally {
+                            await fsx.rm(newFile, { force: true });
+                        }
+                    }
+                })();
+            } catch (error) {
+                errors.push(error);
+            }
+
+            /**
+             * Attach recorded videos from each page to test report
+             */
+            try {
+                await (async () => {
+                    for (const [index, directory] of pageDirectories.entries()) {
+                        const filePath = ['webm', 'mp4'].map((extension) => path.join(directory, `video.${extension}`)).find((filePath) => fs.existsSync(filePath))!;
+                        if (!filePath) {
+                            continue;
+                        }
+                        const fileExtension = path.extname(filePath).slice(1);
+
+                        const stats = await fsx.stat(filePath);
+                        if (stats.size <= 0) {
+                            continue;
+                        }
+
+                        const newFile = path.join(tmpDirectory, attachmenName({ prefix: 'Video', page: index, extension: fileExtension }));
+                        try {
+                            await fsx.copyFile(filePath, newFile);
+                            await baseTest.info().attach(path.basename(newFile), { contentType: `video/${fileExtension}`, path: newFile });
                         } finally {
                             await fsx.rm(newFile, { force: true });
                         }
@@ -220,7 +273,7 @@ const customTest = baseTest.extend<{
                     }
 
                     const filename = `Logs${retryAttachmentLabel}.txt`;
-                    const newFile = path.join(tmpDir, filename);
+                    const newFile = path.join(tmpDirectory, filename);
                     try {
                         await fsx.copyFile(filePath, newFile);
                         await baseTest.info().attach(filename, { contentType: 'text/plain', body: await fsx.readFile(newFile, 'utf8') });
@@ -236,7 +289,7 @@ const customTest = baseTest.extend<{
              * Remove temporary directory
              */
             try {
-                await fsx.rm(tmpDir, { force: true, recursive: true });
+                await fsx.rm(tmpDirectory, { force: true, recursive: true });
             } catch (error) {
                 errors.push(error);
             }

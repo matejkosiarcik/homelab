@@ -2,10 +2,11 @@ import fs from 'node:fs';
 import fsx from 'node:fs/promises';
 import path from 'node:path';
 import { test as baseTest, Browser, BrowserContext, Page } from '@playwright/test';
-import { OverridenBrowser, OverridenContext, OverridenPage } from '../types/playwright';
+import type { OverridenBrowser, OverridenContext, OverridenPage } from '#/types/playwright.d.ts';
+import { Log } from '#/utils/log.ts';
 
 /**
- * Return current test directory for storing temporary artifacts
+ * Return current test directory for storing artifacts
  */
 export function testArtifactDirectory(): string {
     const testInfo = baseTest.info();
@@ -13,11 +14,17 @@ export function testArtifactDirectory(): string {
     return path.join('tmp', testInfo.project.name, `test---name-${testName}---id-${testInfo.testId}---try-${testInfo.retry + 1}---worker-${testInfo.workerIndex}`);
 }
 
+/**
+ * Return current page directory for storing artifacts
+ */
 export function pageArtifactDirectory(page: OverridenPage): string {
     const pageDirectoryName = `page---date-${page._openedAt.date.toISOString().replaceAll(/[:.]/g, '-')}---hrtime-${page._openedAt.hrtime.toString(10)}`;
     return path.join(testArtifactDirectory(), pageDirectoryName);
 }
 
+/**
+ * Add custom properties and override some builtin functions on a playwright Page
+ */
 export async function extendPage(_page: Page): Promise<OverridenPage> {
     const page = (_page as OverridenPage);
 
@@ -39,6 +46,9 @@ export async function extendPage(_page: Page): Promise<OverridenPage> {
     return page;
 }
 
+/**
+ * Add custom properties and override some builtin functions on a playwright Context
+ */
 export async function extendContext(_context: BrowserContext): Promise<OverridenContext> {
     const context = (_context as OverridenContext);
     await new Promise((resolve, _) => { resolve(true) }); // Placeholder to avoid ESLint error
@@ -57,14 +67,26 @@ export async function extendContext(_context: BrowserContext): Promise<Overriden
     // Make sure all opened pages in this context are automatically extended
     context._newPageOriginal = context.newPage;
     context.newPage = async function (...args) {
-        const page = await this._newPageOriginal(...args);
+        const page = (await this._newPageOriginal(...args)) as OverridenPage;
         await extendPage(page);
+
+        const extension = path.extname(await page.video()?.path() ?? '.webm').slice(1);
+        const newVideoPath = path.join(pageArtifactDirectory(page), `video.${extension}`);
+        try {
+            void page.video()?.saveAs(newVideoPath);
+        } catch (error) {
+            Log.warn(`Saving page video error: ${error}`);
+        }
+
         return page;
     };
 
     return context;
 }
 
+/**
+ * Add custom properties and override some builtin functions on a playwright Browser
+ */
 export async function extendBrowser(_browser: Browser): Promise<OverridenBrowser> {
     const browser = (_browser as OverridenBrowser);
     await new Promise((resolve, _) => { resolve(true) }); // Placeholder to avoid ESLint error
@@ -79,12 +101,27 @@ export async function extendBrowser(_browser: Browser): Promise<OverridenBrowser
     browser._overridden ??= true;
     browser._default ??= false;
 
+    const videoDirectory = path.join(testArtifactDirectory(), 'videos');
+    await fsx.mkdir(videoDirectory, { recursive: true });
+
     // Make sure all opened pages in this browser are automatically extended
     browser._newPageOriginal = browser.newPage;
     browser.newPage = async function (..._args) {
         const args = (_args as Parameters<Browser['newPage']>)[0] ?? {};
-        const page = await this._newPageOriginal(args);
+        args.recordVideo = {
+            dir: videoDirectory,
+            size: { height: 720, width: 1280 },
+        };
+        const page = (await this._newPageOriginal(args)) as OverridenPage;
         await extendPage(page);
+
+        const extension = path.extname(await page.video()?.path() ?? '.webm').slice(1);
+        const newVideoPath = path.join(pageArtifactDirectory(page), `video.${extension}`);
+        try {
+            void page.video()?.saveAs(newVideoPath);
+        } catch (error) {
+            Log.warn(`Saving page video error: ${error}`);
+        }
         return page;
     };
 
@@ -92,7 +129,11 @@ export async function extendBrowser(_browser: Browser): Promise<OverridenBrowser
     browser._newContextOriginal = browser.newContext;
     browser.newContext = async function (..._args) {
         const args = (_args as Parameters<Browser['newContext']>)[0] ?? {};
-        const context = await this._newContextOriginal(args);
+        args.recordVideo = {
+            dir: videoDirectory,
+            size: { height: 720, width: 1280 },
+        };
+        const context = (await this._newContextOriginal(args)) as OverridenContext;
         await extendContext(context);
         return context;
     };
