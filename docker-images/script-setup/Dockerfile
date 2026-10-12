@@ -25,8 +25,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_se
 
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
-COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
-RUN sh /homelab/busybox-copy.sh
+RUN mkdir -p '/fsroot/bin' && \
+    cp '/bin/date' '/bin/grep' '/bin/sed' '/bin/sh' '/bin/sleep' '/bin/timeout' '/bin/wc' '/fsroot/bin/'
 
 ### Healthcheck ###
 
@@ -67,7 +67,7 @@ FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
-COPY --from=busybox /fsroot/bin /fsroot/bin
+COPY --from=busybox /fsroot/bin/ /fsroot/bin/
 COPY --from=package_moreutils /usr/bin/sponge /fsroot/usr-bin/
 COPY --from=package_curl /usr/bin/curl /fsroot/usr-bin/
 COPY --from=package_curl /homelab/usr-lib/ /fsroot/usr-lib/

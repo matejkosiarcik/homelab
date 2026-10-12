@@ -86,8 +86,8 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
-COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
-RUN sh /homelab/busybox-copy.sh
+RUN mkdir -p '/fsroot/bin' && \
+    cp '/bin/sh' '/bin/sleep' '/bin/timeout' '/fsroot/bin/'
 
 ### User setup ###
 
@@ -117,7 +117,7 @@ FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
-COPY --from=busybox /fsroot/bin /fsroot/bin
+COPY --from=busybox /fsroot/bin/ /fsroot/bin/
 
 ### Final ###
 

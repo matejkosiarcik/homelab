@@ -55,8 +55,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
 
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
-COPY ./docker-images/.shared/build-utils/busybox-copy.sh /homelab/
-RUN sh /homelab/busybox-copy.sh
+RUN mkdir -p '/fsroot/bin' && \
+    cp '/bin/dirname' '/bin/grep' '/bin/sh' '/bin/sleep' '/bin/timeout' '/fsroot/bin/'
 
 ### App ###
 
@@ -140,7 +140,7 @@ COPY --from=homelab_dir /homelab /homelab
 COPY --from=package_curl /usr/bin/curl /fsroot/usr-bin/
 COPY --from=package_curl /homelab/usr-lib/ /fsroot/usr-lib/
 COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
-COPY --from=busybox /fsroot/bin /fsroot/bin
+COPY --from=busybox /fsroot/bin/ /fsroot/bin/
 
 ### Final ###
 
