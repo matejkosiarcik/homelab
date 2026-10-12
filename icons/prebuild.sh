@@ -202,7 +202,7 @@ fi
 if should_generate_icon "${output_dir}/smart-home-devices.png"; then
     magick -size 1000x1000 xc:none \
         \( "${tmpdir}/13_05_osa_icons_svg/osa_home.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
-        \( "${tmpdir}/other/iot.png" -background none -resize 600x600 \) -gravity SouthEast -geometry +0+188 -composite \
+        \( "${tmpdir}/other/iot.png" -background none -resize 600x600 \) -gravity NorthEast -geometry +20+20 -composite \
         "${tmpdir}/smart-home-devices.png"
     convert_image_full "${tmpdir}/smart-home-devices.png" "${output_dir}/smart-home-devices.png"
     rm -f "${tmpdir}/smart-home-devices.png"
