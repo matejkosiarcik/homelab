@@ -15,6 +15,24 @@ import (
 	"github.com/alexflint/go-arg"
 )
 
+const healthcheckLogFile = "/homelab/healthcheck/logs/healthcheck.log"
+
+func logError(format string, args ...any) {
+	message := fmt.Sprintf(format, args...)
+	fmt.Fprint(os.Stderr, message)
+
+	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error opening healthcheck log file %s: %v\n", healthcheckLogFile, err)
+		return
+	}
+	defer func() { _ = logFile.Close() }()
+
+	if _, err := fmt.Fprint(logFile, message); err != nil {
+		fmt.Fprintf(os.Stderr, "Error writing healthcheck log file %s: %v\n", healthcheckLogFile, err)
+	}
+}
+
 // nolint:gocyclo
 func main() {
 	// Parse arguments
@@ -29,14 +47,17 @@ func main() {
 		BasicAuthUsernameEnv string `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
 		BasicAuthPasswordEnv string `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
 	}
-	arg.MustParse(&args)
+	if err := arg.Parse(&args); err != nil {
+		logError("Error parsing healthcheck arguments: %v\n", err)
+		os.Exit(1)
+	}
 
 	if args.BasicAuthUsername != "" && args.BasicAuthUsernameEnv != "" {
-		fmt.Fprintln(os.Stderr, "Use only one of --basic-auth-username and --basic-auth-username-env")
+		logError("Use only one of --basic-auth-username and --basic-auth-username-env\n")
 		os.Exit(1)
 	}
 	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
-		fmt.Fprintln(os.Stderr, "Use only one of --basic-auth-password and --basic-auth-password-env")
+		logError("Use only one of --basic-auth-password and --basic-auth-password-env\n")
 		os.Exit(1)
 	}
 
@@ -45,7 +66,7 @@ func main() {
 		var exists bool
 		basicAuthUsername, exists = os.LookupEnv(args.BasicAuthUsernameEnv)
 		if !exists {
-			fmt.Fprintf(os.Stderr, "HTTP Basic Auth username environment variable is unset: %s\n", args.BasicAuthUsernameEnv)
+			logError("HTTP Basic Auth username environment variable is unset: %s\n", args.BasicAuthUsernameEnv)
 			os.Exit(1)
 		}
 	}
@@ -55,13 +76,13 @@ func main() {
 		var exists bool
 		basicAuthPassword, exists = os.LookupEnv(args.BasicAuthPasswordEnv)
 		if !exists {
-			fmt.Fprintf(os.Stderr, "HTTP Basic Auth password environment variable is unset: %s\n", args.BasicAuthPasswordEnv)
+			logError("HTTP Basic Auth password environment variable is unset: %s\n", args.BasicAuthPasswordEnv)
 			os.Exit(1)
 		}
 	}
 
 	if (basicAuthUsername == "") != (basicAuthPassword == "") {
-		fmt.Fprintln(os.Stderr, "HTTP Basic Auth requires both a username and password")
+		logError("HTTP Basic Auth requires both a username and password\n")
 		os.Exit(1)
 	}
 
@@ -78,7 +99,7 @@ func main() {
 		if strings.Contains(status, "-") {
 			parts := strings.Split(status, "-")
 			if len(parts) != 2 {
-				fmt.Fprintf(os.Stderr, "Invalid HTTP status range for --status: %q\n", status)
+				logError("Invalid HTTP status range for --status: %q\n", status)
 				os.Exit(1)
 			}
 
@@ -86,7 +107,7 @@ func main() {
 			end, err2 := strconv.Atoi(strings.TrimSpace(parts[1]))
 
 			if err1 != nil || err2 != nil || start < 100 || end > 599 || start > end {
-				fmt.Fprintf(os.Stderr, "Invalid HTTP status range for --status: %q\n", status)
+				logError("Invalid HTTP status range for --status: %q\n", status)
 				os.Exit(1)
 			}
 
@@ -96,7 +117,7 @@ func main() {
 		} else {
 			code, err := strconv.Atoi(status)
 			if err != nil || code < 100 || code > 599 {
-				fmt.Fprintf(os.Stderr, "Invalid HTTP status code for --status: %q\n", status)
+				logError("Invalid HTTP status code for --status: %q\n", status)
 				os.Exit(1)
 			}
 
@@ -108,7 +129,7 @@ func main() {
 		if args.Body != "" {
 			bodyRegex, err := regexp.Compile(args.Body)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Invalid regex for --body: %v\n", err)
+				logError("Invalid regex for --body: %v\n", err)
 				os.Exit(1)
 			}
 			return bodyRegex
@@ -127,7 +148,7 @@ func main() {
 	client := &http.Client{Timeout: 2 * time.Second, Transport: transport}
 	request, err := http.NewRequest(args.Method, args.URL, nil)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating request: %v\n", err)
+		logError("Error creating request: %v\n", err)
 		os.Exit(1)
 	}
 	if basicAuthUsername != "" {
@@ -135,13 +156,13 @@ func main() {
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error performing request: %v\n", err)
+		logError("Error performing request: %v\n", err)
 		os.Exit(1)
 	}
 
 	// Validate response status
 	if !slices.Contains(expectedStatuses, response.StatusCode) {
-		fmt.Fprintf(os.Stderr, "Unexpected response status: %s\n", response.Status)
+		logError("Unexpected response status: %s\n", response.Status)
 		os.Exit(1)
 	}
 
@@ -151,13 +172,13 @@ func main() {
 		bodyBytes, err := io.ReadAll(response.Body)
 		_ = response.Body.Close()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error reading response body: %v\n", err)
+			logError("Error reading response body: %v\n", err)
 			os.Exit(1)
 		}
 
 		// Test regex
 		if !bodyRegex.Match(bodyBytes) {
-			fmt.Fprintf(os.Stderr, "Response body does not match: %s\n", bodyBytes)
+			logError("Response body does not match: %s\n", bodyBytes)
 			os.Exit(1)
 		}
 	} else if response.Body != nil {
