@@ -13,7 +13,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
     security_opt:
-      - no-new-privileges:false  # Necessary to bind to port 53 in host network mode
+      - no-new-privileges:false # Necessary to bind to port 53 in host network mode
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
