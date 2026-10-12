@@ -12,14 +12,14 @@ flowchart LR
     classDef dashed_border stroke-dasharray:10 6;
     classDef strong_border stroke-width:6px;
 
-    remote_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Public remote registry<br/></i>")
+    remote_registry("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Public remote registry<br/></i></p></div>")
 
     subgraph home["Home"]
-        home_notebook("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/notebook.png' style='min-width:80px;max-width:80px' /></div>Personal<br/>Notebook")
-        home_servers("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Home Servers")
+        home_notebook("<div class='custom-node'><img src='../../../../icons/notebook.png' /><p>Personal<br/>Notebook</p></div>")
+        home_servers("<div class='custom-node'><img src='../../../../icons/servers.png' /><p>Home Servers</p></div>")
 
-        home_dns("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/dns.png' style='min-width:80px;max-width:80px' /></div>Private<br/>DNS Server")
-        xyz_cache("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Xyz Cache")
+        home_dns("<div class='custom-node'><img src='../../../../icons/dns.png' /><p>Private<br/>DNS Server</p></div>")
+        xyz_cache("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Xyz Cache</p></div>")
 
         home_notebook & home_servers -.->|Resolve domain| home_dns
         home_dns -.->|DNS entries for <i>xyzcache.matejhome.com</i>| xyz_cache
@@ -27,11 +27,11 @@ flowchart LR
     end
 
     subgraph outside["Outside"]
-        outside_notebook("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/notebook.png' style='min-width:80px;max-width:80px' /></div>Personal<br/>Notebook")
-        public_dns("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/dns.png' style='min-width:80px;max-width:80px' /></div>Public<br/>DNS Server")
+        outside_notebook("<div class='custom-node'><img src='../../../../icons/notebook.png' /><p>Personal<br/>Notebook</p></div>")
+        public_dns("<div class='custom-node'><img src='../../../../icons/dns.png' /><p>Public<br/>DNS Server</p></div>")
 
         subgraph vps["VPS"]
-            public_https_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/www.png' style='min-width:80px;max-width:80px' /></div>Placeholder HTTP(S) Server")
+            public_https_server("<div class='custom-node'><img src='../../../../icons/www.png' /><p>Placeholder HTTP(S) Server</p></div>")
         end
 
         outside_notebook -.->|Resolve domain| public_dns

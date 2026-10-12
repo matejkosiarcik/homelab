@@ -61,7 +61,7 @@ convert_image_draft 'magick -density 2000 -background none -bordercolor transpar
 convert_image_full "${tmpdir}/prometheus-alone.png" "${output_dir}/prometheus.png"
 
 # Rounded Squid
-convert_image_draft 'magick INPUT_FILE \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite OUTPUT_FILE' "${input_dir}/other/squid.jpg" "${tmpdir}/squid.png"
+convert_image_draft 'magick INPUT_FILE \( +clone -alpha extract -draw "fill black roundrectangle 0,0 %[w],%[h] 12,12" -negate \) -alpha off -compose CopyOpacity -composite OUTPUT_FILE' "${tmpdir}/other/squid.jpg" "${tmpdir}/squid.png"
 convert_image_full "${tmpdir}/squid.png" "${output_dir}/squid.png"
 
 ### Combined icons ###
@@ -90,7 +90,7 @@ magick "${tmpdir}/white-background.png" "${tmpdir}/white-background-mask.png" -a
 magick "${tmpdir}/white-background.png" -define png:color-type=6 "${tmpdir}/white-background.png"
 
 # DWService with custom background
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 900x900 -density 2000 OUTPUT_FILE' "${input_dir}/other/dwservice.png" "${tmpdir}/dwservice-foreground.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 900x900 -density 2000 OUTPUT_FILE' "${tmpdir}/other/dwservice.png" "${tmpdir}/dwservice-foreground.png"
 convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -composite OUTPUT_FILE' "${tmpdir}/white-background.png" "${tmpdir}/dwservice-foreground.png" "${tmpdir}/dwservice.png"
 convert_image_full "${tmpdir}/dwservice.png" "${output_dir}/dwservice.png"
 rm -f "${tmpdir}/dwservice-foreground.png" "${tmpdir}/dwservice.png"
@@ -108,7 +108,7 @@ convert_image_full "${tmpdir}/libretranslate.png" "${output_dir}/libretranslate.
 rm -f "${tmpdir}/libretranslate-foreground.png" "${tmpdir}/libretranslate.png"
 
 # Ollama
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -density 2000 OUTPUT_FILE' "${input_dir}/other/openwebui.png" "${tmpdir}/openwebui-foreground.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -density 2000 OUTPUT_FILE' "${tmpdir}/other/openwebui.png" "${tmpdir}/openwebui-foreground.png"
 convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +0+0 -composite OUTPUT_FILE' "${tmpdir}/white-background.png" "${tmpdir}/openwebui-foreground.png" "${tmpdir}/openwebui.png"
 convert_image_full "${tmpdir}/openwebui.png" "${output_dir}/openwebui.png"
 rm -f "${tmpdir}/openwebui-foreground.png" "${tmpdir}/openwebui.png"
@@ -120,10 +120,93 @@ convert_image_full "${tmpdir}/ollama.png" "${output_dir}/ollama.png"
 rm -f "${tmpdir}/ollama-foreground.png" "${tmpdir}/ollama.png"
 
 # Smtp4dev with custom background
-convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 875x875 -density 2000 OUTPUT_FILE' "${input_dir}/other/smtp4dev-custom.png" "${tmpdir}/smtp4dev-foreground.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 875x875 -density 2000 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-custom.png" "${tmpdir}/smtp4dev-foreground.png"
 convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +0+0 -composite OUTPUT_FILE' "${tmpdir}/white-background.png" "${tmpdir}/smtp4dev-foreground.png" "${tmpdir}/smtp4dev.png"
 convert_image_full "${tmpdir}/smtp4dev.png" "${output_dir}/smtp4dev.png"
 rm -f "${tmpdir}/smtp4dev-foreground.png" "${tmpdir}/smtp4dev.png"
+
+### Cronjobs ###
+
+# Certificator
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -density 2000 OUTPUT_FILE' "${input_dir}/prebuild/lets-encrypt.png" "${tmpdir}/lets-encrypt.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 350x350 -density 2000 OUTPUT_FILE' "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" "${tmpdir}/cronjob.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity NorthEast -geometry +0+0 -composite -resize 1000x1000 OUTPUT_FILE' "${tmpdir}/lets-encrypt.png" "${tmpdir}/cronjob.png" "${tmpdir}/certificator.png"
+convert_image_full "${tmpdir}/certificator.png" "${output_dir}/certificator.png"
+
+### Layered diagram icons ###
+
+# Backup script
+if should_generate_icon "${output_dir}/backup-script.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${input_dir}/gitman-repositories/homer-icons/png/chromium.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
+        \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" -background none -resize 400x400 \) -gravity NorthEast -geometry +0+0 -composite \
+        \( "${tmpdir}/other/playwright.svg" -background none -resize 600x600 \) -gravity SouthEast -geometry +63+125 -composite \
+        "${tmpdir}/backup-script.png"
+    convert_image_full "${tmpdir}/backup-script.png" "${output_dir}/backup-script.png"
+    rm -f "${tmpdir}/backup-script.png"
+fi
+
+# Docker registry
+if should_generate_icon "${output_dir}/docker-registry.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${input_dir}/prebuild/cloud.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
+        \( "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" -background none -resize 625x625 \) -gravity SouthEast -geometry +0+0 -composite \
+        "${tmpdir}/docker-registry.png"
+    convert_image_full "${tmpdir}/docker-registry.png" "${output_dir}/docker-registry.png"
+    rm -f "${tmpdir}/docker-registry.png"
+fi
+
+# Dozzle agents
+if should_generate_icon "${output_dir}/dozzle-agents.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
+        \( "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" -background none -resize 500x500 \) -gravity SouthEast -geometry +0+63 -composite \
+        "${tmpdir}/dozzle-agents.png"
+    convert_image_full "${tmpdir}/dozzle-agents.png" "${output_dir}/dozzle-agents.png"
+    rm -f "${tmpdir}/dozzle-agents.png"
+fi
+
+# Public DNS
+if should_generate_icon "${output_dir}/public-dns.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${input_dir}/prebuild/cloud.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
+        \( "${input_dir}/gitman-repositories/homer-icons/png/azuredns.png" -background none -resize 500x500 \) -gravity Center -geometry +250+125 -composite \
+        "${tmpdir}/public-dns.png"
+    convert_image_full "${tmpdir}/public-dns.png" "${output_dir}/public-dns.png"
+    rm -f "${tmpdir}/public-dns.png"
+fi
+
+# ReportPortal migrations
+if should_generate_icon "${output_dir}/reportportal-migrations.png"; then
+    # TODO: Merge this call into a single magick call
+    convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 OUTPUT_FILE' "${tmpdir}/other/reportportal.svg" "${tmpdir}/reportportal.png"
+    magick -size 1000x1000 xc:none \
+        \( "${tmpdir}/reportportal.png" -background none -resize 812x812 \) -gravity NorthWest -geometry +0+200 -composite \
+        \( "${input_dir}/gitman-repositories/bash-logo/assets/Logos/Icons/SVG/512x512_white.svg" -background none -resize 400x400 \) -gravity NorthEast -geometry +0+0 -composite \
+        "${tmpdir}/reportportal-migrations.png"
+    convert_image_full "${tmpdir}/reportportal-migrations.png" "${output_dir}/reportportal-migrations.png"
+    rm -f "${tmpdir}/reportportal-migrations.png"
+fi
+
+# RenovateBot cronjob
+if should_generate_icon "${output_dir}/renovatebot-cronjob.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${tmpdir}/other/renovatebot.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
+        \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" -background none -resize 400x400 \) -gravity NorthEast -geometry +0+0 -composite \
+        "${tmpdir}/renovatebot-cronjob.png"
+    convert_image_full "${tmpdir}/renovatebot-cronjob.png" "${output_dir}/renovatebot-cronjob.png"
+    rm -f "${tmpdir}/renovatebot-cronjob.png"
+fi
+
+# Smart home devices
+if should_generate_icon "${output_dir}/smart-home-devices.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${tmpdir}/13_05_osa_icons_svg/osa_home.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
+        \( "${tmpdir}/other/iot.png" -background none -resize 600x600 \) -gravity NorthEast -geometry +20+20 -composite \
+        "${tmpdir}/smart-home-devices.png"
+    convert_image_full "${tmpdir}/smart-home-devices.png" "${output_dir}/smart-home-devices.png"
+    rm -f "${tmpdir}/smart-home-devices.png"
+fi
 
 ### Cache ###
 
@@ -201,7 +284,7 @@ convert_image_full "${tmpdir}/rubygems-cloud.png" "${output_dir}/rubygems-cloud.
 ## Prometheus exporters
 
 # Apache prometheus exporter
-cp "${input_dir}/other/apache.svg.bin" "${tmpdir}/apache.svg"
+cp "${tmpdir}/other/apache.svg" "${tmpdir}/apache.svg"
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 800x800 OUTPUT_FILE' "${tmpdir}/apache.svg" "${tmpdir}/apache.png"
 convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry "+325+150" -composite OUTPUT_FILE' "${tmpdir}/prometheus-background.png" "${tmpdir}/apache.png" "${tmpdir}/apache-prometheus-exporter.png"
 convert_image_full "${tmpdir}/apache-prometheus-exporter.png" "${output_dir}/apache-prometheus-exporter.png"
@@ -222,3 +305,4 @@ rm -f "${tmpdir}/cache.png" "${tmpdir}/cloud.png" "${tmpdir}/prometheus-backgrou
 ### Cleanup ###
 
 rm -rf "${tmpdir}"
+unset tmpdir

@@ -14,12 +14,12 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        lamp_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp controller")
+        lamp_controller("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Lamp controller</p></div>")
         class lamp_controller strong_border
 
-        gpio_button("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /></div>Button")
+        gpio_button("<div class='custom-node'><img src='../../../../icons/button.png' /><p>Button</p></div>")
         class gpio_button dashed_border
-        gpio_lamp("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /></div>Lamp")
+        gpio_lamp("<div class='custom-node'><img src='../../../../icons/lightbulb.png' /><p>Lamp</p></div>")
         class gpio_lamp dashed_border
 
         inbound_interface --> lamp_controller
@@ -28,8 +28,8 @@ flowchart LR
     end
 
     subgraph others_1["Others"]
-        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
-        homeassistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/homeassistant.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Assistant")
+        home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
+        homeassistant("<div class='custom-node'><img src='../../../../icons/homeassistant.png' /><p>Home<br/>Assistant</p></div>")
     end
 
     home_network <--> inbound_interface

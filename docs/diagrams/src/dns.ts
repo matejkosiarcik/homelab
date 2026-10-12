@@ -1,6 +1,10 @@
 import path from 'node:path';
 import _ from 'lodash';
 import { Diagram, DiagramCircle, DiagramEdge, DiagramItem, DiagramSection } from '#/src/utils/diagrams.ts';
+import { faker } from '@faker-js/faker';
+
+// Pressed faker to make sure output diagram node IDs are consistent
+faker.seed(123456789);
 
 (async () => {
     // Items

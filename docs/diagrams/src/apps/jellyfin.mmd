@@ -14,14 +14,14 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
-        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
-        favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
+        apache_proxy("<div class='custom-node'><img src='../../../../icons/apache.png' /><p>Apache<br/>proxy</p></div>")
+        apache_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/apache-prometheus-exporter.png' /><p>Apache<br/>prometheus<br/>exporter</p></div>")
+        certificator("<div class='custom-node'><img src='../../../../icons/certificator.png' /><p>Certificator</p></div>")
+        favicons("<div class='custom-node'><img src='../../../../icons/picture.png' /><p>Favicons</p></div>")
+        app("<div class='custom-node'><img src='../../../../icons/jellyfin.png' /><p>Jellyfin</p></div>")
         class app strong_border;
-        app_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/bash.png' style='min-width:80px;max-width:80px' /></div>Jellyfin<br/>Setup")
-        gpu("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/graphics-card.png' style='min-width:80px;max-width:80px' /></div>iGPU")
+        app_setup("<div class='custom-node'><img src='../../../../icons/bash.png' /><p>Jellyfin<br/>Setup</p></div>")
+        gpu("<div class='custom-node'><img src='../../../../icons/graphics-card.png' /><p>iGPU</p></div>")
 
         inbound_interface -->|:80,443,8096| apache_proxy -->|/*:8096| app
         apache_proxy -.-|fs| certificator
@@ -32,10 +32,10 @@ flowchart LR
     end
 
     subgraph others_1["Others"]
-        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
-        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
-        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        personal_devices("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices")
+        home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
+        prometheus("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Prometheus</p></div>")
+        gatus("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
+        personal_devices("<div class='custom-node'><img src='../../../../icons/personal-devices.png' /><p>Devices</p></div>")
 
         home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
@@ -44,9 +44,9 @@ flowchart LR
     end
 
     subgraph others_2["Others"]
-        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
-        certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
-        tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+        healthchecks("<div class='custom-node'><img src='../../../../icons/healthchecks.png' /><p>Healthchecks</p></div>")
+        certbot("<div class='custom-node'><img src='../../../../icons/lets-encrypt.png' /><p>Certbot</p></div>")
+        tvheadend("<div class='custom-node'><img src='../../../../icons/tvheadend.png' /><p>Tvheadend</p></div>")
 
         gpu ~~~ tvheadend & healthchecks
         app -.->|use| tvheadend

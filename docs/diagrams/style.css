@@ -37,3 +37,30 @@
   filter: none !important;
   shape-rendering: crispEdges;
 }
+
+.custom-node {
+  height:180px;
+  width:120px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  box-sizing:border-box;
+  padding: 10px 0 0 0;
+}
+
+.custom-node img {
+  width:80px;
+  min-width:80px;
+  max-width:80px;
+  margin:0 auto;
+}
+
+.custom-node p {
+  margin:0 auto;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  line-height:1.5;
+}

@@ -14,19 +14,19 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>agent")
+        app("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>agent</p></div>")
         class app strong_border;
-        docker_socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Socket<br/>proxy")
-        docker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br/>host<br/>*global*")
+        docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Socket<br/>proxy</p></div>")
+        docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host<br/>*global*</p></div>")
 
         inbound_interface -->|:7007|app
         app -.->|docker tcp| docker_socket_proxy -.->|docker sock| docker
     end
 
     subgraph others_1["Others"]
-        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
-        dozzle_server("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/dozzle.png' style='min-width:80px;max-width:80px' /></div>Dozzle<br/>Server")
-        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
+        dozzle_server("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Server</p></div>")
+        gatus("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
 
         home_network <--> inbound_interface
         dozzle_server -->|collect logs| inbound_interface
