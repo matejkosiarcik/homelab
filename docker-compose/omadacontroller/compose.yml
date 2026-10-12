@@ -8,6 +8,11 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/omada-controller/Dockerfile
+    cap_add:
+      - CHOWN # Allows running setup script under root
+      - DAC_OVERRIDE # Allows running setup script under root
+      - SETGID # Necessary to switch to the configured group
+      - SETUID # Necessary to switch to the configured user
     networks: # Internet access required for downloading device firmware updates
       - external-network
       - internal-network
