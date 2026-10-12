@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curlimages/curl:8.22.0 AS package_curl
+FROM curlimages/curl:8.22.0 AS package_curl
 USER root
 
 FROM busybox:1.38.0-uclibc AS busybox
