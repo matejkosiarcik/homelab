@@ -1,9 +1,11 @@
 #!/bin/sh
 set -euf
 
+icons_dir="$(git rev-parse --show-toplevel)/icons"
 PATH="${PATH}:$(dirname "${0}")/node_modules/.bin"
 tmpdir="$(mktemp -d)"
 export tmpdir
+
 mkdir "${tmpdir}/file" "${tmpdir}/other"
 unzip -q './13_05_osa_icons_svg.zip' -d "${tmpdir}/13_05_osa_icons_svg"
 
@@ -11,7 +13,7 @@ default_image_size='1x1'
 default_convert_options='magick INPUT_FILE OUTPUT_FILE'
 
 # Remove ".bin" suffix from 3rd party SVGs
-find "${input_dir}/other" -type f -exec sh -c 'cp "${1}" "${tmpdir}/other/$(basename "${1}" .bin)"' - {} \;
+find "${icons_dir}/other" -type f -exec sh -c 'cp "${1}" "${tmpdir}/other/$(basename "${1}" .bin)"' - {} \;
 
 # Check if an icon should be generated based on the --only filter
 should_generate_icon() {
