@@ -34,6 +34,7 @@ server:
     outgoing-interface: {{ env["HOMELAB_APP_EXTERNAL_IP"] }}
     {%- endif %}
     username: ""
+    so-sndbuf: 0 # Use the host's default UDP send buffer
     access-control: 10.0.0.0/8 allow
     access-control: 127.0.0.0/8 allow
     access-control: 172.16.0.0/12 allow
