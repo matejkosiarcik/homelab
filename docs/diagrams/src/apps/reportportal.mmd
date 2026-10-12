@@ -14,26 +14,26 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
-        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
-        favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        postgres("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/postgres.png' style='min-width:80px;max-width:80px' /></div>Postgres")
-        rabbitmq("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/rabbitmq.png' style='min-width:80px;max-width:80px' /></div>RabbitMQ")
-        opensearch("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/opensearch.png' style='min-width:80px;max-width:80px' /></div>Opensearch")
-        app_index("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>Index")
+        apache_proxy("<div class='custom-node'><img src='../../../../icons/apache.png' /><p>Apache<br/>proxy</p></div>")
+        apache_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/apache-prometheus-exporter.png' /><p>Apache<br/>prometheus<br/>exporter</p></div>")
+        certificator("<div class='custom-node'><img src='../../../../icons/certificator.png' /><p>Certificator</p></div>")
+        favicons("<div class='custom-node'><img src='../../../../icons/picture.png' /><p>Favicons</p></div>")
+        postgres("<div class='custom-node'><img src='../../../../icons/postgres.png' /><p>Postgres</p></div>")
+        rabbitmq("<div class='custom-node'><img src='../../../../icons/rabbitmq.png' /><p>RabbitMQ</p></div>")
+        opensearch("<div class='custom-node'><img src='../../../../icons/opensearch.png' /><p>Opensearch</p></div>")
+        app_index("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>Index</p></div>")
         class app_index strong_border;
-        app_ui("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>UI")
+        app_ui("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>UI</p></div>")
         class app_ui strong_border;
-        app_api("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>API")
+        app_api("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>API</p></div>")
         class app_api strong_border;
-        app_uat("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>UAT(Authorization)")
+        app_uat("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>UAT(Authorization)</p></div>")
         class app_uat strong_border;
-        app_jobs("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>Jobs")
+        app_jobs("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>Jobs</p></div>")
         class app_jobs strong_border;
-        app_analyzer("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/reportportal.png' style='min-width:80px;max-width:80px' /></div>ReportPortal<br/>Analyzer")
+        app_analyzer("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>Analyzer</p></div>")
         class app_analyzer strong_border;
-        app_migrations("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/bash.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/reportportal.png' style='min-width:65px;max-width:65px;position:absolute;top:20px' /></div>ReportPortal<br/>Migrations")
+        app_migrations("<div class='custom-node'><img src='../../../../icons/reportportal-migrations.png' /><p>ReportPortal<br/>Migrations</p></div>")
         class app_migrations strong_border;
 
         %% app_index ~~~ app_ui & app_api & app_uat ~~~ app_jobs & app_analyzer & app_migrations
@@ -58,10 +58,10 @@ flowchart LR
     end
 
     subgraph others_1["Others"]
-        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
-        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
-        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
-        playwright_tests("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/playwright.png' style='min-width:80px;max-width:80px' /></div>Playwright Tests")
+        home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
+        prometheus("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Prometheus</p></div>")
+        gatus("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
+        playwright_tests("<div class='custom-node'><img src='../../../../icons/playwright.png' /><p>Playwright Tests</p></div>")
 
         home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
@@ -70,8 +70,8 @@ flowchart LR
     end
 
     subgraph others_2["Others"]
-        certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
-        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        certbot("<div class='custom-node'><img src='../../../../icons/lets-encrypt.png' /><p>Certbot</p></div>")
+        healthchecks("<div class='custom-node'><img src='../../../../icons/healthchecks.png' /><p>Healthchecks</p></div>")
 
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot

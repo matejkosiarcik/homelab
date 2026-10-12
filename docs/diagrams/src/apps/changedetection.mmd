@@ -14,13 +14,13 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
-        apache_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>proxy")
-        apache_prometheus_exporter("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache-prometheus-exporter.png' style='min-width:80px;max-width:80px' /></div>Apache<br/>prometheus<br/>exporter")
-        certificator("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificator")
-        favicons("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/picture.png' style='min-width:80px;max-width:80px' /></div>Favicons")
-        app("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
+        apache_proxy("<div class='custom-node'><img src='../../../../icons/apache.png' /><p>Apache<br/>proxy</p></div>")
+        apache_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/apache-prometheus-exporter.png' /><p>Apache<br/>prometheus<br/>exporter</p></div>")
+        certificator("<div class='custom-node'><img src='../../../../icons/certificator.png' /><p>Certificator</p></div>")
+        favicons("<div class='custom-node'><img src='../../../../icons/picture.png' /><p>Favicons</p></div>")
+        app("<div class='custom-node'><img src='../../../../icons/changedetection.png' /><p>Changedetection</p></div>")
         class app strong_border;
-        sockpuppetbrowser("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/chrome.png' style='min-width:80px;max-width:80px' /></div>SockPuppteBrowser<br/>(Playwright)")
+        sockpuppetbrowser("<div class='custom-node'><img src='../../../../icons/chrome.png' /><p>SockPuppteBrowser<br/>(Playwright)</p></div>")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:5000| app -->|use| sockpuppetbrowser
         apache_proxy -.-|fs| certificator
@@ -29,9 +29,9 @@ flowchart LR
     end
 
     subgraph others_1["Others"]
-        home_network("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br/>Network")
-        prometheus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/prometheus.png' style='min-width:80px;max-width:80px' /></div>Prometheus")
-        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
+        prometheus("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Prometheus</p></div>")
+        gatus("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
 
         home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
@@ -39,12 +39,12 @@ flowchart LR
     end
 
     subgraph others_2["Others"]
-        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
-        certbot("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certbot")
-        gotify("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/gotify.png' style='min-width:80px;max-width:80px' /></div>Gotify")
-        ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
-        smtp("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Email")
-        websites("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/www.png' style='min-width:80px;max-width:80px' /></div>External<br/>Websites")
+        healthchecks("<div class='custom-node'><img src='../../../../icons/healthchecks.png' /><p>Healthchecks</p></div>")
+        certbot("<div class='custom-node'><img src='../../../../icons/lets-encrypt.png' /><p>Certbot</p></div>")
+        gotify("<div class='custom-node'><img src='../../../../icons/gotify.png' /><p>Gotify</p></div>")
+        ntfy("<div class='custom-node'><img src='../../../../icons/ntfy.png' /><p>Ntfy</p></div>")
+        smtp("<div class='custom-node'><img src='../../../../icons/smtp4dev.png' /><p>Email</p></div>")
+        websites("<div class='custom-node'><img src='../../../../icons/www.png' /><p>External<br/>Websites</p></div>")
         class websites dashed_border
 
         app -->|notification| gotify & ntfy & smtp
