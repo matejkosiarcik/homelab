@@ -10,6 +10,10 @@ services:
       dockerfile: ./docker-images/pihole/app/Dockerfile
       args:
         SETUP_SCRIPT: blackhole
+    cap_add:
+      - CHOWN # Allows running setup script under root
+      - DAC_OVERRIDE # Allows running setup script under root
+      - KILL # Needed for `pihole reloaddns`
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
