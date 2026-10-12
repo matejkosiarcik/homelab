@@ -27,13 +27,26 @@ samba_exporter_logfile_out='/homelab/logs/samba_exporter/samba_exporter.log'
 
 # Setup log redirection
 # Because the default logfile is owned by "root"
-# So we continuously read it and redirect to our logfile owned by "homelab"
+# So we continuously read it and forward it to our logfile owned by "homelab"
 for samba_logfile in "${samba_default_logfile}" "${samba_smbd_logfile_original}" "${samba_statusd_logfile_original}" "${samba_exporter_logfile_original}"; do
     install --mode=0644 '/dev/null' "${samba_logfile}"
 done
-su --shell='/bin/sh' --command="/bin/sh -c 'tail -F \"${samba_smbd_logfile_original}\" >>\"${samba_smbd_logfile_out}\"'" 'homelab' &
-su --shell='/bin/sh' --command="/bin/sh -c 'tail -F \"${samba_statusd_logfile_original}\" >>\"${samba_statusd_logfile_out}\"'" 'homelab' &
-su --shell='/bin/sh' --command="/bin/sh -c 'tail -F \"${samba_exporter_logfile_original}\" >>\"${samba_exporter_logfile_out}\"'" 'homelab' &
+
+start_log_forwarder() {
+    source_logfile="$1"
+    output_logfile="$2"
+
+    su --shell='/bin/sh' --command="/bin/sh -c 'while true; do
+        tail -n 0 -F \"${source_logfile}\" >>\"${output_logfile}\" || {
+            printf \"Error: Log forwarder for %s stopped; retrying in 1 second\\n\" \"${source_logfile}\" >&2
+            sleep 1
+        }
+    done'" 'homelab' &
+}
+
+start_log_forwarder "${samba_smbd_logfile_original}" "${samba_smbd_logfile_out}"
+start_log_forwarder "${samba_statusd_logfile_original}" "${samba_statusd_logfile_out}"
+start_log_forwarder "${samba_exporter_logfile_original}" "${samba_exporter_logfile_out}"
 
 config_input_file='/homelab/smb.conf'
 config_output_file='/homelab/tmpfs/smb.conf'
