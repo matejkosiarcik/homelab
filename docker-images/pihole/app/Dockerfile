@@ -91,9 +91,9 @@ FROM pihole/pihole:2026.09.0 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
-RUN chown -R homelab:homelab /macvendor.db /etc/.pihole /etc/pihole /usr/local/bin/pihole /usr/bin/pihole-FTL && \
-    mv /usr/sbin/setcap /usr/sbin/setcap-original && \
-    mv /usr/sbin/capsh /usr/sbin/capsh-original
+RUN chown -R homelab:homelab '/macvendor.db' '/etc/.pihole' '/etc/pihole' '/usr/local/bin/pihole' '/usr/bin/pihole-FTL' && \
+    mv '/usr/sbin/setcap' '/usr/sbin/setcap-original' && \
+    mv '/usr/sbin/capsh' '/usr/sbin/capsh-original'
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /usr/sbin/capsh /usr/sbin/capsh
