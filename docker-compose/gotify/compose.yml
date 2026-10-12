@@ -28,6 +28,8 @@ services:
       dockerfile: ./docker-images/gotify/setup/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-setup/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

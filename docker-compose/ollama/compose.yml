@@ -10,6 +10,7 @@ services:
       dockerfile: ./docker-images/ollama/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ollama/data:/home/homelab/.ollama:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

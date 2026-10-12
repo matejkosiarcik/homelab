@@ -31,6 +31,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/jellyfin/default:/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   app-setup:
     extends:

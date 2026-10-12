@@ -18,6 +18,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot/default:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/renovatebot/cron:/homelab/cron:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

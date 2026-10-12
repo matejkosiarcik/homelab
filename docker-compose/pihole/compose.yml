@@ -32,6 +32,7 @@ services:
       - /var/spool/cron/crontabs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole/data:/etc/pihole:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   app-setup:
     extends:
@@ -52,6 +53,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/healthcheck/logs:rw
 
   docker-socket-proxy:
     extends:

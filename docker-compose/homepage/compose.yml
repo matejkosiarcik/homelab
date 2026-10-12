@@ -63,6 +63,8 @@ services:
     networks: # Network access is necessary for accessing other services via HTTPS
       - external-network
       - internal-network
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/widgets/healthcheck:/homelab/healthcheck/logs:rw
 
 networks:
   default:

@@ -13,6 +13,8 @@ services:
     networks: # Internet access required for downloading packages
       - external-network
       - internal-network
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   redis:
     extends:
