@@ -20,7 +20,7 @@ COPY ./docker-images/openspeedtest/entrypoint-extra.sh /homelab/
 RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
     tail -n +2 /entrypoint.sh >/homelab/entrypoint-upstream-rest.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
-    chmod u=rx,go= /homelab/entrypoint-final.sh
+    chmod 0500 /homelab/entrypoint-final.sh
 
 FROM openspeedtest/latest:v2.0.6 AS runtime_dirs
 USER root
@@ -72,8 +72,8 @@ FROM openspeedtest/latest:v2.0.6 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
-RUN chown -R homelab:homelab /etc/nginx && \
-    chmod a+x "$(which crond)"
+RUN chown -R homelab:homelab '/etc/nginx' && \
+    ln -sf "$(which true)" "$(which crond)"
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/entrypoint.sh /
@@ -85,4 +85,5 @@ ENV ENABLE_LETSENCRYPT="False" \
     PGID="${GID}" \
     PUID="${UID}" \
     TZ="Europe/Bratislava"
+USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000" ]
