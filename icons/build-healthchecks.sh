@@ -51,3 +51,4 @@ convert_image_full "${input_dir}/gitman-repositories/organizr/plugins/images/tab
 ### Cleanup ###
 
 rm -rf "${tmpdir}"
+unset tmpdir

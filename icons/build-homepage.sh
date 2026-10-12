@@ -125,19 +125,19 @@ convert_image_full "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Netw
 
 ### Other Icons ###
 
-convert_image_full "${input_dir}/other/actualbudget.png" "${output_dir}/actualbudget.png"
-convert_image_full "${input_dir}/other/antennas.png" "${output_dir}/antennas.png"
-convert_image_full "${input_dir}/other/automatic1111.png" "${output_dir}/automatic1111.png"
-convert_image_full "${input_dir}/other/gatus.png" "${output_dir}/gatus.png"
-convert_image_full "${input_dir}/other/odroid.png" "${output_dir}/odroid.png"
-convert_image_full "${input_dir}/other/raspberry-pi.svg.bin" "${output_dir}/raspberry-pi.png"
-convert_image_full "${input_dir}/other/renovatebot.png" "${output_dir}/renovatebot.png"
-convert_image_full "${input_dir}/other/reportportal.svg.bin" "${output_dir}/reportportal.png"
-convert_image_full "${input_dir}/other/smtp4dev-custom.png" "${output_dir}/smtp4dev.png"
-convert_image_full "${input_dir}/other/squid.jpg" "${output_dir}/squid.jpg"
-convert_image_full "${input_dir}/other/upc.svg.bin" "${output_dir}/upc.png"
-convert_image_full "${input_dir}/other/wiktionary.svg.bin" "${output_dir}/wiktionary.png"
-convert_image_full "${input_dir}/other/windshift.svg.bin" "${output_dir}/windshift.png"
+convert_image_full "${tmpdir}/other/actualbudget.png" "${output_dir}/actualbudget.png"
+convert_image_full "${tmpdir}/other/antennas.png" "${output_dir}/antennas.png"
+convert_image_full "${tmpdir}/other/automatic1111.png" "${output_dir}/automatic1111.png"
+convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
+convert_image_full "${tmpdir}/other/odroid.png" "${output_dir}/odroid.png"
+convert_image_full "${tmpdir}/other/raspberry-pi.svg" "${output_dir}/raspberry-pi.png"
+convert_image_full "${tmpdir}/other/renovatebot.png" "${output_dir}/renovatebot.png"
+convert_image_full "${tmpdir}/other/reportportal.svg" "${output_dir}/reportportal.png"
+convert_image_full "${tmpdir}/other/smtp4dev-custom.png" "${output_dir}/smtp4dev.png"
+convert_image_full "${tmpdir}/other/squid.jpg" "${output_dir}/squid.jpg"
+convert_image_full "${tmpdir}/other/upc.svg" "${output_dir}/upc.png"
+convert_image_full "${tmpdir}/other/wiktionary.svg" "${output_dir}/wiktionary.png"
+convert_image_full "${tmpdir}/other/windshift.svg" "${output_dir}/windshift.png"
 
 ### Prebuild Icons ###
 
@@ -149,3 +149,4 @@ convert_image_full "${input_dir}/prebuild/openwebui.png" "${output_dir}/openwebu
 ### Cleanup ###
 
 rm -rf "${tmpdir}"
+unset tmpdir

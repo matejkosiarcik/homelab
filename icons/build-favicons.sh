@@ -50,18 +50,18 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/prometh
 
 # Smtp4dev
 
-convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${input_dir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-16.png"
 optimize_image "${tmpdir}/smtp4dev-favicon-16.png"
-convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "${input_dir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-32.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-32.png"
 optimize_image "${tmpdir}/smtp4dev-favicon-32.png"
 convert_ico "${tmpdir}/smtp4dev-favicon-16.png ${tmpdir}/smtp4dev-favicon-32.png" "$(git rev-parse --show-toplevel)/docker-images/smtp4dev/icons/favicon.ico"
-convert_image_full "${input_dir}/other/smtp4dev-favicon.png" "$(git rev-parse --show-toplevel)/docker-images/smtp4dev/icons/favicon.png"
+convert_image_full "${tmpdir}/other/smtp4dev-favicon.png" "$(git rev-parse --show-toplevel)/docker-images/smtp4dev/icons/favicon.png"
 rm -f "${tmpdir}/smtp4dev-favicon-16.png" "${tmpdir}/smtp4dev-favicon-32.png"
 
 ## Other ##
 
 convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker-stats.png"
-convert_image_full "${input_dir}/other/renovatebot.png" "${output_dir}/renovatebot.png"
+convert_image_full "${tmpdir}/other/renovatebot.png" "${output_dir}/renovatebot.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/samba-server.svg" "${output_dir}/samba.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound.svg" "${output_dir}/unbound.png"
 
@@ -76,3 +76,4 @@ convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/certb
 ### Cleanup ###
 
 rm -rf "${tmpdir}"
+unset tmpdir
