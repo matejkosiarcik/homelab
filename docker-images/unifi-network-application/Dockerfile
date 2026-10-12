@@ -10,7 +10,7 @@ COPY ./docker-images/unifi-network-application/entrypoint-extra.sh /homelab/
 RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
     tail -n +2 /init >/homelab/entrypoint-upstream-rest.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
-    chmod u=rx,go= /homelab/entrypoint-final.sh
+    chmod 0550 /homelab/entrypoint-final.sh
 
 FROM linuxserver/unifi-network-application:10.6.106 AS runtime_dirs
 USER root

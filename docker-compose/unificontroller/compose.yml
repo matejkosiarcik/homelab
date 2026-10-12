@@ -8,6 +8,10 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/unifi-network-application/Dockerfile
+    cap_add:
+      - DAC_OVERRIDE # Allows running setup script under root
+      - SETGID # Necessary to switch to the configured group
+      - SETUID # Necessary to switch to the configured user
     depends_on:
       mongodb:
         condition: service_healthy
@@ -18,7 +22,8 @@ services:
     stop_grace_period: 30s
     tmpfs:
       - /defaults:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,exec,nodev,noatime,nodiratime,uid=0,gid=0 # Needs to mount as root to start the container
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/unifi/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
