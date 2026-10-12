@@ -133,7 +133,8 @@ FROM linuxserver/speedtest-tracker:1.15.0 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
-RUN chown -R homelab:homelab /app /config
+RUN chown -R homelab:homelab '/app' '/config' '/etc/logrotate.d' '/etc/crontabs' '/var/lib/nginx' && \
+    ln -sf '/config/database.sqlite' '/app/www/database/database.sqlite'
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /etc/s6-overlay/s6-rc.d/svc-cron/run /etc/s6-overlay/s6-rc.d/svc-cron/run
