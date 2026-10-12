@@ -8,6 +8,12 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/speedtesttracker/Dockerfile
+    cap_add:
+      - CHOWN # TODO: Remove
+      - DAC_OVERRIDE # TODO: Remove
+      - FOWNER # TODO: Remove
+      - SETGID # Necessary to switch to the configured group
+      - SETUID # Necessary to switch to the configured user
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     init: false # Can't run with PID other than 1
@@ -16,17 +22,18 @@ services:
       - internal-network
     read_only: false # TODO: Enable readonly mode
     tmpfs: # TODO: Finish all TMPFS
-      - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,exec,nodev,noatime,nodiratime,uid=0,gid=0 # Must be owned by root, otherwise we get startup errors
+      # - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/bootstrap/cache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/database:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/storage:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/storage/framework:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/storage/framework/cache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/storage/framework/sessions:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/storage/framework/testing:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/storage/framework/views:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-    #   - /app/www/storage/logs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/bootstrap/cache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/database:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/storage:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/storage/framework:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/storage/framework/cache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/storage/framework/sessions:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/storage/framework/testing:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /app/www/storage/framework/views:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /app/www/storage/logs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/speedtesttracker/data:/config:rw
 
