@@ -13,6 +13,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/data-optimization/default:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/data-optimization/cron:/homelab/cron:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

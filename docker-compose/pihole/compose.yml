@@ -9,6 +9,8 @@ services:
     build:
       dockerfile: ./docker-images/pihole/app/Dockerfile
     cap_add:
+      - CHOWN # Allows running setup script under root
+      - DAC_OVERRIDE # Allows running setup script under root
       - KILL # Needed for `pihole reloaddns`
     # TODO: Try to remove hard-coded DNS after setting up OpenWRT router with DNS forwarding
     # Hard-coded DNS is necessary because of bootstrapping problem
@@ -25,12 +27,14 @@ services:
       - internal-network
     stop_grace_period: 30s
     tmpfs:
+      - /etc/pihole/listsCache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/pihole:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/spool:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/spool/cron/crontabs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole/data:/etc/pihole:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   app-setup:
     extends:
@@ -51,6 +55,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/healthcheck/logs:rw
 
   docker-socket-proxy:
     extends:

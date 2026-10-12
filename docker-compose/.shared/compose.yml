@@ -80,6 +80,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/default:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/cron:/homelab/cron:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/healthcheck:/homelab/healthcheck/logs:rw
 
   apache:
     extends:
@@ -104,6 +105,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/default:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/users/proxy-prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/healthcheck:/homelab/healthcheck/logs:rw
 
   apache-prometheus-exporter:
     extends:
@@ -115,6 +117,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/healthcheck:/homelab/healthcheck/logs:rw
 
   docker-socket-proxy:
     extends:
@@ -128,6 +132,7 @@ services:
       - /run:rw,uid=0,gid=0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-socket-proxy/healthcheck:/homelab/healthcheck/logs:rw
 
   docker-app-setup:
     extends:
@@ -142,6 +147,8 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-app-setup/healthcheck:/homelab/healthcheck/logs:rw
 
   favicons:
     extends:
@@ -153,6 +160,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/favicons/healthcheck:/homelab/healthcheck/logs:rw
 
   file-server:
     extends:
@@ -162,6 +171,8 @@ services:
       dockerfile: ./docker-images/file-server/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/file-server/healthcheck:/homelab/healthcheck/logs:rw
 
   script-app-setup:
     extends:
@@ -173,6 +184,8 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/script-app-setup/healthcheck:/homelab/healthcheck/logs:rw
 
   redis:
     extends:
@@ -189,6 +202,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/redis/healthcheck:/homelab/healthcheck/logs:rw
 
   postgres:
     extends:
@@ -207,6 +221,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgres/data:/var/lib/postgresql/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/postgres/healthcheck:/homelab/healthcheck/logs:rw
 
   postgis:
     extends:
@@ -224,5 +239,6 @@ services:
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/shared:/var/shared:rw # TODO: Determine if necessary
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/postgis/healthcheck:/homelab/healthcheck/logs:rw
     tmpfs:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

@@ -17,6 +17,8 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations:1.0.0
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-migrations/healthcheck:/homelab/healthcheck/logs:rw
 
   app-index:
     extends:
@@ -27,6 +29,8 @@ services:
       dockerfile: ./docker-images/reportportal/index/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-index/healthcheck:/homelab/healthcheck/logs:rw
 
   app-ui:
     extends:
@@ -40,6 +44,8 @@ services:
     tmpfs:
       - /etc/nginx/conf.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-ui/healthcheck:/homelab/healthcheck/logs:rw
 
   app-api:
     extends:
@@ -62,6 +68,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/reportportal/api:/var/log/reportportal:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/healthcheck:/homelab/healthcheck/logs:rw
 
   app-uat:
     extends:
@@ -79,6 +86,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-uat/healthcheck:/homelab/healthcheck/logs:rw
 
   app-jobs:
     extends:
@@ -98,6 +106,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-jobs/healthcheck:/homelab/healthcheck/logs:rw
 
   app-analyzer:
     extends:
@@ -117,6 +126,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-analyzer:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-analyzer/healthcheck:/homelab/healthcheck/logs:rw
 
   postgres:
     extends:
@@ -139,6 +149,8 @@ services:
       - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /opt/bitnami/rabbitmq/.rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /opt/bitnami/rabbitmq/.rabbitmq/mnesia:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/rabbitmq/healthcheck:/homelab/healthcheck/logs:rw
 
   opensearch:
     extends:
@@ -158,6 +170,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/opensearch/data:/usr/share/opensearch/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/opensearch/default:/usr/share/opensearch/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/opensearch/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

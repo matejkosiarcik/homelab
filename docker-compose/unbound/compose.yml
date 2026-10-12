@@ -9,16 +9,17 @@ services:
     build:
       dockerfile: ./docker-images/unbound/app/Dockerfile
     cap_add:
-      - NET_BIND_SERVICE # Necessary to bind to port 53 in host network mode
+      - NET_BIND_SERVICE # Necessary to bind to low port in host network mode
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
     security_opt:
-      - no-new-privileges:false # Necessary to bind to port 53 in host network mode
+      - no-new-privileges:false # Necessary to bind to low port in host network mode
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound/sock:/homelab/sock:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/unbound/default:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   app-prometheus-exporter:
     extends:
@@ -31,6 +32,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound/sock:/homelab/sock:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

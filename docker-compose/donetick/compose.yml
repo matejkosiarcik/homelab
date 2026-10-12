@@ -12,6 +12,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/donetick/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

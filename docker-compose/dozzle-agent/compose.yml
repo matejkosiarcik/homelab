@@ -25,6 +25,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-cert.pem:/certs/dozzle-cert.pem:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-key.pem:/certs/dozzle-key.pem:ro
       # Docker socket intentionally left out, as we are using docker-socket-proxy
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   docker-socket-proxy:
     extends:

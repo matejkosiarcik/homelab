@@ -12,6 +12,8 @@ services:
       dockerfile: ./docker-images/adventurelog/frontend/Dockerfile
     environment:
       ORIGIN: ${DOCKER_COMPOSE_NETWORK_URL}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-frontend/healthcheck:/homelab/healthcheck/logs:rw
 
   app-backend:
     extends:
@@ -36,6 +38,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/adventurelog/data:/code/media:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/adventurelog/backend/nginx:/var/log/nginx:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/healthcheck:/homelab/healthcheck/logs:rw
     tmpfs:
       - /etc/adventurelog:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

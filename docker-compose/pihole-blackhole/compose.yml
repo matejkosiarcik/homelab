@@ -10,12 +10,9 @@ services:
       dockerfile: ./docker-images/pihole/app/Dockerfile
       args:
         SETUP_SCRIPT: blackhole
-    dns: # TODO: Revert back to use internal DNS
-      # - 10.1.12.6
-      # - 10.1.10.6
-      - 1.1.1.1
-      - 8.8.8.8
-      - 9.9.9.9
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header
@@ -24,12 +21,14 @@ services:
       - internal-network
     stop_grace_period: 30s
     tmpfs:
+      - /etc/pihole/listsCache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/pihole:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/spool:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/spool/cron/crontabs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/pihole/data:/etc/pihole:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   app-setup:
     extends:
@@ -50,6 +49,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-prometheus-exporter.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/healthcheck/logs:rw
 
   docker-socket-proxy:
     extends:

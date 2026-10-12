@@ -17,6 +17,8 @@ services:
     networks:
       - external-network
       - internal-network
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/novnc/healthcheck:/homelab/healthcheck/logs:rw
 
   wayvnc:
     extends:
@@ -34,6 +36,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rsa_key.pem:/homelab/rsa_key.pem:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rsa_key.pem.pub:/homelab/rsa_key.pem.pub:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/wayvnc/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

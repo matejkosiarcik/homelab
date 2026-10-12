@@ -19,6 +19,7 @@ services:
     stop_grace_period: 30s
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/smtp4dev/data:/smtp4dev:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:

@@ -11,6 +11,7 @@ services:
     init: false
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/actualbudget/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   certificator:
     extends:
