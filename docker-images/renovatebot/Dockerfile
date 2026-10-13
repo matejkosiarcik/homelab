@@ -171,6 +171,7 @@ ENV HOMELAB_CONTAINER_NAME="renovatebot" \
     HOMELAB_CRON_SKIP_INITIAL="1" \
     HOMELAB_CRON_TIMEOUT="30m" \
     PATH="/homelab/bin:${PATH}" \
+    RENOVATE_BASE_DIR="/tmp/renovate" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
