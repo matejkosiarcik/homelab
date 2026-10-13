@@ -67,9 +67,7 @@ WORKDIR /homelab
 ARG HOMELAB_APP_TYPE=".template"
 ARG HOMELAB_ENV=dev
 COPY ./docker-compose/${HOMELAB_APP_TYPE}/config.yml /homelab/data.yml
-RUN yq . data.yml >data.json && \
-    jq --arg homelab_env "${HOMELAB_ENV}" '. + {build_env: $homelab_env}' data.json >data.json.tmp && \
-    mv data.json.tmp data.json
+RUN yq --arg homelab_env "${HOMELAB_ENV}" 'if .apache."upstream-url" == null then . else (.apache."upstream-url") |= map(select(.env == null or .env == $homelab_env) | del(.env)) end' data.yml >data.json
 
 FROM jinja AS htaccess_config_2
 USER root

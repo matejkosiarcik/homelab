@@ -1,4 +1,4 @@
-{%- for item in apache["upstream-url"] if item.env is not defined or item.env == build_env %}
+{%- for item in apache["upstream-url"] %}
 {%- set itempathtrimmed = item.path | trim("/") -%}
 {%- set itempathescaped = item.path | replace("/", "_") | upper -%}
 
