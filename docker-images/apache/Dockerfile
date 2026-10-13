@@ -65,8 +65,11 @@ FROM yq AS apache_htaccess_config_1
 USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_TYPE=".template"
+ARG HOMELAB_ENV=dev
 COPY ./docker-compose/${HOMELAB_APP_TYPE}/config.yml /homelab/data.yml
-RUN yq . data.yml >data.json
+RUN yq . data.yml >data.json && \
+    jq --arg homelab_env "${HOMELAB_ENV}" '. + {build_env: $homelab_env}' data.json >data.json.tmp && \
+    mv data.json.tmp data.json
 
 FROM jinja AS htaccess_config_2
 USER root
