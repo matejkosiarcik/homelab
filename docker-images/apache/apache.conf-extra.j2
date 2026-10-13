@@ -1,4 +1,4 @@
-{%- for item in apache["upstream-url"] -%}
+{%- for item in apache["upstream-url"] if item.env is not defined or item.env == build_env -%}
 {%- if item.path == "/" %}
     ProxyPassReverse "{{ item.path }}" "{{ item.target }}/"
 {%- elif item.path.endswith("/") %}
