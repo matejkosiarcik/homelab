@@ -50,15 +50,29 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 
 ### App ###
 
-FROM node:26.11.1-slim AS nodejs_main_build
+FROM node:26.11.1-slim AS nodejs_backend_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/prebudget/package-lock.json ./docker-images/prebudget/package.json /homelab/
+COPY ./docker-images/prebudget/backend/package-lock.json ./docker-images/prebudget/backend/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/prebudget/tsconfig.json /homelab/
-COPY ./docker-images/prebudget/src/ /homelab/src/
+COPY ./docker-images/prebudget/backend/tsconfig.json /homelab/
+COPY ./docker-images/prebudget/backend/src/ /homelab/src/
+RUN npm run build && \
+    npx modclean --patterns default:safe --run --error-halt && \
+    npx node-prune && \
+    npm prune --production
+
+FROM node:26.11.1-slim AS nodejs_frontend_build
+USER root
+WORKDIR /homelab
+COPY ./docker-images/prebudget/frontend/package-lock.json ./docker-images/prebudget/frontend/package.json /homelab/
+COPY --from=npmconfig /root/.npmrc /root/.npmrc
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+COPY ./docker-images/prebudget/frontend/tsconfig.json /homelab/
+COPY ./docker-images/prebudget/frontend/src/ /homelab/src/
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
@@ -115,9 +129,10 @@ COPY --from=empty_dir /empty /homelab/logs
 COPY ./docker-images/prebudget/main.sh /homelab/
 COPY ./docker-images/prebudget/icons/favicon.png ./docker-images/prebudget/icons/favicon.ico /homelab/icons/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=nodejs_main_build /homelab/package.json /homelab/
-COPY --from=nodejs_main_build /homelab/node_modules /homelab/node_modules
-COPY --from=nodejs_main_build /homelab/dist /homelab/dist
+COPY --from=nodejs_backend_build /homelab/package.json /homelab/
+COPY --from=nodejs_backend_build /homelab/node_modules /homelab/node_modules
+COPY --from=nodejs_backend_build /homelab/dist /homelab/dist
+COPY --from=nodejs_frontend_build /homelab/dist /homelab/www
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/

@@ -11,6 +11,7 @@ let started = false;
 const app = express();
 
 app.use(express.static('./icons'));
+app.use(express.static('./www'));
 
 // Healthcheck
 app.get('/.health', (_: Request, response: Response) => {
