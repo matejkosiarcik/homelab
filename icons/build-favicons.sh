@@ -48,16 +48,6 @@ default_convert_options='magick -density 2000 -background none -bordercolor tran
 
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "${output_dir}/nodeexporter.png"
 
-# Smtp4dev
-
-convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-16.png"
-optimize_image "${tmpdir}/smtp4dev-favicon-16.png"
-convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-32.png"
-optimize_image "${tmpdir}/smtp4dev-favicon-32.png"
-convert_ico "${tmpdir}/smtp4dev-favicon-16.png ${tmpdir}/smtp4dev-favicon-32.png" "$(git rev-parse --show-toplevel)/docker-images/smtp4dev/icons/favicon.ico"
-convert_image_full "${tmpdir}/other/smtp4dev-favicon.png" "$(git rev-parse --show-toplevel)/docker-images/smtp4dev/icons/favicon.png"
-rm -f "${tmpdir}/smtp4dev-favicon-16.png" "${tmpdir}/smtp4dev-favicon-32.png"
-
 ## Other ##
 
 convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker-stats.png"
@@ -72,6 +62,28 @@ convert_image_full "${input_dir}/prebuild/git-cache.png" "${output_dir}/git-cach
 convert_image_full "${input_dir}/prebuild/npm-cache.png" "${output_dir}/npm-cache.png"
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
 convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/certbot.png"
+
+## Smtp4dev ###
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/smtp4dev/icons"
+convert_image_full "${tmpdir}/other/smtp4dev-favicon.png" "${output_dir}/favicon.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-16.png"
+optimize_image "${tmpdir}/smtp4dev-favicon-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-32.png"
+optimize_image "${tmpdir}/smtp4dev-favicon-32.png"
+convert_ico "${tmpdir}/smtp4dev-favicon-16.png ${tmpdir}/smtp4dev-favicon-32.png" "${output_dir}/favicon.ico"
+rm -f "${tmpdir}/smtp4dev-favicon-16.png" "${tmpdir}/smtp4dev-favicon-32.png"
+
+## PreBudget ##
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/prebudget/icons"
+convert_image_full "${input_dir}/prebuild/prebudget.png" "${output_dir}/favicon.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${input_dir}/prebuild/prebudget.png" "${tmpdir}/prebudget-favicon-16.png"
+optimize_image "${tmpdir}/prebudget-favicon-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "${input_dir}/prebuild/prebudget.png" "${tmpdir}/prebudget-favicon-32.png"
+optimize_image "${tmpdir}/prebudget-favicon-32.png"
+convert_ico "${tmpdir}/prebudget-favicon-16.png ${tmpdir}/prebudget-favicon-32.png" "${output_dir}/favicon.ico"
+rm -f "${tmpdir}/prebudget-favicon-16.png" "${tmpdir}/prebudget-favicon-32.png"
 
 ### Cleanup ###
 

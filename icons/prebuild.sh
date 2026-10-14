@@ -66,6 +66,13 @@ convert_image_full "${tmpdir}/squid.png" "${output_dir}/squid.png"
 
 ### Combined icons ###
 
+# PreBudget
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -density 2000 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/png/actual-budget.png" "${tmpdir}/actualbudget.png"
+convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 375x375 -density 2000 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/png/csv.png" "${tmpdir}/csv.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity SouthEast -geometry -25+0 -composite OUTPUT_FILE' "${tmpdir}/actualbudget.png" "${tmpdir}/csv.png" "${tmpdir}/prebudget.png"
+convert_image_full "${tmpdir}/prebudget.png" "${output_dir}/prebudget.png"
+rm -f "${tmpdir}/actualbudget.png" "${tmpdir}/csv.png" "${tmpdir}/prebudget.png"
+
 # Servers
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 -border 10 -density 2000 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_server.svg" "${tmpdir}/servers-1.png"
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 650x650 -density 2000 OUTPUT_FILE' "${tmpdir}/13_05_osa_icons_svg/osa_server.svg" "${tmpdir}/servers-2.png"
