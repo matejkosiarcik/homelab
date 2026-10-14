@@ -72,6 +72,7 @@
 | `10.1.12.67` | `npm-cache.matejhome.com`                       |
 | `10.1.12.68` | `koffan.matejhome.com`                          |
 | `10.1.12.69` | `vikunja.matejhome.com`                         |
+| `10.1.12.70` | `prebudget.matejhome.com`                       |
 | `10.1.14.21` | `docker-stats-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.22` | `dozzle-agent-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.23` | `nodeexporter-raspberry-pi-4b-2g.matejhome.com` |

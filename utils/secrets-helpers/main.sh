@@ -1362,6 +1362,25 @@ planka)
     touch "${initial_output}/favicons.env"
     ;;
 
+prebudget)
+    # Preload #
+    matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
+
+    # App #
+    printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
+    printf 'PASSWORD_ENCRYPTED="%s"\n' "${matej_password}" >>"${initial_output}/app.env"
+
+    # Apache #
+    write_default_proxy_users "${app_full_name_key}"
+
+    # Certificator #
+    write_certificator_users
+    write_healthcheck_url "${app_full_name_machine}" certificator
+
+    # Favicons #
+    touch "${initial_output}/favicons.env"
+    ;;
+
 prometheus)
     # Preload #
     matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"

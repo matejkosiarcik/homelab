@@ -1,0 +1,23 @@
+app:
+  name: PreBudget
+
+apache:
+  upstream-url:
+    - path: /
+      target: http://app:8080
+
+favicons:
+  default: /favicon.png
+
+gatus:
+  enabled: true
+
+healthchecks:
+  - slug: certificator
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
