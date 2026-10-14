@@ -1,21 +1,33 @@
 {
+  "name": "prebudget-frontend",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "imports": {
     "#/*": "./*"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "run-s build:typecheck build:vite",
+    "build:typecheck": "vue-tsc --noEmit",
+    "build:vite": "vite build .",
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "dotenv": "^18.0.7"
+    "modern-normalize": "^3.0.1",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^26.6.5",
+    "@vitejs/plugin-vue": "^6.0.10",
     "modclean": "^3.0.0-beta.1",
     "node-prune": "^1.0.2",
+    "npm-run-all2": "^9.0.3",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4",
+    "vue-tsc": "^3.3.13"
   }
 }

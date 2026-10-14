@@ -71,7 +71,7 @@ COPY ./docker-images/prebudget/frontend/package-lock.json ./docker-images/prebud
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/prebudget/frontend/tsconfig.json /homelab/
+COPY ./docker-images/prebudget/frontend/index.html ./docker-images/prebudget/frontend/tsconfig.json ./docker-images/prebudget/frontend/vite.config.ts ./docker-images/prebudget/frontend/terser.json /homelab/
 COPY ./docker-images/prebudget/frontend/src/ /homelab/src/
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
