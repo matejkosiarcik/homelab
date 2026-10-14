@@ -58,7 +58,7 @@ indent_size = unset
 
 ### Documentation, Configuration, Markup # ###
 
-[*.{css,drawio,htm,html,j2,jinja,jinja2,json,json5,less,liquid,sass,scss,sdef,svg,toml,xhtml,xlf,xml,yaml,yml}]
+[*.{css,drawio,htm,html,j2,jinja,jinja2,json,json5,less,liquid,sass,scss,sdef,svg,toml,vue,xhtml,xlf,xml,yaml,yml}]
 indent_size = 2
 
 # RC files
