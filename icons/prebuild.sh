@@ -136,7 +136,7 @@ convert_image_full "${tmpdir}/certificator.png" "${output_dir}/certificator.png"
 ### Layered diagram icons ###
 
 # Backup script
-if should_generate_icon "${output_dir}/backup-script.png"; then
+if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/chromium.png" "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" "${tmpdir}/other/playwright.svg" "${output_dir}/backup-script.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/gitman-repositories/homer-icons/png/chromium.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" -background none -resize 400x400 \) -gravity NorthEast -geometry +0+0 -composite \
@@ -147,7 +147,7 @@ if should_generate_icon "${output_dir}/backup-script.png"; then
 fi
 
 # Docker registry
-if should_generate_icon "${output_dir}/docker-registry.png"; then
+if should_generate_icon "${input_dir}/prebuild/cloud.png" "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker-registry.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/prebuild/cloud.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" -background none -resize 625x625 \) -gravity SouthEast -geometry +0+0 -composite \
@@ -157,7 +157,7 @@ if should_generate_icon "${output_dir}/docker-registry.png"; then
 fi
 
 # Dozzle agents
-if should_generate_icon "${output_dir}/dozzle-agents.png"; then
+if should_generate_icon "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle-agents.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" -background none -resize 500x500 \) -gravity SouthEast -geometry +0+63 -composite \
@@ -167,7 +167,7 @@ if should_generate_icon "${output_dir}/dozzle-agents.png"; then
 fi
 
 # Public DNS
-if should_generate_icon "${output_dir}/public-dns.png"; then
+if should_generate_icon "${input_dir}/prebuild/cloud.png" "${input_dir}/gitman-repositories/homer-icons/png/azuredns.png" "${output_dir}/public-dns.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/prebuild/cloud.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${input_dir}/gitman-repositories/homer-icons/png/azuredns.png" -background none -resize 500x500 \) -gravity Center -geometry +250+125 -composite \
@@ -177,7 +177,7 @@ if should_generate_icon "${output_dir}/public-dns.png"; then
 fi
 
 # ReportPortal migrations
-if should_generate_icon "${output_dir}/reportportal-migrations.png"; then
+if should_generate_icon "${tmpdir}/other/reportportal.svg" "${input_dir}/gitman-repositories/bash-logo/assets/Logos/Icons/SVG/512x512_white.svg" "${output_dir}/reportportal-migrations.png"; then
     # TODO: Merge this call into a single magick call
     convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 1000x1000 OUTPUT_FILE' "${tmpdir}/other/reportportal.svg" "${tmpdir}/reportportal.png"
     magick -size 1000x1000 xc:none \
@@ -189,7 +189,7 @@ if should_generate_icon "${output_dir}/reportportal-migrations.png"; then
 fi
 
 # RenovateBot cronjob
-if should_generate_icon "${output_dir}/renovatebot-cronjob.png"; then
+if should_generate_icon "${tmpdir}/other/renovatebot.png" "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" "${output_dir}/renovatebot-cronjob.png"; then
     magick -size 1000x1000 xc:none \
         \( "${tmpdir}/other/renovatebot.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/cronjob.svg" -background none -resize 400x400 \) -gravity NorthEast -geometry +0+0 -composite \
@@ -199,7 +199,7 @@ if should_generate_icon "${output_dir}/renovatebot-cronjob.png"; then
 fi
 
 # Smart home devices
-if should_generate_icon "${output_dir}/smart-home-devices.png"; then
+if should_generate_icon "${tmpdir}/13_05_osa_icons_svg/osa_home.svg" "${tmpdir}/other/iot.png" "${output_dir}/smart-home-devices.png"; then
     magick -size 1000x1000 xc:none \
         \( "${tmpdir}/13_05_osa_icons_svg/osa_home.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${tmpdir}/other/iot.png" -background none -resize 600x600 \) -gravity NorthEast -geometry +20+20 -composite \
