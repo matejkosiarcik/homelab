@@ -17,16 +17,18 @@ find "${icons_dir}/other" -type f -exec sh -c 'cp "${1}" "${tmpdir}/other/$(base
 
 # Check if an icon should be generated based on the --only filter
 should_generate_icon() {
-    # ${1} - filepath
+    # ${@} - input and output filepaths
 
     if [ -z "${only_pattern:-}" ]; then
         return 0 # No "--only" pattern -> return positive code
     fi
 
     pattern="$(printf '%s' "${only_pattern}" | tr '-' '|')"
-    if printf '%s\n' "${1}" | grep -qE ".*(?:${pattern}).*" >'/dev/null'; then
-        return 0 # The file matches -> return positive code
-    fi
+    for filepath in "$@"; do
+        if printf '%s\n' "${filepath}" | grep -qE ".*(?:${pattern}).*" >'/dev/null'; then
+            return 0 # An input or output file matches -> return positive code
+        fi
+    done
 
     # No match -> return negative code
     return 1
@@ -70,7 +72,7 @@ convert_image_draft() {
     # ${2} - input file
     # ${3} - output file
 
-    if ! should_generate_icon "${3}"; then
+    if ! should_generate_icon "${2}" "${3}"; then
         return 0
     fi
 
@@ -85,7 +87,7 @@ convert_image_draft_2() {
     # ${3} - input file 2
     # ${4} - output file
 
-    if ! should_generate_icon "${4}"; then
+    if ! should_generate_icon "${2}" "${3}" "${4}"; then
         return 0
     fi
 
@@ -101,7 +103,7 @@ convert_image_draft_3() {
     # ${4} - input file 3
     # ${5} - output file
 
-    if ! should_generate_icon "${5}"; then
+    if ! should_generate_icon "${2}" "${3}" "${4}" "${5}"; then
         return 0
     fi
 
@@ -114,7 +116,7 @@ convert_image_full() {
     # ${1} - input file
     # ${2} - output file
 
-    if ! should_generate_icon "${2}"; then
+    if ! should_generate_icon "${1}" "${2}"; then
         return 0
     fi
 
@@ -128,7 +130,7 @@ convert_ico() {
     # ${1} - input files
     # ${2} - output file
 
-    if ! should_generate_icon "${2}"; then
+    if ! should_generate_icon "${1}" "${2}"; then
         return 0
     fi
 
