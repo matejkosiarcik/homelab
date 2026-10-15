@@ -129,6 +129,7 @@ WORKDIR /homelab
 ARG HOMELAB_APP_TYPE
 ARG HOMELAB_ENV=dev
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/favicons/parse-app-entry.sh /homelab/
+# hadolint ignore=SC2016
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     printf 'apps:\n' >'/homelab/app-entries.yml' && \
