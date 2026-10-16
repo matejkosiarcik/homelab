@@ -3,13 +3,12 @@ set -euf
 
 script_dir="$(dirname "${0}")"
 
-if [ -e '/.dockerenv' ]; then
+if [ -n "${MINIO_URL+x}" ]; then
+    minio_url="${MINIO_URL}"
+elif [ -e '/.dockerenv' ]; then
     minio_url='http://app:9000'
 else
     minio_url='https://localhost:8443'
-fi
-if [ -n "${MINIO_URL+x}" ]; then
-    minio_url="${MINIO_URL}"
 fi
 
 # Wait for minio to start
