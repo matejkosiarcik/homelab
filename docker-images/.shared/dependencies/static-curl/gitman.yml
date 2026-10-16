@@ -1,0 +1,32 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/stunnel/static-curl.git
+    name: static-curl
+    rev: main
+    type: git
+    params: --depth=1
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+sources_locked:
+  - repo: https://github.com/stunnel/static-curl.git
+    name: static-curl
+    rev: e2acbcd219422678ae616982e316d15ba97cb2bd
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+default_group: ""
+groups:
+  -
