@@ -30,7 +30,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM mongo:9.0.2 AS final
+FROM mongo:9.0.4 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
