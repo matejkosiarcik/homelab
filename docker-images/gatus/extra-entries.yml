@@ -17,6 +17,10 @@ network:
     ip: 10.1.0.3
   - name: Smart switch - TP-Link SG105E
     ip: 10.1.0.4
+  - name: Smart switch - Unifi USW Flex 2.5G 5-port
+    ip: 10.1.0.5
+  - name: Smart switch - Unifi USW Flex 2.5G 8-port
+    ip: 10.1.0.6
 
 home_devices:
   - name: Living Room TV
