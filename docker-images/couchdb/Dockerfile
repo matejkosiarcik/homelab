@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh /go/bin/envsubst
 
-FROM couchdb:3.5.2 AS entrypoint
+FROM couchdb:3.5.3 AS entrypoint
 USER root
 WORKDIR /homelab
 COPY ./docker-images/couchdb/entrypoint-extra.sh /homelab/
@@ -31,7 +31,7 @@ RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && 
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM couchdb:3.5.2 AS runtime_dirs
+FROM couchdb:3.5.3 AS runtime_dirs
 USER root
 RUN mkdir -p '/homelab/original/opt/couchdb/etc/local.d' && \
     cp -R '/opt/couchdb/etc/local.d/.' '/homelab/original/opt/couchdb/etc/local.d'
@@ -79,7 +79,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM couchdb:3.5.2 AS final
+FROM couchdb:3.5.3 AS final
 LABEL build.user=matejkosiarcik
 USER root
 RUN rm -rf /opt/couchdb/etc/local.d
