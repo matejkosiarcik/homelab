@@ -28,7 +28,7 @@ export function createApiRootTest(url: string, _options?: { headers?: Record<str
     };
     return [
         test(`API: Get root${options.title ? ` - ${options.title}` : ''}`, async () => {
-            await test.step('Request server', async () => {
+            const response = await test.step('Request server', async () => {
                 const response = await axios.get(url, { headers: options.headers });
                 expect(response.status, 'Response Status').toStrictEqual(options.status);
                 return response;
@@ -51,7 +51,7 @@ export function createHttpToHttpsRedirectTests(url: string, _options?: { title?:
     const urlWithTrailingSlash = new URL(url).pathname === '/' || url.endsWith('/') ? url : `${url}/`;
     return [
         test(`API: Redirect HTTP${port} to HTTPS (root)${options.title ? ` - ${options.title}` : ''}`, async () => {
-            await test.step('Request server', async () => {
+            const response = await test.step('Request server', async () => {
                 const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
                 expect(response.status, 'Response Status').toStrictEqual(302);
                 return response;
@@ -63,7 +63,7 @@ export function createHttpToHttpsRedirectTests(url: string, _options?: { title?:
         }),
 
         test(`API: Redirect HTTP${port} to HTTPS (root slash)${options.title ? ` - ${options.title}` : ''}`, async () => {
-            await test.step('Request server', async () => {
+            const response = await test.step('Request server', async () => {
                 const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
                 expect(response.status, 'Response Status').toStrictEqual(302);
                 return response;
@@ -186,7 +186,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
 
     const output = [
         test(`API: Proxy root${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await test.step('Request server', async () => {
+            await test.step('Request server', async () => {
                 const response = await axios.get(`${url}/.apache`);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });
@@ -250,7 +250,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
     ];
     output.push(...proxyStatusVariants.map((variant) => {
         return test(`API: Proxy status (${variant.title})${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await test.step('Request server', async () => {
+            await test.step('Request server', async () => {
                 const response = await axios.get(`${url}/.apache/status`, { auth: variant.auth });
                 expect(response.status, 'Response Status').toStrictEqual(variant.status);
             });
@@ -298,7 +298,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
     ];
     output.push(...proxyPrometheusVariants.map((variant) => {
         return test(`API: Proxy prometheus metrics (${variant.title})${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await test.step('Request server', async () => {
+            await test.step('Request server', async () => {
                 const response = await axios.get(`${url}/.apache/metrics`, { auth: variant.auth });
                 expect(response.status, 'Response Status').toStrictEqual(variant.status);
             });
