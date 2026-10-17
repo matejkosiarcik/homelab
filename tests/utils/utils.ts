@@ -136,7 +136,7 @@ export async function withTimeout<T>(operation: () => Promise<T>, timeout: numbe
 
 /**
  * Waits for instance(s) of locator to be hidden
- * Automatically resolves **all** isntances of this locator and waits for all of them to be hidden
+ * Automatically resolves **all** instances of this locator and waits for all of them to be hidden
  */
 export async function waitForHidden(locator: Locator): Promise<void> {
     const set = new Set<string>();
