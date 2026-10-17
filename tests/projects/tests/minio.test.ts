@@ -200,7 +200,7 @@ test.describe(app.title, () => {
                     });
 
                     await test.step('Validate login', async () => {
-                        await page.waitForURL(`${instance.url.ui}/browser`);
+                        await page.waitForURL(`${instance.url.ui}/browser/*`);
                         await expect(page.locator('#root .menuItems')).toBeVisible();
                         await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
                     });
