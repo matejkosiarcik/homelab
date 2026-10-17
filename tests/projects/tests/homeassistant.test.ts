@@ -67,14 +67,13 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('form input[name="username"]').fill(user.username);
                         await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('form button.button').click();
+                        await page.getByRole('button', { name: 'Log in', exact: true }).click();
                     });
 
                     await test.step('Validate login', async () => {
-                        await page.waitForURL(`${instance.url}/lovelace/0`);
+                        await page.waitForURL(`${instance.url}/home/overview`);
                         await expect(page.locator('home-assistant')).toBeVisible();
                         await expect(page.locator('ha-sidebar')).toBeVisible();
-                        await expect(page.locator('ha-panel-lovelace')).toBeVisible();
                     });
                 });
             }
@@ -101,7 +100,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('form input[name="username"]').fill(user.username);
                         await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                        await page.locator('form button.button').click();
+                        await page.getByRole('button', { name: 'Log in', exact: true }).click();
                     });
 
                     await test.step('Validate login attempt', async () => {
