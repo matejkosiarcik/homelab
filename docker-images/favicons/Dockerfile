@@ -114,7 +114,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_
 COPY --from=imagemagick_appimage_gitman /homelab/gitman-repositories/imagemagick-appimage /homelab/imagemagick-git
 WORKDIR /homelab/imagemagick-git
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    version="$(cat LATEST_VERSION)" && \
+    version="$(cat './LATEST_VERSION')" && \
     tag="$(git tag --list "${version}@*" | head -n1)" && \
     curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o ./ImageMagick.AppImage "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
     chmod a+x ./ImageMagick.AppImage && \

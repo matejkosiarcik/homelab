@@ -1,7 +1,35 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
-### Other ###
+### Build config ###
+
+FROM debian:13.7-slim AS gitconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gitconfig_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/* && \
+    printf '' >/root/.gitconfig
+# TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
+# RUN printf '' >/root/.gitconfig && \
+#     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
+#     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
+
+### Dependencies ###
+
+FROM python:3.15.0-slim AS gitman
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
+    python3 -m pip install --no-compile --requirement './requirements.txt' --target './python-vendor' --quiet
 
 FROM debian:13.7-slim AS package_moreutils
 USER root
@@ -21,17 +49,45 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM debian:13.7-slim AS package_curl
+FROM python:3.15.0-slim AS package_curl_gitman
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_curl_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_curl_aptlibcache \
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_setup_package_curl_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_script_setup_package_curl_gitman_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p '/fsroot' && \
-    ldd '/usr/bin/curl' | awk '{ if ($3 ~ /^\//) print $3; else if ($1 ~ /^\//) print $1; }' | \
-        xargs -r cp --parents --dereference --target-directory='/fsroot'
+        git retry >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
+ENV GITMAN_CACHE="/root/.gitcache" \
+    PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
+COPY ./docker-images/.shared/dependencies/static-curl/gitman.yml /homelab/
+COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
+    retry --times=3 -- gitman install --quiet
+
+FROM debian:13.7-slim AS package_curl_final
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_setup_package_curl_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_script_setup_package_curl_final_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates curl git xz-utils >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=package_curl_gitman /homelab/gitman-repositories/static-curl /homelab/static-curl
+WORKDIR /homelab/static-curl
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
+    git fetch --tags && \
+    tag="$(git tag --sort=-creatordate | head -n 1)" && \
+    tmpdir="$(mktemp -d)" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/curl-linux-x86_64-musl-${tag}.tar.xz" && \
+    mkdir -p "${tmpdir}/curl.d" && \
+    tar -xJf "${tmpdir}/curl.tar.xz" -C "${tmpdir}/curl.d" && \
+    mkdir -p '/homelab/bin' && \
+    cp "${tmpdir}/curl.d/curl" '/homelab/bin/' && \
+    rm -rf "${tmpdir}"
 
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
@@ -79,8 +135,7 @@ COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=busybox /fsroot/bin/ /fsroot/bin/
 COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/certs/
-COPY --from=package_curl /fsroot/lib/ /fsroot/lib/
-COPY --from=package_curl /usr/bin/curl /fsroot/usr/bin/
+COPY --from=package_curl_final /homelab/bin/curl /fsroot/usr/bin/
 COPY --from=package_moreutils /usr/bin/sponge /fsroot/usr/bin/
 
 ### Final ###
@@ -94,7 +149,6 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /fsroot/bin/ /bin/
-COPY --from=prefinal --chown=homelab:homelab /fsroot/lib/ /lib/
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="script-setup" \
