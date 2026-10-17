@@ -67,21 +67,31 @@ test.describe(app.title, () => {
                     await fs.mkdir(cacheDir, { recursive: true });
                     console.log = silentConsoleLog;
 
-                    await actualbudgetApi.init({
-                        dataDir: cacheDir,
-                        serverURL: instance.url,
-                        password: getEnv(instance.url, 'PASSWORD'),
+                    const accounts = await test.step('Connect to server', async () => {
+                        await actualbudgetApi.init({
+                            dataDir: cacheDir,
+                            serverURL: instance.url,
+                            password: getEnv(instance.url, 'PASSWORD'),
+                        });
+                        await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'), { password: getEnv(instance.url, 'ENCRYPTION_PASSWORD') });
+                        await actualbudgetApi.sync();
+                        return await actualbudgetApi.getAccounts();
                     });
-                    await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'), { password: getEnv(instance.url, 'ENCRYPTION_PASSWORD') });
-                    await actualbudgetApi.sync();
-                    const accounts = await actualbudgetApi.getAccounts();
-                    expect(accounts, 'There should be some accounts').not.toHaveLength(0);
-                    expect(accounts, 'There should be exactly 1 account').toHaveLength(1);
-                    await actualbudgetApi.getTransactions(accounts[0].id, '1900-01-01', '2999-12-31');
-                    await actualbudgetApi.shutdown();
+
+                    await test.step('Validate server data', async () => {
+                        expect(accounts, 'There should be some accounts').not.toHaveLength(0);
+                        expect(accounts, 'There should be exactly 1 account').toHaveLength(1);
+                        await actualbudgetApi.getTransactions(accounts[0].id, '1900-01-01', '2999-12-31');
+                    });
                 } finally {
-                    console.log = originalConsoleLog;
-                    await fs.rm(cacheDir, { recursive: true, force: true });
+                    await test.step('Close server connection', async () => {
+                        await actualbudgetApi.shutdown();
+                    });
+
+                    await test.step('Cleanup data', async () => {
+                        console.log = originalConsoleLog;
+                        await fs.rm(cacheDir, { recursive: true, force: true });
+                    });
                 }
             })
         });
