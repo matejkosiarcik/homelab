@@ -71,7 +71,7 @@ test.describe(app.title, () => {
                         await actualbudgetApi.init({
                             dataDir: cacheDir,
                             serverURL: instance.url,
-                            password: getEnv(instance.url, 'PASSWORD'),
+                            password: getEnv(instance.url, 'ADMIN_PASSWORD'),
                         });
                         await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'), { password: getEnv(instance.url, 'ENCRYPTION_PASSWORD') });
                         await actualbudgetApi.sync();

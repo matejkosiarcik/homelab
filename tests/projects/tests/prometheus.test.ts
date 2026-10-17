@@ -52,11 +52,11 @@ test.describe(app.title, () => {
                         const response = await axios.get(instance.url, {
                             beforeRedirect: (opts) => {
                                 opts['headers'] = {
-                                    Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                                    Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}`,
                                 };
                             },
                             headers: {
-                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}`,
                             },
                         });
                         expect(response.status, 'Response Status').toStrictEqual(200);
@@ -65,7 +65,7 @@ test.describe(app.title, () => {
 
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
                     await test.step('Open application', async () => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
                         await page.goto(instance.url);
                     });
 
