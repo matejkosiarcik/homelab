@@ -41,7 +41,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM homeassistant/home-assistant:2026.10.1 AS final
+FROM homeassistant/home-assistant:2026.10.2 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
