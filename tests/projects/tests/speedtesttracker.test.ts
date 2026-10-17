@@ -70,14 +70,22 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/admin/login`);
-                    await page.locator('form input[id="form.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                    const originalUrl = page.url();
-                    await page.locator('form input[id="form.email"][type="email"]').fill(user.email);
-                    await page.locator('form input[id="form.password"][type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('form button:has-text("Sign in")').click();
-                    await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/admin/login`);
+                        await page.locator('form input[id="form.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                        return page.url();
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input[id="form.email"][type="email"]').fill(user.email);
+                        await page.locator('form input[id="form.password"][type="password"]').fill(faker.string.alpha(10));
+                        await page.locator('form button:has-text("Sign in")').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
 

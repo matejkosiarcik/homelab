@@ -207,13 +207,21 @@ test.describe(app.title, () => {
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login`);
-                const originalUrl = page.url();
-                await page.locator('form#loginform input[type="password"]').fill(faker.string.alpha(10));
-                await page.locator('form#loginform button[type="submit"]').click();
-                await page.waitForSelector('#error-message:has-text("Wrong password!")', { timeout: 10_000 });
-                await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                const originalUrl = await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/admin/login`);
+                    return page.url();
+                });
+
+                await test.step('Attempt login', async () => {
+                    await page.locator('form#loginform input[type="password"]').fill(faker.string.alpha(10));
+                    await page.locator('form#loginform button[type="submit"]').click();
+                });
+
+                await test.step('Validate login attempt', async () => {
+                    await page.waitForSelector('#error-message:has-text("Wrong password!")', { timeout: 10_000 });
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                });
             });
         });
     }

@@ -75,15 +75,24 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
-                    const originalUrl = page.url();
-                    await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                    await page.locator('input#txtManualName').fill(user.username);
-                    await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
-                    await page.locator('button[type="submit"]').click();
-                    await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
+                        const loginUrl = page.url();
+                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
+                        return loginUrl;
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input#txtManualName').fill(user.username);
+                        await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
+                        await page.locator('button[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

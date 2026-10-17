@@ -85,19 +85,22 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    // Load page
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/dashboard`);
-                    await expect(page.locator('.form-container form')).toBeVisible();
-                    await expect(page.getByRole('alert', { name: 'Incorrect username or password.' })).not.toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/dashboard`);
+                        await expect(page.locator('.form-container form')).toBeVisible();
+                        await expect(page.getByRole('alert', { name: 'Incorrect username or password.' })).not.toBeVisible();
+                    });
 
-                    // Fill in form
-                    await page.locator('form input[autocomplete="username"]').fill(user.username);
-                    await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input[autocomplete="username"]').fill(user.username);
+                        await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
+                        await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    });
 
-                    // Verify fail
-                    await expect(page.locator('[role="alert"]:has-text("Incorrect username or password.")')).toBeVisible();
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('[role="alert"]:has-text("Incorrect username or password.")')).toBeVisible();
+                    });
                 });
             }
         });

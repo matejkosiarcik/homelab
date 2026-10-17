@@ -56,12 +56,20 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/users/sign_in`);
-                    await page.locator('input#user_email[type="email"]').fill(user.email);
-                    await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('input[type="submit"][value="Log in"]').click();
-                    await expect(page.locator('#flash-messages')).toContainText('Invalid email or password.');
-                    await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
+                    await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/users/sign_in`);
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input#user_email[type="email"]').fill(user.email);
+                        await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));
+                        await page.locator('input[type="submit"][value="Log in"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('#flash-messages')).toContainText('Invalid email or password.');
+                        await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
+                    });
                 });
             }
 

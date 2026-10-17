@@ -143,15 +143,23 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    const originalUrl = page.url();
-                    await page.locator('input[name="email"]').fill(user.email);
-                    await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                        return page.url();
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input[name="email"]').fill(user.email);
+                        await page.locator('input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                        await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

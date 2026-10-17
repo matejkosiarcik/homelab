@@ -60,13 +60,21 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/login?redirectUrl=/`);
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('form button[type="submit"]:has-text("Login")').click();
-                    await page.waitForSelector('.text-error:has-text("Username or password are not valid")', { timeout: 10_000 });
-                    await expect(page).toHaveURL(`${instance.url}/login?redirectUrl=/`);
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/login?redirectUrl=/`);
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('form button[type="submit"]:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await page.waitForSelector('.text-error:has-text("Username or password are not valid")', { timeout: 10_000 });
+                        await expect(page).toHaveURL(`${instance.url}/login?redirectUrl=/`);
+                    });
                 });
             }
         });

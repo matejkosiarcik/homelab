@@ -104,20 +104,29 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidViewerUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await delay(2500); // Must delay tests a bit
-                    await page.goto(instance.url);
-                    await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().waitFor()
-                    const originalUrl = page.url();
-                    await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
-                    await page.locator('.MuiDialogContent-root input#topic').fill('test');
-                    await delay(100);
-                    await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
-                    await page.locator('.MuiDialogContent-root input#username').fill(user.username);
-                    await page.locator('.MuiDialogContent-root input#password').fill(faker.string.alpha(10));
-                    await delay(100);
-                    await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
-                    await expect(page.locator('.MuiDialog-container')).toContainText(`User ${user.username} not authorized`);
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await delay(2500); // Must delay tests a bit
+                        await page.goto(instance.url);
+                        await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().waitFor()
+                        const loginUrl = page.url();
+                        await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
+                        await page.locator('.MuiDialogContent-root input#topic').fill('test');
+                        await delay(100);
+                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
+                        return loginUrl;
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('.MuiDialogContent-root input#username').fill(user.username);
+                        await page.locator('.MuiDialogContent-root input#password').fill(faker.string.alpha(10));
+                        await delay(100);
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.MuiDialog-container')).toContainText(`User ${user.username} not authorized`);
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
 

@@ -198,14 +198,22 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.uiUrl);
-                    await page.waitForURL(`${instance.uiUrl}/login`);
-                    const originalUrl = page.url();
-                    await page.locator('input#accessKey').fill(user.username);
-                    await page.locator('input#secretKey').fill(faker.string.alpha(10));
-                    await page.locator('button#do-login[type="submit"]').click();
-                    await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.uiUrl);
+                        await page.waitForURL(`${instance.uiUrl}/login`);
+                        return page.url();
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input#accessKey').fill(user.username);
+                        await page.locator('input#secretKey').fill(faker.string.alpha(10));
+                        await page.locator('button#do-login[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

@@ -57,28 +57,34 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    // Load page
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/login`);
-                    const originalUrl = page.url();
-                    await expect(page.locator('form#loginform')).toBeVisible();
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/login`);
+                        await expect(page.locator('form#loginform')).toBeVisible();
+                        return page.url();
+                    });
 
-                    // For loop necessary to overcome flakiness
-                    for (let i = 0; i < 2; i++) {
-                        // Fill in form
-                        await page.locator('form#loginform input#username').fill(user.username);
-                        await page.locator('form#loginform input#password').fill(faker.string.alphanumeric(10));
-                        await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
+                    await test.step('Attempt login', async () => {
+                        // For loop necessary to overcome flakiness
+                        for (let i = 0; i < 2; i++) {
+                            await page.locator('form#loginform input#username').fill(user.username);
+                            await page.locator('form#loginform input#password').fill(faker.string.alphanumeric(10));
+                            await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
 
-                        // Verify fail
-                        try {
-                            await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
-                            await expect(page).toHaveURL(originalUrl);
-                        } catch {
-                            continue;
+                            try {
+                                await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
+                                await expect(page).toHaveURL(originalUrl);
+                            } catch {
+                                continue;
+                            }
+                            break;
                         }
-                        break;
-                    }
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
+                        await expect(page).toHaveURL(originalUrl);
+                    });
                 });
             }
         });

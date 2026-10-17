@@ -82,13 +82,21 @@ test.describe.skip(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful full login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/`);
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('.button:has-text("Login")').click();
-                    await page.waitForURL(`${instance.url}/`);
-                    await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/`);
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('.button:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await page.waitForURL(`${instance.url}/`);
+                        await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
+                    });
                 });
 
                 test(`UI: Unsuccessful embed open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {

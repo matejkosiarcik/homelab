@@ -90,15 +90,24 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                    const originalUrl = page.url();
-                    await page.locator('form input[name="username"]').waitFor({ timeout: 6000 });
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('form button.button').click();
-                    await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
+                        const loginUrl = page.url();
+                        await page.locator('form input[name="username"]').waitFor({ timeout: 6000 });
+                        return loginUrl;
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('form button.button').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

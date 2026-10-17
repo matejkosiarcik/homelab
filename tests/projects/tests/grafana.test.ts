@@ -56,16 +56,25 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/login`);
-                    const originalUrl = page.url();
-                    await page.locator('input[name="user"]').waitFor({ timeout: 6000 });
-                    await page.locator('input[name="user"]').fill(user.username);
-                    await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('button[type=submit]').click();
-                    await expect(page.locator('.login-content-box:has-text("Login failed")')).toBeVisible();
-                    await expect(page.locator('.login-content-box:has-text("Invalid username or password")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/login`);
+                        const loginUrl = page.url();
+                        await page.locator('input[name="user"]').waitFor({ timeout: 6000 });
+                        return loginUrl;
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input[name="user"]').fill(user.username);
+                        await page.locator('input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('button[type=submit]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.login-content-box:has-text("Login failed")')).toBeVisible();
+                        await expect(page.locator('.login-content-box:has-text("Invalid username or password")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

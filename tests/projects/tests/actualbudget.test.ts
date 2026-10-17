@@ -42,12 +42,20 @@ test.describe(app.title, () => {
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login`);
-                await page.locator('input[type="password"][placeholder="Password"]').fill(faker.string.alpha(10));
-                await page.locator('button[type="button"]:has-text("Sign in")').click();
-                await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
-                await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login`);
+                await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/login`);
+                });
+
+                await test.step('Attempt login', async () => {
+                    await page.locator('input[type="password"][placeholder="Password"]').fill(faker.string.alpha(10));
+                    await page.locator('button[type="button"]:has-text("Sign in")').click();
+                });
+
+                await test.step('Validate login attempt', async () => {
+                    await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
+                    await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login`);
+                });
             });
 
             test('API: Download budget', async () => {
