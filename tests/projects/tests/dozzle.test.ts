@@ -33,7 +33,7 @@ test.describe(app.title, () => {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
                     await test.step('Open login', async () => {
                         await page.goto(instance.url);
-                        await page.waitForURL(`${instance.url}/login?redirectUrl=/`);
+                        await page.waitForURL(`${instance.url}/login?redirectUrl=${encodeURIComponent('/')}`);
                     });
 
                     await test.step('Login', async () => {
@@ -62,7 +62,7 @@ test.describe(app.title, () => {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     await test.step('Open login', async () => {
                         await page.goto(instance.url);
-                        await page.waitForURL(`${instance.url}/login?redirectUrl=/`);
+                        await page.waitForURL(`${instance.url}/login?redirectUrl=${encodeURIComponent('/')}`);
                     });
 
                     await test.step('Attempt login', async () => {
@@ -73,7 +73,7 @@ test.describe(app.title, () => {
 
                     await test.step('Validate login attempt', async () => {
                         await page.waitForSelector('.text-error:has-text("Username or password are not valid")', { timeout: 10_000 });
-                        await expect(page).toHaveURL(`${instance.url}/login?redirectUrl=/`);
+                        await expect(page).toHaveURL(`${instance.url}/login?redirectUrl=${encodeURIComponent('/')}`);
                     });
                 });
             }
