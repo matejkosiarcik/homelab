@@ -39,7 +39,7 @@ test.describe(app.title, () => {
                 expect(response.headers['location'], 'Response header location').toStrictEqual(instance.uiUrl);
             });
 
-            test('UI: Root', async () => {
+            test('API: Get UI', async () => {
                 const response = await axios.get(instance.uiUrl);
                 expect(response.status, 'Response Status').toStrictEqual(200);
             });

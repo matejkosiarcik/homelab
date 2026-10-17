@@ -21,8 +21,13 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('UI: Open', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('text="All notifications"').first()).toBeVisible({ timeout: 5000 });
+                await test.step('Open application', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate application', async () => {
+                    await expect(page.locator('text="All notifications"').first()).toBeVisible({ timeout: 5000 });
+                });
             });
 
             const validUsers = [
@@ -59,39 +64,54 @@ test.describe(app.title, () => {
                 });
 
                 test(`API+UI: Send notification in homelab-publisher and view in ${user.username}`, async ({ page }) => {
-                    await delay(2500); // Must delay tests a bit
-                    await page.goto(instance.url);
-                    await page.locator('#splash').waitFor({ state: 'hidden' });
-                    await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
-                    await page.locator('.MuiDialogContent-root input#topic').fill('test');
-                    await delay(100);
-                    await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
-                    await page.locator('.MuiDialogContent-root input#username').fill(user.username);
-                    await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await delay(100);
-                    await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
-                    await page.waitForURL(`${instance.url}/test`);
-                    await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
-
                     const notification = faker.string.alphanumeric(30);
-                    await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).not.toBeVisible();
 
-                    const response = await axios.request({
-                        auth: {
-                            username: 'homelab-publisher',
-                            password: getEnv(instance.url, 'HOMELAB_PUBLISHER_PASSWORD'),
-                        },
-                        data: notification,
-                        maxRedirects: 0,
-                        method: 'POST',
-                        url: `${instance.url}/test`,
+                    await test.step('Open subscription', async () => {
+                        await delay(2500); // Must delay tests a bit
+                        await page.goto(instance.url);
+                        await waitForHidden(page.locator('#splash'));
+                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
+                        await page.locator('.MuiDialogContent-root input#topic').fill('test');
+                        await delay(100);
+                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
 
-                    await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).toBeVisible();
-                    await delay(500);
-                    await page.locator(`.MuiCardContent-root:has-text("${notification}") button:has([data-testid="CloseIcon"])`).click();
-                    await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).not.toBeVisible();
+                    await test.step('Login', async () => {
+                        await page.locator('.MuiDialogContent-root input#username').fill(user.username);
+                        await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await delay(100);
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/test`);
+                        await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
+                    });
+
+                    await test.step('Send notification', async () => {
+                        await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).not.toBeVisible();
+                        const response = await axios.request({
+                            auth: {
+                                username: 'homelab-publisher',
+                                password: getEnv(instance.url, 'HOMELAB_PUBLISHER_PASSWORD'),
+                            },
+                            data: notification,
+                            maxRedirects: 0,
+                            method: 'POST',
+                            url: `${instance.url}/test`,
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
+                    });
+
+                    await test.step('Validate notification', async () => {
+                        await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).toBeVisible();
+                    });
+
+                    await test.step('Dismiss notification', async () => {
+                        await delay(500);
+                        await page.locator(`.MuiCardContent-root:has-text("${notification}") button:has([data-testid="CloseIcon"])`).click();
+                        await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).not.toBeVisible();
+                    });
                 });
             }
 

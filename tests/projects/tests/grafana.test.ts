@@ -33,15 +33,22 @@ test.describe(app.title, () => {
                 },
             ];
             for (const user of validUsers) {
-                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    // await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/login`);
-                    await page.locator('input[name="user"]').waitFor({ timeout: 6000 });
-                    await page.locator('input[name="user"]').fill(user.username);
-                    await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('button[type=submit]').click();
-                    await expect(page.locator('button[aria-label="Profile"]')).toBeVisible({ timeout: 6000 });
+                test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/login`);
+                        await page.locator('input[name="user"]').waitFor({ timeout: 6000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input[name="user"]').fill(user.username);
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('button[type=submit]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await expect(page.locator('button[aria-label="Profile"]')).toBeVisible({ timeout: 6000 });
+                    });
                 });
             }
 

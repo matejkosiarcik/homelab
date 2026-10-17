@@ -62,12 +62,17 @@ test.describe(app.title, () => {
                 });
 
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('#root header:has-text("Prometheus")')).toBeVisible({ timeout: 10_000 });
-                    await expect(page.locator('#root header a:has-text("Query")')).toBeVisible();
-                    await expect(page.locator('#root header a:has-text("Alerts")')).toBeVisible();
-                    await expect(page.locator('#root header button:has-text("Status")')).toBeVisible();
+                    await test.step('Open application', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate application', async () => {
+                        await expect(page.locator('#root header:has-text("Prometheus")')).toBeVisible({ timeout: 10_000 });
+                        await expect(page.locator('#root header a:has-text("Query")')).toBeVisible();
+                        await expect(page.locator('#root header a:has-text("Alerts")')).toBeVisible();
+                        await expect(page.locator('#root header button:has-text("Status")')).toBeVisible();
+                    });
                 });
             }
 
@@ -102,15 +107,25 @@ test.describe(app.title, () => {
                 });
 
                 test(`UI: Unsuccessful open with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
+                    await test.step('Attempt open with invalid credentials', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
+                    });
                 });
 
                 test(`UI: Unsuccessful open without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
+                    await test.step('Attempt open without a password', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
+                    });
                 });
             }
 
@@ -120,8 +135,13 @@ test.describe(app.title, () => {
             });
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
+                await test.step('Attempt open without credentials', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate access is denied', async () => {
+                    await expect(page.locator('#root header:has-text("Prometheus")')).not.toBeVisible();
+                });
             });
 
             test('API: Prometheus metrics - User homelab-viewer', async () => {

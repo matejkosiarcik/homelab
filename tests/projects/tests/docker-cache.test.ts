@@ -36,11 +36,15 @@ test.describe(app.title, () => {
             });
 
             test('UI: Open proper root', async ({ page }) => {
-                await page.goto(`${instance.url}/v2`);
+                await test.step('Open registry root', async () => {
+                    await page.goto(`${instance.url}/v2`);
+                });
             });
 
             test('UI: Open catalog', async ({ page }) => {
-                await page.goto(`${instance.url}/v2/_catalog`);
+                await test.step('Open registry catalog', async () => {
+                    await page.goto(`${instance.url}/v2/_catalog`);
+                });
             });
         });
     }

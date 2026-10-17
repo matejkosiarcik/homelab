@@ -55,21 +55,34 @@ test.describe.skip(app.title, () => {
                 });
 
                 test(`UI: Successful embed open - User ${user.username}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/picture/1/frame/`);
-                    await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('.button:has-text("Login")').click();
-                    await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                    await expect(page.locator('.admin .icon.settings-button')).not.toBeVisible();
-                    await expect(page.locator('img.camera')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/picture/1/frame/`);
+                        await page.waitForURL(`${instance.url}/picture/1/frame/`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('.button:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/picture/1/frame/`);
+                        await expect(page.locator('.admin .icon.settings-button')).not.toBeVisible();
+                        await expect(page.locator('img.camera')).toBeVisible();
+                    });
                 });
 
                 if (user.username === 'stream') {
                     test(`UI: Successful stream open - User ${user.username}`, async ({ page }) => {
-                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
-                        await page.goto(`${instance.url}/stream`, { waitUntil: 'commit' });
-                        await expect(page.locator('body > img')).toBeVisible({ timeout: 5000 });
+                        await test.step('Open stream', async () => {
+                            await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                            await page.goto(`${instance.url}/stream`, { waitUntil: 'commit' });
+                        });
+
+                        await test.step('Validate stream', async () => {
+                            await expect(page.locator('body > img')).toBeVisible({ timeout: 5000 });
+                        });
                     });
                 }
             }
@@ -100,13 +113,21 @@ test.describe.skip(app.title, () => {
                 });
 
                 test(`UI: Unsuccessful embed open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/picture/1/frame/`);
-                    await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('.button:has-text("Login")').click();
-                    await page.waitForURL(`${instance.url}/picture/1/frame/`);
-                    await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/picture/1/frame/`);
+                        await page.waitForURL(`${instance.url}/picture/1/frame/`);
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('.button:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await page.waitForURL(`${instance.url}/picture/1/frame/`);
+                        await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
+                    });
                 });
 
                 test(`API: Unsuccessful stream open - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {

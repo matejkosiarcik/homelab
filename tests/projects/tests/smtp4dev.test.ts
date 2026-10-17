@@ -64,9 +64,14 @@ test.describe(app.title, () => {
                 });
 
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
+                    await test.step('Open application', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate application', async () => {
+                        await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
+                    });
                 });
 
                 test(`API: Successful get messages - User ${user.username}`, async () => {
@@ -91,13 +96,18 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
-                    try {
-                        await page.goto(instance.url);
-                    } catch {
-                        // Ignore error
-                    }
-                    await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
+                    await test.step('Attempt open with invalid credentials', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                        try {
+                            await page.goto(instance.url);
+                        } catch {
+                            // Ignore error
+                        }
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
+                    });
                 });
 
                 test(`API: Unsuccessful get messages with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
@@ -124,12 +134,17 @@ test.describe(app.title, () => {
             }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
-                try {
-                    await page.goto(instance.url);
-                } catch {
-                    // Ignore error
-                }
-                await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
+                await test.step('Attempt open without credentials', async () => {
+                    try {
+                        await page.goto(instance.url);
+                    } catch {
+                        // Ignore error
+                    }
+                });
+
+                await test.step('Validate access is denied', async () => {
+                    await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
+                });
             });
 
             test('API: Successful get messages', async () => {

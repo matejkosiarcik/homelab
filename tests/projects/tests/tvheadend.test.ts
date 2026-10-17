@@ -40,9 +40,14 @@ test.describe.skip(app.title, () => {
             });
 
             test('UI: Open - No user', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/extjs.html`);
-                await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
+                await test.step('Open application', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate login prompt', async () => {
+                    await page.waitForURL(`${instance.url}/extjs.html`);
+                    await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
+                });
             });
 
             const validUsers = [
@@ -59,15 +64,20 @@ test.describe.skip(app.title, () => {
             for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ browser }) => {
                     const page = await browser.newPage({ httpCredentials: { username: user.username, password: getEnv(instance.url, `${user.username}_PASSWORD`) } });
-                    try {
+
+                    await test.step('Open application', async () => {
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/extjs.html`);
                         await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
+                    });
+
+                    await test.step('Open user session', async () => {
                         await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
+                    });
+
+                    await test.step('Validate user session', async () => {
                         await expect(page.locator(`.x-tab-panel-header .x-tab-strip-text:has-text("Logged in as ${user.username}")`)).toBeVisible({ timeout: 10_000 });
-                    } finally {
-                        await page.close();
-                    }
+                    });
                 });
             }
 
@@ -83,15 +93,17 @@ test.describe.skip(app.title, () => {
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ browser }) => {
                     const page = await browser.newPage({ httpCredentials: { username: user.username, password: faker.string.alpha(10) } });
-                    try {
+
+                    await test.step('Attempt open with invalid credentials', async () => {
                         await page.goto(instance.url);
                         await page.waitForURL(`${instance.url}/extjs.html`);
                         await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
                         await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
+                    });
+
+                    await test.step('Validate access is denied', async () => {
                         await expect(page.locator('body h1:has-text("403 Forbidden")')).toBeVisible();
-                    } finally {
-                        await page.close();
-                    }
+                    });
                 });
             }
         });

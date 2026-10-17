@@ -90,8 +90,13 @@ test.describe(app.title, () => {
             }
 
             test('UI: Open', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login`);
+                await test.step('Open application', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate login page', async () => {
+                    await page.waitForURL(`${instance.url}/admin/login`);
+                });
             });
         });
     }
