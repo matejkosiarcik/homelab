@@ -70,9 +70,15 @@ test.describe(app.title, () => {
             }
 
             test('API: Get healthcheck', async () => {
-                const response = await axios.get(`${instance.url}/api/healthcheck`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response Content').toStrictEqual('up');
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/healthcheck`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.data, 'Response Content').toStrictEqual('up');
+                });
             });
         });
     }

@@ -26,29 +26,35 @@ test.describe(app.title, () => {
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'API_KEY'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'API_KEY'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'app_version',
-                    'expressjs_number_of_open_connections',
-                    'monitor_cert_days_remaining',
-                    'monitor_cert_is_valid',
-                    'monitor_response_time_seconds',
-                    'monitor_response_time',
-                    'monitor_status',
-                    'monitor_uptime_ratio',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'app_version',
+                        'expressjs_number_of_open_connections',
+                        'monitor_cert_days_remaining',
+                        'monitor_cert_is_valid',
+                        'monitor_response_time_seconds',
+                        'monitor_response_time',
+                        'monitor_status',
+                        'monitor_uptime_ratio',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
 
             const validUsers = [

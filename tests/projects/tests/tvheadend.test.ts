@@ -30,13 +30,19 @@ test.describe.skip(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Info', async () => {
-                const response = await axios.get(`${instance.url}/api/serverinfo`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const body = response.data as TvheadendServerInfoResponse;
-                expect(body.api_version, 'API Version').toBeGreaterThan(0);
-                expect(body.sw_version, 'SW Version').toMatch(/.+/);
-                expect(body.name, 'Name').toMatch(/.+/);
-                expect(body.capabilities, 'Capabilities').not.toHaveLength(0);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/serverinfo`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as TvheadendServerInfoResponse;
+                    expect(body.api_version, 'API Version').toBeGreaterThan(0);
+                    expect(body.sw_version, 'SW Version').toMatch(/.+/);
+                    expect(body.name, 'Name').toMatch(/.+/);
+                    expect(body.capabilities, 'Capabilities').not.toHaveLength(0);
+                });
             });
 
             test('UI: Open - No user', async ({ page }) => {

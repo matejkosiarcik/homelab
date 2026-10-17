@@ -153,38 +153,44 @@ test.describe(app.title, () => {
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'pihole_ads_blocked_today',
-                    'pihole_ads_percentage_today',
-                    'pihole_clients_ever_seen',
-                    'pihole_dns_queries_all_types',
-                    'pihole_dns_queries_today',
-                    'pihole_domains_being_blocked',
-                    'pihole_forward_destinations',
-                    'pihole_queries_cached',
-                    'pihole_queries_forwarded',
-                    'pihole_querytypes',
-                    'pihole_reply',
-                    'pihole_status',
-                    'pihole_top_ads',
-                    ...(instance.title.toLowerCase().includes('blackhole') ? [] : ['pihole_top_queries']),
-                    'pihole_top_sources',
-                    'pihole_unique_clients',
-                    'pihole_unique_domains',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'pihole_ads_blocked_today',
+                        'pihole_ads_percentage_today',
+                        'pihole_clients_ever_seen',
+                        'pihole_dns_queries_all_types',
+                        'pihole_dns_queries_today',
+                        'pihole_domains_being_blocked',
+                        'pihole_forward_destinations',
+                        'pihole_queries_cached',
+                        'pihole_queries_forwarded',
+                        'pihole_querytypes',
+                        'pihole_reply',
+                        'pihole_status',
+                        'pihole_top_ads',
+                        ...(instance.title.toLowerCase().includes('blackhole') ? [] : ['pihole_top_queries']),
+                        'pihole_top_sources',
+                        'pihole_unique_clients',
+                        'pihole_unique_domains',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
 
             test('UI: Successful login', async ({ page }) => {

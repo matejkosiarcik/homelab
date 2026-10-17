@@ -50,9 +50,15 @@ test.describe(app.title, () => {
             createPrometheusTests(instance.url, { auth: 'none', path: `/projects/${getEnv(instance.url, 'PROMETHEUS_PROJECT')}/metrics/${getEnv(instance.url, 'API_KEY_READONLY')}` });
 
             test('API: Status endpoint', async () => {
-                const response = await axios.get(`${instance.url}/api/v3/status`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response body').toStrictEqual('OK');
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/v3/status`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.data, 'Response body').toStrictEqual('OK');
+                });
             });
 
             const apiKeys = [
@@ -83,8 +89,10 @@ test.describe(app.title, () => {
                     if (!!variant.key) {
                         headers['X-Api-Key'] = variant.key;
                     }
-                    const response = await axios.get(`${instance.url}/api/v3/checks`, { headers: headers });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/v3/checks`, { headers: headers });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 });
 
                 test(`API: List badges (${variant.title})`, async () => {
@@ -92,8 +100,10 @@ test.describe(app.title, () => {
                     if (!!variant.key) {
                         headers['X-Api-Key'] = variant.key;
                     }
-                    const response = await axios.get(`${instance.url}/api/v3/badges`, { headers: headers });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/v3/badges`, { headers: headers });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 });
 
                 test(`API: List channels (${variant.title})`, async () => {
@@ -102,8 +112,10 @@ test.describe(app.title, () => {
                     if (!!variant.key) {
                         headers['X-Api-Key'] = variant.key;
                     }
-                    const response = await axios.get(`${instance.url}/api/v3/channels`, { headers: headers });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/v3/channels`, { headers: headers });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 });
             }
 

@@ -24,15 +24,23 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Proper root', async () => {
-                const response = await axios.get(`${instance.url}/v2`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
+                await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/v2`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
             });
 
             test('API: Catalog', async () => {
-                const response = await axios.get(`${instance.url}/v2/_catalog`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const body = response.data as DockerProxyCatalogResponse;
-                expect(body.repositories, 'Response repositories').not.toHaveLength(0);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/v2/_catalog`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as DockerProxyCatalogResponse;
+                    expect(body.repositories, 'Response repositories').not.toHaveLength(0);
+                });
             });
 
             test('UI: Open proper root', async ({ page }) => {

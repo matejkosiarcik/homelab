@@ -53,13 +53,15 @@ test.describe(app.title, () => {
                 });
 
                 test(`API: Get prometheus metrics - User ${user.username}`, async () => {
-                    const response = await axios.get(`${instance.url}/metrics`, {
-                        auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/metrics`, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             }
 
@@ -123,13 +125,15 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidPrometheusUsers) {
                 test(`API: Unsuccessful get prometheus metrics - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/metrics`, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alpha(10),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/metrics`, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alpha(10),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
@@ -146,74 +150,80 @@ test.describe(app.title, () => {
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'node_boot_time_seconds',
-                    'node_context_switches_total',
-                    'node_cpu_frequency_max_hertz',
-                    'node_cpu_frequency_min_hertz',
-                    'node_cpu_guest_seconds_total',
-                    'node_cpu_scaling_frequency_hertz',
-                    'node_cpu_scaling_frequency_max_hertz',
-                    'node_cpu_scaling_frequency_min_hertz',
-                    'node_cpu_scaling_governor',
-                    'node_cpu_seconds_total',
-                    'node_disk_discard_time_seconds_total',
-                    'node_disk_discarded_sectors_total',
-                    'node_disk_discards_completed_total',
-                    'node_disk_discards_merged_total',
-                    'node_disk_flush_requests_time_seconds_total',
-                    'node_disk_flush_requests_total',
-                    'node_disk_info',
-                    'node_disk_io_now',
-                    'node_disk_io_time_seconds_total',
-                    'node_disk_io_time_weighted_seconds_total',
-                    'node_disk_read_bytes_total',
-                    'node_disk_read_time_seconds_total',
-                    'node_disk_reads_completed_total',
-                    'node_disk_reads_merged_total',
-                    'node_disk_write_time_seconds_total',
-                    'node_disk_writes_completed_total',
-                    'node_disk_writes_merged_total',
-                    'node_disk_written_bytes_total',
-                    'node_entropy_available_bits',
-                    'node_entropy_pool_size_bits',
-                    'node_exporter_build_info',
-                    'node_filefd_allocated',
-                    'node_filefd_maximum',
-                    'node_filesystem_avail_bytes',
-                    'node_filesystem_device_error',
-                    'node_filesystem_files',
-                    'node_filesystem_files_free',
-                    'node_filesystem_free_bytes',
-                    'node_filesystem_mount_info',
-                    'node_filesystem_purgeable_bytes',
-                    'node_filesystem_readonly',
-                    'node_filesystem_size_bytes',
-                    'node_forks_total',
-                    'node_intr_total',
-                    'node_load1',
-                    'node_load15',
-                    'node_load5',
-                    'node_memory_Active_bytes',
-                    'node_network_up',
-                    'node_os_info',
-                    'node_os_version',
-                    'node_time_seconds',
-                    'node_time_zone_offset_seconds',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'node_boot_time_seconds',
+                        'node_context_switches_total',
+                        'node_cpu_frequency_max_hertz',
+                        'node_cpu_frequency_min_hertz',
+                        'node_cpu_guest_seconds_total',
+                        'node_cpu_scaling_frequency_hertz',
+                        'node_cpu_scaling_frequency_max_hertz',
+                        'node_cpu_scaling_frequency_min_hertz',
+                        'node_cpu_scaling_governor',
+                        'node_cpu_seconds_total',
+                        'node_disk_discard_time_seconds_total',
+                        'node_disk_discarded_sectors_total',
+                        'node_disk_discards_completed_total',
+                        'node_disk_discards_merged_total',
+                        'node_disk_flush_requests_time_seconds_total',
+                        'node_disk_flush_requests_total',
+                        'node_disk_info',
+                        'node_disk_io_now',
+                        'node_disk_io_time_seconds_total',
+                        'node_disk_io_time_weighted_seconds_total',
+                        'node_disk_read_bytes_total',
+                        'node_disk_read_time_seconds_total',
+                        'node_disk_reads_completed_total',
+                        'node_disk_reads_merged_total',
+                        'node_disk_write_time_seconds_total',
+                        'node_disk_writes_completed_total',
+                        'node_disk_writes_merged_total',
+                        'node_disk_written_bytes_total',
+                        'node_entropy_available_bits',
+                        'node_entropy_pool_size_bits',
+                        'node_exporter_build_info',
+                        'node_filefd_allocated',
+                        'node_filefd_maximum',
+                        'node_filesystem_avail_bytes',
+                        'node_filesystem_device_error',
+                        'node_filesystem_files',
+                        'node_filesystem_files_free',
+                        'node_filesystem_free_bytes',
+                        'node_filesystem_mount_info',
+                        'node_filesystem_purgeable_bytes',
+                        'node_filesystem_readonly',
+                        'node_filesystem_size_bytes',
+                        'node_forks_total',
+                        'node_intr_total',
+                        'node_load1',
+                        'node_load15',
+                        'node_load5',
+                        'node_memory_Active_bytes',
+                        'node_network_up',
+                        'node_os_info',
+                        'node_os_version',
+                        'node_time_seconds',
+                        'node_time_zone_offset_seconds',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
         });
     }

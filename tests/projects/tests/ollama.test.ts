@@ -53,14 +53,16 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`API: Unsuccessful get root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/`, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alpha(10),
-                        },
-                        validateStatus: () => true,
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/`, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alpha(10),
+                            },
+                            validateStatus: () => true,
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 

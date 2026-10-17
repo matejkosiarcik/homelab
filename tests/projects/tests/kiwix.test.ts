@@ -49,12 +49,14 @@ test.describe(app.title, () => {
                 });
 
                 test(`API: Successful root - User ${user.username}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        headers: {
-                            Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             }
 
@@ -80,12 +82,14 @@ test.describe(app.title, () => {
                 });
 
                 test(`API: Unsuccessful root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        headers: {
-                            Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 

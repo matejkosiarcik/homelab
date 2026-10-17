@@ -28,11 +28,17 @@ export function createApiRootTest(url: string, _options?: { headers?: Record<str
     };
     return [
         test(`API: Get root${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(url, { headers: options.headers });
-            expect(response.status, 'Response Status').toStrictEqual(options.status);
-            if (options.title !== 'portal') {
-                expect(response.headers['Server'] || response.headers['server'], 'Response Proxy Server header').toStrictEqual('Apache');
-            }
+            await test.step('Request server', async () => {
+                const response = await axios.get(url, { headers: options.headers });
+                expect(response.status, 'Response Status').toStrictEqual(options.status);
+                return response;
+            });
+
+            await test.step('Validate response', async () => {
+                if (options.title !== 'portal') {
+                    expect(response.headers['Server'] || response.headers['server'], 'Response Proxy Server header').toStrictEqual('Apache');
+                }
+            });
         }),
     ];
 }
@@ -45,22 +51,40 @@ export function createHttpToHttpsRedirectTests(url: string, _options?: { title?:
     const urlWithTrailingSlash = new URL(url).pathname === '/' || url.endsWith('/') ? url : `${url}/`;
     return [
         test(`API: Redirect HTTP${port} to HTTPS (root)${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
-            expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
+            await test.step('Request server', async () => {
+                const response = await axios.get(url.replace('https://', 'http://'), { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                return response;
+            });
+
+            await test.step('Validate response', async () => {
+                expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('http://', 'https://').replace(/:\d+$/, ''));
+            });
         }),
 
         test(`API: Redirect HTTP${port} to HTTPS (root slash)${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
-            expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(urlWithTrailingSlash.replace('http://', 'https://').replace(/:\d+$/, ''));
+            await test.step('Request server', async () => {
+                const response = await axios.get(`${url.replace('https://', 'http://')}/`, { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                return response;
+            });
+
+            await test.step('Validate response', async () => {
+                expect(response.headers['location'], 'Response header location').toStrictEqual(urlWithTrailingSlash.replace('http://', 'https://').replace(/:\d+$/, ''));
+            });
         }),
 
         test(`API: Redirect HTTP${port} to HTTPS (random subpage)${options.title ? ` - ${options.title}` : ''}`, async () => {
             const subpage = `/${faker.string.alpha(10)}`;
-            const response = await axios.get(`${url.replace('https://', 'http://')}${subpage}`, { maxRedirects: 0 });
-            expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://').replace(/:\d+$/, '')}${subpage}`);
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url.replace('https://', 'http://')}${subpage}`, { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                return response;
+            });
+
+            await test.step('Validate response', async () => {
+                expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://').replace(/:\d+$/, '')}${subpage}`);
+            });
         }),
     ];
 }
@@ -68,22 +92,40 @@ export function createHttpToHttpsRedirectTests(url: string, _options?: { title?:
 export function createHttpsToHttpRedirectTests(url: string) {
     return [
         test('API: Redirect HTTPS to HTTP (root)', async () => {
-            const response = await axios.get(url.replace('http://', 'https://'), { maxRedirects: 0 });
-            expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('https://', 'http://'));
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(url.replace('http://', 'https://'), { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                return response;
+            });
+
+            await test.step('Validate response', async () => {
+                expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('https://', 'http://'));
+            });
         }),
 
         test('API: Redirect HTTPS to HTTP (root slash)', async () => {
-            const response = await axios.get(`${url.replace('http://', 'https://')}/`, { maxRedirects: 0 });
-            expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('https://', 'http://'));
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url.replace('http://', 'https://')}/`, { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                return response;
+            });
+
+            await test.step('Validate response', async () => {
+                expect(response.headers['location'], 'Response header location').toStrictEqual(url.replace('https://', 'http://'));
+            });
         }),
 
         test('API: Redirect HTTPS to HTTP (random subpage)', async () => {
             const subpage = `/${faker.string.alpha(10)}`;
-            const response = await axios.get(`${url.replace('http://', 'https://')}${subpage}`, { maxRedirects: 0 });
-            expect(response.status, 'Response Status').toStrictEqual(302);
-            expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('https://', 'http://')}${subpage}`);
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url.replace('http://', 'https://')}${subpage}`, { maxRedirects: 0 });
+                expect(response.status, 'Response Status').toStrictEqual(302);
+                return response;
+            });
+
+            await test.step('Validate response', async () => {
+                expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('https://', 'http://')}${subpage}`);
+            });
         }),
     ];
 }
@@ -95,31 +137,43 @@ export function createFaviconTests(url: string, _options?: { headers?: Record<st
     };
     return [
         test(`API: Get favicon.ico${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url}/favicon.ico`, {
-                headers: options.headers,
-                responseType: 'arraybuffer',
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url}/favicon.ico`, {
+                    headers: options.headers,
+                    responseType: 'arraybuffer',
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                return response;
             });
-            expect(response.status, 'Response Status').toStrictEqual(200);
-            const sharpIcons = sharpIco.sharpsFromIco(response.data);
-            expect(sharpIcons.length, `Favicon.ico should have some decoded images`).toBeGreaterThanOrEqual(1);
-            for (const el of sharpIcons.entries()) {
-                const faviconBuffer = await (async () => {
-                    if ('data' in el[1]) {
-                        return await sharp(el[1].data).toFormat('raw').toBuffer();
-                    }
-                    return el[1].toFormat('raw').toBuffer();
-                })();
-                expect(faviconBuffer.length, `Favicon.ico image ${el[0]} decoded size should be nonzero`).toBeGreaterThan(1);
-            }
+
+            await test.step('Validate response', async () => {
+                const sharpIcons = sharpIco.sharpsFromIco(response.data);
+                expect(sharpIcons.length, `Favicon.ico should have some decoded images`).toBeGreaterThanOrEqual(1);
+                for (const el of sharpIcons.entries()) {
+                    const faviconBuffer = await (async () => {
+                        if ('data' in el[1]) {
+                            return await sharp(el[1].data).toFormat('raw').toBuffer();
+                        }
+                        return el[1].toFormat('raw').toBuffer();
+                    })();
+                    expect(faviconBuffer.length, `Favicon.ico image ${el[0]} decoded size should be nonzero`).toBeGreaterThan(1);
+                }
+            });
         }),
         test(`API: Get favicon.png${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url}/favicon.png`, {
-                headers: options.headers,
-                responseType: 'arraybuffer',
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url}/favicon.png`, {
+                    headers: options.headers,
+                    responseType: 'arraybuffer',
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                return response;
             });
-            expect(response.status, 'Response Status').toStrictEqual(200);
-            const faviconBuffer = await sharp(response.data).toFormat('raw').toBuffer();
-            expect(faviconBuffer.length, 'Favicon.png decoded size should be nonzero').toBeGreaterThan(1);
+
+            await test.step('Validate response', async () => {
+                const faviconBuffer = await sharp(response.data).toFormat('raw').toBuffer();
+                expect(faviconBuffer.length, 'Favicon.png decoded size should be nonzero').toBeGreaterThan(1);
+            });
         }),
     ];
 }
@@ -132,17 +186,25 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
 
     const output = [
         test(`API: Proxy root${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url}/.apache`);
-            expect(response.status, 'Response Status').toStrictEqual(200);
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url}/.apache`);
+                expect(response.status, 'Response Status').toStrictEqual(200);
+            });
         }),
     ];
 
     if (options.redirect) {
         output.push(
             test(`API: Proxy redirect to HTTPS${options.title ? ` - ${options.title}` : ''}`, async () => {
-                const response = await axios.get(`${url.replace('https://', 'http://')}/.apache`, { maxRedirects: 0 });
-                expect(response.status, 'Response Status').toStrictEqual(302);
-                expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}/.apache`);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${url.replace('https://', 'http://')}/.apache`, { maxRedirects: 0 });
+                    expect(response.status, 'Response Status').toStrictEqual(302);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.headers['location'], 'Response header location').toStrictEqual(`${url.replace('http://', 'https://')}/.apache`);
+                });
             }),
         );
     }
@@ -188,8 +250,10 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
     ];
     output.push(...proxyStatusVariants.map((variant) => {
         return test(`API: Proxy status (${variant.title})${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url}/.apache/status`, { auth: variant.auth });
-            expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url}/.apache/status`, { auth: variant.auth });
+                expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            });
         });
     }));
 
@@ -234,44 +298,52 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
     ];
     output.push(...proxyPrometheusVariants.map((variant) => {
         return test(`API: Proxy prometheus metrics (${variant.title})${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url}/.apache/metrics`, { auth: variant.auth });
-            expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url}/.apache/metrics`, { auth: variant.auth });
+                expect(response.status, 'Response Status').toStrictEqual(variant.status);
+            });
         });
     }));
 
     output.push(
         test(`API: Proxy prometheus metrics content${options.title ? ` - ${options.title}` : ''}`, async () => {
-            const response = await axios.get(`${url}/.apache/metrics`, {
-                auth: {
-                    username: 'proxy-prometheus',
-                    password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
-                },
+            const response = await test.step('Request server', async () => {
+                const response = await axios.get(`${url}/.apache/metrics`, {
+                    auth: {
+                        username: 'proxy-prometheus',
+                        password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
+                    },
+                });
+                expect(response.status, 'Response Status').toStrictEqual(200);
+                return response;
             });
-            expect(response.status, 'Response Status').toStrictEqual(200);
-            const content = response.data as string;
-            await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-            const lines = content.split('\n');
-            const metrics = [
-                'apache_accesses_total',
-                'apache_connections',
-                'apache_cpu_time_ms_total',
-                'apache_cpuload',
-                'apache_duration_ms_total',
-                'apache_exporter_build_info',
-                'apache_generation',
-                'apache_info',
-                'apache_load',
-                'apache_processes',
-                'apache_scoreboard',
-                'apache_sent_kilobytes_total',
-                'apache_up',
-                'apache_uptime_seconds_total',
-                'apache_version',
-                'apache_workers',
-            ];
-            for (const metric of metrics) {
-                expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-            }
+
+            await test.step('Validate response', async () => {
+                const content = response.data as string;
+                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                const lines = content.split('\n');
+                const metrics = [
+                    'apache_accesses_total',
+                    'apache_connections',
+                    'apache_cpu_time_ms_total',
+                    'apache_cpuload',
+                    'apache_duration_ms_total',
+                    'apache_exporter_build_info',
+                    'apache_generation',
+                    'apache_info',
+                    'apache_load',
+                    'apache_processes',
+                    'apache_scoreboard',
+                    'apache_sent_kilobytes_total',
+                    'apache_up',
+                    'apache_uptime_seconds_total',
+                    'apache_version',
+                    'apache_workers',
+                ];
+                for (const metric of metrics) {
+                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                }
+            });
         }),
     );
 
@@ -324,8 +396,10 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
             ];
             return options.path.flatMap((path, index) => {
                 return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Basic auth (${variant.title})${options.path.length > 1 ? ` path-${index + 1}` : ''}`, async () => {
-                    const response = await axios.get(`${url}${path}`, { auth: variant.auth });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${url}${path}`, { auth: variant.auth });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 }));
             });
         }
@@ -357,8 +431,10 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
                         headers['Authorization'] = `Bearer ${variant.auth}`;
                     }
 
-                    const response = await axios.get(`${url}${path}`, { headers: headers });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${url}${path}`, { headers: headers });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 }));
             });
         }
@@ -382,8 +458,10 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
             ];
             return options.path.flatMap((path, index) => {
                 return prometheusVariants.map((variant) => test(`API: Prometheus metrics with No auth (${variant.title})${options.path.length > 1 ? ` path-${index + 1}` : ''}`, async () => {
-                    const response = await axios.get(`${url}${path}`);
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${url}${path}`);
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 }));
             });
         }

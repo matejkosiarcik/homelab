@@ -23,9 +23,15 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Health endpoint', async () => {
-                const response = await axios.get(`${instance.url}/health`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response body').toStrictEqual('Healthy');
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/health`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.data, 'Response body').toStrictEqual('Healthy');
+                });
             });
 
             const validUsers = [

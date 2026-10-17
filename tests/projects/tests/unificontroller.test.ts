@@ -32,14 +32,20 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Status endpoint', async () => {
-                const response = await axios.get(`${instance.url}/status`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const body = response.data as UnifiControllerStatusResponse;
-                expect(body.meta.rc, 'Response body .meta.rc').toStrictEqual('ok');
-                expect(body.meta.up, 'Response body .meta.up').toStrictEqual(true);
-                expect(body.meta.uuid, 'Response body .meta.uuid').toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
-                expect(body.meta.server_version, 'Response body .meta.server_version').toMatch(/^\d+\.\d+\.\d+$/);
-                expect(body.data, 'Response body .data').toHaveLength(0);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/status`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as UnifiControllerStatusResponse;
+                    expect(body.meta.rc, 'Response body .meta.rc').toStrictEqual('ok');
+                    expect(body.meta.up, 'Response body .meta.up').toStrictEqual(true);
+                    expect(body.meta.uuid, 'Response body .meta.uuid').toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+                    expect(body.meta.server_version, 'Response body .meta.server_version').toMatch(/^\d+\.\d+\.\d+$/);
+                    expect(body.data, 'Response body .data').toHaveLength(0);
+                });
             });
 
             const validUsers = [

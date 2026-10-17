@@ -22,27 +22,33 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/api/prometheus`, {
-                    headers: {
-                        Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}`,
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/prometheus`, {
+                        headers: {
+                            Authorization: `Bearer ${getEnv(instance.url, 'PROMETHEUS_BEARER_TOKEN')}`,
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'homeassistant_area_info',
-                    'homeassistant_entity_available',
-                    'homeassistant_last_updated_time_seconds',
-                    'homeassistant_sensor_timestamp_seconds',
-                    'homeassistant_state_change_created',
-                    'homeassistant_state_change_total',
-                    'python_info',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'homeassistant_area_info',
+                        'homeassistant_entity_available',
+                        'homeassistant_last_updated_time_seconds',
+                        'homeassistant_sensor_timestamp_seconds',
+                        'homeassistant_state_change_created',
+                        'homeassistant_state_change_total',
+                        'python_info',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
 
             const validUsers = [

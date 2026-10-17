@@ -131,26 +131,36 @@ test.describe.skip(app.title, () => {
                 });
 
                 test(`API: Unsuccessful stream open - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/stream`, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alpha(10),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/stream`, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alpha(10),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
             test(`API: Unsuccessful stream open - No user`, async () => {
-                const response = await axios.get(`${instance.url}/stream`);
-                expect(response.status, 'Response Status').toStrictEqual(401);
+                await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/stream`);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
             });
 
             test(`API: Unsuccessful snapshot open - No user`, async () => {
-                const response = await axios.get(`${instance.url}/picture/1/current`);
-                expect(response.status, 'Response Status').toStrictEqual(403);
-                const body = response.data as MotioneyeError;
-                expect(body).toStrictEqual({ error: 'unauthorized', prompt: false });
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/picture/1/current`);
+                    expect(response.status, 'Response Status').toStrictEqual(403);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as MotioneyeError;
+                    expect(body).toStrictEqual({ error: 'unauthorized', prompt: false });
+                });
             });
         });
     }

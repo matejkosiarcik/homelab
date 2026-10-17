@@ -25,10 +25,16 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Healthcheck', async () => {
-                const response = await axios.get(`${instance.url}/api/healthcheck`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const body = response.data as SpeedtestTrackerHealthcheckResponse;
-                expect(body.message, 'Response Message').toMatch(/.+/);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/healthcheck`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as SpeedtestTrackerHealthcheckResponse;
+                    expect(body.message, 'Response Message').toMatch(/.+/);
+                });
             });
 
             const validUsers = [

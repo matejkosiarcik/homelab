@@ -164,17 +164,19 @@ test.describe(app.title, () => {
             for (const user of invalidPublisherUsers2) {
                 test(`API: Unsuccessful send notification - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     await delay(2500); // Must delay tests a bit
-                    const response = await axios.request({
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alpha(10),
-                        },
-                        data: faker.string.alphanumeric(30),
-                        maxRedirects: 0,
-                        method: 'POST',
-                        url: `${instance.url}/test`,
+                    await test.step('Request server', async () => {
+                        const response = await axios.request({
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alpha(10),
+                            },
+                            data: faker.string.alphanumeric(30),
+                            maxRedirects: 0,
+                            method: 'POST',
+                            url: `${instance.url}/test`,
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
         });

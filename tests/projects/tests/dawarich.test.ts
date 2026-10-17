@@ -74,22 +74,28 @@ test.describe(app.title, () => {
             }
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'ruby_collector_metrics_total',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'ruby_collector_metrics_total',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
         });
     }

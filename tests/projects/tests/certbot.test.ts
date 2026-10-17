@@ -26,16 +26,28 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test(`API: HTTPS redirect for certificate`, async () => {
-                const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/certificate.tar.xz`, { maxRedirects: 0 });
-                expect(response.status, 'Response Status').toStrictEqual(302);
-                expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/certificate.tar.xz`);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/certificate.tar.xz`, { maxRedirects: 0 });
+                    expect(response.status, 'Response Status').toStrictEqual(302);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/certificate.tar.xz`);
+                });
             });
 
             test(`API: HTTPS redirect for random download subpath`, async () => {
                 const randomSubpath = faker.string.alphanumeric(10);
-                const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/${randomSubpath}`, { maxRedirects: 0 });
-                expect(response.status, 'Response Status').toStrictEqual(302);
-                expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/${randomSubpath}`);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/${randomSubpath}`, { maxRedirects: 0 });
+                    expect(response.status, 'Response Status').toStrictEqual(302);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/${randomSubpath}`);
+                });
             });
 
             const validUsers = [
@@ -51,33 +63,39 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`API: API Get root - User ${user.username}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
 
                 test(`API: Get certificate - User ${user.username})`, async () => {
-                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
-                        auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
 
                 test(`API: Get random download subpath - User ${user.username}`, async () => {
-                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
-                        auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(404);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(404);
                 });
             }
 
@@ -92,91 +110,109 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`API: Unsuccessful API Get root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alphanumeric(10),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alphanumeric(10),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
                 test(`API: Get certificate - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alphanumeric(10),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alphanumeric(10),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
                 test(`API: Get random download subpath without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
-                        auth: {
-                            username: user.username,
-                            password: '',
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                            auth: {
+                                username: user.username,
+                                password: '',
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
 
                 test(`API: Get random download subpath with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alphanumeric(10),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alphanumeric(10),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
             test(`API: Get certificate - No user`, async () => {
-                const response = await axios.get(`${instance.url}/download/certificate.tar.xz`);
-                expect(response.status, 'Response Status').toStrictEqual(401);
+                await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
             });
 
             test(`API: Get random download subpath - No user`, async () => {
-                const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`);
-                expect(response.status, 'Response Status').toStrictEqual(401);
+                await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`);
+                    expect(response.status, 'Response Status').toStrictEqual(401);
+                });
             });
 
             test('API: Read and validate certificate', async () => {
-                const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
-                    decompress: false,
-                    responseType: 'arraybuffer',
-                    auth: {
-                        username: 'homelab-viewer',
-                        password: getEnv(instance.url, 'HOMELAB_VIEWER_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                        decompress: false,
+                        responseType: 'arraybuffer',
+                        auth: {
+                            username: 'homelab-viewer',
+                            password: getEnv(instance.url, 'HOMELAB_VIEWER_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const randomDir = (await fsx.mkdtemp(path.join(os.tmpdir(), 'homelab-')))!;
-                try {
-                    await fsx.writeFile(path.join(randomDir, 'certificate.tar.xz'), response.data, { encoding: 'binary' });
 
-                    const certificateDir = path.join(randomDir, 'certificate');
-                    await fsx.mkdir(certificateDir);
-                    await extractTar(path.join(randomDir, 'certificate.tar.xz'), certificateDir);
-                    const certificateFile = path.join(randomDir, 'certificate', 'fullchain.pem');
+                await test.step('Validate response', async () => {
+                    const randomDir = (await fsx.mkdtemp(path.join(os.tmpdir(), 'homelab-')))!;
+                    try {
+                        await fsx.writeFile(path.join(randomDir, 'certificate.tar.xz'), response.data, { encoding: 'binary' });
 
-                    expect(fs.existsSync(path.join(certificateDir, 'cert.pem')), 'File cert.pem should exist').toStrictEqual(true);
-                    expect(fs.existsSync(path.join(certificateDir, 'chain.pem')), 'File chain.pem should exist').toStrictEqual(true);
-                    expect(fs.existsSync(path.join(certificateDir, 'fullchain.pem')), 'File fullchain.pem should exist').toStrictEqual(true);
-                    expect(fs.existsSync(path.join(certificateDir, 'privkey.pem')), 'File privkey.pem should exist').toStrictEqual(true);
-                    expect(fs.existsSync(path.join(certificateDir, 'README')), 'File README should exist').toStrictEqual(true);
+                        const certificateDir = path.join(randomDir, 'certificate');
+                        await fsx.mkdir(certificateDir);
+                        await extractTar(path.join(randomDir, 'certificate.tar.xz'), certificateDir);
+                        const certificateFile = path.join(randomDir, 'certificate', 'fullchain.pem');
 
-                    const subprocess = await execa('openssl', ['x509', '-noout', '-subject', '-in', certificateFile]);
-                    expect(subprocess.exitCode, 'OpenSSL subject exit code').toStrictEqual(0);
-                    const domain = subprocess.stdout.trim().replace(/^subject\s*=\s*CN\s*=\s*/, '');
-                    expect(domain, 'OpenSSL exit code').toStrictEqual('*.matejhome.com');
+                        expect(fs.existsSync(path.join(certificateDir, 'cert.pem')), 'File cert.pem should exist').toStrictEqual(true);
+                        expect(fs.existsSync(path.join(certificateDir, 'chain.pem')), 'File chain.pem should exist').toStrictEqual(true);
+                        expect(fs.existsSync(path.join(certificateDir, 'fullchain.pem')), 'File fullchain.pem should exist').toStrictEqual(true);
+                        expect(fs.existsSync(path.join(certificateDir, 'privkey.pem')), 'File privkey.pem should exist').toStrictEqual(true);
+                        expect(fs.existsSync(path.join(certificateDir, 'README')), 'File README should exist').toStrictEqual(true);
 
-                    const subprocess2 = await execa('openssl', ['x509', '-noout', '-checkend', (60 * 60 * 24 * 30).toFixed(0), '-in', certificateFile]);
-                    expect(subprocess2.exitCode, 'OpenSSL validity exit code').toStrictEqual(0);
-                } finally {
-                    await fsx.rm(randomDir, { recursive: true, force: true });
-                }
+                        const subprocess = await execa('openssl', ['x509', '-noout', '-subject', '-in', certificateFile]);
+                        expect(subprocess.exitCode, 'OpenSSL subject exit code').toStrictEqual(0);
+                        const domain = subprocess.stdout.trim().replace(/^subject\s*=\s*CN\s*=\s*/, '');
+                        expect(domain, 'OpenSSL exit code').toStrictEqual('*.matejhome.com');
+
+                        const subprocess2 = await execa('openssl', ['x509', '-noout', '-checkend', (60 * 60 * 24 * 30).toFixed(0), '-in', certificateFile]);
+                        expect(subprocess2.exitCode, 'OpenSSL validity exit code').toStrictEqual(0);
+                    } finally {
+                        await fsx.rm(randomDir, { recursive: true, force: true });
+                    }
+                });
             });
         });
     }
