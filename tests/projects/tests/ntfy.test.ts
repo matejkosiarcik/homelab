@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
-import { axios, delay, getEnv } from '#/utils/utils.ts';
+import { axios, delay, getEnv, waitForHidden } from '#/utils/utils.ts';
 
 const app = apps.ntfy;
 
@@ -38,7 +38,8 @@ test.describe(app.title, () => {
                     await test.step('Open login', async () => {
                         await delay(2500); // Must delay tests a bit
                         await page.goto(instance.url);
-                        await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
+                        await waitForHidden(page.locator('#splash'));
+                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
                         await page.locator('.MuiDialogContent-root input#topic').fill('test');
                         await delay(100);
                         await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
@@ -60,7 +61,8 @@ test.describe(app.title, () => {
                 test(`API+UI: Send notification in homelab-publisher and view in ${user.username}`, async ({ page }) => {
                     await delay(2500); // Must delay tests a bit
                     await page.goto(instance.url);
-                    await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
+                    await page.locator('#splash').waitFor({ state: 'hidden' });
+                    await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
                     await page.locator('.MuiDialogContent-root input#topic').fill('test');
                     await delay(100);
                     await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
@@ -107,9 +109,9 @@ test.describe(app.title, () => {
                     const originalUrl = await test.step('Open login', async () => {
                         await delay(2500); // Must delay tests a bit
                         await page.goto(instance.url);
-                        await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().waitFor()
+                        await waitForHidden(page.locator('#splash'));
                         const loginUrl = page.url();
-                        await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
+                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
                         await page.locator('.MuiDialogContent-root input#topic').fill('test');
                         await delay(100);
                         await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();

@@ -6,6 +6,7 @@ import dns from 'native-dns';
 import * as tar from 'tar';
 import lzma from 'lzma-native';
 import { apps } from '#/utils/apps.ts';
+import { Locator } from '@playwright/test';
 
 export async function delay(timeout: number): Promise<void> {
     return new Promise((resolve) => {
@@ -111,4 +112,53 @@ export function getAllHomelabDomains(): string[] {
         .map(([, value]) => URL.parse(`${value}` as string)?.hostname)
         .filter((hostname): hostname is string => typeof hostname === 'string');
     return [...new Set(domains)];
+}
+
+/**
+ * Invokes a given promise and errors out if it takes longer than given timeout
+ */
+export async function withTimeout<T>(operation: () => Promise<T>, timeout: number, message: string): Promise<T> {
+    let timeoutId: NodeJS.Timeout | undefined;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+        timeoutId = setTimeout(() => {
+            reject(new Error(message));
+        }, timeout);
+    });
+
+    try {
+        return await Promise.race([operation(), timeoutPromise]);
+    } finally {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+    }
+}
+
+/**
+ * Waits for instance(s) of locator to be hidden
+ * Automatically resolves **all** isntances of this locator and waits for all of them to be hidden
+ */
+export async function waitForHidden(locator: Locator): Promise<void> {
+    const set = new Set<string>();
+    const timeout = 10_000;
+
+    await withTimeout(async () => {
+        while (true) {
+            const locators = await locator.all();
+            let newLocators = false;
+
+            await Promise.all(locators.map(async (locator) => {
+                const locatorDescription = locator.toString();
+                if (!set.has(locatorDescription)) {
+                    newLocators = true;
+                    set.add(locatorDescription);
+                }
+                await locator.waitFor({ state: 'hidden', timeout: timeout });
+            }));
+
+            if (!newLocators) {
+                break;
+            }
+        }
+    }, 3 * timeout, `Timed out waiting for ${locator} to be hidden after ${3 * timeout}ms`);
 }
