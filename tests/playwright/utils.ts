@@ -39,6 +39,38 @@ export async function extendPage(_page: Page): Promise<OverridenPage> {
     page._default ??= false;
     page._testid ??= baseTest.info().testId;
 
+    page._goto = page.goto;
+    page.goto = async function (...args: Parameters<Page['goto']>): ReturnType<Page['goto']> {
+        const originalUrl = page.url();
+        const targetUrl = args[0];
+
+        try {
+            return await (page as OverridenPage)._goto(...args);
+        } catch (error) {
+            const currentUrl = page.url();
+            if (error instanceof Error) {
+                (error as Error).message += `\nOriginal URL: ${originalUrl}\nTarget URL: ${targetUrl}\nCurrent URL: ${currentUrl}\nOptions: ${JSON.stringify(args[1] ?? {}, null, 0)}`;
+            }
+            throw error;
+        }
+    };
+
+    page._waitForURL = page.waitForURL;
+    page.waitForURL = async function (...args: Parameters<Page['waitForURL']>): ReturnType<Page['waitForURL']> {
+        const originalUrl = page.url();
+        const targetUrl = args[0];
+
+        try {
+            return await page._waitForURL(...args);
+        } catch (error) {
+            const currentUrl = page.url();
+            if (error instanceof Error) {
+                (error as Error).message += `\nOriginal URL: ${originalUrl}\nTarget URL: ${targetUrl}\nCurrent URL: ${currentUrl}\nOptions: ${JSON.stringify(args[1] ?? {}, null, 0)}`;
+            }
+            throw error;
+        }
+    };
+
     await setupPageConsoleCapture(page);
     await setupPageErrorCapture(page);
     await setupPageHarCapture(page);

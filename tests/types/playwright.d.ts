@@ -20,6 +20,16 @@ export type OverridenPage = Page & {
      * Playwright test ID of the test during which this page was opened
      */
     _testid: string;
+
+    /**
+     * Original `.goto` method
+     */
+    _goto: Page['goto'];
+
+    /**
+     * Original `.waitForURL` method
+     */
+    _waitForURL: Page['waitForURL'];
 };
 
 export type OverridenContext = BrowserContext & {
