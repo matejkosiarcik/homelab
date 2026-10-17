@@ -73,7 +73,7 @@ test.describe(app.title, () => {
 
                             try {
                                 await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
-                                await expect(page).toHaveURL(originalUrl);
+                                await expect(page, 'URL should not change').toHaveURL(originalUrl);
                             } catch {
                                 continue;
                             }
@@ -83,7 +83,7 @@ test.describe(app.title, () => {
 
                     await test.step('Validate login attempt', async () => {
                         await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
-                        await expect(page).toHaveURL(originalUrl);
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });
                 });
             }
