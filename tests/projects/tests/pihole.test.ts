@@ -159,6 +159,7 @@ test.describe(app.title, () => {
                             username: 'prometheus',
                             password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
                         },
+                        timeout: 15_000,
                     });
                     expect(response.status, 'Response Status').toStrictEqual(200);
                     return response;

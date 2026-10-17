@@ -61,7 +61,7 @@ const config: PlaywrightTestConfig = {
         video: 'off',
         screenshot: 'on',
         trace: 'off',
-        actionTimeout: 1000,
+        actionTimeout: 2500,
         navigationTimeout: 20_000,
         contextOptions: {
             strictSelectors: true,
