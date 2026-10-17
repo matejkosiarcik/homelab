@@ -313,10 +313,12 @@ const customTest = baseTest.extend<{
 customTest.expect = customExpect;
 
 // Custom `test.step.soft()`
-async function customTestStepSoft(title: Parameters<(typeof customTest)['step']>[0], callback: Parameters<(typeof baseTest)['step']>[1]): Promise<void> {
-    await customTest.step(title, async (testStepInfo) => {
+async function customTestStepSoft(title: Parameters<(typeof customTest)['step']>[0], callback: Parameters<(typeof customTest)['step']>[1], options?: Parameters<(typeof customTest)['step']>[2]): Promise<void> {
+    await customTest.step(title, async () => {
         try {
-            await callback(testStepInfo);
+            await customTest.step(title, async (testStepInfo) => {
+                await callback(testStepInfo);
+            }, { ...(options ?? {}), box: true });
         } catch (_error) {
             // Playwright's errors don't have proper name, but the name of the class is in the constructor
             const errorName = (() => {
@@ -333,7 +335,7 @@ async function customTestStepSoft(title: Parameters<(typeof customTest)['step']>
                 }
             })();
 
-            // Must rethrow the errors Playwright uses for control mechanism, otherwise we interfere with intended test flow
+            // Must rethrow the original errors Playwright uses for control mechanism, otherwise we interfere with intended test flow
             if (['StepSkipError', 'TestAbortError', 'TestSkipError'].includes(errorName)) {
                 throw _error;
             }
