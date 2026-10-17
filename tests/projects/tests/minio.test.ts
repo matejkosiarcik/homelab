@@ -15,22 +15,22 @@ test.describe(app.title, () => {
         }
 
         test.describe(instance.title, () => {
-            createHttpToHttpsRedirectTests(instance.apiUrl);
-            createHttpToHttpsRedirectTests(instance.uiUrl, { title: 'UI' });
-            createProxyTests(instance.apiUrl);
-            createPrometheusTests(instance.apiUrl, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
-            createApiRootTest(instance.apiUrl, {
+            createHttpToHttpsRedirectTests(instance.url.api);
+            createHttpToHttpsRedirectTests(instance.url.ui, { title: 'UI' });
+            createProxyTests(instance.url.api);
+            createPrometheusTests(instance.url.api, { auth: 'bearer', path: '/minio/v2/metrics/cluster' });
+            createApiRootTest(instance.url.api, {
                 headers: {
                     'User-Agent': new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString()
                 }
             });
-            createTcpTests(instance.apiUrl, [80, 443]);
-            createFaviconTests(instance.apiUrl);
+            createTcpTests(instance.url.api, [80, 443]);
+            createFaviconTests(instance.url.api);
 
             test('API: Redirect to UI', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
-                await test.step('Request server', async () => {
-                    const response = await axios.get(instance.apiUrl, {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(instance.url.api, {
                         headers: {
                             'User-Agent': userAgent,
                         },
@@ -41,43 +41,43 @@ test.describe(app.title, () => {
                 });
 
                 await test.step('Validate response', async () => {
-                    expect(response.headers['location'], 'Response header location').toStrictEqual(instance.uiUrl);
+                    expect(response.headers['location'], 'Response header location').toStrictEqual(instance.url.ui);
                 });
             });
 
             test('API: Get UI', async () => {
                 await test.step('Request server', async () => {
-                    const response = await axios.get(instance.uiUrl);
+                    const response = await axios.get(instance.url.ui);
                     expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             });
 
             test('API: Health endpoint (live)', async () => {
                 await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.apiUrl}/minio/health/live`);
+                    const response = await axios.get(`${instance.url.api}/minio/health/live`);
                     expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             });
 
             test('API: Health endpoint (cluster)', async () => {
                 await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.apiUrl}/minio/health/cluster`);
+                    const response = await axios.get(`${instance.url.api}/minio/health/cluster`);
                     expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             });
 
             test('API: Health endpoint (cluster-read)', async () => {
                 const response = await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.apiUrl}/minio/health/cluster/read`);
+                    const response = await axios.get(`${instance.url.api}/minio/health/cluster/read`);
                     expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             });
 
             test('API: Prometheus metrics content', async () => {
                 const response = await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.apiUrl}/minio/v2/metrics/cluster`, {
+                    const response = await axios.get(`${instance.url.api}/minio/v2/metrics/cluster`, {
                         headers: {
-                            Authorization: `Bearer ${getEnv(instance.apiUrl, 'PROMETHEUS_BEARER_TOKEN')}`,
+                            Authorization: `Bearer ${getEnv(instance.url.api, 'PROMETHEUS_BEARER_TOKEN')}`,
                         },
                     });
                     expect(response.status, 'Response Status').toStrictEqual(200);
@@ -189,18 +189,18 @@ test.describe(app.title, () => {
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
                     await test.step('Open login', async () => {
-                        await page.goto(instance.uiUrl);
-                        await page.waitForURL(`${instance.uiUrl}/login`);
+                        await page.goto(instance.url.ui);
+                        await page.waitForURL(`${instance.url.ui}/login`);
                     });
 
                     await test.step('Login', async () => {
                         await page.locator('input#accessKey').fill(user.username);
-                        await page.locator('input#secretKey').fill(getEnv(instance.apiUrl, `${user.username}_PASSWORD`));
+                        await page.locator('input#secretKey').fill(getEnv(instance.url.api, `${user.username}_PASSWORD`));
                         await page.locator('button#do-login[type="submit"]').click();
                     });
 
                     await test.step('Validate login', async () => {
-                        await page.waitForURL(`${instance.uiUrl}/browser`);
+                        await page.waitForURL(`${instance.url.ui}/browser`);
                         await expect(page.locator('#root .menuItems')).toBeVisible();
                         await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
                     });
@@ -219,8 +219,8 @@ test.describe(app.title, () => {
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
                     const originalUrl = await test.step('Open login', async () => {
-                        await page.goto(instance.uiUrl);
-                        await page.waitForURL(`${instance.uiUrl}/login`);
+                        await page.goto(instance.url.ui);
+                        await page.waitForURL(`${instance.url.ui}/login`);
                         return page.url();
                     });
 

@@ -8,7 +8,7 @@ export const apps = {
     adventurelog: {
         title: 'AdventureLog',
         instances: [
-            { url: 'https://adventurelog.matejhome.com', title: 'Main', backendUrl: 'https://adventurelog.matejhome.com/api', },
+            { url: 'https://adventurelog.matejhome.com', title: 'Main', },
         ],
     },
     certbot: {
@@ -76,7 +76,7 @@ export const apps = {
         title: 'Git Cache',
         instances: [
             // TODO: Re-enable or use nexus
-            { url: 'https://git-cache-github.matejhome.com', title: 'GitHub', enabled: false }, // TODO: Re-enable
+            { url: 'https://git-cache-github.matejhome.com', title: 'GitHub', enabled: false },
         ],
     },
     gotify: {
@@ -137,7 +137,7 @@ export const apps = {
     minio: {
         title: 'MinIO',
         instances: [
-            { apiUrl: 'https://minio.matejhome.com', title: 'Main', uiUrl: 'https://minio.matejhome.com/ui' },
+            { url: { api: 'https://minio.matejhome.com', ui: 'https://minio.matejhome.com/ui' }, title: 'Main' },
         ],
     },
     motioneye: {
@@ -157,7 +157,7 @@ export const apps = {
         title: 'NPM Cache',
         instances: [
             // TODO: Re-enable or use nexus
-            { url: 'https://npm-cache.matejhome.com', title: 'npmjs', enabled: false }, // TODO: Re-enable
+            { url: 'https://npm-cache.matejhome.com', title: 'npmjs', enabled: false },
         ],
     },
     ntfy: {
@@ -179,7 +179,7 @@ export const apps = {
         title: 'Ollama',
         instances: [
             { url: 'https://ollama.matejhome.com', title: 'Main' },
-            // TODO: Reactivete: { url: 'https://ollama-private.matejhome.com', title: 'Private' },
+            { url: 'https://ollama-private.matejhome.com', title: 'Private' },
         ],
     },
     omadacontroller: {
@@ -199,7 +199,7 @@ export const apps = {
         title: 'OpenWebUI',
         instances: [
             { url: 'https://openwebui.matejhome.com', title: 'Main' },
-            // TODO: Reactivete: { url: 'https://openwebui-private.matejhome.com', title: 'Private' },
+            { url: 'https://openwebui-private.matejhome.com', title: 'Private' },
         ],
     },
     pihole: {
