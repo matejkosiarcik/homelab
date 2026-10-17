@@ -24,22 +24,38 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login`);
-                await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
-                await page.locator('button[type="button"]:has-text("Sign in")').click();
-                await page.waitForURL(instance.url);
-                await expect(page.locator('#root:has-text("Files")')).toBeVisible();
-                await expect(page.locator('button:has-text("Create new file")')).toBeVisible();
+                await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/login`);
+                });
+
+                await test.step('Login', async () => {
+                    await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                    await page.locator('button[type="button"]:has-text("Sign in")').click();
+                });
+
+                await test.step('Validate login', async () => {
+                    await page.waitForURL(instance.url);
+                    await expect(page.locator('#root:has-text("Files")')).toBeVisible();
+                    await expect(page.locator('button:has-text("Create new file")')).toBeVisible();
+                });
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login`);
-                await page.locator('input[type="password"][placeholder="Password"]').fill(faker.string.alpha(10));
-                await page.locator('button[type="button"]:has-text("Sign in")').click();
-                await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
-                await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login`);
+                await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/login`);
+                });
+
+                await test.step('Attempt login', async () => {
+                    await page.locator('input[type="password"][placeholder="Password"]').fill(faker.string.alpha(10));
+                    await page.locator('button[type="button"]:has-text("Sign in")').click();
+                });
+
+                await test.step('Validate login attempt', async () => {
+                    await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
+                    await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login`);
+                });
             });
 
             test('API: Download budget', async () => {
@@ -51,21 +67,31 @@ test.describe(app.title, () => {
                     await fs.mkdir(cacheDir, { recursive: true });
                     console.log = silentConsoleLog;
 
-                    await actualbudgetApi.init({
-                        dataDir: cacheDir,
-                        serverURL: instance.url,
-                        password: getEnv(instance.url, 'PASSWORD'),
+                    const accounts = await test.step('Connect to server', async () => {
+                        await actualbudgetApi.init({
+                            dataDir: cacheDir,
+                            serverURL: instance.url,
+                            password: getEnv(instance.url, 'PASSWORD'),
+                        });
+                        await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'), { password: getEnv(instance.url, 'ENCRYPTION_PASSWORD') });
+                        await actualbudgetApi.sync();
+                        return await actualbudgetApi.getAccounts();
                     });
-                    await actualbudgetApi.downloadBudget(getEnv(instance.url, 'SYNC_ID'), { password: getEnv(instance.url, 'ENCRYPTION_PASSWORD') });
-                    await actualbudgetApi.sync();
-                    const accounts = await actualbudgetApi.getAccounts();
-                    expect(accounts, 'There should be some accounts').not.toHaveLength(0);
-                    expect(accounts, 'There should be exactly 1 account').toHaveLength(1);
-                    await actualbudgetApi.getTransactions(accounts[0].id, '1900-01-01', '2999-12-31');
-                    await actualbudgetApi.shutdown();
+
+                    await test.step('Validate server data', async () => {
+                        expect(accounts, 'There should be some accounts').not.toHaveLength(0);
+                        expect(accounts, 'There should be exactly 1 account').toHaveLength(1);
+                        await actualbudgetApi.getTransactions(accounts[0].id, '1900-01-01', '2999-12-31');
+                    });
                 } finally {
-                    console.log = originalConsoleLog;
-                    await fs.rm(cacheDir, { recursive: true, force: true });
+                    await test.step('Close server connection', async () => {
+                        await actualbudgetApi.shutdown();
+                    });
+
+                    await test.step('Cleanup data', async () => {
+                        console.log = originalConsoleLog;
+                        await fs.rm(cacheDir, { recursive: true, force: true });
+                    });
                 }
             })
         });

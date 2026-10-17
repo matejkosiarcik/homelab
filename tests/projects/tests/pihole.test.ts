@@ -153,59 +153,81 @@ test.describe(app.title, () => {
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'pihole_ads_blocked_today',
-                    'pihole_ads_percentage_today',
-                    'pihole_clients_ever_seen',
-                    'pihole_dns_queries_all_types',
-                    'pihole_dns_queries_today',
-                    'pihole_domains_being_blocked',
-                    'pihole_forward_destinations',
-                    'pihole_queries_cached',
-                    'pihole_queries_forwarded',
-                    'pihole_querytypes',
-                    'pihole_reply',
-                    'pihole_status',
-                    'pihole_top_ads',
-                    ...(instance.title.toLowerCase().includes('blackhole') ? [] : ['pihole_top_queries']),
-                    'pihole_top_sources',
-                    'pihole_unique_clients',
-                    'pihole_unique_domains',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'pihole_ads_blocked_today',
+                        'pihole_ads_percentage_today',
+                        'pihole_clients_ever_seen',
+                        'pihole_dns_queries_all_types',
+                        'pihole_dns_queries_today',
+                        'pihole_domains_being_blocked',
+                        'pihole_forward_destinations',
+                        'pihole_queries_cached',
+                        'pihole_queries_forwarded',
+                        'pihole_querytypes',
+                        'pihole_reply',
+                        'pihole_status',
+                        'pihole_top_ads',
+                        ...(instance.title.toLowerCase().includes('blackhole') ? [] : ['pihole_top_queries']),
+                        'pihole_top_sources',
+                        'pihole_unique_clients',
+                        'pihole_unique_domains',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
 
             test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login`);
-                await page.locator('form#loginform input[type="password"]').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('form#loginform button[type="submit"]').click({ timeout: 5000 });
-                await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
-                await expect(page.locator('aside.main-sidebar li a:has-text("Dashboard")')).toBeVisible();
-                await expect(page.locator('.content-wrapper #total_queries')).toBeVisible();
-                await expect(page.locator('.content-wrapper #queries-over-time')).toBeVisible();
+                await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/admin/login`);
+                });
+
+                await test.step('Login', async () => {
+                    await page.locator('form#loginform input[type="password"]').fill(getEnv(instance.url, 'PASSWORD'));
+                    await page.locator('form#loginform button[type="submit"]').click({ timeout: 5000 });
+                });
+
+                await test.step('Validate login', async () => {
+                    await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
+                    await expect(page.locator('aside.main-sidebar li a:has-text("Dashboard")')).toBeVisible();
+                    await expect(page.locator('.content-wrapper #total_queries')).toBeVisible();
+                    await expect(page.locator('.content-wrapper #queries-over-time')).toBeVisible();
+                });
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login`);
-                const originalUrl = page.url();
-                await page.locator('form#loginform input[type="password"]').fill(faker.string.alpha(10));
-                await page.locator('form#loginform button[type="submit"]').click();
-                await page.waitForSelector('#error-message:has-text("Wrong password!")', { timeout: 10_000 });
-                await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                const originalUrl = await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/admin/login`);
+                    return page.url();
+                });
+
+                await test.step('Attempt login', async () => {
+                    await page.locator('form#loginform input[type="password"]').fill(faker.string.alpha(10));
+                    await page.locator('form#loginform button[type="submit"]').click();
+                });
+
+                await test.step('Validate login attempt', async () => {
+                    await page.waitForSelector('#error-message:has-text("Wrong password!")', { timeout: 10_000 });
+                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                });
             });
         });
     }

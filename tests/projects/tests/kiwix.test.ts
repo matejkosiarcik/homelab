@@ -37,19 +37,26 @@ test.describe(app.title, () => {
                 });
 
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/#lang=eng`);
-                    await expect(page.locator('.book__list .book').first()).toBeVisible();
+                    await test.step('Open application', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate application', async () => {
+                        await page.waitForURL(`${instance.url}/#lang=eng`);
+                        await expect(page.locator('.book__list .book').first()).toBeVisible();
+                    });
                 });
 
                 test(`API: Successful root - User ${user.username}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        headers: {
-                            Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username.toUpperCase()}_PASSWORD`)}`).toString('base64')}`,
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             }
 
@@ -64,24 +71,36 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('.book__list .book').first()).not.toBeVisible();
+                    await test.step('Attempt open with invalid credentials', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await expect(page.locator('.book__list .book').first()).not.toBeVisible();
+                    });
                 });
 
                 test(`API: Unsuccessful root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        headers: {
-                            Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('.book__list .book').first()).not.toBeVisible();
+                await test.step('Attempt open without credentials', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate access is denied', async () => {
+                    await expect(page.locator('.book__list .book').first()).not.toBeVisible();
+                });
             });
         });
     }

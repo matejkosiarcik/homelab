@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
-import { axios, getEnv } from '#/utils/utils.ts';
+import { axios, getEnv, waitForHidden } from '#/utils/utils.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
 const app = apps.gatus;
@@ -34,35 +34,44 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    try {
-                        await expect(page.locator('.animate-spin')).toBeVisible({ timeout: 4000 });
-                    } catch {
-                        // Ignore error
-                    }
-                    await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
-                    await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
+                    await test.step('Open application', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                        try {
+                            await expect(page.locator('.animate-spin')).toBeVisible({ timeout: 4000 });
+                        } catch {
+                            // Ignore error
+                        }
+                        await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
+                    });
+
+                    await test.step('Validate application', async () => {
+                        await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
+                    });
                 });
 
                 test(`API: API Get root - User ${user.username}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
 
                 test(`API: Prometheus metrics - User ${user.username}`, async () => {
-                    const response = await axios.get(`${instance.url}/metrics`, {
-                        auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/metrics`, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             }
 
@@ -77,57 +86,80 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful open with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                    await test.step('Attempt open with invalid credentials', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                    });
                 });
 
                 test(`UI: Unsuccessful open without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                    await test.step('Attempt open without a password', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                    });
                 });
 
                 test(`API: Unsuccessful API Get root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(instance.url, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alphanumeric(10),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alphanumeric(10),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             }
 
             test('UI: Unsuccessful open - No user', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                await test.step('Attempt open without credentials', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate access is denied', async () => {
+                    await expect(page.locator('#app .endpoint-group').first()).not.toBeVisible();
+                });
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'gatus_results_certificate_expiration_seconds',
-                    'gatus_results_code_total',
-                    'gatus_results_connected_total',
-                    'gatus_results_duration_seconds',
-                    'gatus_results_endpoint_success',
-                    'gatus_results_total',
-                    'promhttp_metric_handler_requests_in_flight',
-                    'promhttp_metric_handler_requests_total',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'gatus_results_certificate_expiration_seconds',
+                        'gatus_results_code_total',
+                        'gatus_results_connected_total',
+                        'gatus_results_duration_seconds',
+                        'gatus_results_endpoint_success',
+                        'gatus_results_total',
+                        'promhttp_metric_handler_requests_in_flight',
+                        'promhttp_metric_handler_requests_total',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
         });
     }

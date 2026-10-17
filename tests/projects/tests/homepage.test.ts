@@ -27,12 +27,20 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent('/')}`);
-                    await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('button[type="submit"]').click();
-                    await page.waitForURL(`${instance.url}`);
-                    await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent('/')}`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('button[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}`);
+                        await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
+                    });
                 });
             }
 
@@ -43,20 +51,34 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login with wrong password - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent('/')}`);
-                    await page.locator('input[name="password"]').fill(faker.string.alphanumeric(10));
-                    await page.locator('button[type="submit"]').click();
-                    await expect(page.locator('text="Invalid password. Please try again."')).toBeVisible();
-                    await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent(instance.url + '/')}&error=CredentialsSignin`);
-                    expect(page.url(), 'URL should contain error code').toContain('error=CredentialsSignin');
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent('/')}`);
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input[name="password"]').fill(faker.string.alphanumeric(10));
+                        await page.locator('button[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('text="Invalid password. Please try again."')).toBeVisible();
+                        await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent(instance.url + '/')}&error=CredentialsSignin`);
+                        expect(page.url(), 'URL should contain error code').toContain('error=CredentialsSignin');
+                    });
                 });
             }
 
             test('API: Get healthcheck', async () => {
-                const response = await axios.get(`${instance.url}/api/healthcheck`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response Content').toStrictEqual('up');
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/healthcheck`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.data, 'Response Content').toStrictEqual('up');
+                });
             });
         });
     }

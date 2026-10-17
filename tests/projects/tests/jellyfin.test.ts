@@ -23,9 +23,15 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Health endpoint', async () => {
-                const response = await axios.get(`${instance.url}/health`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response body').toStrictEqual('Healthy');
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/health`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.data, 'Response body').toStrictEqual('Healthy');
+                });
             });
 
             const validUsers = [
@@ -44,15 +50,23 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
-                    await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                    await page.locator('input#txtManualName').fill(user.username);
-                    await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('button[type="submit"]').click();
-                    await page.waitForURL(`${instance.url}/web/#/home`);
-                    await expect(page.locator('#indexPage.homePage')).toBeVisible();
-                    await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
+                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input#txtManualName').fill(user.username);
+                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('button[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/web/#/home`);
+                        await expect(page.locator('#indexPage.homePage')).toBeVisible();
+                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+                    });
                 });
             }
 
@@ -67,15 +81,24 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
-                    const originalUrl = page.url();
-                    await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                    await page.locator('input#txtManualName').fill(user.username);
-                    await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
-                    await page.locator('button[type="submit"]').click();
-                    await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
+                        const loginUrl = page.url();
+                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
+                        return loginUrl;
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input#txtManualName').fill(user.username);
+                        await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
+                        await page.locator('button[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

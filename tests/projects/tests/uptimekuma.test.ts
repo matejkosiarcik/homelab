@@ -26,29 +26,35 @@ test.describe(app.title, () => {
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'API_KEY'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'API_KEY'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'app_version',
-                    'expressjs_number_of_open_connections',
-                    'monitor_cert_days_remaining',
-                    'monitor_cert_is_valid',
-                    'monitor_response_time_seconds',
-                    'monitor_response_time',
-                    'monitor_status',
-                    'monitor_uptime_ratio',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'app_version',
+                        'expressjs_number_of_open_connections',
+                        'monitor_cert_days_remaining',
+                        'monitor_cert_is_valid',
+                        'monitor_response_time_seconds',
+                        'monitor_response_time',
+                        'monitor_status',
+                        'monitor_uptime_ratio',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
 
             const validUsers = [
@@ -58,20 +64,22 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    // Load page
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/dashboard`);
-                    await expect(page.locator('.form-container form')).toBeVisible();
-                    // await expect(PageRevealEvent.getByRole('heading', { name: 'All Messages'})).not.toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/dashboard`);
+                        await expect(page.locator('.form-container form')).toBeVisible();
+                    });
 
-                    // Fill in form
-                    await page.locator('form input[autocomplete="username"]').fill(user.username);
-                    await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    await test.step('Login', async () => {
+                        await page.locator('form input[autocomplete="username"]').fill(user.username);
+                        await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    });
 
-                    // Verify login
-                    await expect(page.locator('.form-container form')).not.toBeVisible();
-                    await expect(page.getByRole('heading', { name: 'Quick Stats'})).toBeVisible();
+                    await test.step('Validate login', async () => {
+                        await expect(page.locator('.form-container form')).not.toBeVisible();
+                        await expect(page.getByRole('heading', { name: 'Quick Stats'})).toBeVisible();
+                    });
                 });
             }
 
@@ -83,19 +91,22 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    // Load page
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/dashboard`);
-                    await expect(page.locator('.form-container form')).toBeVisible();
-                    await expect(page.getByRole('alert', { name: 'Incorrect username or password.' })).not.toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/dashboard`);
+                        await expect(page.locator('.form-container form')).toBeVisible();
+                        await expect(page.getByRole('alert', { name: 'Incorrect username or password.' })).not.toBeVisible();
+                    });
 
-                    // Fill in form
-                    await page.locator('form input[autocomplete="username"]').fill(user.username);
-                    await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input[autocomplete="username"]').fill(user.username);
+                        await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
+                        await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    });
 
-                    // Verify fail
-                    await expect(page.locator('[role="alert"]:has-text("Incorrect username or password.")')).toBeVisible();
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('[role="alert"]:has-text("Incorrect username or password.")')).toBeVisible();
+                    });
                 });
             }
         });

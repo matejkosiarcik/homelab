@@ -28,12 +28,20 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/users/sign_in`);
-                    await page.locator('input#user_email[type="email"]').fill(user.email);
-                    await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                    await page.locator('input[type="submit"][value="Log in"]').click();
-                    await expect(page).toHaveURL(`${instance.url}/map/v2`);
-                    await expect(page.locator('#maps-maplibre-container')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/users/sign_in`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input#user_email[type="email"]').fill(user.email);
+                        await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                        await page.locator('input[type="submit"][value="Log in"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await expect(page).toHaveURL(`${instance.url}/map/v2`);
+                        await expect(page.locator('#maps-maplibre-container')).toBeVisible();
+                    });
                 });
             }
 
@@ -48,32 +56,46 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/users/sign_in`);
-                    await page.locator('input#user_email[type="email"]').fill(user.email);
-                    await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('input[type="submit"][value="Log in"]').click();
-                    await expect(page.locator('#flash-messages')).toContainText('Invalid email or password.');
-                    await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
+                    await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/users/sign_in`);
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input#user_email[type="email"]').fill(user.email);
+                        await page.locator('input#user_password[type="password"]').fill(faker.string.alpha(10));
+                        await page.locator('input[type="submit"][value="Log in"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('#flash-messages')).toContainText('Invalid email or password.');
+                        await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
+                    });
                 });
             }
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.url}/metrics`, {
-                    auth: {
-                        username: 'prometheus',
-                        password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'ruby_collector_metrics_total',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'ruby_collector_metrics_total',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
         });
     }

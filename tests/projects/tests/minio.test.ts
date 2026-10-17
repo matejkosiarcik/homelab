@@ -29,127 +29,147 @@ test.describe(app.title, () => {
 
             test('API: Redirect to UI', async () => {
                 const userAgent = new UserAgent([/Chrome/, { platform: 'Win32', vendor: 'Google Inc.' }]).toString();
-                const response = await axios.get(instance.apiUrl, {
-                    headers: {
-                        'User-Agent': userAgent,
-                    },
-                    maxRedirects: 0,
+                await test.step('Request server', async () => {
+                    const response = await axios.get(instance.apiUrl, {
+                        headers: {
+                            'User-Agent': userAgent,
+                        },
+                        maxRedirects: 0,
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(307);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(307);
-                expect(response.headers['location'], 'Response header location').toStrictEqual(instance.uiUrl);
+
+                await test.step('Validate response', async () => {
+                    expect(response.headers['location'], 'Response header location').toStrictEqual(instance.uiUrl);
+                });
             });
 
-            test('UI: Root', async () => {
-                const response = await axios.get(instance.uiUrl);
-                expect(response.status, 'Response Status').toStrictEqual(200);
+            test('API: Get UI', async () => {
+                await test.step('Request server', async () => {
+                    const response = await axios.get(instance.uiUrl);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
             });
 
             test('API: Health endpoint (live)', async () => {
-                const response = await axios.get(`${instance.apiUrl}/minio/health/live`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
+                await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.apiUrl}/minio/health/live`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
             });
 
             test('API: Health endpoint (cluster)', async () => {
-                const response = await axios.get(`${instance.apiUrl}/minio/health/cluster`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
+                await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.apiUrl}/minio/health/cluster`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
             });
 
             test('API: Health endpoint (cluster-read)', async () => {
-                const response = await axios.get(`${instance.apiUrl}/minio/health/cluster/read`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.apiUrl}/minio/health/cluster/read`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                });
             });
 
             test('API: Prometheus metrics content', async () => {
-                const response = await axios.get(`${instance.apiUrl}/minio/v2/metrics/cluster`, {
-                    headers: {
-                        Authorization: `Bearer ${getEnv(instance.apiUrl, 'PROMETHEUS_BEARER_TOKEN')}`,
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.apiUrl}/minio/v2/metrics/cluster`, {
+                        headers: {
+                            Authorization: `Bearer ${getEnv(instance.apiUrl, 'PROMETHEUS_BEARER_TOKEN')}`,
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
-                const lines = content.split('\n');
-                const metrics = [
-                    'minio_audit_failed_messages',
-                    'minio_audit_target_queue_length',
-                    'minio_audit_total_messages',
-                    'minio_cluster_bucket_total',
-                    'minio_cluster_capacity_raw_free_bytes',
-                    'minio_cluster_capacity_raw_total_bytes',
-                    'minio_cluster_capacity_usable_free_bytes',
-                    'minio_cluster_capacity_usable_total_bytes',
-                    'minio_cluster_drive_offline_total',
-                    'minio_cluster_drive_online_total',
-                    'minio_cluster_drive_total',
-                    'minio_cluster_health_erasure_set_healing_drives',
-                    'minio_cluster_health_erasure_set_online_drives',
-                    'minio_cluster_health_erasure_set_read_quorum',
-                    'minio_cluster_health_erasure_set_status',
-                    'minio_cluster_health_erasure_set_write_quorum',
-                    'minio_cluster_health_status',
-                    'minio_cluster_nodes_offline_total',
-                    'minio_cluster_nodes_online_total',
-                    'minio_cluster_objects_size_distribution',
-                    'minio_cluster_objects_version_distribution',
-                    'minio_cluster_usage_deletemarker_total',
-                    'minio_cluster_usage_object_total',
-                    'minio_cluster_usage_total_bytes',
-                    'minio_cluster_usage_version_total',
-                    'minio_cluster_webhook_failed_messages',
-                    'minio_cluster_webhook_online',
-                    'minio_cluster_webhook_queue_length',
-                    'minio_cluster_webhook_total_messages',
-                    'minio_cluster_write_quorum',
-                    'minio_node_file_descriptor_limit_total',
-                    'minio_node_file_descriptor_open_total',
-                    'minio_node_go_routine_total',
-                    'minio_node_ilm_expiry_missed_freeversions',
-                    'minio_node_ilm_expiry_missed_tasks',
-                    'minio_node_ilm_expiry_missed_tierjournal_tasks',
-                    'minio_node_ilm_expiry_num_workers',
-                    'minio_node_ilm_expiry_pending_tasks',
-                    'minio_node_ilm_transition_active_tasks',
-                    'minio_node_ilm_transition_missed_immediate_tasks',
-                    'minio_node_ilm_transition_pending_tasks',
-                    'minio_node_ilm_versions_scanned',
-                    'minio_node_io_rchar_bytes',
-                    // 'minio_node_io_read_bytes',
-                    'minio_node_io_wchar_bytes',
-                    'minio_node_io_write_bytes',
-                    'minio_node_process_cpu_total_seconds',
-                    'minio_node_process_resident_memory_bytes',
-                    'minio_node_process_starttime_seconds',
-                    'minio_node_process_uptime_seconds',
-                    'minio_node_scanner_bucket_scans_finished',
-                    'minio_node_scanner_bucket_scans_started',
-                    'minio_node_scanner_directories_scanned',
-                    'minio_node_scanner_objects_scanned',
-                    'minio_node_scanner_versions_scanned',
-                    'minio_node_syscall_read_total',
-                    'minio_node_syscall_write_total',
-                    'minio_notify_events_errors_total',
-                    'minio_notify_events_sent_total',
-                    'minio_notify_events_skipped_total',
-                    'minio_s3_requests_4xx_errors_total',
-                    'minio_s3_requests_errors_total',
-                    'minio_s3_requests_incoming_total',
-                    'minio_s3_requests_inflight_total',
-                    'minio_s3_requests_rejected_auth_total',
-                    'minio_s3_requests_rejected_header_total',
-                    'minio_s3_requests_rejected_invalid_total',
-                    'minio_s3_requests_rejected_timestamp_total',
-                    'minio_s3_requests_total',
-                    'minio_s3_requests_ttfb_seconds_distribution',
-                    'minio_s3_requests_waiting_total',
-                    'minio_s3_traffic_received_bytes',
-                    'minio_s3_traffic_sent_bytes',
-                    'minio_software_commit_info',
-                    'minio_software_version_info',
-                    'minio_usage_last_activity_nano_seconds',
-                ];
-                for (const metric of metrics) {
-                    expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
-                }
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'minio_audit_failed_messages',
+                        'minio_audit_target_queue_length',
+                        'minio_audit_total_messages',
+                        'minio_cluster_bucket_total',
+                        'minio_cluster_capacity_raw_free_bytes',
+                        'minio_cluster_capacity_raw_total_bytes',
+                        'minio_cluster_capacity_usable_free_bytes',
+                        'minio_cluster_capacity_usable_total_bytes',
+                        'minio_cluster_drive_offline_total',
+                        'minio_cluster_drive_online_total',
+                        'minio_cluster_drive_total',
+                        'minio_cluster_health_erasure_set_healing_drives',
+                        'minio_cluster_health_erasure_set_online_drives',
+                        'minio_cluster_health_erasure_set_read_quorum',
+                        'minio_cluster_health_erasure_set_status',
+                        'minio_cluster_health_erasure_set_write_quorum',
+                        'minio_cluster_health_status',
+                        'minio_cluster_nodes_offline_total',
+                        'minio_cluster_nodes_online_total',
+                        'minio_cluster_objects_size_distribution',
+                        'minio_cluster_objects_version_distribution',
+                        'minio_cluster_usage_deletemarker_total',
+                        'minio_cluster_usage_object_total',
+                        'minio_cluster_usage_total_bytes',
+                        'minio_cluster_usage_version_total',
+                        'minio_cluster_webhook_failed_messages',
+                        'minio_cluster_webhook_online',
+                        'minio_cluster_webhook_queue_length',
+                        'minio_cluster_webhook_total_messages',
+                        'minio_cluster_write_quorum',
+                        'minio_node_file_descriptor_limit_total',
+                        'minio_node_file_descriptor_open_total',
+                        'minio_node_go_routine_total',
+                        'minio_node_ilm_expiry_missed_freeversions',
+                        'minio_node_ilm_expiry_missed_tasks',
+                        'minio_node_ilm_expiry_missed_tierjournal_tasks',
+                        'minio_node_ilm_expiry_num_workers',
+                        'minio_node_ilm_expiry_pending_tasks',
+                        'minio_node_ilm_transition_active_tasks',
+                        'minio_node_ilm_transition_missed_immediate_tasks',
+                        'minio_node_ilm_transition_pending_tasks',
+                        'minio_node_ilm_versions_scanned',
+                        'minio_node_io_rchar_bytes',
+                        // 'minio_node_io_read_bytes',
+                        'minio_node_io_wchar_bytes',
+                        'minio_node_io_write_bytes',
+                        'minio_node_process_cpu_total_seconds',
+                        'minio_node_process_resident_memory_bytes',
+                        'minio_node_process_starttime_seconds',
+                        'minio_node_process_uptime_seconds',
+                        'minio_node_scanner_bucket_scans_finished',
+                        'minio_node_scanner_bucket_scans_started',
+                        'minio_node_scanner_directories_scanned',
+                        'minio_node_scanner_objects_scanned',
+                        'minio_node_scanner_versions_scanned',
+                        'minio_node_syscall_read_total',
+                        'minio_node_syscall_write_total',
+                        'minio_notify_events_errors_total',
+                        'minio_notify_events_sent_total',
+                        'minio_notify_events_skipped_total',
+                        'minio_s3_requests_4xx_errors_total',
+                        'minio_s3_requests_errors_total',
+                        'minio_s3_requests_incoming_total',
+                        'minio_s3_requests_inflight_total',
+                        'minio_s3_requests_rejected_auth_total',
+                        'minio_s3_requests_rejected_header_total',
+                        'minio_s3_requests_rejected_invalid_total',
+                        'minio_s3_requests_rejected_timestamp_total',
+                        'minio_s3_requests_total',
+                        'minio_s3_requests_ttfb_seconds_distribution',
+                        'minio_s3_requests_waiting_total',
+                        'minio_s3_traffic_received_bytes',
+                        'minio_s3_traffic_sent_bytes',
+                        'minio_software_commit_info',
+                        'minio_software_version_info',
+                        'minio_usage_last_activity_nano_seconds',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
             });
 
             const validUsers = [
@@ -168,14 +188,22 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.uiUrl);
-                    await page.waitForURL(`${instance.uiUrl}/login`);
-                    await page.locator('input#accessKey').fill(user.username);
-                    await page.locator('input#secretKey').fill(getEnv(instance.apiUrl, `${user.username}_PASSWORD`));
-                    await page.locator('button#do-login[type="submit"]').click();
-                    await page.waitForURL(`${instance.uiUrl}/browser`);
-                    await expect(page.locator('#root .menuItems')).toBeVisible();
-                    await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.uiUrl);
+                        await page.waitForURL(`${instance.uiUrl}/login`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input#accessKey').fill(user.username);
+                        await page.locator('input#secretKey').fill(getEnv(instance.apiUrl, `${user.username}_PASSWORD`));
+                        await page.locator('button#do-login[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.uiUrl}/browser`);
+                        await expect(page.locator('#root .menuItems')).toBeVisible();
+                        await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
+                    });
                 });
             }
 
@@ -190,14 +218,22 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.uiUrl);
-                    await page.waitForURL(`${instance.uiUrl}/login`);
-                    const originalUrl = page.url();
-                    await page.locator('input#accessKey').fill(user.username);
-                    await page.locator('input#secretKey').fill(faker.string.alpha(10));
-                    await page.locator('button#do-login[type="submit"]').click();
-                    await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.uiUrl);
+                        await page.waitForURL(`${instance.uiUrl}/login`);
+                        return page.url();
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input#accessKey').fill(user.username);
+                        await page.locator('input#secretKey').fill(faker.string.alpha(10));
+                        await page.locator('button#do-login[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

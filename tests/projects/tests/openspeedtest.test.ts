@@ -19,8 +19,13 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url);
 
             test('UI: Open', async ({ page }) => {
-                await page.goto(instance.url);
-                await expect(page.locator('#OpenSpeedtest')).toBeVisible({ timeout: 5000 });
+                await test.step('Open application', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate application', async () => {
+                    await expect(page.locator('#OpenSpeedtest')).toBeVisible({ timeout: 5000 });
+                });
             });
         });
     }

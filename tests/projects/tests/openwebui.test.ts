@@ -30,14 +30,22 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/auth?redirect=%2F`);
-                    await page.locator('form input#email').fill(user.email);
-                    await page.locator('form input#password').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                    await page.locator('form button[type="submit"]:has-text("Sign in")').click();
-                    await page.waitForURL(`${instance.url}/`);
-                    await expect(page.locator('section[aria-label*="Notifications"] [data-content]:has-text("You\'re now logged in.")')).toBeVisible();
-                    await expect(page.locator('#chat-input')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/auth?redirect=%2F`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input#email').fill(user.email);
+                        await page.locator('form input#password').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                        await page.locator('form button[type="submit"]:has-text("Sign in")').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/`);
+                        await expect(page.locator('section[aria-label*="Notifications"] [data-content]:has-text("You\'re now logged in.")')).toBeVisible();
+                        await expect(page.locator('#chat-input')).toBeVisible();
+                    });
                 });
             }
 
@@ -52,12 +60,20 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/auth?redirect=%2F`);
-                    await page.locator('form input#email').fill(user.email);
-                    await page.locator('form input#password').fill(faker.string.alpha(10));
-                    await page.locator('form button[type="submit"]:has-text("Sign in")').click();
-                    await expect(page.locator('section[aria-label*="Notifications"] [data-content]:has-text("The email or password provided is incorrect. Please check for typos and try logging in again.")')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/auth?redirect=%2F`);
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('form input#email').fill(user.email);
+                        await page.locator('form input#password').fill(faker.string.alpha(10));
+                        await page.locator('form button[type="submit"]:has-text("Sign in")').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('section[aria-label*="Notifications"] [data-content]:has-text("The email or password provided is incorrect. Please check for typos and try logging in again.")')).toBeVisible();
+                    });
                 });
             }
 

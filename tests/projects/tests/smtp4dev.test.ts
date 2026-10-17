@@ -64,19 +64,26 @@ test.describe(app.title, () => {
                 });
 
                 test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
-                    await page.goto(instance.url);
-                    await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
+                    await test.step('Open application', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate application', async () => {
+                        await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
+                    });
                 });
 
                 test(`API: Successful get messages - User ${user.username}`, async () => {
-                    const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
-                        auth: {
-                            username: user.username,
-                            password: getEnv(instance.url, `${user.username}_PASSWORD`),
-                        },
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
                     });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
                 });
             }
 
@@ -91,66 +98,86 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                    await test.step('Attempt open with invalid credentials', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                        try {
+                            await page.goto(instance.url);
+                        } catch {
+                            // Ignore error
+                        }
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
+                    });
+                });
+
+                test(`API: Unsuccessful get messages with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alpha(10),
+                            },
+                            validateStatus: () => true,
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
+                    });
+                });
+
+                test(`API: Unsuccessful get messages without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                            auth: {
+                                username: user.username,
+                                password: '',
+                            },
+                            validateStatus: () => true,
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
+                    });
+                });
+            }
+
+            test('UI: Unsuccessful open - No user', async ({ page }) => {
+                await test.step('Attempt open without credentials', async () => {
                     try {
                         await page.goto(instance.url);
                     } catch {
                         // Ignore error
                     }
+                });
+
+                await test.step('Validate access is denied', async () => {
                     await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
                 });
-
-                test(`API: Unsuccessful get messages with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
-                        auth: {
-                            username: user.username,
-                            password: faker.string.alpha(10),
-                        },
-                        validateStatus: () => true,
-                    });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
-                });
-
-                test(`API: Unsuccessful get messages without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
-                    const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
-                        auth: {
-                            username: user.username,
-                            password: '',
-                        },
-                        validateStatus: () => true,
-                    });
-                    expect(response.status, 'Response Status').toStrictEqual(401);
-                });
-            }
-
-            test('UI: Unsuccessful open - No user', async ({ page }) => {
-                try {
-                    await page.goto(instance.url);
-                } catch {
-                    // Ignore error
-                }
-                await expect(page.locator('#tab-messages')).not.toBeVisible({ timeout: 5000 });
             });
 
             test('API: Successful get messages', async () => {
-                const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
-                    auth: {
-                        username: 'homelab-test',
-                        password: getEnv(instance.url, 'HOMELAB_TEST_PASSWORD'),
-                    },
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/messages?page=1&pageSize=10`, {
+                        auth: {
+                            username: 'homelab-test',
+                            password: getEnv(instance.url, 'HOMELAB_TEST_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
                 });
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const data = response.data as Smtp4devResponse;
-                expect(typeof data.currentPage, 'Data currentPage should be number').toStrictEqual('number');
-                expect(typeof data.firstRowOnPage, 'Data firstRowOnPage should be number').toStrictEqual('number');
-                expect(typeof data.lastRowOnPage, 'Data lastRowOnPage should be number').toStrictEqual('number');
-                expect(typeof data.pageCount, 'Data pageCount should be number').toStrictEqual('number');
-                expect(typeof data.pageSize, 'Data pageSize should be number').toStrictEqual('number');
-                expect(typeof data.rowCount, 'Data rowCount should be number').toStrictEqual('number');
-                expect(data.results, 'Data results should be array').toBeInstanceOf(Array);
-                expect(data.currentPage, 'Data results should be array').toStrictEqual(1);
-                expect(data.lastRowOnPage, 'Data results should be array').toBeGreaterThanOrEqual(data.firstRowOnPage - 1);
-                expect(data.pageSize, 'Data results should be array').toStrictEqual(10);
+
+                await test.step('Validate response', async () => {
+                    const data = response.data as Smtp4devResponse;
+                    expect(typeof data.currentPage, 'Data currentPage should be number').toStrictEqual('number');
+                    expect(typeof data.firstRowOnPage, 'Data firstRowOnPage should be number').toStrictEqual('number');
+                    expect(typeof data.lastRowOnPage, 'Data lastRowOnPage should be number').toStrictEqual('number');
+                    expect(typeof data.pageCount, 'Data pageCount should be number').toStrictEqual('number');
+                    expect(typeof data.pageSize, 'Data pageSize should be number').toStrictEqual('number');
+                    expect(typeof data.rowCount, 'Data rowCount should be number').toStrictEqual('number');
+                    expect(data.results, 'Data results should be array').toBeInstanceOf(Array);
+                    expect(data.currentPage, 'Data results should be array').toStrictEqual(1);
+                    expect(data.lastRowOnPage, 'Data results should be array').toBeGreaterThanOrEqual(data.firstRowOnPage - 1);
+                    expect(data.pageSize, 'Data results should be array').toStrictEqual(10);
+                });
             });
         });
     }

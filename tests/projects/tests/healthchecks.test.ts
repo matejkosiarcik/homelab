@@ -50,9 +50,15 @@ test.describe(app.title, () => {
             createPrometheusTests(instance.url, { auth: 'none', path: `/projects/${getEnv(instance.url, 'PROMETHEUS_PROJECT')}/metrics/${getEnv(instance.url, 'API_KEY_READONLY')}` });
 
             test('API: Status endpoint', async () => {
-                const response = await axios.get(`${instance.url}/api/v3/status`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                expect(response.data, 'Response body').toStrictEqual('OK');
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/v3/status`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.data, 'Response body').toStrictEqual('OK');
+                });
             });
 
             const apiKeys = [
@@ -83,8 +89,10 @@ test.describe(app.title, () => {
                     if (!!variant.key) {
                         headers['X-Api-Key'] = variant.key;
                     }
-                    const response = await axios.get(`${instance.url}/api/v3/checks`, { headers: headers });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/v3/checks`, { headers: headers });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 });
 
                 test(`API: List badges (${variant.title})`, async () => {
@@ -92,8 +100,10 @@ test.describe(app.title, () => {
                     if (!!variant.key) {
                         headers['X-Api-Key'] = variant.key;
                     }
-                    const response = await axios.get(`${instance.url}/api/v3/badges`, { headers: headers });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/v3/badges`, { headers: headers });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 });
 
                 test(`API: List channels (${variant.title})`, async () => {
@@ -102,8 +112,10 @@ test.describe(app.title, () => {
                     if (!!variant.key) {
                         headers['X-Api-Key'] = variant.key;
                     }
-                    const response = await axios.get(`${instance.url}/api/v3/channels`, { headers: headers });
-                    expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/v3/channels`, { headers: headers });
+                        expect(response.status, 'Response Status').toStrictEqual(variant.status);
+                    });
                 });
             }
 
@@ -114,13 +126,21 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    await page.locator('input[name="email"]').fill(user.email);
-                    await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                    await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
-                    await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
-                    await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input[name="email"]').fill(user.email);
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
+                        await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
+                    });
                 });
             }
 
@@ -135,15 +155,23 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.email.split('@')[0]}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    const originalUrl = page.url();
-                    await page.locator('input[name="email"]').fill(user.email);
-                    await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                    await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                        return page.url();
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('input[name="email"]').fill(user.email);
+                        await page.locator('input[name="password"]').fill(faker.string.alpha(10));
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                        await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

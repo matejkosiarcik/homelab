@@ -39,21 +39,27 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('API: Status endpoint', async () => {
-                const response = await axios.get(`${instance.url}/api/v2/anon/info`);
-                expect(response.status, 'Response Status').toStrictEqual(200);
-                const body = response.data as OmadaControllerStatusResponse;
-                expect(body.errorCode, 'Response body .errorCode').toStrictEqual(0);
-                expect(body.msg, 'Response body .msg').toStrictEqual('Success.');
-                expect(body.result.controllerBasicVersion, 'Response body .result.controllerBasicVersion').toMatch(/\d+\.\d+\.\d+\.\d+/);
-                expect(body.result.controllerVer, 'Response body .result.controllerVer').toMatch(/\d+\.\d+\.\d+\.\d+/);
-                expect(body.result.apiVer, 'Response body .result.apiVer').toStrictEqual('3');
-                expect(body.result.configured, 'Response body .result.configured').toStrictEqual(true);
-                expect(body.result.type, 'Response body .result.type').toStrictEqual(1);
-                expect(body.result.supportApp, 'Response body .result.supportApp').toStrictEqual(true);
-                expect(body.result.omadacId, 'Response body .result.omadacId').toMatch(/[0-9a-f]+/);
-                expect(body.result.registeredRoot, 'Response body .result.registeredRoot').toStrictEqual(true);
-                expect(body.result.omadacCategory, 'Response body .result.omadacCategory').toMatch('advanced');
-                expect(body.result.mspMode, 'Response body .result.mspMode').toStrictEqual(false);
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/v2/anon/info`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as OmadaControllerStatusResponse;
+                    expect(body.errorCode, 'Response body .errorCode').toStrictEqual(0);
+                    expect(body.msg, 'Response body .msg').toStrictEqual('Success.');
+                    expect(body.result.controllerBasicVersion, 'Response body .result.controllerBasicVersion').toMatch(/\d+\.\d+\.\d+\.\d+/);
+                    expect(body.result.controllerVer, 'Response body .result.controllerVer').toMatch(/\d+\.\d+\.\d+\.\d+/);
+                    expect(body.result.apiVer, 'Response body .result.apiVer').toStrictEqual('3');
+                    expect(body.result.configured, 'Response body .result.configured').toStrictEqual(true);
+                    expect(body.result.type, 'Response body .result.type').toStrictEqual(1);
+                    expect(body.result.supportApp, 'Response body .result.supportApp').toStrictEqual(true);
+                    expect(body.result.omadacId, 'Response body .result.omadacId').toMatch(/[0-9a-f]+/);
+                    expect(body.result.registeredRoot, 'Response body .result.registeredRoot').toStrictEqual(true);
+                    expect(body.result.omadacCategory, 'Response body .result.omadacCategory').toMatch('advanced');
+                    expect(body.result.mspMode, 'Response body .result.mspMode').toStrictEqual(false);
+                });
             });
 
             const validUsers = [
@@ -69,15 +75,23 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/independent/index.html#login`);
-                    await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
-                    await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
-                    await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('.login-form a.button-button[title="Log in"]').click();
-                    await page.waitForURL(`${instance.url}/#/dashboardGlobal`);
-                    await expect(page.locator('text="Site List"')).toBeVisible();
-                    await expect(page.locator('text="Home"')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/independent/index.html#login`);
+                        await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
+                        await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('.login-form a.button-button[title="Log in"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/#/dashboardGlobal`);
+                        await expect(page.locator('text="Site List"')).toBeVisible();
+                        await expect(page.locator('text="Home"')).toBeVisible();
+                    });
                 });
             }
 
@@ -92,15 +106,23 @@ test.describe(app.title, () => {
             ];
             for (const user of invalidUsers) {
                 test(`UI: Unsuccessful login - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/independent/index.html#login`);
-                    await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
-                    const originalUrl = page.url();
-                    await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
-                    await page.locator('.login-form input[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('.login-form a.button-button[title="Log in"]').click();
-                    await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();
-                    await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    const originalUrl = await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/independent/index.html#login`);
+                        await page.locator('.login-form input[placeholder^="Username"]').waitFor({ state: 'visible', timeout: 6000 });
+                        return page.url();
+                    });
+
+                    await test.step('Attempt login', async () => {
+                        await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
+                        await page.locator('.login-form input[type="password"]').fill(faker.string.alpha(10));
+                        await page.locator('.login-form a.button-button[title="Log in"]').click();
+                    });
+
+                    await test.step('Validate login attempt', async () => {
+                        await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();
+                        await expect(page, 'URL should not change').toHaveURL(originalUrl);
+                    });
                 });
             }
         });

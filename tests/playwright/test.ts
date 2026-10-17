@@ -312,5 +312,47 @@ const customTest = baseTest.extend<{
 
 customTest.expect = customExpect;
 
-export const test = customTest;
+// Custom `test.step.soft()`
+async function customTestStepSoft(title: Parameters<(typeof customTest)['step']>[0], callback: Parameters<(typeof customTest)['step']>[1], options?: Parameters<(typeof customTest)['step']>[2]): Promise<void> {
+    await customTest.step(title, async () => {
+        try {
+            await customTest.step(title, async (testStepInfo) => {
+                await callback(testStepInfo);
+            }, { ...(options ?? {}), box: true });
+        } catch (_error) {
+            // Playwright's errors don't have proper name, but the name of the class is in the constructor
+            const errorName = (() => {
+                try {
+                    if (!(_error instanceof Error)) {
+                        return new Error().name;
+                    }
+
+                    const error = (_error as Error);
+                    const errorName = error.constructor.name || error.name;
+                    return errorName;
+                } catch {
+                    return new Error().name;
+                }
+            })();
+
+            // Must rethrow the original errors Playwright uses for control mechanism, otherwise we interfere with intended test flow
+            if (['StepSkipError', 'TestAbortError', 'TestSkipError'].includes(errorName)) {
+                throw _error;
+            }
+
+            // Mark other errors as soft - the test continues, but it is marked as failed and all errors are listed in the report
+            expect.soft(_error, `Soft step "${title}" failed`).toBeUndefined();
+        }
+    }, { box: true });
+}
+
+type CustomTestStepSoft = typeof customTestStepSoft & { skip: typeof customTest.step.skip };
+type CustomTestStep = typeof customTest.step & { soft: CustomTestStepSoft };
+const customTestStepSoftWrapper: CustomTestStepSoft = Object.assign(customTestStepSoft, { skip: customTest.step.skip });
+(customTest.step as CustomTestStep).soft = customTestStepSoftWrapper;
+
+export const test = customTest as typeof customTest & {
+    expect: typeof customExpect,
+    step: { soft: CustomTestStepSoft },
+};
 export const expect = customExpect;
