@@ -28,16 +28,24 @@ test.describe.skip(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/#/login`);
-                    await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                    await page.locator('form input[type="email"]').fill(user.email);
-                    await page.locator('form button:has-text("Continue")').click();
-                    await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
-                    await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                    await page.locator('form button:has-text("Log in with master password")').click();
-                    await page.waitForURL(`${instance.url}/#/vault`);
-                    await page.locator('app-vault').waitFor();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/#/login`);
+                        await page.locator('form input[type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input[type="email"]').fill(user.email);
+                        await page.locator('form button:has-text("Continue")').click();
+                        await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
+                        await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                        await page.locator('form button:has-text("Log in with master password")').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/#/vault`);
+                        await page.locator('app-vault').waitFor();
+                    });
                 });
             }
 

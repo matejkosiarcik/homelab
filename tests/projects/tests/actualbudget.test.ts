@@ -24,13 +24,21 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login`);
-                await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
-                await page.locator('button[type="button"]:has-text("Sign in")').click();
-                await page.waitForURL(instance.url);
-                await expect(page.locator('#root:has-text("Files")')).toBeVisible();
-                await expect(page.locator('button:has-text("Create new file")')).toBeVisible();
+                await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/login`);
+                });
+
+                await test.step('Login', async () => {
+                    await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                    await page.locator('button[type="button"]:has-text("Sign in")').click();
+                });
+
+                await test.step('Validate login', async () => {
+                    await page.waitForURL(instance.url);
+                    await expect(page.locator('#root:has-text("Files")')).toBeVisible();
+                    await expect(page.locator('button:has-text("Create new file")')).toBeVisible();
+                });
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {

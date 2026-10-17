@@ -36,14 +36,22 @@ test.describe.skip(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful full login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/`);
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('.button:has-text("Login")').click();
-                    await page.waitForURL(`${instance.url}/`);
-                    await expect(page.locator('img.camera')).toBeVisible();
-                    await expect(page.locator('.settings-top-bar .icon.settings-button')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('.button:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/`);
+                        await expect(page.locator('img.camera')).toBeVisible();
+                        await expect(page.locator('.settings-top-bar .icon.settings-button')).toBeVisible();
+                    });
                 });
 
                 test(`UI: Successful embed open - User ${user.username}`, async ({ page }) => {

@@ -28,12 +28,20 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/users/sign_in`);
-                    await page.locator('input#user_email[type="email"]').fill(user.email);
-                    await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                    await page.locator('input[type="submit"][value="Log in"]').click();
-                    await expect(page).toHaveURL(`${instance.url}/map/v2`);
-                    await expect(page.locator('#maps-maplibre-container')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/users/sign_in`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input#user_email[type="email"]').fill(user.email);
+                        await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                        await page.locator('input[type="submit"][value="Log in"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await expect(page).toHaveURL(`${instance.url}/map/v2`);
+                        await expect(page.locator('#maps-maplibre-container')).toBeVisible();
+                    });
                 });
             }
 

@@ -38,16 +38,24 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
-                    await page.goto(`${instance.url}/admin/login`);
-                    await page.locator('form input[id="form.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
-                    await page.locator('form input[id="form.email"][type="email"]').fill(user.email);
-                    await page.locator('form input[id="form.password"][type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                    await page.locator('form button:has-text("Sign in")').click();
-                    await page.waitForURL(`${instance.url}/admin`);
-                    await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
-                    await expect(page.locator('main .fi-section-header-heading:has-text("Download")')).toBeVisible();
-                    await expect(page.locator('main .fi-section-header-heading:has-text("Upload")')).toBeVisible();
-                    await expect(page.locator('main .fi-section-header-heading:has-text("Ping")')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(`${instance.url}/admin/login`);
+                        await page.locator('form input[id="form.email"][type="email"]').waitFor({ state: 'visible', timeout: 6000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input[id="form.email"][type="email"]').fill(user.email);
+                        await page.locator('form input[id="form.password"][type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                        await page.locator('form button:has-text("Sign in")').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/admin`);
+                        await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
+                        await expect(page.locator('main .fi-section-header-heading:has-text("Download")')).toBeVisible();
+                        await expect(page.locator('main .fi-section-header-heading:has-text("Upload")')).toBeVisible();
+                        await expect(page.locator('main .fi-section-header-heading:has-text("Ping")')).toBeVisible();
+                    });
                 });
             }
 

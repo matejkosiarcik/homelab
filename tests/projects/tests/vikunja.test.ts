@@ -28,18 +28,21 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    // Load page
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/login`);
-                    await expect(page.locator('form#loginform')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/login`);
+                        await expect(page.locator('form#loginform')).toBeVisible();
+                    });
 
-                    // Fill in form
-                    await page.locator('form#loginform input#username').fill(user.username);
-                    await page.locator('form#loginform input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
+                    await test.step('Login', async () => {
+                        await page.locator('form#loginform input#username').fill(user.username);
+                        await page.locator('form#loginform input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
+                    });
 
-                    // Verify login
-                    await expect(page.locator('aside li .project-menu-title:has-text("Inbox")')).toBeVisible();
+                    await test.step('Validate login', async () => {
+                        await expect(page.locator('aside li .project-menu-title:has-text("Inbox")')).toBeVisible();
+                    });
                 });
             }
 

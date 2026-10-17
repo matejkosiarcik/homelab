@@ -58,16 +58,24 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
-                    await page.locator('form input[name="username"]').waitFor({ timeout: 6000 });
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('form button.button').click();
-                    await page.waitForURL(`${instance.url}/lovelace/0`);
-                    await expect(page.locator('home-assistant')).toBeVisible();
-                    await expect(page.locator('ha-sidebar')).toBeVisible();
-                    await expect(page.locator('ha-panel-lovelace')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/auth\/authorize(?:\?.*)?$/);
+                        await page.locator('form input[name="username"]').waitFor({ timeout: 6000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('form button.button').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/lovelace/0`);
+                        await expect(page.locator('home-assistant')).toBeVisible();
+                        await expect(page.locator('ha-sidebar')).toBeVisible();
+                        await expect(page.locator('ha-panel-lovelace')).toBeVisible();
+                    });
                 });
             }
 

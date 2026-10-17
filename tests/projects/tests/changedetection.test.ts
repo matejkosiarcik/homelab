@@ -21,15 +21,23 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
 
             test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login?redirect=/`);
-                await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
-                await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
-                await page.waitForURL(instance.url);
-                await expect(page.locator('#new-watch-form')).toBeVisible();
-                await expect(page.locator('table.watch-table td.last-checked').first()).toBeVisible();
-                await page.goto(`${instance.url}/settings#general`);
-                await expect(page).toHaveURL(`${instance.url}/settings#general`);
+                await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/login?redirect=/`);
+                });
+
+                await test.step('Login', async () => {
+                    await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
+                    await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
+                });
+
+                await test.step('Validate login', async () => {
+                    await page.waitForURL(instance.url);
+                    await expect(page.locator('#new-watch-form')).toBeVisible();
+                    await expect(page.locator('table.watch-table td.last-checked').first()).toBeVisible();
+                    await page.goto(`${instance.url}/settings#general`);
+                    await expect(page).toHaveURL(`${instance.url}/settings#general`);
+                });
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {

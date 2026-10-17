@@ -44,15 +44,23 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
-                    await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
-                    await page.locator('input#txtManualName').fill(user.username);
-                    await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('button[type="submit"]').click();
-                    await page.waitForURL(`${instance.url}/web/#/home`);
-                    await expect(page.locator('#indexPage.homePage')).toBeVisible();
-                    await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/web\/#\/login(?:\?.*)?/);
+                        await page.locator('input#txtManualName').waitFor({ timeout: 8000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input#txtManualName').fill(user.username);
+                        await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('button[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/web/#/home`);
+                        await expect(page.locator('#indexPage.homePage')).toBeVisible();
+                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+                    });
                 });
             }
 

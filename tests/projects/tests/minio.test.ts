@@ -168,14 +168,22 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.uiUrl);
-                    await page.waitForURL(`${instance.uiUrl}/login`);
-                    await page.locator('input#accessKey').fill(user.username);
-                    await page.locator('input#secretKey').fill(getEnv(instance.apiUrl, `${user.username}_PASSWORD`));
-                    await page.locator('button#do-login[type="submit"]').click();
-                    await page.waitForURL(`${instance.uiUrl}/browser`);
-                    await expect(page.locator('#root .menuItems')).toBeVisible();
-                    await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.uiUrl);
+                        await page.waitForURL(`${instance.uiUrl}/login`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input#accessKey').fill(user.username);
+                        await page.locator('input#secretKey').fill(getEnv(instance.apiUrl, `${user.username}_PASSWORD`));
+                        await page.locator('button#do-login[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.uiUrl}/browser`);
+                        await expect(page.locator('#root .menuItems')).toBeVisible();
+                        await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
+                    });
                 });
             }
 

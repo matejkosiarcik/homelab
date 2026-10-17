@@ -188,14 +188,22 @@ test.describe(app.title, () => {
             });
 
             test('UI: Successful login', async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/admin/login`);
-                await page.locator('form#loginform input[type="password"]').fill(getEnv(instance.url, 'PASSWORD'));
-                await page.locator('form#loginform button[type="submit"]').click({ timeout: 5000 });
-                await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
-                await expect(page.locator('aside.main-sidebar li a:has-text("Dashboard")')).toBeVisible();
-                await expect(page.locator('.content-wrapper #total_queries')).toBeVisible();
-                await expect(page.locator('.content-wrapper #queries-over-time')).toBeVisible();
+                await test.step('Open login', async () => {
+                    await page.goto(instance.url);
+                    await page.waitForURL(`${instance.url}/admin/login`);
+                });
+
+                await test.step('Login', async () => {
+                    await page.locator('form#loginform input[type="password"]').fill(getEnv(instance.url, 'PASSWORD'));
+                    await page.locator('form#loginform button[type="submit"]').click({ timeout: 5000 });
+                });
+
+                await test.step('Validate login', async () => {
+                    await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
+                    await expect(page.locator('aside.main-sidebar li a:has-text("Dashboard")')).toBeVisible();
+                    await expect(page.locator('.content-wrapper #total_queries')).toBeVisible();
+                    await expect(page.locator('.content-wrapper #queries-over-time')).toBeVisible();
+                });
             });
 
             test('UI: Unsuccessful login', async ({ page }) => {

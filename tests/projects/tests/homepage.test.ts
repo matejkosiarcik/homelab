@@ -27,12 +27,20 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent('/')}`);
-                    await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('button[type="submit"]').click();
-                    await page.waitForURL(`${instance.url}`);
-                    await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent('/')}`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('button[type="submit"]').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}`);
+                        await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
+                    });
                 });
             }
 

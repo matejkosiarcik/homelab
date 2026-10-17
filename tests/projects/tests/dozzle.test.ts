@@ -31,13 +31,21 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                await page.goto(instance.url);
-                await page.waitForURL(`${instance.url}/login?redirectUrl=/`);
-                await page.locator('form input[name="username"]').fill(user.username);
-                await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                await page.locator('form button[type="submit"]:has-text("Login")').click();
-                await page.waitForURL(instance.url);
-                await expect(page.locator('a[href^="/container/"]').first()).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/login?redirectUrl=/`);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('form button[type="submit"]:has-text("Login")').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(instance.url);
+                        await expect(page.locator('a[href^="/container/"]').first()).toBeVisible();
+                    });
                 });
             }
 

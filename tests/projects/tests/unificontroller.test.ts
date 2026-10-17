@@ -55,15 +55,23 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
-                    await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
-                    await page.locator('form input[name="username"]').fill(user.username);
-                    await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('button#loginButton').click();
-                    await page.waitForURL(`${instance.url}/manage/default/dashboard`, { timeout: 30_000 });
-                    await expect(page.locator('[data-testid="header_usericon"]')).toBeVisible({ timeout: 20_000 });
-                    await expect(page.locator('a[data-testid="navigation-dashboard"]')).toBeVisible({ timeout: 20_000 });
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/manage\/account\/login(?:\?.*)?$/);
+                        await page.locator('form input[name="username"]').waitFor({ state: 'visible', timeout: 6000 });
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('form input[name="username"]').fill(user.username);
+                        await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('button#loginButton').click();
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/manage/default/dashboard`, { timeout: 30_000 });
+                        await expect(page.locator('[data-testid="header_usericon"]')).toBeVisible({ timeout: 20_000 });
+                        await expect(page.locator('a[data-testid="navigation-dashboard"]')).toBeVisible({ timeout: 20_000 });
+                    });
                 });
             }
 

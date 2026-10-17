@@ -114,13 +114,21 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.email.split('@')[0]}`, async ({ page }) => {
-                    await page.goto(instance.url);
-                    await page.waitForURL(/\/accounts\/login\/?$/);
-                    await page.locator('input[name="email"]').fill(user.email);
-                    await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                    await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
-                    await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
-                    await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(/\/accounts\/login\/?$/);
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('input[name="email"]').fill(user.email);
+                        await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
+                        await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
+                    });
                 });
             }
 

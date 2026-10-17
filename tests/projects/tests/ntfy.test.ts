@@ -35,18 +35,26 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    await delay(2500); // Must delay tests a bit
-                    await page.goto(instance.url);
-                    await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
-                    await page.locator('.MuiDialogContent-root input#topic').fill('test');
-                    await delay(100);
-                    await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
-                    await page.locator('.MuiDialogContent-root input#username').fill(user.username);
-                    await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await delay(250);
-                    await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ timeout: 4000 });
-                    await page.waitForURL(`${instance.url}/test`);
-                    await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
+                    await test.step('Open login', async () => {
+                        await delay(2500); // Must delay tests a bit
+                        await page.goto(instance.url);
+                        await page.locator('.MuiDrawer-root .MuiListItemText-root:has-text("Subscribe to topic")').first().click();
+                        await page.locator('.MuiDialogContent-root input#topic').fill('test');
+                        await delay(100);
+                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
+                    });
+
+                    await test.step('Login', async () => {
+                        await page.locator('.MuiDialogContent-root input#username').fill(user.username);
+                        await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await delay(250);
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ timeout: 4000 });
+                    });
+
+                    await test.step('Validate login', async () => {
+                        await page.waitForURL(`${instance.url}/test`);
+                        await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
+                    });
                 });
 
                 test(`API+UI: Send notification in homelab-publisher and view in ${user.username}`, async ({ page }) => {

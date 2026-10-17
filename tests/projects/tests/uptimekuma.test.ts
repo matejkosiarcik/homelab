@@ -58,20 +58,22 @@ test.describe(app.title, () => {
             ];
             for (const user of validUsers) {
                 test(`UI: Successful login - User ${user.username}`, async ({ page }) => {
-                    // Load page
-                    await page.goto(instance.url);
-                    await page.waitForURL(`${instance.url}/dashboard`);
-                    await expect(page.locator('.form-container form')).toBeVisible();
-                    // await expect(PageRevealEvent.getByRole('heading', { name: 'All Messages'})).not.toBeVisible();
+                    await test.step('Open login', async () => {
+                        await page.goto(instance.url);
+                        await page.waitForURL(`${instance.url}/dashboard`);
+                        await expect(page.locator('.form-container form')).toBeVisible();
+                    });
 
-                    // Fill in form
-                    await page.locator('form input[autocomplete="username"]').fill(user.username);
-                    await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                    await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    await test.step('Login', async () => {
+                        await page.locator('form input[autocomplete="username"]').fill(user.username);
+                        await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
+                        await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                    });
 
-                    // Verify login
-                    await expect(page.locator('.form-container form')).not.toBeVisible();
-                    await expect(page.getByRole('heading', { name: 'Quick Stats'})).toBeVisible();
+                    await test.step('Validate login', async () => {
+                        await expect(page.locator('.form-container form')).not.toBeVisible();
+                        await expect(page.getByRole('heading', { name: 'Quick Stats'})).toBeVisible();
+                    });
                 });
             }
 
