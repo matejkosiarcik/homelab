@@ -65,6 +65,9 @@ test.describe(app.title, () => {
 
                 test(`API+UI: Send notification in homelab-publisher and view in ${user.username}`, async ({ page }) => {
                     const notification = faker.string.alphanumeric(30);
+                    const notificationItem = page
+                        .getByRole('listitem', { name: 'Notification' })
+                        .filter({ hasText: notification });
 
                     await test.step('Open subscription', async () => {
                         await delay(2500); // Must delay tests a bit
@@ -104,13 +107,12 @@ test.describe(app.title, () => {
                     });
 
                     await test.step('Validate notification', async () => {
-                        await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).toBeVisible();
+                        await expect(notificationItem).toBeVisible();
                     });
 
                     await test.step('Dismiss notification', async () => {
-                        await delay(500);
-                        await page.locator(`.MuiCardContent-root:has-text("${notification}") button:has([data-testid="CloseIcon"])`).click();
-                        await expect(page.locator(`.MuiCardContent-root:has-text("${notification}")`)).not.toBeVisible();
+                        await notificationItem.getByRole('button', { name: 'Delete' }).click();
+                        await expect(notificationItem).not.toBeVisible();
                     });
                 });
             }

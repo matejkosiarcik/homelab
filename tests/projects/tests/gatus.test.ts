@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
-import { axios, getEnv, waitForHidden } from '#/utils/utils.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
 const app = apps.gatus;
