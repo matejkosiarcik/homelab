@@ -1,6 +1,8 @@
-import { test } from '#/playwright/test.ts';
+import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { faker } from '@faker-js/faker';
+import { axios, getEnv } from '../../utils/utils';
 
 const app = apps.vnc;
 
@@ -14,12 +16,90 @@ test.describe(app.title, () => {
         test.describe(instance.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
-            createApiRootTest(instance.url);
+            createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test.skip('PLACEHOLDER', () => {
-                // TODO: Finish tests
+            const validUsers = [
+                {
+                    username: 'matej',
+                },
+            ];
+            for (const user of validUsers) {
+                createApiRootTest(instance.url, {
+                    title: `Authenticated - User ${user.username}`,
+                    headers: {
+                        Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `NOVNC_${user.username}_PASSWORD`)}`).toString('base64')}`
+                    },
+                });
+
+                test(`UI: Successful open - User ${user.username}`, async ({ page }) => {
+                    await test.step('Open application', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `NOVNC_${user.username}_PASSWORD`)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate application', async () => {
+                        await page.waitForURL(`${instance.url}/vnc.html`);
+                        await expect(page.locator('button#noVNC_connect_button').first()).toBeVisible();
+                    });
+                });
+
+                test(`API: Successful root - User ${user.username}`, async () => {
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `NOVNC_${user.username}_PASSWORD`)}`).toString('base64')}`,
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
+                    });
+                });
+            }
+
+            const invalidUsers = [
+                {
+                    username: 'homelab-test',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of invalidUsers) {
+                test(`UI: Unsuccessful open - ${user.random ? 'Random user' : `User ${user.username}`}`, async ({ page }) => {
+                    await test.step('Attempt open with invalid credentials', async () => {
+                        await page.setExtraHTTPHeaders({ Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}` });
+                        await page.goto(instance.url);
+                    });
+
+                    await test.step('Validate access is denied', async () => {
+                        await page.waitForURL(`${instance.url}/vnc.html`);
+                        await expect(page.locator('button#noVNC_connect_button').first()).not.toBeVisible();
+                    });
+                });
+
+                test(`API: Unsuccessful root - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            headers: {
+                                Authorization: `Basic ${Buffer.from(`${user.username}:${faker.string.alphanumeric(10)}`).toString('base64')}`,
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
+                    });
+                });
+            }
+
+            test('UI: Unsuccessful open - No user', async ({ page }) => {
+                await test.step('Attempt open without credentials', async () => {
+                    await page.goto(instance.url);
+                });
+
+                await test.step('Validate access is denied', async () => {
+                    await page.waitForURL(`${instance.url}/vnc.html`);
+                    await expect(page.locator('button#noVNC_connect_button').first()).not.toBeVisible();
+                });
             });
         });
     }
