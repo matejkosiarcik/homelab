@@ -87,7 +87,7 @@ COPY --chmod=0777 ./docker-images/pihole/app/setcap.sh /usr/sbin/setcap
 
 ### Final ###
 
-FROM pihole/pihole:2026.09.0 AS final
+FROM pihole/pihole:2026.10.0 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
