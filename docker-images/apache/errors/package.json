@@ -12,7 +12,7 @@
     "build:11ty": "eleventy"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy": "^3.1.7",
     "@rollup/plugin-typescript": "^12.3.0",
     "@tsconfig/recommended": "^1.0.13",
     "@types/node": "^26.6.5",
