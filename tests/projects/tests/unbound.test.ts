@@ -138,7 +138,7 @@ test.describe(app.title, () => {
                 });
             }
 
-            test('DNS: example.com lookup', async () => {
+            test('DNS: example.com lookup', { lock: 'dns' }, async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'Unbound DNS address resolution').toHaveLength(1);
@@ -180,7 +180,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: self domain lookup', async () => {
+            test('DNS: self domain lookup', { lock: 'dns' }, async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'Unbound DNS address resolution').toHaveLength(1);
@@ -213,7 +213,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: local unused domain', async () => {
+            test('DNS: local unused domain', { lock: 'dns' }, async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'Unbound DNS address resolution').toHaveLength(1);
@@ -237,7 +237,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: Local domains lookup', async () => {
+            test('DNS: Local domains lookup', { lock: 'dns' }, async () => {
                 const instanceIp = await (async () => {
                     const instanceIps = await nodeDns.resolve(instanceDomain);
                     expect(instanceIps, 'Unbound DNS address resolution').toHaveLength(1);
