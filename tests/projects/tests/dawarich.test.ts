@@ -39,7 +39,7 @@ test.describe(app.title, () => {
                     });
 
                     await test.step('Validate login', async () => {
-                        await expect(page).toHaveURL(`${instance.url}/map/v2`);
+                        await page.waitForURL(`${instance.url}/map/v2`);
                         await expect(page.locator('#maps-maplibre-container')).toBeVisible();
                     });
                 });
@@ -68,7 +68,7 @@ test.describe(app.title, () => {
 
                     await test.step('Validate login attempt', async () => {
                         await expect(page.locator('#flash-messages')).toContainText('Invalid email or password.');
-                        await expect(page).toHaveURL(`${instance.url}/users/sign_in`);
+                        await expect(page, 'URL Should not change').toHaveURL(`${instance.url}/users/sign_in`);
                     });
                 });
             }

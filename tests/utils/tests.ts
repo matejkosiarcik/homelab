@@ -397,7 +397,7 @@ export function createPrometheusTests(url: string, _options: { auth?: 'none' | '
             return options.path.flatMap((path, index) => {
                 return prometheusVariants.map((variant) => test(`API: Prometheus metrics with Basic auth (${variant.title})${options.path.length > 1 ? ` path-${index + 1}` : ''}`, async () => {
                     await test.step('Request server', async () => {
-                        const response = await axios.get(`${url}${path}`, { auth: variant.auth });
+                        const response = await axios.get(`${url}${path}`, { auth: variant.auth, timeout: 10_000 });
                         expect(response.status, 'Response Status').toStrictEqual(variant.status);
                     });
                 }));
