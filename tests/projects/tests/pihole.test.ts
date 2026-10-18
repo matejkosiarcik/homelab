@@ -35,7 +35,7 @@ test.describe(app.title, () => {
 
                 for (const transportVariant of ['tcp', 'udp'] as const) {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
-                        await test.step(`Check example.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                        await test.step.soft(`Check example.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole') || instance.title.toLowerCase().endsWith(' internal')) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
@@ -77,7 +77,7 @@ test.describe(app.title, () => {
 
                 for (const transportVariant of ['tcp', 'udp'] as const) {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
-                        await test.step(`Check self via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                        await test.step.soft(`Check self via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain ${instanceDomain} should be resolved`).toHaveLength(1);
@@ -110,7 +110,7 @@ test.describe(app.title, () => {
 
                 for (const transportVariant of ['tcp', 'udp'] as const) {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
-                        await test.step(`Check <random>.matejhome.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
+                        await test.step.soft(`Check <random>.matejhome.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const domain = `${faker.string.alpha(10)}.matejhome.com`;
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
@@ -136,7 +136,7 @@ test.describe(app.title, () => {
 
                 for (const domain of domains) {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
-                        await test.step(`Check domain ${domain} via ${transportVariant.toUpperCase()}`, async () => {
+                        await test.step.soft(`Check domain ${domain} via ${transportVariant.toUpperCase()}`, async () => {
                             const ips = await dnsLookup(domain, transportVariant, 'A', instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain ${domain} should be resolved`).toHaveLength(1);
