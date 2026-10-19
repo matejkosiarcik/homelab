@@ -24,6 +24,7 @@ flowchart LR
         gpu("<div class='custom-node'><img src='../../../../icons/graphics-card.png' /><p>iGPU</p></div>")
 
         inbound_interface -->|:80,443,8096| apache_proxy -->|/*:8096| app
+        inbound_interface <-->|:7359/udp discovery| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app

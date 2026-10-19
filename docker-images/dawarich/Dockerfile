@@ -93,6 +93,6 @@ ENV APPLICATION_PROTOCOL="http" \
     TIME_ZONE="Europe/Bratislava" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body", "\"status\"\\s*:\\s*\"ok\"" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body-json", ".status == \"ok\"" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []
