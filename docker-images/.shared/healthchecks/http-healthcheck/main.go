@@ -30,7 +30,7 @@ func touchLogFile() error {
 	return nil
 }
 
-//nolint:errcheck
+// nolint:errcheck
 func log(level string, format string, args ...any) {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
@@ -109,6 +109,7 @@ func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
 // nolint:gocyclo
 func main() {
 	if err := touchLogFile(); err != nil {
+		// nolint:errcheck
 		_ = printLog(os.Stderr, "ERROR", "%v", err)
 		os.Exit(1)
 	}
