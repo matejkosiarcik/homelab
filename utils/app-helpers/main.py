@@ -23,7 +23,8 @@ start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not 
 
 app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
-log_dir = path.join(app_dir, "app-logs", ".meta")
+main_log_dir = path.join(app_dir, "app-logs")
+log_dir = path.join(main_log_dir, ".meta")
 
 is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
 cpu_count = os.cpu_count() or 1
@@ -378,7 +379,19 @@ def docker_stop():
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
 
 
+def clear_app_runtime_logs():
+    for log_entry in os.scandir(main_log_dir):
+        if log_entry.name == path.basename(log_dir):
+            continue
+        if log_entry.is_dir(follow_symlinks=False):
+            shutil.rmtree(log_entry.path)
+        else:
+            os.unlink(log_entry.path)
+
+
 def docker_start():
+    clear_app_runtime_logs()
+
     config_json = get_docker_compose_config()
     config_obj = json.loads(config_json)
 
