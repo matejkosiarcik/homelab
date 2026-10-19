@@ -15,13 +15,14 @@ const healthcheckLogFile = "/homelab/healthcheck/logs/healthcheck.log"
 func touchLogFile() error {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
-		return fmt.Errorf("Could not touch logfile %s: %w", healthcheckLogFile, err)
+		return fmt.Errorf("could not touch logfile %s: %w", healthcheckLogFile, err)
 	}
 	defer func() { _ = logFile.Close() }()
 
 	return nil
 }
 
+//nolint:errcheck
 func log(level string, format string, args ...any) {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
