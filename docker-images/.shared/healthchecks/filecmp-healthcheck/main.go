@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"time"
@@ -14,31 +15,37 @@ const healthcheckLogFile = "/homelab/healthcheck/logs/healthcheck.log"
 func touchLogFile() error {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
-		return fmt.Errorf("opening healthcheck log file %s: %w", healthcheckLogFile, err)
+		return fmt.Errorf("Could not touch logfile %s: %w", healthcheckLogFile, err)
 	}
 	defer func() { _ = logFile.Close() }()
 
 	return nil
 }
 
-func logError(format string, args ...any) {
-	message := formatLogMessage(fmt.Sprintf(format, args...))
-	fmt.Fprint(os.Stderr, message)
-
+func log(level string, format string, args ...any) {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
-		fmt.Fprint(os.Stderr, formatLogMessage(fmt.Sprintf("Error opening healthcheck log file %s: %v", healthcheckLogFile, err)))
+		_ = printLog(os.Stderr, level, format, args...)
+		_ = printLog(os.Stderr, "ERROR", "Could not open logfile %s: %v", healthcheckLogFile, err)
 		return
 	}
 	defer func() { _ = logFile.Close() }()
 
-	if _, err := fmt.Fprint(logFile, message); err != nil {
-		fmt.Fprint(os.Stderr, formatLogMessage(fmt.Sprintf("Error writing healthcheck log file %s: %v", healthcheckLogFile, err)))
+	if err := printLog(logFile, level, format, args...); err != nil {
+		_ = printLog(os.Stderr, level, format, args...)
+		_ = printLog(os.Stderr, "ERROR", "Could not write to logfile %s: %v", healthcheckLogFile, err)
 	}
 }
 
-func formatLogMessage(message string) string {
-	prefix := fmt.Sprintf("%s [healthcheck]: ", time.Now().UTC().Format(time.RFC3339Nano))
+func printLog(writer io.Writer, level string, format string, args ...any) error {
+	_, err := fmt.Fprint(writer, formatLogMessage(level, format, args...))
+
+	return err
+}
+
+func formatLogMessage(level string, format string, args ...any) string {
+	message := fmt.Sprintf(format, args...)
+	prefix := time.Now().UTC().Format("2006-01-02T15:04:05.000Z07:00") + " [healthcheck]: [" + level + "] "
 	lines := strings.Split(strings.TrimSuffix(message, "\n"), "\n")
 
 	return prefix + strings.Join(lines, "\n"+prefix) + "\n"
@@ -46,7 +53,7 @@ func formatLogMessage(message string) string {
 
 func main() {
 	if err := touchLogFile(); err != nil {
-		fmt.Fprint(os.Stderr, formatLogMessage(err.Error()))
+		_ = printLog(os.Stderr, "ERROR", "%v", err)
 		os.Exit(1)
 	}
 
@@ -56,23 +63,24 @@ func main() {
 		ExpectedContent string `arg:"--content,required" help:"Expected file content"`
 	}
 	if err := arg.Parse(&args); err != nil {
-		logError("Error parsing healthcheck arguments: %v\n", err)
+		log("ERROR", "Error parsing healthcheck arguments: %v\n", err)
 		os.Exit(1)
 	}
 
 	// Read file
 	fileBytes, err := os.ReadFile(args.FilePath)
 	if err != nil {
-		logError("Error reading file %s: %v\n", args.FilePath, err)
+		log("ERROR", "Error reading file %s: %v\n", args.FilePath, err)
 		os.Exit(1)
 	}
 
 	// Compare file content
 	fileContent := strings.TrimSpace(string(fileBytes))
 	if fileContent != args.ExpectedContent {
-		logError("File content mismatch: got %q, want %q\n", fileContent, args.ExpectedContent)
+		log("ERROR", "File content mismatch: got %q, want %q\n", fileContent, args.ExpectedContent)
 		os.Exit(1)
 	}
 
+	log("INFO", "Success")
 	os.Exit(0)
 }
