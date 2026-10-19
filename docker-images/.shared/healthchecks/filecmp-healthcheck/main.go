@@ -10,6 +10,16 @@ import (
 
 const healthcheckLogFile = "/homelab/healthcheck/logs/healthcheck.log"
 
+func touchLogFile() error {
+	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
+	if err != nil {
+		return fmt.Errorf("opening healthcheck log file %s: %w", healthcheckLogFile, err)
+	}
+	defer func() { _ = logFile.Close() }()
+
+	return nil
+}
+
 func logError(format string, args ...any) {
 	message := fmt.Sprintf(format, args...)
 	fmt.Fprint(os.Stderr, message)
@@ -27,6 +37,11 @@ func logError(format string, args ...any) {
 }
 
 func main() {
+	if err := touchLogFile(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 	// Parse arguments
 	var args struct {
 		FilePath        string `arg:"--file,required" help:"File path"`
