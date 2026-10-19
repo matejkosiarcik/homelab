@@ -31,19 +31,26 @@ func touchLogFile() error {
 }
 
 func logError(format string, args ...any) {
-	message := fmt.Sprintf(format, args...)
+	message := formatLogMessage(fmt.Sprintf(format, args...))
 	fmt.Fprint(os.Stderr, message)
 
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error opening healthcheck log file %s: %v\n", healthcheckLogFile, err)
+		fmt.Fprint(os.Stderr, formatLogMessage(fmt.Sprintf("Error opening healthcheck log file %s: %v", healthcheckLogFile, err)))
 		return
 	}
 	defer func() { _ = logFile.Close() }()
 
 	if _, err := fmt.Fprint(logFile, message); err != nil {
-		fmt.Fprintf(os.Stderr, "Error writing healthcheck log file %s: %v\n", healthcheckLogFile, err)
+		fmt.Fprint(os.Stderr, formatLogMessage(fmt.Sprintf("Error writing healthcheck log file %s: %v", healthcheckLogFile, err)))
 	}
+}
+
+func formatLogMessage(message string) string {
+	prefix := fmt.Sprintf("%s [healthcheck]: ", time.Now().UTC().Format(time.RFC3339Nano))
+	lines := strings.Split(strings.TrimSuffix(message, "\n"), "\n")
+
+	return prefix + strings.Join(lines, "\n"+prefix) + "\n"
 }
 
 func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
@@ -95,7 +102,7 @@ func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
 // nolint:gocyclo
 func main() {
 	if err := touchLogFile(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprint(os.Stderr, formatLogMessage(err.Error()))
 		os.Exit(1)
 	}
 
