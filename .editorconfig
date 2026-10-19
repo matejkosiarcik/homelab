@@ -37,7 +37,7 @@ insert_final_newline = false
 indent_style = tab
 
 # Golang files must be indented using tabs
-[*.go]
+[{*.go,go.{mod,sum}}]
 indent_style = tab
 
 # Trailing whitespace is generally permitted in markdown
