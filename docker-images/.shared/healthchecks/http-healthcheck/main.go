@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -13,6 +15,7 @@ import (
 	"time"
 
 	"github.com/alexflint/go-arg"
+	"github.com/itchyny/gojq"
 )
 
 const healthcheckLogFile = "/homelab/healthcheck/logs/healthcheck.log"
@@ -43,6 +46,52 @@ func logError(format string, args ...any) {
 	}
 }
 
+func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
+	decoder := json.NewDecoder(bytes.NewReader(bodyBytes))
+	decoder.UseNumber()
+
+	var body any
+	if err := decoder.Decode(&body); err != nil {
+		return fmt.Errorf("invalid JSON: %w", err)
+	}
+
+	var extraValue any
+	if err := decoder.Decode(&extraValue); err != io.EOF {
+		if err == nil {
+			return fmt.Errorf("multiple JSON values")
+		}
+		return fmt.Errorf("invalid JSON: %w", err)
+	}
+
+	iterator := query.Run(body)
+	var result any
+	var hasResult bool
+	for {
+		value, ok := iterator.Next()
+		if !ok {
+			break
+		}
+		if err, ok := value.(error); ok {
+			return fmt.Errorf("evaluating jq query: %w", err)
+		}
+
+		result = value
+		hasResult = true
+	}
+
+	if !hasResult {
+		return fmt.Errorf("jq query produced no results")
+	}
+	if result == nil {
+		return fmt.Errorf("jq query result is null")
+	}
+	if resultBoolean, ok := result.(bool); ok && !resultBoolean {
+		return fmt.Errorf("jq query result is false")
+	}
+
+	return nil
+}
+
 // nolint:gocyclo
 func main() {
 	if err := touchLogFile(); err != nil {
@@ -54,7 +103,8 @@ func main() {
 	var args struct {
 		URL                  string `arg:"--url,required" help:"URL to check"`
 		Method               string `arg:"--method" default:"GET" help:"HTTP method"`
-		Body                 string `arg:"--body" help:"Regex to validate response body against (optional)"`
+		BodyRegex            string `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
+		BodyJSON             string `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
 		Status               string `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
 		Insecure             bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
 		BasicAuthUsername    string `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
@@ -73,6 +123,10 @@ func main() {
 	}
 	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
 		logError("Use only one of --basic-auth-password and --basic-auth-password-env\n")
+		os.Exit(1)
+	}
+	if args.BodyRegex != "" && args.BodyJSON != "" {
+		logError("Use only one of --body-regex and --body-json\n")
 		os.Exit(1)
 	}
 
@@ -141,13 +195,25 @@ func main() {
 	}
 
 	bodyRegex := func() *regexp.Regexp {
-		if args.Body != "" {
-			bodyRegex, err := regexp.Compile(args.Body)
+		if args.BodyRegex != "" {
+			bodyRegex, err := regexp.Compile(args.BodyRegex)
 			if err != nil {
-				logError("Invalid regex for --body: %v\n", err)
+				logError("Invalid regex for --body-regex: %v\n", err)
 				os.Exit(1)
 			}
 			return bodyRegex
+		}
+
+		return nil
+	}()
+	bodyJSONQuery := func() *gojq.Query {
+		if args.BodyJSON != "" {
+			bodyJSONQuery, err := gojq.Parse(args.BodyJSON)
+			if err != nil {
+				logError("Invalid jq query for --body-json: %v\n", err)
+				os.Exit(1)
+			}
+			return bodyJSONQuery
 		}
 
 		return nil
@@ -182,7 +248,7 @@ func main() {
 	}
 
 	// Validate response body
-	if bodyRegex != nil {
+	if bodyRegex != nil || bodyJSONQuery != nil {
 		// Read and close response body
 		bodyBytes, err := io.ReadAll(response.Body)
 		_ = response.Body.Close()
@@ -191,10 +257,15 @@ func main() {
 			os.Exit(1)
 		}
 
-		// Test regex
-		if !bodyRegex.Match(bodyBytes) {
+		if bodyRegex != nil && !bodyRegex.Match(bodyBytes) {
 			logError("Response body does not match: %s\n", bodyBytes)
 			os.Exit(1)
+		}
+		if bodyJSONQuery != nil {
+			if err := validateJSONBody(bodyJSONQuery, bodyBytes); err != nil {
+				logError("Response body does not match JSON query: %v\n", err)
+				os.Exit(1)
+			}
 		}
 	} else if response.Body != nil {
 		// No body check requested; but we must close the body before exiting

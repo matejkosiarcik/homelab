@@ -2,6 +2,16 @@
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 # checkov:skip=CKV_DOCKER_8: Must run as root initially, and the linuxserver.io image switches to nonroot after it starts
 
+### Healthcheck ###
+
+FROM golang:1.27.2-alpine AS healthcheck_build
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
+
 ### Other ###
 
 FROM linuxserver/unifi-network-application:10.6.106 AS entrypoint
@@ -51,6 +61,7 @@ RUN sh '/homelab/create-user.sh' && \
 FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY --from=runtime_dirs /homelab/original /homelab/original
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -94,4 +105,4 @@ ENV FILE__MONGO_PASS="/homelab/mongodb-password.txt" \
     PUID="${UID}"
 # checkov:skip=CKV_SECRET_6: false positive in timezone
 ENV TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=360s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && if [ \"$(curl --insecure \"https://localhost:${https_port}/status\" | jq .meta.up)\" = 'true' ]; then exit 0; else exit 1; fi" ]
+HEALTHCHECK --interval=10s --start-period=360s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && exec /homelab/bin/healthcheck --url \"https://localhost:${https_port}/status\" --insecure --body-json '.meta.up == true'" ]
