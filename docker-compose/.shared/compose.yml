@@ -78,7 +78,7 @@ services:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/default:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/supercronic:/homelab/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/cron:/homelab/cron:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/healthcheck:/homelab/healthcheck/logs:rw
 
