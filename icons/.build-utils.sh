@@ -24,7 +24,7 @@ should_generate_icon() {
     fi
 
     pattern="$(printf '%s' "${only_pattern}" | tr '-' '|')"
-    for filepath in "$@"; do
+    for filepath in "${@}"; do
         if printf '%s\n' "${filepath}" | grep -qE ".*(?:${pattern}).*" >'/dev/null'; then
             return 0 # An input or output file matches -> return positive code
         fi
