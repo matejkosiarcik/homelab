@@ -16,7 +16,7 @@ log() {
     log_level="${1}"
     shift
     log_timestamp="$(date "${datetime_format}")"
-    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+    printf '%s\n' "${*}" | while IFS= read -r log_message; do
         printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
     done >&2
 }
