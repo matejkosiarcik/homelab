@@ -9,18 +9,30 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 if [ ! -d '/var/lib/samba' ]; then
-    printf '%s [ERROR]: Directory "/var/lib/samba" not found\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'Directory "/var/lib/samba" not found'
     exit 1
 fi
 
 # Test user account exists
 if ! grep -Eq "^${SAMBA_GROUP}:" '/etc/group'; then
-    printf '%s [ERROR]: Group %s not available\n' "$(date "${datetime_format}")" "${SAMBA_GROUP}" >&2
+    log ERROR "$(printf 'Group %s not available' "${SAMBA_GROUP}")"
     exit 1
 fi
 if ! grep -Eq "^${SAMBA_USERNAME}:" '/etc/passwd'; then
-    printf '%s [ERROR]: User %s not available\n' "$(date "${datetime_format}")" "${SAMBA_GROUP}" >&2
+    log ERROR "$(printf 'User %s not available' "${SAMBA_GROUP}")"
     exit 1
 fi
 
@@ -62,7 +74,7 @@ config_temporary_file="${config_output_file}.tmp"
 
 su --shell='/bin/sh' --command="/bin/sh -c 'envsubst -no-digit -no-unset -no-empty -i \"${config_input_file}\" -o \"${config_temporary_file}\"'" 'homelab' || {
     rm -f "${config_temporary_file}"
-    printf '%s [ERROR]: An error happened during processing of %s to %s\n' "$(date "${datetime_format}")" "${config_input_file}" "${config_output_file}" >&2
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_input_file}" "${config_output_file}")"
     exit 1
 }
 
@@ -74,7 +86,7 @@ printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c "${c
 
 # Test config is valid before starting
 testparm -s "${config_output_file}" || {
-    printf '%s [ERROR]: Program "testparm -s" failed with status %s. Review samba config.\n' "$(date "${datetime_format}")" "${?}" >&2
+    log ERROR "$(printf 'Program "testparm -s" failed with status %s. Review samba config.' "${?}")"
     exit 1
 }
 

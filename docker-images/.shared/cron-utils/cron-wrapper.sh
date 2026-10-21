@@ -21,6 +21,9 @@ touch "${statusfile}" "${logfile}"
 printf '0\n' >"${statusfile}"
 
 log() {
+    # $1 - log level
+    # $2+ - message
+
     log_level="${1}"
     shift
     log_timestamp="$(date "${datetime_format}")"

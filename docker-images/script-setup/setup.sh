@@ -9,8 +9,20 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 # Default no-op setup script for direct builds of this image
 # Should be replaced by real script file during builds of production images
 
-printf '%s [ERROR]: Placeholder script is invalid. Replace this file with the path to a real script and build again.\n' "$(date "${datetime_format}")" >&2
+log ERROR 'Placeholder script is invalid. Replace this file with the path to a real script and build again.'
 exit 1

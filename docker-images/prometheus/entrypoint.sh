@@ -9,12 +9,24 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 process_template() {
     input_file="${1}"
     output_file="${2}"
 
     if [ ! -f "${input_file}" ]; then
-        printf '%s [ERROR]: Template file %s not found\n' "$(date "${datetime_format}")" "${input_file}" >&2
+        log ERROR "$(printf 'Template file %s not found' "${input_file}")"
         exit 1
     fi
 
@@ -27,7 +39,7 @@ process_template() {
 
         if printf '%s' "${variable}" | grep -E '_ENCRYPTED$' >'/dev/null' 2>&1; then
             value="$(printf '%s' "${value}" | base64 -d 2>'/dev/null')" || {
-                printf '%s [ERROR]: Failed to base64 decode variable %s\n' "$(date "${datetime_format}")" "${variable}" >&2
+                log ERROR "$(printf 'Failed to base64 decode variable %s' "${variable}")"
                 exit 1
             }
             printf "export %s='%s'\n" "${variable}" "${value}" >>"${tmpfile}"
@@ -39,7 +51,7 @@ process_template() {
     rm -f "${tmpfile}"
 
     envsubst -no-digit -no-unset -no-empty -i "${input_file}" -o "${output_file}" || {
-        printf '%s [ERROR]: An error happened during processing of %s to %s\n' "$(date "${datetime_format}")" "${input_file}" "${output_file}" >&2
+        log ERROR "$(printf 'An error happened during processing of %s to %s' "${input_file}" "${output_file}")"
         exit 1
     }
 }

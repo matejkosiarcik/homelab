@@ -6,8 +6,8 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 # Define portable datetime format
-define define_log_timestamp_function
-log_timestamp() { date_supports_milliseconds="$$(date '+%3N')"; case "$$date_supports_milliseconds" in \[0-9][0-9][0-9]) milliseconds_format='%3N' ;; \*) milliseconds_format='000' ;; esac; date "+%Y-%m-%dT%H:%M:%S.$${milliseconds_format}Z"; }
+define define_log_function
+log_timestamp() { date_supports_milliseconds="$$(date '+%3N')"; case "$${date_supports_milliseconds}" in [0-9][0-9][0-9]) milliseconds_format='%3N' ;; *) milliseconds_format='000' ;; esac; date "+%Y-%m-%dT%H:%M:%S.$${milliseconds_format}Z"; }; log() { log_level="$$1"; shift; log_timestamp="$$(log_timestamp)"; printf '%s\n' "$${*}" | while IFS= read -r log_message || [ -n "$${log_message}" ]; do printf '%s [%s]: %s\n' "$${log_timestamp}" "$$log_level" "$${log_message}"; done >&2; }
 endef
 
 DOCKER_APPS := $(shell find 'servers' -type f -name 'Taskfile.yml' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
@@ -27,9 +27,9 @@ all: clean bootstrap build docker-build docker-build-multiarch
 .PHONY: bootstrap
 bootstrap:
 	# Check if there is an active virtualenv and abort
-	$(define_log_timestamp_function); \
+	$(define_log_function); \
 	if [ -n "$${VIRTUAL_ENV+x}" ]; then \
-		printf '%s [ERROR]: There is an active python virtualenv. Run "deactivate" and try again.\n' "$$(log_timestamp)"; \
+		log ERROR 'There is an active python virtualenv. Run "deactivate" and try again.'; \
 		exit 1; \
 	fi
 
@@ -74,18 +74,18 @@ bootstrap:
 
 .PHONY: build
 build:
-	$(define_log_timestamp_function); \
+	$(define_log_function); \
 	printf '%s' "$(NPM_COMPONENTS_FOR_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
-		printf '%s [INFO]: Building %s\n' "$$(log_timestamp)" "$${component}" && \
+		log INFO "Building $${component}" && \
 		npm run build --prefix "$(PROJECT_DIR)/$${component}" && \
 		printf '\n\n' && \
 	true; done
 
 .PHONY: docker-build
 docker-build:
-	$(define_log_timestamp_function); \
+	$(define_log_function); \
 	printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
-		printf '%s [INFO]: Building %s\n' "$$(log_timestamp)" "$${component}" && \
+		log INFO "Building $${component}" && \
 		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" && \
 		printf '\n\n' && \
 	true; done
@@ -99,10 +99,10 @@ docker-build:
 
 .PHONY: docker-build-multiarch
 docker-build-multiarch:
-	$(define_log_timestamp_function); \
+	$(define_log_function); \
 	printf '%s' "$(DOCKER_ARCHS)" | tr -d ' ' | base64 -d | while read -r arch; do \
 		printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
-			printf '%s [INFO]: Building %s for linux/%s\n' "$$(log_timestamp)" "$${component}" "$${arch}" && \
+			log INFO "Building $${component} for linux/$${arch}" && \
 			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" && \
 			printf '\n\n' && \
 		true; done && \
@@ -118,9 +118,9 @@ dryrun:
 .PHONY: clean
 clean:
 	# Check if there is an active virtualenv and abort
-	$(define_log_timestamp_function); \
+	$(define_log_function); \
 	if [ -n "$${VIRTUAL_ENV+x}" ]; then \
-		printf '%s [ERROR]: There is an active python virtualenv. Run "deactivate" and try again.\n' "$$(log_timestamp)"; \
+		log ERROR 'There is an active python virtualenv. Run "deactivate" and try again.'; \
 		exit 1; \
 	fi
 

@@ -8,6 +8,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 # Copy everything from fake to real "local.d"
 mkdir -p '/opt/couchdb/etc/local.d'
 cp -R '/homelab/original/opt/couchdb/etc/local.d/.' '/opt/couchdb/etc/local.d'
@@ -20,7 +32,7 @@ config_file='/opt/couchdb/etc/local.d/jwt.ini'
 config_file_tmp="${tmpdir}/jwt.ini"
 
 envsubst -no-digit -no-unset -no-empty -i "${config_file}" -o "${config_file_tmp}" || {
-    printf '%s [ERROR]: An error happened during processing of %s to %s\n' "$(date "${datetime_format}")" "${config_file}" "${config_file_tmp}" >&2
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_file}" "${config_file_tmp}")"
     exit 1
 }
 

@@ -9,6 +9,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 timeout 30s sh <<EOF
 while [ ! -e '/homelab/sock/unbound.sock' ]; do
     sleep 1
@@ -16,7 +28,7 @@ done
 EOF
 
 if [ ! -e '/homelab/sock/unbound.sock' ]; then
-    printf '%s [ERROR]: /homelab/sock/unbound.sock not found\n' "$(date "${datetime_format}")" >&2
+    log ERROR '/homelab/sock/unbound.sock not found'
     exit 1
 fi
 

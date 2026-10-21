@@ -9,11 +9,23 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 config_input_file='/homelab/redis.conf'
 config_output_file='/homelab/tmpfs/redis.conf'
 
 envsubst -no-digit -no-unset -no-empty -i "${config_input_file}" -o "${config_output_file}" || {
-    printf '%s [ERROR]: An error happened during processing of %s to %s\n' "$(date "${datetime_format}")" "${config_input_file}" "${config_output_file}" >&2
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_input_file}" "${config_output_file}")"
     exit 1
 }
 

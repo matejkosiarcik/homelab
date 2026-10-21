@@ -11,26 +11,50 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 # Wait for config file to be created (mostly relevant for initial setup)
 timeout 60s sh <<EOF
+log() {
+    # \$1 - log level
+    # \$2+ - message
+
+    log_level="\${1}"
+    shift
+    log_timestamp="\$(date "${datetime_format}")"
+    printf '%s\n' "\${*}" | while IFS= read -r log_message || [ -n "\${log_message}" ]; do
+        printf '%s [%s]: %s\n' "\${log_timestamp}" "\${log_level}" "\${log_message}"
+    done >&2
+}
+
 while [ ! -f "${config_file}" ]; do
-    printf '%s [INFO]: Waiting for config file\n' "\$(date "${datetime_format}")" >&2
+    log INFO 'Waiting for config file'
     sleep 1
 done
 while [ "$(wc -l <"${config_file}")" -eq 0 ]; do
-    printf '%s [INFO]: Waiting for config file content\n' "\$(date "${datetime_format}")" >&2
+    log INFO 'Waiting for config file content'
     sleep 1
 done
 EOF
-printf '%s [INFO]: Config file found\n' "$(date "${datetime_format}")" >&2
+log INFO 'Config file found'
 
 sleep "${HOMELAB_SETUP_DELAY-5}"
 
 # Enable Prometheus metrics
 sed 's~<EnableMetrics>false</EnableMetrics>~<EnableMetrics>true</EnableMetrics>~' <"${config_file}" | sponge "${config_file}"
 if ! grep '<EnableMetrics>true</EnableMetrics>' <"${config_file}" >'/dev/null'; then
-    printf '%s [ERROR]: Failed to enable prometheus metrics\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'Failed to enable prometheus metrics'
     exit 1
 else
-    printf '%s [INFO]: Successfully enabled prometheus metrics\n' "$(date "${datetime_format}")" >&2
+    log INFO 'Successfully enabled prometheus metrics'
 fi

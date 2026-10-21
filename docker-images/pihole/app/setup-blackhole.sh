@@ -9,6 +9,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 sql() {
     command="${1}"
     i=0
@@ -27,7 +39,7 @@ sql() {
             break
         fi
         if [ "${i}" -ge '3' ] && [ "${status}" -ne '0' ]; then
-            printf '%s [ERROR]: There was an error during SQL command %s\n' "$(date "${datetime_format}")" "${command}" >&2
+            log ERROR "$(printf 'There was an error during SQL command %s' "${command}")"
             exit "${status}"
         fi
     done
@@ -35,9 +47,9 @@ sql() {
 
 # Detect or create database
 if [ -e '/etc/pihole/gravity.db' ]; then
-    printf '%s [INFO]: Database found\n' "$(date "${datetime_format}")" >&2
+    log INFO 'Database found'
 else
-    printf '%s [INFO]: Database created\n' "$(date "${datetime_format}")" >&2
+    log INFO 'Database created'
     pihole updateGravity
 fi
 
@@ -47,10 +59,10 @@ while true; do
     if [ "${count}" -gt '0' ]; then
         break
     fi
-    printf '%s [INFO]: Waiting for database tables\n' "$(date "${datetime_format}")" >&2
+    log INFO 'Waiting for database tables'
     sleep 1
 done
-printf '%s [INFO]: Main table found\n' "$(date "${datetime_format}")" >&2
+log INFO 'Main table found'
 
 # Wipe other existing entities
 sql 'DELETE FROM [adlist_by_group];'

@@ -8,6 +8,18 @@ case "${date_supports_milliseconds}" in
     *) milliseconds_format="000" ;;
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
 export datetime_format
 
 mkdir -p '/homelab/logs'
@@ -15,21 +27,21 @@ touch '/homelab/logs/generic-access.log' '/homelab/logs/generic-error.log' '/hom
 
 # Set HOMELAB_ENV
 if [ "${HOMELAB_ENV-x}" = 'x' ]; then
-    printf '%s [ERROR]: HOMELAB_ENV unset\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'HOMELAB_ENV unset'
     exit 1
 fi
 export HOMELAB_ENV
 
 # Set HOMELAB_APP_TYPE
 if [ "${HOMELAB_APP_TYPE-x}" = 'x' ]; then
-    printf '%s [ERROR]: HOMELAB_APP_TYPE unset\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'HOMELAB_APP_TYPE unset'
     exit 1
 fi
 export HOMELAB_APP_TYPE
 
 # Set HOMELAB_APP_EXTERNAL_DOMAIN
 if [ "${HOMELAB_APP_EXTERNAL_DOMAIN-x}" = 'x' ]; then
-    printf '%s [ERROR]: HOMELAB_APP_EXTERNAL_DOMAIN unset\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'HOMELAB_APP_EXTERNAL_DOMAIN unset'
     exit 1
 fi
 export HOMELAB_APP_EXTERNAL_DOMAIN
@@ -40,7 +52,7 @@ if [ "${HOMELAB_ENV}" = 'prod' ]; then
 elif [ "${HOMELAB_ENV}" = 'dev' ]; then
     PROXY_HTTP_PORT='8080'
 else
-    printf '%s [ERROR]: Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "$(date "${datetime_format}")" "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}" >&2
+    log ERROR "$(printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}")"
     exit 1
 fi
 export PROXY_HTTP_PORT
@@ -51,7 +63,7 @@ if [ "${HOMELAB_ENV}" = 'prod' ]; then
 elif [ "${HOMELAB_ENV}" = 'dev' ]; then
     PROXY_HTTPS_PORT='8443'
 else
-    printf '%s [ERROR]: Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "$(date "${datetime_format}")" "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}" >&2
+    log ERROR "$(printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}")"
     exit 1
 fi
 export PROXY_HTTPS_PORT
@@ -81,10 +93,22 @@ export PROXY_PROMETHEUS_EXPORTER_URL
 
 # Wait for certificates to exist before starting
 timeout 90s sh <<EOF
+log() {
+    # \$1 - log level
+    # \$2+ - message
+
+    log_level="\${1}"
+    shift
+    log_timestamp="\$(date "${datetime_format}")"
+    printf '%s\n' "\${*}" | while IFS= read -r log_message || [ -n "\${log_message}" ]; do
+        printf '%s [%s]: %s\n' "\${log_timestamp}" "\${log_level}" "\${log_message}"
+    done >&2
+}
+
 if [ -e '/homelab/certs/fullchain.pem' ]; then
     return 0
 fi
-printf '%s [INFO]: Waiting for certificate before starting\n' "\$(date "\${datetime_format}")" >&2
+log INFO 'Waiting for certificate before starting'
 while [ ! -e '/homelab/certs/fullchain.pem' ]; do
     sleep 1
 done
@@ -92,13 +116,17 @@ sleep 1
 EOF
 
 # Watch certificates in background
-inotifywait --monitor --event modify --format '%w%f' --include 'fullchain\.pem' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "%s [INFO]: Detected new certificates - Restarting apache\n" "$(date "${datetime_format}")" >&2 && apachectl -k restart' - &
+inotifywait --monitor --event modify --format '%w%f' --include 'fullchain\.pem' '/homelab/certs' | while IFS= read -r _; do
+    sleep 1
+    log INFO 'Detected new certificates - Restarting apache'
+    apachectl -k restart
+done &
 
 # Graceful shutdown
 trap 'apachectl -k stop; exit 0' TERM
 
 # Start apache
-printf '%s [INFO]: Starting Apache\n' "$(date "${datetime_format}")" >&2
+log INFO 'Starting Apache'
 apachectl -D FOREGROUND &
 apache_pid="${!}"
 

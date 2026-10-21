@@ -9,20 +9,32 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 if [ -z "${GID+x}" ]; then
-    printf '%s [ERROR]: GID undefined\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'env GID unset'
     exit 1
 fi
 
 if [ -z "${UID+x}" ]; then
-    printf '%s [ERROR]: UID undefined\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'env UID unset'
     exit 1
 fi
 
 # Determine nologin shell
 nologinshell="$(getent passwd nobody | cut -d: -f7)"
 if printf '%s' "${nologinshell}" | grep -vE '/nologin$' >'/dev/null' 2>&1; then
-    printf '%s [WARNING]: Unknown nologin shell: %s\n' "$(date "${datetime_format}")" "${nologinshell}" >&2
+    log WARNING "$(printf 'Unknown nologin shell: %s' "${nologinshell}")"
     nologinshell='/bin/false'
 fi
 

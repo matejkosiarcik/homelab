@@ -9,6 +9,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 git_root_dir="$(git rev-parse --show-toplevel)"
 
 LANG=en_US.UTF-8
@@ -32,7 +44,7 @@ while [ "${#}" -gt 0 ]; do
         shift
         ;;
     *)
-        printf '%s [ERROR]: Unknown argument %s\n' "$(date "${datetime_format}")" "${1}" >&2
+        log ERROR "$(printf 'Unknown argument %s' "${1}")"
         exit 1
         ;;
     esac
@@ -61,7 +73,7 @@ export SOPS_AGE_KEY_FILE
 if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
     true # Check skipped on CI
 elif [ ! -e "${SOPS_AGE_KEY_FILE}" ]; then
-    printf '%s [ERROR]: SOPS_AGE_KEY_FILE not found\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'SOPS_AGE_KEY_FILE not found'
     exit 1
 fi
 
@@ -80,7 +92,7 @@ load_secret() {
     # ${2} - behaviour for dev environment
 
     if [ "${#}" -lt 2 ]; then
-        printf '%s [ERROR]: Missing arguments for load_secret() function, got: %s\n' "$(date "${datetime_format}")" "${#}" >&2
+        log ERROR "$(printf 'Missing arguments for load_secret() function, got: %s' "${#}")"
         exit 1
     fi
 
@@ -89,7 +101,7 @@ load_secret() {
     else
         main_secret="$(sops --decrypt --config "${git_root_dir}/secrets/.sops.yml" "${git_root_dir}/secrets/secrets.enc.yml" | yq -r "${1}")"
         if [ "${main_secret}" = '' ] || [ "${main_secret}" = 'null' ] || [ "${main_secret}" = 'undefined' ]; then
-            printf '%s [ERROR]: Could not load secret "%s"\n' "$(date "${datetime_format}")" "${1}" >&2
+            log ERROR "$(printf 'Could not load secret "%s"' "${1}")"
             exit 1
         fi
     fi
@@ -116,7 +128,7 @@ load_secret() {
     fi
 
     if [ "${mode}" = 'dev' ]; then
-        printf '%s [ERROR]: Unknown dev value: %s\n' "$(date "${datetime_format}")" "${2}" >&2
+        log ERROR "$(printf 'Unknown dev value: %s' "${2}")"
         return
     fi
 
@@ -1897,7 +1909,7 @@ vikunja)
     ;;
 
 *)
-    printf '%s [ERROR]: Unknown app "%s" at "%s"\n' "$(date "${datetime_format}")" "${app_type}" "${app_dir_path}" >&2
+    log ERROR "$(printf 'Unknown app "%s" at "%s"' "${app_type}" "${app_dir_path}")"
     exit 1
     ;;
 esac

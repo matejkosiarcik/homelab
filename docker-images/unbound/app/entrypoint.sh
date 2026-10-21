@@ -9,6 +9,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 ls -lah '/homelab/sock' >'/dev/null' # This command has to be here, it seem to help with issue `touch: cannot touch '<file>': Operation not supported`
 if [ ! -e '/homelab/sock/unbound.sock' ]; then
     touch '/homelab/sock/unbound.sock'
@@ -19,9 +31,9 @@ if [ ! -e '/homelab/logs/unbound.log' ]; then
     chmod 0666 '/homelab/logs/unbound.log'
 fi
 
-printf '%s [INFO]: Checking config\n' "$(date "${datetime_format}")" >&2
+log INFO 'Checking config'
 unbound-checkconf '/homelab/unbound.conf'
-printf '%s [INFO]: Config OK\n' "$(date "${datetime_format}")" >&2
+log INFO 'Config OK'
 
-printf '%s [INFO]: Starting unbound\n' "$(date "${datetime_format}")" >&2
+log INFO 'Starting unbound'
 exec unbound -v -d -c '/homelab/unbound.conf'

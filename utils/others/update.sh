@@ -9,16 +9,28 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 # TODO: Read mode from global .env file
 mode='prod'
 
 # Pull latest git changes
 if [ "$(git branch --show-current)" != 'main' ]; then
-    printf '%s [ERROR]: Git repository is on branch %s instead of main, cannot update.\n' "$(date "${datetime_format}")" "$(git branch --show-current)" >&2
+    log ERROR "$(printf 'Git repository is on branch %s instead of main, cannot update.' "$(git branch --show-current)")"
     exit 1
 fi
 if [ "$(git status --short)" != '' ]; then
-    printf '%s [ERROR]: Git repository is dirty, cannot update. Current changes: %s\n' "$(date "${datetime_format}")" "$(git status --short)" >&2
+    log ERROR "$(printf 'Git repository is dirty, cannot update. Current changes: %s' "$(git status --short)")"
     exit 1
 fi
 git pull --ff-only

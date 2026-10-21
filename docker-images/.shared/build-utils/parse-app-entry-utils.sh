@@ -9,6 +9,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 # This is equal to dirname
 get_app_short_name_machine() {
     # Arg 1 - App directory path
@@ -25,7 +37,7 @@ get_app_type() {
     fi
 
     if [ ! -d "${root_path}/docker-compose/${app_type}" ]; then
-        printf '%s [ERROR]: App-template directory not found\n' "$(date "${datetime_format}")" >&2
+        log ERROR 'App-template directory not found'
         exit 1
     fi
 
@@ -38,7 +50,7 @@ get_server_name_pretty() {
 
     server_name="$(yq --raw-output '.server.name' "${server_path}/config/config.yml")"
     if [ "${server_name}" = '' ] || [ "${server_name}" = 'null' ] || [ "${server_name}" = 'undefined' ]; then
-        printf '%s [ERROR]: Could not get server name\n' "$(date "${datetime_format}")" >&2
+        log ERROR 'Could not get server name'
         exit 1
     fi
 
@@ -61,7 +73,7 @@ get_app_full_name_pretty() {
 
     app_template_prettyname="$(yq --raw-output '.app.name' "${root_path}/docker-compose/$(get_app_type "${1}")/config.yml")"
     if [ "${app_template_prettyname}" = '' ] || [ "${app_template_prettyname}" = 'null' ] || [ "${app_template_prettyname}" = 'undefined' ]; then
-        printf '%s [ERROR]: Could not get app name\n' "$(date "${datetime_format}")" >&2
+        log ERROR 'Could not get app name'
         exit 1
     fi
 

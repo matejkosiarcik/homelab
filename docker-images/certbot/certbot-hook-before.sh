@@ -9,12 +9,24 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 if [ "${CERTBOT_REMAINING_CHALLENGES-}" != '0' ]; then
-    printf '%s [ERROR]: There should be 0 remaining challenges, but found: %s\n' "$(date "${datetime_format}")" "${CERTBOT_REMAINING_CHALLENGES}" >&2
+    log ERROR "$(printf 'There should be 0 remaining challenges, but found: %s' "${CERTBOT_REMAINING_CHALLENGES}")"
     exit 1
 fi
 
-printf '%s [INFO]: Checking DNS authentication\n' "$(date "${datetime_format}")" >&2
+log INFO 'Checking DNS authentication'
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "${date}" +'%s')" | openssl dgst -sha1 -hmac "${WEBSUPPORT_API_SECRET}" | sed -E 's~^.* ~~')"
 curl -s --fail -X GET \
@@ -23,7 +35,7 @@ curl -s --fail -X GET \
     'https://rest.websupport.sk/v2/check' >'/dev/null'
 
 # This is for 4th degree subdomains "_acme-challenge.$(printf '%s' "${CERTBOT_DOMAIN}" | sed -E 's~\..+$~~')"
-printf '%s [INFO]: Adding new DNS record\n' "$(date "${datetime_format}")" >&2
+log INFO 'Adding new DNS record'
 record_payload="{
     \"type\": \"TXT\",
     \"name\": \"_acme-challenge\",

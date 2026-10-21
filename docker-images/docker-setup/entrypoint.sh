@@ -9,26 +9,50 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 printf 'starting\n' >'/homelab/tmpfs/status.txt'
 
 # Wait for target container to start
 timeout 30s sh <<EOF
-printf '%s [INFO]: Waiting for container %s\n' "\$(date "${datetime_format}")" "${HOMELAB_SETUP_TARGET_CONTAINER}" >&2
+log() {
+    # \$1 - log level
+    # \$2+ - message
+
+    log_level="\${1}"
+    shift
+    log_timestamp="\$(date "${datetime_format}")"
+    printf '%s\n' "\${*}" | while IFS= read -r log_message || [ -n "\${log_message}" ]; do
+        printf '%s [%s]: %s\n' "\${log_timestamp}" "\${log_level}" "\${log_message}"
+    done >&2
+}
+
+log INFO "Waiting for container ${HOMELAB_SETUP_TARGET_CONTAINER}"
 while [ "\$(docker ps --quiet --filter "name=^${HOMELAB_SETUP_TARGET_CONTAINER}\\$" --filter 'status=running')" == '' ]; do
     sleep 1
 done
-printf '%s [INFO]: Container found\n' "\$(date "${datetime_format}")" >&2
+log INFO 'Container found'
 EOF
 
 sleep "${HOMELAB_SETUP_DELAY-10}"
 
-printf '%s [INFO]: Starting setup\n' "$(date "${datetime_format}")" >&2
+log INFO 'Starting setup'
 if [ -n "${HOMELAB_SETUP_TARGET_USER-}" ]; then
     docker exec --user "${HOMELAB_SETUP_TARGET_USER}" "${HOMELAB_SETUP_TARGET_CONTAINER}" sh '/homelab/setup.sh'
 else
     docker exec "${HOMELAB_SETUP_TARGET_CONTAINER}" sh '/homelab/setup.sh'
 fi
-printf '%s [INFO]: Finished setup\n' "$(date "${datetime_format}")" >&2
+log INFO 'Finished setup'
 
 printf 'started\n' >'/homelab/tmpfs/status.txt'
 exec sleep infinity

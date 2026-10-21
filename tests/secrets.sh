@@ -9,11 +9,23 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 cd "$(dirname "${0}")"
 git_root_dir="$(git rev-parse --show-toplevel)"
 
 if [ "${BW_SESSION-}" = '' ]; then
-    printf '%s [ERROR]: You must set BW_SESSION env variable before calling this script.\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'You must set BW_SESSION env variable before calling this script.'
     exit 1
 fi
 
@@ -25,13 +37,13 @@ load_secret() {
     # ${1} - yq query
 
     if [ "${#}" -lt 1 ]; then
-        printf '%s [ERROR]: Missing arguments for load_secret() function, got: %s\n' "$(date "${datetime_format}")" "${#}" >&2
+        log ERROR "$(printf 'Missing arguments for load_secret() function, got: %s' "${#}")"
         exit 1
     fi
 
     secret="$(sops --decrypt --config "${git_root_dir}/secrets/.sops.yml" "${git_root_dir}/secrets/secrets.enc.yml" | yq -r "${1}")"
     if [ "${secret}" = '' ] || [ "${secret}" = 'null' ] || [ "${secret}" = 'undefined' ]; then
-        printf '%s [ERROR]: Could not load secret "%s"\n' "$(date "${datetime_format}")" "${1}" >&2
+        log ERROR "$(printf 'Could not load secret "%s"' "${1}")"
         exit 1
     fi
 

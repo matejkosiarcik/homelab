@@ -9,6 +9,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 timeout 30s sh -c '
     until curl --silent --fail --insecure --max-time 2 "https://app:443/api/healthcheck" >/dev/null; do
         sleep 1
@@ -16,7 +28,7 @@ timeout 30s sh -c '
 '
 
 if [ "${SPEEDTEST_RUN_TOKEN-}" = '' ]; then
-    printf '%s [ERROR]: SPEEDTEST_RUN_TOKEN unset\n' "$(date "${datetime_format}")" >&2
+    log ERROR 'SPEEDTEST_RUN_TOKEN unset'
     exit 1
 fi
 

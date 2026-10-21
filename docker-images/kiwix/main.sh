@@ -9,6 +9,18 @@ case "${date_supports_milliseconds}" in
 esac
 datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message || [ -n "${log_message}" ]; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 kiwix_pid_file='/homelab/tmpfs/pid.txt'
 touch "${kiwix_pid_file}"
 last_shasum_file='/homelab/tmpfs/shasum.txt'
@@ -20,7 +32,7 @@ if [ "$(cat "${kiwix_pid_file}")" = '' ]; then
     is_initial_run='1'
 fi
 
-printf '%s [INFO]: Checking valid ZIM files\n' "$(date "${datetime_format}")" >&2
+log INFO 'Checking valid ZIM files'
 
 zim_files_list_new_all_file="$(mktemp)"
 zim_files_list_new_valid_file="$(mktemp)"
@@ -44,7 +56,7 @@ new_shasum="$(sha256sum <"${zim_files_list_new_shasum_file}")"
 
 # If the shasum is the same, abort this run
 if [ "${new_shasum}" = "${last_shasum}" ]; then
-    printf '%s [INFO]: Server already started and no valid changes in ZIM files detected\n' "$(date "${datetime_format}")" >&2
+    log INFO 'Server already started and no valid changes in ZIM files detected'
     return
 fi
 
@@ -54,14 +66,14 @@ printf '%s\n' "${new_shasum}" >"${last_shasum_file}"
 # Use placeholder if there are no real ZIM files
 zim_files_count="$(wc -l <"${zim_files_list_new_valid_file}")"
 if [ "${zim_files_count}" -eq '0' ]; then
-    printf '%s [WARNING]: No ZIM files found, using placeholder\n' "$(date "${datetime_format}")" >&2
+    log WARNING 'No ZIM files found, using placeholder'
     printf '/homelab/default-data/empty.zim\n' >>"${zim_files_list_new_valid_file}"
 fi
 
 if [ "${is_initial_run}" -eq '1' ]; then
-    printf '%s [INFO]: Starting server initially\n' "$(date "${datetime_format}")" >&2
+    log INFO 'Starting server initially'
 else
-    printf '%s [INFO]: Restarting server\n' "$(date "${datetime_format}")" >&2
+    log INFO 'Restarting server'
     kill "$(cat "${kiwix_pid_file}")"
 fi
 
