@@ -21,7 +21,7 @@ if command -v mongosh >'/dev/null'; then
 elif command -v mongo >'/dev/null'; then
     mongo_shell='mongo'
 else
-    printf '%s [ERROR]: No suitable mongo shell found\n' "$(date "${datetime_format}")" | tee '/homelab/logs/healthcheck.log' >&2
+    printf '%s [ERROR]: No suitable mongo shell found\n' "$(date "${datetime_format}")" | tee '/homelab/logs/healthcheck/healthcheck.log' >&2
     exit 1
 fi
 

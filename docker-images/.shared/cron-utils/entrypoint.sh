@@ -1,6 +1,22 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N' 2>&1)"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
+log() {
+    printf '%s [%s]: %s\n' "$(date "${datetime_format}")" "${1}" "${2}" >&2
+}
+
 printf 'starting\n' >'/homelab/tmpfs/status.txt'
 
 # Setup Environment variables
@@ -9,6 +25,7 @@ export CRON
 
 # Run script initially
 if [ "${HOMELAB_CRON_SKIP_INITIAL-}" != '1' ]; then
+    log INFO 'Running initial cron job'
     sh '/homelab/cron-wrapper.sh'
 fi
 
@@ -25,7 +42,7 @@ else
 fi
 
 if [ ! -e "${cronfile}" ]; then
-    printf 'crontab file %s not found\n' "${cronfile}"
+    log ERROR "Crontab file ${cronfile} not found"
     exit 1
 fi
 
@@ -34,11 +51,13 @@ trap 'exit 0' TERM
 
 # Start HTTP server
 if [ -e '/homelab/server/dist/main.js' ]; then
+    log INFO 'Starting on-demand cron server'
     node '/homelab/server/dist/main.js' &
     node_pid="$!"
 fi
 
 # Start cron
+log INFO "Starting cron schedule from ${cronfile}"
 supercronic "${cronfile}" &
 supercronic_pid="$!"
 
