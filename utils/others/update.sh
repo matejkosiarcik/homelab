@@ -1,16 +1,28 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 # TODO: Read mode from global .env file
 mode='prod'
 
 # Pull latest git changes
 if [ "$(git branch --show-current)" != 'main' ]; then
-    printf "Git repository is on branch %s instead of main, can't update.\n" "$(git branch --show-current)"
+    printf '%s [ERROR]: Git repository is on branch %s instead of main, cannot update.\n' "$(date "${datetime_format}")" "$(git branch --show-current)" >&2
     exit 1
 fi
 if [ "$(git status --short)" != '' ]; then
-    printf "Git repository is dirty, can't update. Current changes: %s\n" "$(git status --short)"
+    printf '%s [ERROR]: Git repository is dirty, cannot update. Current changes: %s\n' "$(date "${datetime_format}")" "$(git status --short)" >&2
     exit 1
 fi
 git pull --ff-only

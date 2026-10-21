@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 if [ "${HOMELAB_ENV}" = 'dev' ]; then
     domain='localhost'
     subject_domain="${domain}"
@@ -13,26 +25,26 @@ load_certificate='0'
 certificate_file='/homelab/certs/fullchain.pem'
 if [ -e "${certificate_file}" ]; then
     if [ "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^.*CN\s*=\s*([a-zA-Z0-9*.]+).*$~\1~')" != "${subject_domain}" ]; then
-        printf 'Loading certificate (previous certificate has wrong domain)\n' >&2
+        printf '%s [INFO]: Loading certificate (previous certificate has wrong domain)\n' "$(date "${datetime_format}")" >&2
         load_certificate='1'
     elif ! openssl x509 -checkend "$((60 * 60 * 24 * 30))" -noout -in "${certificate_file}" >'/dev/null'; then
-        printf 'Loading certificate (previous certificate is about to expire)\n' >&2
+        printf '%s [INFO]: Loading certificate (previous certificate is about to expire)\n' "$(date "${datetime_format}")" >&2
         load_certificate='1'
     elif [ "${HOMELAB_ENV}" = 'prod' ] && [ "$(openssl x509 -noout -issuer -in "${certificate_file}" | sed -E 's~^issuer=~~')" = "$(openssl x509 -noout -subject -in "${certificate_file}" | sed -E 's~^subject=~~')" ]; then
-        printf 'Loading certificate (previous certificate is self-signed)\n' >&2
+        printf '%s [INFO]: Loading certificate (previous certificate is self-signed)\n' "$(date "${datetime_format}")" >&2
         load_certificate='1'
     fi
 else
-    printf 'Loading certificate (previous certificate not found)\n' >&2
+    printf '%s [INFO]: Loading certificate (previous certificate not found)\n' "$(date "${datetime_format}")" >&2
     load_certificate='1'
 fi
 if [ "${load_certificate}" != '1' ]; then
-    printf 'Existing certificate is valid\n' >&2
+    printf '%s [INFO]: Existing certificate is valid\n' "$(date "${datetime_format}")" >&2
     exit 0
 fi
 
 get_dev_certificate() {
-    printf 'Creating self-signed certificates\n' >&2
+    printf '%s [INFO]: Creating self-signed certificates\n' "$(date "${datetime_format}")" >&2
     tmpdir="$(mktemp -d)"
 
     # Create new certificates
@@ -51,7 +63,7 @@ get_dev_certificate() {
 }
 
 get_prod_certificate() {
-    printf 'Downloading certificates from certbot\n' >&2
+    printf '%s [INFO]: Downloading certificates from certbot\n' "$(date "${datetime_format}")" >&2
     tmpdir="$(mktemp -d)"
 
     # Download certificates
@@ -71,7 +83,7 @@ get_prod_certificate() {
 }
 
 check_certbot_availability() {
-    printf 'Checking certbot availability\n' >&2
+    printf '%s [INFO]: Checking certbot availability\n' "$(date "${datetime_format}")" >&2
     timeout 45s sh <<EOF
     while ! curl --fail --silent --show-error --output '/dev/null' --user "homelab-viewer:${CERTBOT_HOMELAB_VIEWER_PASSWORD}" 'https://certbot.matejhome.com/download/certificate.tar.xz'; do
         sleep 5
@@ -87,6 +99,6 @@ if [ "${HOMELAB_ENV}" = 'prod' ]; then
         get_dev_certificate
     fi
 else
-    printf 'Creating self-signed certificates\n' >&2
+    printf '%s [INFO]: Creating self-signed certificates\n' "$(date "${datetime_format}")" >&2
     get_dev_certificate
 fi

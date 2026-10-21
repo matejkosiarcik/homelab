@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 git_root_dir="$(git rev-parse --show-toplevel)"
 
 LANG=en_US.UTF-8
@@ -24,7 +36,7 @@ while [ "${#}" -gt 0 ]; do
         shift
         ;;
     *)
-        printf 'Unknown argument %s\n' "${1}"
+        printf '%s [ERROR]: Unknown argument %s\n' "$(date "${datetime_format}")" "${1}" >&2
         exit 1
         ;;
     esac
@@ -53,7 +65,7 @@ export SOPS_AGE_KEY_FILE
 if [ "${GITHUB_ACTIONS:-}" = 'true' ] || [ "${CIRCLECI:-}" = 'true' ] || [ "${CI:-}" = '1' ] || [ "${CI:-}" = 'true' ]; then
     true # Check skipped on CI
 elif [ ! -e "${SOPS_AGE_KEY_FILE}" ]; then
-    printf 'SOPS_AGE_KEY_FILE not found\n' >&2
+    printf '%s [ERROR]: SOPS_AGE_KEY_FILE not found\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 
@@ -72,7 +84,7 @@ load_secret() {
     # ${2} - behaviour for dev environment
 
     if [ "${#}" -lt 2 ]; then
-        printf 'Missing arguments for load_secret() function, got: %s\n' "${#}" >&2
+        printf '%s [ERROR]: Missing arguments for load_secret() function, got: %s\n' "$(date "${datetime_format}")" "${#}" >&2
         exit 1
     fi
 
@@ -81,7 +93,7 @@ load_secret() {
     else
         main_secret="$(sops --decrypt --config "${git_root_dir}/secrets/.sops.yml" "${git_root_dir}/secrets/secrets.enc.yml" | yq -r "${1}")"
         if [ "${main_secret}" = '' ] || [ "${main_secret}" = 'null' ] || [ "${main_secret}" = 'undefined' ]; then
-            printf 'Could not load secret "%s"\n' "${1}" >&2
+            printf '%s [ERROR]: Could not load secret "%s"\n' "$(date "${datetime_format}")" "${1}" >&2
             exit 1
         fi
     fi
@@ -108,7 +120,7 @@ load_secret() {
     fi
 
     if [ "${mode}" = 'dev' ]; then
-        printf 'Unknown dev value: %s\n' "${2}" >&2
+        printf '%s [ERROR]: Unknown dev value: %s\n' "$(date "${datetime_format}")" "${2}" >&2
         return
     fi
 
@@ -1889,7 +1901,7 @@ vikunja)
     ;;
 
 *)
-    printf 'Unknown app "%s" at "%s"\n' "${app_type}" "${app_dir_path}" >&2
+    printf '%s [ERROR]: Unknown app "%s" at "%s"\n' "$(date "${datetime_format}")" "${app_type}" "${app_dir_path}" >&2
     exit 1
     ;;
 esac

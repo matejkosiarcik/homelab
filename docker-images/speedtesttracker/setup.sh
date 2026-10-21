@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 timeout 30s sh -c '
     until curl --silent --fail --insecure --max-time 2 "https://app:443/api/healthcheck" >/dev/null; do
         sleep 1
@@ -8,7 +20,7 @@ timeout 30s sh -c '
 '
 
 if [ "${SPEEDTEST_RUN_TOKEN-}" = '' ]; then
-    printf 'SPEEDTEST_RUN_TOKEN unset\n' >&2
+    printf '%s [ERROR]: SPEEDTEST_RUN_TOKEN unset\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 

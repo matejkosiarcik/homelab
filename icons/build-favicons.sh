@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 mode=''
 only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
@@ -21,7 +33,7 @@ while [ "${#}" -gt 0 ]; do
         shift 2
         ;;
     *)
-        printf 'Unknown argument %s\n' "${1}"
+        printf '%s [ERROR]: Unknown argument %s\n' "$(date "${datetime_format}")" "${1}" >&2
         exit 1
         ;;
     esac

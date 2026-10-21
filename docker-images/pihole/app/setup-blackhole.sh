@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 sql() {
     command="${1}"
     i=0
@@ -19,7 +31,7 @@ sql() {
             break
         fi
         if [ "${i}" -ge '3' ] && [ "${status}" -ne '0' ]; then
-            printf 'There was an error during SQL command %s\n' "${command}" >&2
+            printf '%s [ERROR]: There was an error during SQL command %s\n' "$(date "${datetime_format}")" "${command}" >&2
             exit "${status}"
         fi
     done
@@ -27,9 +39,9 @@ sql() {
 
 # Detect or create database
 if [ -e '/etc/pihole/gravity.db' ]; then
-    printf 'Database found\n'
+    printf '%s [INFO]: Database found\n' "$(date "${datetime_format}")" >&2
 else
-    printf 'Database created\n'
+    printf '%s [INFO]: Database created\n' "$(date "${datetime_format}")" >&2
     pihole updateGravity
 fi
 
@@ -39,10 +51,10 @@ while true; do
     if [ "${count}" -gt '0' ]; then
         break
     fi
-    printf 'Waiting for database tables\n'
+    printf '%s [INFO]: Waiting for database tables\n' "$(date "${datetime_format}")" >&2
     sleep 1
 done
-printf 'Main table found\n'
+printf '%s [INFO]: Main table found\n' "$(date "${datetime_format}")" >&2
 
 # Wipe other existing entities
 sql 'DELETE FROM [adlist_by_group];'

@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 # This condition ensures this script works with both versions of mongodb container images
 # First is the official one with `mongosh` and second the unofficial/older one with plain `mongo`
 mongo_shell=''
@@ -9,7 +21,7 @@ if command -v mongosh >'/dev/null'; then
 elif command -v mongo >'/dev/null'; then
     mongo_shell='mongo'
 else
-    printf 'No suitable mongo shell found\n' | tee '/homelab/logs/healthcheck.log' >&2
+    printf '%s [ERROR]: No suitable mongo shell found\n' "$(date "${datetime_format}")" | tee '/homelab/logs/healthcheck.log' >&2
     exit 1
 fi
 

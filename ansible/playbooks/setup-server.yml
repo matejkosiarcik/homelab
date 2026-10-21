@@ -191,8 +191,20 @@
         set -eufo pipefail
         source "${HOME}/.profile"
 
+        # Define portable datetime format
+        date_supports_milliseconds="$(date '+%3N')"
+        case "${date_supports_milliseconds}" in
+            [0-9][0-9][0-9])
+                milliseconds_format="%3N"
+                ;;
+            *)
+                milliseconds_format="000"
+                ;;
+        esac
+        datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
         if [ ! -f '/boot/firmware/cmdline.txt' ]; then
-          printf 'File '/boot/firmware/cmdline.txt' not found' >&2
+          printf '%s [ERROR]: File /boot/firmware/cmdline.txt not found\n' "$(date "${datetime_format}")" >&2
           exit 1
         fi
         before_sha="$(shasum '/boot/firmware/cmdline.txt')"

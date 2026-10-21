@@ -1,9 +1,21 @@
 #!/bin/sh
 set -euf
+
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 # This script sets up macvlan-shim "router" to be able to access containers running in macvlan network from current host
 
 if [ "${#}" -lt 2 ]; then
-    printf 'Not enough arguments\n' >&2
+    printf '%s [ERROR]: Not enough arguments\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 
@@ -20,7 +32,7 @@ elif [ "${has_enp1s0}" = '' ]; then
     found_interface='enp1s0'
 fi
 if [ "${found_interface}" = '' ]; then
-    printf 'No suitable network interface found\n'
+    printf '%s [ERROR]: No suitable network interface found\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 

@@ -1,11 +1,23 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 cd "$(dirname "${0}")"
 git_root_dir="$(git rev-parse --show-toplevel)"
 
 if [ "${BW_SESSION-}" = '' ]; then
-    echo 'You must set BW_SESSION env variable before calling this script.' >&2
+    printf '%s [ERROR]: You must set BW_SESSION env variable before calling this script.\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 
@@ -17,13 +29,13 @@ load_secret() {
     # ${1} - yq query
 
     if [ "${#}" -lt 1 ]; then
-        printf 'Missing arguments for load_secret() function, got: %s\n' "${#}" >&2
+        printf '%s [ERROR]: Missing arguments for load_secret() function, got: %s\n' "$(date "${datetime_format}")" "${#}" >&2
         exit 1
     fi
 
     secret="$(sops --decrypt --config "${git_root_dir}/secrets/.sops.yml" "${git_root_dir}/secrets/secrets.enc.yml" | yq -r "${1}")"
     if [ "${secret}" = '' ] || [ "${secret}" = 'null' ] || [ "${secret}" = 'undefined' ]; then
-        printf 'Could not load secret "%s"\n' "${1}" >&2
+        printf '%s [ERROR]: Could not load secret "%s"\n' "$(date "${datetime_format}")" "${1}" >&2
         exit 1
     fi
 

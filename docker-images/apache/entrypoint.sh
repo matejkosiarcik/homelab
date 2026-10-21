@@ -1,26 +1,39 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+export datetime_format
+
 mkdir -p '/homelab/logs'
 touch '/homelab/logs/generic-access.log' '/homelab/logs/generic-error.log' '/homelab/logs/http-access.log' '/homelab/logs/http-error.log' '/homelab/logs/https-access.log' '/homelab/logs/https-error.log'
 
 # Set HOMELAB_ENV
 if [ "${HOMELAB_ENV-x}" = 'x' ]; then
-    printf 'HOMELAB_ENV unset\n' >&2
+    printf '%s [ERROR]: HOMELAB_ENV unset\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 export HOMELAB_ENV
 
 # Set HOMELAB_APP_TYPE
 if [ "${HOMELAB_APP_TYPE-x}" = 'x' ]; then
-    printf 'HOMELAB_APP_TYPE unset\n' >&2
+    printf '%s [ERROR]: HOMELAB_APP_TYPE unset\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 export HOMELAB_APP_TYPE
 
 # Set HOMELAB_APP_EXTERNAL_DOMAIN
 if [ "${HOMELAB_APP_EXTERNAL_DOMAIN-x}" = 'x' ]; then
-    printf 'HOMELAB_APP_EXTERNAL_DOMAIN unset\n' >&2
+    printf '%s [ERROR]: HOMELAB_APP_EXTERNAL_DOMAIN unset\n' "$(date "${datetime_format}")" >&2
     exit 1
 fi
 export HOMELAB_APP_EXTERNAL_DOMAIN
@@ -31,7 +44,7 @@ if [ "${HOMELAB_ENV}" = 'prod' ]; then
 elif [ "${HOMELAB_ENV}" = 'dev' ]; then
     PROXY_HTTP_PORT='8080'
 else
-    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
+    printf '%s [ERROR]: Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "$(date "${datetime_format}")" "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}" >&2
     exit 1
 fi
 export PROXY_HTTP_PORT
@@ -42,7 +55,7 @@ if [ "${HOMELAB_ENV}" = 'prod' ]; then
 elif [ "${HOMELAB_ENV}" = 'dev' ]; then
     PROXY_HTTPS_PORT='8443'
 else
-    printf 'Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}"
+    printf '%s [ERROR]: Unknown HOMELAB_ENV: %s for HOMELAB_APP_TYPE: %s\n' "$(date "${datetime_format}")" "${HOMELAB_ENV-N/A}" "${HOMELAB_APP_TYPE}" >&2
     exit 1
 fi
 export PROXY_HTTPS_PORT
@@ -75,7 +88,7 @@ timeout 90s sh <<EOF
 if [ -e '/homelab/certs/fullchain.pem' ]; then
     return 0
 fi
-printf 'Waiting for certificate before starting\n' >&2
+printf '%s [INFO]: Waiting for certificate before starting\n' "\$(date "\${datetime_format}")" >&2
 while [ ! -e '/homelab/certs/fullchain.pem' ]; do
     sleep 1
 done
@@ -83,13 +96,13 @@ sleep 1
 EOF
 
 # Watch certificates in background
-inotifywait --monitor --event modify --format '%w%f' --include 'fullchain\.pem' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "Detected new certificates - Restarting apache\n" && apachectl -k restart' - &
+inotifywait --monitor --event modify --format '%w%f' --include 'fullchain\.pem' '/homelab/certs' | xargs -n1 sh -c 'sleep 1 && printf "%s [INFO]: Detected new certificates - Restarting apache\n" "$(date "${datetime_format}")" >&2 && apachectl -k restart' - &
 
 # Graceful shutdown
 trap 'apachectl -k stop; exit 0' TERM
 
 # Start apache
-printf 'Starting Apache\n' >&2
+printf '%s [INFO]: Starting Apache\n' "$(date "${datetime_format}")" >&2
 apachectl -D FOREGROUND &
 apache_pid="${!}"
 

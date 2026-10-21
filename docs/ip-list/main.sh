@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 script_path="$(realpath "${0}")"
 script_dir="$(dirname "${script_path}")"
 git_root_dir="$(git -C "$(dirname "${script_path}")" rev-parse --show-toplevel)"
@@ -50,10 +62,17 @@ domain_separator="$(printf '%*s' "$((domain_column_length + 2))" '' | tr ' ' '-'
     printf '\n'
 } >"${table_filepath}"
 
-awk -v table_filepath="${table_filepath}" '
+awk -v table_filepath="${table_filepath}" -v datetime_format="${datetime_format}" '
+    function log_error(message, timestamp, date_command) {
+        date_command = "date " datetime_format
+        date_command | getline timestamp
+        close(date_command)
+        printf "%s [ERROR]: %s\n", timestamp, message > "/dev/stderr"
+    }
+
     $0 == "<!-- IP start -->" {
         if (start_count != 0 || in_ip_section) {
-            printf "Invalid IP section markers in README.md\\n" > "/dev/stderr"
+            log_error("Invalid IP section markers in README.md")
             exit 1
         }
 
@@ -68,7 +87,7 @@ awk -v table_filepath="${table_filepath}" '
     }
     $0 == "<!-- IP end -->" {
         if (!in_ip_section || end_count != 0) {
-            printf "Invalid IP section markers in README.md\\n" > "/dev/stderr"
+            log_error("Invalid IP section markers in README.md")
             exit 1
         }
 
@@ -82,7 +101,7 @@ awk -v table_filepath="${table_filepath}" '
     }
     END {
         if (start_count != 1 || end_count != 1 || in_ip_section) {
-            printf "Invalid IP section markers in README.md\\n" > "/dev/stderr"
+            log_error("Invalid IP section markers in README.md")
             exit 1
         }
     }

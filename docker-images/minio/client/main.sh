@@ -1,6 +1,18 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 script_dir="$(dirname "${0}")"
 
 if [ -n "${MINIO_URL+x}" ]; then
@@ -13,11 +25,11 @@ fi
 
 # Wait for minio to start
 timeout 30s sh <<EOF
-printf 'Waiting for minio deployment\n' >&2
+printf '%s [INFO]: Waiting for minio deployment\n' "\$(date "${datetime_format}")" >&2
 while ! curl --fail "${minio_url}/minio/health/live"; do
     sleep 1
 done
-printf 'MinIO deployment available\n' >&2
+printf '%s [INFO]: MinIO deployment available\n' "\$(date "${datetime_format}")" >&2
 sleep 1
 EOF
 

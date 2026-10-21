@@ -1,12 +1,24 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+    [0-9][0-9][0-9])
+        milliseconds_format="%3N"
+        ;;
+    *)
+        milliseconds_format="000"
+        ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
 if [ "${CERTBOT_REMAINING_CHALLENGES-}" != '0' ]; then
-    printf 'There should be 0 remaining challenges, but found: %s\n' "${CERTBOT_REMAINING_CHALLENGES}" >&2
+    printf '%s [ERROR]: There should be 0 remaining challenges, but found: %s\n' "$(date "${datetime_format}")" "${CERTBOT_REMAINING_CHALLENGES}" >&2
     exit 1
 fi
 
-printf 'Checking DNS authentication\n' >&2
+printf '%s [INFO]: Checking DNS authentication\n' "$(date "${datetime_format}")" >&2
 date="$(date +'%Y-%m-%dT%H:%M:%S')"
 websupport_request_signature="$(printf 'GET /v2/check %s' "$(date -u -d "${date}" +'%s')" | openssl dgst -sha1 -hmac "${WEBSUPPORT_API_SECRET}" | sed -E 's~^.* ~~')"
 curl -s --fail -X GET \
@@ -15,7 +27,7 @@ curl -s --fail -X GET \
     'https://rest.websupport.sk/v2/check' >'/dev/null'
 
 # This is for 4th degree subdomains "_acme-challenge.$(printf '%s' "${CERTBOT_DOMAIN}" | sed -E 's~\..+$~~')"
-printf 'Adding new DNS record\n' >&2
+printf '%s [INFO]: Adding new DNS record\n' "$(date "${datetime_format}")" >&2
 record_payload="{
     \"type\": \"TXT\",
     \"name\": \"_acme-challenge\",
