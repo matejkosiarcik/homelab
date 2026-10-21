@@ -4,6 +4,7 @@ import process from 'node:process';
 import axios from 'axios';
 import { assert } from 'simple-assert';
 import sleep from 'sleep-promise';
+import { Log } from './log.ts';
 
 type AppBase = {
     defaultPriority: number,
@@ -37,19 +38,19 @@ async function syncApps() {
 
     // Load existing apps in database
     const serverApps = await (async () => {
-        console.log('Loading list of existing apps');
+        Log.info('Loading list of existing apps');
         const response = await axios.get('/application');
         assert(response.status === 200, `Failed to fetch list of apps\nStatus: ${response.status}\nBody: ${response.data}`);
         const body = response.data as AppGet[];
         return body;
     })();
 
-    console.log('Existing apps:', serverApps);
+    Log.info('Existing apps:', serverApps);
 
     // Delete apps in database which are no longer used
     const appsToDelete = serverApps.filter((el1) => !localApps.find((el2) => el2.name === el1.name));
     for (const serverApp of appsToDelete) {
-        console.log(`Deleting app ${serverApp.name}`);
+        Log.info(`Deleting app ${serverApp.name}`);
         await (async () => {
             const response = await axios.delete(`/application/${serverApp.id}`);
             assert(response.status === 200, `Failed to delete app\nStatus: ${response.status}\nBody: ${response.data}`);
@@ -64,12 +65,12 @@ async function syncApps() {
             serverApp.description = localApp.description;
             serverApp.defaultPriority = localApp.defaultPriority;
             await (async () => {
-                console.log(`Updating app ${serverApp.name}`);
+                Log.info(`Updating app ${serverApp.name}`);
                 const response = await axios.put(`/application/${serverApp.id}`, serverApp);
                 assert(response.status === 200, `Failed to update app ${serverApp.name}\nStatus: ${response.status}\nBody: ${response.data}`);
             })();
         } else {
-            console.log(`App ${serverApp.name} already up-to-date.`);
+            Log.info(`App ${serverApp.name} already up-to-date.`);
         }
     }
 
@@ -77,7 +78,7 @@ async function syncApps() {
     const appsToAdd = localApps.filter((el1) => !serverApps.find((el2) => el2.name === el1.name));
     for (const localApp of appsToAdd) {
         await (async () => {
-            console.log(`Creating app ${localApp.name}`);
+            Log.info(`Creating app ${localApp.name}`);
             const response = await axios.post('/application', localApp, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,19 +117,19 @@ async function syncUsers() {
 
     // Load existing apps in database
     const serverUsers = await (async () => {
-        console.log('Loading list of existing users');
+        Log.info('Loading list of existing users');
         const response = await axios.get('/user');
         assert(response.status === 200, `Failed to fetch list of users\nStatus: ${response.status}\nBody: ${response.data}`);
         const body = response.data as UserGet[];
         return body;
     })();
 
-    console.log('Existing users:', serverUsers);
+    Log.info('Existing users:', serverUsers);
 
     // Delete users in database which are no longer used
     const usersToDelete = serverUsers.filter((el1) => !localUsers.find((el2) => el2.name === el1.name));
     for (const serveruser of usersToDelete) {
-        console.log(`Deleting user ${serveruser.name}`);
+        Log.info(`Deleting user ${serveruser.name}`);
         await (async () => {
             const response = await axios.delete(`/user/${serveruser.id}`);
             assert(response.status === 200, `Failed to delete user\nStatus: ${response.status}\nBody: ${response.data}`);
@@ -144,9 +145,9 @@ async function syncUsers() {
             ...serverUser,
             pass: localUser.pass,
         }
-        console.log('User:', editUser);
+        Log.info('User:', editUser);
         await (async () => {
-            console.log(`Updating user ${serverUser.name}`);
+            Log.info(`Updating user ${serverUser.name}`);
             const response = await axios.post(`/user/${serverUser.id}`, editUser);
             assert(response.status === 200, `Failed to update user ${serverUser.name}\nStatus: ${response.status}\nBody: ${response.data}`);
         })();
@@ -156,7 +157,7 @@ async function syncUsers() {
     const usersToAdd = localUsers.filter((el1) => !serverUsers.find((el2) => el2.name === el1.name));
     for (const localUser of usersToAdd) {
         await (async () => {
-            console.log(`Creating user ${localUser.name}`);
+            Log.info(`Creating user ${localUser.name}`);
             const response = await axios.post('/user', localUser, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -176,7 +177,7 @@ async function syncUsers() {
     axios.defaults.baseURL = `http://app:80`;
     axios.defaults.validateStatus = () => true;
 
-    console.log('Waiting for gotify to start');
+    Log.info('Waiting for gotify to start');
     const startDate = new Date();
     while (true) {
         const currentDate = new Date();
@@ -193,12 +194,12 @@ async function syncUsers() {
             await sleep(1000);
         }
     }
-    console.log('Gotify status OK');
+    Log.info('Gotify status OK');
 
     await syncApps();
     await syncUsers();
 
-    console.log('Setup successful');
+    Log.info('Setup successful');
     await fsx.writeFile(statusFile, 'started', 'utf8');
 
     // Sleep forever

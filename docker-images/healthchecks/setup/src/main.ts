@@ -4,6 +4,7 @@ import axios from 'axios';
 import { assert } from 'simple-assert';
 import parseDuration from 'parse-duration-ms';
 import sleep from 'sleep-promise';
+import { Log } from './log.ts';
 
 type InputHealthcheck = {
     grace: string,
@@ -78,7 +79,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
     axios.defaults.baseURL = 'http://app:8000/api/v3';
     axios.defaults.validateStatus = () => true;
 
-    console.log('Waiting for healthchecks to return status 200');
+    Log.info('Waiting for healthchecks to return status 200');
     const startDate = new Date();
     while (true) {
         const currentDate = new Date();
@@ -95,14 +96,14 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
             await sleep(1000);
         }
     }
-    console.log('Healthchecks status OK');
+    Log.info('Healthchecks status OK');
 
     // Load new healthchecks
     const declaredHealthchecks = await loadHealthchecks('healthchecks.json');
 
     // Load existing healthchecks in database
     const existingHealthchecks = await (async () => {
-        console.log('Loading list of existing healthchecks');
+        Log.info('Loading list of existing healthchecks');
         return await retry(async () => {
             const response = await axios.get('/checks/');
             assert(response.status === 200, `Failed to fetch list of healthchecks\nStatus: ${response.status}\nBody: ${response.data}`);
@@ -112,14 +113,14 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
             retries: 3,
             delay: 1000,
             onRetry: (error) => {
-                console.log(`Failed to fetch list of healthchecks, retrying... Error: ${error}`);
+                Log.warn(`Failed to fetch list of healthchecks, retrying... Error: ${error}`);
             },
         });
     })();
 
     // Load all notification channels before modifying healthchecks
     const notificationChannelIds = await (async () => {
-        console.log('Loading list of notification channels');
+        Log.info('Loading list of notification channels');
         return await retry(async () => {
             const response = await axios.get('/channels/');
             assert(response.status === 200, `Failed to fetch list of notification channels\nStatus: ${response.status}\nBody: ${response.data}`);
@@ -129,17 +130,17 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
             retries: 3,
             delay: 1000,
             onRetry: (error) => {
-                console.log(`Failed to fetch list of notification channels, retrying... Error: ${error}`);
+                Log.warn(`Failed to fetch list of notification channels, retrying... Error: ${error}`);
             },
         });
     })();
     const notificationChannels = [...notificationChannelIds].toSorted().join(',');
-    console.log('Noitifications:', notificationChannels);
+    Log.info('Noitifications:', notificationChannels);
 
     // Delete healthchecks in database which are no longer used
     const healthchecksToDelete = existingHealthchecks.filter((el1) => !declaredHealthchecks.find((el2) => el2.slug === el1.slug));
     for (const healthcheck of healthchecksToDelete) {
-        console.log(`Deleting healthcheck ${healthcheck.slug}`);
+        Log.info(`Deleting healthcheck ${healthcheck.slug}`);
         await retry(async () => {
             const response = await axios.delete(`/checks/${healthcheck.uuid}`);
             assert(response.status === 200, `Failed to delete healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
@@ -147,7 +148,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
             retries: 3,
             delay: 1000,
             onRetry: (error) => {
-                console.log(`Failed to delete healthcheck, retrying... Error: ${error}`);
+                Log.warn(`Failed to delete healthcheck, retrying... Error: ${error}`);
             },
         });
     }
@@ -166,18 +167,18 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
         };
         if (declaredHealthcheck.schedule !== healthcheck.schedule || declaredHealthcheck.grace !== healthcheck.grace || declaredHealthcheck.name !== healthcheck.name || declaredHealthcheck.tz !== healthcheck.tz || healthcheck.channels.split(',').filter(Boolean).toSorted().join(',') !== notificationChannels) {
             await retry(async () => {
-                console.log(`Updating healthcheck ${healthcheck.slug}`);
+                Log.info(`Updating healthcheck ${healthcheck.slug}`);
                 const response = await axios.post(`/checks/${healthcheck.uuid}`, updatedHealthcheck);
                 assert(response.status === 200, `Failed to update healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
             }, {
                 retries: 3,
                 delay: 1000,
                 onRetry: (error) => {
-                    console.log(`Failed to update healthcheck, retrying... Error: ${error}`);
+                    Log.warn(`Failed to update healthcheck, retrying... Error: ${error}`);
                 },
             });
         } else {
-            console.log(`Healthcheck ${healthcheck.slug} already up-to-date.`);
+            Log.info(`Healthcheck ${healthcheck.slug} already up-to-date.`);
         }
     }
 
@@ -185,7 +186,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
     const healthchecksToAdd = declaredHealthchecks.filter((el1) => !existingHealthchecks.find((el2) => el2.slug === el1.slug));
     for (const healthcheck of healthchecksToAdd) {
         await retry(async () => {
-            console.log(`Creating healthcheck ${healthcheck.slug}`);
+            Log.info(`Creating healthcheck ${healthcheck.slug}`);
             const response = await axios.post('/checks/', { ...healthcheck, channels: notificationChannels }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -196,12 +197,12 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
             retries: 3,
             delay: 1000,
             onRetry: (error) => {
-                console.log(`Failed to create healthcheck, retrying... Error: ${error}`);
+                Log.warn(`Failed to create healthcheck, retrying... Error: ${error}`);
             },
         });
     }
 
-    console.log('Setup successful');
+    Log.info('Setup successful');
     await fsx.writeFile(statusFile, 'started', 'utf8');
 
     // Sleep forever

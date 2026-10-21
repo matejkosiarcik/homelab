@@ -15,6 +15,7 @@ import fastq from 'fastq';
 import cron from 'node-cron';
 import { Client as PostgresClient, Query } from 'pg';
 import { createClient } from 'redis';
+import { Log } from './log.ts';
 
 if (fs.existsSync('.env')) {
     dotenv.config({ fast: true });
@@ -57,7 +58,7 @@ async function waitForRedisPort() {
                     reject(error);
                 });
             });
-            console.log("Redis port is ready");
+            Log.info("Redis port is ready");
             return;
         } catch (error) {
             lastError = error instanceof Error ? error : new Error(`${error}`);
@@ -75,7 +76,7 @@ const redis = createClient({
     url: `redis://${config.redis.host}:${config.redis.port}`,
     password: config.redis.password,
 });
-redis.on('error', (err) => console.error('Redis error:', err));
+redis.on('error', (err) => Log.error('Redis error:', err));
 await redis.connect();
 
 /**
@@ -98,7 +99,7 @@ async function waitForPostgresPort() {
                     reject(error);
                 });
             });
-            console.log("Postgres port is ready");
+            Log.info("Postgres port is ready");
             return;
         } catch (error) {
             lastError = error instanceof Error ? error : new Error(`${error}`);
@@ -125,7 +126,7 @@ async function waitForPostgres() {
             });
             await client.connect();
             await client.end();
-            console.log("Postgres is ready");
+            Log.info("Postgres is ready");
             return;
         } catch (error) {
             lastError = error instanceof Error ? error : new Error(`${error}`);
@@ -206,14 +207,14 @@ async function listRedisKeys(): Promise<string[]> {
     return output.filter((el) => el !== 'ping');
 }
 let redisKeys = await listRedisKeys();
-console.log('Redis keys:', redisKeys);
+Log.info('Redis keys:', redisKeys);
 const postgresKeys = ((await sequelize.query('SELECT DISTINCT "key" FROM "data" ORDER BY "key";')) as [{ key: string }[], unknown])[0].map((el) => el.key);
-console.log('Postgres keys:', postgresKeys);
+Log.info('Postgres keys:', postgresKeys);
 for (const key of postgresKeys) {
     if (redisKeys.includes(key)) {
         continue;
     }
-    console.log(`Removing postgres rows with key: ${key}`);
+    Log.info(`Removing postgres rows with key: ${key}`);
     await sequelize.query(
         'DELETE FROM "data" WHERE "key" = :key;',
         {
@@ -228,7 +229,7 @@ for (const key of postgresKeys) {
 for (const key of redisKeys) {
     const metadataRaw = await redis.get(key);
     if (!metadataRaw) {
-        console.log(`Removing redis and postgres rows with key: ${key}`);
+        Log.info(`Removing redis and postgres rows with key: ${key}`);
         await redis.del(key);
         await sequelize.query(
             'DELETE FROM "data" WHERE "key" = :key',
@@ -258,7 +259,7 @@ for (const key of redisKeys) {
         },
     });
     if (chunksLength !== metadata.parts) {
-        console.log(`Removing redis and postgres rows with key: ${key}`);
+        Log.info(`Removing redis and postgres rows with key: ${key}`);
         await redis.del(key);
         await sequelize.query(
             'DELETE FROM "data" WHERE "key" = :key;',
@@ -270,7 +271,7 @@ for (const key of redisKeys) {
         );
         continue;
     } else {
-        console.log(`Keeping redis and postgres rows with key: ${key}`);
+        Log.info(`Keeping redis and postgres rows with key: ${key}`);
     }
 }
 
@@ -467,12 +468,12 @@ async function saveStreamToCache(
             } satisfies CachedMetadata));
             await redis.expire(key, config.expirationInterval);
 
-            console.log(`Saved ${part} chunks to Postgres for ${key} with rand ${rand}`);
+            Log.info(`Saved ${part} chunks to Postgres for ${key} with rand ${rand}`);
             resolve();
         });
 
         upstreamStream.on('error', async (error) => {
-            console.log(`Error for ${key} with rand ${rand}`);
+            Log.error(`Error for ${key} with rand ${rand}`);
             reject(error);
         })
     });
@@ -485,22 +486,22 @@ app.get('/.health', (_, res) => res.sendStatus(200));
 
 const upstreamUrl = process.env['UPSTREAM_URL'] || '';
 if (!upstreamUrl) {
-    console.error(`UPSTREAM_URL unset.`);
+    Log.error(`UPSTREAM_URL unset.`);
     process.exit(1);
 }
 
 // Main endpoint
 app.use(async (mainRequest: Request, mainResponse: Response) => {
     const { key, postStream } = await computeStreamingKey(mainRequest);
-    console.log(`Key: ${key}`);
+    Log.info(`Key: ${key}`);
 
     if (await isCached(key)) {
-        console.log(`Cache HIT for ${key}`);
+        Log.info(`Cache HIT for ${key}`);
         mainResponse.set('X-Cache', 'HIT');
         return streamFromCache(key, mainResponse);
     }
 
-    console.log(`Cache MISS for ${key}`);
+    Log.info(`Cache MISS for ${key}`);
     mainResponse.set('X-Cache', 'MISS');
 
     const requestUpstreamUrl = new URL(mainRequest.originalUrl, upstreamUrl);
@@ -539,13 +540,13 @@ app.use(async (mainRequest: Request, mainResponse: Response) => {
     postStream.pipe(upstreamRequest);
 
     upstreamRequest.on('error', (err) => {
-        console.error('Upstream error:', err);
+        Log.error('Upstream error:', err);
         mainResponse.status(502).end();
     });
 });
 
 app.listen(config.port, () => {
-    console.log(`Server started on port ${config.port}`);
+    Log.info(`Server started on port ${config.port}`);
 });
 
 process.on('SIGTERM', () => {
@@ -554,7 +555,7 @@ process.on('SIGTERM', () => {
 
 cron.schedule('0 30 */2 * * *', async () => {
     const currentDate = new Date();
-    console.log('Running cron cleanup');
+    Log.info('Running cron cleanup');
 
     let redisKeys = await listRedisKeys();
 
@@ -564,7 +565,7 @@ cron.schedule('0 30 */2 * * *', async () => {
         if (redisKeys.includes(key)) {
             continue;
         }
-        console.log(`Removing postgres rows with key: ${key}`);
+        Log.info(`Removing postgres rows with key: ${key}`);
         await sequelize.query(
             'DELETE FROM "data" WHERE "key" = :key;',
             {
@@ -579,7 +580,7 @@ cron.schedule('0 30 */2 * * *', async () => {
     for (const key of redisKeys) {
         const metadataRaw = await redis.get(key);
         if (!metadataRaw) {
-            console.log(`Removing redis and postgres rows with key: ${key}`);
+            Log.info(`Removing redis and postgres rows with key: ${key}`);
             await redis.del(key);
             await sequelize.query(
                 'DELETE FROM "data" WHERE "key" = :key;',

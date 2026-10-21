@@ -4,6 +4,7 @@ import path from 'node:path';
 import dotevn from 'dotenv';
 import express, { type Request, type Response } from 'express';
 import mime from 'mime-types';
+import { Log } from './log.ts';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -30,7 +31,7 @@ app.use(async (request: Request, response: Response) => {
 
         const root = path.join('/', 'homelab', 'www');
         const filepath = path.join(root, ...request.path.split(/\//));
-        console.log(`Request filepath: ${filepath}`);
+        Log.info(`Request filepath: ${filepath}`);
         if (!fs.existsSync(filepath)) {
             response.sendStatus(404);
             return;
@@ -54,13 +55,13 @@ app.use(async (request: Request, response: Response) => {
             response.send();
         }
     } catch (error) {
-        console.error('Server error:', error);
+        Log.error('Server error:', error);
         response.sendStatus(500);
     }
 });
 
 app.listen(8080, () => {
-    console.log('Server started.');
+    Log.info('Server started.');
 });
 
 process.on('SIGTERM', () => {

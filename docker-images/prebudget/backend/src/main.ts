@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import dotevn from 'dotenv';
 import express, { type Request, type Response } from 'express';
+import { Log } from './log.ts';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -23,7 +24,7 @@ app.get('/', async (_: Request, response: Response) => {
 });
 
 app.listen(8080, () => {
-    console.log('Server started.');
+    Log.info('Server started.');
 });
 
 // Init server

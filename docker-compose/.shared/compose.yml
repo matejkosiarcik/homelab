@@ -173,6 +173,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server:1.0.0
     volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/file-server/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/file-server/healthcheck:/homelab/healthcheck/logs:rw
 
   script-app-setup:

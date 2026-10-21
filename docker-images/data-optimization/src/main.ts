@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import dotevn from 'dotenv';
 import { execa } from 'execa';
-import winston from 'winston';
+import { Log } from './log.ts';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -17,12 +17,12 @@ let sourceDirectory = '/placeholder';
 const targetDirectory = path.resolve(process.env['TARGET_DIR'] || '/target-data');
 const cacheDirectory = path.resolve(process.env['CACHE_DIR'] || '/cache-data');
 
-console.log('Snapshots directory:', snapshotsDirectory);
-console.log('Target directory:', targetDirectory);
-console.log('Cache directory:', cacheDirectory);
+Log.info('Snapshots directory:', snapshotsDirectory);
+Log.info('Target directory:', targetDirectory);
+Log.info('Cache directory:', cacheDirectory);
 
 if (!fs.existsSync(path.dirname(snapshotsDirectory))) {
-    console.error(`Snapshots directory not found: ${snapshotsDirectory}`);
+    Log.error(`Snapshots directory not found: ${snapshotsDirectory}`);
     process.exit(1);
 }
 if (!fs.existsSync(path.dirname(targetDirectory))) {
@@ -31,19 +31,6 @@ if (!fs.existsSync(path.dirname(targetDirectory))) {
 if (!fs.existsSync(path.dirname(cacheDirectory))) {
     fs.mkdirSync(path.dirname(cacheDirectory), { recursive: true });
 }
-
-const log = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-        winston.format.printf(({ timestamp, level, message }) => `${message ?? ''}`.trim().split('\n').map((line) => `${timestamp} ${level.toUpperCase()}: ${line}`).join('\n')),
-    ),
-    transports: [
-        new winston.transports.Console({
-            stderrLevels: Object.keys(winston.config.npm.levels),
-        }),
-    ],
-});
 
 function hashFile(filepath: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -97,15 +84,13 @@ function ensureExtension(filepath: string, extension: string): string {
 }
 
 async function processFile(relativeFilepath: string) {
-    console.error(); // Just print blank line between files
-
     const fileHash = await hashFile(path.join(sourceDirectory, relativeFilepath));
     const cachedFilepath = path.join(cacheDirectory, fileHash.substring(0, 2), `${fileHash}.bin`);
     const sourceFilepath = path.join(sourceDirectory, relativeFilepath);
     const defaultTargetFilepath = path.join(targetDirectory, relativeFilepath);
 
     if ([/Private.*\.zip/, '.DS_Store', 'Icon\r'].some((el) => typeof el === 'string' ? el === path.basename(relativeFilepath) : el.test(path.basename(relativeFilepath)))) {
-        log.info(`Skipping file ${relativeFilepath.replace(/\s/g, ' ')}`);
+        Log.info(`Skipping file ${relativeFilepath.replace(/\s/g, ' ')}`);
         return;
     }
 
@@ -114,7 +99,7 @@ async function processFile(relativeFilepath: string) {
 
     const fileType = await getFileType(relativeFilepath);
     const [fileType1, fileType2] = fileType.split(';')[0].trim().split('/');
-    log.debug(`Detected ${relativeFilepath} as ${fileType1}/${fileType2}`);
+    Log.info(`Detected ${relativeFilepath} as ${fileType1}/${fileType2}`);
     const originalExtension = path.basename(relativeFilepath).replace(/^.*\./, '');
 
     /**
@@ -239,7 +224,7 @@ async function processFile(relativeFilepath: string) {
         }
         return '';
     })();
-    log.info(`Detected ${relativeFilepath.replace(/\s/g, ' ')} as ${fileType1}/${fileType2} - ${actualFileType}`);
+    Log.info(`Detected ${relativeFilepath.replace(/\s/g, ' ')} as ${fileType1}/${fileType2} - ${actualFileType}`);
 
     const potentialTargetFilepath = (() => {
         let filename = (() => {
@@ -288,7 +273,7 @@ async function processFile(relativeFilepath: string) {
     let outputFilename = path.basename(potentialTargetFilepath);
 
     if (fs.existsSync(cachedFilepath)) {
-        log.info(`Copying file ${relativeFilepath} from cache as ${path.basename(potentialTargetFilepath)}`);
+        Log.info(`Copying file ${relativeFilepath} from cache as ${path.basename(potentialTargetFilepath)}`);
         await atomicCopyFile(cachedFilepath, potentialTargetFilepath);
         return;
     }
@@ -312,18 +297,18 @@ async function processFile(relativeFilepath: string) {
                 await atomicCopyFile(convertedFilepath, cachedFilepath);
                 await atomicCopyFile(convertedFilepath, potentialTargetFilepath);
             } else {
-                log.warn(`File ${relativeFilepath} was not optimized, but enlarged`);
+                Log.warn(`File ${relativeFilepath} was not optimized, but enlarged`);
                 await fallbackCopy();
             }
         } catch (error) {
-            log.error(`There was error optimizing ${relativeFilepath.replace(/\s/g, ' ')}: (${actualFileType}) ${error}`);
+            Log.error(`There was error optimizing ${relativeFilepath.replace(/\s/g, ' ')}: (${actualFileType}) ${error}`);
             await fallbackCopy();
         } finally {
             await fsx.rm(temporaryDirectory, { force: true, recursive: true });
         }
     }
 
-    log.info(`Optimizing ${relativeFilepath.replace(/\s/g, ' ')} (${actualFileType})`);
+    Log.info(`Optimizing ${relativeFilepath.replace(/\s/g, ' ')} (${actualFileType})`);
     switch (actualFileType) {
         case 'audio': {
             await convertFile(async (temporaryDirectory) => {
@@ -521,12 +506,12 @@ async function processFile(relativeFilepath: string) {
         }
         default: {
             await fallbackCopy();
-            log.error(`Unknown file type for optimization: ${relativeFilepath} - ${fileType}`);
+            Log.error(`Unknown file type for optimization: ${relativeFilepath} - ${fileType}`);
             break;
         }
     }
 
-    log.info(`File converted from ${relativeFilepath.replace(/\s/g, ' ')} to ${outputFilename.replace(/\s/g, ' ')}`);
+    Log.info(`File converted from ${relativeFilepath.replace(/\s/g, ' ')} to ${outputFilename.replace(/\s/g, ' ')}`);
 }
 
 void (async () => {
@@ -564,6 +549,6 @@ void (async () => {
 })();
 
 process.on('SIGTERM', () => {
-    console.error('SIGTERM received');
+    Log.info('SIGTERM received');
     process.exit(0);
 });
