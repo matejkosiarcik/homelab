@@ -74,7 +74,7 @@ with open(
     encoding="utf-8",
 ) as anticachefile:
     print(
-        f"This file is for cache busting\nDatetime: {datetime.now(local_tz).isoformat()}\n",
+        f"This file is for cache busting\nDatetime: {datetime.now(local_tz).isoformat()}",
         file=anticachefile,
     )
 
