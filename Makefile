@@ -6,9 +6,7 @@ SHELL := /bin/sh
 PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 # Define portable datetime format
-define define_log_function
-log_timestamp() { date_supports_milliseconds="$$(date '+%3N')"; case "$${date_supports_milliseconds}" in [0-9][0-9][0-9]) milliseconds_format='%3N' ;; *) milliseconds_format='000' ;; esac; date "+%Y-%m-%dT%H:%M:%S.$${milliseconds_format}Z"; }; log() { log_level="$$1"; shift; log_timestamp="$$(log_timestamp)"; printf '%s\n' "$${*}" | while IFS= read -r log_message || [ -n "$${log_message}" ]; do printf '%s [%s]: %s\n' "$${log_timestamp}" "$$log_level" "$${log_message}"; done >&2; }
-endef
+define_log_function = log_timestamp() { date_supports_milliseconds="$$(date '+%3N')"; case "$${date_supports_milliseconds}" in [0-9][0-9][0-9]) milliseconds_format='%3N' ;; *) milliseconds_format='000' ;; esac; date "+%Y-%m-%dT%H:%M:%S.$${milliseconds_format}Z"; }; log() { log_level="$$1"; shift; log_timestamp="$$(log_timestamp)"; printf '%s\n' "$${*}" | while IFS= read -r log_message || [ -n "$${log_message}" ]; do printf '%s [%s]: %s\n' "$${log_timestamp}" "$$log_level" "$${log_message}"; done >&2; }
 
 DOCKER_APPS := $(shell find 'servers' -type f -name 'Taskfile.yml' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
