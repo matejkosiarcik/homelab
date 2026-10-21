@@ -37,9 +37,9 @@ services:
       - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/adventurelog/data:/code/media:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/nginx:/var/log/nginx:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/supercronic:/homelab/logs/supercronic:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/healthcheck:/homelab/logs/healthcheck:rw
     tmpfs:
       - /etc/adventurelog:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

@@ -34,9 +34,9 @@ services:
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rsa_key.pem:/homelab/rsa_key.pem:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rsa_key.pem.pub:/homelab/rsa_key.pem.pub:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-wayvnc/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rsa_key.pem.pub:/homelab/rsa_key.pem.pub:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rsa_key.pem:/homelab/rsa_key.pem:ro
 
   certificator:
     extends:
