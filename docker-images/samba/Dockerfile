@@ -92,7 +92,9 @@ WORKDIR /homelab/samba_exporter
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    ./build.sh build
+    ./build.sh build && \
+    strip --strip-all --remove-section=.note.go.buildid --remove-section=.note.gnu.build-id ./bin/samba_exporter && \
+    strip --strip-all --remove-section=.note.go.buildid --remove-section=.note.gnu.build-id ./bin/samba_statusd
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \

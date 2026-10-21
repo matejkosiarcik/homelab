@@ -22,7 +22,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/docker-registry/data:/var/lib/registry:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   redis:
     extends:

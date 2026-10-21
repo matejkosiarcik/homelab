@@ -1,6 +1,26 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+[0-9][0-9][0-9]) milliseconds_format="%3N" ;;
+*) milliseconds_format="000" ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 git_dir="$(git rev-parse --show-toplevel)"
 server_dir="${git_dir}/servers/.current"
 
@@ -12,16 +32,16 @@ sudo chown -R "$(whoami)" '/homelab'
 sudo chmod a+rwx '/homelab' '/homelab/config' '/homelab/log' # TODO: Remove permissions after homelab user is created
 
 if [ -f "${server_dir}/config/startup.sh" ]; then
-    printf 'Copy startup script\n' >&2
+    log INFO 'Copy startup script'
     cp "${server_dir}/config/startup.sh" "${HOME}/config/startup.sh"
 fi
 
 if [ -f "${server_dir}/config/update.sh" ]; then
-    printf 'Copy update script\n' >&2
+    log INFO 'Copy update script'
     cp "${server_dir}/config/update.sh" "${HOME}/config/update.sh"
 fi
 
 if [ -f "${server_dir}/config/crontab.cron" ]; then
-    printf 'Installing crontab\n' >&2
+    log INFO 'Installing crontab'
     crontab - <"${server_dir}/config/crontab.cron"
 fi

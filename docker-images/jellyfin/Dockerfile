@@ -4,11 +4,11 @@
 
 ### App ###
 
-FROM linuxserver/jellyfin:10.11.11 AS favicon
+FROM jellyfin/jellyfin:12.2 AS favicon
 USER root
-RUN find '/usr/share/jellyfin/web' -name 'favicon.*.ico' -type f -maxdepth 1 -exec cp {} '/usr/share/jellyfin/web/favicon.ico' \; && \
-    if [ ! -e '/usr/share/jellyfin/web/favicon.ico' ]; then \
-        printf 'File "favicon.ico" not found\n' >&2 && \
+RUN find '/jellyfin/jellyfin-web' -name 'favicon.*.ico' -type f -maxdepth 1 -exec cp {} '/jellyfin/jellyfin-web/favicon.ico' \; && \
+    if [ ! -f '/jellyfin/jellyfin-web/favicon.ico' ]; then \
+        printf 'Favicon not found\n' >&2 && \
         exit 1 && \
     true; fi
 
@@ -41,14 +41,8 @@ ARG GID=1000
 ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh '/homelab/create-user.sh' && \
-    grep -E '^homelab:' </etc/group | sed 's~^homelab~abc~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~abc~' | sponge --append /etc/passwd && \
-    grep -E '^homelab:' </etc/group | sed 's~^homelab~jellyfin~' | sponge --append /etc/group && \
-    grep -E '^homelab:' </etc/passwd | sed 's~^homelab~jellyfin~' | sponge --append /etc/passwd && \
     pwconv && \
-    passwd --lock homelab && \
-    passwd --lock abc && \
-    passwd --lock jellyfin
+    passwd --lock homelab
 
 ### Prefinal ###
 
@@ -60,24 +54,21 @@ FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
-COPY --from=favicon /usr/share/jellyfin/web/favicon.ico /fsroot/favicon/favicon.ico
+COPY --from=favicon /jellyfin/jellyfin-web/favicon.ico /fsroot/favicon/favicon.ico
 
 ### Final ###
 
-FROM linuxserver/jellyfin:10.11.11 AS final
+FROM jellyfin/jellyfin:12.2 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-COPY --from=prefinal /fsroot/favicon/favicon.ico /usr/share/jellyfin/web/favicon.ico
-ARG GID=1000
-ARG UID=1000
+COPY --from=prefinal /fsroot/favicon/favicon.ico /jellyfin/jellyfin-web/favicon.ico
 ENV HOMELAB_CONTAINER_NAME="jellyfin" \
     HOMELAB_CONTAINER_VARIANT="default" \
     JELLYFIN_CACHE_DIR="/cache" \
     JELLYFIN_LOG_DIR="/logs" \
-    PGID="${GID}" \
-    PUID="${UID}" \
     TZ="Europe/Bratislava"
+USER homelab
 HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8096" ]

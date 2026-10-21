@@ -25,7 +25,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant/data:/config:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/homeassistant/configuration.yaml:/config/configuration.yaml:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
     extends:

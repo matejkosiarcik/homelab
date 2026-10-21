@@ -21,7 +21,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis:/dawarich_db_data:rw # TODO: Determine if necessary
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   sidekiq:
     extends:
@@ -51,7 +51,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/sidekiq/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/sidekiq/healthcheck:/homelab/logs/healthcheck:rw
 
   redis:
     extends:
@@ -78,7 +78,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/decryptor.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-decryptor:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/decryptor/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/decryptor/default:/homelab/logs/default:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/decryptor/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
     extends:

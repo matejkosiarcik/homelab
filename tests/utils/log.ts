@@ -8,14 +8,14 @@ import { parseISO } from 'date-fns';
  * Logger for usage in tests
  */
 export class Log {
-    private static instances: Record<string, winston.Logger> = {};
+    private static _instances: Record<string, winston.Logger> = {};
 
     private static get instance(): winston.Logger {
         const outputDirectory = testArtifactDirectory();
         const loggerName = path.basename(outputDirectory);
 
-        if (this.instances[loggerName]) {
-            return this.instances[loggerName];
+        if (this._instances[loggerName]) {
+            return this._instances[loggerName];
         }
 
         const logLevel = process.env['LOG_LEVEL'] || 'info';
@@ -26,7 +26,7 @@ export class Log {
         const outputFile = path.join(outputDirectory, 'log.txt');
         fs.writeFileSync(outputFile, '', 'utf-8');
 
-        this.instances[loggerName] = winston.createLogger({
+        this._instances[loggerName] = winston.createLogger({
             format: winston.format.combine(
                 winston.format.timestamp({ format: 'YYYY-MM-DDTHH:mm:ss.SSSZ' }),
                 winston.format.printf(({ timestamp, level, message }) => {
@@ -35,7 +35,7 @@ export class Log {
                     return `${message}`
                         .trim()
                         .split('\n')
-                        .map((line) => `${editedTimestamp} ${level.toUpperCase().padStart(5, '_')}: ${line}`)
+                        .map((line) => `${editedTimestamp} [${level.toUpperCase()}]: ${line}`)
                         .join('\n');
                     }
                 ),
@@ -48,7 +48,7 @@ export class Log {
                 }),
             ],
         });
-        return this.instances[loggerName];
+        return this._instances[loggerName];
     }
 
     public static debug(...args: any[]): void {

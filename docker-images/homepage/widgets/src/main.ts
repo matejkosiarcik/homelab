@@ -2,12 +2,13 @@ import fs from 'node:fs';
 import express, { type Request, type Response } from 'express';
 import axios from 'axios';
 import dotevn from 'dotenv';
+import { Log } from './log.ts';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
 if (!process.env['PROMETHEUS_PASSWORD']) {
-    console.error('PROMETHEUS_PASSWORD unset!');
+    Log.error('PROMETHEUS_PASSWORD unset!');
     process.exit(1);
 }
 const app = express();
@@ -54,7 +55,7 @@ app.get('/smtp4dev', async (_: Request, response: Response) => {
         response.status(200);
         response.send({ total: total, unread: unread });
     } catch (error) {
-        console.error('Proxy error:', error);
+        Log.error('Proxy error:', error);
         response.sendStatus(500);
     }
 });
@@ -85,13 +86,13 @@ app.use('/prometheus', async (request: Request, response: Response) => {
         }
         axiosResponse.data.pipe(response);
     } catch (error) {
-        console.error('Proxy error:', error);
+        Log.error('Proxy error:', error);
         response.sendStatus(500);
     }
 });
 
 app.listen(8080, () => {
-    console.log('Server started.');
+    Log.info('Server started.');
 });
 
 process.on('SIGTERM', () => {

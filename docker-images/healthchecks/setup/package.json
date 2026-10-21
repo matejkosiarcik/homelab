@@ -16,7 +16,8 @@
     "simple-assert": "^2.0.0",
     "sleep-promise": "^9.1.0",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "modclean": "^3.0.0-beta.1",

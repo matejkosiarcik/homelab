@@ -6,6 +6,7 @@ import express, { type Request, type Response } from 'express';
 import dotevn from 'dotenv';
 import { execa } from 'execa';
 import { PassThrough } from 'node:stream';
+import { Log } from './log.js';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -23,7 +24,7 @@ app.get('/status', async (_: Request, response: Response) => {
         response.status(200);
         response.send({ status: isRunning ? 'running' : 'idle' });
     } catch (error) {
-        console.error('Server error:', error);
+        Log.error('Server error:', error);
         response.status(500);
         response.send({ error: 'Server error' });
     }
@@ -63,7 +64,7 @@ app.post('/run', async (_: Request, response: Response) => {
         response.status(200);
         response.send({ 'job': jobId });
     } catch (error) {
-        console.error('Server error:', error);
+        Log.error('Server error:', error);
         response.status(500);
         response.send({ error: 'Server error' });
     }
@@ -73,7 +74,7 @@ app.post('/run', async (_: Request, response: Response) => {
 app.get('/log/:id', async (request: Request, response: Response) => {
     try {
         const jobId = `${request.params['id']}`;
-        const logFilePath = path.join('/', 'homelab', 'logs', jobId, 'output.log');
+        const logFilePath = path.join('/', 'homelab', 'cron', jobId, 'output.txt');
         if (!fs.existsSync(logFilePath)) {
             response.status(404);
             response.send({ error: 'Logfile not found' });
@@ -85,14 +86,14 @@ app.get('/log/:id', async (request: Request, response: Response) => {
         response.contentType('text/plain');
         response.send(logContent);
     } catch (error) {
-        console.error('Server error:', error);
+        Log.error('Server error:', error);
         response.status(500);
         response.send({ error: 'Server error' });
     }
 });
 
 app.listen(8080, () => {
-    console.log('Server started.');
+    Log.info('Server started.');
 });
 
 process.on('SIGTERM', () => {

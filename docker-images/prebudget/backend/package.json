@@ -10,10 +10,12 @@
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.48",
     "axios": "^1.20.0",
+    "date-fns": "^4.4.0",
     "dotenv": "^18.0.8",
     "execa": "^10.2.0",
     "express": "^5.3.0",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",

@@ -22,7 +22,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/tvheadend/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/config/groupadd.txt:/groupadd:ro
       # - ./app-data/tvheadend-recordings:/recordings
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
     extends:

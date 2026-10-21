@@ -1,18 +1,38 @@
 #!/bin/sh
 set -euf
 
+# Define portable datetime format
+date_supports_milliseconds="$(date '+%3N')"
+case "${date_supports_milliseconds}" in
+[0-9][0-9][0-9]) milliseconds_format="%3N" ;;
+*) milliseconds_format="000" ;;
+esac
+datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
+
+log() {
+    # $1 - log level
+    # $2+ - message
+
+    log_level="${1}"
+    shift
+    log_timestamp="$(date "${datetime_format}")"
+    printf '%s\n' "${*}" | while IFS= read -r log_message; do
+        printf '%s [%s]: %s\n' "${log_timestamp}" "${log_level}" "${log_message}"
+    done >&2
+}
+
 if [ ! -d '/var/lib/samba' ]; then
-    printf 'Directory "/var/lib/samba" not found\n' >&2
+    log ERROR 'Directory "/var/lib/samba" not found'
     exit 1
 fi
 
 # Test user account exists
 if ! grep -Eq "^${SAMBA_GROUP}:" '/etc/group'; then
-    printf 'Group %s not available\n' "${SAMBA_GROUP}" >&2
+    log ERROR "$(printf 'Group %s not available' "${SAMBA_GROUP}")"
     exit 1
 fi
 if ! grep -Eq "^${SAMBA_USERNAME}:" '/etc/passwd'; then
-    printf 'User %s not available\n' "${SAMBA_GROUP}" >&2
+    log ERROR "$(printf 'User %s not available' "${SAMBA_GROUP}")"
     exit 1
 fi
 
@@ -36,9 +56,9 @@ start_log_forwarder() {
     source_logfile="$1"
     output_logfile="$2"
 
-    su --shell='/bin/sh' --command="/bin/sh -c 'while true; do
+    su --shell='/bin/sh' --command="/bin/sh -c 'datetime_format=\"${datetime_format}\"; while true; do
         tail -n 0 -F \"${source_logfile}\" >>\"${output_logfile}\" || {
-            printf \"Error: Log forwarder for %s stopped; retrying in 1 second\\n\" \"${source_logfile}\" >&2
+            printf \"%s [WARNING]: Log forwarder for %s stopped; retrying in 1 second\\n\" \"\$(date \"\${datetime_format}\")\" \"${source_logfile}\" >&2
             sleep 1
         }
     done'" 'homelab' &
@@ -54,7 +74,7 @@ config_temporary_file="${config_output_file}.tmp"
 
 su --shell='/bin/sh' --command="/bin/sh -c 'envsubst -no-digit -no-unset -no-empty -i \"${config_input_file}\" -o \"${config_temporary_file}\"'" 'homelab' || {
     rm -f "${config_temporary_file}"
-    printf 'An error happened during processing of %s to %s\n\n' "${config_input_file}" "${config_output_file}" >&2
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_input_file}" "${config_output_file}")"
     exit 1
 }
 
@@ -66,7 +86,7 @@ printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c "${c
 
 # Test config is valid before starting
 testparm -s "${config_output_file}" || {
-    printf 'Program "testparm -s" failed with status %s. Review samba config.\n' "${?}" >&2
+    log ERROR "$(printf 'Program "testparm -s" failed with status %s. Review samba config.' "${?}")"
     exit 1
 }
 

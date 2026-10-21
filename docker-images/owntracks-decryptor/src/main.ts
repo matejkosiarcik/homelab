@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios';
 import dotevn from 'dotenv';
 import express, { type Request, type Response } from 'express';
 import sodium from 'libsodium-wrappers';
+import { Log } from './log.ts';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -80,10 +81,10 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
         const responseData = Buffer.from(axiosResponse.data).toString('utf8');
 
         if (axiosResponse.status !== 200) {
-            console.error(`Error ${axiosResponse.status} from ${axiosResponse.config.method} ${axiosResponse.config.url}: ${responseData}`);
+            Log.error(`Error ${axiosResponse.status} from ${axiosResponse.config.method} ${axiosResponse.config.url}: ${responseData}`);
         }
 
-        console.log(`${new Date().toISOString()} Forwarding value: ${JSON.stringify(decryptedData)}`);
+        Log.info(`Forwarding value: ${JSON.stringify(decryptedData)}`);
 
         response.status(axiosResponse.status);
         response.send(axiosResponse.data);
@@ -92,13 +93,13 @@ app.post(['/pub', '/api/v1/owntracks/points'], async (request: Request, response
         if (error instanceof AxiosError) {
             errorDescription += `\nStatus: ${error.status ?? 0}\n${JSON.stringify(error.config ?? {}, null, 2)}`;
         }
-        console.error(errorDescription);
+        Log.error(errorDescription);
         response.sendStatus(500);
     }
 });
 
 app.listen(8080, () => {
-    console.log('Server started.');
+    Log.info('Server started.');
 });
 
 process.on('SIGTERM', () => {
