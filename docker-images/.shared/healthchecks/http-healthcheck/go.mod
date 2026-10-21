@@ -9,5 +9,5 @@ require (
 
 require (
 	github.com/alexflint/go-scalar v1.2.0 // indirect
-	github.com/itchyny/timefmt-go v0.1.8 // indirect
+	github.com/itchyny/timefmt-go v0.1.9 // indirect
 )
