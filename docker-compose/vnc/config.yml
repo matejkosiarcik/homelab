@@ -4,7 +4,7 @@ app:
 apache:
   upstream-url:
     - path: /
-      target: http://novnc:6080
+      target: http://app-novnc:6080
 
 favicons:
   default: /app/images/icons/novnc-ios-180.png
