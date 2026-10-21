@@ -1,7 +1,7 @@
 x-definitions: {}
 
 services:
-  novnc:
+  app-novnc:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
@@ -20,7 +20,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-novnc/healthcheck:/homelab/logs/healthcheck:rw
 
-  wayvnc:
+  app-wayvnc:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app

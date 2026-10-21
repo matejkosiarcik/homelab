@@ -1,7 +1,7 @@
 x-definitions: {}
 
 services:
-  app:
+  app-main:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
@@ -23,7 +23,7 @@ services:
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis:/dawarich_db_data:rw # TODO: Determine if necessary
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-main/healthcheck:/homelab/logs/healthcheck:rw
 
-  sidekiq:
+  app-sidekiq:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template

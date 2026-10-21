@@ -3,12 +3,12 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  app:
+  app-main:
     <<: *common-service-options
     environment:
       APPLICATION_HOSTS: app,${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
-  sidekiq:
+  app-sidekiq:
     <<: *common-service-options
     environment:
       APPLICATION_HOSTS: app,${DOCKER_COMPOSE_NETWORK_DOMAIN}
