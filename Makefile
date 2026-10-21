@@ -7,14 +7,7 @@ PROJECT_DIR := $(abspath $(dir $(MAKEFILE_LIST)))
 
 # Define portable datetime format
 define define_log_timestamp_function
-log_timestamp() { \
-	date_supports_milliseconds="$$(date '+%3N')"; \
-	case "$$date_supports_milliseconds" in \
-		[0-9][0-9][0-9]) milliseconds_format='%3N' ;; \
-		*) milliseconds_format='000' ;; \
-	esac; \
-	date "+%Y-%m-%dT%H:%M:%S.$${milliseconds_format}Z"; \
-}
+log_timestamp() { date_supports_milliseconds="$$(date '+%3N')"; case "$$date_supports_milliseconds" in \[0-9][0-9][0-9]) milliseconds_format='%3N' ;; \*) milliseconds_format='000' ;; esac; date "+%Y-%m-%dT%H:%M:%S.$${milliseconds_format}Z"; }
 endef
 
 DOCKER_APPS := $(shell find 'servers' -type f -name 'Taskfile.yml' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
