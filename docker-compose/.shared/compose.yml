@@ -161,6 +161,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons:1.0.0
     volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/favicons/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/favicons/healthcheck:/homelab/healthcheck/logs:rw
 
   file-server:

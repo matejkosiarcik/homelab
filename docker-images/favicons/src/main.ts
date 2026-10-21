@@ -11,6 +11,7 @@ import express, { type Request, type Response } from 'express';
 import png2ico from 'png-to-ico';
 import sharp from 'sharp';
 import { CookieJar } from 'tough-cookie';
+import { Log } from './log.ts';
 
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
@@ -30,7 +31,7 @@ type EnvMode = 'dev' | 'prod';
 
 const envMode = (() => {
     if (!process.env['HOMELAB_ENV']) {
-        console.error('HOMELAB_ENV is unset');
+        Log.error('HOMELAB_ENV is unset');
         process.exit(1);
     }
     return process.env['HOMELAB_ENV'] as EnvMode;
@@ -38,7 +39,7 @@ const envMode = (() => {
 
 const appType = (() => {
     if (!process.env['HOMELAB_APP_TYPE']) {
-        console.error('HOMELAB_APP_TYPE is unset');
+        Log.error('HOMELAB_APP_TYPE is unset');
         process.exit(1);
     }
     return process.env['HOMELAB_APP_TYPE'];
@@ -193,7 +194,7 @@ async function convertImage(upstreamImage: Buffer, sourceImageType: 'ico' | 'png
 
     const cachedImage = fileCache.get(imageKey);
     if (cachedImage) {
-        console.log(`Serving cached image: ${imageKey}`);
+        Log.info(`Serving cached image: ${imageKey}`);
         return cachedImage;
     }
 
@@ -210,7 +211,7 @@ async function convertImage(upstreamImage: Buffer, sourceImageType: 'ico' | 'png
         }
     })();
 
-    console.log(`Saving converted image: ${imageKey}`);
+    Log.info(`Saving converted image: ${imageKey}`);
     fileCache.set(imageKey, output);
     return output;
 }
@@ -405,7 +406,7 @@ app.get('/favicon.ico', async (request: Request, response: Response) => {
         response.setHeader('Content-Type', 'image/x-icon');
         response.send(image);
     } catch (error) {
-        console.error('Favicon error:', error);
+        Log.error('Favicon error:', error);
         response.sendStatus(500);
     }
 });
@@ -417,13 +418,13 @@ app.get('/favicon.png', async (request: Request, response: Response) => {
         response.setHeader('Content-Type', 'image/png');
         response.send(image);
     } catch (error) {
-        console.error('Favicon error:', error);
+        Log.error('Favicon error:', error);
         response.sendStatus(500);
     }
 });
 
 app.listen(8080, () => {
-    console.log('Server started.');
+    Log.info('Server started.');
 });
 
 // Request favicons at startup before reporting successful start
@@ -440,7 +441,7 @@ app.listen(8080, () => {
     }
 
     const startTimeout = setTimeout(() => {
-        console.error('Favicon startup did not complete within 5 minutes, consider investigation.');
+        Log.error('Favicon startup did not complete within 5 minutes, consider investigation.');
     }, 5 * 60_000);
 
     try {
