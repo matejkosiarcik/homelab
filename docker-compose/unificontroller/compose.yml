@@ -26,8 +26,8 @@ services:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=0,gid=0 # Needs to mount as root to start the container
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/unifi/data:/config:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
 
   mongodb:
     extends:
@@ -45,10 +45,10 @@ services:
       MONGO_USER: unifi
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-mongodb:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/mongodb/data:/data/db:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/mongodb/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/mongodb/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
 
   certificator:
     extends:
@@ -88,9 +88,9 @@ services:
   #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
   #   volumes:
   #     - ./app-data/web-backup/default:/homelab/backup:rw
-  #     - ./app-logs/web-backup/errors:/homelab/errors:rw
-  #     - ./app-logs/web-backup/default:/homelab/logs:rw
-  #     - ./app-logs/web-backup/cron:/homelab/cron:rw
+  #     - ./app-logs/app-backup/errors:/homelab/errors:rw
+  #     - ./app-logs/app-backup/default:/homelab/logs:rw
+  #     - ./app-logs/app-backup/cron:/homelab/cron:rw
 
 networks:
   default:

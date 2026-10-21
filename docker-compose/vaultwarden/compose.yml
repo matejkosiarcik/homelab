@@ -11,8 +11,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vaultwarden/data:/data
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/vaultwarden/default:/homelab/logs
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/vaultwarden/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs:rw
 
   certificator:
     extends:

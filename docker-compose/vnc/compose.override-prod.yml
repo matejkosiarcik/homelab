@@ -3,10 +3,10 @@ x-definitions:
     restart: unless-stopped
 
 services:
-  novnc:
+  app-novnc:
     <<: *common-service-options
 
-  wayvnc:
+  app-wayvnc:
     <<: *common-service-options
     volumes:
       - /run/user/${DOCKER_COMPOSE_UID}:/run/user/${DOCKER_COMPOSE_UID}:rw

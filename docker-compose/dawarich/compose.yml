@@ -1,7 +1,7 @@
 x-definitions: {}
 
 services:
-  app:
+  app-main:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
@@ -18,12 +18,12 @@ services:
       - /var/app/tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis:/dawarich_db_data:rw # TODO: Determine if necessary
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-main/healthcheck:/homelab/logs/healthcheck:rw
 
-  sidekiq:
+  app-sidekiq:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
@@ -49,9 +49,9 @@ services:
       - /var/app/tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/sidekiq/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-sidekiq/healthcheck:/homelab/logs/healthcheck:rw
 
   redis:
     extends:

@@ -3,12 +3,12 @@ x-definitions:
     restart: "no"
 
 services:
-  app:
+  app-main:
     <<: *common-service-options
     environment:
       APPLICATION_HOSTS: app,localhost
 
-  sidekiq:
+  app-sidekiq:
     <<: *common-service-options
     environment:
       APPLICATION_HOSTS: app,localhost
