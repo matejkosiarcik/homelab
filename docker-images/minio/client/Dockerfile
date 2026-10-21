@@ -85,7 +85,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
 RUN mkdir -p '/fsroot/bin' && \
-    cp '/bin/dirname' '/bin/grep' '/bin/sh' '/bin/sleep' '/bin/timeout' '/fsroot/bin/'
+    cp '/bin/date' '/bin/dirname' '/bin/grep' '/bin/sh' '/bin/sleep' '/bin/timeout' '/fsroot/bin/'
 
 ### App ###
 
