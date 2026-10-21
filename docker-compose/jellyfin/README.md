@@ -7,7 +7,7 @@
 Jellyfin (official):
 
 - Main docs: <https://jellyfin.org/docs/general/quick-start>
-  - Install guide: <https://jellyfin.org/docs/general/installation/container>
+    - Install guide: <https://jellyfin.org/docs/general/installation/container>
     - Hardware Acceleration guide: <https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration> and <https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/intel>
 - DockerHub: <https://hub.docker.com/r/jellyfin/jellyfin>
 - GHCR: <https://ghcr.io/jellyfin/jellyfin>
