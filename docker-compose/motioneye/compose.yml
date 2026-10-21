@@ -15,7 +15,6 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye/etc:/etc/motioneye:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye/lib:/var/lib/motioneye:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
-      - /etc/localtime:/etc/localtime:ro
 
   certificator:
     extends:
