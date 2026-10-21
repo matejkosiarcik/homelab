@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from os import path
 
 local_tz = datetime.now().astimezone().tzinfo
@@ -32,10 +32,27 @@ env_mode = ""
 when_mode = ""
 include_secrets = False
 
+
+class LogFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        timestamp = datetime.fromtimestamp(record.created, UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+        message = record.getMessage().strip()
+        if record.exc_info:
+            message = f"{message}\n{self.formatException(record.exc_info)}"
+        if record.stack_info:
+            message = f"{message}\n{self.formatStack(record.stack_info)}"
+        return "\n".join(f"{timestamp} [{record.levelname}]: {line}" for line in message.split("\n"))
+
+
 log = logging.getLogger()
 log.setLevel(logging.INFO)
-log.addHandler(logging.StreamHandler())
-log.addHandler(logging.FileHandler(log_file))
+log_formatter = LogFormatter()
+log_handler = logging.StreamHandler(sys.stderr)
+log_handler.setFormatter(log_formatter)
+log.addHandler(log_handler)
+log_file_handler = logging.FileHandler(log_file)
+log_file_handler.setFormatter(log_formatter)
+log.addHandler(log_file_handler)
 
 
 def tty_supports_color():
@@ -156,9 +173,9 @@ def main(argv: list[str]):
     if env_mode is None:
         env_mode = os.environ["HOMELAB_ENV"]
     if env_mode is None:
-        print("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
+        log.error("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
     if env_mode not in ["dev", "prod"]:
-        print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
+        log.error("Invalid mode, got: %s, valid values are: dev|prod", env_mode)
         sys.exit(1)
 
     if command == "deploy":
@@ -172,7 +189,7 @@ def main(argv: list[str]):
         server_action(command)
         return
 
-    print(f"Unrecognized command: {command}")
+    log.error("Unrecognized command: %s", command)
     sys.exit(1)
 
 
@@ -180,7 +197,7 @@ def server_action(action: str):
     action_log = action.replace("-", " ").capitalize()
     if action == "secrets":
         action_log += " for"
-    print(f"↓ {action_log} docker apps")
+    log.info("%s %s docker apps", "↓", action_log)
     print("\n---\n")
 
     cli_args = ["--mode", env_mode]
@@ -200,16 +217,16 @@ def server_action(action: str):
     total_elapsed = time.time() - start_time
     total_elapsed_mins = int(total_elapsed) // 60
     total_elapsed_secs = int(total_elapsed) % 60
-    print(f"{ascii_checkmark} {action_log} docker apps {total_elapsed_mins:02d}:{total_elapsed_secs:02d}")
+    log.info("%s %s docker apps %02d:%02d", ascii_checkmark, action_log, total_elapsed_mins, total_elapsed_secs)
 
 
 def server_install():
-    print("↓ Installing global server config")
+    log.info("%s Installing global server config", "↓")
     subprocess.check_call(["sh", path.join(git_dir, "utils", "server-helpers", "install.sh")])
     total_elapsed = time.time() - start_time
     total_elapsed_mins = int(total_elapsed) // 60
     total_elapsed_secs = int(total_elapsed) % 60
-    print(f"{ascii_checkmark} Install global config {total_elapsed_mins:02d}:{total_elapsed_secs:02d}")
+    log.info("%s Install global config %02d:%02d", ascii_checkmark, total_elapsed_mins, total_elapsed_secs)
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ import sys
 import threading
 import time
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from os import path
 
 local_tz = datetime.now().astimezone().tzinfo
@@ -25,6 +25,7 @@ app_dir = path.abspath(path.curdir)
 git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
 main_log_dir = path.join(app_dir, "app-logs")
 log_dir = path.join(main_log_dir, ".meta")
+log_file_main = path.join(log_dir, "task.log")
 
 is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
 cpu_count = os.cpu_count() or 1
@@ -62,9 +63,27 @@ include_secrets = False
 docker_compose_args = []
 docker_command_args = []
 
+
+class LogFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        timestamp = datetime.fromtimestamp(record.created, UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+        message = record.getMessage().strip()
+        if record.exc_info:
+            message = f"{message}\n{self.formatException(record.exc_info)}"
+        if record.stack_info:
+            message = f"{message}\n{self.formatStack(record.stack_info)}"
+        return "\n".join(f"{timestamp} [{record.levelname}]: {line}" for line in message.split("\n"))
+
+
 log = logging.getLogger()
 log.setLevel(logging.INFO)
-log.addHandler(logging.StreamHandler())
+log_formatter = LogFormatter()
+log_handler = logging.StreamHandler(sys.stderr)
+log_handler.setFormatter(log_formatter)
+log.addHandler(log_handler)
+log_file_handler = logging.FileHandler(log_file_main)
+log_file_handler.setFormatter(log_formatter)
+log.addHandler(log_file_handler)
 
 
 # Write current anticache.txt
@@ -370,7 +389,7 @@ def docker_debug_compose():
     commands = ["docker", "compose"] + docker_compose_args + ["config", "--output", compose_file]
     docker_log_file = path.join(log_dir, "docker-debug-compose.log")
     run_with_spinner(commands, "Resolving compose config for", "Resolve compose config for", docker_log_file, False)
-    print(f"Resolved compose config written to {compose_file}")
+    log.info("Resolved compose config written to %s", compose_file)
 
 
 def docker_stop():
@@ -449,7 +468,7 @@ def run_main_command(command: str):
     # Check if docker-compose stack exists
     compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
     if not path.isdir(compose_path):
-        print(f"Docker compose stack for app {os.environ.get('DOCKER_COMPOSE_APP_TYPE')} not found")
+        log.error("Docker compose stack for app %s not found", os.environ.get("DOCKER_COMPOSE_APP_TYPE"))
         sys.exit(1)
 
     # Execute commands
@@ -482,7 +501,7 @@ def run_main_command(command: str):
     elif command == "secrets":
         create_secrets()
     else:
-        print(f"Unrecognized command '{command}'", file=sys.stderr)
+        log.error("Unrecognized command '%s'", command)
         sys.exit(1)
 
 
@@ -547,16 +566,16 @@ def main(argv):
     if env_mode is None:
         env_mode = os.environ["HOMELAB_ENV"]
     if env_mode is None:
-        print("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
+        log.error("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
     if env_mode not in ["dev", "prod"]:
-        print(f"Invalid mode, got: {env_mode}, valid values are: dev|prod")
+        log.error("Invalid mode, got: %s, valid values are: dev|prod", env_mode)
         sys.exit(1)
 
     if command == "deploy":
         when_mode = args.when_mode or ("always" if env_mode == "dev" else "onchange")
 
     if command not in ["build", "debug-compose", "deploy", "restart", "secrets", "start", "stop"]:
-        print(f"Unrecognized command: {command}")
+        log.error("Unrecognized command: %s", command)
         sys.exit(1)
 
     load_app_config()
