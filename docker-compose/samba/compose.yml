@@ -38,9 +38,9 @@ services:
       - /var/log/samba_statusd:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
       - /var/log/samba_exporter:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/smbd:/homelab/logs/samba_smbd:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/statusd:/homelab/logs/samba_statusd:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/exporter:/homelab/logs/samba_exporter:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/smbd:/homelab/logs/samba_smbd:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/statusd:/homelab/logs/samba_statusd:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/exporter:/homelab/logs/samba_exporter:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:

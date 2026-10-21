@@ -68,9 +68,9 @@ services:
   #     - internal-network
   #   volumes:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/web-backup/default:/homelab/backup:rw
-  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup/errors:/homelab/errors:rw
-  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup/default:/homelab/logs:rw
-  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/web-backup/cron:/homelab/cron:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/errors:/homelab/errors:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/default:/homelab/logs:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/cron:/homelab/cron:rw
 
 networks:
   default:

@@ -20,7 +20,7 @@ services:
       - /app/.next/server/pages:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /app/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/homepage/default:/app/config/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/app/config/logs:rw
 
   certificator:
     extends:
@@ -64,8 +64,8 @@ services:
       - external-network
       - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/widgets/default:/homelab/logs/default:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/widgets/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-widgets/default:/homelab/logs/default:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-widgets/healthcheck:/homelab/logs/healthcheck:rw
 
 networks:
   default:

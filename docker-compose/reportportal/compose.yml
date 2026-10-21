@@ -67,7 +67,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/reportportal/api:/var/log/reportportal:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/default:/var/log/reportportal:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/healthcheck:/homelab/logs/healthcheck:rw
 
   app-uat:

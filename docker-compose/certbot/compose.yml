@@ -21,8 +21,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot/data:/homelab/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/supercronic:/homelab/logs/supercronic:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot/cron:/homelab/cron:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certbot/letsencrypt:/var/log/letsencrypt:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/cron:/homelab/cron:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/letsencrypt:/var/log/letsencrypt:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   file-server:
