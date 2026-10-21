@@ -10,7 +10,7 @@ apache:
     # - path: /pub
     #   target: http://decryptor:8080/pub
     - path: /
-      target: http://app:3000
+      target: http://app-main:3000
 
 favicons:
   default: /assets/favicon/apple-touch-icon.png
