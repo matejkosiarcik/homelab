@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
 RUN mkdir -p '/fsroot/bin' && \
-    cp '/bin/sh' '/fsroot/bin/'
+    cp '/bin/date' '/bin/sh' '/fsroot/bin/'
 
 ### Users ###
 
