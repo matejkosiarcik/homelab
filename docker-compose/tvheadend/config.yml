@@ -1,5 +1,5 @@
 app:
-  name: TVheadend
+  name: Tvheadend
 
 apache:
   upstream-url:
