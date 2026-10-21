@@ -5,10 +5,8 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    environment:
-      JELLYFIN_PublishedServerUrl: ${DOCKER_COMPOSE_NETWORK_URL}
-    # ports:
-    #   - 127.0.0.1:7359:7359/udp # Autodiscovery - turned off for now
+    ports:
+      - 127.0.0.1:7359:7359/udp
 
   app-setup:
     <<: *common-service-options

@@ -8,29 +8,21 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/jellyfin/Dockerfile
-    cap_add:
-      - SETGID # Necessary to switch to the configured group
-      - SETUID # Necessary to switch to the configured user
     dns: # Use internal DNS
       - 10.1.12.6
       - 10.1.10.6
+    environment:
+      JELLYFIN_PublishedServerUrl: ${DOCKER_COMPOSE_NETWORK_URL}
     hostname: ${DOCKER_COMPOSE_APP_FULLNAME} # This fixes random container hostname in settings and server picker (everything after dot is ignored, so it cannot be full domain)
-    init: false
-    networks:
+    networks: # External network necessary to connect to media storage and Tvheadend
       - external-network
       - internal-network
-    read_only: false # TODO: Enable readonly mode
     tmpfs:
-      - /app:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /cache:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /data:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /defaults:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /run:rw,exec,nodev,noatime,nodiratime,uid=0,gid=0 # Must be owned by root, otherwise we get startup errors
-      - /transcode:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /tmp/jellyfin:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},size=4G
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin/data:/config:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/jellyfin/default:/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
 
   app-setup:
@@ -42,7 +34,7 @@ services:
       args:
         SETUP_SCRIPT_DIR: jellyfin
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/jellyfin/data:/homelab/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/homelab/data:rw
 
   certificator:
     extends:
