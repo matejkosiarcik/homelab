@@ -30,7 +30,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-setup/default:/homelab/logs/default:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-setup/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-setup/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
     extends:

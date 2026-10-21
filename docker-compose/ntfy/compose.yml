@@ -17,7 +17,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy/cache:/var/cache/ntfy:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy/lib:/var/lib/ntfy:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/ntfy-etc:/etc/ntfy:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   app-setup:
     extends:

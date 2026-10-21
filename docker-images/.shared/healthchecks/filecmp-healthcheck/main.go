@@ -10,7 +10,7 @@ import (
 	"github.com/alexflint/go-arg"
 )
 
-const healthcheckLogFile = "/homelab/healthcheck/logs/healthcheck.log"
+const healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 
 func touchLogFile() error {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)

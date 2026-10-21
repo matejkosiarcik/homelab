@@ -37,7 +37,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/speedtesttracker/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/supercronic:/homelab/logs:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   app-setup:
     extends:

@@ -41,7 +41,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/smbd:/homelab/logs/samba_smbd:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/statusd:/homelab/logs/samba_statusd:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/samba/exporter:/homelab/logs/samba_exporter:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
     extends:

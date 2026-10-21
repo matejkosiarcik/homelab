@@ -27,7 +27,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/unifi/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   mongodb:
     extends:
@@ -48,7 +48,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/mongodb/data:/data/db:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/mongodb/default:/homelab/logs:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/unifi-network-application/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/mongodb/healthcheck:/homelab/healthcheck/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/mongodb/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
     extends:
