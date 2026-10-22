@@ -53,7 +53,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab/app
 ENV DOCKERSTATS_INTERVAL="60" \
-    DOCKER_HOST="tcp://socket-proxy:2375" \
+    DOCKER_HOST="tcp://docker-socket-proxy:2375" \
     HOMELAB_CONTAINER_NAME="docker-stats-exporter" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \

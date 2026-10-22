@@ -323,6 +323,10 @@ rm -f './.secrets.env'
     printf 'PLANKA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.planka.apache.status_user')"
     printf 'PLANKA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.planka.apache.prometheus_user')"
 
+    printf 'PREBUDGET__MATEJ_PASSWORD=%s\n' "$(load_secret '.prebudget.app.matej_user')"
+    printf 'PREBUDGET__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.prebudget.apache.status_user')"
+    printf 'PREBUDGET__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.prebudget.apache.prometheus_user')"
+
     printf 'PROMETHEUS__MATEJ_PASSWORD=%s\n' "$(load_secret '.prometheus.app.matej_user')"
     printf 'PROMETHEUS__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.prometheus.app.homelab_viewer_user')"
     printf 'PROMETHEUS__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.prometheus.app.homelab_test_user')"
