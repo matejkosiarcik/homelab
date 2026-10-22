@@ -39,7 +39,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV EXTENDED_LOGGING="true" \
     HOMELAB_CONTAINER_NAME="vaultwarden" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    LOG_FILE="/homelab/logs/vaultwarden.log" \
+    LOG_FILE="/homelab/logs/default/vaultwarden.log" \
     LOG_LEVEL="error" \
     LOG_LEVEL="warn" \
     PASSWORD_ITERATIONS="500000" \
