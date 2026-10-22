@@ -219,6 +219,12 @@ export const apps = {
             { url: 'https://planka.matejhome.com', title: 'Main' },
         ],
     },
+    prebudget: {
+        title: 'PreBudget',
+        instances: [
+            { url: 'https://prebudget.matejhome.com', title: 'Main' },
+        ],
+    },
     prometheus: {
         title: 'Prometheus',
         instances: [
