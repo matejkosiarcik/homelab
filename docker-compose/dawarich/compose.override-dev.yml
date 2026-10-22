@@ -6,12 +6,12 @@ services:
   app-main:
     <<: *common-service-options
     environment:
-      APPLICATION_HOSTS: app,localhost
+      APPLICATION_HOSTS: app-main,localhost
 
   app-sidekiq:
     <<: *common-service-options
     environment:
-      APPLICATION_HOSTS: app,localhost
+      APPLICATION_HOSTS: app-main,localhost
 
   redis:
     <<: *common-service-options

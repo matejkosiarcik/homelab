@@ -8,6 +8,7 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/dawarich/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-main
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
@@ -30,12 +31,12 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/dawarich/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-sidekiq
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-sidekiq
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     environment:
       MODE: sidekiq
-      PROMETHEUS_EXPORTER_HOST: app
+      PROMETHEUS_EXPORTER_HOST: app-main
     healthcheck:
       test: ["CMD-SHELL", "pgrep -f sidekiq"]
       interval: 10s

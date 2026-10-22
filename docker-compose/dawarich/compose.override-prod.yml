@@ -6,12 +6,12 @@ services:
   app-main:
     <<: *common-service-options
     environment:
-      APPLICATION_HOSTS: app,${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      APPLICATION_HOSTS: app-main,${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   app-sidekiq:
     <<: *common-service-options
     environment:
-      APPLICATION_HOSTS: app,${DOCKER_COMPOSE_NETWORK_DOMAIN}
+      APPLICATION_HOSTS: app-main,${DOCKER_COMPOSE_NETWORK_DOMAIN}
 
   redis:
     <<: *common-service-options
