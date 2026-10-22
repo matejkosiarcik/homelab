@@ -105,15 +105,15 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
-FROM node:26.12.0-slim AS nodejs_server_build
+FROM node:26.12.0-slim AS nodejs_backend_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/.shared/cron-utils/on-demand/package-lock.json ./docker-images/.shared/cron-utils/on-demand/package.json /homelab/
+COPY ./docker-images/.shared/cron-utils/on-demand/backend/package-lock.json ./docker-images/.shared/cron-utils/on-demand/backend/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/.shared/cron-utils/on-demand/tsconfig.json /homelab/
-COPY ./docker-images/.shared/cron-utils/on-demand/src/ /homelab/src/
+COPY ./docker-images/.shared/cron-utils/on-demand/backend/tsconfig.json /homelab/
+COPY ./docker-images/.shared/cron-utils/on-demand/backend/src/ /homelab/src/
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
@@ -163,9 +163,9 @@ COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=nodejs_main_build /homelab/package.json /homelab/
 COPY --from=nodejs_main_build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs_main_build /homelab/dist /homelab/dist
-COPY --from=nodejs_server_build /homelab/package.json /homelab/server/
-COPY --from=nodejs_server_build /homelab/node_modules /homelab/server/node_modules
-COPY --from=nodejs_server_build /homelab/dist /homelab/server/dist
+COPY --from=nodejs_backend_build /homelab/package.json /homelab/server/
+COPY --from=nodejs_backend_build /homelab/node_modules /homelab/server/node_modules
+COPY --from=nodejs_backend_build /homelab/dist /homelab/server/dist
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
