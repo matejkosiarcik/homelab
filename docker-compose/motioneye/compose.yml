@@ -12,8 +12,8 @@ services:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/motioneye:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye/etc:/etc/motioneye:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/motioneye/lib:/var/lib/motioneye:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/etc:/etc/motioneye:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/lib:/var/lib/motioneye:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:

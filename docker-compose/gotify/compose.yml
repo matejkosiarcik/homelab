@@ -17,7 +17,7 @@ services:
       - external-network
       - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/gotify/data:/app/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/app/data:rw
 
   app-setup:
     extends:

@@ -10,7 +10,7 @@ services:
       dockerfile: ./docker-images/actualbudget/Dockerfile
     init: false
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/actualbudget/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:

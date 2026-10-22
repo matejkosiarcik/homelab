@@ -14,7 +14,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/default:/app/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/app/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/app/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro

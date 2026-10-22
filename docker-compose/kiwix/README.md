@@ -20,5 +20,5 @@ Kiwix:
 ## After initial installation
 
 - Copy ZIM files:
-    - Wikipedia: `scp wikipedia*.zim homelab@server-odroid-h4-ultra.matejhome.com:~/git/homelab/servers/.current/docker-apps/kiwix-wikipedia/app-data/kiwix/data/`
-    - Wiktionary: `scp wiktionary*.zim homelab@server-odroid-h4-ultra.matejhome.com:~/git/homelab/servers/.current/docker-apps/kiwix-wiktionary/app-data/kiwix/data/`
+    - Wikipedia: `scp wikipedia*.zim homelab@server-odroid-h4-ultra.matejhome.com:~/git/homelab/servers/.current/docker-apps/kiwix-wikipedia/app-data/app/data/`
+    - Wiktionary: `scp wiktionary*.zim homelab@server-odroid-h4-ultra.matejhome.com:~/git/homelab/servers/.current/docker-apps/kiwix-wiktionary/app-data/app/data/`

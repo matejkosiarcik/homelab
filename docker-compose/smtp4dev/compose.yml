@@ -18,7 +18,7 @@ services:
       - internal-network
     stop_grace_period: 30s
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/smtp4dev/data:/smtp4dev:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/smtp4dev:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
