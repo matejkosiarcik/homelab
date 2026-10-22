@@ -25,10 +25,17 @@ jobs:
           persist-credentials: false
 
       - name: Install APT dependencies
-        run: |
-          set -euf
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils moreutils
+        uses: Wandalen/wretry.action@v3.8.0
+        with:
+          command: |
+            set -euf
+            timeout 5m sh <<EOF
+              sudo apt-get update
+              sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils moreutils
+            EOF
+          current_path: ${{ matrix.path }}
+          attempt_limit: 2
+          attempt_delay: 0
 
       - name: Setup NodeJS
         uses: Wandalen/wretry.action@v3.8.0
