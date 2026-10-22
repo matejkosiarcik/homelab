@@ -9,7 +9,7 @@ services:
     build:
       dockerfile: ./docker-images/kiwix/Dockerfile
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/kiwix/data:/data:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

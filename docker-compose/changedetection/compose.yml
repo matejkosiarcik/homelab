@@ -12,7 +12,7 @@ services:
       - external-network
       - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/datastore:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/changedetection/data:/datastore:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   sockpuppetbrowser:

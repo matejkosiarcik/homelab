@@ -15,7 +15,7 @@ services:
       - external-network
       - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/app/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/uptimekuma/data:/app/data:rw
 
   certificator:
     extends:

@@ -11,7 +11,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/koffan/data:/data:rw
 
   certificator:
     extends:

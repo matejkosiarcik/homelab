@@ -18,9 +18,9 @@ services:
     #   - internal-network
     # stop_grace_period: 30s
     # volumes:
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/PLACEHOLDER:rw
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/PLACEHOLDER:rw
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app:/PLACEHOLDER:ro
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/PLACEHOLDER/data:/PLACEHOLDER:rw
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-logs/PLACEHOLDER/default:/PLACEHOLDER:rw
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/PLACEHOLDER:/PLACEHOLDER:ro
 
   certificator:
     extends:

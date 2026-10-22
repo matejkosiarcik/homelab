@@ -17,7 +17,7 @@ services:
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/sock:/homelab/sock:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound/sock:/homelab/sock:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -31,7 +31,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/sock:/homelab/sock:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unbound/sock:/homelab/sock:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:

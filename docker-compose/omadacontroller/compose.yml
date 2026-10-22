@@ -25,7 +25,7 @@ services:
         soft: 4096
         hard: 8192
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/opt/tplink/EAPController/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/omada/data:/opt/tplink/EAPController/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/opt/tplink/EAPController/logs:rw
 
   certificator:
@@ -64,7 +64,7 @@ services:
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
   #   volumes:
-  #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/app-backup/data:/homelab/backup:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/web-backup/default:/homelab/backup:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/errors:/homelab/logs/errors:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/default:/homelab/logs/default:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/cron:/homelab/cron:rw
