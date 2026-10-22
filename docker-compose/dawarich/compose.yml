@@ -18,9 +18,9 @@ services:
       - /var/app/db:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/app/tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/public:/var/app/public:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/storage:/var/app/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/watched:/var/app/tmp/imports/watched:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis:/dawarich_db_data:rw # TODO: Determine if necessary
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-main/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -49,9 +49,9 @@ services:
       - /var/app/db:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/app/tmp:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/public:/var/app/public:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/storage:/var/app/storage:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/watched:/var/app/tmp/imports/watched:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/public:/var/app/public:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/storage:/var/app/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/watched:/var/app/tmp/imports/watched:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-sidekiq/healthcheck:/homelab/logs/healthcheck:rw
 
   redis:
@@ -60,7 +60,7 @@ services:
       service: redis
     # Override:
     # volumes:
-    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/shared:/data:rw # TODO: Determine if necessary
+    #   - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/shared:/data:rw # TODO: Determine if necessary
 
   postgis:
     extends:

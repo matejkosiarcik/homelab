@@ -13,7 +13,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/minio/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   app-setup:

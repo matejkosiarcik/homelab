@@ -22,7 +22,7 @@ services:
     tmpfs:
       - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/homeassistant/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-images/homeassistant/configuration.yaml:/config/configuration.yaml:ro
 
@@ -66,7 +66,7 @@ services:
   #     - external-network
   #     - internal-network
   #   volumes:
-  #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/web-backup/default:/homelab/backup:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/app-backup/data:/homelab/backup:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/errors:/homelab/logs/errors:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/default:/homelab/logs/default:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/cron:/homelab/cron:rw
