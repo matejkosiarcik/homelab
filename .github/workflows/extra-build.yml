@@ -33,7 +33,6 @@ jobs:
               sudo apt-get update
               sudo apt-get install --yes --no-install-recommends --no-install-suggests apache2-utils moreutils
             EOF
-          current_path: ${{ matrix.path }}
           attempt_limit: 2
           attempt_delay: 0
 
