@@ -36,7 +36,7 @@ services:
       - external-network
       - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app-backend/data:/code/media:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/code/media:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/nginx:/var/log/nginx:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/cron:/homelab/logs/cron:rw
