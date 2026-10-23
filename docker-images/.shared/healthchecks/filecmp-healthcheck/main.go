@@ -11,7 +11,7 @@ import (
 	"github.com/alexflint/go-arg"
 )
 
-const healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
+var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 
 func touchLogFile() error {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
@@ -25,16 +25,16 @@ func touchLogFile() error {
 
 // nolint:errcheck
 func log(level string, format string, args ...any) {
+	_ = printLog(os.Stderr, level, format, args...)
+
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
-		_ = printLog(os.Stderr, level, format, args...)
 		_ = printLog(os.Stderr, "ERROR", "Could not open logfile %s: %v", healthcheckLogFile, err)
 		return
 	}
 	defer func() { _ = logFile.Close() }()
 
 	if err := printLog(logFile, level, format, args...); err != nil {
-		_ = printLog(os.Stderr, level, format, args...)
 		_ = printLog(os.Stderr, "ERROR", "Could not write to logfile %s: %v", healthcheckLogFile, err)
 	}
 }
