@@ -285,6 +285,7 @@
           enableUser: false
           showEpisodeNumber: false
           expandOneStreamToTwoRows: false
+          version: 2 # Jellyfin 12+
 
     - Tvheadend:
         description: Live TV

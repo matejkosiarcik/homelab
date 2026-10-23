@@ -22,8 +22,8 @@ log() {
 }
 export datetime_format
 
-mkdir -p '/homelab/logs'
-touch '/homelab/logs/generic-access.log' '/homelab/logs/generic-error.log' '/homelab/logs/http-access.log' '/homelab/logs/http-error.log' '/homelab/logs/https-access.log' '/homelab/logs/https-error.log'
+mkdir -p '/homelab/logs/apache'
+touch '/homelab/logs/apache/generic-access.log' '/homelab/logs/apache/generic-error.log' '/homelab/logs/apache/http-access.log' '/homelab/logs/apache/http-error.log' '/homelab/logs/apache/https-access.log' '/homelab/logs/apache/https-error.log'
 
 # Set HOMELAB_ENV
 if [ "${HOMELAB_ENV-x}" = 'x' ]; then

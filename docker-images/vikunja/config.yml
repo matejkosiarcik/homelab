@@ -15,7 +15,7 @@ database:
   path: /db/vikunja.db
 
 log:
-  path: /homelab/logs
+  path: /homelab/logs/default
   level: WARNING
   standard: file
   database: file

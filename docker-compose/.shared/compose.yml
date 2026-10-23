@@ -102,10 +102,10 @@ services:
       - /var/run/apache2:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/default:/homelab/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/default:/homelab/logs/apache:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/users/proxy-prometheus.htpasswd:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/healthcheck:/homelab/logs/healthcheck:rw
 
   apache-prometheus-exporter:
     extends:

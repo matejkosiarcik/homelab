@@ -13,10 +13,11 @@ datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 # It calls healthchecks both before and after the main script is run, and reports it status and output to healthchecks
 
 # Setup
-logdir="/homelab/cron/$(date "+%Y-%m-%d_%H-%M-%S.${milliseconds_format}")"
-mkdir -p "${logdir}"
-statusfile="${logdir}/status.txt"
-logfile="${logdir}/output.txt"
+taskid="$(date "+%Y-%m-%d_%H-%M-%S.${milliseconds_format}")"
+taskdir="/homelab/logs/cron/${taskid}"
+mkdir -p "${taskdir}"
+statusfile="${taskdir}/status.txt"
+logfile="${taskdir}/output.txt"
 touch "${statusfile}" "${logfile}"
 printf '0\n' >"${statusfile}"
 
@@ -32,7 +33,7 @@ log() {
     done | tee -a "${logfile}" >&2
 }
 
-log INFO "Running job with ID $(basename "${logdir}")"
+log INFO "Running job with ID ${taskid}"
 
 # Send start-signal to healthchecks
 if [ "${HOMELAB_HEALTHCHECK_URL-}" != '' ]; then
