@@ -18,10 +18,21 @@ RUN sh '/homelab/create-user.sh' && \
     pwconv && \
     passwd --lock homelab
 
+### Healthcheck ###
+
+FROM golang:1.27.2-alpine AS healthcheck_build
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
+
 ### Prefinal ###
 
 FROM scratch AS homelab_dir
 WORKDIR /homelab
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -33,8 +44,6 @@ COPY --from=homelab_dir /homelab /homelab
 FROM linuxserver/socket-proxy:3.4.7 AS final
 LABEL build.user=matejkosiarcik
 USER root
-RUN apk update --no-cache && \
-    apk add --no-cache bash
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
@@ -92,4 +101,4 @@ ENV ALLOW_ARCHIVE="0" \
     VERSION="0" \
     VOLUMES="0"
 VOLUME /var/run/docker.sock
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "bash -c ':> /dev/tcp/localhost/2375' || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:2375/_ping", "--status", "200,403" ]
