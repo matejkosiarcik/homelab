@@ -7,7 +7,7 @@ import { expect, test } from '#/playwright/test.ts';
 import { execa } from 'execa';
 import { apps } from '#/utils/apps.ts';
 import { axios, extractTar, getEnv } from '#/utils/utils.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
 const app = apps.certbot;
 const filesPath = '/files';
@@ -27,18 +27,7 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
-
-            test('API: HTTPS redirect root to files', async () => {
-                const response = await test.step('Request server', async () => {
-                    const response = await axios.get(instance.url, { maxRedirects: 0 });
-                    expect(response.status, 'Response Status').toStrictEqual(302);
-                    return response;
-                });
-
-                await test.step('Validate response', async () => {
-                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url}${filesPath}`);
-                });
-            });
+            createHttpsRootRedirectTest(instance.url, filesPath);
 
             test(`API: HTTPS redirect for certificate`, async () => {
                 const response = await test.step('Request server', async () => {
