@@ -36,8 +36,8 @@ services:
       - /app/www/storage/logs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/speedtesttracker/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/cron:/homelab/logs/cron:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/supercronic:/homelab/logs/supercronic:rw
 
   app-setup:
     extends:
