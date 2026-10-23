@@ -49,8 +49,8 @@ func TestLogWritesToStderrAndLogFile(t *testing.T) {
 	})
 
 	log("INFO", "Success")
-	if err := stderrFile.Close(); err != nil {
-		t.Fatalf("stderrFile.Close() error = %v", err)
+	if closeErr := stderrFile.Close(); closeErr != nil {
+		t.Fatalf("stderrFile.Close() error = %v", closeErr)
 	}
 	os.Stderr = originalStderr
 

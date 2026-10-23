@@ -323,10 +323,10 @@ func checkHTTP(args healthcheckArgs) error {
 
 func main() {
 	var args healthcheckArgs
-	parser, err := arg.NewParser(arg.Config{}, &args)
-	if err != nil {
+	parser, parserErr := arg.NewParser(arg.Config{}, &args)
+	if parserErr != nil {
 		// nolint:errcheck
-		_, _ = fmt.Fprintf(os.Stderr, "Error configuring healthcheck arguments: %v\n", err)
+		_, _ = fmt.Fprintf(os.Stderr, "Error configuring healthcheck arguments: %v\n", parserErr)
 		os.Exit(1)
 	}
 	parseErr := parser.Parse(os.Args[1:])

@@ -25,7 +25,9 @@ func TestCheckHTTP(t *testing.T) {
 		}
 
 		writer.Header().Set("Content-Type", "application/json")
-		_, _ = writer.Write([]byte(`{"healthy":true}`))
+		if _, writeErr := writer.Write([]byte(`{"healthy":true}`)); writeErr != nil {
+			t.Errorf("writer.Write() error = %v", writeErr)
+		}
 	}))
 	t.Cleanup(server.Close)
 
@@ -61,8 +63,8 @@ func TestCheckTCP(t *testing.T) {
 
 	accepted := make(chan struct{})
 	go func() {
-		connection, err := listener.Accept()
-		if err == nil {
+		connection, acceptErr := listener.Accept()
+		if acceptErr == nil {
 			_ = connection.Close()
 			close(accepted)
 		}
@@ -174,8 +176,8 @@ func TestLogWritesToStderrAndLogFile(t *testing.T) {
 	})
 
 	log("INFO", "Success")
-	if err := stderrFile.Close(); err != nil {
-		t.Fatalf("stderrFile.Close() error = %v", err)
+	if closeErr := stderrFile.Close(); closeErr != nil {
+		t.Fatalf("stderrFile.Close() error = %v", closeErr)
 	}
 	os.Stderr = originalStderr
 
