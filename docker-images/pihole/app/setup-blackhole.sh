@@ -49,8 +49,9 @@ sql() {
 if [ -e '/etc/pihole/gravity.db' ]; then
     log INFO 'Database found'
 else
-    log INFO 'Database created'
+    log INFO 'Creating database'
     pihole updateGravity
+    log INFO 'Database created'
 fi
 
 # Wait for database tables to be ready
