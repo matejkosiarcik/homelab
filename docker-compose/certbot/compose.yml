@@ -31,7 +31,7 @@ services:
       service: file-server
     # Override:
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot/data:/homelab/www/download:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/homelab/www/download:rw
 
   apache:
     extends:

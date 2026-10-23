@@ -1,17 +1,15 @@
-# Protect .htaccess and .htpasswd
-<FilesMatch "^(?:^.*/)?\.[Hh][Tt]">
-    Order allow,deny
-    Deny from all
+# Protect .htaccess and .htpasswd files, including names such as foo.htpasswd.
+<FilesMatch "(?i)^.*\.ht(?:access|passwd)$">
+    Require all denied
 </FilesMatch>
 
 # Turn on redirection
 RewriteEngine On
 RewriteBase /
 
-# Remove port from _HOST if applicable
-RewriteRule ^ - [E=_HOST:%{HTTP_HOST},NE]
-RewriteCond %{ENV:_HOST} ^(.*):.*$ [NC]
-RewriteRule ^ - [E=_HOST:%1,NE]
+# Redirect only to the configured canonical host. Reflecting HTTP_HOST here
+# would let an untrusted Host header choose the redirect destination.
+RewriteRule ^ - [E=_HOST:%{SERVER_NAME},NE]
 
 # Set _ALLOW_HTTPS depending on current path
 RewriteRule ^ - [E=_ALLOW_HTTPS:true,NE]
@@ -220,12 +218,14 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Custom prometheus metrics for apache itself
+RewriteCond %{HTTPS} on [NC]
 RewriteCond %{REQUEST_URI} ^/\.apache/metrics$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]
 RewriteRule ^ "%{ENV:PROXY_PROMETHEUS_EXPORTER_URL}/metrics" [P,L]
 
 # Custom favicons
+RewriteCond %{HTTPS} on [NC]
 RewriteCond %{REQUEST_URI} ^/favicon\.(?:ico|png)$ [NC]
 RewriteCond %{HTTP:Upgrade} !websocket [NC]
 RewriteCond %{HTTP:Connection} !upgrade [NC]

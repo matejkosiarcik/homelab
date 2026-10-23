@@ -45,8 +45,8 @@ COPY --from=homelab_dir /homelab /homelab/
 FROM debian:13.7-slim AS final
 LABEL build.user=matejkosiarcik
 USER root
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_gitman_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_supercronic_gitman_aptlibcache \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_novnc_final_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_novnc_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
         novnc procps >/dev/null && \
