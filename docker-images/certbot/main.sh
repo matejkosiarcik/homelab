@@ -127,8 +127,8 @@ certbot certonly --manual --non-interactive --agree-tos \
     --preferred-challenges dns \
     --domain "*.${domain}" \
     --email "${CERTBOT_PUBLIC_EMAIL}" \
-    --manual-auth-hook "sh './certbot-hook-before.sh' >>'/homelab/logs/certbot-hooks.log' 2>&1" \
-    --manual-cleanup-hook "sh './certbot-hook-after.sh' >>'/homelab/logs/certbot-hooks.log' 2>&1" \
+    --manual-auth-hook "sh './certbot-hook-before.sh' >>'/homelab/logs/default/hooks.log' 2>&1" \
+    --manual-cleanup-hook "sh './certbot-hook-after.sh' >>'/homelab/logs/default/hooks.log' 2>&1" \
     ${test_cert_mode} || printf '%s\n' "${?}" >"${statusfile}"
 
 if [ "$(cat "${statusfile}")" != '0' ]; then

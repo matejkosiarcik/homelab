@@ -26,9 +26,9 @@ if [ ! -e '/homelab/sock/unbound.sock' ]; then
     touch '/homelab/sock/unbound.sock'
 fi
 
-if [ ! -e '/homelab/logs/unbound.log' ]; then
-    touch '/homelab/logs/unbound.log'
-    chmod 0666 '/homelab/logs/unbound.log'
+if [ ! -e '/homelab/logs/default/unbound.log' ]; then
+    touch '/homelab/logs/default/unbound.log'
+    chmod 0666 '/homelab/logs/default/unbound.log'
 fi
 
 log INFO 'Checking config'
