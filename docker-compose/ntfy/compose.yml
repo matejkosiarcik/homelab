@@ -15,7 +15,7 @@ services:
       - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/cache:/var/cache/ntfy:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/lib:/var/lib/ntfy:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/var/lib/ntfy:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/etc:/etc/ntfy:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 

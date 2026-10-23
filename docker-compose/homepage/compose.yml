@@ -64,8 +64,8 @@ services:
       - external-network
       - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-widgets/default:/homelab/logs/default:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-widgets/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/widgets/default:/homelab/logs/default:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/widgets/healthcheck:/homelab/logs/healthcheck:rw
 
 networks:
   default:
