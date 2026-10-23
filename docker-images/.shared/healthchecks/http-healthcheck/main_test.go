@@ -2,14 +2,98 @@ package main
 
 import (
 	"bytes"
+	"net"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/itchyny/gojq"
 )
+
+func TestCheckTCPConnection(t *testing.T) {
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("net.Listen() error = %v", err)
+	}
+	t.Cleanup(func() { _ = listener.Close() })
+
+	accepted := make(chan struct{})
+	go func() {
+		connection, err := listener.Accept()
+		if err == nil {
+			_ = connection.Close()
+			close(accepted)
+		}
+	}()
+
+	if err := checkTCPConnection(listener.Addr().String()); err != nil {
+		t.Errorf("checkTCPConnection() error = %v", err)
+	}
+
+	select {
+	case <-accepted:
+	case <-time.After(time.Second):
+		t.Error("TCP listener did not accept the health check connection")
+	}
+}
+
+func TestTCPAddress(t *testing.T) {
+	tests := []struct {
+		name     string
+		endpoint string
+		want     string
+		wantErr  string
+	}{
+		{
+			name:     "hostname",
+			endpoint: "tcp://localhost:139",
+			want:     "localhost:139",
+		},
+		{
+			name:     "IPv6",
+			endpoint: "tcp://[::1]:2375",
+			want:     "[::1]:2375",
+		},
+		{
+			name:     "missing port",
+			endpoint: "tcp://localhost",
+			wantErr:  "host and port",
+		},
+		{
+			name:     "path is not supported",
+			endpoint: "tcp://localhost:139/health",
+			wantErr:  "only a host and port",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			endpoint, err := url.Parse(test.endpoint)
+			if err != nil {
+				t.Fatalf("url.Parse() error = %v", err)
+			}
+
+			address, err := tcpAddress(endpoint)
+			if test.wantErr == "" {
+				if err != nil {
+					t.Fatalf("tcpAddress() error = %v", err)
+				}
+				if address != test.want {
+					t.Errorf("tcpAddress() = %q, want %q", address, test.want)
+				}
+				return
+			}
+
+			if err == nil || !strings.Contains(err.Error(), test.wantErr) {
+				t.Errorf("tcpAddress() error = %v, want error containing %q", err, test.wantErr)
+			}
+		})
+	}
+}
 
 func TestFormatLogMessage(t *testing.T) {
 	message := formatLogMessage("ERROR", "first %s\nsecond line %d\n", "line", 2)

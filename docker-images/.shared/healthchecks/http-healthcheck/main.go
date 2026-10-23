@@ -7,7 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"slices"
@@ -20,6 +22,33 @@ import (
 )
 
 var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
+
+const checkTimeout = 2 * time.Second
+
+func checkTCPConnection(address string) error {
+	connection, err := net.DialTimeout("tcp", address, checkTimeout)
+	if err != nil {
+		return err
+	}
+
+	return connection.Close()
+}
+
+func tcpAddress(endpoint *url.URL) (string, error) {
+	if endpoint.Host == "" {
+		return "", errors.New("TCP URL must include a host and port")
+	}
+	if endpoint.User != nil || endpoint.Path != "" || endpoint.RawQuery != "" || endpoint.Fragment != "" {
+		return "", errors.New("TCP URL must contain only a host and port")
+	}
+
+	host, port, err := net.SplitHostPort(endpoint.Host)
+	if err != nil || host == "" || port == "" {
+		return "", errors.New("TCP URL must include a host and port")
+	}
+
+	return endpoint.Host, nil
+}
 
 func touchLogFile() error {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
@@ -111,7 +140,7 @@ func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
 func main() {
 	// Parse arguments
 	var args struct {
-		URL                  string `arg:"--url,required" help:"URL to check"`
+		URL                  string `arg:"--url,required" help:"Endpoint URL to check; supports http, https, and tcp"`
 		Method               string `arg:"--method" default:"GET" help:"HTTP method"`
 		BodyRegex            string `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
 		BodyJSON             string `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
@@ -142,6 +171,31 @@ func main() {
 
 	if parseErr != nil {
 		log("ERROR", "Error parsing healthcheck arguments: %v\n", parseErr)
+		os.Exit(1)
+	}
+	endpoint, err := url.Parse(args.URL)
+	if err != nil {
+		log("ERROR", "Error parsing URL: %v\n", err)
+		os.Exit(1)
+	}
+	protocol := strings.ToLower(endpoint.Scheme)
+	switch protocol {
+	case "tcp":
+		address, err := tcpAddress(endpoint)
+		if err != nil {
+			log("ERROR", "Invalid TCP URL %q: %v\n", args.URL, err)
+			os.Exit(1)
+		}
+		if err := checkTCPConnection(address); err != nil {
+			log("ERROR", "Error connecting to TCP address %q: %v\n", address, err)
+			os.Exit(1)
+		}
+
+		log("INFO", "Success")
+		return
+	case "http", "https":
+	default:
+		log("ERROR", "Unsupported URL protocol %q; use http, https, or tcp\n", endpoint.Scheme)
 		os.Exit(1)
 	}
 
@@ -254,7 +308,7 @@ func main() {
 	}
 
 	// Perform HTTP request
-	client := &http.Client{Timeout: 2 * time.Second, Transport: transport}
+	client := &http.Client{Timeout: checkTimeout, Transport: transport}
 	request, err := http.NewRequest(args.Method, args.URL, nil)
 	if err != nil {
 		log("ERROR", "Error creating request: %v\n", err)

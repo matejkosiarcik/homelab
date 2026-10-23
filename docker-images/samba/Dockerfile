@@ -100,6 +100,16 @@ COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
     sh validate-executable.sh ./samba_exporter/bin/samba_statusd
 
+### Healthcheck ###
+
+FROM golang:1.27.2-alpine AS healthcheck_build
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
+
 ### App config ###
 
 FROM debian:13.7-slim AS app_config
@@ -132,6 +142,7 @@ COPY --from=app_config /homelab/smb.conf /homelab/
 COPY ./docker-images/samba/entrypoint.sh /homelab/
 COPY --from=samba_exporter_build /homelab/samba_exporter/bin /homelab/bin
 COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=empty_dir /empty /homelab/logs/samba
 
 FROM scratch AS prefinal
@@ -220,5 +231,5 @@ ENV HOMELAB_CONTAINER_NAME="samba" \
     SAMBA_GROUP="homelab" \
     SAMBA_USERNAME="homelab" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "bash -c ':> /dev/tcp/localhost/139' || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "tcp://localhost:139" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
