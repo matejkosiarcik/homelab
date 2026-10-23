@@ -22,6 +22,8 @@ gatus:
 
 healthchecks:
   - slug: certificator
+  - slug: update-gravity
+    schedule: "35 0 * * *"
 
 prometheus:
   enabled: true

@@ -22,6 +22,8 @@ gatus:
 
 healthchecks:
   - slug: certificator
+  - slug: backend-misc
+    schedule: "0 0 * * *"
 
 prometheus:
   enabled: true
