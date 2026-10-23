@@ -10,6 +10,9 @@ import { axios, extractTar, getEnv } from '#/utils/utils.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
 const app = apps.certbot;
+const filesPath = '/files';
+const downloadPath = `${filesPath}/download`;
+const certificatePath = `${downloadPath}/certificate.tar.xz`;
 
 test.describe(app.title, () => {
     for (const instance of app.instances) {
@@ -25,28 +28,40 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
-            test(`API: HTTPS redirect for certificate`, async () => {
+            test('API: HTTPS redirect root to files', async () => {
                 const response = await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/certificate.tar.xz`, { maxRedirects: 0 });
+                    const response = await axios.get(instance.url, { maxRedirects: 0 });
                     expect(response.status, 'Response Status').toStrictEqual(302);
                     return response;
                 });
 
                 await test.step('Validate response', async () => {
-                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/certificate.tar.xz`);
+                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url}${filesPath}`);
+                });
+            });
+
+            test(`API: HTTPS redirect for certificate`, async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url.replace('https://', 'http://')}${certificatePath}`, { maxRedirects: 0 });
+                    expect(response.status, 'Response Status').toStrictEqual(302);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}${certificatePath}`);
                 });
             });
 
             test(`API: HTTPS redirect for random download subpath`, async () => {
                 const randomSubpath = faker.string.alphanumeric(10);
                 const response = await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.url.replace('https://', 'http://')}/download/${randomSubpath}`, { maxRedirects: 0 });
+                    const response = await axios.get(`${instance.url.replace('https://', 'http://')}${downloadPath}/${randomSubpath}`, { maxRedirects: 0 });
                     expect(response.status, 'Response Status').toStrictEqual(302);
                     return response;
                 });
 
                 await test.step('Validate response', async () => {
-                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}/download/${randomSubpath}`);
+                    expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url.replace('http://', 'https://')}${downloadPath}/${randomSubpath}`);
                 });
             });
 
@@ -76,7 +91,7 @@ test.describe(app.title, () => {
 
                 test(`API: Get certificate - User ${user.username})`, async () => {
                     await test.step('Request server', async () => {
-                        const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                        const response = await axios.get(`${instance.url}${certificatePath}`, {
                             auth: {
                                 username: user.username,
                                 password: getEnv(instance.url, `${user.username}_PASSWORD`),
@@ -88,7 +103,7 @@ test.describe(app.title, () => {
 
                 test(`API: Get random download subpath - User ${user.username}`, async () => {
                     await test.step('Request server', async () => {
-                        const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                        const response = await axios.get(`${instance.url}${downloadPath}/${faker.string.alpha(10)}`, {
                             auth: {
                                 username: user.username,
                                 password: getEnv(instance.url, `${user.username}_PASSWORD`),
@@ -123,7 +138,7 @@ test.describe(app.title, () => {
 
                 test(`API: Get certificate - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     await test.step('Request server', async () => {
-                        const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                        const response = await axios.get(`${instance.url}${certificatePath}`, {
                             auth: {
                                 username: user.username,
                                 password: faker.string.alphanumeric(10),
@@ -135,7 +150,7 @@ test.describe(app.title, () => {
 
                 test(`API: Get random download subpath without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     await test.step('Request server', async () => {
-                        const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                        const response = await axios.get(`${instance.url}${downloadPath}/${faker.string.alpha(10)}`, {
                             auth: {
                                 username: user.username,
                                 password: '',
@@ -147,7 +162,7 @@ test.describe(app.title, () => {
 
                 test(`API: Get random download subpath with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
                     await test.step('Request server', async () => {
-                        const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`, {
+                        const response = await axios.get(`${instance.url}${downloadPath}/${faker.string.alpha(10)}`, {
                             auth: {
                                 username: user.username,
                                 password: faker.string.alphanumeric(10),
@@ -160,21 +175,21 @@ test.describe(app.title, () => {
 
             test(`API: Get certificate - No user`, async () => {
                 await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`);
+                    const response = await axios.get(`${instance.url}${certificatePath}`);
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             });
 
             test(`API: Get random download subpath - No user`, async () => {
                 await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.url}/download/${faker.string.alpha(10)}`);
+                    const response = await axios.get(`${instance.url}${downloadPath}/${faker.string.alpha(10)}`);
                     expect(response.status, 'Response Status').toStrictEqual(401);
                 });
             });
 
             test('API: Read and validate certificate', async () => {
                 const response = await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.url}/download/certificate.tar.xz`, {
+                    const response = await axios.get(`${instance.url}${certificatePath}`, {
                         decompress: false,
                         responseType: 'arraybuffer',
                         auth: {

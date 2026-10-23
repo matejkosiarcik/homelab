@@ -75,7 +75,7 @@ get_prod_certificate() {
     tmpdir="$(mktemp -d)"
 
     # Download certificates
-    curl --fail --silent --show-error --output "${tmpdir}/certificate.tar.xz" --user "homelab-viewer:${CERTBOT_HOMELAB_VIEWER_PASSWORD}" 'https://certbot.matejhome.com/download/certificate.tar.xz'
+    curl --fail --silent --show-error --output "${tmpdir}/certificate.tar.xz" --user "homelab-viewer:${CERTBOT_HOMELAB_VIEWER_PASSWORD}" 'https://certbot.matejhome.com/files/download/certificate.tar.xz'
 
     # Extract certificates
     mkdir -p "${tmpdir}/certs"
@@ -93,7 +93,7 @@ get_prod_certificate() {
 check_certbot_availability() {
     log INFO 'Checking certbot availability'
     timeout 45s sh <<EOF
-    while ! curl --fail --silent --show-error --output '/dev/null' --user "homelab-viewer:${CERTBOT_HOMELAB_VIEWER_PASSWORD}" 'https://certbot.matejhome.com/download/certificate.tar.xz'; do
+    while ! curl --fail --silent --show-error --output '/dev/null' --user "homelab-viewer:${CERTBOT_HOMELAB_VIEWER_PASSWORD}" 'https://certbot.matejhome.com/files/download/certificate.tar.xz'; do
         sleep 5
     done
 EOF
