@@ -1570,29 +1570,26 @@ renovatebot)
     # Preload #
     renovate_token="$(load_secret ".${app_full_name_key}.app.renovate_token" dev=real)" # PAT specific for each git host
     github_token="$(load_secret ".${app_full_name_key}.app.github_token" dev=real)"     # GitHub PAT (even if using other git hosts)
-    matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
-    homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
-    homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
+    runwisp_admin_password="$(load_secret ".${app_full_name_key}.runwisp.admin_user" dev=default)"
+    runwisp_viewer_password="$(load_secret ".${app_full_name_key}.runwisp.viewer_user" dev=default)"
+    if [ "${mode}" = 'dev' ]; then
+        runwisp_viewer_password="${runwisp_viewer_password}!"
+    fi
+    runwisp_prometheus_password="$(load_secret ".${app_full_name_key}.runwisp.prometheus_user" dev=default)"
 
     # App #
     write_healthcheck_url "${app_full_name_machine}" app
     printf 'RENOVATE_TOKEN="%s"\n' "${renovate_token}" >>"${initial_output}/app.env"
     printf 'GITHUB_COM_TOKEN="%s"\n' "${github_token}" >>"${initial_output}/app.env"
+    printf 'RUNWISP_PASSWORD="%s"\n' "${runwisp_admin_password}" >>"${initial_output}/app.env"
+    printf 'runwisp-admin,%s\n' "${runwisp_admin_password}" >>"${initial_output}/.secrets.csv"
+    printf 'RUNWISP_VIEWER_PASSWORD="%s"\n' "${runwisp_viewer_password}" >>"${initial_output}/app.env"
+    printf 'runwisp-viewer,%s\n' "${runwisp_viewer_password}" >>"${initial_output}/.secrets.csv"
     printf 'renovate-token,%s\n' "${renovate_token}" >>"${initial_output}/.secrets.csv"
     printf 'github-token,%s\n' "${github_token}" >>"${initial_output}/.secrets.csv"
 
-    write_http_auth_user matej "${matej_password}" proxy-prometheus
-    write_http_auth_user matej "${matej_password}" users-viewers
-    write_http_auth_user matej "${matej_password}" users-admins
-    printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
-
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" proxy-prometheus
-    write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-viewers
-    printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
-
-    write_http_auth_user homelab-test "${homelab_test_password}" proxy-prometheus
-    write_http_auth_user homelab-test "${homelab_test_password}" users-viewers
-    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
+    write_http_auth_user prometheus "${runwisp_prometheus_password}" prometheus
+    printf 'app-prometheus,%s\n' "${runwisp_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"

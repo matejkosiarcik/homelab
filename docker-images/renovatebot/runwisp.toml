@@ -1,0 +1,21 @@
+[daemon]
+metrics_enabled  = true
+shutdown_timeout = "30s"
+timezone         = "Europe/Bratislava"
+external_url     = "${HOMELAB_APP_EXTERNAL_URL}"
+
+[defaults]
+keep_for     = "90d"
+keep_runs    = 100
+log_max_size = "20mb"
+log_on_full  = "drop_old"
+
+[tasks.renovate]
+description   = "Run Renovate dependency updates"
+catch_up      = 1
+cron          = "0 1,3,5 * * *"
+jitter        = "1m"
+on_overlap    = "skip"
+timeout       = "30m"
+graceful_stop = "30s"
+run           = "CRON=0 /bin/sh /homelab/cron-wrapper.sh"

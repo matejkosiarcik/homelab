@@ -25,3 +25,6 @@ prometheus:
     - path: /.apache/metrics
       auth:
         type: basic
+    - path: /metrics
+      auth:
+        type: basic
