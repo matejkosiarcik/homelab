@@ -124,7 +124,7 @@ services:
       service: template
     # Override:
     build:
-      dockerfile: ./docker-images/socket-proxy/Dockerfile
+      dockerfile: ./docker-images/docker-socket-proxy/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:1.0.0
     tmpfs:
