@@ -12,6 +12,8 @@ services:
       - CHOWN # Allows running setup script under root
       - DAC_OVERRIDE # Allows running setup script under root
       - KILL # Needed for `pihole reloaddns`
+      - SETGID # Needed for `pihole updateGravity`
+      - SETUID # Needed for `pihole updateGravity`
     # TODO: Try to remove hard-coded DNS after setting up OpenWRT router with DNS forwarding
     # Hard-coded DNS is necessary because of bootstrapping problem
     # Basically PiHole needs functional DNS in order to start (eg. to update adlists before start - which it can't do until it itself started, when it's the only DNS server on network)
