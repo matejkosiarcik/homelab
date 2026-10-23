@@ -47,7 +47,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh /go/bin/envsubst
 
-FROM python:3.15.0-slim AS gitman
+FROM python:3.15.1-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 
 ### Samba exporter ###
 
-FROM python:3.15.0-slim AS samba_exporter_gitman
+FROM python:3.15.1-slim AS samba_exporter_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_prometheus_exporter_gitman_aptcache \
