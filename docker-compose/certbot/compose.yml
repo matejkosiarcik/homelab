@@ -20,6 +20,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certbot/data:/homelab/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/cron:/homelab/logs/cron:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/letsencrypt:/var/log/letsencrypt:rw
