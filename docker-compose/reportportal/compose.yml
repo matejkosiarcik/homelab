@@ -66,7 +66,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-api.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/default:/var/log/reportportal:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -85,7 +85,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-uat.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-uat/healthcheck:/homelab/logs/healthcheck:rw
 
   app-jobs:
@@ -105,7 +105,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-jobs.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-jobs/healthcheck:/homelab/logs/healthcheck:rw
 
   app-analyzer:
@@ -125,7 +125,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-analyzer.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-analyzer:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/reportportal/data:/data/storage:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-analyzer/healthcheck:/homelab/logs/healthcheck:rw
 
   postgres:

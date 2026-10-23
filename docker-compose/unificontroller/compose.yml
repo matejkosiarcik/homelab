@@ -25,7 +25,7 @@ services:
       # - /run:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,exec,nodev,noatime,nodiratime,uid=0,gid=0 # Needs to mount as root to start the container
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/unifi/data:/config:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mongodb-password.txt:/homelab/mongodb-password.txt:ro
 
@@ -87,10 +87,10 @@ services:
   #     HOMELAB_CONTAINER_VARIANT: backup
   #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
   #   volumes:
-  #     - ./app-data/web-backup/default:/homelab/backup:rw
-  #     - ./app-logs/app-backup/errors:/homelab/logs/errors:rw
-  #     - ./app-logs/app-backup/default:/homelab/logs/default:rw
-  #     - ./app-logs/app-backup/cron:/homelab/cron:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/app-backup/data:/homelab/backup:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/errors:/homelab/logs/errors:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/default:/homelab/logs/default:rw
+  #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/cron:/homelab/cron:rw
 
 networks:
   default:

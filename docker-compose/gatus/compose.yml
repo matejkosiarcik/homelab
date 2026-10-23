@@ -15,7 +15,7 @@ services:
       - internal-network
     stop_grace_period: 30s
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/gatus/data:/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:

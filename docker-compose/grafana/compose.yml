@@ -14,7 +14,7 @@ services:
       GF_SECURITY_ADMIN_EMAIL: matej@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       GF_SERVER_ROOT_URL: ${DOCKER_COMPOSE_NETWORK_URL}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/grafana/data:/var/lib/grafana:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/var/lib/grafana:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
