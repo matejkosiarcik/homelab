@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"net"
+	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -14,7 +16,31 @@ import (
 	"github.com/itchyny/gojq"
 )
 
-func TestCheckTCPConnection(t *testing.T) {
+func TestCheckHTTP(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		username, password, ok := request.BasicAuth()
+		if !ok || username != "healthcheck" || password != "password" {
+			writer.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+
+		writer.Header().Set("Content-Type", "application/json")
+		_, _ = writer.Write([]byte(`{"healthy":true}`))
+	}))
+	t.Cleanup(server.Close)
+
+	err := checkHTTP(healthcheckArgs{
+		URL:               server.URL,
+		BasicAuthUsername: "healthcheck",
+		BasicAuthPassword: "password",
+		BodyJSON:          ".healthy == true",
+	})
+	if err != nil {
+		t.Errorf("checkHTTP() error = %v", err)
+	}
+}
+
+func TestCheckTCP(t *testing.T) {
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		t.Fatalf("net.Listen() error = %v", err)
@@ -30,8 +56,9 @@ func TestCheckTCPConnection(t *testing.T) {
 		}
 	}()
 
-	if err := checkTCPConnection(listener.Addr().String()); err != nil {
-		t.Errorf("checkTCPConnection() error = %v", err)
+	err = checkTCP(healthcheckArgs{URL: "tcp://" + listener.Addr().String()})
+	if err != nil {
+		t.Errorf("checkTCP() error = %v", err)
 	}
 
 	select {
