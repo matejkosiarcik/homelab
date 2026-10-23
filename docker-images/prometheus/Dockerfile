@@ -120,7 +120,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM prom/prometheus:v3.15.0 AS final
+FROM prom/prometheus:v3.15.1 AS final
 LABEL build.user=matejkosiarcik
 USER root
 ARG GID=1000
