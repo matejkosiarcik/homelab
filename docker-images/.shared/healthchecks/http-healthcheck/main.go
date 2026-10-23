@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -108,12 +109,6 @@ func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
 
 // nolint:gocyclo
 func main() {
-	if err := touchLogFile(); err != nil {
-		// nolint:errcheck
-		_ = printLog(os.Stderr, "ERROR", "%v", err)
-		os.Exit(1)
-	}
-
 	// Parse arguments
 	var args struct {
 		URL                  string `arg:"--url,required" help:"URL to check"`
@@ -127,8 +122,26 @@ func main() {
 		BasicAuthUsernameEnv string `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
 		BasicAuthPasswordEnv string `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
 	}
-	if err := arg.Parse(&args); err != nil {
-		log("ERROR", "Error parsing healthcheck arguments: %v\n", err)
+	parser, err := arg.NewParser(arg.Config{}, &args)
+	if err != nil {
+		// nolint:errcheck
+		_, _ = fmt.Fprintf(os.Stderr, "Error configuring healthcheck arguments: %v\n", err)
+		os.Exit(1)
+	}
+	parseErr := parser.Parse(os.Args[1:])
+	if errors.Is(parseErr, arg.ErrHelp) {
+		parser.WriteHelp(os.Stdout)
+		return
+	}
+
+	if err := touchLogFile(); err != nil {
+		// nolint:errcheck
+		_ = printLog(os.Stderr, "ERROR", "%v", err)
+		os.Exit(1)
+	}
+
+	if parseErr != nil {
+		log("ERROR", "Error parsing healthcheck arguments: %v\n", parseErr)
 		os.Exit(1)
 	}
 

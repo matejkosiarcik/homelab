@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -53,19 +54,31 @@ func formatLogMessage(level string, format string, args ...any) string {
 }
 
 func main() {
+	// Parse arguments
+	var args struct {
+		FilePath        string `arg:"--file,required" help:"File path"`
+		ExpectedContent string `arg:"--content,required" help:"Expected file content"`
+	}
+	parser, err := arg.NewParser(arg.Config{}, &args)
+	if err != nil {
+		// nolint:errcheck
+		_, _ = fmt.Fprintf(os.Stderr, "Error configuring healthcheck arguments: %v\n", err)
+		os.Exit(1)
+	}
+	parseErr := parser.Parse(os.Args[1:])
+	if errors.Is(parseErr, arg.ErrHelp) {
+		parser.WriteHelp(os.Stdout)
+		return
+	}
+
 	if err := touchLogFile(); err != nil {
 		// nolint:errcheck
 		_ = printLog(os.Stderr, "ERROR", "%v", err)
 		os.Exit(1)
 	}
 
-	// Parse arguments
-	var args struct {
-		FilePath        string `arg:"--file,required" help:"File path"`
-		ExpectedContent string `arg:"--content,required" help:"Expected file content"`
-	}
-	if err := arg.Parse(&args); err != nil {
-		log("ERROR", "Error parsing healthcheck arguments: %v\n", err)
+	if parseErr != nil {
+		log("ERROR", "Error parsing healthcheck arguments: %v\n", parseErr)
 		os.Exit(1)
 	}
 
