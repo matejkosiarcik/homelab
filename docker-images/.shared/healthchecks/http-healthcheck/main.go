@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"regexp"
 	"slices"
 	"strconv"
@@ -26,7 +27,7 @@ var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 const checkTimeout = 2 * time.Second
 
 type healthcheckArgs struct {
-	URL                  string `arg:"--url,required" help:"Endpoint URL to check; supports http, https, and tcp"`
+	URL                  string `arg:"--url,required" help:"Endpoint URL to check; supports file, http, https, and tcp"`
 	Method               string `arg:"--method" default:"GET" help:"HTTP method"`
 	BodyRegex            string `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
 	BodyJSON             string `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
@@ -71,6 +72,32 @@ func tcpAddress(endpoint *url.URL) (string, error) {
 	}
 
 	return endpoint.Host, nil
+}
+
+func checkFile(args healthcheckArgs) error {
+	endpoint, err := url.Parse(args.URL)
+	if err != nil {
+		return fmt.Errorf("parsing file URL: %w", err)
+	}
+	if endpoint.Host != "" && endpoint.Host != "localhost" {
+		return fmt.Errorf("file URL host must be empty or localhost: %q", endpoint.Host)
+	}
+	if endpoint.User != nil || endpoint.RawQuery != "" || endpoint.Fragment != "" {
+		return errors.New("file URL must not contain user info, a query, or a fragment")
+	}
+	if endpoint.Path == "" || !filepath.IsAbs(endpoint.Path) {
+		return errors.New("file URL must include an absolute path")
+	}
+
+	fileInfo, err := os.Stat(endpoint.Path)
+	if err != nil {
+		return fmt.Errorf("stating file %q: %w", endpoint.Path, err)
+	}
+	if fileInfo.IsDir() {
+		return fmt.Errorf("file path is a directory: %q", endpoint.Path)
+	}
+
+	return nil
 }
 
 func touchLogFile() error {
@@ -325,6 +352,11 @@ func main() {
 	}
 
 	switch strings.ToLower(endpoint.Scheme) {
+	case "file":
+		if err := checkFile(args); err != nil {
+			log("ERROR", "File health check failed: %v\n", err)
+			os.Exit(1)
+		}
 	case "tcp":
 		if err := checkTCP(args); err != nil {
 			log("ERROR", "TCP health check failed: %v\n", err)
@@ -336,7 +368,7 @@ func main() {
 			os.Exit(1)
 		}
 	default:
-		log("ERROR", "Unsupported URL protocol %q; use http, https, or tcp\n", endpoint.Scheme)
+		log("ERROR", "Unsupported URL protocol %q; use file, http, https, or tcp\n", endpoint.Scheme)
 		os.Exit(1)
 	}
 

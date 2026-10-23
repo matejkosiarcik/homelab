@@ -40,6 +40,18 @@ func TestCheckHTTP(t *testing.T) {
 	}
 }
 
+func TestCheckFile(t *testing.T) {
+	filePath := filepath.Join(t.TempDir(), "status.txt")
+	if err := os.WriteFile(filePath, []byte("ready"), 0o600); err != nil {
+		t.Fatalf("os.WriteFile() error = %v", err)
+	}
+
+	fileURL := (&url.URL{Scheme: "file", Path: filePath}).String()
+	if err := checkFile(healthcheckArgs{URL: fileURL}); err != nil {
+		t.Errorf("checkFile() error = %v", err)
+	}
+}
+
 func TestCheckTCP(t *testing.T) {
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
