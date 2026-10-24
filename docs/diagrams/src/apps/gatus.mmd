@@ -31,11 +31,9 @@ flowchart LR
         home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
         prometheus("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Prometheus</p></div>")
         app("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
-        uptimekuma("<div class='custom-node'><img src='../../../../icons/uptimekuma.png' /><p>Uptime<br/>Kuma</p></div>")
 
         home_network <--> inbound_interface
         prometheus -->|collect metrics| inbound_interface
-        app & uptimekuma -->|monitor| inbound_interface
     end
 
     subgraph others_2["Others"]

@@ -21,6 +21,7 @@ flowchart LR
         app("<div class='custom-node'><img src='../../../../icons/tvheadend.png' /><p>Tvheadend</p></div>")
         class app strong_border;
         antenna("<div class='custom-node'><img src='../../../../icons/antenna.png' /><p>Antenna</p></div>")
+        class antenna dashed_border;
 
         inbound_interface -->|:80,443,9981| apache_proxy -->|/*:9981| app
         inbound_interface -->|:9982| app
