@@ -143,7 +143,8 @@ COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/c
 ### Final ###
 
 FROM node:26.12.1-slim AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

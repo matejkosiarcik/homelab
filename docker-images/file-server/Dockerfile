@@ -113,7 +113,8 @@ COPY --from=homelab_dir /homelab /homelab
 
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/nodejs26-debian13:latest AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

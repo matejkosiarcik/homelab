@@ -67,6 +67,22 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
     throw lastError;
 }
 
+function decodeResponseBody(responseData: unknown): string {
+    if (typeof responseData === 'string') {
+        return responseData;
+    } else if (responseData === null || responseData === undefined) {
+        return '';
+    } else if (responseData instanceof ArrayBuffer) {
+        return new TextDecoder().decode(responseData);
+    } else if (ArrayBuffer.isView(responseData)) {
+        return new TextDecoder().decode(new Uint8Array(responseData.buffer, responseData.byteOffset, responseData.byteLength));
+    } else if (typeof responseData === 'object') {
+        return JSON.stringify(responseData) ?? String(responseData);
+    }
+
+    return String(responseData);
+}
+
 (async () => {
     const statusFile = path.join('tmpfs', 'status.txt');
     await fsx.mkdir(path.dirname(statusFile), { recursive: true });
@@ -90,7 +106,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
 
         try {
             const response = await axios.get('/status');
-            assert(response.status === 200, `Failed to connect to healthcheck-app\nStatus: ${response.status}\n`);
+            assert(response.status === 200, `Failed to connect to healthcheck-app\nStatus: ${response.status}\nBody: ${decodeResponseBody(response.data)}`);
             break;
         } catch {
             await sleep(1000);
@@ -106,7 +122,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
         Log.info('Loading list of existing healthchecks');
         return await retry(async () => {
             const response = await axios.get('/checks/');
-            assert(response.status === 200, `Failed to fetch list of healthchecks\nStatus: ${response.status}\nBody: ${response.data}`);
+            assert(response.status === 200, `Failed to fetch list of healthchecks\nStatus: ${response.status}\nBody: ${decodeResponseBody(response.data)}`);
             const body = response.data as { checks: Healthcheck[] };
             return body.checks;
         }, {
@@ -123,7 +139,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
         Log.info('Loading list of notification channels');
         return await retry(async () => {
             const response = await axios.get('/channels/');
-            assert(response.status === 200, `Failed to fetch list of notification channels\nStatus: ${response.status}\nBody: ${response.data}`);
+            assert(response.status === 200, `Failed to fetch list of notification channels\nStatus: ${response.status}\nBody: ${decodeResponseBody(response.data)}`);
             const body = response.data as { channels: NotificationChannel[] };
             return new Set(body.channels.map((channel) => channel.id));
         }, {
@@ -143,7 +159,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
         Log.info(`Deleting healthcheck ${healthcheck.slug}`);
         await retry(async () => {
             const response = await axios.delete(`/checks/${healthcheck.uuid}`);
-            assert(response.status === 200, `Failed to delete healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
+            assert(response.status === 200, `Failed to delete healthcheck\nStatus: ${response.status}\nBody: ${decodeResponseBody(response.data)}`);
         }, {
             retries: 3,
             delay: 1000,
@@ -169,7 +185,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
             await retry(async () => {
                 Log.info(`Updating healthcheck ${healthcheck.slug}`);
                 const response = await axios.post(`/checks/${healthcheck.uuid}`, updatedHealthcheck);
-                assert(response.status === 200, `Failed to update healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
+                assert(response.status === 200, `Failed to update healthcheck\nStatus: ${response.status}\nBody: ${decodeResponseBody(response.data)}`);
             }, {
                 retries: 3,
                 delay: 1000,
@@ -192,7 +208,7 @@ async function retry<T>(fn: () => Promise<T>, _config: { retries?: number | unde
                     'Content-Type': 'application/json',
                 },
             });
-            assert(response.status === 201, `Failed to create healthcheck\nStatus: ${response.status}\nBody: ${response.data}`);
+            assert(response.status === 201, `Failed to create healthcheck\nStatus: ${response.status}\nBody: ${decodeResponseBody(response.data)}`);
         }, {
             retries: 3,
             delay: 1000,

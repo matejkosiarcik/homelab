@@ -42,7 +42,8 @@ COPY ./docker-images/smtp4dev/icons/favicon.ico ./docker-images/smtp4dev/icons/f
 ### Final ###
 
 FROM rnwood/smtp4dev:3.15.0 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

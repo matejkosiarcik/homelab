@@ -174,7 +174,8 @@ COPY --from=package_curl_final /homelab/bin/curl /fsroot/usr/bin/
 ### Final ###
 
 FROM debian:13.7-slim AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_certbot_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_certbot_final_aptlibcache \

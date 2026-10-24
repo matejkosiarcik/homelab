@@ -126,7 +126,8 @@ COPY --from=adventurelog_backend /etc/supervisor/conf.d /fsroot/etc/supervisor/c
 ### Final ###
 
 FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.0 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN ln -sf /run/supervisord.pid /code/supervisord.pid && \
