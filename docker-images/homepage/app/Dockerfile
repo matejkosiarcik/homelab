@@ -88,7 +88,8 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 ### Final ###
 
 FROM ghcr.io/gethomepage/homepage:v2.7.0 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 RUN rm -rf /app/.next/server/pages /app/config
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/

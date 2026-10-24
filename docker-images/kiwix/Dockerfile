@@ -44,7 +44,8 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 FROM ghcr.io/kiwix/kiwix-serve:3.8.2 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 RUN apk update --no-cache && \
     apk add --no-cache inotify-tools zim-tools

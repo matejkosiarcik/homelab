@@ -44,7 +44,8 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 FROM mbentley/omada-controller:6.3 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 ARG GID=1000
 ARG UID=1000
