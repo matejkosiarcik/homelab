@@ -24,7 +24,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header
-    networks:
+    networks: # Internet access required for updating blocklists
       - external-network
       - internal-network
     stop_grace_period: 30s
