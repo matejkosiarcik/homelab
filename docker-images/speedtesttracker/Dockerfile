@@ -75,7 +75,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App config ####
 
-FROM linuxserver/speedtest-tracker:1.15.0 AS speedtesttracker_config
+FROM linuxserver/speedtest-tracker:1.15.1 AS speedtesttracker_config
 USER root
 
 ### Healthcheck ###
@@ -129,7 +129,7 @@ COPY --chmod=0755 ./docker-images/speedtesttracker/cron-run.sh /etc/s6-overlay/s
 
 ### Final ###
 
-FROM linuxserver/speedtest-tracker:1.15.0 AS final
+FROM linuxserver/speedtest-tracker:1.15.1 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
