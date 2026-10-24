@@ -33,6 +33,7 @@ flowchart LR
         apache_proxy -->|"/favicon.{ico,png}"| favicons
 
         apache_prometheus_exporter ~~~ file_server & favicons & certificator
+        favicons -.->|use| file_server
     end
 
     subgraph others_1["Others"]
@@ -52,7 +53,7 @@ flowchart LR
 
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
-        app -.->|use| pihole
+        app -.->|DNS requests| pihole
     end
 
     certificator & app ~~~ others_2
