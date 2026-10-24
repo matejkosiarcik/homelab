@@ -16,7 +16,8 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh '/homelab/create-user.sh' && \
     pwconv && \
-    passwd --lock homelab
+    passwd --lock homelab && \
+    usermod --append --groups root homelab
 
 ### Healthcheck ###
 
@@ -100,5 +101,6 @@ ENV ALLOW_ARCHIVE="0" \
     TZ="Europe/Bratislava" \
     VERSION="0" \
     VOLUMES="0"
+USER homelab
 VOLUME /var/run/docker.sock
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:2375/_ping", "--status", "200,403" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "tcp://localhost:2375" ]

@@ -19,8 +19,10 @@ flowchart LR
         certificator("<div class='custom-node'><img src='../../../../icons/certificator.png' /><p>Certificator</p></div>")
         favicons("<div class='custom-node'><img src='../../../../icons/picture.png' /><p>Favicons</p></div>")
         app("<div class='custom-node'><img src='../../../../icons/samba.png' /><p>Samba</p></div>")
-        file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
         class app strong_border;
+        filesystem("<div class='custom-node'><img src='../../../../icons/files.png' /><p>Filesystem</p></div>")
+        class filesystem dashed_border;
+        file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
 
         inbound_interface -->|:139,445| app
         inbound_interface -->|:80,443| apache_proxy
@@ -29,6 +31,7 @@ flowchart LR
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|"/favicon.{ico,png}"| favicons
+        app ---|read/write| filesystem
 
         apache_prometheus_exporter ~~~ app
         favicons ~~~ certificator & file_server
