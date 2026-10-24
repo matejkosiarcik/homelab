@@ -32,9 +32,10 @@ The Icons are obtained from following locations:
     - Raspberry Pi: `https://iconduck.com/icons/14184/raspberry-pi` (server down)
     - RenovateBot: <https://docs.renovatebot.com>
     - Reportportal: <https://reportportal.io>
+    - RunWisp: <https://github.com/runwisp>
     - Smtp4dev: <https://github.com/rnwood/smtp4dev>
-    - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - Squid: <https://github.com/squid-cache>
+    - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - Stable Diffusion: <https://custom.typingmind.com/tools/model-icons/stable-diffusion>
     - TV (old): <https://www.flaticon.com/free-icon/television_550486>
     - UPC: <https://www.upc.sk>
