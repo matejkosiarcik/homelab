@@ -119,6 +119,17 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw
 
+  docker-proxy-filter:
+    extends:
+      service: template
+    # Override:
+    build:
+      dockerfile: ./docker-images/docker-proxy-filter/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-proxy-filter
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-proxy-filter:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-proxy-filter/healthcheck:/homelab/logs/healthcheck:rw
+
   docker-socket-proxy:
     extends:
       service: template
@@ -128,7 +139,8 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:1.0.0
     tmpfs:
-      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      # - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-socket-proxy/healthcheck:/homelab/logs/healthcheck:rw

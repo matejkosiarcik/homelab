@@ -9,10 +9,24 @@ services:
     depends_on:
       docker-socket-proxy:
         condition: service_healthy
+      docker-proxy-filter:
+        condition: service_healthy
     build:
       dockerfile: ./docker-images/docker-stats-exporter/Dockerfile
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
+
+  docker-proxy-filter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: docker-proxy-filter
+    # Override:
+    depends_on:
+      docker-socket-proxy:
+        condition: service_healthy
+    environment:
+      CONTAINER_LABELS: "" # Allow all containers
+      CONTAINER_NAMES: "" # Allow all containers
 
   docker-socket-proxy:
     extends:

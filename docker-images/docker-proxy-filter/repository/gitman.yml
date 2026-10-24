@@ -1,0 +1,32 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/FoxxMD/docker-proxy-filter.git
+    name: docker-proxy-filter
+    rev: main
+    type: git
+    params: --depth=1
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+sources_locked:
+  - repo: https://github.com/FoxxMD/docker-proxy-filter.git
+    name: docker-proxy-filter
+    rev: d2f671aa67a8316dd3024923e79df093aa643acb
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+default_group: ""
+groups:
+  -
