@@ -101,4 +101,4 @@ ENV ALLOW_ARCHIVE="0" \
     VERSION="0" \
     VOLUMES="0"
 VOLUME /var/run/docker.sock
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:2375/_ping", "--status", "200,403" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "tcp://localhost:2375" ]
