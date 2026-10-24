@@ -45,6 +45,19 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
+            test('API: Get health', async () => {
+                const response = await test.step('Request endpoint', async () => {
+                    const response = await axios.get(`${instance.url}/api/health`);
+                    expect(response.status, 'Response status').toStrictEqual(401);
+                    return response;
+                });
+
+                await test.step.soft('Validate response', async () => {
+                    const body = response.data as string;
+                    expect(body, 'Response body should match').toStrictEqual('OK');
+                });
+            });
+
             test('API: Validate permissions for unauthenticated access', async () => {
                 await test.step('Attempt to get list of tasks', async () => {
                     const response = await axios.get(`${instance.url}/api/tasks`);
