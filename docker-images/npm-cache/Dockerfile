@@ -43,7 +43,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM pkgems/npm-cache-proxy:1.3.5 AS final
 LABEL build.user="matejkosiarcik" \
-      dev.dozzle.icon="none"
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /srv/app && \

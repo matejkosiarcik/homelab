@@ -4,7 +4,7 @@
 
 FROM arduinoci/ci-arduino-cli:v1.5.1 AS final
 LABEL build.user="matejkosiarcik" \
-      dev.dozzle.icon="none"
+    dev.dozzle.icon="none"
 USER root
 WORKDIR /homelab
 RUN arduino-cli core update-index && \

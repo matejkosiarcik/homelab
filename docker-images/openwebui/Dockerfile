@@ -60,7 +60,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/start.sh
 
 FROM openwebui/open-webui:0.12.3 AS final
 LABEL build.user="matejkosiarcik" \
-      dev.dozzle.icon="none"
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

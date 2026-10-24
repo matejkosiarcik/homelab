@@ -52,7 +52,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM ghcr.io/motioneye-project/motioneye:edge AS final
 LABEL build.user="matejkosiarcik" \
-      dev.dozzle.icon="none"
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

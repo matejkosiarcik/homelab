@@ -31,7 +31,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM bitnamilegacy/rabbitmq:4.1.3-debian-12-r1 AS final
 LABEL build.user="matejkosiarcik" \
-      dev.dozzle.icon="none"
+    dev.dozzle.icon="none"
 # FROM rabbitmq:4.3.2-management
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
