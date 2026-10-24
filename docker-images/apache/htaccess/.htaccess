@@ -131,6 +131,16 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /files [L,R=307]
 
+# Specific redirect for apps with primary Runwisp: "/" -> "/runwisp"
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^renovatebot$ [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /runwisp [L,R=302]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^renovatebot$ [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /runwisp [L,R=307]
+
 # Specific redirect for NoVNC: "/" -> "/vnc.html"
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^vnc$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]

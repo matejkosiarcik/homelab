@@ -22,6 +22,16 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
+  file-server:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: file-server
+    # Override:
+    build:
+      args:
+        HOMELAB_COPY_PATH_1_SRC: "./docker-images/renovatebot/icons/"
+        HOMELAB_COPY_PATH_1_DEST: ""
+
   certificator:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml

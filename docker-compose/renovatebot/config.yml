@@ -3,11 +3,13 @@ app:
 
 apache:
   upstream-url:
+    - path: /runwisp/
+      target: http://app:8080/runwisp
     - path: /
-      target: http://app:8080
+      target: http://file-server:8080
 
 favicons:
-  default: "@renovatebot.png"
+  default: "/favicon.png"
 
 gatus:
   enabled: true

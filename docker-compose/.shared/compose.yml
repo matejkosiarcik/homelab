@@ -136,6 +136,8 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/docker-socket-proxy/Dockerfile
+    cap_add: # TODO: Remove capabilities
+      - DAC_OVERRIDE # Allows running under root
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:1.0.0
     tmpfs:
