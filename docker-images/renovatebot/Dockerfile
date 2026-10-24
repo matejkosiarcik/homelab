@@ -55,8 +55,16 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
 FROM golang:1.27.3-trixie AS runwisp_build_tweak_paths
 USER root
 WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_runwisp_build_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        file libdigest-sha-perl moreutils >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
 COPY --from=runwisp_gitman /homelab/gitman-repositories/runwisp/ ./runwisp/
+COPY ./docker-images/renovatebot/runwisp/add-prefix.sh /homelab/
 WORKDIR /homelab/runwisp
+RUN sh '/homelab/add-prefix.sh'
 
 FROM oven/bun:1.4.0-debian AS runwisp_build_frontend
 USER root
@@ -79,6 +87,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_b
     rm -rf /var/lib/apt/lists/*
 COPY --from=runwisp_build_tweak_paths /homelab/runwisp/ ./runwisp/
 COPY --from=runwisp_build_frontend /homelab/runwisp/apps/ui/build/ ./runwisp/apps/runwisp/internal/ui/dist/
+COPY --from=runwisp_build_frontend /homelab/runwisp/apps/ui/build/ ./runwisp/apps/runwisp/internal/ui/dist/runwisp/
 WORKDIR /homelab/runwisp/apps/runwisp
 ENV CGO_ENABLED="0"
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
@@ -138,7 +147,7 @@ FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
 COPY --from=empty_dir /empty /homelab/logs
-COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/renovatebot/entrypoint.sh ./docker-images/renovatebot/main.sh ./docker-images/renovatebot/runwisp.toml /homelab/
+COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/renovatebot/entrypoint.sh ./docker-images/renovatebot/main.sh ./docker-images/renovatebot/runwisp/runwisp.toml /homelab/
 COPY --from=runwisp_final /usr/local/bin/runwisp /homelab/bin/runwisp
 COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
 

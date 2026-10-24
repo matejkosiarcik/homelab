@@ -2,7 +2,7 @@
 metrics_enabled  = true
 shutdown_timeout = "30s"
 timezone         = "Europe/Bratislava"
-external_url     = "${HOMELAB_APP_EXTERNAL_URL}"
+external_url     = "${HOMELAB_APP_EXTERNAL_URL}/runwisp"
 
 [defaults]
 keep_for     = "90d"
