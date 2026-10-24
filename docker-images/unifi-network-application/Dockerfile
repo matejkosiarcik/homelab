@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM linuxserver/unifi-network-application:10.6.106 AS entrypoint
+FROM linuxserver/unifi-network-application:10.6.109 AS entrypoint
 USER root
 COPY ./docker-images/unifi-network-application/entrypoint-extra.sh /homelab/
 RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
@@ -22,7 +22,7 @@ RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod 0550 /homelab/entrypoint-final.sh
 
-FROM linuxserver/unifi-network-application:10.6.106 AS runtime_dirs
+FROM linuxserver/unifi-network-application:10.6.109 AS runtime_dirs
 USER root
 WORKDIR /homelab
 RUN mkdir -p '/homelab/original/defaults' && \
@@ -71,7 +71,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 
 ### Final ###
 
-FROM linuxserver/unifi-network-application:10.6.106 AS final
+FROM linuxserver/unifi-network-application:10.6.109 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
