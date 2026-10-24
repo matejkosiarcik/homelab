@@ -54,7 +54,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 FROM debian:13.7-slim AS final
 LABEL build.user="matejkosiarcik" \
-      dev.dozzle.icon="none"
+    dev.dozzle.icon="none"
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_wayvnc_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_wayvnc_aptlibcache \

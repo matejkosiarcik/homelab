@@ -48,7 +48,7 @@ COPY --from=minio --chown=homelab:homelab /usr/bin/minio /usr/bin/minio
 
 FROM scratch AS final
 LABEL build.user="matejkosiarcik" \
-      dev.dozzle.icon="none"
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
