@@ -108,7 +108,7 @@ jobs:
       - name: Setup Docker Compose
         uses: Wandalen/wretry.action@v3.8.0
         with:
-          action: docker/setup-compose-action@v2.3.0
+          action: docker/setup-compose-action@v2.4.0
           attempt_limit: 3
           attempt_delay: 2500
           with: |
