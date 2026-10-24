@@ -16,7 +16,7 @@ COPY ./docker-images/.shared/dependencies/envsubst/go.mod /homelab/
 ENV CGO_ENABLED="0"
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
-    envsubst_version="$(cat /homelab/go.mod | grep "github.com/a8m/envsubst" | cut -d ' ' -f 3)" && \
+    envsubst_version="$(grep "github.com/a8m/envsubst" <'/homelab/go.mod' | cut -d ' ' -f 3)" && \
     go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
     strip --strip-all /go/bin/envsubst
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/

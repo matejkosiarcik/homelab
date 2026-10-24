@@ -17,7 +17,7 @@ if [ ! -f './apps/ui/svelte.config.js' ]; then
     exit 1
 fi
 svelte_config_shasum_before="$(shasum './apps/ui/svelte.config.js')"
-cat './apps/ui/svelte.config.js' | sed 's~base: "",~base: "/runwisp",~' | sponge './apps/ui/svelte.config.js'
+sed 's~base: "",~base: "/runwisp",~' <'./apps/ui/svelte.config.js' | sponge './apps/ui/svelte.config.js'
 svelte_config_shasum_after="$(shasum './apps/ui/svelte.config.js')"
 if [ "${svelte_config_shasum_before}" = "${svelte_config_shasum_after}" ]; then
     printf 'Svelte config not changed, could not apply new basepath\n' >&2
@@ -25,7 +25,6 @@ if [ "${svelte_config_shasum_before}" = "${svelte_config_shasum_after}" ]; then
 fi
 
 # Add prefix to paths: "/api", "/health", "/healthz", "/metrics"
-cat "${text_files_list}" | while read -r file; do
-    extension="$(printf '%s' "${file}" | sed -E 's~^.*\.~~')"
-    cat "${file}" | sed -E 's~([^[:alnum:]])/(api|healthz?|metrics)([^[:alnum:]])~\1/runwisp/\2\3~g' | sponge "${file}"
-done
+while read -r file; do
+    sed -E 's~([^[:alnum:]])/(api|healthz?|metrics)([^[:alnum:]])~\1/runwisp/\2\3~g' <"${file}" | sponge "${file}"
+done <"${text_files_list}"

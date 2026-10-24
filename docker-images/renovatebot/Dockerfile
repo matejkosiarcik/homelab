@@ -72,9 +72,9 @@ WORKDIR /homelab
 COPY --from=runwisp_build_tweak_paths /homelab/runwisp/ ./runwisp/
 WORKDIR /homelab/runwisp
 RUN --mount=type=cache,target=/root/.bun/install/cache,sharing=shared,id=homelab_runwisp_buncache \
-    bun install --frozen-lockfile && \
-    cd './apps/ui' && \
-    bunx --bun vite build
+    bun install --frozen-lockfile
+WORKDIR /homelab/runwisp/apps/ui
+RUN bunx --bun vite build
 
 FROM golang:1.27.3-trixie AS runwisp_build_backend
 USER root
@@ -120,7 +120,7 @@ COPY ./docker-images/.shared/dependencies/envsubst/go.mod /homelab/
 ENV CGO_ENABLED="0"
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
-    envsubst_version="$(cat /homelab/go.mod | grep "github.com/a8m/envsubst" | cut -d ' ' -f 3)" && \
+    envsubst_version="$(grep "github.com/a8m/envsubst" <'/homelab/go.mod' | cut -d ' ' -f 3)" && \
     go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
     strip --strip-all /go/bin/envsubst
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
