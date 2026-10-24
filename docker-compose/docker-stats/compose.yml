@@ -20,7 +20,7 @@ services:
       service: docker-socket-proxy
     # Override:
     environment:
-      CONTAINERS: 1
+      CONTAINERS: "1"
 
   certificator:
     extends:
