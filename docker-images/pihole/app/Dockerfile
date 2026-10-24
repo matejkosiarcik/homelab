@@ -102,6 +102,8 @@ ARG GID=1000
 ARG UID=1000
 ENV DHCP_ACTIVE="false" \
     DNSMASQ_USER="homelab" \
+    FTLCONF_dns_blocking_active="true" \
+    FTLCONF_dns_blocking_mode="NULL" \
     FTLCONF_dns_blockTTL="600" \
     FTLCONF_dns_domain_local="true" \
     FTLCONF_dns_domain_name="matejhome.com" \
@@ -114,6 +116,7 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_dns_replyWhenBusy="BLOCK" \
     FTLCONF_dns_upstreams="1.1.1.1;8.8.8.8;9.9.9.9" \
     FTLCONF_misc_dnsmasq_lines="local-ttl=600" \
+    FTLCONF_misc_readOnly="true" \
     FTLCONF_misc_nice="-999" \
     FTLCONF_misc_privacylevel="0" \
     FTLCONF_webserver_api_allow_destructive="false" \
