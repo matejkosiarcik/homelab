@@ -48,7 +48,7 @@ COPY ./docker-images/unbound/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     retry --times=3 -- gitman install --quiet && \
-    find '.' -type d -name .git -prune -exec rm -rf {} \;
+    find '.' -type d -name '.git' -prune -exec rm -rf {} \;
 
 ### App ###
 
