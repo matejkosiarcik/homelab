@@ -98,7 +98,7 @@ jobs:
       - name: Setup Docker Buildx
         uses: Wandalen/wretry.action@v3.8.0
         with:
-          action: docker/setup-buildx-action@v4.3.0
+          action: docker/setup-buildx-action@v4.4.1
           attempt_limit: 3
           attempt_delay: 2500
           with: |
