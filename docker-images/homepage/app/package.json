@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "notyf": "^3.10.0",
-    "npm-run-all2": "^9.0.3"
+    "npm-run-all2": "^9.0.4"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.3.0",
