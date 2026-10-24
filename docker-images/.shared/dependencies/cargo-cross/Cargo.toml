@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-cargo-cross = { version = "1.5.0" }
+cargo-cross = { version = "1.6.0" }
