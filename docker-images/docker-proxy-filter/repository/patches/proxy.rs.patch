@@ -1,0 +1,69 @@
+diff --git a/src/proxy.rs b/src/proxy.rs
+index 1e1fc08..86febf4 100644
+--- a/src/proxy.rs
++++ b/src/proxy.rs
+@@ -91,38 +91,50 @@ pub async fn forward(
+                     debug!("Matched container route with Id {}", &m.id);
+                     // we keep a stateful hashmap of all requested container ids and their names
+                     // see AppStateWithContainerMap
+-                    let mut cm = data.container_map.lock().unwrap();
+-
+-                    // if the map does not already include the container id-name then we try to get it with our own request to docker api
+-                    // or if we encountered an error last time then try again
+-                    if !cm.contains_key(&m.id) || cm.get(&m.id).unwrap().is_none() {
++                    // Never retain this synchronous mutex while awaiting I/O. A client such as
++                    // docker-stats-exporter requests every container's stats concurrently; doing
++                    // so blocks every ntex worker and prevents the inspect request below from
++                    // completing.
++                    let cached_allowed = {
++                        let cm = data.container_map.lock().unwrap();
++                        cm.get(&m.id).cloned()
++                    };
++
++                    // If the map does not already include the container id-name, or the prior
++                    // lookup errored, inspect the container and record the result.
++                    let allowed = match cached_allowed {
++                        Some(Some(allowed)) => Some(allowed),
++                        _ => {
+                         debug!("Requested Id not in map, trying to inspect...");
+                         let info_res = docker::get_container_info(&client, &forward_url, &m.id).await;
+-                        match info_res {
++                        let allowed = match info_res {
+                             Ok((name, labels)) => {
+                                 let is_container_match = docker::match_labels_or_names(&app_config.get_ref().container_names, &app_config.get_ref().container_labels, &Vec::from([name.clone()]), &labels);
+                                 debug!("Recording container '{}' {} valid", name, is!(is_container_match; "as";"as not"));
+-                                cm.insert(m.id.clone(), Some(is_container_match));
++                                Some(is_container_match)
+                             }
+                             Err(e) => {
+                                 warn!("Could not inspect: {e}");
+                                 if e.to_string().contains("No such container") {
+-                                    cm.insert(m.id.clone(), Some(false));
++                                    Some(false)
+                                 } else {
+                                     // if the error was not a 404 then allow trying again later
+-                                    cm.insert(m.id.clone(), None);
++                                    None
+                                 }
+                             }
+-                        }
+-                    }
++                        };
++
++                        let mut cm = data.container_map.lock().unwrap();
++                        cm.insert(m.id.clone(), allowed);
++                        allowed
++                    }
++                };
+ 
+                     // then we try to get the name from the stateful hashmap
+-                    let allowed = cm.get(&m.id).unwrap();
+-                    
+                     match allowed {
+                         Some(n) => {
+                             // only return if a response if requested container has a name  that includes values from CONTAINER_NAMES
+-                            if *n {
++                            if n {
+                                 debug!("Matched container filters");
+                                 // if the route resource is specifically the Container Inspect API
+                                 // then we may need to scrub Envs if SCRUB_ENVS=true
