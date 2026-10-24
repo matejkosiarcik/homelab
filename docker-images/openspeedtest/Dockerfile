@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM openspeedtest/latest:v2.0.6 AS entrypoint
+FROM openspeedtest/latest:v2.0.7 AS entrypoint
 USER root
 COPY ./docker-images/openspeedtest/entrypoint-extra.sh /homelab/
 RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -22,7 +22,7 @@ RUN head -n 1 /entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod 0500 /homelab/entrypoint-final.sh
 
-FROM openspeedtest/latest:v2.0.6 AS runtime_dirs
+FROM openspeedtest/latest:v2.0.7 AS runtime_dirs
 USER root
 RUN mkdir -p '/homelab/original/etc/nginx/conf.d' && \
     cp -R '/etc/nginx/conf.d/.' '/homelab/original/etc/nginx/conf.d'
@@ -68,7 +68,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoin
 
 ### Final ###
 
-FROM openspeedtest/latest:v2.0.6 AS final
+FROM openspeedtest/latest:v2.0.7 AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
