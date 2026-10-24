@@ -75,8 +75,10 @@ WORKDIR /homelab/docker-proxy-filter
 ENV OPENSSL_STATIC=1 \
     PKG_CONFIG_ALLOW_CROSS=1 \
     RUSTFLAGS="-C target-feature=+crt-static"
-RUN export PKG_CONFIG_SYSROOT_DIR="/opt/openssl-$(uname -m)-musl" && \
-    export PKG_CONFIG_PATH="${PKG_CONFIG_SYSROOT_DIR}/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/share/pkgconfig" && \
+RUN PKG_CONFIG_SYSROOT_DIR="/opt/openssl-$(uname -m)-musl" && \
+    export PKG_CONFIG_SYSROOT_DIR && \
+    PKG_CONFIG_PATH="${PKG_CONFIG_SYSROOT_DIR}/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/share/pkgconfig" && \
+    export PKG_CONFIG_PATH && \
     cargo cross build --release --target "$(uname -m)-unknown-linux-musl" && \
     strip --strip-all "./target/$(uname -m)-unknown-linux-musl/release/docker-proxy-filter" && \
     cp "./target/$(uname -m)-unknown-linux-musl/release/docker-proxy-filter" '/homelab/docker-proxy-filter-bin'
