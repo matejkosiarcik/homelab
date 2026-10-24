@@ -1,6 +1,6 @@
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { faker } from '@faker-js/faker';
 import { axios, getEnv } from '../../utils/utils';
 
@@ -19,6 +19,7 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
+            createHttpsRootRedirectTest(instance.url, '/vnc.html');
 
             const validUsers = [
                 {

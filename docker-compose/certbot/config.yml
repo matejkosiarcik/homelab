@@ -3,7 +3,7 @@ app:
 
 apache:
   upstream-url:
-    - path: /
+    - path: /files/
       target: http://file-server:8080
 
 favicons:

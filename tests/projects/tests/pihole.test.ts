@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { axios, dnsLookup, getAllHomelabDomains, getEnv } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
 const app = apps.pihole;
 
@@ -25,6 +25,7 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
+            createHttpsRootRedirectTest(instance.url, '/admin');
 
             test('DNS: example.com lookup', { lock: 'dns' }, async () => {
                 const instanceIp = await (async () => {

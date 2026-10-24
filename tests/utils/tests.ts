@@ -89,6 +89,20 @@ export function createHttpToHttpsRedirectTests(url: string, _options?: { title?:
     ];
 }
 
+export function createHttpsRootRedirectTest(url: string, targetPath: string) {
+    return test(`API: HTTPS redirect root to ${targetPath}`, async () => {
+        const response = await test.step('Request server', async () => {
+            const response = await axios.get(url, { maxRedirects: 0 });
+            expect(response.status, 'Response Status').toStrictEqual(302);
+            return response;
+        });
+
+        await test.step('Validate response', async () => {
+            expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${url}${targetPath}`);
+        });
+    });
+}
+
 export function createHttpsToHttpRedirectTests(url: string) {
     return [
         test('API: Redirect HTTPS to HTTP (root)', async () => {

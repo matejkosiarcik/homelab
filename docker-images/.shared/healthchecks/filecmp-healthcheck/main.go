@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -10,7 +11,7 @@ import (
 	"github.com/alexflint/go-arg"
 )
 
-const healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
+var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 
 func touchLogFile() error {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
@@ -24,16 +25,16 @@ func touchLogFile() error {
 
 // nolint:errcheck
 func log(level string, format string, args ...any) {
+	_ = printLog(os.Stderr, level, format, args...)
+
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
-		_ = printLog(os.Stderr, level, format, args...)
 		_ = printLog(os.Stderr, "ERROR", "Could not open logfile %s: %v", healthcheckLogFile, err)
 		return
 	}
 	defer func() { _ = logFile.Close() }()
 
 	if err := printLog(logFile, level, format, args...); err != nil {
-		_ = printLog(os.Stderr, level, format, args...)
 		_ = printLog(os.Stderr, "ERROR", "Could not write to logfile %s: %v", healthcheckLogFile, err)
 	}
 }
@@ -53,19 +54,31 @@ func formatLogMessage(level string, format string, args ...any) string {
 }
 
 func main() {
+	// Parse arguments
+	var args struct {
+		FilePath        string `arg:"--file,required" help:"File path"`
+		ExpectedContent string `arg:"--content,required" help:"Expected file content"`
+	}
+	parser, parserErr := arg.NewParser(arg.Config{}, &args)
+	if parserErr != nil {
+		// nolint:errcheck
+		_, _ = fmt.Fprintf(os.Stderr, "Error configuring healthcheck arguments: %v\n", parserErr)
+		os.Exit(1)
+	}
+	parseErr := parser.Parse(os.Args[1:])
+	if errors.Is(parseErr, arg.ErrHelp) {
+		parser.WriteHelp(os.Stdout)
+		return
+	}
+
 	if err := touchLogFile(); err != nil {
 		// nolint:errcheck
 		_ = printLog(os.Stderr, "ERROR", "%v", err)
 		os.Exit(1)
 	}
 
-	// Parse arguments
-	var args struct {
-		FilePath        string `arg:"--file,required" help:"File path"`
-		ExpectedContent string `arg:"--content,required" help:"Expected file content"`
-	}
-	if err := arg.Parse(&args); err != nil {
-		log("ERROR", "Error parsing healthcheck arguments: %v\n", err)
+	if parseErr != nil {
+		log("ERROR", "Error parsing healthcheck arguments: %v\n", parseErr)
 		os.Exit(1)
 	}
 

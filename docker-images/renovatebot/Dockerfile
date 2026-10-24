@@ -1,125 +1,34 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
-### Build config ###
+### RunWisp ###
 
-FROM debian:13.7-slim AS gitconfig
-USER root
-WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gitconfig_aptlibcache \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/* && \
-    printf '' >/root/.gitconfig
-# TODO: Re-enable cache below:
-# COPY ./docker-images/.shared/anticache.txt /homelab/
-# RUN printf '' >/root/.gitconfig && \
-#     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
-#     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
-
-    FROM node:26.12.1-slim AS npmconfig
-USER root
-WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_npmconfig_aptlibcache \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates curl >/dev/null && \
-    rm -rf /var/lib/apt/lists/* && \
-    touch '/root/.npmrc'
-# TODO: Re-enable cache below:
-# COPY ./docker-images/.shared/anticache.txt /homelab/
-# RUN touch '/root/.npmrc' && \
-#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-#     npm config set proxy https://npm-cache.matejhome.com && \
-#     npm config set https-proxy https://npm-cache.matejhome.com
-
-### Dependencies ###
-
-FROM python:3.15.1-slim AS gitman
-USER root
-WORKDIR /homelab
-COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
-ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
-    PIP_ROOT_USER_ACTION="ignore" \
-    PYTHONDONTWRITEBYTECODE="1"
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --no-compile --requirement './requirements.txt' --target './python-vendor' --quiet
-
-### Supercronic ###
-
-FROM python:3.15.1-slim AS supercronic_gitman
-USER root
-WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_gitman_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_supercronic_gitman_aptlibcache \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        git retry >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
-ENV GITMAN_CACHE="/root/.gitcache" \
-    PATH="/homelab/python-vendor/bin:${PATH}" \
-    PYTHONPATH="/homelab/python-vendor"
-COPY ./docker-images/.shared/dependencies/supercronic/gitman.yml /homelab/
-COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
-RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    retry --times=3 -- gitman install --quiet && \
-    find '.' -type d -name .git -prune -exec rm -rf {} \;
-
-FROM golang:1.27.3-trixie AS supercronic_build
-USER root
-WORKDIR /homelab
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_build_aptcache \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_supercronic_build_aptlibcache \
-    apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        binutils file >/dev/null && \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=supercronic_gitman /homelab/gitman-repositories/supercronic/ ./supercronic/
-ENV CGO_ENABLED="0"
-WORKDIR /homelab/supercronic
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
-    go build -ldflags='-s -w -buildid=' -buildvcs=false && \
-    strip --strip-all supercronic
-WORKDIR /homelab
-COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
-RUN sh validate-executable.sh ./supercronic/supercronic
-
-### App ###
-
-FROM node:26.12.1-slim AS nodejs_backend_build
-USER root
-WORKDIR /homelab
-COPY ./docker-images/.shared/cron-utils/on-demand/backend/package-lock.json ./docker-images/.shared/cron-utils/on-demand/backend/package.json /homelab/
-COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/.shared/cron-utils/on-demand/backend/tsconfig.json /homelab/
-COPY ./docker-images/.shared/cron-utils/on-demand/backend/src/ /homelab/src/
-RUN npm run build && \
-    npx modclean --patterns default:safe --run --error-halt && \
-    npx node-prune && \
-    npm prune --production
-
-### Healthcheck ###
-
-FROM golang:1.27.3-alpine AS healthcheck_build
-USER root
-WORKDIR /homelab
-COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
-    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
+FROM runwisp/runwisp:1.7.1-debian-docker AS runwisp
 
 ### Other ###
 
 FROM debian:13.7-slim AS empty_dir
 USER root
 RUN mkdir /empty
+
+FROM golang:1.27.2-trixie AS envsubst_build
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_envsubst_build_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/envsubst/go.mod /homelab/
+ENV CGO_ENABLED="0"
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    envsubst_version="$(cat /homelab/go.mod | grep "github.com/a8m/envsubst" | cut -d ' ' -f 3)" && \
+    go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
+    strip --strip-all /go/bin/envsubst
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
+RUN sh validate-executable.sh /go/bin/envsubst
 
 ### Users ###
 
@@ -142,13 +51,9 @@ FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
 COPY --from=empty_dir /empty /homelab/logs
-COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/.shared/cron-utils/entrypoint.sh /homelab/
-COPY ./docker-images/renovatebot/crontab.cron ./docker-images/renovatebot/main.sh /homelab/
-COPY --from=supercronic_build /homelab/supercronic/supercronic /homelab/bin/
-COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=nodejs_backend_build /homelab/package.json /homelab/server/
-COPY --from=nodejs_backend_build /homelab/node_modules /homelab/server/node_modules
-COPY --from=nodejs_backend_build /homelab/dist /homelab/server/dist
+COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/renovatebot/entrypoint.sh ./docker-images/renovatebot/main.sh ./docker-images/renovatebot/runwisp.toml /homelab/
+COPY --from=runwisp /usr/local/bin/runwisp /homelab/bin/runwisp
+COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -168,11 +73,17 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /usr/src/app/config.js /usr/src/app/
 ENV HOMELAB_CONTAINER_NAME="renovatebot" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    HOMELAB_CRON_SKIP_INITIAL="1" \
     HOMELAB_CRON_TIMEOUT="30m" \
     PATH="/homelab/bin:${PATH}" \
     RENOVATE_BASE_DIR="/tmp/renovate" \
+    RUNWISP_CONFIG="/homelab/tmpfs/runwisp.toml" \
+    RUNWISP_DATA="/runwisp" \
+    RUNWISP_HOST="0.0.0.0" \
+    RUNWISP_LOG_FORMAT="text" \
+    RUNWISP_PORT="8080" \
+    RUNWISP_SOCKET="/homelab/tmpfs/runwisp.sock" \
+    RUNWISP_TRUSTED_PROXIES="172.16.0.0/12" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
+HEALTHCHECK --interval=10s --start-period=60s --timeout=1s --retries=1 CMD [ "/homelab/bin/runwisp", "status" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

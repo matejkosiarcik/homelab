@@ -16,9 +16,6 @@ services:
       - KILL # Needed for `pihole reloaddns`
       - SETGID # Needed for `pihole updateGravity`
       - SETUID # Needed for `pihole updateGravity`
-    dns: # Use internal DNS
-      - 10.1.12.6
-      - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     hostname: pihole-placeholder # This fixes random container hostname in dashboard header

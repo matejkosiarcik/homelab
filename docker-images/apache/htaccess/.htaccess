@@ -119,6 +119,16 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /admin [L,R=307]
 
+# Specific redirect for Certbot: "/" -> "/files"
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^certbot$ [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /files [L,R=302]
+RewriteCond %{ENV:HOMELAB_APP_TYPE} ^certbot$ [NC]
+RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
+RewriteCond %{REQUEST_URI} ^/?$
+RewriteRule ^ /files [L,R=307]
+
 # Specific redirect for NoVNC: "/" -> "/vnc.html"
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^vnc$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
@@ -175,7 +185,7 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|pihole-blackhole|samba|unbound)$#">
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|pihole-blackhole|renovatebot|samba|unbound)$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -191,7 +201,7 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Protect entire apps
-<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|kiwix|libretranslate|nodeexporter|ollama|prometheus|renovatebot|unbound)$#">
+<If "%{HTTPS} == 'on' && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:certbot|docker-stats|gatus|kiwix|libretranslate|nodeexporter|ollama|prometheus|unbound)$#">
     <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$# && %{REQUEST_URI} =~ m#^/favicon\.(?:ico|png)$#">
         # Allow requests with readonly methods to safe locations without authentication
     </If>

@@ -334,9 +334,9 @@ rm -f './.secrets.env'
     printf 'PROMETHEUS__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.prometheus.apache.status_user')"
     printf 'PROMETHEUS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.prometheus.apache.prometheus_user')"
 
-    printf 'RENOVATEBOT__MATEJ_PASSWORD=%s\n' "$(load_secret '.renovatebot.app.matej_user')"
-    printf 'RENOVATEBOT__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.renovatebot.app.homelab_viewer_user')"
-    printf 'RENOVATEBOT__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.renovatebot.app.homelab_test_user')"
+    printf 'RENOVATEBOT__RUNWISP_ADMIN_PASSWORD=%s\n' "$(load_secret '.renovatebot.runwisp.admin_user')"
+    printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.runwisp.prometheus_user')"
+    printf 'RENOVATEBOT__RUNWISP_VIEWER_PASSWORD=%s\n' "$(load_secret '.renovatebot.runwisp.viewer_user')"
     printf 'RENOVATEBOT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.apache.status_user')"
     printf 'RENOVATEBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.apache.prometheus_user')"
 

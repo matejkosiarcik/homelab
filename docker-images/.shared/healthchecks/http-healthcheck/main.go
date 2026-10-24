@@ -4,10 +4,14 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
+	"net/url"
 	"os"
+	"path/filepath"
 	"regexp"
 	"slices"
 	"strconv"
@@ -18,7 +22,83 @@ import (
 	"github.com/itchyny/gojq"
 )
 
-const healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
+var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
+
+const checkTimeout = 2 * time.Second
+
+type healthcheckArgs struct {
+	URL                  string `arg:"--url,required" help:"Endpoint URL to check; supports file, http, https, and tcp"`
+	Method               string `arg:"--method" default:"GET" help:"HTTP method"`
+	BodyRegex            string `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
+	BodyJSON             string `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
+	Status               string `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
+	Insecure             bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
+	BasicAuthUsername    string `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
+	BasicAuthPassword    string `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
+	BasicAuthUsernameEnv string `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
+	BasicAuthPasswordEnv string `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
+}
+
+func checkTCP(args healthcheckArgs) error {
+	endpoint, err := url.Parse(args.URL)
+	if err != nil {
+		return fmt.Errorf("parsing TCP URL: %w", err)
+	}
+
+	address, err := tcpAddress(endpoint)
+	if err != nil {
+		return err
+	}
+
+	connection, err := net.DialTimeout("tcp", address, checkTimeout)
+	if err != nil {
+		return fmt.Errorf("connecting to TCP address %q: %w", address, err)
+	}
+
+	return connection.Close()
+}
+
+func tcpAddress(endpoint *url.URL) (string, error) {
+	if endpoint.Host == "" {
+		return "", errors.New("TCP URL must include a host and port")
+	}
+	if endpoint.User != nil || endpoint.Path != "" || endpoint.RawQuery != "" || endpoint.Fragment != "" {
+		return "", errors.New("TCP URL must contain only a host and port")
+	}
+
+	host, port, err := net.SplitHostPort(endpoint.Host)
+	if err != nil || host == "" || port == "" {
+		return "", errors.New("TCP URL must include a host and port")
+	}
+
+	return endpoint.Host, nil
+}
+
+func checkFile(args healthcheckArgs) error {
+	endpoint, err := url.Parse(args.URL)
+	if err != nil {
+		return fmt.Errorf("parsing file URL: %w", err)
+	}
+	if endpoint.Host != "" && endpoint.Host != "localhost" {
+		return fmt.Errorf("file URL host must be empty or localhost: %q", endpoint.Host)
+	}
+	if endpoint.User != nil || endpoint.RawQuery != "" || endpoint.Fragment != "" {
+		return errors.New("file URL must not contain user info, a query, or a fragment")
+	}
+	if endpoint.Path == "" || !filepath.IsAbs(endpoint.Path) {
+		return errors.New("file URL must include an absolute path")
+	}
+
+	fileInfo, err := os.Stat(endpoint.Path)
+	if err != nil {
+		return fmt.Errorf("stating file %q: %w", endpoint.Path, err)
+	}
+	if fileInfo.IsDir() {
+		return fmt.Errorf("file path is a directory: %q", endpoint.Path)
+	}
+
+	return nil
+}
 
 func touchLogFile() error {
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
@@ -32,16 +112,16 @@ func touchLogFile() error {
 
 // nolint:errcheck
 func log(level string, format string, args ...any) {
+	_ = printLog(os.Stderr, level, format, args...)
+
 	logFile, err := os.OpenFile(healthcheckLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
-		_ = printLog(os.Stderr, level, format, args...)
 		_ = printLog(os.Stderr, "ERROR", "Could not open logfile %s: %v", healthcheckLogFile, err)
 		return
 	}
 	defer func() { _ = logFile.Close() }()
 
 	if err := printLog(logFile, level, format, args...); err != nil {
-		_ = printLog(os.Stderr, level, format, args...)
 		_ = printLog(os.Stderr, "ERROR", "Could not write to logfile %s: %v", healthcheckLogFile, err)
 	}
 }
@@ -107,42 +187,15 @@ func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
 }
 
 // nolint:gocyclo
-func main() {
-	if err := touchLogFile(); err != nil {
-		// nolint:errcheck
-		_ = printLog(os.Stderr, "ERROR", "%v", err)
-		os.Exit(1)
-	}
-
-	// Parse arguments
-	var args struct {
-		URL                  string `arg:"--url,required" help:"URL to check"`
-		Method               string `arg:"--method" default:"GET" help:"HTTP method"`
-		BodyRegex            string `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
-		BodyJSON             string `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
-		Status               string `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
-		Insecure             bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
-		BasicAuthUsername    string `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
-		BasicAuthPassword    string `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
-		BasicAuthUsernameEnv string `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
-		BasicAuthPasswordEnv string `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
-	}
-	if err := arg.Parse(&args); err != nil {
-		log("ERROR", "Error parsing healthcheck arguments: %v\n", err)
-		os.Exit(1)
-	}
-
+func checkHTTP(args healthcheckArgs) error {
 	if args.BasicAuthUsername != "" && args.BasicAuthUsernameEnv != "" {
-		log("ERROR", "Use only one of --basic-auth-username and --basic-auth-username-env\n")
-		os.Exit(1)
+		return errors.New("use only one of --basic-auth-username and --basic-auth-username-env")
 	}
 	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
-		log("ERROR", "Use only one of --basic-auth-password and --basic-auth-password-env\n")
-		os.Exit(1)
+		return errors.New("use only one of --basic-auth-password and --basic-auth-password-env")
 	}
 	if args.BodyRegex != "" && args.BodyJSON != "" {
-		log("ERROR", "Use only one of --body-regex and --body-json\n")
-		os.Exit(1)
+		return errors.New("use only one of --body-regex and --body-json")
 	}
 
 	basicAuthUsername := args.BasicAuthUsername
@@ -150,8 +203,7 @@ func main() {
 		var exists bool
 		basicAuthUsername, exists = os.LookupEnv(args.BasicAuthUsernameEnv)
 		if !exists {
-			log("ERROR", "HTTP Basic Auth username environment variable is unset: %s\n", args.BasicAuthUsernameEnv)
-			os.Exit(1)
+			return fmt.Errorf("HTTP Basic Auth username environment variable is unset: %s", args.BasicAuthUsernameEnv)
 		}
 	}
 
@@ -160,14 +212,12 @@ func main() {
 		var exists bool
 		basicAuthPassword, exists = os.LookupEnv(args.BasicAuthPasswordEnv)
 		if !exists {
-			log("ERROR", "HTTP Basic Auth password environment variable is unset: %s\n", args.BasicAuthPasswordEnv)
-			os.Exit(1)
+			return fmt.Errorf("HTTP Basic Auth password environment variable is unset: %s", args.BasicAuthPasswordEnv)
 		}
 	}
 
 	if (basicAuthUsername == "") != (basicAuthPassword == "") {
-		log("ERROR", "HTTP Basic Auth requires both a username and password\n")
-		os.Exit(1)
+		return errors.New("HTTP Basic Auth requires both a username and password")
 	}
 
 	var argsStatus = args.Status
@@ -183,16 +233,14 @@ func main() {
 		if strings.Contains(status, "-") {
 			parts := strings.Split(status, "-")
 			if len(parts) != 2 {
-				log("ERROR", "Invalid HTTP status range for --status: %q\n", status)
-				os.Exit(1)
+				return fmt.Errorf("invalid HTTP status range for --status: %q", status)
 			}
 
 			start, err1 := strconv.Atoi(strings.TrimSpace(parts[0]))
 			end, err2 := strconv.Atoi(strings.TrimSpace(parts[1]))
 
 			if err1 != nil || err2 != nil || start < 100 || end > 599 || start > end {
-				log("ERROR", "Invalid HTTP status range for --status: %q\n", status)
-				os.Exit(1)
+				return fmt.Errorf("invalid HTTP status range for --status: %q", status)
 			}
 
 			for code := start; code <= end; code++ {
@@ -201,38 +249,30 @@ func main() {
 		} else {
 			code, err := strconv.Atoi(status)
 			if err != nil || code < 100 || code > 599 {
-				log("ERROR", "Invalid HTTP status code for --status: %q\n", status)
-				os.Exit(1)
+				return fmt.Errorf("invalid HTTP status code for --status: %q", status)
 			}
 
 			expectedStatuses = append(expectedStatuses, code)
 		}
 	}
 
-	bodyRegex := func() *regexp.Regexp {
-		if args.BodyRegex != "" {
-			bodyRegex, err := regexp.Compile(args.BodyRegex)
-			if err != nil {
-				log("ERROR", "Invalid regex for --body-regex: %v\n", err)
-				os.Exit(1)
-			}
-			return bodyRegex
+	var bodyRegex *regexp.Regexp
+	if args.BodyRegex != "" {
+		var err error
+		bodyRegex, err = regexp.Compile(args.BodyRegex)
+		if err != nil {
+			return fmt.Errorf("invalid regex for --body-regex: %w", err)
 		}
+	}
 
-		return nil
-	}()
-	bodyJSONQuery := func() *gojq.Query {
-		if args.BodyJSON != "" {
-			bodyJSONQuery, err := gojq.Parse(args.BodyJSON)
-			if err != nil {
-				log("ERROR", "Invalid jq query for --body-json: %v\n", err)
-				os.Exit(1)
-			}
-			return bodyJSONQuery
+	var bodyJSONQuery *gojq.Query
+	if args.BodyJSON != "" {
+		var err error
+		bodyJSONQuery, err = gojq.Parse(args.BodyJSON)
+		if err != nil {
+			return fmt.Errorf("invalid jq query for --body-json: %w", err)
 		}
-
-		return nil
-	}()
+	}
 
 	// Preconfigure transport layer to optionally skip TLS verification when requested
 	transport := &http.Transport{}
@@ -241,52 +281,96 @@ func main() {
 	}
 
 	// Perform HTTP request
-	client := &http.Client{Timeout: 2 * time.Second, Transport: transport}
+	client := &http.Client{Timeout: checkTimeout, Transport: transport}
 	request, err := http.NewRequest(args.Method, args.URL, nil)
 	if err != nil {
-		log("ERROR", "Error creating request: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("creating request: %w", err)
 	}
 	if basicAuthUsername != "" {
 		request.SetBasicAuth(basicAuthUsername, basicAuthPassword)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		log("ERROR", "Error performing request: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("performing request: %w", err)
 	}
+	defer func() { _ = response.Body.Close() }()
 
 	// Validate response status
 	if !slices.Contains(expectedStatuses, response.StatusCode) {
-		log("ERROR", "Unexpected response status: %s\n", response.Status)
-		os.Exit(1)
+		return fmt.Errorf("unexpected response status: %s", response.Status)
 	}
 
 	// Validate response body
 	if bodyRegex != nil || bodyJSONQuery != nil {
-		// Read and close response body
+		// Read response body for validation.
 		bodyBytes, err := io.ReadAll(response.Body)
-		_ = response.Body.Close()
 		if err != nil {
-			log("ERROR", "Error reading response body: %v\n", err)
-			os.Exit(1)
+			return fmt.Errorf("reading response body: %w", err)
 		}
 
 		if bodyRegex != nil && !bodyRegex.Match(bodyBytes) {
-			log("ERROR", "Response body does not match: %s\n", bodyBytes)
-			os.Exit(1)
+			return fmt.Errorf("response body does not match: %s", bodyBytes)
 		}
 		if bodyJSONQuery != nil {
 			if err := validateJSONBody(bodyJSONQuery, bodyBytes); err != nil {
-				log("ERROR", "Response body does not match JSON query: %v\n", err)
-				os.Exit(1)
+				return fmt.Errorf("response body does not match JSON query: %w", err)
 			}
 		}
-	} else if response.Body != nil {
-		// No body check requested; but we must close the body before exiting
-		_ = response.Body.Close()
+	}
+
+	return nil
+}
+
+func main() {
+	var args healthcheckArgs
+	parser, parserErr := arg.NewParser(arg.Config{}, &args)
+	if parserErr != nil {
+		// nolint:errcheck
+		_, _ = fmt.Fprintf(os.Stderr, "Error configuring healthcheck arguments: %v\n", parserErr)
+		os.Exit(1)
+	}
+	parseErr := parser.Parse(os.Args[1:])
+	if errors.Is(parseErr, arg.ErrHelp) {
+		parser.WriteHelp(os.Stdout)
+		return
+	}
+
+	if err := touchLogFile(); err != nil {
+		// nolint:errcheck
+		_ = printLog(os.Stderr, "ERROR", "%v", err)
+		os.Exit(1)
+	}
+	if parseErr != nil {
+		log("ERROR", "Error parsing healthcheck arguments: %v\n", parseErr)
+		os.Exit(1)
+	}
+
+	endpoint, err := url.Parse(args.URL)
+	if err != nil {
+		log("ERROR", "Error parsing URL: %v\n", err)
+		os.Exit(1)
+	}
+
+	switch strings.ToLower(endpoint.Scheme) {
+	case "file":
+		if err := checkFile(args); err != nil {
+			log("ERROR", "File health check failed: %v\n", err)
+			os.Exit(1)
+		}
+	case "tcp":
+		if err := checkTCP(args); err != nil {
+			log("ERROR", "TCP health check failed: %v\n", err)
+			os.Exit(1)
+		}
+	case "http", "https":
+		if err := checkHTTP(args); err != nil {
+			log("ERROR", "HTTP health check failed: %v\n", err)
+			os.Exit(1)
+		}
+	default:
+		log("ERROR", "Unsupported URL protocol %q; use file, http, https, or tcp\n", endpoint.Scheme)
+		os.Exit(1)
 	}
 
 	log("INFO", "Success")
-	os.Exit(0)
 }

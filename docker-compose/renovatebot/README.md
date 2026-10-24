@@ -10,6 +10,7 @@
     - Running guide: <https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/running.md>
 - GitHub: <https://github.com/renovatebot/renovate>
 - DockerHub: <https://hub.docker.com/r/renovate/renovate>
+- RunWisp: <https://docs.runwisp.com>
 
 ## Before initial installation
 
@@ -19,6 +20,10 @@
     - `GITHUB_COM_TOKEN` is for `github.com` - It is _required_ even if targeting other Git hosts, such as `gitlab`.
       For more see subsection <https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/running.md#githubcom-token-for-changelogs>.
       This should be a readonly token with access to public repositories and packages.
+
+## RunWisp
+
+RunWisp is the scheduler and provides the application dashboard at the main Renovatebot URL.
 
 ## After initial installation
 
