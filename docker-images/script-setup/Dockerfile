@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Dependencies ###
 
-FROM python:3.15.0-slim AS gitman
+FROM python:3.15.1-slim AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM python:3.15.0-slim AS package_curl_gitman
+FROM python:3.15.1-slim AS package_curl_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_setup_package_curl_gitman_aptcache \
