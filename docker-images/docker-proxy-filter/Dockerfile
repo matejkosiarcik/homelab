@@ -127,7 +127,8 @@ COPY --from=docker_proxy_filter_build /homelab/docker-proxy-filter-bin /usr/loca
 ### Final ###
 
 FROM foxxmd/docker-proxy-filter:0.1.2 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

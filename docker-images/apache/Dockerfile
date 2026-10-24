@@ -180,7 +180,8 @@ COPY --from=apache_config_3 /homelab/apache.conf /fsroot/apache.conf
 ### Final ###
 
 FROM debian:13.7-slim AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_apache_final_aptlibcache \

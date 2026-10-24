@@ -175,7 +175,8 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 FROM node:26.12.1-slim AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_data_optimizer_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_data_optimizer_final_aptlibcache \

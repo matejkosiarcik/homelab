@@ -41,7 +41,8 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 FROM grafana/grafana-oss:13.0.2 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab

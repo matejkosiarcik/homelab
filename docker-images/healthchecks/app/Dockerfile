@@ -50,7 +50,8 @@ COPY ./docker-images/healthchecks/app/icons/healthchecks.png /custom-healthcheck
 ### Final ###
 
 FROM healthchecks/healthchecks:v5.0 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+      dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
