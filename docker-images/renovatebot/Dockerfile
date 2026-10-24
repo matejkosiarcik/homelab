@@ -1,9 +1,96 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
+### Build config ###
+
+FROM debian:13.7-slim AS gitconfig
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_gitconfig_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        ca-certificates curl >/dev/null && \
+    rm -rf /var/lib/apt/lists/* && \
+    printf '' >/root/.gitconfig
+# TODO: Re-enable cache below:
+# COPY ./docker-images/.shared/anticache.txt /homelab/
+# RUN printf '' >/root/.gitconfig && \
+#     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
+#     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
+
+### Dependencies ###
+
+FROM python:3.15.1-slim AS gitman
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
+    python3 -m pip install --no-compile --requirement './requirements.txt' --target './python-vendor' --quiet
+
 ### RunWisp ###
 
-FROM runwisp/runwisp:1.7.1-debian-docker AS runwisp
+FROM python:3.15.1-slim AS runwisp_gitman
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_gitman_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_runwisp_gitman_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        git retry >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=gitman /homelab/python-vendor /homelab/python-vendor
+ENV GITMAN_CACHE="/root/.gitcache" \
+    PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
+COPY ./docker-images/renovatebot/runwisp/gitman.yml /homelab/
+COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
+    retry --times=3 -- gitman install --quiet && \
+    find '.' -type d -name '.git' -prune -exec rm -rf {} \;
+
+FROM golang:1.27.3-trixie AS runwisp_build_tweak_paths
+USER root
+WORKDIR /homelab
+COPY --from=runwisp_gitman /homelab/gitman-repositories/runwisp/ ./runwisp/
+WORKDIR /homelab/runwisp
+
+FROM oven/bun:1.4.0-debian AS runwisp_build_frontend
+USER root
+WORKDIR /homelab
+COPY --from=runwisp_build_tweak_paths /homelab/runwisp/ ./runwisp/
+WORKDIR /homelab/runwisp
+RUN --mount=type=cache,target=/root/.bun/install/cache,sharing=shared,id=homelab_runwisp_buncache \
+    bun install --frozen-lockfile && \
+    cd './apps/ui' && \
+    bunx --bun vite build
+
+FROM golang:1.27.3-trixie AS runwisp_build_backend
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_build_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_runwisp_build_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        binutils file >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=runwisp_build_tweak_paths /homelab/runwisp/ ./runwisp/
+COPY --from=runwisp_build_frontend /homelab/runwisp/apps/ui/build/ ./runwisp/apps/runwisp/internal/ui/dist/
+WORKDIR /homelab/runwisp/apps/runwisp
+ENV CGO_ENABLED="0"
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    RELEASE=1 bash -o pipefail -c 'source ./scripts/metadata.sh && go build -ldflags "$(runner_ldflags) -buildid=" -buildvcs=false -o ./runwisp ./cmd/runwisp' && \
+    strip --strip-all './runwisp'
+WORKDIR /homelab
+COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
+RUN sh './validate-executable.sh' './runwisp/apps/runwisp/runwisp'
+
+FROM scratch AS runwisp_final
+COPY --from=runwisp_build_backend /homelab/runwisp/apps/runwisp/runwisp /usr/local/bin/runwisp
 
 ### Other ###
 
@@ -52,7 +139,7 @@ USER root
 WORKDIR /homelab
 COPY --from=empty_dir /empty /homelab/logs
 COPY ./docker-images/.shared/cron-utils/cron-wrapper.sh ./docker-images/renovatebot/entrypoint.sh ./docker-images/renovatebot/main.sh ./docker-images/renovatebot/runwisp.toml /homelab/
-COPY --from=runwisp /usr/local/bin/runwisp /homelab/bin/runwisp
+COPY --from=runwisp_final /usr/local/bin/runwisp /homelab/bin/runwisp
 COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
 
 FROM scratch AS prefinal
