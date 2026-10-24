@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 #     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
 #     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
 
-FROM node:26.12.0-slim AS npmconfig
+FROM node:26.12.1-slim AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -50,7 +50,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 
 ### App ###
 
-FROM node:26.12.0-slim AS nodejs_backend_build
+FROM node:26.12.1-slim AS nodejs_backend_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/prebudget/backend/package-lock.json ./docker-images/prebudget/backend/package.json /homelab/
@@ -64,7 +64,7 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
-FROM node:26.12.0-slim AS nodejs_frontend_build
+FROM node:26.12.1-slim AS nodejs_frontend_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/prebudget/frontend/package-lock.json ./docker-images/prebudget/frontend/package.json /homelab/
@@ -142,7 +142,7 @@ COPY --from=package_ca_certificates /etc/ssl/certs/ca-certificates.crt /fsroot/c
 
 ### Final ###
 
-FROM node:26.12.0-slim AS final
+FROM node:26.12.1-slim AS final
 LABEL build.user=matejkosiarcik
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
