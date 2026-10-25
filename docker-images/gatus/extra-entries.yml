@@ -13,13 +13,13 @@ network:
     ip: 10.1.0.1
   - name: WiFi AP - UniFi U6
     ip: 10.1.0.2
-  - name: Smart switch - TP-Link SG108E
+  - name: Smart Switch - UniFi USW Flex 2.5G 8-port (Hallway - Server closet)
     ip: 10.1.0.3
-  - name: Smart switch - TP-Link SG105E
+  - name: Smart Switch - UniFi USW Flex 2.5G 8-port (Living room - Matej's desk)
     ip: 10.1.0.4
-  - name: Smart switch - Unifi USW Flex 2.5G 5-port
+  - name: Smart Switch - UniFi USW Flex 2.5G 5-port (Bedroom - Monika's desk)
     ip: 10.1.0.5
-  - name: Smart switch - Unifi USW Flex 2.5G 8-port
+  - name: Smart Switch - UniFi USW Flex 2.5G 5-port (Living room - TV closet)
     ip: 10.1.0.6
 
 home_devices:

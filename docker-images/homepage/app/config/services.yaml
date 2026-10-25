@@ -5,34 +5,34 @@
         ping: "10.1.0.1"
         icon: /icons/router.png
 
-    - Wifi AP:
+    - WiFi AP:
         description: UniFi U6 Mesh
         href: ""
         ping: "10.1.0.2"
         icon: /icons/wifi-ap.png
 
-    - Switch (Bedroom):
-        description: Smart switch - Unifi USW Flex 2.5G 5-port
-        href: http://10.1.0.5
-        ping: "10.1.0.5"
-        icon: /icons/switch.png
-
-    - Switch (Server room):
-        description: Smart switch - Unifi USW Flex 2.5G 8-port
-        href: http://10.1.0.6
-        ping: "10.1.0.6"
-        icon: /icons/switch.png
-
-    - Smart Switch 8-port (deprecated):
-        description: TP-Link SG108E
+    - Smart Switch:
+        description: UniFi USW Flex 2.5G 8-port (Hallway - Server closet)
         href: http://10.1.0.3
         ping: "10.1.0.3"
         icon: /icons/switch.png
 
-    - Smart Switch 5-port (deprecated):
-        description: TP-Link SG105E
+    - Smart Switch:
+        description: UniFi USW Flex 2.5G 8-port (Living room - Matej's desk)
         href: http://10.1.0.4
         ping: "10.1.0.4"
+        icon: /icons/switch.png
+
+    - Smart Switch:
+        description: UniFi USW Flex 2.5G 5-port (Bedroom - Monika's desk)
+        href: http://10.1.0.5
+        ping: "10.1.0.5"
+        icon: /icons/switch.png
+
+    - Smart Switch:
+        description: UniFi USW Flex 2.5G 5-port (Living room - TV closet)
+        href: http://10.1.0.6
+        ping: "10.1.0.6"
         icon: /icons/switch.png
 
     - UniFi Controller:
