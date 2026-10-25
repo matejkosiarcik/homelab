@@ -53,7 +53,8 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoin
 ### Final ###
 
 FROM reportportal/migrations:5.15.6 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab

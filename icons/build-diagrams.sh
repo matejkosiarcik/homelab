@@ -242,6 +242,7 @@ convert_image_full "${tmpdir}/other/playwright.svg" "${output_dir}/playwright.pn
 convert_image_full "${tmpdir}/other/raspberry-pi.svg" "${output_dir}/raspberry-pi.png"
 convert_image_full "${tmpdir}/other/renovatebot.png" "${output_dir}/renovatebot.png"
 convert_image_full "${tmpdir}/other/reportportal.svg" "${output_dir}/reportportal.png"
+convert_image_full "${tmpdir}/other/runwisp.svg" "${output_dir}/runwisp.png"
 convert_image_full "${tmpdir}/other/stable-diffusion.png" "${output_dir}/stable-diffusion.png"
 convert_image_full "${tmpdir}/other/vnc.png" "${output_dir}/vnc.png"
 convert_image_full "${tmpdir}/other/webcamera.png" "${output_dir}/webcamera.png"

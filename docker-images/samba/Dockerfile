@@ -153,7 +153,8 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 FROM debian:13.7-slim AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_samba_final_aptlibcache \
@@ -231,5 +232,5 @@ ENV HOMELAB_CONTAINER_NAME="samba" \
     SAMBA_GROUP="homelab" \
     SAMBA_USERNAME="homelab" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "tcp://localhost:139" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "su", "--shell", "/bin/sh", "--command", "exec /homelab/bin/healthcheck --url tcp://localhost:139", "homelab" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

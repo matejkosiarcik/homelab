@@ -80,7 +80,8 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 ### Final ###
 
 FROM couchdb:3.5.3 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 RUN rm -rf /opt/couchdb/etc/local.d
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/

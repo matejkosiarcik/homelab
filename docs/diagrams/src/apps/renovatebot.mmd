@@ -18,13 +18,17 @@ flowchart LR
         apache_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/apache-prometheus-exporter.png' /><p>Apache<br/>prometheus<br/>exporter</p></div>")
         certificator("<div class='custom-node'><img src='../../../../icons/certificator.png' /><p>Certificator</p></div>")
         favicons("<div class='custom-node'><img src='../../../../icons/picture.png' /><p>Favicons</p></div>")
-        app("<div class='custom-node'><img src='../../../../icons/renovatebot-cronjob.png' /><p>RenovateBot</p></div>")
+        file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
+        runwisp("<div class='custom-node'><img src='../../../../icons/runwisp.png' /><p>RunWisp</p></div>")
+        app("<div class='custom-node'><img src='../../../../icons/renovatebot.png' /><p>RenovateBot</p></div>")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/:8080| app
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|/:8080| file_server
+        apache_proxy -->|/runwisp/:8080| runwisp -->|schedule| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
+        apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| file_server
     end
 
     subgraph others_1["Others"]

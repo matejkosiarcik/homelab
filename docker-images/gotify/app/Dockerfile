@@ -32,7 +32,8 @@ COPY ./docker-images/gotify/app/gotify-server.env /app/gotify-server.env
 ### Final ###
 
 FROM gotify/server:3.1.1 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /app/gotify-server.env /app/gotify-server.env

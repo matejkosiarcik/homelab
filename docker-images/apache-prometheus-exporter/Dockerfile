@@ -63,7 +63,8 @@ COPY --from=busybox /fsroot/bin /fsroot/bin
 
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/base-debian13:latest AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 WORKDIR /homelab
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/

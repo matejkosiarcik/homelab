@@ -88,7 +88,8 @@ COPY --chmod=0777 ./docker-images/pihole/app/setcap.sh /usr/sbin/setcap
 ### Final ###
 
 FROM pihole/pihole:2026.10.0 AS final
-LABEL build.user=matejkosiarcik
+LABEL build.user="matejkosiarcik" \
+    dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab '/macvendor.db' '/etc/.pihole' '/etc/pihole' '/usr/local/bin/pihole' '/usr/bin/pihole-FTL' && \
@@ -102,6 +103,8 @@ ARG GID=1000
 ARG UID=1000
 ENV DHCP_ACTIVE="false" \
     DNSMASQ_USER="homelab" \
+    FTLCONF_dns_blocking_active="true" \
+    FTLCONF_dns_blocking_mode="NULL" \
     FTLCONF_dns_blockTTL="600" \
     FTLCONF_dns_domain_local="true" \
     FTLCONF_dns_domain_name="matejhome.com" \
@@ -114,6 +117,7 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_dns_replyWhenBusy="BLOCK" \
     FTLCONF_dns_upstreams="1.1.1.1;8.8.8.8;9.9.9.9" \
     FTLCONF_misc_dnsmasq_lines="local-ttl=600" \
+    FTLCONF_misc_readOnly="true" \
     FTLCONF_misc_nice="-999" \
     FTLCONF_misc_privacylevel="0" \
     FTLCONF_webserver_api_allow_destructive="false" \

@@ -1,0 +1,62 @@
+---
+title: Unbound blackhole
+config:
+    theme: dark
+    flowchart:
+        diagramPadding: 50
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef transparent fill:transparent,stroke:transparent,stroke-width:0px,color:transparent;
+    classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:5px;
+
+    subgraph app_wrapper["App"]
+        inbound_interface(" ")
+        apache_proxy("<div class='custom-node'><img src='../../../../icons/apache.png' /><p>Apache<br/>proxy</p></div>")
+        apache_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/apache-prometheus-exporter.png' /><p>Apache<br/>prometheus<br/>exporter</p></div>")
+        certificator("<div class='custom-node'><img src='../../../../icons/certificator.png' /><p>Certificator</p></div>")
+        favicons("<div class='custom-node'><img src='../../../../icons/picture.png' /><p>Favicons</p></div>")
+        app("<div class='custom-node'><img src='../../../../icons/unbound.png' /><p>Unbound<br/>blackhole</p></div>")
+        class app strong_border;
+        app_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Unbound<br/>Prometheus<br/>Exporter</p></div>")
+        file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
+        transparent(" ")
+        class transparent transparent;
+
+        inbound_interface -->|:80,443| apache_proxy
+        apache_proxy -->|/metrics:9167| app_prometheus_exporter
+        apache_proxy -->|/:8080| file_server
+        inbound_interface -->|:53| app
+        app_prometheus_exporter -.->|use| app
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -.-|fs| certificator
+        apache_proxy -->|"/favicon.{ico,png}"| favicons
+
+        apache_prometheus_exporter ~~~ file_server & favicons & certificator
+        favicons -.->|use| file_server
+
+        app ---x|DNS requests| transparent
+    end
+
+    subgraph others_1["Others"]
+        home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
+        prometheus("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Prometheus</p></div>")
+        gatus("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
+
+        home_network <--> inbound_interface
+        prometheus -->|collect metrics| inbound_interface
+        gatus -->|monitor| inbound_interface
+    end
+
+    subgraph others_2["Others"]
+        healthchecks("<div class='custom-node'><img src='../../../../icons/healthchecks.png' /><p>Healthchecks</p></div>")
+        certbot("<div class='custom-node'><img src='../../../../icons/lets-encrypt.png' /><p>Certbot</p></div>")
+
+        certificator -->|report status| healthchecks
+        certificator -.->|download certificate| certbot
+    end
+
+    certificator & app ~~~ others_2
