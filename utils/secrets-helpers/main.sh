@@ -1771,7 +1771,7 @@ tvheadend)
     touch "${initial_output}/favicons.env"
     ;;
 
-unbound|unbound-blackhole)
+unbound | unbound-blackhole)
     # Preload #
     matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
     homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
