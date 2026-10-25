@@ -1,0 +1,79 @@
+x-definitions: {}
+
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template_no_network
+    # Override:
+    build:
+      dockerfile: ./docker-images/unbound/app/Dockerfile
+      args:
+        CONFIG: blackhole
+    cap_add:
+      - NET_BIND_SERVICE # Necessary to bind to low port in host network mode
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
+    security_opt:
+      - no-new-privileges:false # Necessary to bind to low port in host network mode
+    tmpfs:
+      - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/sock:/homelab/sock:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
+
+  app-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    # Override:
+    build:
+      dockerfile: ./docker-images/unbound/prometheus-exporter/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/sock:/homelab/sock:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    # Override:
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+  file-server:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: file-server
+
+networks:
+  default:
+    driver: none
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
+    driver: bridge
+    internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
+    driver: bridge
+    internal: true

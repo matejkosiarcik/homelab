@@ -1,0 +1,35 @@
+app:
+  name: Unbound [blackhole]
+
+apache:
+  upstream-url:
+    - path: /metrics
+      target: http://app-prometheus-exporter:9167/metrics
+    - path: /
+      target: http://file-server:8080
+
+favicons:
+  default: "@unbound.png"
+
+gatus:
+  enabled: true
+  authentication:
+    basic: homelab-viewer
+  type: ["dns[blackhole]", http]
+  endpoints:
+    - path: /metrics
+      authentication:
+        basic: prometheus
+
+healthchecks:
+  - slug: certificator
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /metrics
+      auth:
+        type: basic

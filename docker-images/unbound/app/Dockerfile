@@ -70,7 +70,8 @@ FROM jinja AS config_3
 USER root
 WORKDIR /homelab
 COPY --from=config_2 /homelab/data.json /homelab/
-COPY ./docker-images/unbound/app/unbound.conf.j2 /homelab/
+ARG CONFIG=default
+COPY ./docker-images/unbound/app/${CONFIG}.conf.j2 /homelab/unbound.conf.j2
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
 FROM debian:13.7-slim AS config_4
