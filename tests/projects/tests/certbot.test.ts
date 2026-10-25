@@ -22,9 +22,9 @@ test.describe(app.title, () => {
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
             createApiRootTest(instance.url, { title: 'Unauthenticated', status: 401 });
+            createApiRootTest(`${instance.url}/files`, { title: 'Unauthenticated /files', status: 401 });
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
-            createHttpsRootRedirectTest(instance.url, '/files');
 
             test(`API: HTTPS redirect for certificate`, async () => {
                 const response = await test.step('Request server', async () => {
@@ -63,6 +63,24 @@ test.describe(app.title, () => {
                 },
             ];
             for (const user of validUsers) {
+                test(`API: Root redirect to /files - User ${user.username}`, async () => {
+                    const response = await test.step('Request server', async () => {
+                        const response = await axios.get(instance.url, {
+                            maxRedirects: 0,
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(302);
+                        return response;
+                    });
+
+                    await test.step('Validate response', async () => {
+                        expect(response.headers['location'], 'Response Header Location').toStrictEqual(`${instance.url}/files`);
+                    });
+                });
+
                 test(`API: API Get root - User ${user.username}`, async () => {
                     await test.step('Request server', async () => {
                         const response = await axios.get(instance.url, {
