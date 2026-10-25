@@ -159,7 +159,7 @@ COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
 
 ### Final ###
 
-FROM renovate/renovate:44.181.5-full AS final
+FROM renovate/renovate:44.181.6-full AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
