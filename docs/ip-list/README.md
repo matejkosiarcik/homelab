@@ -4,12 +4,12 @@
 
 | IP address   | Domain                                          |
 |--------------|-------------------------------------------------|
-| `10.1.10.1`  | `unbound-2-default.matejhome.com`               |
-| `10.1.10.2`  | `unbound-2-matej.matejhome.com`                 |
-| `10.1.10.3`  | `unbound-2-monika.matejhome.com`                |
-| `10.1.10.4`  | `unbound-2-iot.matejhome.com`                   |
-| `10.1.10.5`  | `unbound-2-guests.matejhome.com`                |
-| `10.1.10.6`  | `unbound-2-internal.matejhome.com`              |
+| `10.1.10.1`  | `unbound-default-2.matejhome.com`               |
+| `10.1.10.2`  | `unbound-matej-2.matejhome.com`                 |
+| `10.1.10.3`  | `unbound-monika-2.matejhome.com`                |
+| `10.1.10.4`  | `unbound-iot-2.matejhome.com`                   |
+| `10.1.10.5`  | `unbound-guests-2.matejhome.com`                |
+| `10.1.10.6`  | `unbound-internal-2.matejhome.com`              |
 | `10.1.10.7`  | `unbound-blackhole-2.matejhome.com`             |
 | `10.1.10.11` | `pihole-3.matejhome.com`                        |
 | `10.1.10.12` | `pihole-4.matejhome.com`                        |
@@ -19,12 +19,12 @@
 | `10.1.10.31` | `data.matejhome.com`                            |
 | `10.1.10.32` | `gatus-2.matejhome.com`                         |
 | `10.1.10.33` | `uptimekuma-2.matejhome.com`                    |
-| `10.1.12.1`  | `unbound-1-default.matejhome.com`               |
-| `10.1.12.2`  | `unbound-1-matej.matejhome.com`                 |
-| `10.1.12.3`  | `unbound-1-monika.matejhome.com`                |
-| `10.1.12.4`  | `unbound-1-iot.matejhome.com`                   |
-| `10.1.12.5`  | `unbound-1-guests.matejhome.com`                |
-| `10.1.12.6`  | `unbound-1-internal.matejhome.com`              |
+| `10.1.12.1`  | `unbound-default-1.matejhome.com`               |
+| `10.1.12.2`  | `unbound-matej-1.matejhome.com`                 |
+| `10.1.12.3`  | `unbound-monika-1.matejhome.com`                |
+| `10.1.12.4`  | `unbound-iot-1.matejhome.com`                   |
+| `10.1.12.5`  | `unbound-guests-1.matejhome.com`                |
+| `10.1.12.6`  | `unbound-internal-1.matejhome.com`              |
 | `10.1.12.7`  | `unbound-blackhole-1.matejhome.com`             |
 | `10.1.12.11` | `pihole-1.matejhome.com`                        |
 | `10.1.12.12` | `pihole-2.matejhome.com`                        |
