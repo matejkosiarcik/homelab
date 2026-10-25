@@ -4,18 +4,18 @@ services:
   app:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template_no_network
+      service: app
     # Override:
     build:
       dockerfile: ./docker-images/unbound/app/Dockerfile
       args:
         CONFIG: blackhole
-    cap_add:
-      - NET_BIND_SERVICE # Necessary to bind to low port in host network mode
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
-    security_opt:
-      - no-new-privileges:false # Necessary to bind to low port in host network mode
+    dns: # Use blackhole DNS
+      - 10.1.12.7
+      - 10.1.10.7
+    networks: # External network only necessary to publish ports
+      - external-network
+      - internal-network
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:

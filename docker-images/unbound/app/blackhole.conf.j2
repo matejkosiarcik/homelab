@@ -1,10 +1,5 @@
 server:
-    {%- if env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
     interface: 0.0.0.0
-    {%- else %}
-    interface: {{ env["HOMELAB_APP_EXTERNAL_IP"] }}
-    outgoing-interface: {{ env["HOMELAB_APP_EXTERNAL_IP"] }}
-    {%- endif %}
     username: ""
     so-sndbuf: 0 # Use the host's default UDP send buffer
     access-control: 10.0.0.0/8 allow

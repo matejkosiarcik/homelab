@@ -5,7 +5,9 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    network_mode: host
+    ports:
+      - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/tcp
+      - ${DOCKER_COMPOSE_NETWORK_IP}:53:53/udp
 
   app-prometheus-exporter:
     <<: *common-service-options
