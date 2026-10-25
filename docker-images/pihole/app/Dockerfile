@@ -118,6 +118,7 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_misc_dnsmasq_lines="local-ttl=600" \
     FTLCONF_misc_nice="-999" \
     FTLCONF_misc_privacylevel="0" \
+    FTLCONF_misc_readOnly="false" \
     FTLCONF_webserver_api_allow_destructive="false" \
     FTLCONF_webserver_domain="pihole-placeholder" \
     FTLCONF_webserver_interface_theme="default-darker" \
