@@ -16,7 +16,7 @@ sources:
 sources_locked:
   - repo: https://github.com/runwisp/runwisp.git
     name: runwisp
-    rev: 9b4c50c2dcdccc0d3922caaa88584b3d5f6b8177
+    rev: 55bdcd1efe9ac7160da44ec300abfaa97bc9e9d1
     type: git
     params:
     sparse_paths:
