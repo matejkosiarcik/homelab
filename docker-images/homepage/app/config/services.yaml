@@ -133,40 +133,40 @@
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_4__PASSWORD}}"
 
-    - Unbound 1 Default:
+    - Unbound Default 1:
         description: Entrypoint DNS Server
-        href: https://unbound-1-default.matejhome.com
-        ping: unbound-1-default.matejhome.com
+        href: https://unbound-default-1.matejhome.com
+        ping: unbound-default-1.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 1 Matej:
+    - Unbound Matej 1:
         description: Entrypoint DNS Server
-        href: https://unbound-1-matej.matejhome.com
-        ping: unbound-1-matej.matejhome.com
+        href: https://unbound-matej-1.matejhome.com
+        ping: unbound-matej-1.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 1 Monika:
+    - Unbound Monika 1:
         description: Entrypoint DNS Server
-        href: https://unbound-1-monika.matejhome.com
-        ping: unbound-1-monika.matejhome.com
+        href: https://unbound-monika-1.matejhome.com
+        ping: unbound-monika-1.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 1 IoT:
+    - Unbound IoT 1:
         description: Entrypoint DNS Server
-        href: https://unbound-1-iot.matejhome.com
-        ping: unbound-1-iot.matejhome.com
+        href: https://unbound-iot-1.matejhome.com
+        ping: unbound-iot-1.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 1 Guests:
+    - Unbound Guests 1:
         description: Entrypoint DNS Server
-        href: https://unbound-1-guests.matejhome.com
-        ping: unbound-1-guests.matejhome.com
+        href: https://unbound-guests-1.matejhome.com
+        ping: unbound-guests-1.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 1 Internal:
+    - Unbound Internal 1:
         description: Entrypoint DNS Server
-        href: https://unbound-1-internal.matejhome.com
-        ping: unbound-1-internal.matejhome.com
+        href: https://unbound-internal-1.matejhome.com
+        ping: unbound-internal-1.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound Blackhole 1:
@@ -175,40 +175,40 @@
         ping: unbound-blackhole-1.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 2 Default:
+    - Unbound Default 2:
         description: Entrypoint DNS Server
-        href: https://unbound-2-default.matejhome.com
-        ping: unbound-2-default.matejhome.com
+        href: https://unbound-default-2.matejhome.com
+        ping: unbound-default-2.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 2 Matej:
+    - Unbound Matej 2:
         description: Entrypoint DNS Server
-        href: https://unbound-2-matej.matejhome.com
-        ping: unbound-2-matej.matejhome.com
+        href: https://unbound-matej-2.matejhome.com
+        ping: unbound-matej-2.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 2 Monika:
+    - Unbound Monika 2:
         description: Entrypoint DNS Server
-        href: https://unbound-2-monika.matejhome.com
-        ping: unbound-2-monika.matejhome.com
+        href: https://unbound-monika-2.matejhome.com
+        ping: unbound-monika-2.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 2 IoT:
+    - Unbound IoT 2:
         description: Entrypoint DNS Server
-        href: https://unbound-2-iot.matejhome.com
-        ping: unbound-2-iot.matejhome.com
+        href: https://unbound-iot-2.matejhome.com
+        ping: unbound-iot-2.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 2 Guests:
+    - Unbound Guests 2:
         description: Entrypoint DNS Server
-        href: https://unbound-2-guests.matejhome.com
-        ping: unbound-2-guests.matejhome.com
+        href: https://unbound-guests-2.matejhome.com
+        ping: unbound-guests-2.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound 2 Internal:
+    - Unbound Internal 2:
         description: Entrypoint DNS Server
-        href: https://unbound-2-internal.matejhome.com
-        ping: unbound-2-internal.matejhome.com
+        href: https://unbound-internal-2.matejhome.com
+        ping: unbound-internal-2.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound Blackhole 2:

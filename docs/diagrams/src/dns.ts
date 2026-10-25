@@ -12,33 +12,33 @@ faker.seed(123456789);
     const personalDevices = new DiagramItem('personal-devices.png', 'Personal\nDevices', { x: 100, y: 350 });
     const monikaDevices = new DiagramItem('personal-devices.png', "Monika's\nDevices", { x: personalDevices.coordinates.minX, y: 550 });
 
-    const unbound1Default = new DiagramItem('unbound.png', 'Unbound\n1 Default', { x: personalDevices.coordinates.minX + 200, y: 150 });
-    const unbound1Open = new DiagramItem('unbound.png', 'Unbound\n1 Open', { x: personalDevices.coordinates.minX + 200, y: 300 });
-    const unbound2Default = new DiagramItem('unbound.png', 'Unbound\n2 Default', { x: personalDevices.coordinates.minX + 200, y: 600 });
-    const unbound2Open = new DiagramItem('unbound.png', 'Unbound\n2 Open', { x: personalDevices.coordinates.minX + 200, y: 750 });
+    const unboundDefault1 = new DiagramItem('unbound.png', 'Unbound\nDefault 1', { x: personalDevices.coordinates.minX + 200, y: 150 });
+    const unboundOpen1 = new DiagramItem('unbound.png', 'Unbound\nOpen 1', { x: personalDevices.coordinates.minX + 200, y: 300 });
+    const unboundDefault2 = new DiagramItem('unbound.png', 'Unbound\nDefault 2', { x: personalDevices.coordinates.minX + 200, y: 600 });
+    const unboundOpen2 = new DiagramItem('unbound.png', 'Unbound\nOpen 2', { x: personalDevices.coordinates.minX + 200, y: 750 });
 
-    const pihole1Primary = new DiagramItem('pihole.png', 'PiHole\n1 Primary', { x: unbound1Default.coordinates.minX + 300, y: unbound1Default.coordinates.minY });
-    const pihole1Secondary = new DiagramItem('pihole.png', 'PiHole\n1 Secondary', { x: pihole1Primary.coordinates.minX, y: unbound1Open.coordinates.minY });
-    const pihole2Primary = new DiagramItem('pihole.png', 'PiHole\n2 Primary', { x: pihole1Primary.coordinates.minX, y: unbound2Default.coordinates.minY });
-    const pihole2Secondary = new DiagramItem('pihole.png', 'PiHole\n2 Secondary', { x: pihole1Primary.coordinates.minX, y: unbound2Open.coordinates.minY });
+    const pihole1Primary = new DiagramItem('pihole.png', 'PiHole\n1 Primary', { x: unboundDefault1.coordinates.minX + 300, y: unboundDefault1.coordinates.minY });
+    const pihole1Secondary = new DiagramItem('pihole.png', 'PiHole\n1 Secondary', { x: pihole1Primary.coordinates.minX, y: unboundOpen1.coordinates.minY });
+    const pihole2Primary = new DiagramItem('pihole.png', 'PiHole\n2 Primary', { x: pihole1Primary.coordinates.minX, y: unboundDefault2.coordinates.minY });
+    const pihole2Secondary = new DiagramItem('pihole.png', 'PiHole\n2 Secondary', { x: pihole1Primary.coordinates.minX, y: unboundOpen2.coordinates.minY });
 
     const dns1 = new DiagramItem('cloud.png', 'Cloudflare\nDNS\n1.1.1.1', { x: pihole1Primary.coordinates.minX + 250, y: personalDevices.coordinates.minY - 50 });
     const dns2 = new DiagramItem('cloud.png', 'Google\nDNS\n8.8.8.8', { x: dns1.coordinates.minX, y: dns1.coordinates.maxY + 50 });
     const dns3 = new DiagramItem('cloud.png', 'Quad9\nDNS\n9.9.9.9', { x: dns1.coordinates.minX, y: dns2.coordinates.maxY + 50 });
 
-    const edgeIntersection1 = new DiagramCircle({ x: _.mean([unbound1Default.coordinates.maxX, pihole1Primary.coordinates.minX]) - 10, y: 500 - 10 }, { width: 20, height: 20 });
+    const edgeIntersection1 = new DiagramCircle({ x: _.mean([unboundDefault1.coordinates.maxX, pihole1Primary.coordinates.minX]) - 10, y: 500 - 10 }, { width: 20, height: 20 });
     const edgeIntersection2 = new DiagramCircle({ x: _.mean([pihole1Primary.coordinates.maxX, dns1.coordinates.minX]) + 10, y: 500 - 10 }, { width: 20, height: 20 });
 
     // Edges
 
     const defaultEdgeOffset = 20;
-    for (const unbound of [unbound1Default, unbound2Default]) {
+    for (const unbound of [unboundDefault1, unboundDefault2]) {
         new DiagramEdge({ node: personalDevices, location: 'right', offset: { x: defaultEdgeOffset, y: 0 } }, { node: unbound, location: 'left', offset: { x: -defaultEdgeOffset, y: 0 } });
     }
-    for (const unbound of [unbound1Open, unbound2Open]) {
+    for (const unbound of [unboundOpen1, unboundOpen2]) {
         new DiagramEdge({ node: monikaDevices, location: 'right', offset: { x: defaultEdgeOffset, y: 0 } }, { node: unbound, location: 'left', offset: { x: -defaultEdgeOffset, y: 0 } });
     }
-    for (const unbound of [unbound1Default, unbound1Open, unbound2Default, unbound2Open]) {
+    for (const unbound of [unboundDefault1, unboundOpen1, unboundDefault2, unboundOpen2]) {
         new DiagramEdge({ node: unbound, location: 'right', offset: { x: defaultEdgeOffset, y: 0 } }, { node: edgeIntersection1, location: 'left', connector: 'none', offset: { x: -defaultEdgeOffset, y: 0 } });
     }
     for (const pihole of [pihole1Primary, pihole1Secondary, pihole2Primary, pihole2Secondary]) {
@@ -52,8 +52,8 @@ faker.seed(123456789);
     // Sections
 
     const sectionPadding = 50;
-    new DiagramSection('Odroid H4 Ultra', { x: unbound1Default.coordinates.minX - sectionPadding, y: unbound1Default.coordinates.minY - sectionPadding }, { x: pihole1Primary.coordinates.maxX + sectionPadding, y: pihole1Secondary.coordinates.maxY + sectionPadding });
-    new DiagramSection('Odroid H3', { x: unbound2Default.coordinates.minX - sectionPadding, y: unbound2Default.coordinates.minY - sectionPadding }, { x: pihole2Primary.coordinates.maxX + sectionPadding, y: pihole2Secondary.coordinates.maxY + sectionPadding });
+    new DiagramSection('Odroid H4 Ultra', { x: unboundDefault1.coordinates.minX - sectionPadding, y: unboundDefault1.coordinates.minY - sectionPadding }, { x: pihole1Primary.coordinates.maxX + sectionPadding, y: pihole1Secondary.coordinates.maxY + sectionPadding });
+    new DiagramSection('Odroid H3', { x: unboundDefault2.coordinates.minX - sectionPadding, y: unboundDefault2.coordinates.minY - sectionPadding }, { x: pihole2Primary.coordinates.maxX + sectionPadding, y: pihole2Secondary.coordinates.maxY + sectionPadding });
 
     // Final
 
