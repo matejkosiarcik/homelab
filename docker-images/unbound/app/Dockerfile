@@ -70,7 +70,8 @@ FROM jinja AS config_3
 USER root
 WORKDIR /homelab
 COPY --from=config_2 /homelab/data.json /homelab/
-COPY ./docker-images/unbound/app/unbound.conf.j2 /homelab/
+ARG CONFIG=default
+COPY ./docker-images/unbound/app/${CONFIG}.conf.j2 /homelab/unbound.conf.j2
 RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
 
 FROM debian:13.7-slim AS config_4
@@ -119,13 +120,18 @@ FROM debian:13.7-slim AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
+ARG CONFIG=default
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_final_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_unbound_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        dnsutils libcap2-bin unbound >/dev/null && \
-    setcap 'cap_net_bind_service=+ep' "$(which unbound)" && \
-    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get purge -qq --yes libcap2-bin >/dev/null && \
+        dnsutils unbound >/dev/null && \
+    if [ "${CONFIG}" != 'blackhole' ]; then true && \
+        DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+            libcap2-bin >/dev/null && \
+        setcap 'cap_net_bind_service=+ep' "$(which unbound)" && \
+        DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get purge -qq --yes libcap2-bin >/dev/null && \
+    true; fi && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf \
         /etc/apparmor.d/usr.sbin.unbound \

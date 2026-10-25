@@ -1,5 +1,5 @@
 app:
-  type: unbound
+  type: unbound-blackhole
 
 network:
   ip: 10.1.12.7

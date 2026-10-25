@@ -1,0 +1,22 @@
+server:
+    interface: 0.0.0.0
+    username: ""
+    so-sndbuf: 0 # Use the host's default UDP send buffer
+    access-control: 10.0.0.0/8 allow
+    access-control: 127.0.0.0/8 allow
+    access-control: 172.16.0.0/12 allow
+    access-control: 192.168.0.0/16 allow
+    hide-identity: yes
+    hide-version: yes
+    logfile: /homelab/logs/default/unbound.log
+    extended-statistics: yes
+    cache-max-ttl: 60
+    cache-min-ttl: 1
+    # These options are not in debian's unbound version yet:
+    # cache-max-negative-ttl: 10
+    # cache-min-negative-ttl: 1
+    local-zone: "." always_null
+
+remote-control:
+    control-enable: yes
+    control-interface: /homelab/sock/unbound.sock

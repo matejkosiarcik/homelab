@@ -271,14 +271,14 @@ export const apps = {
     unbound: {
         title: 'Unbound',
         instances: [
-            { url: 'https://unbound-1-blackhole.matejhome.com', title: '1 Blackhole' },
+            { url: 'https://unbound-blackhole-1.matejhome.com', title: 'Blackhole 1' },
             { url: 'https://unbound-1-default.matejhome.com', title: '1 Default' },
             { url: 'https://unbound-1-guests.matejhome.com', title: '1 Guests' },
             { url: 'https://unbound-1-internal.matejhome.com', title: '1 Internal' },
             { url: 'https://unbound-1-iot.matejhome.com', title: '1 IoT' },
             { url: 'https://unbound-1-matej.matejhome.com', title: '1 Matej' },
             { url: 'https://unbound-1-monika.matejhome.com', title: '1 Monika' },
-            { url: 'https://unbound-2-blackhole.matejhome.com', title: '2 Blackhole' },
+            { url: 'https://unbound-blackhole-2.matejhome.com', title: 'Blackhole 2' },
             { url: 'https://unbound-2-default.matejhome.com', title: '2 Default' },
             { url: 'https://unbound-2-guests.matejhome.com', title: '2 Guests' },
             { url: 'https://unbound-2-internal.matejhome.com', title: '2 Internal' },
