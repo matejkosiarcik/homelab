@@ -149,6 +149,9 @@ sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_1_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_2_id}';"
 
+# Enable config editing temporarily
+pihole-FTL --config misc.readOnly "false"
+
 # Set custom local domains
 custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
 pihole-FTL --config dns.hosts "${custom_domains_a}"
@@ -157,6 +160,9 @@ pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
 
 # Restart DNS
 pihole reloaddns
+
+# Disable config editing permanently
+pihole-FTL --config misc.readOnly "true"
 
 # Make sure all subdirectories are owned by homelab user
 chown -R homelab:homelab '/etc/pihole'
