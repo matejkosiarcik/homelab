@@ -54,7 +54,6 @@ services:
     extends:
       service: template
     # Override:
-    # build:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
 
