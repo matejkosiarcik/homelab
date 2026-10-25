@@ -22,9 +22,14 @@ scrape_configs:
       {%- set endpoint_auth_default_user = "prometheus" %}
     {%- endif %}
     {%- set endpoint_auth_user = endpoint.auth.user or endpoint_auth_default_user %}
+    {%- if endpoint.path.startswith("/runwisp/") %}
+      {%- set runwisp_prefix = "RUNWISP_" %}
+    {%- else %}
+      {%- set runwisp_prefix = "" %}
+    {%- endif %}
     basic_auth:
       username: {{ endpoint_auth_user }}
-      password: ${{ "{" }}{{ app.full_name_env }}__{{ endpoint_auth_user | replace("-", "_") | upper() }}_PASSWORD{{ "}" }}
+      password: ${{ "{" }}{{ app.full_name_env }}__{{ runwisp_prefix }}{{ endpoint_auth_user | replace("-", "_") | upper() }}_PASSWORD{{ "}" }}
     {%- elif endpoint.auth.type == "bearer" %}
     authorization:
       credentials: Bearer ${{ "{" }}{{ app.full_name_env }}__PROMETHEUS_TOKEN{{ "}" }}

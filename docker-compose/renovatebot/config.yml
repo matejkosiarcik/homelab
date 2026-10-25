@@ -27,6 +27,6 @@ prometheus:
     - path: /.apache/metrics
       auth:
         type: basic
-    - path: /metrics
+    - path: /runwisp/metrics
       auth:
         type: basic
