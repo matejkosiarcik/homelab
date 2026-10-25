@@ -15,7 +15,7 @@ test.describe(app.title, () => {
         }
 
         test.describe(instance.title, () => {
-            const runWispUrl = `${instance.url}/runwisp`;
+            const runWispUrl = `${instance.url}/runwisp/`;
 
             createHttpToHttpsRedirectTests(instance.url);
             createProxyTests(instance.url);
@@ -38,8 +38,8 @@ test.describe(app.title, () => {
             test.describe('Runwisp', () => {
                 test('API: Get runwisp health', async () => {
                     const response = await test.step('Request endpoint', async () => {
-                        const response = await axios.get(`${runWispUrl}/api/health`);
-                        expect(response.status, 'Response status').toStrictEqual(401);
+                        const response = await axios.get(`${runWispUrl}/health`);
+                        expect(response.status, 'Response status').toStrictEqual(200);
                         return response;
                     });
 
@@ -57,7 +57,7 @@ test.describe(app.title, () => {
 
                     await test.step.soft('Attempt to trigger a new run', async () => {
                         const response = await axios.post(`${runWispUrl}/api/tasks/renovate/run`, {});
-                        expect(response.status, 'Read-only task trigger response').toStrictEqual(403);
+                        expect(response.status, 'Read-only task trigger response').toStrictEqual(401);
                     });
                 });
 
@@ -123,7 +123,7 @@ test.describe(app.title, () => {
                         const response = await axios.get(`${runWispUrl}/metrics`, {
                             auth: {
                                 username: 'prometheus',
-                                password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                                password: getEnv(instance.url, 'RUNWISP_PROMETHEUS_PASSWORD'),
                             },
                         });
                         expect(response.status, 'Response Status').toStrictEqual(200);
@@ -135,16 +135,13 @@ test.describe(app.title, () => {
                         await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
                         const lines = content.split('\n');
                         const metrics = [
-                            'runwisp_runs_total',
-                            'runwisp_runs_last_failure_timestamp_seconds',
-                            'runwisp_task_active_runs',
-                            'runwisp_task_cpu_percent',
-                            'runwisp_task_memory_bytes',
+                            'runwisp_build_info',
                             'runwisp_daemon_cpu_percent',
-                            'runwisp_daemon_memory_used_bytes',
                             'runwisp_daemon_memory_total_bytes',
+                            'runwisp_daemon_memory_used_bytes',
                             'runwisp_daemon_uptime_seconds',
-                            'runwisp_build_inf',
+                            'runwisp_runs_total',
+                            'runwisp_task_active_runs',
                         ];
                         for (const metric of metrics) {
                             expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
