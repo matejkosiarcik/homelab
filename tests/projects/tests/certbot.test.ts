@@ -7,7 +7,7 @@ import { expect, test } from '#/playwright/test.ts';
 import { execa } from 'execa';
 import { apps } from '#/utils/apps.ts';
 import { axios, extractTar, getEnv } from '#/utils/utils.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
 const app = apps.certbot;
 
