@@ -2,6 +2,8 @@
 
 ![diagram](../../docs/diagrams/out/apps/unbound.png)
 
+![diagram](../../docs/diagrams/out/apps/unbound-internal.png)
+
 ## Docs
 
 Unbound:

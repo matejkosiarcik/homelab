@@ -209,8 +209,6 @@ export const apps = {
             { url: 'https://pihole-2.matejhome.com', title: '2' },
             { url: 'https://pihole-3.matejhome.com', title: '3' },
             { url: 'https://pihole-4.matejhome.com', title: '4' },
-            { url: 'https://pihole-blackhole-1.matejhome.com', title: 'Blackhole 1' },
-            { url: 'https://pihole-blackhole-2.matejhome.com', title: 'Blackhole 2' },
         ],
     },
     planka: {

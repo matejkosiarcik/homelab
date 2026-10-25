@@ -14,13 +14,13 @@
   {%- endif %}
 {%- endmacro -%}
 
-{%- macro blackhole_piholes() -%}
+{%- macro blackhole_unbounds() -%}
   {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
-    forward-addr: 10.1.12.19
-    forward-addr: 10.1.10.19
+    forward-addr: 10.1.12.7
+    forward-addr: 10.1.10.7
   {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
-    forward-addr: 10.1.10.19
-    forward-addr: 10.1.12.19
+    forward-addr: 10.1.10.7
+    forward-addr: 10.1.12.7
   {%- else %}
     $ Unknown IP: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}} $
   {%- endif %}
@@ -53,10 +53,6 @@ server:
 forward-zone:
     name: "."
     {{- default_piholes() -}}
-{% elif env["HOMELAB_APP_FULLNAME"].endswith("-blackhole") %}
-forward-zone:
-    name: "."
-    {{- blackhole_piholes() }}
 {% elif env["HOMELAB_APP_FULLNAME"].endswith("-internal") %}
 forward-zone:
     name: "matejhome.com."
@@ -68,7 +64,7 @@ forward-zone:
 
 forward-zone:
     name: "."
-    {{- blackhole_piholes() }}
+    {{- blackhole_unbounds() }}
 {% else %}
     $ Unknown app: {{- env["HOMELAB_APP_FULLNAME"] -}} $
 {% endif %}

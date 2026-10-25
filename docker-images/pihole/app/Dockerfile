@@ -73,8 +73,7 @@ RUN sh '/homelab/create-user.sh' && \
 
 FROM scratch AS homelab_dir
 WORKDIR /homelab
-ARG SETUP_SCRIPT=default
-COPY ./docker-images/pihole/app/setup-${SETUP_SCRIPT}.sh /homelab/setup.sh
+COPY ./docker-images/pihole/app/setup.sh /homelab/setup.sh
 COPY --from=dns_entries /homelab/custom-domains.txt /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 

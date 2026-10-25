@@ -197,7 +197,7 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|pihole-blackhole|renovatebot|samba|unbound|unbound-blackhole)$#">
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|docker-stats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|renovatebot|samba|unbound|unbound-blackhole)$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
