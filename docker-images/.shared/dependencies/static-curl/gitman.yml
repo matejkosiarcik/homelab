@@ -16,7 +16,7 @@ sources:
 sources_locked:
   - repo: https://github.com/stunnel/static-curl.git
     name: static-curl
-    rev: e2acbcd219422678ae616982e316d15ba97cb2bd
+    rev: 42f2a97a52882304c10caa608cad5cce9c34b0c6
     type: git
     params:
     sparse_paths:
