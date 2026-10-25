@@ -468,7 +468,7 @@
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        docker run hello-world
+        docker run --rm hello-world
 
     - name: Start docker on startup
       register: docker_startup
