@@ -66,7 +66,7 @@ COPY ./docker-images/renovatebot/runwisp/add-prefix.sh /homelab/
 WORKDIR /homelab/runwisp
 RUN sh '/homelab/add-prefix.sh'
 
-FROM oven/bun:1.4.0-debian AS runwisp_build_frontend
+FROM oven/bun:1.4.4-debian AS runwisp_build_frontend
 USER root
 WORKDIR /homelab
 COPY --from=runwisp_build_tweak_paths /homelab/runwisp/ ./runwisp/
