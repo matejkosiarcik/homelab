@@ -124,43 +124,34 @@ def write_log_file_footer(command_log_file: str):
         file.write(f"\nEnd date: {start_datestr}\n")
 
 
+def get_canonical_app_value(function_name: str) -> str:
+    """Read an app value from the shared canonical app-entry resolver."""
+    if function_name not in ["get_app_domain", "get_app_full_name_machine", "get_app_ip", "get_app_type"]:
+        raise ValueError(f"Unsupported canonical app function: {function_name}")
+
+    resolver_path = path.join(git_dir, "docker-images", ".shared", "build-utils", "parse-app-entry-utils.sh")
+    return subprocess.check_output(
+        ["sh", "-c", f'. "$1"; {function_name} "$2"', "sh", resolver_path, app_dir],
+        text=True,
+    ).strip()
+
+
 def load_app_config():
     config_path = path.join(app_dir, "config", "config.yml")
     if not path.exists(config_path):
         raise FileNotFoundError("App config.yml not found")
 
-    # Set App shortname
+    # Set name properties
     app_config.app_shortname = path.basename(app_dir).lstrip(".")
+    app_config.app_type = get_canonical_app_value("get_app_type")
+    app_config.app_fullname = get_canonical_app_value("get_app_full_name_machine")
 
-    # Set App type
-    config_app_type = subprocess.check_output(["yq", "--raw-output", ".app.type", config_path], text=True).strip()
-    if config_app_type not in ["", "null", "undefined"]:
-        app_config.app_type = config_app_type
-    else:
-        app_config.app_type = app_config.app_shortname
-
-    # Set App fullname
-    config_app_fullname = subprocess.check_output(["yq", "--raw-output", ".app.fullname", config_path], text=True).strip()
-    if config_app_fullname not in ["", "null", "undefined"]:
-        app_config.app_fullname = config_app_fullname
-    else:
-        app_config.app_fullname = app_config.app_shortname
-
-    # Set domain
-    config_domain = subprocess.check_output(["yq", "--raw-output", ".network.domain", config_path], text=True).strip()
+    # Set network properties
     if env_mode == "prod":
-        if config_domain not in ["", "null", "undefined"]:
-            app_config.app_domain = config_domain
-        else:
-            app_config.app_domain = f"{app_config.app_fullname}.matejhome.com"
+        app_config.app_domain = get_canonical_app_value("get_app_domain")
+        app_config.app_ip = get_canonical_app_value("get_app_ip")
     else:
         app_config.app_domain = "localhost"
-
-    # Set IP
-    config_ip = subprocess.check_output(["yq", "--raw-output", ".network.ip", config_path], text=True).strip()
-    if config_ip not in ["", "null", "undefined"] and env_mode == "prod":
-        app_config.app_ip = config_ip
-    else:
         app_config.app_ip = "127.0.0.1"
 
 
