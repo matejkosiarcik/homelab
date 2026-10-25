@@ -13,7 +13,6 @@
 | `10.1.10.7`  | `unbound-blackhole-2.matejhome.com`             |
 | `10.1.10.11` | `pihole-3.matejhome.com`                        |
 | `10.1.10.12` | `pihole-4.matejhome.com`                        |
-| `10.1.10.19` | `pihole-blackhole-2.matejhome.com`              |
 | `10.1.10.21` | `docker-stats-odroid-h3.matejhome.com`          |
 | `10.1.10.22` | `dozzle-agent-odroid-h3.matejhome.com`          |
 | `10.1.10.23` | `nodeexporter-odroid-h3.matejhome.com`          |
@@ -29,7 +28,6 @@
 | `10.1.12.7`  | `unbound-blackhole-1.matejhome.com`             |
 | `10.1.12.11` | `pihole-1.matejhome.com`                        |
 | `10.1.12.12` | `pihole-2.matejhome.com`                        |
-| `10.1.12.19` | `pihole-blackhole-1.matejhome.com`              |
 | `10.1.12.21` | `docker-stats-odroid-h4-ultra.matejhome.com`    |
 | `10.1.12.22` | `dozzle-agent-odroid-h4-ultra.matejhome.com`    |
 | `10.1.12.23` | `nodeexporter-odroid-h4-ultra.matejhome.com`    |

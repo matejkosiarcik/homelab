@@ -18,10 +18,9 @@ flowchart TB
             direction TB
             subgraph odroid_h4_ultra_dns_pihole_row[" "]
                 direction LR
-                pihole_1_blackhole("<div class='custom-node'><img src='../../../../icons/pihole.png' /><p>PiHole 1<br/>Blackhole</p></div>")
                 pihole_1_primary("<div class='custom-node'><img src='../../../../icons/pihole.png' /><p>PiHole 1<br/>Primary</p></div>")
                 pihole_1_secondary("<div class='custom-node'><img src='../../../../icons/pihole.png' /><p>PiHole 1<br/>Secondary</p></div>")
-                pihole_1_blackhole ~~~ pihole_1_primary ~~~ pihole_1_secondary
+                pihole_1_primary ~~~ pihole_1_secondary
             end
 
             subgraph odroid_h4_ultra_dns_unbound_row[" "]
@@ -172,10 +171,9 @@ flowchart TB
             direction TB
             subgraph odroid_h3_dns_pihole_row[" "]
                 direction LR
-                pihole_2_blackhole("<div class='custom-node'><img src='../../../../icons/pihole.png' /><p>PiHole 2<br/>Blackhole</p></div>")
                 pihole_3("<div class='custom-node'><img src='../../../../icons/pihole.png' /><p>PiHole 3</p></div>")
                 pihole_4("<div class='custom-node'><img src='../../../../icons/pihole.png' /><p>PiHole 4</p></div>")
-                pihole_2_blackhole ~~~ pihole_3 ~~~ pihole_4
+                pihole_3 ~~~ pihole_4
             end
 
             subgraph odroid_h3_dns_unbound_row[" "]

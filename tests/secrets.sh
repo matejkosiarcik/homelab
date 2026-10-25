@@ -299,11 +299,6 @@ rm -f './.secrets.env'
     printf 'PIHOLE_2__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.apache.status_user')"
     printf 'PIHOLE_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.apache.prometheus_user')"
 
-    printf 'PIHOLE_BLACKHOLE_1__PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_1.app.admin_user')"
-    printf 'PIHOLE_BLACKHOLE_1__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_1.app.prometheus_user')"
-    printf 'PIHOLE_BLACKHOLE_1__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_1.apache.status_user')"
-    printf 'PIHOLE_BLACKHOLE_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_1.apache.prometheus_user')"
-
     printf 'PIHOLE_3__PASSWORD=%s\n' "$(load_secret '.pihole_3.app.admin_user')"
     printf 'PIHOLE_3__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.app.prometheus_user')"
     printf 'PIHOLE_3__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.apache.status_user')"
@@ -313,11 +308,6 @@ rm -f './.secrets.env'
     printf 'PIHOLE_4__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.app.prometheus_user')"
     printf 'PIHOLE_4__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.apache.status_user')"
     printf 'PIHOLE_4__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.apache.prometheus_user')"
-
-    printf 'PIHOLE_BLACKHOLE_2__PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_2.app.admin_user')"
-    printf 'PIHOLE_BLACKHOLE_2__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_2.app.prometheus_user')"
-    printf 'PIHOLE_BLACKHOLE_2__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_2.apache.status_user')"
-    printf 'PIHOLE_BLACKHOLE_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_blackhole_2.apache.prometheus_user')"
 
     printf 'PLANKA__MATEJ_PASSWORD=%s\n' "$(load_secret '.planka.app.matej_user')"
     printf 'PLANKA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.planka.apache.status_user')"

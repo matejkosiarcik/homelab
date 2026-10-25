@@ -38,29 +38,23 @@ test.describe(app.title, () => {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step.soft(`Check example.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
-                            if (instance.title.toLowerCase().includes('blackhole') || instance.title.toLowerCase().endsWith(' internal')) {
-                                expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
-                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
-                            } else {
-                                expect(ips, `Domain example.com should be resolved`).not.toHaveLength(0);
-                                for (const ip of ips) {
-                                    switch (ipVariant) {
-                                        case 'A': {
-                                            expect(ip, 'Resolved entry should be valid IPv4').toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
-                                            expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
-                                            expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(?:1[6-9]|2[0-9]|3[0-1])\./);
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
-                                            break;
-                                        }
-                                        case 'AAAA': {
-                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(/(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
-                                            expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
-                                            break;
-                                        }
+                            expect(ips, `Domain example.com should be resolved`).not.toHaveLength(0);
+                            for (const ip of ips) {
+                                switch (ipVariant) {
+                                    case 'A': {
+                                        expect(ip, 'Resolved entry should be valid IPv4').toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+                                        expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
+                                        expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(?:1[6-9]|2[0-9]|3[0-1])\./);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
+                                        break;
+                                    }
+                                    case 'AAAA': {
+                                        expect(ip, 'Resolved entry should be valid IPv6').toMatch(/(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                                        expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
+                                        break;
                                     }
                                 }
                             }
@@ -80,21 +74,15 @@ test.describe(app.title, () => {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step.soft(`Check self via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
-                            if (instance.title.toLowerCase().includes('blackhole')) {
-                                expect(ips, `Domain ${instanceDomain} should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
-                                expect(ips[0], `Domain ${instanceDomain} should be resolved to no IP address`).toStrictEqual(expectedIp);
-                            } else {
-                                switch (ipVariant) {
-                                    case 'A': {
-                                        expect(ips, `Domain ${instanceDomain} should be resolved`).not.toHaveLength(0);
-                                        expect(ips, `Domain ${instanceDomain} should be resolved exactly`).toContain(instanceIp);
-                                        break;
-                                    }
-                                    case 'AAAA': {
-                                        expect(ips, `Domain ${instanceDomain} should not be resolved`).toHaveLength(0);
-                                        break;
-                                    }
+                            switch (ipVariant) {
+                                case 'A': {
+                                    expect(ips, `Domain ${instanceDomain} should be resolved`).not.toHaveLength(0);
+                                    expect(ips, `Domain ${instanceDomain} should be resolved exactly`).toContain(instanceIp);
+                                    break;
+                                }
+                                case 'AAAA': {
+                                    expect(ips, `Domain ${instanceDomain} should not be resolved`).toHaveLength(0);
+                                    break;
                                 }
                             }
                         });
@@ -114,13 +102,7 @@ test.describe(app.title, () => {
                         await test.step.soft(`Check <random>.matejhome.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const domain = `${faker.string.alpha(10)}.matejhome.com`;
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
-                            if (instance.title.toLowerCase().includes('blackhole')) {
-                                expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
-                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
-                            } else {
-                                expect(ips, 'Domain should not be resolved').toHaveLength(0);
-                            }
+                            expect(ips, 'Domain should not be resolved').toHaveLength(0);
                         });
                     }
                 }
@@ -139,14 +121,9 @@ test.describe(app.title, () => {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
                         await test.step.soft(`Check domain ${domain} via ${transportVariant.toUpperCase()}`, async () => {
                             const ips = await dnsLookup(domain, transportVariant, 'A', instanceIp);
-                            if (instance.title.toLowerCase().includes('blackhole')) {
-                                expect(ips, `Domain ${domain} should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain ${domain} should be resolved to no IP address`).toStrictEqual('0.0.0.0');
-                            } else {
-                                expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
-                                for (const ip of ips) {
-                                    expect(ip, `Resolved entry should be valid IPv4`).toMatch(/^10\.1\.\d{1,3}\.\d{1,3}$/);
-                                }
+                            expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
+                            for (const ip of ips) {
+                                expect(ip, `Resolved entry should be valid IPv4`).toMatch(/^10\.1\.\d{1,3}\.\d{1,3}$/);
                             }
                         });
                     }
@@ -184,7 +161,7 @@ test.describe(app.title, () => {
                         'pihole_reply',
                         'pihole_status',
                         'pihole_top_ads',
-                        ...(instance.title.toLowerCase().includes('blackhole') ? [] : ['pihole_top_queries']),
+                        'pihole_top_queries',
                         'pihole_top_sources',
                         'pihole_unique_clients',
                         'pihole_unique_domains',

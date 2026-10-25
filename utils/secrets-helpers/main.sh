@@ -600,8 +600,6 @@ gatus)
     printf 'PIHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_4__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PROMETHEUS__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'SAMBA_DATA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.samba_data.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_BLACKHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -670,8 +668,6 @@ gatus)
     printf 'PIHOLE_2__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_3__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_4__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_1__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_1.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_2__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_2.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PLANKA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.planka.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PREBUDGET__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.grafana.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PROMETHEUS__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -885,8 +881,6 @@ homepage)
     printf 'HOMEPAGE_VAR__PIHOLE_2__PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PIHOLE_3__PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.admin_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PIHOLE_4__PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_BLACKHOLE_1__PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_1.app.admin_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEPAGE_VAR__PIHOLE_BLACKHOLE_2__PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_2.app.admin_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__PROMETHEUS__PASSWORD="%s"\n' "$(load_secret '.prometheus.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY="%s"\n' "$(load_secret '.speedtesttracker.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
     printf 'HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD="%s"\n' "$(load_secret '.unificontroller.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
@@ -1319,7 +1313,7 @@ openwebui)
     touch "${initial_output}/favicons.env"
     ;;
 
-pihole | pihole-blackhole)
+pihole)
     # Preload #
     admin_password="$(load_secret ".${app_full_name_key}.app.admin_user" dev=default)"
     app_prometheus_password="$(load_secret ".${app_full_name_key}.app.prometheus_user" dev=default)"
@@ -1460,8 +1454,6 @@ prometheus)
     printf 'PIHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_4__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PROMETHEUS__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'SAMBA_DATA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.samba_data.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UNBOUND_BLACKHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -1530,8 +1522,6 @@ prometheus)
     printf 'PIHOLE_2__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_3__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_4__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_1__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_1.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_BLACKHOLE_2__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_blackhole_2.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PLANKA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.planka.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PREBUDGET__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prebudget.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PROMETHEUS__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
