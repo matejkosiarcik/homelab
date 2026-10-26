@@ -75,7 +75,7 @@ USER root
 WORKDIR /homelab
 COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/htaccess/.htaccess-extra.j2 /homelab/
-RUN jinja2 ./.htaccess-extra.j2 ./data.json --format json -o ./.htaccess-extra
+RUN jinja2 --strict ./.htaccess-extra.j2 ./data.json --format json -o ./.htaccess-extra
 
 FROM debian:13.7-slim AS htaccess_config_3
 USER root
@@ -90,7 +90,7 @@ USER root
 WORKDIR /homelab
 COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
 COPY ./docker-images/apache/apache.conf-extra.j2 /homelab/
-RUN jinja2 ./apache.conf-extra.j2 ./data.json --format json -o ./apache.conf-extra
+RUN jinja2 --strict ./apache.conf-extra.j2 ./data.json --format json -o ./apache.conf-extra
 
 FROM debian:13.7-slim AS apache_config_3
 USER root

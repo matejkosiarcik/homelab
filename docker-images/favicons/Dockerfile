@@ -144,7 +144,7 @@ USER root
 WORKDIR /homelab
 COPY --from=urls_config_1 /homelab/data.json /homelab/
 COPY ./docker-images/favicons/urls.yml.j2 /homelab/
-RUN jinja2 './urls.yml.j2' './data.json' --format json -o './urls.yml'
+RUN jinja2 --strict './urls.yml.j2' './data.json' --format json -o './urls.yml'
 
 FROM yq AS urls_config_3
 USER root
