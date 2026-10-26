@@ -28,6 +28,11 @@ http:
   trusted_proxies:
     - 0.0.0.0/0
 
+media_player:
+  - platform: xiaomi_tv
+    host: 10.1.2.6
+    name: Xiaomi TV Box [Living Room]
+
 # binary_sensor:
 #   - unique_id: light_desklamp_left_status
 #     platform: rest
