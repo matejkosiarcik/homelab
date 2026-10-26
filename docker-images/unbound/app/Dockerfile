@@ -72,7 +72,12 @@ WORKDIR /homelab
 COPY --from=config_2 /homelab/data.json /homelab/
 ARG CONFIG=default
 COPY ./docker-images/unbound/app/${CONFIG}.conf.j2 /homelab/unbound.conf.j2
-RUN jinja2 unbound.conf.j2 data.json --format json -o unbound.conf
+RUN jinja2 --strict './unbound.conf.j2' './data.json' --format json -o './unbound.conf' && \
+    if grep --quiet --fixed-strings 'ERROR:' './unbound.conf' >/dev/null 2>&1; then \
+        printf 'Unbound config is not valid:\n' >&2 && \
+        cat './unbound.conf' >&2 && \
+        exit 1; \
+    fi
 
 FROM debian:13.7-slim AS config_4
 USER root
