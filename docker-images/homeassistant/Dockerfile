@@ -1,6 +1,16 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
+### Entrypoint ###
+
+FROM homeassistant/home-assistant:2026.10.4 AS entrypoint
+USER root
+COPY ./docker-images/homeassistant/entrypoint-extra.sh /homelab/
+RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
+    tail -n +2 /init >/homelab/entrypoint-upstream-rest.sh && \
+    cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
+    chmod 0500 /homelab/entrypoint-final.sh
+
 ### Healthcheck ###
 
 FROM golang:1.27.3-alpine AS healthcheck_build
@@ -38,6 +48,7 @@ FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
+COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
 
 ### Final ###
 
@@ -48,6 +59,7 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
+COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/init /
 ENV HOMELAB_CONTAINER_NAME="homeassistant" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
