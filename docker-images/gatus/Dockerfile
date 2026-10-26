@@ -66,7 +66,7 @@ USER root
 WORKDIR /homelab
 COPY --from=monitoring_entries /homelab/data.json /homelab/
 COPY ./docker-images/gatus/config.yml.j2 /homelab/
-RUN jinja2 './config.yml.j2' './data.json' --format json -o './config.yml'
+RUN jinja2 --strict './config.yml.j2' './data.json' --format json -o './config.yml'
 
 ### Healthcheck ###
 

@@ -76,7 +76,7 @@ USER root
 WORKDIR /homelab
 COPY --from=monitoring_entries /homelab/data.json /homelab/
 COPY ./docker-images/prometheus/prometheus.yml.j2 /homelab/
-RUN jinja2 './prometheus.yml.j2' './data.json' --format json -o './prometheus.yml'
+RUN jinja2 --strict './prometheus.yml.j2' './data.json' --format json -o './prometheus.yml'
 
 ### Healthcheck ###
 

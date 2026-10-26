@@ -263,7 +263,7 @@ endpoints:
     name: HTTP{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: http://{{ item.domain }}
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if item.gatus.conditions is defined %}
     conditions:
@@ -285,7 +285,7 @@ endpoints:
     name: HTTPS{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if item.gatus.authentication is not defined %}
     alerts:
@@ -316,7 +316,7 @@ endpoints:
     {%- else %}
     url: https://{{ item.domain }}
     {%- endif %}
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if item.gatus.conditions is defined %}
     conditions:
@@ -331,7 +331,7 @@ endpoints:
     name: HTTPS Proxy /metrics (noauth) - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/.apache/metrics
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     conditions:
       - "[CONNECTED] == true"
@@ -343,7 +343,7 @@ endpoints:
     name: HTTPS Proxy /metrics - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://proxy-prometheus:${{ "{" }}{{ item.full_name_env }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
@@ -351,7 +351,7 @@ endpoints:
     name: HTTPS /favicon.ico - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.ico
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
@@ -359,7 +359,7 @@ endpoints:
     name: HTTP /favicon.ico - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.ico
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
@@ -367,7 +367,7 @@ endpoints:
     name: HTTPS /favicon.png - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.png
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
@@ -375,7 +375,7 @@ endpoints:
     name: HTTP /favicon.png - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}/favicon.png
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
@@ -386,7 +386,7 @@ endpoints:
     name: {% if endpoint.protocol is defined %}{{ endpoint.protocol | upper }}{% else %}HTTPS{% endif %} - {{ endpoint.path }}{% if endpoint.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
-    {% if endpoint.insecure == True%}client:
+    {% if endpoint.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if endpoint.conditions is defined %}
     conditions:
@@ -412,7 +412,7 @@ endpoints:
     {%- else %}
     url: {% if endpoint.protocol is defined %}{{ endpoint.protocol }}{% else %}https{% endif %}://{{ item.domain }}{{ endpoint.path }}
     {%- endif %}
-    {% if endpoint.insecure == True%}client:
+    {% if endpoint.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {%- if endpoint.conditions is defined %}
     conditions:
@@ -464,31 +464,31 @@ endpoints:
   {%- endif %}
 
   {%- if item.additional_ports is defined %}
-  {%- for port in item.additional_ports.http %}
+  {%- for port in item.additional_ports.http | default([], true) %}
 
   - <<: *default_http
     name: HTTP:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: http://{{ item.domain }}:{{ port }}
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- conditions_http_401(item) -}}
     {{- is_enabled(item) }}
   {%- endfor %}
 
-  {%- for port in item.additional_ports.https %}
+  {%- for port in item.additional_ports.https | default([], true) %}
 
   - <<: *default_https
     name: HTTPS:{{ port }}{% if item.gatus.authentication is defined %} (noauth){% endif %} - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
     url: https://{{ item.domain }}:{{ port }}
-    {% if item.gatus.insecure == True %}client:
+    {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- conditions_https_401(item) -}}
     {{- is_enabled(item) }}
   {%- endfor %}
 
-  {%- for port in item.additional_ports.tcp %}
+  {%- for port in item.additional_ports.tcp | default([], true) %}
 
   - <<: *default_tcp
     name: TCP:{{ port }} - {{ item.full_name_pretty }}

@@ -14,11 +14,11 @@ healthchecks:
   {%- set healthcheck_name = app.full_name_pretty + " - " + (healthcheck.slug | capitalize) %}
   {%- set healthcheck_slug = app.full_name_machine + "-" + healthcheck.slug %}
 
-  - grace: "{{ healthcheck.grace or default_grace }}"
+  - grace: "{{ healthcheck.grace | default(default_grace, true) }}"
     name: "{{ healthcheck_name }}"
-    schedule: "{{ healthcheck.schedule or default_schedule }}"
+    schedule: "{{ healthcheck.schedule | default(default_schedule, true) }}"
     slug: "{{ healthcheck_slug }}"
-    tz: "{{ healthcheck.timezone or default_timezone }}"
+    tz: "{{ healthcheck.timezone | default(default_timezone, true) }}"
 {%- endfor %}
 {%- endfor %}
 
@@ -28,9 +28,9 @@ healthchecks:
   {%- set default_grace = "60m" %}
   {%- set default_timezone = "Europe/Bratislava" %}
 
-  - grace: "{{ healthcheck.grace or default_grace }}"
+  - grace: "{{ healthcheck.grace | default(default_grace, true) }}"
     name: "{{ healthcheck.name }}"
-    schedule: "{{ healthcheck.schedule or default_schedule }}"
+    schedule: "{{ healthcheck.schedule | default(default_schedule, true) }}"
     slug: "{{ healthcheck.slug }}"
-    tz: "{{ healthcheck.timezone or default_timezone }}"
+    tz: "{{ healthcheck.timezone | default(default_timezone, true) }}"
 {%- endfor %}

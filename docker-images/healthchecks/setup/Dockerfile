@@ -77,7 +77,7 @@ USER root
 WORKDIR /homelab
 COPY --from=config_1 /homelab/data.json /homelab/
 COPY ./docker-images/healthchecks/setup/config.yml.j2 /homelab/
-RUN jinja2 './config.yml.j2' './data.json' --format json -o './healthchecks.yml'
+RUN jinja2 --strict './config.yml.j2' './data.json' --format json -o './healthchecks.yml'
 
 FROM yq AS config_3
 USER root
