@@ -21,7 +21,7 @@ scrape_configs:
     {%- else %}
       {%- set endpoint_auth_default_user = "prometheus" %}
     {%- endif %}
-    {%- set endpoint_auth_user = endpoint.auth.user or endpoint_auth_default_user %}
+    {%- set endpoint_auth_user = endpoint.auth.user | default(endpoint_auth_default_user, true) %}
     {%- if endpoint.path.startswith("/runwisp/") %}
       {%- set runwisp_prefix = "RUNWISP_" %}
     {%- else %}
