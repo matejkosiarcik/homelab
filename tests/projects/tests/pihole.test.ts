@@ -180,7 +180,7 @@ test.describe(app.title, () => {
 
                 await test.step('Login', async () => {
                     await page.locator('form#loginform input[type="password"]').fill(getEnv(instance.url, 'PASSWORD'));
-                    await page.locator('form#loginform button[type="submit"]').click({ timeout: 5000 });
+                    await page.locator('form#loginform button[type="submit"]').click({ noWaitAfter: true, timeout: 5000 });
                 });
 
                 await test.step('Validate login', async () => {

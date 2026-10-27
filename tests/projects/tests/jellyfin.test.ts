@@ -59,7 +59,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('input#txtManualName').fill(user.username);
                         await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('button[type="submit"]').click();
+                        await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate login', async () => {

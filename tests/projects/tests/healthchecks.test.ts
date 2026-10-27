@@ -134,7 +134,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('input[name="email"]').fill(user.email);
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true, timeout: 10_000 });
                     });
 
                     await test.step('Validate login', async () => {
@@ -164,7 +164,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('input[name="email"]').fill(user.email);
                         await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true, timeout: 10_000 });
                     });
 
                     await test.step('Validate login attempt', async () => {

@@ -35,7 +35,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('input#user_email[type="email"]').fill(user.email);
                         await page.locator('input#user_password[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                        await page.locator('input[type="submit"][value="Log in"]').click();
+                        await page.locator('input[type="submit"][value="Log in"]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate login', async () => {

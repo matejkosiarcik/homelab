@@ -31,7 +31,7 @@ test.describe(app.title, () => {
 
                 await test.step('Login', async () => {
                     await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
-                    await page.locator('button[type="button"]:has-text("Sign in")').click();
+                    await page.locator('button[type="button"]:has-text("Sign in")').click({ noWaitAfter: true });
                 });
 
                 await test.step('Validate login', async () => {

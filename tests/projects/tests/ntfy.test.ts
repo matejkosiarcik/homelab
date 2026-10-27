@@ -54,7 +54,7 @@ test.describe(app.title, () => {
                         await page.locator('.MuiDialogContent-root input#username').fill(user.username);
                         await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                         await delay(250);
-                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ timeout: 4000 });
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ noWaitAfter: true, timeout: 4000 });
                     });
 
                     await test.step('Validate login', async () => {
@@ -83,7 +83,7 @@ test.describe(app.title, () => {
                         await page.locator('.MuiDialogContent-root input#username').fill(user.username);
                         await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                         await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate login', async () => {

@@ -84,7 +84,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
                         await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('.login-form a.button-button[title="Log in"]').click();
+                        await page.locator('.login-form a.button-button[title="Log in"]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate login', async () => {

@@ -40,7 +40,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('form#login-form input[autocomplete="username"]').fill( user.username);
                         await page.locator('form#login-form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('form#login-form button[type="submit"]:has-text("Login")').click();
+                        await page.locator('form#login-form button[type="submit"]:has-text("Login")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate login', async () => {

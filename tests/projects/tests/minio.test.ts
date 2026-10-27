@@ -196,7 +196,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('input#accessKey').fill(user.username);
                         await page.locator('input#secretKey').fill(getEnv(instance.url.api, `${user.username}_PASSWORD`));
-                        await page.locator('button#do-login[type="submit"]').click();
+                        await page.locator('button#do-login[type="submit"]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate login', async () => {
