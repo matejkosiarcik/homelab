@@ -54,7 +54,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM redis:8.10.2 AS final
+FROM redis:8.10.3 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
