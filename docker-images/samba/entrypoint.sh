@@ -95,4 +95,4 @@ testparm -s "${samba_config_output_file}" || {
 (sleep 2 && nohup '/homelab/bin/samba_exporter' -log-file-path "${samba_exporter_logfile_original}" -log-level Information -not-expose-pid-data) &
 
 # Start samba
-exec smbd --foreground --no-process-group --configfile="${config_output_file}"
+exec smbd --foreground --no-process-group --configfile="${samba_config_output_file}"
