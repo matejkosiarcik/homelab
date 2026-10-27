@@ -82,7 +82,7 @@ su --shell='/bin/sh' --command="/bin/sh -c 'install --mode=0444 \"${samba_config
 su --shell='/bin/sh' --command="/bin/sh -c 'rm -f \"${samba_config_temporary_file}\"'" 'homelab'
 
 # Generate user password
-printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c "${config_output_file}" -a "${SAMBA_USERNAME}"
+printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c "${samba_config_output_file}" -a "${SAMBA_USERNAME}"
 
 # Test config is valid before starting
 testparm -s "${config_output_file}" || {

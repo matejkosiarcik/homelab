@@ -30,4 +30,4 @@ envsubst -no-digit -no-unset -no-empty -i "${registry_config_input_file}" -o "${
 }
 
 # Start
-exec registry serve "${config_output_file}"
+exec registry serve "${registry_config_output_file}"

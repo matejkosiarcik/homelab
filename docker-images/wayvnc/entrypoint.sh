@@ -33,4 +33,4 @@ cp '/homelab/rsa_key.pem' '/homelab/tmpfs/rsa_key.pem'
 cp '/homelab/rsa_key.pem.pub' '/homelab/tmpfs/rsa_key.pem.pub'
 
 # shellcheck disable=SC2068
-exec wayvnc --config "${config_output_file}" ${@}
+exec wayvnc --config "${wayvnc_config_output_file}" ${@}
