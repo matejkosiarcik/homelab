@@ -99,7 +99,8 @@ test.describe(app.title, () => {
                     await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/web/#/home`);
                         await expect(page.locator('#indexPage.homePage')).toBeVisible();
-                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+                        // TODO: Reenable this after TVheadend
+                        // await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
                     });
                 });
             }
