@@ -39,7 +39,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM dgtlmoon/changedetection.io:0.60.9 AS final
+FROM dgtlmoon/changedetection.io:0.60.10 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
