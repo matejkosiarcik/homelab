@@ -69,7 +69,7 @@ test.describe(app.title, () => {
                         await page.goto(instance.url);
                     });
 
-                    await test.step('Validate application', async () => {
+                    await test.step('Validate application opened successfully', async () => {
                         await expect(page.locator('#tab-messages')).toBeVisible({ timeout: 5000 });
                     });
                 });

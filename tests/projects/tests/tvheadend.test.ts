@@ -50,7 +50,7 @@ test.describe.skip(app.title, () => {
                     await page.goto(instance.url);
                 });
 
-                await test.step('Validate login prompt', async () => {
+                await test.step('Validate login prompt is visible', async () => {
                     await page.waitForURL(`${instance.url}/extjs.html`);
                     await expect(page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")')).toBeVisible({ timeout: 10_000 });
                 });
@@ -81,7 +81,7 @@ test.describe.skip(app.title, () => {
                         await page.locator('.x-tab-panel-header .x-tab-extra-comp:has-text("(login)")').click({ timeout: 5000 });
                     });
 
-                    await test.step('Validate user session', async () => {
+                    await test.step('Validate user session is active', async () => {
                         await expect(page.locator(`.x-tab-panel-header .x-tab-strip-text:has-text("Logged in as ${user.username}")`)).toBeVisible({ timeout: 10_000 });
                     });
                 });

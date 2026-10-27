@@ -45,7 +45,7 @@ test.describe(app.title, () => {
                         await page.goto(instance.url);
                     });
 
-                    await test.step('Validate application', async () => {
+                    await test.step('Validate application opened successfully', async () => {
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('h1:has-text("Node Exporter")')).toBeVisible();
                         await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).toBeVisible();

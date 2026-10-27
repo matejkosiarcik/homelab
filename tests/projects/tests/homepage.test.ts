@@ -34,10 +34,10 @@ test.describe(app.title, () => {
 
                     await test.step('Login', async () => {
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('button[type="submit"]').click();
+                        await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}`);
                         await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
                     });
@@ -58,10 +58,10 @@ test.describe(app.title, () => {
 
                     await test.step('Attempt login', async () => {
                         await page.locator('input[name="password"]').fill(faker.string.alphanumeric(10));
-                        await page.locator('button[type="submit"]').click();
+                        await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('text="Invalid password. Please try again."')).toBeVisible();
                         await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent(instance.url + '/')}&error=CredentialsSignin`);
                         expect(page.url(), 'URL should contain error code').toContain('error=CredentialsSignin');

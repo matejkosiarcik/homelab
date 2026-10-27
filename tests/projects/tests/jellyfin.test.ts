@@ -22,6 +22,35 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443, 8096]);
             createFaviconTests(instance.url);
 
+            test('API: Prometheus metrics content', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'dotnet_build_info',
+                        'http_requests_received_total',
+                        'microsoft_aspnetcore_hosting_total_requests',
+                        'process_cpu_count',
+                        'system_runtime_cpu_usage',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
+            });
+
             test('API: Health endpoint', async () => {
                 const response = await test.step('Request server', async () => {
                     const response = await axios.get(`${instance.url}/health`);
@@ -59,10 +88,10 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('input#txtManualName').fill(user.username);
                         await page.locator('input#txtManualPassword').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('button[type="submit"]').click();
+                        await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/web/#/home`);
                         await expect(page.locator('#indexPage.homePage')).toBeVisible();
                         await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
@@ -95,7 +124,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type="submit"]').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

@@ -76,7 +76,7 @@ test.describe(app.title, () => {
                         await page.locator('form button[type="submit"]:has-text("Log In")').click();
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await expect(page.locator('.form-container form')).not.toBeVisible();
                         await expect(page.getByRole('heading', { name: 'Quick Stats'})).toBeVisible();
                     });
@@ -104,7 +104,7 @@ test.describe(app.title, () => {
                         await page.locator('form button[type="submit"]:has-text("Log In")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('[role="alert"]:has-text("Incorrect username or password.")')).toBeVisible();
                     });
                 });

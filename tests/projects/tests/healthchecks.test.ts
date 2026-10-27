@@ -49,6 +49,35 @@ test.describe(app.title, () => {
             createPrometheusTests(instance.url, { auth: 'bearer', path: `/projects/${getEnv(instance.url, 'PROMETHEUS_PROJECT')}/metrics`, token: getEnv(instance.url, 'API_KEY_READONLY') });
             createPrometheusTests(instance.url, { auth: 'none', path: `/projects/${getEnv(instance.url, 'PROMETHEUS_PROJECT')}/metrics/${getEnv(instance.url, 'API_KEY_READONLY')}` });
 
+            test('API: Prometheus metrics content', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/projects/${getEnv(instance.url, 'PROMETHEUS_PROJECT')}/metrics`, {
+                        headers: {
+                            Authorization: `Bearer ${getEnv(instance.url, 'API_KEY_READONLY')}`,
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'hc_check_grace',
+                        'hc_check_paused',
+                        'hc_check_started',
+                        'hc_check_up',
+                        'hc_checks_down_total',
+                        'hc_checks_total',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
+            });
+
             test('API: Status endpoint', async () => {
                 const response = await test.step('Request server', async () => {
                     const response = await axios.get(`${instance.url}/api/v3/status`);
@@ -134,10 +163,10 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('input[name="email"]').fill(user.email);
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true, timeout: 10_000 });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
                         await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
                     });
@@ -164,10 +193,10 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('input[name="email"]').fill(user.email);
                         await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                        await page.locator('button[type="submit"]:has-text("Log In")').click({ timeout: 10_000 });
+                        await page.locator('button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true, timeout: 10_000 });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await page.waitForURL(/\/accounts\/login\/?$/);
                         await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);

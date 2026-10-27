@@ -25,7 +25,7 @@ test.describe(app.title, () => {
                     await page.goto(instance.url);
                 });
 
-                await test.step('Validate application', async () => {
+                await test.step('Validate application opened successfully', async () => {
                     await expect(page.locator('text="All notifications"').first()).toBeVisible({ timeout: 5000 });
                 });
             });
@@ -54,10 +54,10 @@ test.describe(app.title, () => {
                         await page.locator('.MuiDialogContent-root input#username').fill(user.username);
                         await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                         await delay(250);
-                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ timeout: 4000 });
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ noWaitAfter: true, timeout: 4000 });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/test`);
                         await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
                     });
@@ -83,10 +83,10 @@ test.describe(app.title, () => {
                         await page.locator('.MuiDialogContent-root input#username').fill(user.username);
                         await page.locator('.MuiDialogContent-root input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
                         await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/test`);
                         await expect(page.locator('.MuiFormControl-root input[placeholder="Type a message here"]')).toBeVisible();
                     });
@@ -147,7 +147,7 @@ test.describe(app.title, () => {
                         await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.MuiDialog-container')).toContainText(`User ${user.username} not authorized`);
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

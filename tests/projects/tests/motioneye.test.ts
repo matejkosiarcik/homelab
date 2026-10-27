@@ -44,10 +44,10 @@ test.describe.skip(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('form input[name="username"]').fill(user.username);
                         await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('.button:has-text("Login")').click();
+                        await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('img.camera')).toBeVisible();
                         await expect(page.locator('.settings-top-bar .icon.settings-button')).toBeVisible();
@@ -63,10 +63,10 @@ test.describe.skip(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('form input[name="username"]').fill(user.username);
                         await page.locator('form input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('.button:has-text("Login")').click();
+                        await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/picture/1/frame/`);
                         await expect(page.locator('.admin .icon.settings-button')).not.toBeVisible();
                         await expect(page.locator('img.camera')).toBeVisible();
@@ -103,10 +103,10 @@ test.describe.skip(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('form input[name="username"]').fill(user.username);
                         await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                        await page.locator('.button:has-text("Login")').click();
+                        await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
                     });
@@ -121,10 +121,10 @@ test.describe.skip(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('form input[name="username"]').fill(user.username);
                         await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                        await page.locator('.button:has-text("Login")').click();
+                        await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await page.waitForURL(`${instance.url}/picture/1/frame/`);
                         await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
                     });

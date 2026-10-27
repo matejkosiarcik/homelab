@@ -40,7 +40,7 @@ test.describe(app.title, () => {
                         await page.goto(instance.url);
                     });
 
-                    await test.step('Validate application', async () => {
+                    await test.step('Validate application opened successfully', async () => {
                         await page.waitForURL(`${instance.url}/vnc.html`);
                         await expect(page.locator('button#noVNC_connect_button').first()).toBeVisible();
                     });

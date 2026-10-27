@@ -52,10 +52,10 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('form input[id="form.email"][type="email"]').fill(user.email);
                         await page.locator('form input[id="form.password"][type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                        await page.locator('form button:has-text("Sign in")').click();
+                        await page.locator('form button:has-text("Sign in")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/admin`);
                         await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
                         await expect(page.locator('main .fi-section-header-heading:has-text("Download")')).toBeVisible();
@@ -88,7 +88,7 @@ test.describe(app.title, () => {
                         await page.locator('form button:has-text("Sign in")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

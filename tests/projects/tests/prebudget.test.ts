@@ -45,7 +45,7 @@ test.describe(app.title, () => {
                     await expect(page.locator('button[type="submit"]:has-text("Log in")')).toBeVisible();
                 });
 
-                await test.step('Validate login', async () => {
+                await test.step('Validate successful login', async () => {
                     // TODO: Finish this step
                 });
             });

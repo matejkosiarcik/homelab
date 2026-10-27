@@ -39,10 +39,10 @@ test.describe.skip(app.title, () => {
                         await page.locator('form button:has-text("Continue")').click();
                         await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                         await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
-                        await page.locator('form button:has-text("Log in with master password")').click();
+                        await page.locator('form button:has-text("Log in with master password")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/#/vault`);
                         await page.locator('app-vault').waitFor();
                     });
@@ -72,7 +72,7 @@ test.describe.skip(app.title, () => {
                         await page.locator('form button:has-text("Log in with master password")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('bit-error:has-text("Invalid master password")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

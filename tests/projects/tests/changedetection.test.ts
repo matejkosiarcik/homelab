@@ -28,10 +28,10 @@ test.describe(app.title, () => {
 
                 await test.step('Login', async () => {
                     await page.locator('form input[type="password"][name="password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
-                    await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
+                    await page.locator('form button[type="submit"]:has-text("Login")').click({ noWaitAfter: true, timeout: 5000 });
                 });
 
-                await test.step('Validate login', async () => {
+                await test.step('Validate successful login', async () => {
                     await page.waitForURL(instance.url);
                     await expect(page.locator('#new-watch-form')).toBeVisible();
                     await expect(page.locator('table.watch-table td.last-checked').first()).toBeVisible();
@@ -50,7 +50,7 @@ test.describe(app.title, () => {
                     await page.locator('form button[type="submit"]:has-text("Login")').click({ timeout: 5000 });
                 });
 
-                await test.step('Validate login attempt', async () => {
+                await test.step('Validate unsuccessful login', async () => {
                     await page.waitForSelector('.error:has-text("Incorrect password")', { timeout: 10_000 });
                     await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login?redirect=/`);
                 });

@@ -84,10 +84,10 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('.login-form input[placeholder^="Username"]').fill(user.username);
                         await page.locator('.login-form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('.login-form a.button-button[title="Log in"]').click();
+                        await page.locator('.login-form a.button-button[title="Log in"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/#/dashboardGlobal`);
                         await expect(page.locator('text="Site List"')).toBeVisible();
                         await expect(page.locator('text="Home"')).toBeVisible();
@@ -119,7 +119,7 @@ test.describe(app.title, () => {
                         await page.locator('.login-form a.button-button[title="Log in"]').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.error-tips-content:has-text("Invalid username or password.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

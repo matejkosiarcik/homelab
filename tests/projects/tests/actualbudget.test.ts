@@ -31,10 +31,10 @@ test.describe(app.title, () => {
 
                 await test.step('Login', async () => {
                     await page.locator('input[type="password"][placeholder="Password"]').fill(getEnv(instance.url, 'ADMIN_PASSWORD'));
-                    await page.locator('button[type="button"]:has-text("Sign in")').click();
+                    await page.locator('button[type="button"]:has-text("Sign in")').click({ noWaitAfter: true });
                 });
 
-                await test.step('Validate login', async () => {
+                await test.step('Validate successful login', async () => {
                     await page.waitForURL(instance.url);
                     await expect(page.locator('#root:has-text("Files")')).toBeVisible();
                     await expect(page.locator('button:has-text("Create new file")')).toBeVisible();
@@ -52,7 +52,7 @@ test.describe(app.title, () => {
                     await page.locator('button[type="button"]:has-text("Sign in")').click();
                 });
 
-                await test.step('Validate login attempt', async () => {
+                await test.step('Validate unsuccessful login', async () => {
                     await page.waitForSelector('text="Invalid password"', { timeout: 6000 });
                     await expect(page, 'URL should not change').toHaveURL(`${instance.url}/login`);
                 });

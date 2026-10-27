@@ -169,7 +169,7 @@ test.describe(app.title, () => {
                             await page.locator('button[type="submit"]').click();
                         });
 
-                        await test.step('Validate login', async () => {
+                        await test.step('Validate successful login', async () => {
                             await expect(page.locator('#app-sidebar')).toBeVisible();
                             expect(page.url()).toStrictEqual(runWispUrl);
                         });
@@ -194,7 +194,7 @@ test.describe(app.title, () => {
                             await page.locator('button[type="submit"]').click();
                         });
 
-                        await test.step('Validate login attempt', async () => {
+                        await test.step('Validate unsuccessful login', async () => {
                             await expect(page.locator('text="Invalid password. Please try again."')).toBeVisible();
                             await expect(page.locator('#app-sidebar')).not.toBeVisible();
                             expect(page.url()).toStrictEqual(runWispUrl);

@@ -46,7 +46,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type=submit]').click();
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await expect(page.locator('button[aria-label="Profile"]')).toBeVisible({ timeout: 6000 });
                     });
                 });
@@ -77,7 +77,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type=submit]').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.login-content-box:has-text("Login failed")')).toBeVisible();
                         await expect(page.locator('.login-content-box:has-text("Invalid username or password")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
