@@ -43,7 +43,7 @@ test.describe(app.title, () => {
                         await page.locator('form#login-form button[type="submit"]:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/#/`);
                         await expect(page.locator('form#login-form')).not.toBeVisible();
                         await expect(page.getByRole('heading', { name: 'All Messages'})).toBeVisible();
@@ -75,7 +75,7 @@ test.describe(app.title, () => {
                         await page.locator('form#login-form button[type="submit"]:has-text("Login")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('#notistack-snackbar:has-text("Login failed")')).toBeVisible();
                     });
                 });

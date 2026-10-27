@@ -55,7 +55,7 @@ test.describe(app.title, () => {
                         await page.locator('form button:has-text("Sign in")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/admin`);
                         await expect(page.locator('header h1:has-text("Dashboard")')).toBeVisible();
                         await expect(page.locator('main .fi-section-header-heading:has-text("Download")')).toBeVisible();
@@ -88,7 +88,7 @@ test.describe(app.title, () => {
                         await page.locator('form button:has-text("Sign in")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.fi-fo-field-wrp-error-message:has-text("These credentials do not match our records.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

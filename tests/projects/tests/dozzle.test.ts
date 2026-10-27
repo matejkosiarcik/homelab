@@ -42,7 +42,7 @@ test.describe(app.title, () => {
                         await page.locator('form button[type="submit"]:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(instance.url);
                         await expect(page.locator('a[href^="/container/"]').first()).toBeVisible();
                     });
@@ -71,7 +71,7 @@ test.describe(app.title, () => {
                         await page.locator('form button[type="submit"]:has-text("Login")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await page.waitForSelector('.text-error:has-text("Username or password are not valid")', { timeout: 10_000 });
                         await expect(page).toHaveURL(`${instance.url}/login?redirectUrl=${encodeURIComponent('/')}`);
                     });

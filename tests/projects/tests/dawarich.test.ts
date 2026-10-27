@@ -38,7 +38,7 @@ test.describe(app.title, () => {
                         await page.locator('input[type="submit"][value="Log in"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/map/v2`);
                         await expect(page.locator('#maps-maplibre-container')).toBeVisible();
                     });
@@ -66,7 +66,7 @@ test.describe(app.title, () => {
                         await page.locator('input[type="submit"][value="Log in"]').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('#flash-messages')).toContainText('Invalid email or password.');
                         await expect(page, 'URL Should not change').toHaveURL(`${instance.url}/users/sign_in`);
                     });

@@ -47,7 +47,7 @@ test.describe.skip(app.title, () => {
                         await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('img.camera')).toBeVisible();
                         await expect(page.locator('.settings-top-bar .icon.settings-button')).toBeVisible();
@@ -66,7 +66,7 @@ test.describe.skip(app.title, () => {
                         await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/picture/1/frame/`);
                         await expect(page.locator('.admin .icon.settings-button')).not.toBeVisible();
                         await expect(page.locator('img.camera')).toBeVisible();
@@ -106,7 +106,7 @@ test.describe.skip(app.title, () => {
                         await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
                     });
@@ -124,7 +124,7 @@ test.describe.skip(app.title, () => {
                         await page.locator('.button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await page.waitForURL(`${instance.url}/picture/1/frame/`);
                         await expect(page.locator('.login-dialog-error:has-text("Invalid credentials.")')).toBeVisible();
                     });

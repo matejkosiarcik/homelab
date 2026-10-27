@@ -69,7 +69,7 @@ test.describe(app.title, () => {
                         await page.goto(instance.url);
                     });
 
-                    await test.step('Validate application', async () => {
+                    await test.step('Validate application opened successfully', async () => {
                         await expect(page.locator('#root header:has-text("Prometheus")')).toBeVisible({ timeout: 10_000 });
                         await expect(page.locator('#root header a:has-text("Query")')).toBeVisible();
                         await expect(page.locator('#root header a:has-text("Alerts")')).toBeVisible();

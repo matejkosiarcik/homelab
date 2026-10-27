@@ -62,7 +62,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/web/#/home`);
                         await expect(page.locator('#indexPage.homePage')).toBeVisible();
                         await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
@@ -95,7 +95,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type="submit"]').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.toast:has-text("Invalid username or password.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

@@ -41,7 +41,7 @@ test.describe(app.title, () => {
                         await page.locator('form button[type="submit"]:has-text("Sign in")').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/`);
                         await expect(page.locator('section[aria-label*="Notifications"] [data-content]:has-text("You\'re now logged in.")')).toBeVisible();
                         await expect(page.locator('#chat-input')).toBeVisible();
@@ -71,7 +71,7 @@ test.describe(app.title, () => {
                         await page.locator('form button[type="submit"]:has-text("Sign in")').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('section[aria-label*="Notifications"] [data-content]:has-text("The email or password provided is incorrect. Please check for typos and try logging in again.")')).toBeVisible();
                     });
                 });

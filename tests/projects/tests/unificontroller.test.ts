@@ -73,7 +73,7 @@ test.describe(app.title, () => {
                         await page.locator('button#loginButton').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/manage/default/dashboard`, { timeout: 30_000 });
                         await expect(page.locator('[data-testid="header_usericon"]')).toBeVisible({ timeout: 20_000 });
                         await expect(page.locator('a[data-testid="navigation-dashboard"]')).toBeVisible({ timeout: 20_000 });
@@ -105,7 +105,7 @@ test.describe(app.title, () => {
                         await page.locator('button#loginButton').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.appInfoBox--danger:has-text("Invalid username and/or password.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

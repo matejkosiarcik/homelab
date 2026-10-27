@@ -42,7 +42,7 @@ test.describe(app.title, () => {
                         await page.goto(instance.url);
                     });
 
-                    await test.step('Validate application', async () => {
+                    await test.step('Validate application opened successfully', async () => {
                         await page.waitForURL(`${instance.url}/#lang=eng`);
                         await expect(page.locator('.book__list .book').first()).toBeVisible();
                     });

@@ -40,7 +40,7 @@ test.describe(app.title, () => {
                         await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await expect(page.locator('aside li .project-menu-title:has-text("Inbox")')).toBeVisible();
                     });
                 });
@@ -81,7 +81,7 @@ test.describe(app.title, () => {
                         }
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

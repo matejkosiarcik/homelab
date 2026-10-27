@@ -199,7 +199,7 @@ test.describe(app.title, () => {
                         await page.locator('button#do-login[type="submit"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url.ui}/browser/*`);
                         await expect(page.locator('#root .menuItems')).toBeVisible();
                         await expect(page.locator('main.mainPage .page-header:has-text("Object Browser")')).toBeVisible();
@@ -230,7 +230,7 @@ test.describe(app.title, () => {
                         await page.locator('button#do-login[type="submit"]').click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('.messageTruncation:has-text("invalid Login.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

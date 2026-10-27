@@ -76,7 +76,7 @@ test.describe(app.title, () => {
                         await page.getByRole('button', { name: 'Log in', exact: true }).click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/home/overview`);
                         await expect(page.locator('home-assistant')).toBeVisible();
                         await expect(page.locator('ha-sidebar')).toBeVisible();
@@ -109,7 +109,7 @@ test.describe(app.title, () => {
                         await page.getByRole('button', { name: 'Log in', exact: true }).click();
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('ha-alert[alert-type="error"]:has-text("Invalid username or password")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
                     });

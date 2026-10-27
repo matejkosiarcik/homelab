@@ -37,7 +37,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}`);
                         await expect(page.locator('ul.services-list li.service').first()).toBeVisible();
                     });
@@ -61,7 +61,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await expect(page.locator('text="Invalid password. Please try again."')).toBeVisible();
                         await page.waitForURL(`${instance.url}/auth/signin?callbackUrl=${encodeURIComponent(instance.url + '/')}&error=CredentialsSignin`);
                         expect(page.url(), 'URL should contain error code').toContain('error=CredentialsSignin');

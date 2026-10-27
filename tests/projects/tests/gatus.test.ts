@@ -45,7 +45,7 @@ test.describe(app.title, () => {
                         await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 20_000 });
                     });
 
-                    await test.step('Validate application', async () => {
+                    await test.step('Validate application opened successfully', async () => {
                         await expect(page.locator('#app .endpoint-group').first()).toBeVisible();
                     });
                 });

@@ -183,7 +183,7 @@ test.describe(app.title, () => {
                     await page.locator('form#loginform button[type="submit"]').click({ noWaitAfter: true, timeout: 5000 });
                 });
 
-                await test.step('Validate login', async () => {
+                await test.step('Validate successful login', async () => {
                     await page.waitForURL(/\/admin(?:\/?|\/index\.php)$/);
                     await expect(page.locator('aside.main-sidebar li a:has-text("Dashboard")')).toBeVisible();
                     await expect(page.locator('.content-wrapper #total_queries')).toBeVisible();
@@ -203,7 +203,7 @@ test.describe(app.title, () => {
                     await page.locator('form#loginform button[type="submit"]').click();
                 });
 
-                await test.step('Validate login attempt', async () => {
+                await test.step('Validate unsuccessful login', async () => {
                     await page.waitForSelector('#error-message:has-text("Wrong password!")', { timeout: 10_000 });
                     await expect(page, 'URL should not change').toHaveURL(originalUrl);
                 });

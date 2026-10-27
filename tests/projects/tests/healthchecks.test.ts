@@ -137,7 +137,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true, timeout: 10_000 });
                     });
 
-                    await test.step('Validate login', async () => {
+                    await test.step('Validate successful login', async () => {
                         await page.waitForURL(/\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/checks\/?$/);
                         await expect(page.locator('table#checks-table .checks-row').first()).toBeVisible();
                     });
@@ -167,7 +167,7 @@ test.describe(app.title, () => {
                         await page.locator('button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true, timeout: 10_000 });
                     });
 
-                    await test.step('Validate login attempt', async () => {
+                    await test.step('Validate unsuccessful login', async () => {
                         await page.waitForURL(/\/accounts\/login\/?$/);
                         await expect(page.locator('.text-danger:has-text("Incorrect email or password.")')).toBeVisible();
                         await expect(page, 'URL should not change').toHaveURL(originalUrl);
