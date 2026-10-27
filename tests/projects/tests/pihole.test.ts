@@ -102,7 +102,7 @@ test.describe(app.title, () => {
                         await test.step.soft(`Check <random>.matejhome.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const domain = `${faker.string.alpha(10)}.matejhome.com`;
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
-                            expect(ips, 'Domain should not be resolved').toHaveLength(0);
+                            expect(ips, 'Domain <random>.matejhome.com should not be resolved').toHaveLength(0);
                         });
                     }
                 }
