@@ -30,7 +30,20 @@ app.use(async (request: Request, response: Response) => {
         }
 
         const root = path.join('/', 'homelab', 'www');
-        const filepath = path.join(root, ...request.path.split(/\//));
+        let requestedPath: string;
+        try {
+            requestedPath = decodeURIComponent(request.path);
+        } catch {
+            response.sendStatus(400);
+            return;
+        }
+
+        const filepath = path.resolve(root, `.${requestedPath}`);
+        const relativePath = path.relative(root, filepath);
+        if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+            response.sendStatus(403);
+            return;
+        }
         Log.info(`Request filepath: ${filepath}`);
         if (!fs.existsSync(filepath)) {
             response.sendStatus(404);
