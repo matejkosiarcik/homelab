@@ -149,7 +149,7 @@ test.describe(app.title, () => {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step.soft(`Check example.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
-                            if (instance.title.toLowerCase().includes('blackhole') || instance.title.toLowerCase().endsWith(' internal')) {
+                            if (['blackhole', 'internal'].some((el) => instance.title.toLowerCase().includes(el))) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
                                 const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
                                 expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
