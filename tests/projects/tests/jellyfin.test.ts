@@ -22,6 +22,35 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443, 8096]);
             createFaviconTests(instance.url);
 
+            test('API: Prometheus metrics content', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'dotnet_build_info',
+                        'http_requests_received_total',
+                        'microsoft_aspnetcore_hosting_total_requests',
+                        'process_cpu_count',
+                        'system_runtime_cpu_usage',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
+            });
+
             test('API: Health endpoint', async () => {
                 const response = await test.step('Request server', async () => {
                     const response = await axios.get(`${instance.url}/health`);
