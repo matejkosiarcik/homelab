@@ -36,7 +36,7 @@ RUN sh '/homelab/create-user.sh' && \
 
 FROM scratch AS homelab_dir
 WORKDIR /homelab
-COPY --from=pihole_exporter_app /root/pihole-exporter /homelab/bin/
+COPY --from=pihole_exporter_app /app/pihole-exporter /homelab/bin/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
