@@ -40,9 +40,14 @@ test.describe(app.title, () => {
                     const lines = content.split('\n');
                     const metrics = [
                         'dotnet_build_info',
-                        'http_requests_received_total',
-                        'microsoft_aspnetcore_hosting_total_requests',
+                        'dotnet_contention_total',
                         'process_cpu_count',
+                        'process_cpu_seconds_total',
+                        'process_num_threads',
+                        'prometheus_net_metric_families',
+                        'system_net_http_current_requests',
+                        'system_net_http_requests_failed',
+                        'system_net_http_requests_started',
                         'system_runtime_cpu_usage',
                     ];
                     for (const metric of metrics) {

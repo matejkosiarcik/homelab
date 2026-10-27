@@ -347,38 +347,6 @@ endpoints:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}
 
-  - <<: *default_https_infrequent
-    name: HTTPS /favicon.ico - {{ item.full_name_pretty }}
-    group: App - {{ item.full_name_pretty }}
-    url: https://{{ item.domain }}/favicon.ico
-    {% if item.gatus.insecure | default(false) %}client:
-      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
-    {{- is_enabled(item) }}
-
-  - <<: *default_http_infrequent
-    name: HTTP /favicon.ico - {{ item.full_name_pretty }}
-    group: App - {{ item.full_name_pretty }}
-    url: https://{{ item.domain }}/favicon.ico
-    {% if item.gatus.insecure | default(false) %}client:
-      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
-    {{- is_enabled(item) }}
-
-  - <<: *default_https_infrequent
-    name: HTTPS /favicon.png - {{ item.full_name_pretty }}
-    group: App - {{ item.full_name_pretty }}
-    url: https://{{ item.domain }}/favicon.png
-    {% if item.gatus.insecure | default(false) %}client:
-      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
-    {{- is_enabled(item) }}
-
-  - <<: *default_http_infrequent
-    name: HTTP /favicon.png - {{ item.full_name_pretty }}
-    group: App - {{ item.full_name_pretty }}
-    url: https://{{ item.domain }}/favicon.png
-    {% if item.gatus.insecure | default(false) %}client:
-      insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
-    {{- is_enabled(item) }}
-
   {%- if item.gatus.endpoints is defined %}
   {%- for endpoint in item.gatus.endpoints %}
 
