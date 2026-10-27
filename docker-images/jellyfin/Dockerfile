@@ -4,7 +4,7 @@
 
 ### App ###
 
-FROM jellyfin/jellyfin:12.3 AS favicon
+FROM jellyfin/jellyfin:12.4 AS favicon
 USER root
 RUN find '/jellyfin/jellyfin-web' -name 'favicon.*.ico' -type f -maxdepth 1 -exec cp {} '/jellyfin/jellyfin-web/favicon.ico' \; && \
     if [ ! -f '/jellyfin/jellyfin-web/favicon.ico' ]; then \
@@ -58,7 +58,7 @@ COPY --from=favicon /jellyfin/jellyfin-web/favicon.ico /fsroot/favicon/favicon.i
 
 ### Final ###
 
-FROM jellyfin/jellyfin:12.3 AS final
+FROM jellyfin/jellyfin:12.4 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
