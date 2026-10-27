@@ -82,7 +82,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     git fetch --tags && \
     tag="$(git tag --sort=-creatordate | head -n 1)" && \
     tmpdir="$(mktemp -d)" && \
-    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/curl-linux-x86_64-glibc-${tag}.tar.xz" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/curl-linux-$(uname -m)-glibc-${tag}.tar.xz" && \
     mkdir -p "${tmpdir}/curl.d" && \
     tar -xJf "${tmpdir}/curl.tar.xz" -C "${tmpdir}/curl.d" && \
     mkdir -p '/homelab/bin' && \

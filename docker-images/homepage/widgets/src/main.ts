@@ -7,10 +7,14 @@ import { Log } from './log.ts';
 if (fs.existsSync('.env')) {
     dotevn.config({ path: '.env', quiet: true });
 }
-if (!process.env['PROMETHEUS_PASSWORD']) {
-    Log.error('PROMETHEUS_PASSWORD unset!');
-    process.exit(1);
+
+for (const envName of ['PROMETHEUS_PASSWORD', 'SMTP4DEV_PASSWORD']) {
+    if (!process.env[envName]) {
+        Log.error(`Env ${envName} unset!`);
+        process.exit(1);
+    }
 }
+
 const app = express();
 
 // Healthcheck
@@ -40,6 +44,7 @@ type Smtp4devResponse = {
     firstRowOnPage: number,
     lastRowOnPage: number,
 };
+
 app.get('/smtp4dev', async (_: Request, response: Response) => {
     try {
         const axiosResponse = await axios.get('https://smtp4dev.matejhome.com/api/messages?page=1&pageSize=100', {

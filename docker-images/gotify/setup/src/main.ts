@@ -145,7 +145,6 @@ async function syncUsers() {
             ...serverUser,
             pass: localUser.pass,
         }
-        Log.info('User:', editUser);
         await (async () => {
             Log.info(`Updating user ${serverUser.name}`);
             const response = await axios.post(`/user/${serverUser.id}`, editUser);
