@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM ekofr/pihole-exporter:v1.2.0 AS pihole_exporter_app
+FROM ekofr/pihole-exporter:v1.3.0 AS pihole_exporter_app
 USER root
 
 ### Healthcheck ###
@@ -36,7 +36,7 @@ RUN sh '/homelab/create-user.sh' && \
 
 FROM scratch AS homelab_dir
 WORKDIR /homelab
-COPY --from=pihole_exporter_app /root/pihole-exporter /homelab/bin/
+COPY --from=pihole_exporter_app /app/pihole-exporter /homelab/bin/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
