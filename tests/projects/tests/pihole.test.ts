@@ -200,7 +200,7 @@ test.describe(app.title, () => {
 
                 await test.step('Attempt login', async () => {
                     await page.locator('form#loginform input[type="password"]').fill(faker.string.alpha(10));
-                    await page.locator('form#loginform button[type="submit"]').click();
+                    await page.locator('form#loginform button[type="submit"]').click({ noWaitAfter: true });
                 });
 
                 await test.step('Validate unsuccessful login', async () => {

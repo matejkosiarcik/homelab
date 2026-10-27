@@ -106,7 +106,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('form input[name="username"]').fill(user.username);
                         await page.locator('form input[name="password"]').fill(faker.string.alpha(10));
-                        await page.getByRole('button', { name: 'Log in', exact: true }).click();
+                        await page.getByRole('button', { name: 'Log in', exact: true }).click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {

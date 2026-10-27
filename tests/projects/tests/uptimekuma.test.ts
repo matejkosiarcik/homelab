@@ -73,7 +73,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('form input[autocomplete="username"]').fill(user.username);
                         await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                        await page.locator('form button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate successful login', async () => {
@@ -101,7 +101,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('form input[autocomplete="username"]').fill(user.username);
                         await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
-                        await page.locator('form button[type="submit"]:has-text("Log In")').click();
+                        await page.locator('form button[type="submit"]:has-text("Log In")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {

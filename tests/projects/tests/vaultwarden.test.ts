@@ -36,7 +36,7 @@ test.describe.skip(app.title, () => {
 
                     await test.step('Login', async () => {
                         await page.locator('form input[type="email"]').fill(user.email);
-                        await page.locator('form button:has-text("Continue")').click();
+                        await page.locator('form button:has-text("Continue")').click({ noWaitAfter: true });
                         await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                         await page.locator('form input[type="password"]').fill(getEnv(instance.url, `${user.email.split('@')[0]}_PASSWORD`));
                         await page.locator('form button:has-text("Log in with master password")').click({ noWaitAfter: true });
@@ -66,10 +66,10 @@ test.describe.skip(app.title, () => {
 
                     await test.step('Attempt login', async () => {
                         await page.locator('form input[type="email"]').fill(user.email);
-                        await page.locator('form button:has-text("Continue")').click();
+                        await page.locator('form button:has-text("Continue")').click({ noWaitAfter: true });
                         await page.locator('form input[type="password"]').waitFor({ state: 'visible', timeout: 2000 });
                         await page.locator('form input[type="password"]').fill(faker.string.alpha(10));
-                        await page.locator('form button:has-text("Log in with master password")').click();
+                        await page.locator('form button:has-text("Log in with master password")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {

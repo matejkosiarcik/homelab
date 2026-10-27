@@ -26,7 +26,7 @@ prometheus:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-    - 0.0.0.0/0
+    - 172.16.0.0/12
 
 # binary_sensor:
 #   - unique_id: light_desklamp_left_status

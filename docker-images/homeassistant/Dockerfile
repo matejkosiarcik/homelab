@@ -49,6 +49,7 @@ COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
+COPY ./docker-images/homeassistant/configuration.yaml /fsroot/configuration.yaml
 
 ### Final ###
 
@@ -60,6 +61,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/init /
+COPY --from=prefinal --chown=homelab:homelab /fsroot/configuration.yaml /
 ENV HOMELAB_CONTAINER_NAME="homeassistant" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"

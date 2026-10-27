@@ -99,7 +99,8 @@ test.describe(app.title, () => {
                     await test.step('Validate successful login', async () => {
                         await page.waitForURL(`${instance.url}/web/#/home`);
                         await expect(page.locator('#indexPage.homePage')).toBeVisible();
-                        await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
+                        // TODO: Re-enable this after TVheadend
+                        // await expect(page.locator('a[aria-label="Live TV"]')).toBeVisible();
                     });
                 });
             }
@@ -126,7 +127,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('input#txtManualName').fill(user.username);
                         await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
-                        await page.locator('button[type="submit"]').click();
+                        await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {

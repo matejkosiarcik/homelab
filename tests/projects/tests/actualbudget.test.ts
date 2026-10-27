@@ -49,7 +49,7 @@ test.describe(app.title, () => {
 
                 await test.step('Attempt login', async () => {
                     await page.locator('input[type="password"][placeholder="Password"]').fill(faker.string.alpha(10));
-                    await page.locator('button[type="button"]:has-text("Sign in")').click();
+                    await page.locator('button[type="button"]:has-text("Sign in")').click({ noWaitAfter: true });
                 });
 
                 await test.step('Validate unsuccessful login', async () => {
