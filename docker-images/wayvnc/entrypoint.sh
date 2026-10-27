@@ -21,11 +21,11 @@ log() {
     done >&2
 }
 
-config_input_file='/homelab/config.txt'
-config_output_file='/homelab/tmpfs/config.txt'
+wayvnc_config_input_file='/homelab/config.txt'
+wayvnc_config_output_file='/homelab/tmpfs/config.txt'
 
-envsubst -no-digit -no-unset -no-empty -i "${config_input_file}" -o "${config_output_file}" || {
-    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_input_file}" "${config_output_file}")"
+envsubst -no-digit -no-unset -no-empty -i "${wayvnc_config_input_file}" -o "${wayvnc_config_output_file}" || {
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${wayvnc_config_input_file}" "${wayvnc_config_output_file}")"
     exit 1
 }
 
