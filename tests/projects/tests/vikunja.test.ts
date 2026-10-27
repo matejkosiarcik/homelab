@@ -37,7 +37,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('form#loginform input#username').fill(user.username);
                         await page.locator('form#loginform input#password').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
+                        await page.locator('form#loginform button[type="button"]:has-text("Login")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate successful login', async () => {
@@ -69,7 +69,7 @@ test.describe(app.title, () => {
                         for (let i = 0; i < 2; i++) {
                             await page.locator('form#loginform input#username').fill(user.username);
                             await page.locator('form#loginform input#password').fill(faker.string.alphanumeric(10));
-                            await page.locator('form#loginform button[type="button"]:has-text("Login")').click();
+                            await page.locator('form#loginform button[type="button"]:has-text("Login")').click({ noWaitAfter: true });
 
                             try {
                                 await expect(page.locator('.message:has-text("Wrong username or password.")')).toBeVisible();

@@ -166,7 +166,7 @@ test.describe(app.title, () => {
                         await test.step('Login', async () => {
                             await expect(page.locator('#app-sidebar')).not.toBeVisible();
                             await page.locator('input[name="password"]').fill(getEnv(instance.url, `RUNWISP_${user.username}_PASSWORD`));
-                            await page.locator('button[type="submit"]').click();
+                            await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                         });
 
                         await test.step('Validate successful login', async () => {
@@ -191,7 +191,7 @@ test.describe(app.title, () => {
                             await page.locator('input[name="password"]').fill(faker.string.alphanumeric(10));
                             await expect(page.locator('#app-sidebar')).not.toBeVisible();
                             await expect(page.locator('text="Invalid password. Please try again."')).not.toBeVisible();
-                            await page.locator('button[type="submit"]').click();
+                            await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                         });
 
                         await test.step('Validate unsuccessful login', async () => {

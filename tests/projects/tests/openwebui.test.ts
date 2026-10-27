@@ -68,7 +68,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('form input#email').fill(user.email);
                         await page.locator('form input#password').fill(faker.string.alpha(10));
-                        await page.locator('form button[type="submit"]:has-text("Sign in")').click();
+                        await page.locator('form button[type="submit"]:has-text("Sign in")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {

@@ -127,7 +127,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('input#txtManualName').fill(user.username);
                         await page.locator('input#txtManualPassword').fill(faker.string.alpha(10));
-                        await page.locator('button[type="submit"]').click();
+                        await page.locator('button[type="submit"]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {

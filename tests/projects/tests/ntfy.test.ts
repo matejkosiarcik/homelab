@@ -44,10 +44,10 @@ test.describe(app.title, () => {
                         await delay(2500); // Must delay tests a bit
                         await page.goto(instance.url);
                         await waitForHidden(page.locator('#splash'));
-                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
+                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click({ noWaitAfter: true });
                         await page.locator('.MuiDialogContent-root input#topic').fill('test');
                         await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
+                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Login', async () => {
@@ -73,10 +73,10 @@ test.describe(app.title, () => {
                         await delay(2500); // Must delay tests a bit
                         await page.goto(instance.url);
                         await waitForHidden(page.locator('#splash'));
-                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
+                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click({ noWaitAfter: true });
                         await page.locator('.MuiDialogContent-root input#topic').fill('test');
                         await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
+                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Login', async () => {
@@ -111,7 +111,7 @@ test.describe(app.title, () => {
                     });
 
                     await test.step('Dismiss notification', async () => {
-                        await notificationItem.getByRole('button', { name: 'Delete' }).click();
+                        await notificationItem.getByRole('button', { name: 'Delete' }).click({ noWaitAfter: true });
                         await expect(notificationItem).not.toBeVisible();
                     });
                 });
@@ -133,10 +133,10 @@ test.describe(app.title, () => {
                         await page.goto(instance.url);
                         await waitForHidden(page.locator('#splash'));
                         const loginUrl = page.url();
-                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click();
+                        await page.getByRole('button', { name: 'Subscribe to topic', exact: true }).click({ noWaitAfter: true });
                         await page.locator('.MuiDialogContent-root input#topic').fill('test');
                         await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click();
+                        await page.locator('.MuiDialogActions-root button:has-text("Subscribe")').click({ noWaitAfter: true });
                         return loginUrl;
                     });
 
@@ -144,7 +144,7 @@ test.describe(app.title, () => {
                         await page.locator('.MuiDialogContent-root input#username').fill(user.username);
                         await page.locator('.MuiDialogContent-root input#password').fill(faker.string.alpha(10));
                         await delay(100);
-                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click();
+                        await page.locator('.MuiDialogActions-root button:has-text("Login")').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {

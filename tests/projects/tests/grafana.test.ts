@@ -43,7 +43,7 @@ test.describe(app.title, () => {
                     await test.step('Login', async () => {
                         await page.locator('input[name="user"]').fill(user.username);
                         await page.locator('input[name="password"]').fill(getEnv(instance.url, `${user.username}_PASSWORD`));
-                        await page.locator('button[type=submit]').click();
+                        await page.locator('button[type=submit]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate successful login', async () => {
@@ -74,7 +74,7 @@ test.describe(app.title, () => {
                     await test.step('Attempt login', async () => {
                         await page.locator('input[name="user"]').fill(user.username);
                         await page.locator('input[name="password"]').fill(faker.string.alpha(10));
-                        await page.locator('button[type=submit]').click();
+                        await page.locator('button[type=submit]').click({ noWaitAfter: true });
                     });
 
                     await test.step('Validate unsuccessful login', async () => {
