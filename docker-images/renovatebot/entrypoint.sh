@@ -22,11 +22,11 @@ log() {
     done >&2
 }
 
-config_input_file='/homelab/runwisp.toml'
-config_output_file='/homelab/tmpfs/runwisp.toml'
+runwisp_config_input_file='/homelab/runwisp.toml'
+runwisp_config_output_file='/homelab/tmpfs/runwisp.toml'
 
-envsubst -no-digit -no-unset -no-empty -i "${config_input_file}" -o "${config_output_file}" || {
-    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_input_file}" "${config_output_file}")"
+envsubst -no-digit -no-unset -no-empty -i "${runwisp_config_input_file}" -o "${runwisp_config_output_file}" || {
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${runwisp_config_input_file}" "${runwisp_config_output_file}")"
     exit 1
 }
 
