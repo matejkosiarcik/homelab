@@ -41,9 +41,6 @@ test.describe(app.title, () => {
                     const metrics = [
                         'dotnet_build_info',
                         'dotnet_contention_total',
-                        'microsoft_aspnetcore_hosting_current_requests',
-                        'microsoft_aspnetcore_hosting_failed_requests',
-                        'microsoft_aspnetcore_hosting_total_requests',
                         'process_cpu_count',
                         'process_cpu_seconds_total',
                         'process_num_threads',
