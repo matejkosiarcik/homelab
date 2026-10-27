@@ -85,7 +85,7 @@ su --shell='/bin/sh' --command="/bin/sh -c 'rm -f \"${samba_config_temporary_fil
 printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c "${samba_config_output_file}" -a "${SAMBA_USERNAME}"
 
 # Test config is valid before starting
-testparm -s "${config_output_file}" || {
+testparm -s "${samba_config_output_file}" || {
     log ERROR "$(printf 'Program "testparm -s" failed with status %s. Review samba config.' "${?}")"
     exit 1
 }
