@@ -155,7 +155,7 @@ FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
-COPY ./docker-images/renovatebot/config.js /usr/src/app/config.js
+COPY ./docker-images/renovatebot/config.js ./docker-images/renovatebot/test-config.js /usr/src/app/
 
 ### Final ###
 
@@ -167,7 +167,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab '/usr/src/app' '/home/ubuntu'
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-COPY --from=prefinal --chown=homelab:homelab /usr/src/app/config.js /usr/src/app/
+COPY --from=prefinal --chown=homelab:homelab /usr/src/app/config.js /usr/src/app/test-config.js /usr/src/app/
 ENV HOMELAB_CONTAINER_NAME="renovatebot" \
     HOMELAB_CONTAINER_VARIANT="default" \
     HOMELAB_CRON_TIMEOUT="30m" \

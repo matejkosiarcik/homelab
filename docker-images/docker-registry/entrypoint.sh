@@ -21,13 +21,13 @@ log() {
     done >&2
 }
 
-config_input_file='/homelab/config.yml'
-config_output_file='/homelab/tmpfs/config.yml'
+registry_config_input_file='/homelab/config.yml'
+registry_config_output_file='/homelab/tmpfs/config.yml'
 
-envsubst -no-digit -no-unset -no-empty -i "${config_input_file}" -o "${config_output_file}" || {
-    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_input_file}" "${config_output_file}")"
+envsubst -no-digit -no-unset -no-empty -i "${registry_config_input_file}" -o "${registry_config_output_file}" || {
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${registry_config_input_file}" "${registry_config_output_file}")"
     exit 1
 }
 
 # Start
-exec registry serve "${config_output_file}"
+exec registry serve "${registry_config_output_file}"

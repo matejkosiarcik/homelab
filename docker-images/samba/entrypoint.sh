@@ -68,24 +68,24 @@ start_log_forwarder "${samba_smbd_logfile_original}" "${samba_smbd_logfile_out}"
 start_log_forwarder "${samba_statusd_logfile_original}" "${samba_statusd_logfile_out}"
 start_log_forwarder "${samba_exporter_logfile_original}" "${samba_exporter_logfile_out}"
 
-config_input_file='/homelab/smb.conf'
-config_output_file='/homelab/tmpfs/smb.conf'
-config_temporary_file="${config_output_file}.tmp"
+samba_config_input_file='/homelab/smb.conf'
+samba_config_output_file='/homelab/tmpfs/smb.conf'
+samba_config_temporary_file="${samba_config_output_file}.tmp"
 
-su --shell='/bin/sh' --command="/bin/sh -c 'envsubst -no-digit -no-unset -no-empty -i \"${config_input_file}\" -o \"${config_temporary_file}\"'" 'homelab' || {
-    rm -f "${config_temporary_file}"
-    log ERROR "$(printf 'An error happened during processing of %s to %s' "${config_input_file}" "${config_output_file}")"
+su --shell='/bin/sh' --command="/bin/sh -c 'envsubst -no-digit -no-unset -no-empty -i \"${samba_config_input_file}\" -o \"${samba_config_temporary_file}\"'" 'homelab' || {
+    rm -f "${samba_config_temporary_file}"
+    log ERROR "$(printf 'An error happened during processing of %s to %s' "${samba_config_input_file}" "${samba_config_output_file}")"
     exit 1
 }
 
-su --shell='/bin/sh' --command="/bin/sh -c 'install --mode=0444 \"${config_temporary_file}\" \"${config_output_file}\"'" 'homelab'
-su --shell='/bin/sh' --command="/bin/sh -c 'rm -f \"${config_temporary_file}\"'" 'homelab'
+su --shell='/bin/sh' --command="/bin/sh -c 'install --mode=0444 \"${samba_config_temporary_file}\" \"${samba_config_output_file}\"'" 'homelab'
+su --shell='/bin/sh' --command="/bin/sh -c 'rm -f \"${samba_config_temporary_file}\"'" 'homelab'
 
 # Generate user password
-printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c "${config_output_file}" -a "${SAMBA_USERNAME}"
+printf '%s\n%s\n' "${SAMBA_PASSWORD}" "${SAMBA_PASSWORD}" | smbpasswd -s -c "${samba_config_output_file}" -a "${SAMBA_USERNAME}"
 
 # Test config is valid before starting
-testparm -s "${config_output_file}" || {
+testparm -s "${samba_config_output_file}" || {
     log ERROR "$(printf 'Program "testparm -s" failed with status %s. Review samba config.' "${?}")"
     exit 1
 }
@@ -95,4 +95,4 @@ testparm -s "${config_output_file}" || {
 (sleep 2 && nohup '/homelab/bin/samba_exporter' -log-file-path "${samba_exporter_logfile_original}" -log-level Information -not-expose-pid-data) &
 
 # Start samba
-exec smbd --foreground --no-process-group --configfile="${config_output_file}"
+exec smbd --foreground --no-process-group --configfile="${samba_config_output_file}"
