@@ -39,7 +39,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ghcr.io/seanmorley15/adventurelog-frontend:v0.13.0 AS final
+FROM ghcr.io/seanmorley15/adventurelog-frontend:v0.13.1 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
