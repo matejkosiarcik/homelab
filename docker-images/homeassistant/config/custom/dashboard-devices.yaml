@@ -1,0 +1,16 @@
+title: Devices
+
+views:
+  - title: Devices
+    path: home
+    cards:
+      - type: grid
+        columns: 3
+        square: false
+        cards:
+          - type: button
+            name: Xiaomi TV Box
+            icon: mdi:remote-tv
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-living-room-xiaomi-tv-box/home

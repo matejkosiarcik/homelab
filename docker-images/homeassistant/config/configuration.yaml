@@ -95,16 +95,22 @@ http:
 lovelace:
   mode: storage
   dashboards:
+    dashboard-devices:
+      mode: yaml
+      title: Devices
+      icon: mdi:television
+      show_in_sidebar: true
+      filename: custom/dashboard-devices.yaml
     dashboard-living-room-xiaomi-tv-box:
       mode: yaml
       title: Xiaomi TV Box
       icon: mdi:television
-      show_in_sidebar: true
+      show_in_sidebar: false
       filename: custom/dashboard-living_room-xiaomi_tv_box.yaml
 
 script:
   xiaomi_tv_box_button_home:
-    alias: Xiaomi TV Box - Home
+    alias: Xiaomi TV Box - Button Home
     icon: mdi:home
     sequence:
       - action: remote.send_command
@@ -112,3 +118,12 @@ script:
           entity_id: remote.living_room_xiaomi_tv_box
         data:
           command: HOME
+  xiaomi_tv_box_button_power:
+    alias: Xiaomi TV Box - Button Power
+    icon: mdi:home
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: POWER

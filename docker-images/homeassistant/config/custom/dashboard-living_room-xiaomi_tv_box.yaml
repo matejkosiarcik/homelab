@@ -1,7 +1,10 @@
 title: Xiaomi TV Box
+
 views:
   - title: Xiaomi TV Box
-    path: xiaomi-tv-box
+    path: home
+    subview: true
+    back_path: /dashboard-devices/home
     cards:
       - type: grid
         columns: 3
@@ -13,3 +16,10 @@ views:
             tap_action:
               action: perform-action
               perform_action: script.xiaomi_tv_box_button_home
+
+          - type: button
+            name: Power
+            icon: mdi:power
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_power
