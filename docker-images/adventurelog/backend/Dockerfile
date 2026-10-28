@@ -99,7 +99,7 @@ RUN sh '/homelab/create-user.sh' && \
 
 ### App ###
 
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.0 AS adventurelog_backend
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.1 AS adventurelog_backend
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_user_setup_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_apache_user_setup_aptlibcache \
@@ -125,7 +125,7 @@ COPY --from=adventurelog_backend /etc/supervisor/conf.d /fsroot/etc/supervisor/c
 
 ### Final ###
 
-FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.0 AS final
+FROM ghcr.io/seanmorley15/adventurelog-backend:v0.13.1 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
