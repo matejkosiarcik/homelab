@@ -91,3 +91,24 @@ http:
 #         turn_off:
 #           action: rest_command.desklamp_right_off
 #         value_template: "{{ is_state('binary_sensor.desklamp_right', 'on') }}" # NOTE: Where is binary_sensor.desklamp_left defined?
+
+lovelace:
+  mode: storage
+  dashboards:
+    dashboard-living-room-xiaomi-tv-box:
+      mode: yaml
+      title: Xiaomi TV Box
+      icon: mdi:television
+      show_in_sidebar: true
+      filename: custom/dashboard-living_room-xiaomi_tv_box.yaml
+
+script:
+  xiaomi_tv_box_button_home:
+    alias: Xiaomi TV Box - Home
+    icon: mdi:home
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: HOME

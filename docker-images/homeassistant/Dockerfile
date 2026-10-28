@@ -43,13 +43,14 @@ FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
+COPY ./docker-images/homeassistant/config/configuration.yaml /homelab/config/
+COPY ./docker-images/homeassistant/config/custom/ /homelab/config/custom/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
-COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/init
-COPY ./docker-images/homeassistant/configuration.yaml /fsroot/configuration.yaml
+COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/init
 
 ### Final ###
 
@@ -60,8 +61,7 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/init /
-COPY --from=prefinal --chown=homelab:homelab /fsroot/configuration.yaml /
+COPY --from=prefinal --chown=homelab:homelab /fsroot/ /
 ENV HOMELAB_CONTAINER_NAME="homeassistant" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
