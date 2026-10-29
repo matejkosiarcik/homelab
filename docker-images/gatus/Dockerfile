@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM twinproduction/gatus:v5.37.0 AS gatus_app
+FROM twinproduction/gatus:v5.38.0 AS gatus_app
 USER root
 
 ### Dependencies ###
