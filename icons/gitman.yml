@@ -133,7 +133,7 @@ sources_locked:
       -
   - repo: https://github.com/kubernetes/community.git
     name: kubernetes-community
-    rev: 9a945694de626f3b7c2446b45304ac9ae346ebe1
+    rev: a592270a1279da496956728b18083c7374e95b02
     type: git
     params:
     sparse_paths:
