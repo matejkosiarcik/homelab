@@ -52,7 +52,8 @@ jobs:
           attempt_limit: 3
           attempt_delay: 2500
           with: |
-            python-version: 3.x
+            # TODO: Remove this pin once latest LibreTranslate/MiniSBD/ONNXRuntime versions support newer Python releases
+            python-version: "3.14"
 
       - name: Bootstrap dependencies
         uses: Wandalen/wretry.action@v3.8.0
