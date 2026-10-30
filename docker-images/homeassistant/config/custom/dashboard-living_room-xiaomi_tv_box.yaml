@@ -6,20 +6,492 @@ views:
     subview: true
     back_path: /dashboard-devices/home
     cards:
+      - type: entities
+        title: Xiaomi TV Box
+        # show_header_toggle: false
+        entities:
+          - entity: remote.living_room_xiaomi_tv_box
+
+      - type: entities
+        title: Xiaomi TV Box
+        # show_header_toggle: false
+        entities:
+          - entity: media_player.living_room_xiaomi_tv_box
+
+      - type: markdown
+        content: "## Remote"
       - type: grid
-        columns: 3
+        columns: 4
         square: false
         cards:
-          - type: button
-            name: Home
-            icon: mdi:home
-            tap_action:
-              action: perform-action
-              perform_action: script.xiaomi_tv_box_button_home
-
           - type: button
             name: Power
             icon: mdi:power
             tap_action:
               action: perform-action
               perform_action: script.xiaomi_tv_box_button_power
+          - type: button
+            name: Home
+            icon: mdi:home
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_home
+          - type: button
+            name: Back
+            icon: mdi:arrow-left
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_back
+          - type: button
+            name: Assistant
+            icon: mdi:microphone
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_assist
+          - type: button
+            name: Menu
+            icon: mdi:menu
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_menu
+          - type: button
+            name: Search
+            icon: mdi:magnify
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_search
+          - type: button
+            name: Settings
+            icon: mdi:cog-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_settings
+          - type: button
+            name: Info
+            icon: mdi:information-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_info
+
+      - type: markdown
+        content: "## Navigation"
+      - type: grid
+        columns: 3
+        square: true
+        cards:
+          - type: button
+            name: Back
+            icon: mdi:arrow-left
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_back
+          - type: button
+            name: Up
+            icon: mdi:arrow-up-bold
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_dpad_up
+          - type: button
+            name: Home
+            icon: mdi:home-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_home
+          - type: button
+            name: Left
+            icon: mdi:arrow-left-bold
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_dpad_left
+          - type: button
+            name: Select
+            icon: mdi:circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_dpad_center
+          - type: button
+            name: Right
+            icon: mdi:arrow-right-bold
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_dpad_right
+          - type: button
+            name: Menu
+            icon: mdi:menu
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_menu
+          - type: button
+            name: Down
+            icon: mdi:arrow-down-bold
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_dpad_down
+          - type: button
+            name: Assistant
+            icon: mdi:microphone
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_assist
+
+      - type: markdown
+        content: "## Volume and playback"
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: Volume Down
+            icon: mdi:volume-minus
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_volume_down
+          - type: button
+            name: Mute
+            icon: mdi:volume-off
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_mute
+          - type: button
+            name: Volume Mute
+            icon: mdi:volume-mute
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_volume_mute
+          - type: button
+            name: Volume Up
+            icon: mdi:volume-plus
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_volume_up
+          - type: button
+            name: Previous
+            icon: mdi:skip-previous
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_previous
+          - type: button
+            name: Rewind
+            icon: mdi:rewind
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_rewind
+          - type: button
+            name: Play/Pause
+            icon: mdi:play-pause
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_play_pause
+          - type: button
+            name: Fast Forward
+            icon: mdi:fast-forward
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_fast_forward
+          - type: button
+            name: Play
+            icon: mdi:play
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_play
+          - type: button
+            name: Pause
+            icon: mdi:pause
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_pause
+          - type: button
+            name: Stop
+            icon: mdi:stop
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_stop
+          - type: button
+            name: Next
+            icon: mdi:skip-next
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_next
+          - type: button
+            name: Record
+            icon: mdi:record-rec
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_record
+          - type: button
+            name: Audio Track
+            icon: mdi:audio
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_media_audio_track
+
+      - type: markdown
+        content: "## TV controls"
+      - type: grid
+        columns: 3
+        square: false
+        cards:
+          - type: button
+            name: Channel Down
+            icon: mdi:chevron-down-box
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_channel_down
+          - type: button
+            name: TV
+            icon: mdi:television
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_tv
+          - type: button
+            name: Channel Up
+            icon: mdi:chevron-up-box
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_channel_up
+          - type: button
+            name: Guide
+            icon: mdi:book-open-page-variant-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_guide
+          - type: button
+            name: Captions
+            icon: mdi:closed-caption-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_captions
+          - type: button
+            name: Teletext
+            icon: mdi:text-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_teletext
+          - type: button
+            name: DVR
+            icon: mdi:record-player
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_dvr
+          - type: button
+            name: Explorer
+            icon: mdi:compass-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_explorer
+          - type: button
+            name: Mode
+            icon: mdi:remote
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_mode
+          - type: button
+            name: Red
+            icon: mdi:circle
+            color: red
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_prog_red
+          - type: button
+            name: Green
+            icon: mdi:circle
+            color: green
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_prog_green
+          - type: button
+            name: Yellow
+            icon: mdi:circle
+            color: yellow
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_prog_yellow
+          - type: button
+            name: Blue
+            icon: mdi:circle
+            color: blue
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_prog_blue
+
+      - type: markdown
+        content: "## Keypad"
+      - type: grid
+        columns: 3
+        square: true
+        cards:
+          - type: button
+            name: "1"
+            icon: mdi:numeric-1-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_1
+          - type: button
+            name: "2"
+            icon: mdi:numeric-2-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_2
+          - type: button
+            name: "3"
+            icon: mdi:numeric-3-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_3
+          - type: button
+            name: "4"
+            icon: mdi:numeric-4-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_4
+          - type: button
+            name: "5"
+            icon: mdi:numeric-5-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_5
+          - type: button
+            name: "6"
+            icon: mdi:numeric-6-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_6
+          - type: button
+            name: "7"
+            icon: mdi:numeric-7-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_7
+          - type: button
+            name: "8"
+            icon: mdi:numeric-8-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_8
+          - type: button
+            name: "9"
+            icon: mdi:numeric-9-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_9
+          - type: button
+            name: Delete
+            icon: mdi:backspace-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_del
+          - type: button
+            name: "0"
+            icon: mdi:numeric-0-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_0
+          - type: button
+            name: Enter
+            icon: mdi:keyboard-return
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_enter
+
+      - type: markdown
+        content: "## Extra Android key commands"
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: A
+            icon: mdi:alpha-a-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_a
+          - type: button
+            name: B
+            icon: mdi:alpha-b-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_b
+          - type: button
+            name: X
+            icon: mdi:alpha-x-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_x
+          - type: button
+            name: Y
+            icon: mdi:alpha-y-circle
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_y
+          - type: button
+            name: F1
+            icon: mdi:alpha-f-box
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f1
+          - type: button
+            name: F2
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f2
+          - type: button
+            name: F3
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f3
+          - type: button
+            name: F4
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f4
+          - type: button
+            name: F5
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f5
+          - type: button
+            name: F6
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f6
+          - type: button
+            name: F7
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f7
+          - type: button
+            name: F8
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f8
+          - type: button
+            name: F9
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f9
+          - type: button
+            name: F10
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f10
+          - type: button
+            name: F11
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f11
+          - type: button
+            name: F12
+            icon: mdi:alpha-f-box-outline
+            tap_action:
+              action: perform-action
+              perform_action: script.xiaomi_tv_box_button_f12

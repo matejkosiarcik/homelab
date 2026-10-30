@@ -97,7 +97,7 @@ WORKDIR /homelab
 COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/data-optimization/tsconfig.json /homelab/
 COPY ./docker-images/data-optimization/src/ /homelab/src/
 RUN npm run build && \
@@ -111,7 +111,7 @@ WORKDIR /homelab
 COPY ./docker-images/.shared/cron-utils/on-demand/backend/package-lock.json ./docker-images/.shared/cron-utils/on-demand/backend/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/.shared/cron-utils/on-demand/backend/tsconfig.json /homelab/
 COPY ./docker-images/.shared/cron-utils/on-demand/backend/src/ /homelab/src/
 RUN npm run build && \

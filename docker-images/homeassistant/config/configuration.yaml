@@ -109,6 +109,99 @@ lovelace:
       filename: custom/dashboard-living_room-xiaomi_tv_box.yaml
 
 script:
+  # Android TV Remote's documented key-command catalog. Some TV-specific keys
+  # depend on the active app and Xiaomi firmware, but are exposed individually
+  # so they can also be used in automations.
+  xiaomi_tv_box_button_dpad_up:
+    alias: Xiaomi TV Box - Button Up
+    icon: mdi:arrow-up-bold
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: DPAD_UP
+  xiaomi_tv_box_button_dpad_down:
+    alias: Xiaomi TV Box - Button Down
+    icon: mdi:arrow-down-bold
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: DPAD_DOWN
+  xiaomi_tv_box_button_dpad_left:
+    alias: Xiaomi TV Box - Button Left
+    icon: mdi:arrow-left-bold
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: DPAD_LEFT
+  xiaomi_tv_box_button_dpad_right:
+    alias: Xiaomi TV Box - Button Right
+    icon: mdi:arrow-right-bold
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: DPAD_RIGHT
+  xiaomi_tv_box_button_dpad_center:
+    alias: Xiaomi TV Box - Button Select
+    icon: mdi:circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: DPAD_CENTER
+  xiaomi_tv_box_button_a:
+    alias: Xiaomi TV Box - Button A
+    icon: mdi:alpha-a-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: BUTTON_A
+  xiaomi_tv_box_button_b:
+    alias: Xiaomi TV Box - Button B
+    icon: mdi:alpha-b-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: BUTTON_B
+  xiaomi_tv_box_button_x:
+    alias: Xiaomi TV Box - Button X
+    icon: mdi:alpha-x-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: BUTTON_X
+  xiaomi_tv_box_button_y:
+    alias: Xiaomi TV Box - Button Y
+    icon: mdi:alpha-y-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: BUTTON_Y
+  xiaomi_tv_box_button_back:
+    alias: Xiaomi TV Box - Button Back
+    icon: mdi:arrow-left
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: BACK
   xiaomi_tv_box_button_home:
     alias: Xiaomi TV Box - Button Home
     icon: mdi:home
@@ -118,9 +211,513 @@ script:
           entity_id: remote.living_room_xiaomi_tv_box
         data:
           command: HOME
+  xiaomi_tv_box_button_volume_down:
+    alias: Xiaomi TV Box - Button Volume Down
+    icon: mdi:volume-minus
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: VOLUME_DOWN
+  xiaomi_tv_box_button_volume_up:
+    alias: Xiaomi TV Box - Button Volume Up
+    icon: mdi:volume-plus
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: VOLUME_UP
+  xiaomi_tv_box_button_volume_mute:
+    alias: Xiaomi TV Box - Button Volume Mute
+    icon: mdi:volume-mute
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: VOLUME_MUTE
+  xiaomi_tv_box_button_mute:
+    alias: Xiaomi TV Box - Button Mute
+    icon: mdi:volume-off
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MUTE
+  xiaomi_tv_box_button_media_play_pause:
+    alias: Xiaomi TV Box - Button Play Pause
+    icon: mdi:play-pause
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_PLAY_PAUSE
+  xiaomi_tv_box_button_media_play:
+    alias: Xiaomi TV Box - Button Play
+    icon: mdi:play
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_PLAY
+  xiaomi_tv_box_button_media_pause:
+    alias: Xiaomi TV Box - Button Pause
+    icon: mdi:pause
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_PAUSE
+  xiaomi_tv_box_button_media_next:
+    alias: Xiaomi TV Box - Button Next
+    icon: mdi:skip-next
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_NEXT
+  xiaomi_tv_box_button_media_previous:
+    alias: Xiaomi TV Box - Button Previous
+    icon: mdi:skip-previous
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_PREVIOUS
+  xiaomi_tv_box_button_media_stop:
+    alias: Xiaomi TV Box - Button Stop
+    icon: mdi:stop
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_STOP
+  xiaomi_tv_box_button_media_record:
+    alias: Xiaomi TV Box - Button Record
+    icon: mdi:record-rec
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_RECORD
+  xiaomi_tv_box_button_media_rewind:
+    alias: Xiaomi TV Box - Button Rewind
+    icon: mdi:rewind
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_REWIND
+  xiaomi_tv_box_button_media_fast_forward:
+    alias: Xiaomi TV Box - Button Fast Forward
+    icon: mdi:fast-forward
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_FAST_FORWARD
+  xiaomi_tv_box_button_0:
+    alias: Xiaomi TV Box - Button 0
+    icon: mdi:numeric-0-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "0"
+  xiaomi_tv_box_button_1:
+    alias: Xiaomi TV Box - Button 1
+    icon: mdi:numeric-1-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "1"
+  xiaomi_tv_box_button_2:
+    alias: Xiaomi TV Box - Button 2
+    icon: mdi:numeric-2-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "2"
+  xiaomi_tv_box_button_3:
+    alias: Xiaomi TV Box - Button 3
+    icon: mdi:numeric-3-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "3"
+  xiaomi_tv_box_button_4:
+    alias: Xiaomi TV Box - Button 4
+    icon: mdi:numeric-4-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "4"
+  xiaomi_tv_box_button_5:
+    alias: Xiaomi TV Box - Button 5
+    icon: mdi:numeric-5-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "5"
+  xiaomi_tv_box_button_6:
+    alias: Xiaomi TV Box - Button 6
+    icon: mdi:numeric-6-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "6"
+  xiaomi_tv_box_button_7:
+    alias: Xiaomi TV Box - Button 7
+    icon: mdi:numeric-7-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "7"
+  xiaomi_tv_box_button_8:
+    alias: Xiaomi TV Box - Button 8
+    icon: mdi:numeric-8-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "8"
+  xiaomi_tv_box_button_9:
+    alias: Xiaomi TV Box - Button 9
+    icon: mdi:numeric-9-circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: "9"
+  xiaomi_tv_box_button_del:
+    alias: Xiaomi TV Box - Button Delete
+    icon: mdi:backspace-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: DEL
+  xiaomi_tv_box_button_enter:
+    alias: Xiaomi TV Box - Button Enter
+    icon: mdi:keyboard-return
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: ENTER
+  xiaomi_tv_box_button_channel_up:
+    alias: Xiaomi TV Box - Button Channel Up
+    icon: mdi:chevron-up-box
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: CHANNEL_UP
+  xiaomi_tv_box_button_channel_down:
+    alias: Xiaomi TV Box - Button Channel Down
+    icon: mdi:chevron-down-box
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: CHANNEL_DOWN
+  xiaomi_tv_box_button_f1:
+    alias: Xiaomi TV Box - Button F1
+    icon: mdi:alpha-f-box
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F1
+  xiaomi_tv_box_button_f2:
+    alias: Xiaomi TV Box - Button F2
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F2
+  xiaomi_tv_box_button_f3:
+    alias: Xiaomi TV Box - Button F3
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F3
+  xiaomi_tv_box_button_f4:
+    alias: Xiaomi TV Box - Button F4
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F4
+  xiaomi_tv_box_button_f5:
+    alias: Xiaomi TV Box - Button F5
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F5
+  xiaomi_tv_box_button_f6:
+    alias: Xiaomi TV Box - Button F6
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F6
+  xiaomi_tv_box_button_f7:
+    alias: Xiaomi TV Box - Button F7
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F7
+  xiaomi_tv_box_button_f8:
+    alias: Xiaomi TV Box - Button F8
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F8
+  xiaomi_tv_box_button_f9:
+    alias: Xiaomi TV Box - Button F9
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F9
+  xiaomi_tv_box_button_f10:
+    alias: Xiaomi TV Box - Button F10
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F10
+  xiaomi_tv_box_button_f11:
+    alias: Xiaomi TV Box - Button F11
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F11
+  xiaomi_tv_box_button_f12:
+    alias: Xiaomi TV Box - Button F12
+    icon: mdi:alpha-f-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: F12
+  xiaomi_tv_box_button_tv:
+    alias: Xiaomi TV Box - Button TV
+    icon: mdi:television
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: TV
+  xiaomi_tv_box_button_prog_red:
+    alias: Xiaomi TV Box - Button Red
+    icon: mdi:circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: PROG_RED
+  xiaomi_tv_box_button_prog_green:
+    alias: Xiaomi TV Box - Button Green
+    icon: mdi:circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: PROG_GREEN
+  xiaomi_tv_box_button_prog_yellow:
+    alias: Xiaomi TV Box - Button Yellow
+    icon: mdi:circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: PROG_YELLOW
+  xiaomi_tv_box_button_prog_blue:
+    alias: Xiaomi TV Box - Button Blue
+    icon: mdi:circle
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: PROG_BLUE
+  xiaomi_tv_box_button_mode:
+    alias: Xiaomi TV Box - Button Mode
+    icon: mdi:remote
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: BUTTON_MODE
+  xiaomi_tv_box_button_explorer:
+    alias: Xiaomi TV Box - Button Explorer
+    icon: mdi:compass-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: EXPLORER
+  xiaomi_tv_box_button_menu:
+    alias: Xiaomi TV Box - Button Menu
+    icon: mdi:menu
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MENU
+  xiaomi_tv_box_button_info:
+    alias: Xiaomi TV Box - Button Info
+    icon: mdi:information-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: INFO
+  xiaomi_tv_box_button_guide:
+    alias: Xiaomi TV Box - Button Guide
+    icon: mdi:book-open-page-variant-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: GUIDE
+  xiaomi_tv_box_button_teletext:
+    alias: Xiaomi TV Box - Button Teletext
+    icon: mdi:text-box-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: TV_TELETEXT
+  xiaomi_tv_box_button_captions:
+    alias: Xiaomi TV Box - Button Captions
+    icon: mdi:closed-caption-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: CAPTIONS
+  xiaomi_tv_box_button_dvr:
+    alias: Xiaomi TV Box - Button DVR
+    icon: mdi:record-player
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: DVR
+  xiaomi_tv_box_button_media_audio_track:
+    alias: Xiaomi TV Box - Button Audio Track
+    icon: mdi:audio
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: MEDIA_AUDIO_TRACK
+  xiaomi_tv_box_button_settings:
+    alias: Xiaomi TV Box - Button Settings
+    icon: mdi:cog-outline
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: SETTINGS
+  xiaomi_tv_box_button_search:
+    alias: Xiaomi TV Box - Button Search
+    icon: mdi:magnify
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: SEARCH
+  xiaomi_tv_box_button_assist:
+    alias: Xiaomi TV Box - Button Assistant
+    icon: mdi:microphone
+    sequence:
+      - action: remote.send_command
+        target:
+          entity_id: remote.living_room_xiaomi_tv_box
+        data:
+          command: ASSIST
   xiaomi_tv_box_button_power:
     alias: Xiaomi TV Box - Button Power
-    icon: mdi:home
+    icon: mdi:power
     sequence:
       - action: remote.send_command
         target:

@@ -160,7 +160,7 @@ WORKDIR /homelab
 COPY ./docker-images/favicons/package-lock.json ./docker-images/favicons/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/favicons/tsconfig.json /homelab/
 COPY ./docker-images/favicons/src/ /homelab/src/
 RUN npm run build && \
