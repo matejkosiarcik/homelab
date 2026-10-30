@@ -42,7 +42,7 @@ COPY ./docker-images/ntfy/config/server.yml /etc/ntfy/server.yml
 
 ### Final ###
 
-FROM binwiederhier/ntfy:v2.34.0 AS final
+FROM binwiederhier/ntfy:v2.35.0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
