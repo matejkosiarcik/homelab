@@ -28,7 +28,7 @@ WORKDIR /homelab
 COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --unsafe-perm --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/git-cache/tsconfig.json /homelab/
 COPY ./docker-images/git-cache/src/ /homelab/src/
 RUN npm run build && \
