@@ -369,8 +369,7 @@ def docker_build():
     cpu_cores = os.cpu_count()
     if cpu_cores is None:
         cpu_cores = 1
-    threads = math.ceil(cpu_cores // 2)
-    commands = ["docker", "compose"] + docker_compose_args + ["--parallel", f"{threads}", "build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
+    commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
     docker_log_file = path.join(log_dir, "docker-build.log")
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
@@ -452,7 +451,7 @@ def run_main_command(command: str):
         "--progress",
         "plain",
         "--parallel",
-        str(int(max(cpu_count * 0.75, 1))),
+        str(int(max(cpu_count // 2, 1))),
     ]
     docker_command_args = ["--dry-run"] if is_dryrun else []
 
