@@ -75,7 +75,9 @@ ENV GITMAN_CACHE="/root/.gitcache" \
 COPY ./docker-images/samba/prometheus-exporter/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    retry --times=3 -- gitman install --quiet
+    retry --times=3 -- gitman install --quiet && \
+    mkdir -p /root/.gitcache-copy && \
+    cp -R /root/.gitcache/samba_exporter.reference /root/.gitcache-copy/samba_exporter.reference
 
 FROM golang:1.27.3-trixie AS samba_exporter_build
 USER root
@@ -87,11 +89,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_pro
         binutils file git >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=samba_exporter_gitman /homelab/gitman-repositories/samba_exporter/ ./samba_exporter/
+COPY --from=samba_exporter_gitman /root/.gitcache-copy/samba_exporter.reference/ /root/.gitcache/samba_exporter.reference/
 ENV CGO_ENABLED="0"
 WORKDIR /homelab/samba_exporter
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
-    --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     ./build.sh build && \
     strip --strip-all --remove-section=.note.go.buildid --remove-section=.note.gnu.build-id ./bin/samba_exporter && \
     strip --strip-all --remove-section=.note.go.buildid --remove-section=.note.gnu.build-id ./bin/samba_statusd
