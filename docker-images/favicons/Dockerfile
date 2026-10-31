@@ -119,10 +119,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_
 COPY --from=imagemagick_appimage_version /homelab/imagemagick-tag.txt /homelab/imagemagick-version.txt /homelab/
 RUN tag="$(cat '/homelab/imagemagick-tag.txt')" && \
     version="$(cat '/homelab/imagemagick-version.txt')" && \
-    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o ./ImageMagick.AppImage "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
-    chmod a+x './ImageMagick.AppImage' && \
-    './ImageMagick.AppImage' --appimage-extract && \
-    mv './AppDir' '/homelab/imagemagick'
+    tmpdir="$(mktemp -d)" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/ImageMagick.AppImage" "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
+    chmod a+x "${tmpdir}/ImageMagick.AppImage" && \
+    "${tmpdir}/ImageMagick.AppImage" --appimage-extract && \
+    mv "./AppDir" '/homelab/imagemagick' && \
+    rm -rf "${tmpdir}"
 
 ### App config ###
 
@@ -206,7 +208,7 @@ COPY --from=nodejs_build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs_build /homelab/dist /homelab/dist
 COPY ./docker-images/favicons/icons /homelab/icons
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=imagemagick_final /homelab/imagemagick /homelab/imagemagick
+COPY --from=imagemagick_final /homelab/imagemagick/bin/convert /homelab/imagemagick/bin/identify /homelab/imagemagick/bin/magick /homelab/bin/
 COPY --from=urls_config_3 /homelab/urls.json /homelab/
 
 FROM scratch AS prefinal
@@ -228,7 +230,7 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="favicons" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
-    PATH="/homelab/imagemagick/bin:${PATH}" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=300s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
