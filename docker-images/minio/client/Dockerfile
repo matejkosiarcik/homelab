@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
         ca-certificates >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 
-FROM python:3.15.2-slim AS package_curl_gitman
+FROM python:3.15.2-slim AS package_curl_version
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_setup_package_curl_gitman_aptcache \
@@ -59,6 +59,10 @@ COPY ./docker-images/.shared/dependencies/static-curl/gitman.yml /homelab/
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     retry --times=3 -- gitman install --quiet
+WORKDIR /homelab/gitman-repositories/static-curl
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
+    git fetch --tags && \
+    git tag --list --sort=-creatordate | head -n 1 >'/homelab/curl-tag.txt'
 
 FROM debian:13.7-slim AS package_curl_final
 USER root
@@ -67,13 +71,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_se
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_script_setup_package_curl_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates curl git xz-utils >/dev/null && \
+        ca-certificates curl xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=package_curl_gitman /homelab/gitman-repositories/static-curl /homelab/static-curl
-WORKDIR /homelab/static-curl
-RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    git fetch --tags && \
-    tag="$(git tag --sort=-creatordate | head -n 1)" && \
+COPY --from=package_curl_version /homelab/curl-tag.txt /homelab/
+RUN tag="$(cat '/homelab/curl-tag.txt')" && \
     tmpdir="$(mktemp -d)" && \
     curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/curl-linux-$(uname -m)-glibc-${tag}.tar.xz" && \
     mkdir -p "${tmpdir}/curl.d" && \
