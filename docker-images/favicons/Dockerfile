@@ -84,7 +84,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --no-compile --requirement './requirements.txt' --target './python-vendor' --quiet
 
-FROM python:3.15.2-slim AS imagemagick_appimage_gitman
+FROM python:3.15.2-slim AS imagemagick_appimage_version
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_imagemagick_appimage_gitman_aptcache \
@@ -101,6 +101,11 @@ COPY ./docker-images/.shared/dependencies/imagemagick-appimage/gitman.yml /homel
 COPY --from=gitconfig /root/.gitconfig /root/.gitconfig
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     retry --times=3 -- gitman install --quiet
+WORKDIR /homelab/gitman-repositories/imagemagick-appimage
+RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
+    git fetch --tags && \
+    cat './LATEST_VERSION' >'/homelab/imagemagick-version.txt' && \
+    git tag --list --sort=-creatordate "$(cat '/homelab/imagemagick-version.txt')@*" | head -n1  >'/homelab/imagemagick-tag.txt'
 
 FROM debian:13.7-slim AS imagemagick_final
 USER root
@@ -109,17 +114,17 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_favicons_imagemagick_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates curl git >/dev/null && \
+        ca-certificates curl >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=imagemagick_appimage_gitman /homelab/gitman-repositories/imagemagick-appimage /homelab/imagemagick-git
-WORKDIR /homelab/imagemagick-git
-RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    version="$(cat './LATEST_VERSION')" && \
-    tag="$(git tag --list "${version}@*" | head -n1)" && \
-    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o ./ImageMagick.AppImage "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
-    chmod a+x ./ImageMagick.AppImage && \
-    ./ImageMagick.AppImage --appimage-extract && \
-    mv ./AppDir /homelab/imagemagick
+COPY --from=imagemagick_appimage_version /homelab/imagemagick-tag.txt /homelab/imagemagick-version.txt /homelab/
+RUN tag="$(cat '/homelab/imagemagick-tag.txt')" && \
+    version="$(cat '/homelab/imagemagick-version.txt')" && \
+    tmpdir="$(mktemp -d)" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/ImageMagick.AppImage" "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
+    chmod a+x "${tmpdir}/ImageMagick.AppImage" && \
+    "${tmpdir}/ImageMagick.AppImage" --appimage-extract && \
+    mv "./AppDir" '/homelab/imagemagick' && \
+    rm -rf "${tmpdir}"
 
 ### App config ###
 
@@ -203,7 +208,7 @@ COPY --from=nodejs_build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs_build /homelab/dist /homelab/dist
 COPY ./docker-images/favicons/icons /homelab/icons
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=imagemagick_final /homelab/imagemagick /homelab/imagemagick
+COPY --from=imagemagick_final /homelab/imagemagick/bin/convert /homelab/imagemagick/bin/identify /homelab/imagemagick/bin/magick /homelab/bin/
 COPY --from=urls_config_3 /homelab/urls.json /homelab/
 
 FROM scratch AS prefinal
@@ -225,7 +230,7 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="favicons" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
-    PATH="/homelab/imagemagick/bin:${PATH}" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=300s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
