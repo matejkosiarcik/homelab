@@ -124,7 +124,15 @@ RUN tag="$(cat '/homelab/imagemagick-tag.txt')" && \
     chmod a+x "${tmpdir}/ImageMagick.AppImage" && \
     "${tmpdir}/ImageMagick.AppImage" --appimage-extract && \
     mv "./AppDir" '/homelab/imagemagick' && \
-    rm -rf "${tmpdir}"
+    rm -rf "${tmpdir}" && \
+    find '/homelab/imagemagick' -mindepth 1 -maxdepth 1 -not -type d -exec rm -f {} \; && \
+    find '/homelab/imagemagick' -mindepth 1 -maxdepth 1 -type d -not \( -name 'bin' -or -name 'etc' -or -name 'lib' -or -name 'shared' \) -exec rm -rf {} \; && \
+    find '/homelab/imagemagick/shared' -mindepth 1 -maxdepth 1 -not \( -name 'bin' -or -name 'lib' \) -exec rm -f {} \; && \
+    find '/homelab/imagemagick/bin' -mindepth 1 -maxdepth 1 -not \( -name 'magick' -or -name 'convert' \) -exec rm -f {} \; && \
+    find '/homelab/imagemagick/shared/bin' -mindepth 1 -maxdepth 1 -not \( -name 'magick' -or -name 'convert' \) -exec rm -f {} \; && \
+    find '/homelab/imagemagick/etc' -mindepth 1 -maxdepth 1 -not -name 'ImageMagick*' -exec rm -rf {} \; && \
+    find '/homelab/imagemagick/lib' -mindepth 1 -maxdepth 1 \( -name 'gconv' -or -name 'locale' \) -exec rm -rf {} \; && \
+    find '/homelab/imagemagick/lib' -mindepth 2 -path '*/ImageMagick-*/modules-*/coders/*' -not \( -name 'icon.*' -or -name 'png.*' \) -exec rm -f {} \;
 
 ### App config ###
 
