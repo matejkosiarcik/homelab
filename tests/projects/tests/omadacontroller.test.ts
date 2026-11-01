@@ -38,6 +38,14 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443, 29811, 29812, 29813, 29814, 29815, 29816]); // TODO: Add also ports 8080, 8443
             createFaviconTests(instance.url);
 
+            test('API: Login subpage', async () => {
+                await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/login`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    expect(response.headers['content-type'], 'Response content type').toMatch(/^text\/html(?:;\s*charset=.*)?$/i);
+                });
+            });
+
             test('API: Status endpoint', async () => {
                 const response = await test.step('Request server', async () => {
                     const response = await axios.get(`${instance.url}/api/v2/anon/info`);

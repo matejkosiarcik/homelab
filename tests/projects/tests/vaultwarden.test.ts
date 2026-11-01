@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
-import { getEnv } from '#/utils/utils.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
@@ -20,6 +20,20 @@ test.describe.skip(app.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
+
+            test.describe(instance.title, () => {
+                test('API: Health endpoint', async () => {
+                    const response = await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/alive`);
+                        expect(response.status, 'Response Status').toStrictEqual(200);
+                        return response;
+                    });
+
+                    await test.step('Validate response', async () => {
+                        expect(response.data, 'Response should be valid datetime').toMatch(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z/);
+                    });
+                });
+            });
 
             const validUsers = [
                 {

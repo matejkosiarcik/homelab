@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
-import { getEnv } from '#/utils/utils.ts';
 
 const app = apps.gotify;
 
@@ -19,6 +19,19 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
+
+            test('API: Health endpoint', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/health`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as { database: string, health: string};
+                    expect(body, 'Response Content').toStrictEqual({ database: 'green', health: 'green' });
+                });
+            });
 
             const validUsers = [
                 {
