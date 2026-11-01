@@ -78,6 +78,19 @@ sources:
       -
     patches:
       -
+  - repo: https://github.com/devicons/devicon.git
+    name: devicon
+    rev: master
+    type: git
+    params: --depth=1
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
 sources_locked:
   - repo: https://github.com/odb/official-bash-logo.git
     name: bash-logo
@@ -147,6 +160,19 @@ sources_locked:
   - repo: https://github.com/causefx/Organizr.git
     name: organizr
     rev: 6b27515ff3bc6f4998ed83aca8c08be0998fd118
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+  - repo: https://github.com/devicons/devicon.git
+    name: devicon
+    rev: 32fe1d3b3f36ad11f90ab94f7db59738139c2bf6
     type: git
     params:
     sparse_paths:
