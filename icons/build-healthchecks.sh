@@ -22,6 +22,7 @@ log() {
 }
 
 mode=''
+# shellcheck disable=SC2034
 only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
     mode="${HOMELAB_ENV}"
