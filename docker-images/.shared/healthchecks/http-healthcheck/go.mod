@@ -4,7 +4,7 @@ go 1.27.1
 
 require (
 	github.com/alexflint/go-arg v1.6.1
-	github.com/itchyny/gojq v0.12.19
+	github.com/itchyny/gojq v0.12.20
 )
 
 require (
