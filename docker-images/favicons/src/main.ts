@@ -94,7 +94,7 @@ async function extractLargestPngFromIco(icoImage: Buffer): Promise<Buffer> {
         const tmpIco = path.join(tmpDir, 'favicon.ico');
         await fsx.writeFile(tmpIco, icoImage);
 
-        await execa('convert', [tmpIco, path.join(tmpDir, 'favicon.png')]);
+        await execa('magick', ['convert', '-background', 'none', '-auto-orient', tmpIco, path.join(tmpDir, 'favicon.png')]);
 
         // Find the biggest PNG
         const files = await fsx.readdir(tmpDir, { withFileTypes: true, recursive: false });

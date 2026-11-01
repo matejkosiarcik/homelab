@@ -180,6 +180,13 @@ RUN tag="$(cat '/homelab/imagemagick-tag.txt')" && \
         \) -exec rm -rf {} \; && \
     coders_dir="$(find '/homelab/imagemagick/lib' -type d -path '*/ImageMagick-*/modules-*/coders' -print -quit | sed -E 's~^/homelab/imagemagick/lib~~')" && \
     printf '%s\n' '+' '+/sharun-preload' "+${coders_dir}" >'/homelab/imagemagick/lib/lib.path'
+COPY ./docker-images/favicons/test-icons/test.png ./docker-images/favicons/test-icons/test.ico /homelab/test-icons/
+ENV PATH="/homelab/imagemagick/bin:${PATH}"
+RUN tmpdir="$(mktemp -d)" && \
+    mkdir -p "${tmpdir}/ico2png" "${tmpdir}/png2png" && \
+    magick convert -background none -auto-orient '/homelab/test-icons/test.ico' "${tmpdir}/ico2png/test.png" && \
+    magick convert -background none -resize 100x100 -auto-orient '/homelab/test-icons/test.png' "${tmpdir}/png2png/test.png" && \
+    rm -rf "${tmpdir}"
 
 ### App config ###
 
