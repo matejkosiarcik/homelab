@@ -22,7 +22,6 @@ log() {
 }
 
 mode=''
-# shellcheck disable=SC2034
 only_pattern=''
 if [ "${HOMELAB_ENV-}" != '' ]; then
     mode="${HOMELAB_ENV}"
@@ -38,6 +37,7 @@ while [ "${#}" -gt 0 ]; do
         shift
         ;;
     --only)
+        # shellcheck disable=SC2034
         only_pattern="${2}"
         shift 2
         ;;
