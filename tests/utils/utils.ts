@@ -2,11 +2,16 @@ import fs from 'node:fs';
 import https from 'node:https';
 import process from 'node:process';
 import { default as baseAxios } from 'axios';
-import dns from 'native-dns';
+import { execa, ExecaError } from 'execa';
 import * as tar from 'tar';
 import lzma from 'lzma-native';
 import { apps } from '#/utils/apps.ts';
 import { Locator } from '@playwright/test';
+
+export const validators = {
+    ipv4: /^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/,
+    ipv6: /^(?:(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}|(?:[0-9a-f]{1,4}:){1,7}:|(?:[0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|(?:[0-9a-f]{1,4}:){1,5}(?::[0-9a-f]{1,4}){1,2}|(?:[0-9a-f]{1,4}:){1,4}(?::[0-9a-f]{1,4}){1,3}|(?:[0-9a-f]{1,4}:){1,3}(?::[0-9a-f]{1,4}){1,4}|(?:[0-9a-f]{1,4}:){1,2}(?::[0-9a-f]{1,4}){1,5}|[0-9a-f]{1,4}:(?:(?::[0-9a-f]{1,4}){1,6})|:(?:(?::[0-9a-f]{1,4}){1,7}|:))$/i,
+};
 
 export async function delay(timeout: number): Promise<void> {
     return new Promise((resolve) => {
@@ -48,40 +53,15 @@ export function getEnv(instanceUrl: string, name: string): string {
 }
 
 export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
-    return await retry(async () => {
-        return await new Promise((resolve, reject) => {
-            const returnData: string[] = [];
-            const req = dns.Request({
-                question: dns.Question({ name: domain, type: type, }),
-                server: { address: dnsServer, port: 53, type: transport },
-                timeout: 5000,
-            });
-
-            req.on('timeout', () => {
-                reject(new Error('DNS Timeout'));
-            });
-
-            req.on('error', (error: Error) => {
-                reject(error);
-            });
-
-            req.on('message', (err: unknown, answer: { answer: { address: string }[] }) => {
-                if (err) {
-                    reject(new Error(`DNS Message error: ${err}`));
-                    return;
-                }
-                returnData.push(...answer.answer.map((entry) => entry.address));
-            });
-
-            req.on('end', () => {
-                resolve(returnData.sort());
-            });
-
-            req.send();
-        });
-    }, {
-        retries: 2,
-    });
+    try {
+        const { stdout } = await execa('dig', [`@${dnsServer}`, type, '+short', `+${transport === 'udp' ? 'no' : ''}tcp`, domain], { all: true, timeout: 1000 });
+        return stdout.split('\n').filter(Boolean).sort();
+    } catch (error) {
+        if (error instanceof ExecaError) {
+            throw new Error(error.all);
+        }
+        throw error;
+    }
 }
 
 export const axios = baseAxios.create({

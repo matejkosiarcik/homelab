@@ -1,7 +1,7 @@
 import nodeDns from 'node:dns/promises';
 import _ from 'lodash';
 import { expect, test } from '#/playwright/test.ts';
-import { axios, dnsLookup, getAllHomelabDomains, getEnv } from '#/utils/utils.ts';
+import { axios, dnsLookup, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { faker } from '@faker-js/faker';
@@ -138,7 +138,7 @@ test.describe(app.title, () => {
                 });
             }
 
-            test('DNS: example.com lookup', { lock: 'dns' }, async () => {
+            test('DNS: example.com lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'Unbound DNS address resolution').toHaveLength(1);
@@ -151,14 +151,14 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
                             if (['blackhole', 'internal'].some((el) => instance.title.toLowerCase().includes(el))) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
                                 expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 expect(ips, `Domain example.com should be resolved`).not.toHaveLength(0);
                                 for (const ip of ips) {
                                     switch (ipVariant) {
                                         case 'A': {
-                                            expect(ip, 'Resolved entry should be valid IPv4').toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+                                            expect(ip, 'Resolved entry should be valid IPv4').toMatch(validators.ipv4);
                                             expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
                                             expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
                                             expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
@@ -167,7 +167,7 @@ test.describe(app.title, () => {
                                             break;
                                         }
                                         case 'AAAA': {
-                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(/(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(validators.ipv6);
                                             expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
                                             expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
                                             break;
@@ -180,7 +180,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: self domain lookup', { lock: 'dns' }, async () => {
+            test('DNS: self domain lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'Unbound DNS address resolution').toHaveLength(1);
@@ -193,7 +193,7 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain ${instanceDomain} should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
                                 expect(ips[0], `Domain ${instanceDomain} should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 switch (ipVariant) {
@@ -213,7 +213,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: local unused domain', { lock: 'dns' }, async () => {
+            test('DNS: local unused domain', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'Unbound DNS address resolution').toHaveLength(1);
@@ -227,7 +227,7 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain <random>.matejhome.com should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '0:0:0:0:0:0:0:0';
+                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
                                 expect(ips[0], `Domain <random>.matejhome.com should be resolved to no IP address`).toStrictEqual(expectedIp);
                             } else {
                                 expect(ips, 'Domain <random>.matejhome.com should not be resolved').toHaveLength(0);
@@ -237,7 +237,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: Local domains lookup', { lock: 'dns' }, async () => {
+            test('DNS: Local domains lookup', async () => {
                 const instanceIp = await (async () => {
                     const instanceIps = await nodeDns.resolve(instanceDomain);
                     expect(instanceIps, 'Unbound DNS address resolution').toHaveLength(1);

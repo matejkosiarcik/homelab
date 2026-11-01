@@ -2,7 +2,7 @@ import nodeDns from 'node:dns/promises';
 import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
-import { axios, dnsLookup, getAllHomelabDomains, getEnv } from '#/utils/utils.ts';
+import { axios, dnsLookup, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
@@ -27,7 +27,7 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
             createHttpsRootRedirectTest(instance.url, '/admin');
 
-            test('DNS: example.com lookup', { lock: 'dns' }, async () => {
+            test('DNS: example.com lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
@@ -42,7 +42,7 @@ test.describe(app.title, () => {
                             for (const ip of ips) {
                                 switch (ipVariant) {
                                     case 'A': {
-                                        expect(ip, 'Resolved entry should be valid IPv4').toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+                                        expect(ip, 'Resolved entry should be valid IPv4').toMatch(validators.ipv4);
                                         expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
                                         expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
                                         expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
@@ -51,7 +51,7 @@ test.describe(app.title, () => {
                                         break;
                                     }
                                     case 'AAAA': {
-                                        expect(ip, 'Resolved entry should be valid IPv6').toMatch(/(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                                        expect(ip, 'Resolved entry should be valid IPv6').toMatch(validators.ipv6);
                                         expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
                                         expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
                                         break;
@@ -63,7 +63,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: self domain lookup', { lock: 'dns' }, async () => {
+            test('DNS: self domain lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
@@ -90,7 +90,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: local unused domain', { lock: 'dns' }, async () => {
+            test('DNS: local unused domain', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
@@ -108,7 +108,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: Local domains lookup', { lock: 'dns' }, async () => {
+            test('DNS: Local domains lookup', async () => {
                 const instanceIp = await (async () => {
                     const instanceIps = await nodeDns.resolve(instanceDomain);
                     expect(instanceIps, 'PiHole DNS address resolution').toHaveLength(1);
