@@ -262,6 +262,9 @@ convert_image_full "${tmpdir}/other/wiktionary.svg" "${output_dir}/wiktionary.pn
 convert_image_full "${tmpdir}/other/windshift.svg" "${output_dir}/windshift.png"
 convert_image_full "${tmpdir}/other/www.png" "${output_dir}/www.png"
 
+convert_image_draft 'magick INPUT_FILE -fuzz 5% -transparent white OUTPUT_FILE' "${tmpdir}/other/tv.png" "${tmpdir}/tv.png"
+convert_image_full "${tmpdir}/tv.png" "${output_dir}/tv.png"
+
 ### Prebuild ###
 
 # General prebuilds
