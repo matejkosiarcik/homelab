@@ -51,10 +51,6 @@ HOMELAB_ENV="${mode}"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docs/diagrams/icons"
-if [ "${only_pattern:-}" = '' ]; then
-    rm -rf "${output_dir}"
-fi
-mkdir -p "${output_dir}"
 
 tmpdir=''
 # shellcheck source=/dev/null
@@ -64,6 +60,8 @@ tmpdir=''
 default_image_size='256x256'
 # shellcheck disable=SC2034
 default_convert_options='magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 2000 OUTPUT_FILE'
+
+prepare_output_dir "${output_dir}"
 
 ### Bash icon ###
 

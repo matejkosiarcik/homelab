@@ -50,10 +50,6 @@ HOMELAB_ENV="${mode}"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/favicons/icons"
-if [ "${only_pattern:-}" = '' ]; then
-    rm -rf "${output_dir}"
-fi
-mkdir -p "${output_dir}"
 
 tmpdir=''
 # shellcheck source=/dev/null
@@ -63,6 +59,8 @@ tmpdir=''
 default_image_size='64x64'
 # shellcheck disable=SC2034
 default_convert_options='magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize RESOLUTION -density 2000 OUTPUT_FILE'
+
+prepare_output_dir "${output_dir}"
 
 ## Dashboard Icons ##
 
@@ -82,9 +80,22 @@ convert_image_full "${input_dir}/prebuild/npm-cache.png" "${output_dir}/npm-cach
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
 convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/certbot.png"
 
+## Test favicons ##
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/favicons/test-icons"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "${output_dir}/test.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "${tmpdir}/test-16.png"
+optimize_image "${tmpdir}/test-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "${tmpdir}/test-32.png"
+optimize_image "${tmpdir}/test-32.png"
+convert_ico "${tmpdir}/test-16.png ${tmpdir}/test-32.png" "${output_dir}/test.ico"
+rm -f "${tmpdir}/test-16.png" "${tmpdir}/test-32.png"
+
 ## PreBudget ##
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/prebudget/icons"
+prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/prebuild/prebudget.png" "${output_dir}/favicon.png"
 convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${input_dir}/prebuild/prebudget.png" "${tmpdir}/prebudget-favicon-16.png"
 optimize_image "${tmpdir}/prebudget-favicon-16.png"
@@ -96,6 +107,7 @@ rm -f "${tmpdir}/prebudget-favicon-16.png" "${tmpdir}/prebudget-favicon-32.png"
 ## Smtp4dev ###
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/smtp4dev/icons"
+prepare_output_dir "${output_dir}"
 convert_image_full "${tmpdir}/other/smtp4dev-favicon.png" "${output_dir}/favicon.png"
 convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${tmpdir}/other/smtp4dev-favicon.png" "${tmpdir}/smtp4dev-favicon-16.png"
 optimize_image "${tmpdir}/smtp4dev-favicon-16.png"
@@ -107,6 +119,7 @@ rm -f "${tmpdir}/smtp4dev-favicon-16.png" "${tmpdir}/smtp4dev-favicon-32.png"
 # Renovatebot
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/renovatebot/icons"
+prepare_output_dir "${output_dir}"
 convert_image_full "${tmpdir}/other/renovatebot.png" "${output_dir}/favicon.png"
 convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${tmpdir}/other/renovatebot.png" "${tmpdir}/renovatebot-16.png"
 optimize_image "${tmpdir}/renovatebot-16.png"

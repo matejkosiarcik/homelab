@@ -15,6 +15,15 @@ default_convert_options='magick INPUT_FILE OUTPUT_FILE'
 # Remove ".bin" suffix from 3rd party SVGs
 find "${icons_dir}/other" -type f -exec sh -c 'cp "${1}" "${tmpdir}/other/$(basename "${1}" .bin)"' - {} \;
 
+prepare_output_dir() {
+    # ${1} - output directory
+
+    if [ "${only_pattern:-}" = '' ]; then
+        rm -rf "${1}"
+    fi
+    mkdir -p "${1}"
+}
+
 # Check if an icon should be generated based on the --only filter
 should_generate_icon() {
     # ${@} - input and output filepaths
