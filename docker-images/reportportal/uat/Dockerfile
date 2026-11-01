@@ -69,4 +69,4 @@ ENV DATASTORE_TYPE="filesystem" \
     RP_SESSION_LIVE="86400" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9999/health" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9999/health" ]

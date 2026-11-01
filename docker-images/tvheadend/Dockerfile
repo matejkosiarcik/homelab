@@ -71,4 +71,4 @@ ENV HOMELAB_CONTAINER_NAME="tvheadend" \
     PGID="${GID}" \
     PUID="${UID}" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9981" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9981" ]

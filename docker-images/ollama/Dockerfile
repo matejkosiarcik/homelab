@@ -60,5 +60,5 @@ USER homelab
 ENV HOMELAB_CONTAINER_NAME="ollama" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:11434" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:11434" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

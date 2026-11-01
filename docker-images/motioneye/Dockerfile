@@ -60,4 +60,4 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="motioneye" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8765" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8765" ]

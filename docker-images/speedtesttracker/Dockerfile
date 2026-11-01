@@ -164,4 +164,4 @@ ENV APP_TIMEZONE="Etc/Utc" \
     RESULTS_POLLING="5s" \
     SPEEDTEST_SCHEDULE="15 * * * *" \
     TZ="Etc/Utc"
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost:443/api/healthcheck", "--insecure" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost:443/api/healthcheck", "--insecure" ]

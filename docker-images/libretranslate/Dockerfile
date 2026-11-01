@@ -106,5 +106,5 @@ ENV HOMELAB_CONTAINER_NAME="libretranslate" \
     PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]
 ENTRYPOINT [ "libretranslate", "--host", "0.0.0.0", "--port", "5000", "--ssl", "--debug", "--metrics" ]

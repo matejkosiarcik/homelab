@@ -207,5 +207,5 @@ ENV HOMELAB_CONTAINER_NAME="unbound" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @${HOMELAB_APP_EXTERNAL_IP} +short placeholder.matejhome.com || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @${HOMELAB_APP_EXTERNAL_IP} +short placeholder.matejhome.com || exit 1" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

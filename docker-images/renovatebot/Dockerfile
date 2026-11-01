@@ -182,5 +182,5 @@ ENV HOMELAB_CONTAINER_NAME="renovatebot" \
     RUNWISP_TRUSTED_PROXIES="172.16.0.0/12" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/runwisp", "status" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/runwisp", "status" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

@@ -68,5 +68,5 @@ ENV HOMELAB_CONTAINER_NAME="vikunja" \
     TZ="Europe/Bratislava"
 WORKDIR /app/vikunja
 USER homelab
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "./vikunja", "user", "list" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "./vikunja", "user", "list" ]
 ENTRYPOINT [ "/app/vikunja/vikunja" ]
