@@ -48,39 +48,35 @@ export function getEnv(instanceUrl: string, name: string): string {
 }
 
 export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
-    return await retry(async () => {
-        return await new Promise((resolve, reject) => {
-            const returnData: string[] = [];
-            const req = dns.Request({
-                question: dns.Question({ name: domain, type: type, }),
-                server: { address: dnsServer, port: 53, type: transport },
-                timeout: 5000,
-            });
-
-            req.on('timeout', () => {
-                reject(new Error('DNS Timeout'));
-            });
-
-            req.on('error', (error: Error) => {
-                reject(error);
-            });
-
-            req.on('message', (err: unknown, answer: { answer: { address: string }[] }) => {
-                if (err) {
-                    reject(new Error(`DNS Message error: ${err}`));
-                    return;
-                }
-                returnData.push(...answer.answer.map((entry) => entry.address));
-            });
-
-            req.on('end', () => {
-                resolve(returnData.sort());
-            });
-
-            req.send();
+    return await new Promise((resolve, reject) => {
+        const returnData: string[] = [];
+        const req = dns.Request({
+            question: dns.Question({ name: domain, type: type, }),
+            server: { address: dnsServer, port: 53, type: transport },
+            timeout: 5000,
         });
-    }, {
-        retries: 2,
+
+        req.on('timeout', () => {
+            reject(new Error('DNS query timeout'));
+        });
+
+        req.on('error', (error: Error) => {
+            reject(error);
+        });
+
+        req.on('message', (err: unknown, answer: { answer: { address: string }[] }) => {
+            if (err) {
+                reject(new Error(`DNS query error: ${err}`));
+                return;
+            }
+            returnData.push(...answer.answer.map((entry) => entry.address));
+        });
+
+        req.on('end', () => {
+            resolve(returnData.sort());
+        });
+
+        req.send();
     });
 }
 
