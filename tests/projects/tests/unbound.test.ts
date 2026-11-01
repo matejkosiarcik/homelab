@@ -151,25 +151,23 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
                             if (['blackhole', 'internal'].some((el) => instance.title.toLowerCase().includes(el))) {
                                 expect(ips, `Domain example.com should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
-                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toStrictEqual(expectedIp);
+                                const expectedIp = ipVariant === 'A' ? validators.network.ipv4.zero : validators.network.ipv6.zero;
+                                expect(ips[0], `Domain example.com should be resolved to no IP address`).toMatch(expectedIp);
                             } else {
                                 expect(ips, `Domain example.com should be resolved`).not.toHaveLength(0);
                                 for (const ip of ips) {
                                     switch (ipVariant) {
                                         case 'A': {
-                                            expect(ip, 'Resolved entry should be valid IPv4').toMatch(validators.ipv4);
-                                            expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
-                                            expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(?:1[6-9]|2[0-9]|3[0-1])\./);
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
+                                            expect(ip, 'Resolved entry should be valid IPv4').toMatch(validators.network.ipv4.main);
+                                            expect(ip, 'Resolved entry should not be 0.0.0.0').not.toMatch(validators.network.ipv4.zero);
+                                            expect(ip, 'Resolved entry should not be localhost').not.toMatch(validators.network.ipv4.loopback);
+                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(validators.network.ipv4.private);
                                             break;
                                         }
                                         case 'AAAA': {
-                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(validators.ipv6);
-                                            expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
-                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
+                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(validators.network.ipv6.main);
+                                            expect(ip, 'Resolved entry should not be localhost').not.toMatch(validators.network.ipv6.loopback);
+                                            expect(ip, 'Resolved entry should not be in private range').not.toMatch(validators.network.ipv6.uniqueLocal);
                                             break;
                                         }
                                     }
@@ -193,8 +191,8 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain ${instanceDomain} should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
-                                expect(ips[0], `Domain ${instanceDomain} should be resolved to no IP address`).toStrictEqual(expectedIp);
+                                const expectedIp = ipVariant === 'A' ? validators.network.ipv4.zero : validators.network.ipv6.zero;
+                                expect(ips[0], `Domain ${instanceDomain} should be resolved to no IP address`).toMatch(expectedIp);
                             } else {
                                 switch (ipVariant) {
                                     case 'A': {
@@ -227,8 +225,8 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain <random>.matejhome.com should be resolved`).toHaveLength(1);
-                                const expectedIp = ipVariant === 'A' ? '0.0.0.0' : '::';
-                                expect(ips[0], `Domain <random>.matejhome.com should be resolved to no IP address`).toStrictEqual(expectedIp);
+                                const expectedIp = ipVariant === 'A' ? validators.network.ipv4.zero : validators.network.ipv6.zero;
+                                expect(ips[0], `Domain <random>.matejhome.com should be resolved to no IP address`).toMatch(expectedIp);
                             } else {
                                 expect(ips, 'Domain <random>.matejhome.com should not be resolved').toHaveLength(0);
                             }
@@ -252,11 +250,11 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup(domain, transportVariant, 'A', instanceIp);
                             if (instance.title.toLowerCase().includes('blackhole')) {
                                 expect(ips, `Domain ${domain} should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain ${domain} should be resolved to no IP address`).toStrictEqual('0.0.0.0');
+                                expect(ips[0], `Domain ${domain} should be resolved to no IP address`).toMatch(validators.network.ipv4.zero);
                             } else {
                                 expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
                                 for (const ip of ips) {
-                                    expect(ip, `Resolved entry should be valid IPv4`).toMatch(/^10\.1\.\d{1,3}\.\d{1,3}$/);
+                                    expect(ip, `Resolved entry should be valid IPv4`).toMatch(validators.network.homelabIp);
                                 }
                             }
                         });

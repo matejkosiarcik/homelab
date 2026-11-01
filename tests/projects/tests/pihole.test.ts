@@ -42,18 +42,16 @@ test.describe(app.title, () => {
                             for (const ip of ips) {
                                 switch (ipVariant) {
                                     case 'A': {
-                                        expect(ip, 'Resolved entry should be valid IPv4').toMatch(validators.ipv4);
-                                        expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
-                                        expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
-                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
-                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^172\.(?:1[6-9]|2[0-9]|3[0-1])\./);
-                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^192\.168\./);
+                                        expect(ip, 'Resolved entry should be valid IPv4').toMatch(validators.network.ipv4.main);
+                                        expect(ip, 'Resolved entry should not be 0.0.0.0').not.toMatch(validators.network.ipv4.zero);
+                                        expect(ip, 'Resolved entry should not be localhost').not.toMatch(validators.network.ipv4.loopback);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(validators.network.ipv4.private);
                                         break;
                                     }
                                     case 'AAAA': {
-                                        expect(ip, 'Resolved entry should be valid IPv6').toMatch(validators.ipv6);
-                                        expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
-                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
+                                        expect(ip, 'Resolved entry should be valid IPv6').toMatch(validators.network.ipv6.main);
+                                        expect(ip, 'Resolved entry should not be localhost').not.toMatch(validators.network.ipv6.loopback);
+                                        expect(ip, 'Resolved entry should not be in private range').not.toMatch(validators.network.ipv6.uniqueLocal);
                                         break;
                                     }
                                 }
@@ -123,7 +121,7 @@ test.describe(app.title, () => {
                             const ips = await dnsLookup(domain, transportVariant, 'A', instanceIp);
                             expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
                             for (const ip of ips) {
-                                expect(ip, `Resolved entry should be valid IPv4`).toMatch(/^10\.1\.\d{1,3}\.\d{1,3}$/);
+                                expect(ip, `Resolved entry should be valid IPv4`).toMatch(validators.network.homelabIp);
                             }
                         });
                     }
