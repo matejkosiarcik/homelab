@@ -81,4 +81,4 @@ EXPOSE 9200 9600
 
 # TODO: Validate response body
 # Original healthcheck: curl -s -f http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'
-HEALTHCHECK --interval=15s --start-period=90s --timeout=5s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9200/_cluster/health" ]
+HEALTHCHECK --interval=15s --start-period=90s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9200/_cluster/health" ]
