@@ -9,8 +9,21 @@ import { apps } from '#/utils/apps.ts';
 import { Locator } from '@playwright/test';
 
 export const validators = {
-    ipv4: /^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/,
-    ipv6: /^(?:(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}|(?:[0-9a-f]{1,4}:){1,7}:|(?:[0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|(?:[0-9a-f]{1,4}:){1,5}(?::[0-9a-f]{1,4}){1,2}|(?:[0-9a-f]{1,4}:){1,4}(?::[0-9a-f]{1,4}){1,3}|(?:[0-9a-f]{1,4}:){1,3}(?::[0-9a-f]{1,4}){1,4}|(?:[0-9a-f]{1,4}:){1,2}(?::[0-9a-f]{1,4}){1,5}|[0-9a-f]{1,4}:(?:(?::[0-9a-f]{1,4}){1,6})|:(?:(?::[0-9a-f]{1,4}){1,7}|:))$/i,
+    network: {
+        homelabIp: /^10\.1\.(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/,
+        ipv4: {
+            loopback: /^127\.0\.0\.1$/,
+            main: /^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/,
+            private: /^(?:10\.|172\.(?:1[6-9]|2\d|3[0-1])\.|192\.168\.)/,
+            zero: /^(?:0\.0\.0\.0)$/,
+        },
+        ipv6: {
+            loopback: /^(?:0:0:0:0:0:0:0:1|::1)$/,
+            main: /^(?:(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}|(?:[0-9a-f]{1,4}:){1,7}:|(?:[0-9a-f]{1,4}:){1,6}:[0-9a-f]{1,4}|(?:[0-9a-f]{1,4}:){1,5}(?::[0-9a-f]{1,4}){1,2}|(?:[0-9a-f]{1,4}:){1,4}(?::[0-9a-f]{1,4}){1,3}|(?:[0-9a-f]{1,4}:){1,3}(?::[0-9a-f]{1,4}){1,4}|(?:[0-9a-f]{1,4}:){1,2}(?::[0-9a-f]{1,4}){1,5}|[0-9a-f]{1,4}:(?:(?::[0-9a-f]{1,4}){1,6})|:(?:(?::[0-9a-f]{1,4}){1,7}|:))$/i,
+            uniqueLocal: /^f[cd][0-9a-f]{2}:/i, // Equivalent of private IPv4 address ranges
+            zero: /^(?:0:0:0:0:0:0:0:0|::)$/,
+        },
+    },
 };
 
 export async function delay(timeout: number): Promise<void> {
@@ -58,9 +71,9 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
         return stdout.split('\n').filter(Boolean).sort();
     } catch (error) {
         if (error instanceof ExecaError) {
-            throw new Error(error.all);
+            throw new Error(`DNS Query error: ${error.all}`);
         }
-        throw error;
+        throw new Error(`DNS Query error: ${error}`);
     }
 }
 

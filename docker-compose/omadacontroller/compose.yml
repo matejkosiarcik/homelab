@@ -27,6 +27,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/opt/tplink/EAPController/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/opt/tplink/EAPController/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   certificator:
     extends:

@@ -2,7 +2,7 @@ import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { faker } from '@faker-js/faker';
-import { getEnv } from '#/utils/utils.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 
 const app = apps.vikunja;
 
@@ -20,6 +20,20 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
             // TODO: Prometheus tests
+
+            test('API: Service info', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/v1/info`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as { version: string, frontend_url: string };
+                    expect(body.version, 'Response version').toMatch(/^v\d+\.\d+\.\d+$/);
+                    expect(body.frontend_url, 'Response frontend_url').toStrictEqual(`${instance.url}/`);
+                });
+            });
 
             const validUsers = [
                 {

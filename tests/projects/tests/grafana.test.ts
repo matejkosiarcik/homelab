@@ -2,7 +2,7 @@ import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { faker } from '@faker-js/faker';
-import { getEnv } from '#/utils/utils.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 
 const app = apps.grafana;
 
@@ -20,6 +20,21 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
+
+            test('API: Health endpoint', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/api/health`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as { database: string, version: string, commit: string }
+                    expect(body.database, 'Response database').toStrictEqual('ok');
+                    expect(body.version, 'Response version').toMatch(/^\d+\.\d+\.\d+$/);
+                    expect(body.commit, 'Response commit').toMatch(/^[\da-f]+$/);
+                });
+            });
 
             const validUsers = [
                 {

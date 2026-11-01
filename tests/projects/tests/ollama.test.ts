@@ -1,9 +1,8 @@
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
-import { getEnv } from '#/utils/utils.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
 import { faker } from '@faker-js/faker';
-import axios from 'axios';
 
 const app = apps.ollama;
 
@@ -39,6 +38,34 @@ test.describe(app.title, () => {
                     headers: {
                         Authorization: `Basic ${Buffer.from(`${user.username}:${getEnv(instance.url, `${user.username}_PASSWORD`)}`).toString('base64')}`
                     },
+                });
+
+                test(`API: List models - User ${user.username}`, async () => {
+                    const response = await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/api/tags`, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
+                        return response;
+                    });
+
+                    await test.step('Validate response', async () => {
+                        const body = response.data as { models: { name: string, model: string, modified_at: string, size: number, digest: string, details: unknown, capabilities: unknown[] }[] };
+                        expect(body.models, 'Response models').toBeInstanceOf(Array);
+                        expect(body.models.length, 'Response models length').toBeGreaterThan(0);
+                        for (const model of body.models) {
+                            expect(model.name, 'Response model name').toMatch(/^[\w.-]+:[\w.-]+$/);
+                            expect(model.model, 'Response model model').toMatch(/^[\w.-]+:[\w.-]+$/);
+                            expect(model.modified_at, 'Response model modified_at').toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z$/);
+                            expect(model.size, 'Response model size').toBeGreaterThan(0);
+                            expect(model.digest, 'Response model digest').toMatch(/^[\da-f]+$/);
+                            expect(model.details, 'Response model details').toBeDefined();
+                            expect(model.capabilities, 'Response model capabilities').toBeInstanceOf(Array);
+                        }
+                    });
                 });
             }
 
