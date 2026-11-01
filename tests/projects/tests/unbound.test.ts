@@ -1,7 +1,7 @@
 import nodeDns from 'node:dns/promises';
 import _ from 'lodash';
 import { expect, test } from '#/playwright/test.ts';
-import { axios, dnsLookup, getAllHomelabDomains, getEnv } from '#/utils/utils.ts';
+import { axios, dnsLookup, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { faker } from '@faker-js/faker';
@@ -158,7 +158,7 @@ test.describe(app.title, () => {
                                 for (const ip of ips) {
                                     switch (ipVariant) {
                                         case 'A': {
-                                            expect(ip, 'Resolved entry should be valid IPv4').toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+                                            expect(ip, 'Resolved entry should be valid IPv4').toMatch(validators.ipv4);
                                             expect(ip, 'Resolved entry should not be 0.0.0.0').not.toStrictEqual('0.0.0.0');
                                             expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual(/^127\./);
                                             expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^10\./);
@@ -167,7 +167,7 @@ test.describe(app.title, () => {
                                             break;
                                         }
                                         case 'AAAA': {
-                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(/(?:[0-9a-f]{1,4}:){7}[0-9a-f]{1,4}/);
+                                            expect(ip, 'Resolved entry should be valid IPv6').toMatch(validators.ipv6);
                                             expect(ip, 'Resolved entry should not be localhost').not.toStrictEqual('::1');
                                             expect(ip, 'Resolved entry should not be in private range').not.toMatch(/^f[cd][0-9a-fA-F][0-9a-fA-F]:/);
                                             break;
