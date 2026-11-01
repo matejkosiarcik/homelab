@@ -38,6 +38,7 @@ while [ "${#}" -gt 0 ]; do
         shift
         ;;
     --only)
+        # shellcheck disable=SC2034
         only_pattern="${2}"
         shift 2
         ;;
@@ -51,10 +52,6 @@ HOMELAB_ENV="${mode}"
 
 input_dir="$(git rev-parse --show-toplevel)/icons"
 output_dir="$(git rev-parse --show-toplevel)/docker-images/homepage/app/icons"
-if [ "${only_pattern:-}" = '' ]; then
-    rm -rf "${output_dir}"
-fi
-mkdir -p "${output_dir}"
 
 tmpdir=''
 # shellcheck source=/dev/null
@@ -64,6 +61,8 @@ tmpdir=''
 default_image_size='128x128'
 # shellcheck disable=SC2034
 default_convert_options='magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 126x126 -density 2000 -border 1 OUTPUT_FILE'
+
+prepare_output_dir "${output_dir}"
 
 ### Dashboard Icons ###
 

@@ -124,6 +124,68 @@ RUN tag="$(cat '/homelab/imagemagick-tag.txt')" && \
     chmod a+x "${tmpdir}/ImageMagick.AppImage" && \
     "${tmpdir}/ImageMagick.AppImage" --appimage-extract && \
     mv "./AppDir" '/homelab/imagemagick' && \
+    rm -rf "${tmpdir}" && \
+    find '/homelab/imagemagick' -mindepth 1 -maxdepth 1 -not -type d -exec rm -f {} \; && \
+    find '/homelab/imagemagick' -mindepth 1 -maxdepth 1 -type d -not \( -name 'bin' -or -name 'lib' -or -name 'shared' \) -exec rm -rf {} \; && \
+    find '/homelab/imagemagick/shared' -mindepth 1 -maxdepth 1 -not \( -name 'bin' -or -name 'lib' \) -exec rm -f {} \; && \
+    find '/homelab/imagemagick/bin' -mindepth 1 -maxdepth 1 -not \( -name 'magick' -or -name 'convert' \) -exec rm -f {} \; && \
+    find '/homelab/imagemagick/shared/bin' -mindepth 1 -maxdepth 1 -not \( -name 'magick' -or -name 'convert' \) -exec rm -f {} \; && \
+    find '/homelab/imagemagick/lib' -mindepth 1 -maxdepth 1 -type d -not \( -name 'ImageMagick-*' -or -name 'sharun-preload' \) -exec rm -rf {} \; && \
+    find '/homelab/imagemagick/lib' -path '*/ImageMagick-*/modules-*/coders/*' -not \( -name 'icon.*' -or -name 'png.*' -or -name 'webp.*' \) -exec rm -f {} \; && \
+    find '/homelab/imagemagick/lib' -path '*/ImageMagick-*/modules-*/*' -name 'filters' -prune -exec rm -rf {} \; && \
+    find '/homelab/imagemagick/lib' -mindepth 1 -maxdepth 1 \( -type f -or -type l \) \
+        -not \( \
+            -name 'ld-linux-*' -or \
+            -name 'libanl.so*' -or \
+            -name 'libbrotlicommon.so*' -or \
+            -name 'libbrotlidec.so*' -or \
+            -name 'libbz*.so*' -or \
+            -name 'libc.so*' -or \
+            -name 'libcrypt.so*' -or \
+            -name 'libdl.so*' -or \
+            -name 'libexpat.so*' -or \
+            -name 'libfftw*.so*' -or \
+            -name 'libfontconfig.so*' -or \
+            -name 'libfreetype.so*' -or \
+            -name 'libfribidi.so*' -or \
+            -name 'libgcc_s.so*' -or \
+            -name 'libglib-*.*.so*' -or \
+            -name 'libgomp.so*' -or \
+            -name 'libgraphite*.so*' -or \
+            -name 'libharfbuzz.so*' -or \
+            -name 'liblcms*.so*' -or \
+            -name 'liblqr-*.so*' -or \
+            -name 'libltdl.so*' -or \
+            -name 'libm.so*' -or \
+            -name 'libMagickCore-*.*.so*' -or \
+            -name 'libMagickWand-*.*.so*' -or \
+            -name 'libpcre*-*.so*' -or \
+            -name 'libpng*.so*' -or \
+            -name 'libpthread.so*' -or \
+            -name 'libraqm.so*' -or \
+            -name 'libresolv.so*' -or \
+            -name 'librt.so*' -or \
+            -name 'libsharpyuv.so*' -or \
+            -name 'libutil.so*' -or \
+            -name 'libwebp.so*' -or \
+            -name 'libwebpdemux.so*' -or \
+            -name 'libwebpmux.so*' -or \
+            -name 'libX11.so*' -or \
+            -name 'libXau.so*' -or \
+            -name 'libxcb.so*' -or \
+            -name 'libXdmcp.so*' -or \
+            -name 'libXext.so*' -or \
+            -name 'libxml*.so*' -or \
+            -name 'libz.so*' \
+        \) -exec rm -rf {} \; && \
+    coders_dir="$(find '/homelab/imagemagick/lib' -type d -path '*/ImageMagick-*/modules-*/coders' -print -quit | sed -E 's~^/homelab/imagemagick/lib~~')" && \
+    printf '%s\n' '+' '+/sharun-preload' "+${coders_dir}" >'/homelab/imagemagick/lib/lib.path'
+COPY ./docker-images/favicons/test-icons/test.png ./docker-images/favicons/test-icons/test.ico /homelab/test-icons/
+ENV PATH="/homelab/imagemagick/bin:${PATH}"
+RUN tmpdir="$(mktemp -d)" && \
+    mkdir -p "${tmpdir}/ico2png" "${tmpdir}/png2png" && \
+    magick convert -background none -auto-orient '/homelab/test-icons/test.ico' "${tmpdir}/ico2png/test.png" && \
+    magick convert -background none -resize 100x100 -auto-orient '/homelab/test-icons/test.png' "${tmpdir}/png2png/test.png" && \
     rm -rf "${tmpdir}"
 
 ### App config ###
@@ -208,7 +270,7 @@ COPY --from=nodejs_build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs_build /homelab/dist /homelab/dist
 COPY ./docker-images/favicons/icons /homelab/icons
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=imagemagick_final /homelab/imagemagick/bin/convert /homelab/imagemagick/bin/identify /homelab/imagemagick/bin/magick /homelab/bin/
+COPY --from=imagemagick_final /homelab/imagemagick/ /homelab/imagemagick/
 COPY --from=urls_config_3 /homelab/urls.json /homelab/
 
 FROM scratch AS prefinal
@@ -230,7 +292,7 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="favicons" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
-    PATH="/homelab/bin:${PATH}" \
+    PATH="/homelab/imagemagick/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=300s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
