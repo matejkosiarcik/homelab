@@ -227,6 +227,10 @@ convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPU
 convert_image_full "${tmpdir}/server-mini.svg" "${output_dir}/server-mini.png"
 rm -f "${tmpdir}/server-mini.svg"
 
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Dial-up Modem 2.svg" "${tmpdir}/set-top-box.svg"
+convert_image_full "${tmpdir}/set-top-box.svg" "${output_dir}/set-top-box.png"
+rm -f "${tmpdir}/set-top-box.svg"
+
 convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Energy Management/Single-phase Energy Meter (DIN).svg" "${tmpdir}/elecricity-meter.svg"
 convert_image_full "${tmpdir}/elecricity-meter.svg" "${output_dir}/elecricity-meter.png"
 rm -f "${tmpdir}/elecricity-meter.svg"
