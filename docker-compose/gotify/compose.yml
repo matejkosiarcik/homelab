@@ -18,6 +18,7 @@ services:
       - internal-network
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/app/data:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   app-setup:
     extends:

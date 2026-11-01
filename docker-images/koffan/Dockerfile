@@ -1,6 +1,15 @@
 # syntax=docker/dockerfile:1
-# checkov:skip=CKV_DOCKER_2: Healthcheck is built-in
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
+
+### Healthcheck ###
+
+FROM golang:1.27.3-alpine AS healthcheck_build
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
 ### Users ###
 
@@ -22,6 +31,7 @@ RUN sh '/homelab/create-user.sh' && \
 FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
+COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -43,3 +53,4 @@ ENV APP_ENV="production" \
     PORT="8080" \
     TZ="Europe/Bratislava"
 USER homelab
+HEALTHCHECK --interval=10s --start-period=30s --timeout=3s --retries=3 CMD [ "/bin/sh", "-c", "exec /homelab/bin/healthcheck --url \"http://localhost:${PORT}\" --status '200'" ]
