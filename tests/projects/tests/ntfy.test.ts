@@ -20,6 +20,19 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
+            test('API: Health endpoint', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/v1/health`);
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const body = response.data as { healthy: boolean, role: string };
+                    expect(body, 'Response healthy').toStrictEqual({ healthy: true, role: 'active' });
+                });
+            });
+
             test('UI: Open', async ({ page }) => {
                 await test.step('Open application', async () => {
                     await page.goto(instance.url);
