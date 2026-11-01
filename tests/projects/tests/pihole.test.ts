@@ -27,7 +27,7 @@ test.describe(app.title, () => {
             createFaviconTests(instance.url);
             createHttpsRootRedirectTest(instance.url, '/admin');
 
-            test('DNS: example.com lookup', { lock: 'dns' }, async () => {
+            test('DNS: example.com lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
@@ -63,7 +63,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: self domain lookup', { lock: 'dns' }, async () => {
+            test('DNS: self domain lookup', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
@@ -90,7 +90,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: local unused domain', { lock: 'dns' }, async () => {
+            test('DNS: local unused domain', async () => {
                 const instanceIp = await (async () => {
                     const instancesIps = await nodeDns.resolve(instanceDomain);
                     expect(instancesIps, 'PiHole DNS address resolution').toHaveLength(1);
@@ -108,7 +108,7 @@ test.describe(app.title, () => {
                 }
             });
 
-            test('DNS: Local domains lookup', { lock: 'dns' }, async () => {
+            test('DNS: Local domains lookup', async () => {
                 const instanceIp = await (async () => {
                     const instanceIps = await nodeDns.resolve(instanceDomain);
                     expect(instanceIps, 'PiHole DNS address resolution').toHaveLength(1);
